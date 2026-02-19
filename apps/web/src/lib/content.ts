@@ -1,15 +1,23 @@
 import * as fs from "fs";
 import * as path from "path";
 
-// Resolve content dir relative to this file's location (works in both dev and build)
-const CONTENT_DIR = path.resolve(process.cwd(), "../../content");
+// Find the content directory — try multiple possible locations
+function findContentDir(): string {
+  const candidates = [
+    path.resolve(process.cwd(), "../../content"),     // from apps/web
+    path.resolve(process.cwd(), "../content"),         // from apps
+    path.resolve(process.cwd(), "content"),            // from repo root
+    path.resolve(process.cwd(), "apps/web/../../content"), // fallback
+  ];
+  for (const dir of candidates) {
+    if (fs.existsSync(path.join(dir, "mdx"))) return dir;
+  }
+  return candidates[0]; // default even if not found
+}
+
+const CONTENT_DIR = findContentDir();
 const MDX_DIR = path.join(CONTENT_DIR, "mdx");
 const SEARCH_DIR = path.join(CONTENT_DIR, "search-index");
-
-// Debug: log at build time
-if (typeof process !== "undefined" && process.env.NODE_ENV !== "production") {
-  // Only log in dev
-}
 
 
 export interface ContentMeta {

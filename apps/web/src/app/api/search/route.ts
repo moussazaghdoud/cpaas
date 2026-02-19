@@ -27,8 +27,13 @@ function getSearchIndex(): MiniSearch {
     },
   });
 
-  // Try to load crawled content documents
-  const docsPath = path.join(process.cwd(), "../../content/search-index/documents.json");
+  // Try to load crawled content documents (check multiple paths for Railway/Vercel compat)
+  const candidates = [
+    path.join(process.cwd(), "../../content/search-index/documents.json"),
+    path.join(process.cwd(), "../content/search-index/documents.json"),
+    path.join(process.cwd(), "content/search-index/documents.json"),
+  ];
+  const docsPath = candidates.find((p) => fs.existsSync(p)) || candidates[0];
   if (fs.existsSync(docsPath)) {
     try {
       const docs: SearchDoc[] = JSON.parse(fs.readFileSync(docsPath, "utf-8"));
