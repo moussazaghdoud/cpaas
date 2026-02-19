@@ -19,14 +19,18 @@ RUN npm run build
 FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV=production
+ENV HOSTNAME="0.0.0.0"
 ENV PORT=3000
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-COPY --from=builder /app/apps/web/public ./apps/web/public
+# Copy standalone output (preserves directory structure)
 COPY --from=builder /app/apps/web/.next/standalone ./
+# Copy static files and public assets
 COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder /app/apps/web/public ./apps/web/public
+# Copy content for search API
 COPY --from=builder /app/content ./content
 
 USER nextjs
