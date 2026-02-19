@@ -1,0 +1,207 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharpprevious/core/lts/guides/032_autoreconnection"
+lastSynced: "2026-02-19T22:35:14.367Z"
+---
+# Documentation
+
+Auto reconnection
+
+LTS release 2.6.XPubliée le 2021-12-13
+
+## Auto reconnection service
+
+### Prerequisite
+
+---
+
+You must first know how to connect to the Rainbow server - if it's not the case please read first this [guide](/docs/sdk/csharp).
+
+### Features available
+
+---
+
+This service try to automatically reconnect to the server in case of disconnection.
+
+This service is always started as soon as a login method in `Application` is used.
+
+This service is stopped / cancelled:
+
+-   if `Cancel()` method is used
+-   if the current user uses `Application.Logout(...)` method
+-   if the maximum number of attempts is reached.
+-   if the user token has expired and `UsePreviousLoginPwd` property is set to False.
+-   if an attempt (using token or user credentails) is not accepted by the server: inappropriate token or if this user has no more the right to access to the server (account disabled or deleted for example)
+
+When the service is stopped / cancelled, the event `Cancelled` is raised.
+
+If `CheckNetworkInterfaces` property is set to True (default value), an attempt is performed by this service only:
+
+-   if at least one network interface has its status set as **Up** (enabled and with an ip address).
+-   of if no interfarce is **Up**, cheack at least one networkt interface has its status set as **Unknown** (for compatibility purpose with some device running with old frameworks)
+
+Once connected again, the number of attempt is set to zero.
+
+If the maximum number of attempt is reached, the service is stopped and the event `MaxNbAttemptsReached` is raised too.
+
+Each attempt uses first the user token to connect to the server if available and if it's not expired. This service ensures to renew the current user token on its half-life.
+
+If it's no more possible to renew it, the event `TokenExpired` is raised and the connection to the server is automatically stopped.
+
+In this case, if `UsePreviousLoginPwd` is set to False, the service is also stopped. If it's set to True, the service try to use previous credentials to connect to the server.
+
+Default values:
+
+-   `MaxNbAttempts` = 50
+-   `DelayBetweenAttempts` = { 200, 400, 800, 1600, 3200, 6400, ... } (in ms, not necessary to specify all values, last one is used for all others attempts
+-   `MaxRandomDelayBetwenAttemps` = { 100, 200, 400, 800, 1600, 3200, ... } (in ms, not necessary to specify all values, last one is used for all others attempts
+-   `AvoidNetworkInterfaceKeywordsInDescription` = { "virtual" }; (so network interface including the name "virtual" are NOT taken into consideration by default)
+
+### Usage example
+
+---
+
+This code is based on the one available in the guide [Connect to Rainbow](/docs/sdk/csharp).
+
+Management of events from AutoReconnection service have been added.
+
+It's interesseting to see what is happening if you start it and try to disable all your network connections.
+
+You will notice that there is normal delay between the event `OneNetworkInterfaceOperational` (indicating that no one is availalbe) and the event `ConnectionStateChanged` (indicating the disconnected state)
+
+```csharp
+using Rainbow;
+
+// Define objects
+String appId = ""; // To set according your settings
+String appSecretKey = ""; // To set according your settings
+String hostName = "openrainbow.com"; // To set according your settings
+
+String login = ""; // To set according your settings
+String password = ""; // To set according your settings
+
+// In this sample, the program will end only if the auto reconnection service is cancelled / stopped
+Boolean endProgram = false;
+Rainbow.Application? RbApplication;
+Rainbow.AutoReconnection? RbAutoReconnection;
+
+// Create objects from SDK
+RbApplication = new Application();
+RbAutoReconnection = RbApplication.GetAutoReconnection();
+
+// Set events that we want to follow from Rainbow.Application
+RbApplication.AuthenticationFailed += RbApplication_AuthenticationFailed; // This method will be called when the authentication process will fail
+RbApplication.AuthenticationSucceeded += RbApplication_AuthenticationSucceeded; // This method will be called when the authentication process will succeed
+RbApplication.ConnectionStateChanged += RbApplication_ConnectionStateChanged; // This method will be called when the Connection State will change
+RbApplication.InitializationPerformed += RbApplication_InitializationPerformed; // This method will be called when the Initialization process will succeed
+
+// Set events that we want to follow from Rainbow.AutoReconnection
+RbAutoReconnection.Started += RbAutoReconnection_Started; // This method will be called when the AutoReconnection service is started
+RbAutoReconnection.Cancelled += RbAutoReconnection_Cancelled; // This method will be called when the AutoReconnection service is cancelled / stopped
+RbAutoReconnection.MaxNbAttemptsReached += RbAutoReconnection_MaxNbAttemptsReached; // This method will be called when the AutoReconnection service tried too many times to reconnect to the server
+RbAutoReconnection.OneNetworkInterfaceOperational += RbAutoReconnection_OneNetworkInterfaceOperational; // This method will be called when the AutoReconnection service has found at least one network interface which is "operational". Event used onkly if CheckNetworkInterface is set to True
+RbAutoReconnection.TokenExpired += RbAutoReconnection_TokenExpired; // This method will be called when the AutoReconnection service when the authentication token has expired.
+
+// Set global configuration info
+RbApplication.SetApplicationInfo(appId, appSecretKey);
+RbApplication.SetHostInfo(hostName);
+
+// For test purpose, intentionally we set only to 10 the number of attempts before to stop the auto reconnection service 
+RbAutoReconnection.MaxNbAttempts = 10;
+
+// Start login
+RbApplication.Login(login, password);
+
+do
+{
+    Thread.Sleep(100);
+} while (!endProgram);
+
+
+void RbApplication_InitializationPerformed(object? sender, EventArgs e)
+{
+    // Here we just log that the initialization has been performed
+    Console.WriteLine($"InitializationPerformed");
+}
+
+void RbApplication_ConnectionStateChanged(object? sender, Rainbow.Events.ConnectionStateEventArgs e)
+{
+    // Here we just log the connection state in the console
+    Console.WriteLine($"ConnectionStateChanged: [{e.ConnectionState.State}]");
+
+    // in 'connecting' state, we display the current number of attempts
+    if(e.ConnectionState.State == Rainbow.Model.ConnectionState.Connecting)
+        Console.WriteLine($"Current nb of attempts:[{RbAutoReconnection.CurrentNbAttempts}]");
+}
+
+void RbApplication_AuthenticationSucceeded(object? sender, EventArgs e)
+{
+    // Here we just log the authentication has succeeded
+    Console.WriteLine($"AuthenticationSucceeded");
+}
+
+void RbApplication_AuthenticationFailed(object? sender, Rainbow.Events.SdkErrorEventArgs e)
+{
+    // Authentication failed - we display in the console the reason
+    Console.WriteLine($"AuthenticationFailed\r\n[{e.SdkError}");
+}
+
+void RbAutoReconnection_Cancelled(object? sender, Rainbow.Events.StringEventArgs e)
+{
+    // The auto reconnection service has been cancelled / stopped
+    // We get the reason and we display it on the console
+    var connectionState = RbAutoReconnection.GetServerDisconnectionInformation();
+    Console.WriteLine($"AutoReconnection service has been cancelled / stopped - Reason:[{e.Value}] - connectionState:[{connectionState}] ");
+
+    // And we can quit
+    endProgram = true;
+}
+
+void RbAutoReconnection_Started(object? sender, EventArgs e)
+{
+    // The auto reconnection service has started
+    Console.WriteLine($"AutoReconnection service has started");
+}
+
+void RbAutoReconnection_TokenExpired(object? sender, EventArgs e)
+{
+    // The user token has expired
+    Console.WriteLine($"User token has expired");
+}
+
+void RbAutoReconnection_OneNetworkInterfaceOperational(object? sender, Rainbow.Events.BooleanEventArgs e)
+{
+
+    if (e.Value)
+    {
+        // At least one network interface is operational
+        Console.WriteLine($"At least one network interface is operational");
+    }
+    else
+    {
+        // NO network interface is operational
+        Console.WriteLine($"NO network interface is operational");
+    }
+};
+
+void RbAutoReconnection_MaxNbAttemptsReached(object? sender, EventArgs e)
+{
+    // Max number of attempts to connect to the server has been reached
+    Console.WriteLine($"Max number of attempts to connect to the server has been reached");
+}
+```
+
+### Sur cette page
+
+-   [Auto reconnection service](/docs/sdk/csharp#name-auto-reconnection-service-0)
+-   [Prerequisite](/docs/sdk/csharp#name-prerequisite-3)
+-   [Features available](/docs/sdk/csharp#name-features-available-10)
+-   [Usage example](/docs/sdk/csharp#name-usage-example-108)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

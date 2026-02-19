@@ -1,0 +1,394 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/fileStorage"
+lastSynced: "2026-02-19T22:35:15.215Z"
+---
+# Documentation
+
+FileStorage service
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## FileStorage
+
+This service shares files with a single user (one-to-one conversation) or with several persons (bubble conversation). The main methods and events proposed in that service allow to:  
+\- Upload a file in a one-to-one conversation or bubble conversation,  
+\- Download a file from a conversation or bubble,  
+\- To be notified when a file has been successfully uploaded or downloaded by the connected user or when there is an error when uploading or downloading a file in a conversation or a bubble  
+\- Get the list of files send or received in a one-to-one conversation  
+\- Get the list of files send or received in a bubble conversation  
+\- Get the connected user quota and consumption
+
+**Emits**: `event:RAINBOW_ONCHUNKLOADMESSAGE`, `event:RAINBOW_ONFILEUPLOADED`, `event:RAINBOW_ONFILEUPLOADED_ERROR`, `event:RAINBOW_ONFILEDOWNLOADED`, `event:RAINBOW_ONFILEDOWNLOADED_ERROR`  
+**Access**: public
+
+-   [FileStorage](#module_FileStorage)
+    -   [uploadFileToConversation(conversationId, file, message)](#module_FileStorage+uploadFileToConversation) ⇒ `Promise`
+    -   [uploadFile(file)](#module_FileStorage+uploadFile) ⇒ `Promise`
+    -   [uploadExistingFileToConversation(conversationId, fileDescriptor, message)](#module_FileStorage+uploadExistingFileToConversation) ⇒ `Promise`
+    -   [uploadFileToBubble(bubble, file, message)](#module_FileStorage+uploadFileToBubble) ⇒ `Promise`
+    -   [downloadFile(fileDescriptor)](#module_FileStorage+downloadFile) ⇒ `Promise`
+    -   [removeFile(fileDescriptor)](#module_FileStorage+removeFile) ⇒ `Promise`
+    -   [getFileDescriptorFromId(fileId)](#module_FileStorage+getFileDescriptorFromId) ⇒ `object`
+    -   [getFileDescriptorUrl(fileDescriptor, thumbnail)](#module_FileStorage+getFileDescriptorUrl) ⇒ `object`
+    -   [getFilesReceivedInConversation(conversationId)](#module_FileStorage+getFilesReceivedInConversation) ⇒ `Promise`
+    -   [getFilesReceivedInBubble(bubble)](#module_FileStorage+getFilesReceivedInBubble) ⇒ `Promise`
+    -   [getFilesSentInConversation(conversationId)](#module_FileStorage+getFilesSentInConversation) ⇒ `Promise`
+    -   [getFilesSentInBubble(bubble)](#module_FileStorage+getFilesSentInBubble) ⇒ `Promise`
+    -   [getUserQuotaConsumption()](#module_FileStorage+getUserQuotaConsumption) ⇒ `Promise`
+    -   [getAllFilesSent()](#module_FileStorage+getAllFilesSent) ⇒ `Array`
+    -   [getAllFilesReceived()](#module_FileStorage+getAllFilesReceived) ⇒ `Array`
+    -   [cancelCurrentFileTransfer(id)](#module_FileStorage+cancelCurrentFileTransfer) ⇒ `Promise`
+
+### fileStorage.uploadFileToConversation(conversationId, file, message) ⇒ `Promise`
+
+Allow to add a file to an existing conversation (i.e. conversation with a contact)
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)  
+**Returns**: `Promise` - Promise with the message sent or error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+Id of the conversation where the message will be added
+
+file
+
+`object`
+
+The file to add. It could be a JavaScript File object or a path to a local file (string).
+
+message
+
+`string`
+
+An optional message to add with the file
+
+### fileStorage.uploadFile(file) ⇒ `Promise`
+
+Add a file to Rainbow File Storage
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)  
+**Returns**: `Promise` - Promise with the fileDescriptor of the message sent or error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+file
+
+`object`
+
+The file to add. It could be a JavaScript File object or a path to a local file (string).
+
+### fileStorage.uploadExistingFileToConversation(conversationId, fileDescriptor, message) ⇒ `Promise`
+
+Allow to add an existing Rainbow Storage file to an existing conversation (i.e. conversation with a contact)
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)  
+**Returns**: `Promise` - Promise with the message sent or error
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+ID of the conversation where the message will be added
+
+fileDescriptor
+
+`object`
+
+The fileDescriptor to be sent.
+
+message
+
+`string`
+
+An optional message to add with the file
+
+### fileStorage.uploadFileToBubble(bubble, file, message) ⇒ `Promise`
+
+Allow to add a file to an existing Bubble conversation
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)  
+**Returns**: `Promise` - Promise with the message sent or error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`object`
+
+The bubble where the message will be added
+
+file
+
+`object`
+
+The file to add. It could be a JavaScript File object or a path to a local file (string).
+
+message
+
+`string`
+
+An optional message to add with the file
+
+### fileStorage.downloadFile(fileDescriptor) ⇒ `Promise`
+
+Allow to download a file from the server
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)  
+**Returns**: `Promise` - Promise containing file blob or error messasge  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+fileDescriptor
+
+`object`
+
+The description of the file to download (short file descriptor)
+
+### fileStorage.removeFile(fileDescriptor) ⇒ `Promise`
+
+Remove an uploaded file
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)  
+**Returns**: `Promise` - Return a SDK OK Object or a SDK error object depending the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+fileDescriptor
+
+`object`
+
+The description of the file to remove (short file descriptor)
+
+### fileStorage.getFileDescriptorFromId(fileId) ⇒ `object`
+
+Get the file descriptor from the file's ID
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)  
+**Returns**: `object` - Return a file descriptors found or null if no file descriptor has been found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+fileId
+
+`string`
+
+The file id
+
+### fileStorage.getFileDescriptorUrl(fileDescriptor, thumbnail) ⇒ `object`
+
+Get the file descriptor URL. The method uses URL.createObjectURL() method, it is therefore recommended to use URL.revokeObjectURL() to release an object URL (and to let the browser know not to keep the reference to the file any longer)
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)  
+**Returns**: `object` - File descriptor URL  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+fileDescriptor
+
+`object`
+
+File Descriptor object
+
+thumbnail
+
+`boolean`
+
+Set to true to create url for thumbnail only, false to create url for full image
+
+### fileStorage.getFilesReceivedInConversation(conversationId) ⇒ `Promise`
+
+Get the list of all files received in a conversation with a contact
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)  
+**Returns**: `Promise` - Array of file descriptors found or an empty array if no file descriptor has been found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+ID of the conversation where to get the files
+
+### fileStorage.getFilesReceivedInBubble(bubble) ⇒ `Promise`
+
+Get the list of all files received in a bubble
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)  
+**Returns**: `Promise` - Array of file descriptors found or an empty array if no file descriptor has been found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`object`
+
+The bubble where to get the files
+
+### fileStorage.getFilesSentInConversation(conversationId) ⇒ `Promise`
+
+Get the list of all files sent in a conversation with a contact
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)  
+**Returns**: `Promise` - Array of file descriptors found or an empty array if no file descriptor has been found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+The conversationId where to get the files
+
+### fileStorage.getFilesSentInBubble(bubble) ⇒ `Promise`
+
+Get the list of all files sent in a bubble
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)  
+**Returns**: `Promise` - Array of file descriptors found or an empty array if no file descriptor has been found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`object`
+
+The bubble where to get the files
+
+### fileStorage.getUserQuotaConsumption() ⇒ `Promise`
+
+Get the current file storage quota and consumption for the connected user
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)  
+**Returns**: `Promise` - Object containing the user quota and consumption  
+**Access**: public  
+
+### fileStorage.getAllFilesSent() ⇒ `Array`
+
+Get the list of files (represented using an array of File|string Descriptor objects) created and owned by the connected which is the list of file sent to all of his conversations and bubbles.
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)  
+**Returns**: `Array` - Return an array containing the list of FileDescriptor objects representing the files sent  
+**Access**: public  
+
+### fileStorage.getAllFilesReceived() ⇒ `Array`
+
+Get the list of files (represented using an array of File|string Descriptor objects) received by the connected user from all of his conversations and bubbles.
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)  
+**Returns**: `Array` - Return an array containing a list of FileDescriptor objects representing the files received  
+**Access**: public  
+
+### fileStorage.cancelCurrentFileTransfer(id) ⇒ `Promise`
+
+Cancel the ongoing file transfer based on the file ID.
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)  
+**Returns**: `Promise` - Returns promise with the updated fileDescriptor object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+ID of the file that is being transfered
+
+### Sur cette page
+
+-   [FileStorage](/docs/sdk/web#name-filestorage-3)
+-   [fileStorage.uploadFileToConversation(conversationId, file, message) ⇒ Promise](/docs/sdk/web#name-filestorage.uploadfiletoconversationconversationid-file-message--promise-104)
+-   [fileStorage.uploadFile(file) ⇒ Promise](/docs/sdk/web#name-filestorage.uploadfilefile--promise-166)
+-   [fileStorage.uploadExistingFileToConversation(conversationId, fileDescriptor, message) ⇒ Promise](/docs/sdk/web#name-filestorage.uploadexistingfiletoconversationconversationid-filedescriptor-message--promise-206)
+-   [fileStorage.uploadFileToBubble(bubble, file, message) ⇒ Promise](/docs/sdk/web#name-filestorage.uploadfiletobubblebubble-file-message--promise-268)
+-   [fileStorage.downloadFile(fileDescriptor) ⇒ Promise](/docs/sdk/web#name-filestorage.downloadfilefiledescriptor--promise-330)
+-   [fileStorage.removeFile(fileDescriptor) ⇒ Promise](/docs/sdk/web#name-filestorage.removefilefiledescriptor--promise-370)
+-   [fileStorage.getFileDescriptorFromId(fileId) ⇒ object](/docs/sdk/web#name-filestorage.getfiledescriptorfromidfileid--object-410)
+-   [fileStorage.getFileDescriptorUrl(fileDescriptor, thumbnail) ⇒ object](/docs/sdk/web#name-filestorage.getfiledescriptorurlfiledescriptor-thumbnail--object-450)
+-   [fileStorage.getFilesReceivedInConversation(conversationId) ⇒ Promise](/docs/sdk/web#name-filestorage.getfilesreceivedinconversationconversationid--promise-501)
+-   [fileStorage.getFilesReceivedInBubble(bubble) ⇒ Promise](/docs/sdk/web#name-filestorage.getfilesreceivedinbubblebubble--promise-541)
+-   [fileStorage.getFilesSentInConversation(conversationId) ⇒ Promise](/docs/sdk/web#name-filestorage.getfilessentinconversationconversationid--promise-581)
+-   [fileStorage.getFilesSentInBubble(bubble) ⇒ Promise](/docs/sdk/web#name-filestorage.getfilessentinbubblebubble--promise-621)
+-   [fileStorage.getUserQuotaConsumption() ⇒ Promise](/docs/sdk/web#name-filestorage.getuserquotaconsumption--promise-661)
+-   [fileStorage.getAllFilesSent() ⇒ Array](/docs/sdk/web#name-filestorage.getallfilessent--array-670)
+-   [fileStorage.getAllFilesReceived() ⇒ Array](/docs/sdk/web#name-filestorage.getallfilesreceived--array-679)
+-   [fileStorage.cancelCurrentFileTransfer(id) ⇒ Promise](/docs/sdk/web#name-filestorage.cancelcurrentfiletransferid--promise-688)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

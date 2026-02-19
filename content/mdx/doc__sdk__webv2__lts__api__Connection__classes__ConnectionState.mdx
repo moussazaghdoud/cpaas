@@ -1,0 +1,78 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/Connection/classes/ConnectionState"
+lastSynced: "2026-02-19T22:35:16.730Z"
+---
+# Documentation
+
+ConnectionState
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [Connection](doc/sdk/webv2/lts/api/Connection/index) / ConnectionState
+
+# Class: ConnectionState
+
+## Properties
+
+### progress?
+
+> `optional` **progress**: [`ConnectionProgress`](doc/sdk/webv2/lts/api/Connection/classes/ConnectionProgress)
+
+---
+
+### reason?
+
+> `optional` **reason**: [`DisconnectionReasonEnum`](doc/sdk/webv2/lts/api/Connection/enumerations/DisconnectionReasonEnum)
+
+---
+
+### state
+
+> **state**: [`ConnectionStateEnum`](doc/sdk/webv2/lts/api/Connection/enumerations/ConnectionStateEnum)
+
+## Methods
+
+### create()
+
+> `static` **create**<`T`\>(`state`, `reason`?, `progress`?): [`ConnectionState`](doc/sdk/webv2/lts/api/Connection/classes/ConnectionState)
+
+#### Type parameters
+
+• **T** *extends* [`ConnectionStateEnum`](doc/sdk/webv2/lts/api/Connection/enumerations/ConnectionStateEnum)
+
+#### Parameters
+
+• **state**: `T`
+
+• **reason?**: `T` *extends* [`DISCONNECTED`](doc/sdk/webv2/lts/api/Connection/enumerations/ConnectionStateEnum#disconnected) ? [`DisconnectionReasonEnum`](doc/sdk/webv2/lts/api/Connection/enumerations/DisconnectionReasonEnum) : `never`
+
+• **progress?**: [`ConnectionProgress`](doc/sdk/webv2/lts/api/Connection/classes/ConnectionProgress)
+
+#### Returns
+
+[`ConnectionState`](doc/sdk/webv2/lts/api/Connection/classes/ConnectionState)
+
+### Sur cette page
+
+-   [Properties](/docs/sdk/web#name-properties-10)
+-   [progress?](/docs/sdk/web#name-progress-13)
+-   [reason?](/docs/sdk/web#name-reason-22)
+-   [state](/docs/sdk/web#name-state-31)
+-   [Methods](/docs/sdk/web#name-methods-39)
+-   [create()](/docs/sdk/web#name-create-42)
+-   [Type parameters](/docs/sdk/web#name-type-parameters-50)
+-   [Parameters](/docs/sdk/web#name-parameters-56)
+-   [Returns](/docs/sdk/web#name-returns-68)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

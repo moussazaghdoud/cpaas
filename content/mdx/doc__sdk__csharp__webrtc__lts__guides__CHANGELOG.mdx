@@ -1,0 +1,154 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/webrtc/lts/guides/CHANGELOG"
+lastSynced: "2026-02-19T22:35:14.268Z"
+---
+# Documentation
+
+Changelog
+
+LTS release 2.XPubliée le 2025-03-17Comparer
+
+## SDK.WebRTC for C#
+
+### \[2.5.0\] - 2026-01-16
+
+#### Changed
+
+-   Update code to remove compilation warnings
+
+---
+
+### \[2.4.0\] - 2025-11-20
+
+#### Fixed
+
+-   Improve test to avoid crash if an incorrect ICE candidate is used.
+-   If there is no more Video MediaPublication in a conference, ensure to unsubscribe to DynamicFeed if necessary.
+
+#### Added
+
+-   Added .Net 10.0 as target framework
+
+---
+
+### \[2.3.0\] - 2025-09-01
+
+#### Added
+
+-   Request that the gathering of ICE candidates be redone in 3 cases:
+    -   ICE status has failed (without never has been connected)
+    -   ICE status is disconnected
+    -   ICE Status is connected but not the PeerConnection after some delay
+
+#### Fixed
+
+-   Trigger events `OnMediaPublicationUpdated` and `OnMediaServiceUpdated` with `MediaPublicationStatus.CURRENT_USER_UNSUBSCRIBED` if an error occurs when managing SDP exchange
+-   In events `OnMediaPublicationUpdated`, use correct info if available: **MediaId, MediaName, MediaDescription, PeerResource**
+
+---
+
+### \[2.2.0\] - 2025-07-07
+
+#### Changed
+
+-   Technical delivery to ensure to use Rainbow.CSharp.SDK V3.4.0
+
+---
+
+### \[2.1.0\] - 2025-04-23
+
+#### Changed
+
+-   Use `SetLoggerFactory()` of `IWebRTCFactory` interface to set a common logger factory
+
+---
+
+### \[2.0.1\] - 2025-03-27
+
+#### Changed
+
+-   Technical delivery to ensure to use Rainbow.CSharp.SDK V3.1.0
+
+---
+
+### \[2.0.0\] - 2025-03-12
+
+#### Fixed
+
+-   Avoid to create a DataChannel if already one exists
+-   Fix `Dispose()` method of `DataChannel` and `WebRTCCall` (internal object)
+-   When joining conference without Media, set CallStatus to ACTIVE
+
+#### Changed
+
+-   `MediaStreamTrackDescriptor` object: `LocalTrack` property (as Boolean)
+-   `WebRTCCommunications` service: Allow to set **media name** and **media description** (optional parameters) in `JoinConferenceAsync()`, `StartAndJoinConferenceAsync()`, `JoinConferenceAsync()`, `AddAudioAsync()`, `AddVideoAsync()`, `AddSharingAsync()` and `AddDataChannelAsync()`
+-   `WebRTCCommunications` service: `OnTrack` is triggered also when `MediaPublication` is unsubscribed (audio, video or sharing)
+
+---
+
+### \[2.0.0-sts.4\] - 2024-11-22
+
+#### Fixed
+
+-   Fix management of SDP offer / answer
+-   Fix PeerConnection closure for local and remote medias
+
+#### Changed
+
+-   Enhance the way to hangup a webrtc call
+
+---
+
+### \[2.0.0-sts.3\] - 2024-10-01
+
+#### Added
+
+-   `WebRTCCommunications` service: `JoinConferenceAsync()` to avoid to use Audio
+-   `WebRTCCommunications` service: `AddAudioAsync()` now permits to add Audio in Conference if media not already used
+
+#### Changed
+
+-   `WebRTCCommunications` service: `SubscribeToMediaPublicationAsync()`, `SubscribeToMediaServiceAsync()` and `AddAusioAsync()` methods accept a new optional parameter: a **ConfigurationOptions** object
+
+---
+
+### \[2.0.0-sts.2\] - 2024-07-17
+
+#### Info
+
+-   Technical delivery to ensure to use Rainbow.CSharp.SDK 3.0.0-sts.2
+
+---
+
+### \[2.0.0-sts.1\] - 2024-07-01
+
+#### Info
+
+-   Contains all features of v1.X
+-   New features will only been added in V2.X
+-   Use Async/Await pattern
+
+### Sur cette page
+
+-   [SDK.WebRTC for C#](/docs/sdk/csharp#name-sdk.webrtc-for-c-0)
+-   [\[2.5.0\] - 2026-01-16](/doc/sdk/csharp/webrtc/lts/guides/CHANGELOG#name-2.5.0---2026-01-16-3)
+-   [\[2.4.0\] - 2025-11-20](/doc/sdk/csharp/webrtc/lts/guides/CHANGELOG#name-2.4.0---2025-11-20-17)
+-   [\[2.3.0\] - 2025-09-01](/doc/sdk/csharp/webrtc/lts/guides/CHANGELOG#name-2.3.0---2025-09-01-46)
+-   [\[2.2.0\] - 2025-07-07](/doc/sdk/csharp/webrtc/lts/guides/CHANGELOG#name-2.2.0---2025-07-07-92)
+-   [\[2.1.0\] - 2025-04-23](/doc/sdk/csharp/webrtc/lts/guides/CHANGELOG#name-2.1.0---2025-04-23-106)
+-   [\[2.0.1\] - 2025-03-27](/doc/sdk/csharp/webrtc/lts/guides/CHANGELOG#name-2.0.1---2025-03-27-120)
+-   [\[2.0.0\] - 2025-03-12](/doc/sdk/csharp/webrtc/lts/guides/CHANGELOG#name-2.0.0---2025-03-12-134)
+-   [\[2.0.0-sts.4\] - 2024-11-22](/doc/sdk/csharp/webrtc/lts/guides/CHANGELOG#name-2.0.0-sts.4---2024-11-22-178)
+-   [\[2.0.0-sts.3\] - 2024-10-01](/doc/sdk/csharp/webrtc/lts/guides/CHANGELOG#name-2.0.0-sts.3---2024-10-01-207)
+-   [\[2.0.0-sts.2\] - 2024-07-17](/doc/sdk/csharp/webrtc/lts/guides/CHANGELOG#name-2.0.0-sts.2---2024-07-17-236)
+-   [\[2.0.0-sts.1\] - 2024-07-01](/doc/sdk/csharp/webrtc/lts/guides/CHANGELOG#name-2.0.0-sts.1---2024-07-01-250)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

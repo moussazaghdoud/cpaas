@@ -1,0 +1,798 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Manage_contacts"
+lastSynced: "2026-02-19T22:35:13.329Z"
+---
+# Documentation
+
+Android > lts > guides > Manage\_contacts
+
+LTS release 2.61.0Publiée le 202-04-06
+
+## Manage contacts
+
+---
+
+Welcome to the tutorial on managing contacts using **Rainbow SDK for Android !** By the end of this guide, you'll be able to integrate contact management features into your Android application with ease. We'll cover accessing the user's roster, creating and managing personal contacts, and listening to changes in this information for updating your application's UI.
+
+**Rainbow concept**
+
+**Description**
+
+**IRainbowContact**
+
+Represents the public interface for accessing information about Rainbow contacts, including the logged-in user. This interface is utilized and returned by various SDK functions.
+
+**Roster**
+
+In XMPP, one's contact list is called a roster, which consists of any number of specific roster items, each roster item being identified by a unique JID (usually of the form contact@domain). For more information, refer to [RFC 6121](https://xmpp.org/rfcs/rfc6121.html#intro-requirements).
+
+**Personal contacts**
+
+A personal contact is one that you create and manage, exclusive to your account. You have full control over these contacts, allowing you to customize and utilize them according to your preferences
+
+### Preamble
+
+---
+
+This tutorial assumes that you have completed the **Getting Started** and **Connect to Rainbow** tutorials, and that you have an active Rainbow application. Before proceeding with contacts management, ensure the following:
+
+-   Your development environment is configured according to the guidelines in the [Getting Started](/docs/sdk/android) tutorial.
+-   You have successfully connected your application to the Rainbow platform as outlined in the [Connect to Rainbow](/docs/sdk/android) tutorial.
+-   You have obtained the necessary authentication credentials and API keys.
+
+With these prerequisites in place, let's explore the features of contacts management with **Rainbow SDK for Android**.
+
+### Access the user's roster
+
+The user's roster contains contacts that the user has invited, serving as both a contact list and a means of accessing the presence of contacts.
+
+Key Points to Consider:
+
+1.  **Roster Compositions:** The roster consists of contacts explicitly invited by the user. These contacts can be individuals or entities with whom the user interacts frequently.
+2.  **Invitation Mechanism:** Users can send invitations by specifying the contact's email address. Upon sending, a visibility request is initiated. If the recipient accepts the request, they are added to the user's roster.
+
+To access the roster, you can use the `roster` property of the `Contacts` module. This property returns an [ArrayItemList](/docs/sdk/android) containing objects of type `IRainbowContact`. You can then utilize this interface to display the required information in your application. Below are code examples demonstrating how to implement roster functionality in both Kotlin and Java.
+
+-   [kotlin](#codegroupTab-roster_kotlin)
+-   [java](#codegroupTab-roster_java)
+
+```kotlin
+class RosterFragment : Fragment() {
+    private val rosterChangeListener = IItemListChangeListener {
+        // Handle changes on the UI thread
+        val roster = RainbowSdk().contacts().roster.copyOfDataList
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        RainbowSdk().contacts().roster.registerChangeListener(rosterChangeListener)
+        return view;
+    }
+
+    override fun onDestroyView() {
+        RainbowSdk().contacts().roster.unregisterChangeListener(rosterChangeListener)
+    }
+}
+```
+
+```java
+public class RosterFragment extends Fragment {
+    private IItemListChangeListener rosterChangeListener = new IItemListChangeListener() {
+        @Override
+        public void dataChanged() {
+            // Handle changes on the UI thread
+            List<IRainbowContact> contacts = RainbowSdk.instance().contacts().getRoster().getCopyOfDataList();
+        }
+    };
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        RainbowSdk.instance().contacts().getRoster().registerChangeListener(rosterChangeListener);
+        return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        RainbowSdk.instance().contacts().getRoster().unregisterChangeListener(rosterChangeListener);
+        super.onDestroyView();
+    }
+}
+```
+
+In a `RecyclerView`, for example, you can utilize the `IRainbowContact` interface to display various contact details such as the avatar, first name, last name and company name. This allows you to create a visually appealing and informative user interface for managing contacts within your application.
+
+```xml
+<!-- Sample layout XML for displaying contact details in a RecyclerView -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="70dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Avatar and presence indicator -->
+    <com.ale.rainbowx.rainbowavatar.AvatarCardView
+        android:id="@+id/avatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:avatarDimension="tiny"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        app:presenceDimension="tiny"
+        app:presencePosition="bottom_right"/>
+
+    <!-- Contact details -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/avatar"
+        app:layout_constraintBottom_toTopOf="@id/subtitle"
+        app:layout_constraintStart_toEndOf="@id/avatar"
+        app:layout_constraintEnd_toStartOf="@id/call_button"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"/>
+
+    <TextView
+        android:id="@+id/subtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintBottom_toBottomOf="@id/avatar"
+        app:layout_constraintStart_toEndOf="@id/avatar"
+        app:layout_constraintEnd_toStartOf="@id/call_button"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:textAppearance="@style/TextAppearance.Material3.LabelMedium"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+-   [kotlin](#codegroupTab-display_contact_kotlin)
+-   [java](#codegroupTab-display_contact_java)
+
+```kotlin
+// Kotlin code snippet for updating layout with contact details
+private fun updateLayout() {
+    binding.title.text = contact.getDisplayName(context.getString(R.string.unknown))
+    binding.avatar.displayContact(contact)
+    binding.avatar.displayPresence(contact)
+    binding.subtitle.text = contact.companyName
+}
+```
+
+```java
+// Java code snippet for updating layout with contact details
+private void updateLayout() {
+    binding.title.setText(contact.getDisplayName(context.getString(R.string.unknown)));
+    binding.avatar.displayContact(contact);
+    binding.avatar.displayPresence(contact);
+    binding.subtitle.setText(contact.getCompanyName());
+}
+```
+
+*Note:* `AvatarCardView` is a helper view available in the SDK that facilitates displaying contact avatars and presence indicators.
+
+### Manage the roster
+
+Users have the ability to manage their roster by inviting people or deleting previously added contacts.
+
+When inviting someone who is in the same company, that person is auto-accepted and added directly to the roster. However, if the invitee is not in the same company, they will have the option to accept or refuse the invitation to join the roster.
+
+Note: The rest of the Invitations module will be covered in a separate guide.
+
+To add a Person:
+
+-   [kotlin](#codegroupTab-add_roster_kotlin)
+-   [java](#codegroupTab-add_roster_java)
+
+```kotlin
+// This instance can be retrieved through a search operation, for example
+val contact = contactInstance
+
+RainbowSdk().invitations().addRainbowContactToNetwork(contact, object : RainbowListener<Invitation, Unit> {
+    override fun onSuccess(data: Invitation) {
+        // Handle success by updating the UI as needed
+        // The Invitation object provides information about the invitation's status
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle errors gracefully, such as displaying an error message or taking corrective actions.
+    }
+})
+```
+
+```java
+// This instance can be retrieved through a search operation, for example
+IRainbowContact contact = contactInstance;
+
+RainbowSdk.instance().invitations().addRainbowContactToNetwork(contact, new RainbowListener<Invitation, Unit>() {
+    @Override
+    public void onSuccess(Invitation data) {
+        // Handle success by updating the UI as needed
+        // The Invitation object provides information about the invitation's status
+    }
+
+    @Override
+    public void onError(RainbowError<Unit> error) {
+        // Handle errors gracefully, such as displaying an error message or taking corrective actions.
+    }
+});
+```
+
+To remove a Person:
+
+-   [kotlin](#codegroupTab-remove_roster_kotlin)
+-   [java](#codegroupTab-remove_roster_java)
+
+```kotlin
+// This instance can be retrieved from your roster, for example
+IRainbowContact contact = contactInstance;
+
+RainbowSdk().invitations().removeRainbowContactFromNetwork(contact, object : RainbowListener<Unit, Unit> {
+    override fun onSuccess(data: Unit) {
+        // Handle success by updating the UI as needed
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle errors gracefully, such as displaying an error message or taking corrective actions.
+    }
+})
+```
+
+```java
+// This instance can be retrieved from your roster, for example
+IRainbowContact contact = contactInstance;
+
+RainbowSdk.instance().invitations().removeRainbowContactFromNetwork(contact, new RainbowListener<Unit, Unit>() {
+    @Override
+    public void onSuccess(Unit data) {
+        // Handle success by updating the UI as needed
+    }
+
+    @Override
+    public void onError(RainbowError<Unit> error) {
+        // Handle errors gracefully, such as displaying an error message or taking corrective actions.
+    }
+});
+```
+
+To Check if a Contact is Part of the Roster:
+
+-   [kotlin](#codegroupTab-is_roster_kotlin)
+-   [java](#codegroupTab-is_roster_java)
+
+```kotlin
+// Retrieve an instance of IRainbowContact, for example
+val contact = getContact()
+
+// Check if the contact is part of the roster
+if (contact.isRoster) {
+    // Perform actions if the contact is in the roster
+    // For example: Update UI or execute specific logic
+}
+```
+
+```java
+// Retrieve an instance of IRainbowContact, for example
+IRainbowContact contact = getContact();
+
+// Check if the contact is part of the roster
+if (contact.isRoster()) {
+    // Perform actions if the contact is in the roster
+    // For example: Update UI or execute specific logic
+}
+```
+
+### Retrieve a contact
+
+The contacts module exposes several methods for retrieving an instance of `IRainbowContact`. One common method is to find a contact by its ID. This is particularly useful for scenarios such as displaying a contact's details when a RecyclerView item is clicked, opening a screen containing the contact's information.
+
+If the user's information is not present in the cache, the `getContactById()` method will return null. In such cases, it's advisable to retrieve the information directly from the server. However, it's important to note that depending on the visibility settings of the searched user, the retrieved information may vary for privacy reasons.
+
+-   [kotlin](#codegroupTab-get_by_id_kotlin)
+-   [java](#codegroupTab-get_by_id_java)
+
+```kotlin
+class ContactDetailsFragment : Fragment() {
+
+    private var contact: IRainbowContact? = null
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        arguments?.let {
+            val contactID = it.getString("ContactID") ?: error("Contact ID is mandatory")
+            contact = RainbowSdk.instance().contacts().getContactFromId(contactID)
+
+            if (contact == null) {
+                fetchContactInformation(contactID)
+            } else {
+                updateLayout()
+            }
+
+        } ?: error("This fragment cannot be shown without bundle")
+
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_contact_details, container, false)
+    }
+
+
+    private fun fetchContactInformation(contactID: String) {
+        RainbowSdk().contacts().fetchContactDataById(contactID, object : RainbowListener<IRainbowContact, UserRepository.FetchUserDataError> {
+            override fun onSuccess(data: IRainbowContact) {
+                contact = data
+                updateLayout()
+            }
+
+            override fun onError(error: RainbowError<UserRepository.FetchUserDataError>) {
+                // Handle error cases
+                if (error.errorType == FetchUserDataError.CONTACT_TERMINATED) {
+                    // Contact has deleted their account
+                }
+            }
+        })
+    }
+
+    private fun updateLayout() {
+        // Update views
+    }
+}
+```
+
+```java
+public class ContactDetailsFragment extends Fragment {
+
+    private IRainbowContact contact;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            String contactID = arguments.getString("ContactID");
+            if (contactID != null) {
+                contact = RainbowSdk.instance().contacts().getContactFromId(contactID);
+            } else {
+                throw new IllegalArgumentException("Contact ID is mandatory");
+            }
+
+            if (contact == null) {
+                fetchContactInformation(contactID);
+            } else {
+                updateLayout();
+            }
+        } else {
+            throw new IllegalArgumentException("This fragment cannot be shown without a bundle");
+        }
+
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_contact_details, container, false);
+    }
+
+    private void fetchContactInformation(String contactID) {
+        RainbowSdk.instance().contacts().fetchContactDataById(contactID, new RainbowListener<IRainbowContact, UserRepository.FetchUserDataError>() {
+            @Override
+            public void onSuccess(IRainbowContact data) {
+                contact = data;
+                updateLayout();
+            }
+
+            @Override
+            public void onError(RainbowError<UserRepository.FetchUserDataError> error) {
+                // Handle error cases
+                if (error.getErrorType() == FetchUserDataError.CONTACT_TERMINATED) {
+                    // Contact has deleted their account
+                }
+            }
+        });
+    }
+
+    private void updateLayout() {
+        // Update views
+    }
+}
+```
+
+You can also search for a single contact by their JID rather than their ID. Use the `fetchContactDataByJid` method, passing the JID as a parameter. This method retrieves the contact associated with the specified JID.
+
+-   [kotlin](#codegroupTab-search_by_jid_kotlin)
+-   [java](#codegroupTab-search_by_jid_java)
+
+```kotlin
+RainbowSdk().contacts().fetchContactDataByJid(jid = "example@domain", object : RainbowListener<IRainbowContact, Unit> {
+    override fun onSuccess(data: IRainbowContact) {
+        // Handle success on the UI thread if you are updating views
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle error 
+    }
+})
+```
+
+```java
+RainbowSdk.instance().contacts().fetchContactDataByJid("example@domain", new RainbowListener<IRainbowContact, Unit>() {
+    @Override
+    public void onSuccess(IRainbowContact data) {
+        // Handle success on the UI thread if you are updating views
+    }
+
+    @Override
+    public void onError(RainbowError<Unit> error) {
+        // Handle error 
+    }
+});
+```
+
+### Listen to contact changes
+
+You can listen to changes on an object of type `IRainbowContact`, allowing your application to be notified when the contact in question undergoes updates or changes its presence state.
+
+*When registering a listener at some point in your application's lifecycle, it's crucial to remove it before reaching the end of the lifecycle to prevent potential memory leaks.*
+
+-   [kotlin](#codegroupTab-contact_update_kotlin)
+-   [java](#codegroupTab-contact_update_java)
+
+```kotlin
+class ContactDetailsFragment : Fragment() {
+
+    private var contact: IRainbowContact? = null
+    private val contactListener = object : IRainbowContact.IContactListener {
+        override fun contactUpdated(updatedContact: IRainbowContact) {
+            // Handle update of the contact
+        }
+
+        override fun onPresenceChanged(contact: IRainbowContact, presence: RainbowPresence?) {
+            // Handle presence change of the contact
+        }
+
+        override fun onCompanyChanged(companyId: String?) {
+            // Optional callback to be notified when the company associated with the contact changes.
+            // This can be useful for updating UI elements or performing additional actions when the contact's company information is updated.
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_contact_details, container, false)
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        contact?.registerChangeListener(contactListener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        contact?.unregisterChangeListener(contactListener)
+    }
+}
+```
+
+```java
+public class ContactDetailsFragment extends Fragment {
+
+    private IRainbowContact contact;
+    private IRainbowContact.IContactListener contactListener = new IRainbowContact.IContactListener() {
+        @Override
+        public void contactUpdated(IRainbowContact updatedContact) {
+            // Handle update of the contact
+        }
+
+        @Override
+        public void onPresenceChanged(IRainbowContact contact, RainbowPresence presence) {
+            // Handle presence change of the contact
+        }
+
+        @Override
+        public void onCompanyChanged(@Nullable String companyId) {
+            // Optional callback to be notified when the company associated with the contact changes.
+            // This can be useful for updating UI elements or performing additional actions when the contact's company information is updated.
+        }
+    };
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_contact_details, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (contact != null) {
+            contact.registerChangeListener(contactListener);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (contact != null) {
+            contact.unregisterChangeListener(contactListener);
+        }
+    }
+}
+```
+
+### Access the user's personal contacts
+
+With the Rainbow SDK for Android, developers can easily manage their own personal contact list, which serves as a personal address book or for other purposes.
+
+The Contacts module offers various methods for manipulating this list, including adding new contacts, deleting existing ones, retrieving contacts from the server, and updating contact information.
+
+Developers can access their personal contacts through the `personalContacts` property, which provides an [ArrayItemList](/docs/sdk/android) containing objects of type `IRainbowContact`.
+
+-   [kotlin](#codegroupTab-personal_contacts_kotlin)
+-   [java](#codegroupTab-personal_contacts_java)
+
+```kotlin
+// Fragment for managing personal contacts
+class PersonalContactsFragment : Fragment() {
+    // Listener for handling changes to personal contacts
+    private val personalContactsChangeListener = IItemListChangeListener {
+        // Handle changes on the UI thread
+        val personalContacts = RainbowSdk().contacts().personalContacts.copyOfDataList
+        // Perform actions based on changes to personal contacts
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        // Register listener for personal contacts changes
+        RainbowSdk().contacts().personalContacts.registerChangeListener(personalContactsChangeListener)
+        return view;
+    }
+
+    override fun onDestroyView() {
+        // Unregister listener when fragment is destroyed
+        RainbowSdk().contacts().personalContacts.unregisterChangeListener(personalContactsChangeListener)
+        super.onDestroyView()
+    }
+}
+```
+
+```java
+// Fragment for managing personal contacts
+public class PersonalContactsFragment extends Fragment {
+    // Listener for handling changes to personal contacts
+    private IItemListChangeListener personalContactsChangeListener = new IItemListChangeListener() {
+        @Override
+        public void dataChanged() {
+            // Handle changes on the UI thread
+            List<IRainbowContact> personalContacts = RainbowSdk.instance().contacts().getPersonalContacts().getCopyOfDataList();
+            // Perform actions based on changes to personal contacts
+        }
+    };
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Register listener for personal contacts changes
+        RainbowSdk.instance().contacts().getPersonalContacts().registerChangeListener(personalContactsChangeListener);
+        return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        // Unregister listener when fragment is destroyed
+        RainbowSdk.instance().contacts().getPersonalContacts().unregisterChangeListener(personalContactsChangeListener);
+        super.onDestroyView();
+    }
+}
+```
+
+### Create a personal contact
+
+To add a contact to your personal contact list, you can use a DirectoryContactEntry object. This object allows you to specify various details about the contact, such as their name, company, contact information, and additional details.
+
+-   [kotlin](#codegroupTab-create_personal_contact_kotlin)
+-   [java](#codegroupTab-create_personal_contact_java)
+
+```kotlin
+fun createPersonalContact() {
+    // Create a DirectoryContactEntry object to represent the new personal contact
+    // Fields are optional but at least of of parameter 'firstName', 'lastName' or 'companyName' is mandatory
+    val personalContact = DirectoryContactEntry().apply {
+        firstName = "First name"
+        lastName = "Last name"
+        companyName = "Company name"
+        companyId = "Company id"
+        jobDepartment = "Job department"
+        eMail = "your_contact@domain"
+        street = "Contact street"
+        postalCode = "Postal code"
+        city = "City"
+        country = "USA" // Country ISO 3166-1 alpha3 format
+        state = "NY" // When country is USA or CAN
+        directoryType = DirectoryContactEntry.DirectoryType.PERSONAL
+        workPhoneNumbers = listOf("+33390671234") // Allowed format are E164 or national with a country
+        mobilePhoneNumbers = listOf("+33390671234")
+        otherPhoneNumbers = listOf("+33390671234")
+        jobTitle = "Job Title"
+        additionalInformation1 = "0..255 value"
+        additionalInformation2 = "0..255 value"
+
+        listOf("tag 1", "tag 2", "tag 3").forEach { addTag(it) }
+    }
+
+    // Call the Rainbow SDK method to create the personal contact
+    RainbowSdk().contacts().createPersonalDirectoryContact(personalContact, object : RainbowListener<IRainbowContact, Unit> {
+        override fun onSuccess(data: IRainbowContact) {
+            // Handle success case
+            // The personalContacts list will be updated with the newly created contact
+        }
+
+        override fun onError(error: RainbowError<Unit>) {
+            // Handle error case
+        }
+    })
+}
+```
+
+```java
+// Method for creating a personal contact
+public void createPersonalContact() {
+    // Create a DirectoryContactEntry object to represent the new personal contact
+    DirectoryContactEntry personalContact = new DirectoryContactEntry();
+    // Fields are optional but at least of of parameter 'firstName', 'lastName' or 'companyName' is mandatory
+    personalContact.setFirstName("First name");
+    personalContact.setLastName("Last name");
+    personalContact.setCompanyName("Company name");
+    personalContact.setCompanyId("Company id");
+    personalContact.setJobDepartment("Job department");
+    personalContact.setEMail("your_contact@domain");
+    personalContact.setStreet("Contact street");
+    personalContact.setPostalCode("Postal code");
+    personalContact.setCity("City");
+    personalContact.setCountry("USA"); // Country ISO 3166-1 alpha3 format
+    personalContact.setState("NY"); // When country is USA or CAN
+    personalContact.setDirectoryType(DirectoryContactEntry.DirectoryType.PERSONAL);
+    personalContact.setWorkPhoneNumbers(Arrays.asList("+33390671234")); // Allowed format are E164 or national with a country
+    personalContact.setMobilePhoneNumbers(Arrays.asList("+33390671234"));
+    personalContact.setOtherPhoneNumbers(Arrays.asList("+33390671234"));
+    personalContact.setJobTitle("Job Title");
+    personalContact.setAdditionalInformation1("0..255 value");
+    personalContact.setAdditionalInformation2("0..255 value");
+
+    // Add tags to the contact
+    personalContact.addTag("tag 1");
+    personalContact.addTag("tag 2");
+    personalContact.addTag("tag 3");
+
+    // Call the Rainbow SDK method to create the personal contact
+    RainbowSdk.instance().contacts().createPersonalDirectoryContact(personalContact, new RainbowListener<IRainbowContact, Unit>() {
+        @Override
+        public void onSuccess(IRainbowContact data) {
+            // Handle success case
+            // The personalContacts list will be updated with the newly created contact
+        }
+
+        @Override
+        public void onError(RainbowError<Unit> error) {
+            // Handle error case
+        }
+    });
+}
+```
+
+### Update a personal contact
+
+Modifying a contact is much the same as creating one. You need to update an existing `DirectoryContactEntry` object with the new contact details and then use the Rainbow SDK method to perform the update operation.
+
+-   [kotlin](#codegroupTab-update_personal_contact_kotlin)
+-   [java](#codegroupTab-update_personal_contact_java)
+
+```kotlin
+fun updatePersonalContact(existingContact: DirectoryContactEntry) {
+    // Update an existing DirectoryContactEntry object to represent the updated personal contact
+    existingContact.apply {
+        firstName = "New First name"
+        lastName = "New Last name"
+        // Update other contact details as needed
+    }
+
+    // Call the Rainbow SDK method to update the personal contact
+    RainbowSdk().contacts().updatePersonalDirectoryContact(existingContact, object : RainbowListener<IRainbowContact, Unit> {
+        override fun onSuccess(data: IRainbowContact) {
+            // Handle success case
+            // The personalContacts list will be updated with the modified contact
+        }
+
+        override fun onError(error: RainbowError<Unit>) {
+            // Handle error case
+        }
+    })
+}
+```
+
+```java
+// Method for updating a personal contact
+public void updatePersonalContact(DirectoryContactEntry existingContact) {
+    // Update an existing DirectoryContactEntry object to represent the updated personal contact
+    existingContact.setFirstName("New First name");
+    existingContact.setLastName("New Last name");
+    // Update other contact details as needed
+
+    // Call the Rainbow SDK method to update the personal contact
+    RainbowSdk.instance().contacts().updatePersonalDirectoryContact(existingContact, new RainbowListener<IRainbowContact, Unit>() {
+        @Override
+        public void onSuccess(IRainbowContact data) {
+            // Handle success case
+            // The personalContacts list will be updated with the modified contact
+        }
+
+        @Override
+        public void onError(RainbowError<Unit> error) {
+            // Handle error case
+        }
+    });
+}
+```
+
+### Delete a personal contact
+
+To manage your personal contact list effectively, you may need to delete certain contacts. This section explains how to delete a personal contact using the Rainbow SDK for Android.
+
+-   [kotlin](#codegroupTab-delete_personal_contact_kotlin)
+-   [java](#codegroupTab-delete_personal_contact_java)
+
+```kotlin
+// Method for deleting a personal contact
+fun deletePersonalContact(contact: DirectoryContactEntry) {
+    // Call the Rainbow SDK method to delete the personal contact
+    RainbowSdk().contacts().deletePersonalDirectoryContact(contact, object : RainbowListener<Unit, Unit> {
+        override fun onSuccess(data: Unit) {
+            // Handle success case
+            // The personalContacts list will be updated with the modified contact list
+        }
+
+        override fun onError(error: RainbowError<Unit>) {
+            // Handle error case
+        }
+    })
+}
+```
+
+```java
+// Method for deleting a personal contact
+public void deletePersonalContact(DirectoryContactEntry contact) {
+    // Call the Rainbow SDK method to delete the personal contact
+    RainbowSdk.instance().contacts().deletePersonalDirectoryContact(contact, new RainbowListener<Unit, Unit>() {
+        @Override
+        public void onSuccess(Unit data) {
+            // Handle success case
+            // The personalContacts list will be updated with the modified contact list
+        }
+
+        @Override
+        public void onError(RainbowError<Unit> error) {
+            // Handle error case
+        }
+    });
+}
+```
+
+### Conclusion
+
+**You've Finished the Contacts Guide!**
+
+Great job reaching the end of the contacts guide for the Rainbow SDK on Android. You now have a comprehensive understanding of how to manage contacts in your Android app using the Rainbow SDK.
+
+This guide has prepared you to add powerful contact management features to your app, such as accessing rosters, handling personal contacts, and reacting to contact changes.
+
+Whether you're developing a messaging app, a collaboration platform, or any project that needs effective contact management, the Rainbow SDK provides all the necessary tools to ensure smooth user experiences.
+
+Feel free to continue exploring and creating amazing applications with the Rainbow SDK. If you need any help or have questions, our support team is always ready to assist.
+
+Happy coding!
+
+*Last updated April, 2024*
+
+### Sur cette page
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

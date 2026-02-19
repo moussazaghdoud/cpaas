@@ -1,0 +1,2792 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharpprevious/core/lts/guides/145_server_errors_list"
+lastSynced: "2026-02-19T22:35:14.643Z"
+---
+# Documentation
+
+SDK and server errors
+
+LTS release 2.6.XPubliée le 2021-12-13
+
+## Errors list
+
+Most of SDK methods use **SdkResult<T>** object to provide a result or the reason of the error
+
+If no error occurs **SdkResult<T>.Result.Succcess** is equals to **True**. In this case **SdkResult<T>.Data** contains an object on **T** type.
+
+If an error occurs **SdkResult<T>.Result.Succcess** is equals to **False**. To get information about the error the **SdkResult<T>.Result** (which is a **SdkError** object) cand be used.
+
+There is three type of **SdkError** - see **SdkErrorType**:
+
+-   **SdkErrorType.NoError**: There is no error. You have to use **SdkResult<T>.Data**
+-   **SdkErrorType.Exception**: An unexpected exception has occurred. To have more information readable information use **SdkError.ToString()** or use **SdkError.Exception** object
+-   **SdkErrorType.IncorrectUse**: The way to use the method is not done correctly (network error, server errors, or sdk errors - like invalid parameter). In this case properties you can use **ErrorCode**, **ErrorDetailsCode**, **ErrorDetails** and **ErrorDetailsData** of the object **SdkError.IncorrectUseError** for more information.
+
+if **SdkErrorType.IncorrectUse.ErrorCode** is equals to **1000**, it means that the SDK itself has raised an error.
+
+For other values, it means that the Rainbowserver has raised an error.
+
+Find below a full list of potential errors returned by the SDK or by the server.
+
+### SDK errors list
+
+ErrorCode
+
+error DetailsCode
+
+error Details
+
+1000
+
+1000001
+
+JSON Parsing error - Cannot parse Json string to "{0}" object - Method:"{1}"
+
+1000002
+
+JSON Parsing error - Cannot parse "{0}" object to Json string - Method:"{1}"
+
+1000003
+
+REST Request error - SDK is not connected/initialized - Uri:"{0}"
+
+1000004
+
+REST Request error - Cannot use the specified uri - Uri:"{0}"
+
+1000005
+
+REST Request error - Content has been specified without a content-type - Uri:"{0}"
+
+1000006
+
+REST Request error - Timeout occurs - Method:"{0}"
+
+1000008
+
+Operation failed - Info:"{0}" - Method:"{0}"
+
+1000009
+
+Image format not supported - Format(s) Supported:"{0}" - Method:"{1}"
+
+1000010
+
+Invalid parameter - Parameter:"{0}" - Method:"{1}"
+
+1000011
+
+Restriction not set to use this method - Restriction:"{0}" - Method:"{1}"
+
+1000012
+
+Capability not allowed to use this method - Capability:"{0}" - Method:"{1}"
+
+1000013
+
+Feature not allowed to use this method - Capability:"{0}" - Method:"{1}"
+
+1000014
+
+Operation not allowed - Info:"{0}" - Method:"{1}"
+
+1000015
+
+Event mode must be used (XMPP or S2S) - Method:"{0}"
+
+1000016
+
+Event mode must be set to XMPP - Method:"{0}"
+
+1000017
+
+Query already in progress - Method:"{0}"
+
+1000018
+
+Service not available - Service:"{0}" - Method:"{1}"
+
+1000019
+
+Not allowed when connected - Method:"{0}"
+
+1000020
+
+Bubble unknown - Bubble Id/Jid:"{0}" - Method:"{1}"
+
+1000021
+
+Contact unknown - Contact Id/Jid:"{0}" - Method:"{1}"
+
+1000022
+
+Bot unknown - Bot Id/Jid:"{0}" - Method:"{1}"
+
+1000023
+
+Voice message unknown - Voice message Id:"{0}" - Method:"{1}"
+
+1000024
+
+Message unknown- Message Id:"{0}" - Method:"{1}"
+
+1000026
+
+Conversation unknown - Conversation Id/Jid:"{0}" - Method:"{1}"
+
+1000027
+
+Conversation not found using Contact - Contact Id/Jid:"{0}" - Method:"{1}"
+
+1000028
+
+Conversation not found using Bubble - Bubble Id/Jid:"{0}" - Method:"{1}"
+
+1000029
+
+Conversation not found using Bot - Bot Id/Jid:"{0}" - Method:"{1}"
+
+1000030
+
+Not allowed since you are bubble's owner - Bubble Id/Jid:"{0}" - Method:"{1}"
+
+### Server errors list
+
+ErrorCode
+
+error DetailsCode
+
+error Details
+
+400
+
+400000
+
+Bad parameters provided in query or body (related error(s) are listed in errorDetails)
+
+400010
+
+This request does not accept json response. Accept header must be set to application/json
+
+400020
+
+This request does not contains X-Rainbow-Client and X-Rainbow-Client-Version headers
+
+400100
+
+No \[resource\] data provided for update. Expected optional fields: \[resource updatable fields\]
+
+400101
+
+Missing parameter in the request
+
+400200
+
+User \[user\_email or userId\] with roles \[user\_role\] is not allowed. Analytics role must be a single role.
+
+400201
+
+User \[user\_email\] with role \[user\_role\] is not hosted by \[an organization, a site\]. So he can't be \[adminType\]. (Detail: \[any\_detail\])
+
+400202
+
+User \[user\_email\] with role 'admin' needs a subtype. (Detail: organisation, company or site admin).
+
+400203
+
+User \[user\_email\] can't belong to the site \[site\_id\]. (Detail: site doesn't belong to \[company\_name\]).
+
+400204
+
+User \[user\_email\] can't belong to the organisation \[organisation\_id\]. (Detail: organization is not attached with \[company\_name\]).
+
+400205
+
+User \[user\_email\] is admin of the \[organization, site\] \[id\] and can't be detached yet. (Detail: remove user 'admin' role).
+
+400206
+
+CompanyId must be specified when bp\_admin creates a user
+
+400207
+
+One of the new connexion information seems wrong.
+
+400208
+
+First attempt for the webinar guest speaker \[user\_email\] to create an account. Body parameter 'agreement' is needed
+
+400210
+
+Not able to convert phone number \[phone\_number\] with country \[COUNTRY\] to E.164
+
+400220
+
+Scope \[scope\] has not been granted to Rainbow, admin must (re) authenticate to office365 to grant this scope
+
+400300
+
+No \[filetype\] file provided in the request body
+
+400301
+
+Could not create or retrieve company from ACTIS file data
+
+400302
+
+No content parsed from ACTIS file
+
+400303
+
+Problem parsing ACTIS file
+
+400304
+
+Problem dealing with the zipped ACTIS file
+
+400305
+
+ACTIS zipped file does not contain expected file
+
+400306
+
+VATId provided is not valid
+
+400307
+
+Flag allowUsersSelectTheme cannot be set to false because there is no selected themes on this company.
+
+400320
+
+Error during MJML document validation (details: \[error detail\])
+
+400321
+
+Error during email template virus scanning (details: \[error detail\])
+
+400322
+
+Error during custom translations virus scanning (details: \[error detail\])
+
+400400
+
+Password value in field \[password\_field\] does not match password of user with id \[userId\]
+
+400450
+
+One of \[param1\] or \[param2\] parameters must be provided
+
+400451
+
+Only one of \[param1\] or \[param2\] parameters must be provided
+
+400452
+
+\[param\] parameter must be provided
+
+400499
+
+CompanyId \[CompanyId\] is the companyId of the terminated company on which deleted users are attached, not able to delete it
+
+400500
+
+Company name \[Default\] is reserved to the default company on which user without company are attached
+
+400501
+
+CompanyId \[Default\] is the companyId of the default company on which user without company are attached, not able to delete it
+
+400502
+
+CompanyId \[CompanyId\] is the companyId of the default company that cannot be linked with any organisation
+
+400503
+
+Not possible to give visibility to company \[CompanyId\] for itself
+
+400504
+
+\[Resource\_type\] name \[name\] is already used by another \[Resource\_type\]
+
+400505
+
+Company \[companyId\] is a BP company but it does not have bpApplicantNumber set
+
+400506
+
+BP Company \[companyId\] have type IR and does not have an active subscription for offer \[offerId\], his VAD must subscribe first for this offer to this BP IR so that he can sell this offer to his EC
+
+400507
+
+BP Company \[companyId\] have type IR and does not have an active subscription for offer \[offerId\]
+
+400508
+
+BP Company \[companyId\] have type IR and does not have enough free licences for \[offerId\] to create a subscription with maxNumberUsers=\[maxNumberUsers\] for company \[companyId\] (nbFreeLicences=\[nbFreeLicences\])
+
+400509
+
+The subscription \[subscriptionId\] to offer \[offerId\] is prepaid, maxNumberUsers can not be decreased lower than \[quantity\]
+
+400510
+
+Changing the contactId is not allowed
+
+400511
+
+The office365 tenant \[office365Tenant\] is already used by another company
+
+400512
+
+Subscription \[subscriptionId\] provided for TV \[update/delete\] cannot be used (detail: \[subscription not active, not a Room subscription\]).
+
+400513
+
+Not possible to disable the dial out for PSTN conferences during company creation (useDialOutCustomisation field is disabled)"
+
+400514
+
+Subscription \[subscriptionId\] is about a conference bundle offer, maxNumberUsers can not be decreased lower than \[quantity\]
+
+400515
+
+Subscription \[subscriptionId\] can't be decreased, maxNumberUsers is lower than numberAssignedUsers
+
+400520
+
+Changing the sourceId is not allowed
+
+400550
+
+Nothing to search (no option specified in query string or option has no value)
+
+400551
+
+Provided companyId value \[companyId\] is not valid
+
+400552
+
+BP company and end customer company couldn't have the same id
+
+400553
+
+Invitation \[invitationId\] isn't for the invited company \[invitedCompanyId\]
+
+400560
+
+Offer \[offerId\] can not be sold
+
+400561
+
+Offer \[offerId\] is not a demo offer
+
+400570
+
+Greeting \[greetingId\] limit of \[greeting\_max\_per\_type\] uploaded file already reached
+
+400571
+
+Greeting \[greetingId\] is already active
+
+400572
+
+Greeting with fileId \[fileId\] is still active or default. cant delete it
+
+400573
+
+File descriptor with fileId \[fileId\] is not a greeting file
+
+400574
+
+Inconsistency on expected content for greeting \[greetingId\]. Will not restore it
+
+400580
+
+Key \[keyNum\] not in the allowed range of programmable keys ( 1 - \[num\_lines\]) for device \[deviceId\]
+
+400581
+
+Key type \[keyType\] not supported by device \[deviceId\] (vendor: \[vendor\] / model: \[model\]
+
+400582
+
+Not able to find a free programmable key for service on device \[deviceId\]
+
+400600
+
+At least one of shortNumber, number or numberE164 must be provided in PhoneNumbers
+
+400601
+
+outgoingPrefix and numberingPrefix can't have the same value.
+
+400800
+
+Wrong parameter passed through the request to PBX with id \[systemId\]
+
+400801
+
+beginNumPlan or endNumPlan haven't the correct numberingDigits length.
+
+400802
+
+beginNumPlan or endNumPlan doesn't start with the correct numberingPrefix.
+
+400803
+
+endNumPlan exceeds maxNumPlan limitation
+
+400812
+
+Command not valid on OXO PBX.
+
+400813
+
+Missing parameter passed through the request to OXO PBX.
+
+400814
+
+Wrong parameter passed through the request to OXO PBX.
+
+400827
+
+Problem on OXO PBX audio file.
+
+400990
+
+Unable to generate invoice for the Default company
+
+400991
+
+Unable to generate invoice for the Terminated company
+
+400992
+
+billingPeriod should match following format : YYYY-MM (e.g. 2017-08)
+
+400993
+
+CompanyId provided in url \[companyId\] is not a correct Id
+
+400994
+
+Expiration date provided : \[expirationDate\] is lower than actual date \[now\]
+
+401
+
+401000
+
+No Authorization header provided
+
+401100
+
+Request has something wrong with basic authentication header
+
+401101
+
+Invalid login \[wrong\_user\_email\], expected an email address
+
+401102
+
+Request has something wrong with x-rainbow-app-auth header
+
+401103
+
+This request doesn't contain an application Id, please create a Rainbow Application under the Rainbow Developers web site...
+
+401200
+
+No authorization token was found
+
+401201
+
+Format is Authorization: Bearer \[token\]
+
+401202
+
+invalid token / jwt expired
+
+401203
+
+Verification of id\_token failed. Error is: '\[error details\]'
+
+401210
+
+User password has been changed since the date of token generation, new login is required
+
+401220
+
+Authentication data not found in jwt. A jwt generated by login API must be used.
+
+401221
+
+Authentication data for application not found in JWT. A JWT generated by login API with header x-rainbow-app-auth must be used.
+
+401222
+
+Failed to authenticate Rainbow Voice device: \[error details\]
+
+401250
+
+Can't renew token, maximum number renewed reached for this token (5/5)
+
+401251
+
+Can't renew application \[application\_id\], maximum number renewed reached for this application
+
+401252
+
+Can't renew an OAuth 2.0 token using this API. Use POST /api/rainbow/authentication/v1.0/oauth/token to renew the access\_token using a refresh\_token if OAuth Authorization Code grant was used, or GET /api/rainbow/authentication/v1.0/oauth/authorize to get a new access\_token if OAuth Implicit grant was used. See details in documentation https://developers.openrainbow.com/doc/sdk/web/lts/guides/Oauth2\_authentication
+
+401500
+
+Unknown login or wrong password for login \[user\_email\]
+
+401501
+
+Unknown login or wrong password for login \[user\_email\], login is forbidden
+
+401510
+
+User \[user\_email\] not authorized because it has been deleted since last login (not found in database)
+
+401520
+
+User \[user\_email\] is not activated (isActive)
+
+401521
+
+Company of user \[user\_email\] is not active (companyId=56d6f05241255dd54b5b61b2, status=hold)
+
+401522
+
+User \[user\_email\] is deactivated waiting for a complete delete
+
+401523
+
+{  
+"errorMsg": "User \[user\_email\] has expired (timeToLive)",  
+"timeToLive": \[user\_timeToLive\],  
+"creationDate": "\[user\_creationDate\]",  
+"expirationDate": "\[user\_expirationDate\]",  
+"currentDate": "\[currentDate\]"  
+}
+
+401530
+
+User \[user\_email\] has been authenticated by an external authentication server which does not belong to his company.
+
+401600
+
+Wrong temporary token value
+
+401601
+
+Temporary token must be renewed
+
+401650
+
+Invalid invitation id \[invitation\_id\]
+
+401650
+
+Invalid join company invitation id \[invitation\_id\]
+
+401700
+
+Application \[application\_id\] not authorized because it has been deleted since last login (not found in database)
+
+401701
+
+Wrong state for application id \[application\_id\]
+
+401702
+
+Wrong env for application id \[application\_id\]
+
+401703
+
+Application \[application\_id\] is expired since expiration date : \[expirationDate\]
+
+401704
+
+Wrong kpi for application id \[application\_id\]
+
+401705
+
+Application with id \[application\_id\] is not expired
+
+401706
+
+Wrong expirationDate for application id \[application\_id\]
+
+401710
+
+The activation code of TV '\[tv\_name\]' id \[tv\_id\] is out-of-date (validity: \[validity\_duration\] hours)
+
+401711
+
+The activation code of TV '\[tv\_name\]' id \[tv\_id\] is out-of-date (validity: \[validity\_duration\] hours)
+
+401819
+
+Authentication to OXO PBX failed.
+
+403
+
+403000
+
+Access denied: user \[user\_email\] does not have required role(s) \[list\_required\_role(s)\]
+
+403001
+
+Access denied: \[resource\_name\] with \[field\_name\] = \[field\_name\] doesn't belong to \[loginEmail\]
+
+403002
+
+UserId=\[userId\] is not allowed to subscribe to channelId=\[channelId\]
+
+403003
+
+UserId=\[userId\] is not allowed to unsubscribe to channelId=\[channelId\]
+
+403004
+
+UserId=\[userId\] is not allowed to decline channelId=\[channelId\]
+
+403005
+
+UserId=\[userId\] is not allowed to subscribe/unsubscribe this managed channelId=\[channelId\]
+
+403005
+
+Access denied: user \[user\_id/user\_email\] is terminated
+
+403006
+
+UserId=\[userId\] is not allowed to publish to channelId=\[channelId\]
+
+403007
+
+Logs context \[ccare\_logs\_id\] doesn't belong to the user \[userId\].
+
+403007
+
+It is not allowed to set \[visibility/mode\]=\[public/all\_public/all\_private\] to a channel owned by a company with visibility=\[closed/isolated\]
+
+403008
+
+Access denied: user \[user\_email\] is not in required state(s) \[list\_required\_state(s)\]
+
+403009
+
+A guest user inherits company permissions. File sharing is prohibited.
+
+403010
+
+Access denied: user \[user\_email\] has no roles
+
+403011
+
+UserId \[userId\] can't update the locked key \[keyId\]
+
+403012
+
+UserId \[userId\] can't delete the locked key \[keyId\]
+
+403013
+
+UserId=\[userId\] is not allowed to publish on channelId=\[channelId\]
+
+403014
+
+UserId=\[userId\] is not allowed to publish on this managed unsubscribed channelId=\[channelId\]
+
+403015
+
+Selecting a restricted share programmable telephony key is forbidden
+
+403020
+
+Access denied: request refused because client \[client\] with version \[client\_version\] does not match the minimum version authorized \[minimum\_version\]
+
+403021
+
+Access denied: request refused because client \[client\] with version \[client\_version\] is not recognized
+
+403022
+
+Access denied: admin \[admin\_email\] with roles \[roles\] is not allowed to manage external trunk with type \[trunk\_type\].
+
+403023
+
+The service is not available in this country.
+
+403024
+
+Only a superadmin can configure a forward for another user.
+
+403030
+
+Can't delete \[resource\] with id \[resourceId\] because \[reason\]
+
+403031
+
+User \[user\_email\] does not belong to a system.
+
+403032
+
+Media Pillar user \[user\_email\] does not belong to a system.
+
+403033
+
+Inconsistent link. System \[systemId\] is not linked to a site.
+
+403034
+
+Can't deselect default Media Pillar.
+
+403035
+
+Can't remove default Media Pillar.
+
+403036
+
+Can't add system with id \[systemId\] to group with id \[systemsGroupId\] because default Media Pillar already exists.
+
+403037
+
+Can't add system with id \[systemId\] to group with id \[systemsGroupId\] because there is no default Media Pillar.
+
+403038
+
+Can't remove system with id \[systemId\] from group with id \[systemsGroupId\] because there will be no more default Media Pillar.
+
+403050
+
+No external authentication server configuration found for company to which belongs this user
+
+403051
+
+External authentication server configuration is disabled for company to which belongs this user
+
+403052
+
+External authentication server is wrongly configured for company to which belongs this user
+
+403060
+
+Conference is locked.
+
+403061
+
+Conference can't be locked.
+
+403062
+
+Not a WebRTC conference.
+
+403063
+
+Conference endpoint does not belong to user \[user\_email\].
+
+403064
+
+Conference delegation feature isn't available for user with id \[userId\].
+
+403065
+
+Dial out is not authorized.
+
+403066
+
+Already an active session for conference endpoint with id \[confEndpointId\].
+
+403067
+
+User \[userId\] isn't owner of conference linked to room \[roomId\].
+
+403068
+
+No conference for room \[roomId\].
+
+403069
+
+No microphone for user \[userId\].
+
+403070
+
+No version to push to Media Pillar with id \[mediaPillarId\].
+
+403071
+
+\[Files/'No extension' files\] for version \[mediaPillarVersionName\] aren't available.
+
+403072
+
+ISO file doesn't match MD5.
+
+403080
+
+\[action\] not allowed for country \[country\].
+
+403083
+
+Withdrawal of last active member is not allowed in group \[groupId\].
+
+403084
+
+Room \[roomId\] is owned by a group. Can only be modified by creator.
+
+403085
+
+Waiting room.
+
+403086
+
+Recording on for room \[roomId\].
+
+403087
+
+Recording off for room \[roomId\].
+
+403088
+
+Recording paused for room \[roomId\].
+
+403089
+
+Webinar room.
+
+403090
+
+Not a webinar room.
+
+403091
+
+Conference session participant with id \[confSessionParticipantId\] didn't raise his hand.
+
+403092
+
+Conference session participant with id \[confSessionParticipantId\] is no longer connected.
+
+403093
+
+Conference session participant with id \[confSessionParticipantId\] isn't allowed to talk.
+
+403094
+
+It's up to conference session participant with id \[confSessionParticipantId\] to unmute himself.
+
+403095
+
+User \[userId\] is already in conference.
+
+403096
+
+Webinar already started.
+
+403097
+
+Practice room already started.
+
+403098
+
+Webinar with conference endpoint id \[confEndpointId\] already started in room with id \[roomId\].
+
+403099
+
+Not a practice room.
+
+403100
+
+Access denied: this API can only be called by user himself (tried to access resource with userId \[request\_user\_id\], while id of logged in user is \[user\_id\])
+
+403101
+
+Access denied: TV\_User \[user\_id\] cannot update the TV \[tvId\] because the userId \[tv\_user\_id\] of the TV is different to the TV\_User Id : \[user\_id\]
+
+403110
+
+Poll \[pollId\] published.
+
+403111
+
+Poll \[pollId\] unpublished.
+
+403112
+
+Inconsistent vote by user \[userId\] to question \[questionNumber\] of poll \[pollId\].
+
+403113
+
+User \[userId\] already voted to question \[questionNumber\] of poll \[pollId\].
+
+403114
+
+Poll \[pollId\] is terminated.
+
+403115
+
+Poll \[pollId\] was published at \[publishDate\], duration should be at least \[minutes\] minutes long.
+
+403120
+
+Device firmware \[firmware\] selection not allowed for \[userId\].
+
+403130
+
+Waiting room start date \[startDate\] has passed.
+
+403131
+
+Webinar start date \[startDate\] has passed.
+
+403132
+
+Webinar starts before waiting room ( > \[webinarStartDate\] < \[waitingRoomStartDate\]).
+
+403133
+
+Webinar ends before having started (\[endDate\] < \[startDate\]).
+
+403134
+
+User \[user\_id\] is not a valid organizer for the Webinar \[webinar\_id\].
+
+403135
+
+Invalid webinar registration using registrationId \[registration\_id\]
+
+403136
+
+Unsolicited registration request
+
+403137
+
+Registrations for this event are closed
+
+403138
+
+It's too early for joining the webinar event
+
+403139
+
+Cancellation of the participant's registration
+
+403140
+
+Only guest user can get a temporary account
+
+403141
+
+User \[user\_id\] (\[user\_email\]) can't join a webinar with his own Rainbow account. Use a temporary account instead
+
+403142
+
+Webinar overlaps with \[webinarId\] ('\[webinarName\]' from \[startDate\] to \[endDate\]).
+
+403143
+
+Webinar \[webinarId\] is terminated.
+
+403144
+
+Only creator or organizer can delete webinar.
+
+403145
+
+Only user with webinar\_host role or creator or organizer can update webinar.
+
+403146
+
+Only a user with a Rainbow account can participate in a webinar event as participant using this API
+
+403147
+
+No webinar license.
+
+403150
+
+Access denied: this API can only be called on user own company (tried to access resource with companyId \[request\_company\_id\], while companyId of logged in user is \[company\_id\])
+
+403151
+
+Access denied: user \[request\_user\_id\] is not visible by logged in user \[user\_id\] (user is not public, not visible by logged in user, and not in a company visible by logged in user's company)
+
+403152
+
+User \[user\_id\] (\[user\_email\]) tried to access URL \[url\], access denied (because user must come from companyName \[company\_name\])
+
+403153
+
+Access denied: this API can only be called by users having the feature key \[feature\_key\] enable
+
+403154
+
+User does not have the right to use phone meetings. The feature key phoneMeetingCustomisation is disabled"
+
+403155
+
+Company \[company\_id\] have offerType freemium (company must be premium)
+
+403156
+
+Access denied: this API can only be called by users having the feature key \[feature\_key\] disabled
+
+403160
+
+Access denied: company \[company\_id\] is terminated
+
+403165
+
+This resource can not be updated: \[cause\]
+
+403166
+
+This application \[applicationId\] can not be renewed until: \[minimum\_renewal\_date\]
+
+403170
+
+User \[userId\] can't be transferred to user \[userId\].
+
+403200
+
+User \[user\_id\] with roles \[user\_role\] is not allowed to set roles \[roles\_to\_set\] (roles allowed to set for this user: \[roles\_allowed\_to\_set\])
+
+403201
+
+Administrator \[user\_email\] with role \[user\_role\] is not allowed to populate company \[company\_name\]. (Detail: \[any\_detail\])
+
+403202
+
+Administrator \[user\_email\] with role(s) \[user\_role\] is not allowed to add a user to organization \[organization Id\] . (Detail: \[any\_detail\])
+
+403203
+
+Administrator \[user\_email\] with role(s) \[user\_role\] is not allowed to set roles \[roles\] . (Detail: \[any\_detail\])
+
+403204
+
+Administrator \[user\_email\] with role(s) \[user\_role\] is not allowed to move user to company \[company\_name\] . (Detail: \[any\_detail\])
+
+403205
+
+Administrator \[user\_email\] with role \[user\_role\] is not allowed to manage users. (Detail: \[any\_detail\])
+
+403206
+
+Administrator \[user\_email\] with role(s) \[user\_role\] is not allowed removing a user of the organization \[organization Id\] . (Detail: \[any\_detail\])
+
+403207
+
+Administrator \[user\_email\] with role(s) \[user\_role\] is not allowed to move user to organization Id \[organization Id\] . (Detail: \[any\_detail\])
+
+403208
+
+User \[user\_Email\] with role(s) \[user\_role\] is not allowed to invite users to his company. (Detail: \[any\_detail\])
+
+403209
+
+User \[user\_Email\] does not belong to company \[company\_id\] not allowed to get directory entries from other companies
+
+403210
+
+User \[user\_id\] does not belong to company \[company\_id\], not able to set him as company contact
+
+403211
+
+Administrator \[user\_id\] is not allowed to set offerType of company \[company\_id\] from premium to freemium
+
+403212
+
+It's not possible to set visibility \[visibility\] to company name \[CompanyName\]. (Detail: \[any\_detail\])
+
+403213
+
+Only superadmin can set the cloud pbx recording on a bp company
+
+403215
+
+Join company link is no longer valid. (Detail: \[any\_detail\])
+
+403220
+
+User \[user\_id/user\_email\] does not belong to company \[company\_id\]
+
+403321
+
+User \[user\_id/user\_email\] doesn't have \[required\_role\] role
+
+403322
+
+User \[user\_id/user\_email\] have one of the forbidden roles \[forbidden\_roles\]
+
+403300
+
+Only a user with 'admin' role can be assigned to administrate your \[Organisation or Company or Site\]
+
+403301
+
+Administrator \[user\_email\] is not assigned to administrate \[Organisation or Company or Site or System\] \[id\]
+
+403302
+
+Administrator \[user\_email\] is not assigned to create \[Organisation or Company or Site or System\]
+
+403303
+
+Administrator \[user\_email\] is not allowed to perform this operation. (Detail: \[any\_detail\])
+
+403304
+
+The current company subscription disallow to create another admin. (Detail: max value \[counter\])
+
+403310
+
+Administrator \[user\_email\] is not allowed to perform this operation. (Detail: this subscription is linked to a free offer)
+
+403311
+
+Administrator \[user\_email\] is not allowed to perform this operation. (Detail: this company has a subscription with sync on going)
+
+403312
+
+Administrator \[user\_email\] is not allowed to perform this operation. (Detail: this subscription is not active)
+
+403313
+
+Administrator \[user\_email\] is not allowed to perform this operation. (Detail: this subscription has on going synchronization)
+
+403314
+
+Administrator \[user\_email\] is not allowed to perform this operation. (Detail: this subscription is terminated)
+
+403315
+
+Subscription \[subscriptionId\] is a subscription to a prepaid offer. It can only be unsubscribe during the month it was created.
+
+403316
+
+Subscription \[subscriptionId\] to terminate is still assigned to company\_admin users
+
+403317
+
+Subscription \[subscriptionId\] to terminate is still assigned End Customer companie(s)
+
+403318
+
+Subscription \[subscriptionId\] to terminate is about a conference bundle offer and has been already assigned to a user.
+
+403319
+
+Offer \[offerId\] is archived. Cannot subscribe to this offer.
+
+403320
+
+User \[userId\] doesn't have app\_admin role
+
+403321
+
+Developer \[developer\_email\] can't call developers API for another user than himself
+
+403322
+
+bsAccountId is not set on developer user \[userId\]
+
+403323
+
+Application \[appId\] does not belong to developer user \[userId\]
+
+403324
+
+Offer \[offerId\] is not a CPaaS offer : developer \[userId\] cannot subscribe to it
+
+403325
+
+Application \[appId\] is rainbow client default
+
+403326
+
+Application \[appId\] is in \[state\] state
+
+403327
+
+Application \[appId\] has kpi mode \[kpi\] : subscription cannot be created for this app
+
+403328
+
+No payment methods found for developer \[userId\]
+
+403329
+
+Default payment method of developer \[userId\] is expired or expires soon
+
+403330
+
+No account data found for developer \[userId\]
+
+403331
+
+No zuora account name defined for developer \[userId\]
+
+403332
+
+No VATId defined on zuora for developer \[userId\]
+
+403333
+
+Application \[appId\] can't be deployed : mandatory fields are missing on developer \[developer\_id\] account.
+
+403334
+
+Kpi can not be changed to \[kpi\] if the company of the application's owner is not a BP one
+
+403335
+
+Subscription \[subscriptionId\] is a subscription to a prepaid offer. It can only be decrease during the month the subscription or an addon was created.
+
+403340
+
+Administrator \[user\_email\] is not allowed to perform this operation. (Detail: Only roles \[roles\_list\] can manage external trunk for a cloud PBX)
+
+403341
+
+Administrator \[user\_email\] is not allowed to perform this operation. (Detail: Administrator is not allowed to use external trunk \[external\_trunk\_id\])
+
+403350
+
+User \[userId\] (\[user\_email\]) cannot change data of another user \[userId\]
+
+403351
+
+User \[user\_email\] does not have administration rights on user's company
+
+403352
+
+PhoneNumber \[PhoneNumberId\] is not in relation with a RVCP subscriber, cannot access its data using this API
+
+403353
+
+User \[userId\] (\[user\_email\]) cannot performs changes on this SIP phoneNumber \[PhoneNumberId\]
+
+403354
+
+User \[userId\] (\[user\_email\]) cannot get data of this Cloud PBX Subscriber \[PhoneNumberId\]
+
+403360
+
+User (\[user\_email\])) doesn't have enough privilege to load this trunk \[trunkId\]
+
+403361
+
+User (\[user\_email\]) doesn't have enough privilege to load trunks of company \[companyId\]
+
+403362
+
+User (\[user\_email\]) doesn't have enough privilege to load trunks of system \[systemId\]
+
+403380
+
+User \[userId\] doesn't supervise user \[userId/userJidTel\]
+
+403400
+
+User deletion not allowed: user \[userId\] is owner of some applications
+
+403500
+
+loginEmail \[user\_email\] is black-listed, not able to register user
+
+403501
+
+loginEmail \[user\_email\] is black-listed, not able to send invitation email
+
+403502
+
+email \[user\_email\] does not match one of companies' allowed domains, not able to send self register email
+
+403503
+
+email \[user\_email\] matches a company allowed domains, but this company forbid user self-registration, not able to send self register email
+
+403504
+
+email \[user\_email\] is the logged in user's loginEmail, not able to send invitation email
+
+403505
+
+User invitation \[invitation\_id\] has not been sent by logged in user \[user\_id\], do not re-send email
+
+403506
+
+User invitation \[invitation\_id\] has been maid by phoneNumber, not able to re-send this invitation
+
+403507
+
+Email \[supportEmail\] cannot be used as supportEmail because this domain is forbidden
+
+403508
+
+It is forbidden to invite a guest
+
+403509
+
+User \[user\_email\] has limited rights and can't be invited for instance
+
+403510
+
+Domain \[@domain\] for user self-registration is forbidden to be set in company setting userSelfRegisterAllowedDomains
+
+403511
+
+Invite user to join default company is forbidden
+
+403512
+
+Invite user to join terminated company is forbidden
+
+403513
+
+Company \[company\_id\] is not a BP company, not able to create join company invitation with flag invitedToBeBpAdmin
+
+403514
+
+Only superadmin of bp\_admin of the BP company \[company\_id\] can create join company invitation with flag invitedToBeBpAdmin
+
+403515
+
+Join company invitation id \[invitation\_id\] is no longer pending
+
+403516
+
+Company \[company\_id\] is not a BP company, not able to create an invitation to link end customer company
+
+403517
+
+Company \[company\_id\] is seen as terminated, not able to create \[invitation or request\]
+
+403518
+
+Company \[company\_id\] is a BP \[bpType\] company, not able to link it to another company
+
+403519
+
+Company \[company\_id\] is already linked to a BP (\[bp\_id\])
+
+403520
+
+BP Company \[company\_id\] is not a VAD BP company, not able to invite an IR company
+
+403521
+
+Forbidden to invite to be CompanyAdmin, max number of allowed admin has been reached for company \[company\_id\]
+
+403522
+
+TV user (id \[user\_id\]) cannot be invited
+
+403523
+
+TV user (id \[user\_id\]) cannot be added to a group
+
+403524
+
+TV user (id \[user\_id\]) cannot participate to a PSTN conference
+
+403525
+
+Forbidden to invite users with visibility isolated
+
+403526
+
+User with visibility isolated is not allowed to invite external users
+
+403527
+
+TV user (id \[user\_id\]) cannot be a file viewer
+
+403528
+
+User \[loginEmail\] is not registered inside the roomId \[roomId\] he can't share a file
+
+403529
+
+User \[loginEmail\] is not registered inside the channelId \[channelId\] or not a 'publisher', he can't share a file
+
+403530
+
+Registration associated to \[email\] email is temporary blocked
+
+403531
+
+Reset password associated to \[email\] email is temporary blocked
+
+403532
+
+Reset password is forbidden for a guest
+
+403533
+
+Sending an offline mail to \[email\] email is temporary blocked
+
+403534
+
+Sending an offline mail to yourself is forbidden
+
+403535
+
+Sending an offline mail to \[email\] email is blocked by himself
+
+403540
+
+Room moderator privilege is forbidden for a guest
+
+403550
+
+User is not allowed to create a conversation with himself
+
+403560
+
+User \[user\_email\] try to send a presence request to himself
+
+403561
+
+User \[user\_email\] doesn't belong to \[user\_email\] network
+
+403562
+
+Action is not allowed because \[routine\_name\] routine is activated and action is managed.
+
+403600
+
+Rainbow profile \[profileId\] is assigned to \[nb\] Rainbow offers, not possible to delete this Rainbow profile
+
+403601
+
+Rainbow profile \[profileId\] is assigned to \[nb\] company subscriptions, not possible to delete this Rainbow profile
+
+403602
+
+\[Resource\_type\] \[resourceId\] is the default \[resource\_type\], not possible to delete it
+
+403603
+
+Access denied: offer \[offerId\] is not assigned to catalog \[catalogId\]
+
+403604
+
+BP Company \[companyId\] does not have permissions to buy Rainbow Voice offers for his customers
+
+403605
+
+Access denied: user \[user\_email\] is not assigned to profile \[profileId\]
+
+403606
+
+BP Company \[companyId\] does not have permissions to buy Rainbow offers for his customers
+
+403607
+
+The Applicant Ordering is Blocked by Credit Management. \[(403 error returned by Business Store when trying to create/update/cancel a subscription)\]
+
+403608
+
+Subscription \[subscriptionId\] is synchronizing, not possible to assign this subscription to user \[userId\]
+
+403609
+
+Subscription \[subscriptionId\] is not active, not possible to assign this subscription to user \[userId\]
+
+403610
+
+Maximum users number assigned to subscription \[subscriptionId\] has been reached (\[maxNumberUsers\]), not possible to assign this subscription to user \[userId\]
+
+403611
+
+BP \[bpCompanyId\] has not right to connect: forbidden to \[create or delete\] a \[company, system or Media Pillar\]
+
+403612
+
+Company \[companyId\] must be linked to a BP company or be a BP company to subscribe to paid offer \[offerId\]
+
+403613
+
+BP Company \[companyId\] have type IR, it does not have permissions to buy Rainbow offers for itself
+
+403615
+
+Subscription \[subscriptionId\] is user's company's default subscription, not possible to remove this user profile
+
+403616
+
+There is already a free admin (\[loginEmail\], \[userId\]) for company \[companyId\], not possible to remove profile from user \[userId\]
+
+403617
+
+There is already a free admin (\[loginEmail\], \[userId\]) for company \[companyId\], not possible to give company\_admin rights to user \[userId\]
+
+403618
+
+Company \[companyId\] has an active subscription to a conference bundle offer, not possible to enable dial-out
+
+403619
+
+Check VAT status is \[checkVATStatus\], application can't be deployed.
+
+403620
+
+Maximum quota reached for feature \[featureName\]. Current value \[current\] / Max value \[quota\] (unit \[\])
+
+403621
+
+Forecast a maximum quota reached for feature \[featureName\]. Current value \[current\] / Max value \[quota\] (unit \[\])
+
+403622
+
+User's profile(s) don't allow feature \[featureName\]. Current value \[current\]
+
+403623
+
+Company's profile(s) don't allow feature \[featureName\]. Current value \[current\]
+
+403624
+
+User's profile linked to subscription \[subscriptionId\] can't be deleted because a subscriber still exists for user \[userId\].
+
+403625
+
+Subscription \[subscriptionId\] can't be deleted because \[subscriber(s) or TV users\] still exists for this subscription.
+
+403626
+
+Impossible to join a room using an Open invite (detail : room locked \[roomId\])
+
+403627
+
+Profile linked to subscription \[subscriptionId\] don't allow feature \[featureName\]. Current value \[current\].
+
+403628
+
+Inconsistency found among some application customisation parameters. (detail:\[error detail\])
+
+403629
+
+User \[userId\] is not the owner of the file \[fileId\]
+
+403630
+
+Maximum file sharing quota \[file\_sharing\_quota\] Go has been reached (\[updated\_consumption\] Go), not possible to register this file descriptor.
+
+403632
+
+User \[loginEmail\] is not a viewer of the file \[fileDescriptorId\].
+
+403633
+
+User \[loginEmail\] is not in the same data center than the owner.
+
+403634
+
+FileDescriptor with id \[fileDescriptorId\] shows some inconsistencies. The upload is aborted.
+
+403635
+
+Can't delete directory import report for company id \[companyId\] because import is not completed.
+
+403640
+
+Administrator \[loginEmail\] can't create a theme because his BP has locked theme creation.
+
+403641
+
+Selected Theme \[themeId\] can't be applied to company \[companyName\] because it is not a white label theme.
+
+403642
+
+Selected Theme \[themeId\] can't be applied to BP company \[companyName\] because it is a white label theme.
+
+403650
+
+User \[userId\] is not a company administrator
+
+403655
+
+User is not in default company
+
+403660
+
+Email \[user\_email\] has already been invited by another company and he does not exist yet in Rainbow, creation of invitation for another company is forbidden
+
+403670
+
+Operation forbidden because user \[loginEmail\] is a guest
+
+403680
+
+Key \[keyNum\] on device \[deviceId\] has been created by \[owner\]. Can't be removed by \[owner\]
+
+403681
+
+Device \[deviceId\] not associated to a subscriber - not allowed to access programmable keys
+
+403682
+
+Admin \[loginEmail\] of IR company \[companyId\] is not able to \[create\_delete\] DDI because VAD forbid it.
+
+403683
+
+Cli options configuration changes still in synchronization.
+
+403684
+
+Overflow configuration changes still in synchronization.
+
+403685
+
+You can't configure a call forward to your own number.
+
+403686
+
+You can't update forwards of an emergency group.
+
+403687
+
+Only superadmin can set a debug session duration
+
+403688
+
+Cant select autoAttendantMenuId and ivrId in the same request
+
+403689
+
+Group \[groupId\] is not a hunting group.
+
+403690
+
+DDI Phone number with id \[phoneNumberId\] can't be associated to group \[groupId\] because it's the Cloud Pbx default DDI.
+
+403691
+
+DDI Phone number with id \[phoneNumberId\] can't be associated to group \[groupId\] because it's already associated to user \[userId\].
+
+403692
+
+DDI Phone number with id \[phoneNumberId\] can't be associated to group \[groupId\] because it's already associated to another group \[groupId\].
+
+403693
+
+DDI Phone number with id \[phoneNumberId\] is already associated to a rvcpGroup.
+
+403694
+
+Cloud Pbx \[systemId\] has groups. Cannot delete the Cloud Pbx.
+
+403695
+
+DDI Phone number with id \[phoneNumberId\] is already the Default DDI Phone number of Cloud PBX \[systemId\].
+
+403696
+
+DDI Phone number with id \[phoneNumberId\] is already associated to an OXO Group.
+
+403697
+
+DDI Phone number with id \[phoneNumberId\] is already the Default DDI Phone number of OXO PBX \[systemId\].
+
+403698
+
+DDI Phone number with id \[phoneNumberId\] is already associated to a rvcpIvr \[rvcpIvrId\].
+
+403699
+
+Cloud Pbx \[systemId\] has still Welcome(s) or welcome service(s). Cannot delete the Cloud Pbx.
+
+403700
+
+Can't delete site with id \[siteId\] because it's still linked to system(s) : \[systemId\].
+
+403701
+
+Can't delete organisation with id \[organisationId\] because it's still linked to company(ies) : \[companiesId\].
+
+403702
+
+Can't delete company with id \[companyId\] because it's still linked to subscription(s).
+
+403703
+
+Can't delete company with id \[companyId\] because it's still linked to site(s) : \[sitesIds\].
+
+403704
+
+Can't delete company with id \[companyId\] because it's still linked to user(s) : \[usersIds\].
+
+403705
+
+Can't delete company with id \[companyId\] because it's already terminated.
+
+403706
+
+Can't set isBP to false because company \[companyId\] is still linked to \[nb\] companies with bpId equal to this companyId.
+
+403707
+
+Can't set isCentrex to \[true/false\] because company \[companyId\] is still linked to site(s) : \[sitesIds\].
+
+403708
+
+Inconsistent link. The system \[systemId\] is not multi-company nor multi-tenant (\[details\])
+
+403709
+
+Inconsistent link. A multi-tenant system must be shared by a multi-tenant company only (\[details\]).
+
+403710
+
+Inconsistent link. A multi-tenant company must only use a multi-tenant system (\[details\]).
+
+403711
+
+System \[systemId\] is not a Cloud PBX system, cannot get it using this API.
+
+403712
+
+Phone number \[phoneNumberId\] is not a Cloud PBX DDI number.
+
+403713
+
+DDI Phone number \[phoneNumberId\] does not belong to Cloud PBX \[systemId\].
+
+403714
+
+User \[userId\] does not belong to Cloud PBX \[systemId\].
+
+403715
+
+External trunk \[externalTrunkId\] is in status \[status\]. Cannot link it to Cloud PBX.
+
+403716
+
+External trunk \[externalTrunkId\] and Cloud Pbx \[systemId\] does not belong to the same rvcpInstance.
+
+403717
+
+No external trunk found on Cloud Pbx \[systemId\], admin should link an external trunk to the Cloud Pbx before linking DDI to users.
+
+403718
+
+User \[userId\] does not have a phone number. He cannot be linked to a DDI number.
+
+403719
+
+Cloud Pbx \[systemId\] has DDI numbers. Cannot change its external trunk.
+
+403720
+
+Can't delete company with id \[companyId\] because it's still linked to EC or BP IR : \[numberOfECorBPIR\].
+
+403721
+
+Numbering plan can't be updated for cloud pbx \[systemId\] because it already has some subscribers.
+
+403722
+
+outgoingPrefix update is forbidden because cloud pbx \[systemId\] is linked to an external trunk.
+
+403723
+
+DDI \[phoneNumberId\] can't be deleted because it's the default DDI of cloud pbx \[systemId\].
+
+403724
+
+Cloud Pbx \[systemId\] has DDI numbers. Cannot delete the Cloud Pbx.
+
+403725
+
+Cloud Pbx \[systemId\] has subscribers. Cannot delete the Cloud Pbx.
+
+403726
+
+DDI Phone number \[phoneNumberId\] could not be unassociated from user \[userId\] (detail: \[error detail\]).
+
+403727
+
+DDI Phone number \[phoneNumberId\] is already the Default DDI Phone number of Cloud PBX \[systemId\].
+
+403728
+
+Cloud Pbx \[systemId\] has devices. Cannot delete the Cloud Pbx.
+
+403729
+
+Cannot add members \[memberIds\] to \[groupType\] group (detail: members don't have subscribers).
+
+403730
+
+Not allowed to change bpId because company \[companyId\] is still linked to paid subscriptions.
+
+403731
+
+Subscription \[subscriptionId\] associated to TV '\[tvName\]' id \[tvId\] is not active.
+
+403732
+
+No active Room subscription found on company \[companyId\].
+
+403733
+
+More than one active Room subscription found on company \[companyId\]. Admin should select one to associate to the TV for activation.
+
+403734
+
+Profile linked to subscription \[subscriptionId\] is about a Room offer. Not possible to delete profile from user using this API.
+
+403735
+
+Subscription \[subscriptionId\] is about a Room offer. Not possible to add profile to user using this API.
+
+403736
+
+Subscription \[subscriptionId\] can't be assigned to a user with roles \[forbidden\_roles\].
+
+403736
+
+Phone number DDI already assigned to IVR \[ivrId\].
+
+403737
+
+Short number already assigned to phone number \[phoneNumberId\].
+
+403738
+
+Short number already assigned to a phone number.
+
+403739
+
+The Welcome \[rvcpIvrId\] can not be deleted because there are Welcome Service(s) used on the cloud pbx \[systemId\].
+
+403740
+
+The Welcome Service can not be created because the Welcome does not exist.
+
+403741
+
+There is already a Welcome on the cloud pbx \[systemId\]
+
+403742
+
+A DDI Phone number can't be associated to a manager/assistant group.
+
+403743
+
+A Welcome Service can't be associated to a manager/assistant group.
+
+403744
+
+User \[userId\] is already associated to a welcome service.
+
+403745
+
+Group \[rvcpGroupId\] is already associated to a welcome service.
+
+403746
+
+Group \[rvcpGroupId\] is not a hunting group.
+
+403747
+
+You are not allowed to configure a call forward on an external number.
+
+403748
+
+Recordings are not authorized.
+
+403749
+
+Auto attendant \[autoAttendantId\] does not have a phone number. He cannot be linked to a DDI number.
+
+403750
+
+Auto attendant \[autoAttendantId\] is already associated to a welcome service.
+
+403751
+
+DDI Phone number with id \[phoneNumberId\] is already associated to a rvcpAutoAttendant \[rvcpAutoAttendantId\].
+
+403752
+
+An auto attendant can't have more than 3 consecutive menu.
+
+403753
+
+You can't delete the first menu of an auto attendant, to do so delete the auto attendant.
+
+403754
+
+You can't delete an auto attendant menu with at least one menu linked to it.
+
+403755
+
+User \[userId\] does not have a phone number. He cannot be linked to an auto attendant menu entry.
+
+403756
+
+The group is not a hunting group. He cannot be linked to an auto attendant menu entry.
+
+403757
+
+Rvcp auto attendant \[autoAttendantId\] does not belong to Cloud PBX \[systemId\].
+
+403758
+
+You need to delete other(s) menu(s) than the first one before deleting the autoAttendant.
+
+403759
+
+Auto attendant \[rvcpAutoAttendantId\] already have a ddi associated to it.
+
+403760
+
+You can't delete an associated auto attendant menu.
+
+403761
+
+Subscriber \[subscriberId\] is linked in an active auto attendant menu. Need to be removed first.
+
+403762
+
+Group \[groupId\] is linked in an active auto attendant menu. Need to be removed first.
+
+403763
+
+Cloud Pbx \[systemId\] has still auto attendants(s). Cannot delete the Cloud Pbx.
+
+403764
+
+The menu can't be link to itself.
+
+403765
+
+The menu is already link to another menu.
+
+403766
+
+It's not possible to link the first menu here.
+
+403767
+
+There is a sub menu link to its parent.
+
+403768
+
+Admin \[email\] isn't allowed to update externalTrunk \[externalTrunkId\]. Only BP admin of VAD can.
+
+403769
+
+Admin \[email\] isn't allowed to \[remove\_or\_add\] BP with bpId \[bpId\] to externalTrunk \[externalTrunkId\]. (Detail: \[detail\])
+
+403770
+
+User \[userId\] belongs to at least one group. Need to be removed first.
+
+403771
+
+You can only configure a "speeddial" key on a group.
+
+403772
+
+You can not configure a key on the subscriber device to his own number.
+
+403773
+
+Emergency Group \[groupId\] is still activated, its deletion is not authorized.
+
+403774
+
+Personal routine configuration changes still in synchronization.
+
+403775
+
+Only the name can be updated on work routine.
+
+403776
+
+Group \[groupId\] does not belong to company of logged in user (\[userId\]).
+
+403811
+
+OXO PBX access forbidden.
+
+403820
+
+Valid subscription not found for application \[applicationId\]
+
+403900
+
+Comments are disabled for channel with id \[channelId\].
+
+403910
+
+Update of peer authentication options for one or more Cloud Pbx are still ongoing (\[nb\] Cloud PBX remaining, \[nb\] subscribers remaining). Please wait.
+
+403911
+
+Update of peer authentication options for Cloud Pbx \[systemId\] are still ongoing (\[nb\] subscribers remaining). Please wait.
+
+403990
+
+Admin \[email\] isn't allowed to get invoice(s) of company \[companyId\]
+
+403991
+
+Not possible to generate official invoice for another period than the \[period\_type=previous, current, next\] one \[billingPeriod\]
+
+403992
+
+Not possible to force generate of invoice for another period than the \[period\_type=previous, current, next\] one \[billingPeriod\]
+
+403993
+
+Not able to generate invoice for period \[billingPeriod\].
+
+403994
+
+Admin \[email\] doesn't have required roles (\[roles\]) to get invoice \[filename\].
+
+404
+
+404000
+
+\[Resource\] with id \[resourceId\] does not exist.
+
+404001
+
+\[Resource\] with id \[resourceId\] does not exist, not able to update it.
+
+404001
+
+\[Resource\] with id \[resourceId\] does not exist. (CREATE)
+
+404002
+
+\[Resource\] with id \[resourceId\] does not exist, not able to delete it.
+
+404002
+
+\[Resource\] with id \[resourceId\] does not exist, not able to update it. (UPDATE)
+
+404003
+
+\[Resource\] with id \[resourceId\] does not exist for the moment
+
+404003
+
+\[Resource\] with id \[resourceId\] does not exist. (GET)
+
+404004
+
+\[Resource\] with id \[resourceId\] does not exist, not able to delete it. (DELETE pre)
+
+404005
+
+\[Resource\] with id \[resourceId\] does not exist, not able to delete it. (DELETE post)
+
+404006
+
+\[Resource\] with id \[resourceId\] does not exist. (SUBSCRIBE)
+
+404007
+
+\[Resource\] with id \[resourceId\] does not exist. (UNSUBSCRIBE)
+
+404008
+
+\[Resource\] with id \[resourceId\] does not exist. (PUBLISH)
+
+404020
+
+\[Resource\] with id \[resourceId\] not found in Zuora using bsCompanyId \[bsCompanyId\].
+
+404020
+
+Item with id \[resourceId\] does not exist
+
+404021
+
+No active session for conference endpoint with id \[confEndpointId\].
+
+404022
+
+No active webinar or practice room for conference endpoint with id \[confEndpointId\].
+
+404023
+
+No active webinar or waiting room for conference endpoint with id \[confEndpointId\].
+
+404024
+
+No active session for room \[roomId\].
+
+404025
+
+No active webinar or practice room for room \[roomId\].
+
+404026
+
+No active webinar or waiting room for room \[roomId\].
+
+404030
+
+Media Pillar for system with id \[systemId\] does not exist.
+
+404031
+
+Media Pillar user for system with id \[systemId\] does not exist.
+
+404032
+
+No \[resource1\] found for \[resource2\] with id \[resource2Id\].
+
+404033
+
+No TV found with activation code \[activationCode\], not able to activate it.
+
+404034
+
+Phone number \[phoneNumber\] is not assigned.
+
+404035
+
+Media Pillar versions does not exist in common settings.
+
+404036
+
+TV with id \[tvId\] is not activated
+
+404037
+
+User \[userId\] doesn't use system \[systemId\]
+
+404040
+
+Default conference endpoint not found for user \[user\_email\].
+
+404041
+
+Current meeting room not found for conference endpoint with id \[confEndpointId\].
+
+404042
+
+Personal meeting room not found for user \[user\_email\].
+
+404043
+
+Can't add a third participant into ad hoc conference room.
+
+404050
+
+No media gateway found.
+
+404051
+
+No media gateway found for IP address \[ipAddress\] and country \[country\].
+
+404100
+
+No user found with email \[user\_email\], not able to send reset password email
+
+404101
+
+Self-registration process still ongoing for user with email \[user\_email\], not able to send reset password email
+
+404104
+
+User \[user\_id\], wanted my presence is not found, not able to decline the request presence \[presence\_req\_id\]
+
+404105
+
+Inviting user \[user\_id\] not found, not able to accept invitation \[invitation\_id\]
+
+404106
+
+Inviting user \[user\_id\] not found, not able to tag 'failed' invitation \[invitation\_id\]
+
+404110
+
+No user found with email \[user\_email\], not able to send company visibility request email
+
+404115
+
+Open invite doesn't exists for user id \[userId\].
+
+404116
+
+Impossible to join a room using an Open invite (detail : \[lack of room / room closed / room deleted/ invalid openInviteId\])
+
+404117
+
+The room \[room\_name\] (\[room\_id\]) is closed
+
+404118
+
+Invalid webinar registration using registrationId \[registration\_id\]
+
+404200
+
+Specified device or default device not found
+
+404201
+
+Specified leg not found
+
+404202
+
+No call in active state found
+
+404203
+
+No call in held state found
+
+404300
+
+No valid offer reference found in ACTIS file for subscription
+
+404301
+
+Offer with sapReference=\[sapReference\] not found
+
+404302
+
+No country found in Zuora Account Info for developer \[user\_id\]
+
+404303
+
+No VAT number found in Zuora Account Info for developer \[user\_id\]
+
+404540
+
+User \[user\_id\] is already not in group \[group\_id\]
+
+404650
+
+No company admin found for company \[companyId\], not able to send the join company request
+
+404700
+
+Company \[companyId\] is already not visible by company \[companyId\]
+
+404800
+
+Resource not found on PBX with id \[systemId\]
+
+404816
+
+Resource not found on OXO PBX.
+
+404850
+
+No greeting file descriptor with fileId \[fileId\] found
+
+404851
+
+No active greeting file descriptor found for \[greetingId\]
+
+404852
+
+Not able to retrieve soundset for greeting \[greetingId\] of auto attendant menu \[aaMenuId\]
+
+404853
+
+Default greeting \[greetingId\] not found ! not able to restore it
+
+404854
+
+Content of greeting \[greetingId\] not found ! not able to restore it
+
+404990
+
+No \[invoice\_type\] file found for billingPeriod \[billingPeriod\] and unable to generate it.
+
+404991
+
+No \[type\] price list found for start period date \[date\] and bpType \[bpType\]
+
+404992
+
+No file found with path \[filepath\]
+
+404993
+
+No \[data\] found for billingPeriod \[billingPeriod\]
+
+404994
+
+No active subscription found for application: \[applicationId\]
+
+404995
+
+No default CPaaS profile found
+
+405
+
+405000
+
+Method not allowed.
+
+405818
+
+Method not allowed on OXO PBX.
+
+406
+
+406000
+
+This request does not contain json data. Content-Type header must be set to application/json
+
+406001
+
+UserId=%s exceeded payload size on channelId=%s
+
+406800
+
+Unsupported version or method requested by \[user\_email\] for PBX with id \[systemId\]
+
+409
+
+409000
+
+\[resource\] with \[field\_name\] = \[field\_value\] already exists.
+
+409001
+
+Health care deal contacts can't be approved.
+
+409002
+
+New Room owner can't be approved.
+
+409003
+
+Attachments inconsistency.
+
+409004
+
+Logs context update inconsistency.
+
+409005
+
+Can't select user \[userId\], having the feature key \[feature\_key\] value \[feature\_key\_value\]
+
+409006
+
+Lack of backend configuration to generate a public URL. (\[bakend\_data\])
+
+409007
+
+Error while generating temporary download URL for file \[fileId\]. (detail:\[error detail\])
+
+409008
+
+Voice message left is empty.
+
+409009
+
+Room with id \[roomId\] is already hosted by a container.
+
+409010
+
+\[feature\_name\] for \[use case\] not yet available.
+
+409011
+
+Email template \[template\_name\] for company \[companyId\] is active. You can't modify it's content.
+
+409012
+
+Email template \[template\_name\] for company \[companyId\] is not tested yet. It can't be activated.
+
+409013
+
+Email template \[template\_name\] for company \[companyId\] is active. You can't delete it.
+
+409014
+
+The rooms container \[containerId\] has already the same name '\[container\_name\]'.
+
+409015
+
+We can't publish several time the webinar \[webinarId\]
+
+409016
+
+User \[email\] is already registered for the webinar \[webinarId\]
+
+409017
+
+Current custom Bot \[botId\] has already a configured user jid \[userJid\].
+
+409018
+
+Selecting the same shared programmable telephony key twice is not allowed
+
+409100
+
+Domain \[@domain\] for user self-registration is already used by another company
+
+409110
+
+Company \[companyId\] is not a BP company
+
+409111
+
+Room \[roomId\] is not active. You should connect to it before.
+
+409112
+
+Room \[roomId\] has TV user(s). This is not compatible with a PSTN conference
+
+409200
+
+System: \[systemId\] was found in SystemsGroup: \[systemsGroupId\] Name: \[systemsGroupName\]
+
+409250
+
+User \[userId\] is already assigned to other system phoneNumber, only one allowed
+
+409251
+
+User \[userId\] is already assigned to other DDI phoneNumber, only one allowed
+
+409252
+
+DDI phone number \[phoneNumberId\] is already linked to user \[userId\]
+
+409300
+
+RainbowOffer \[offerId\] is already the default offer
+
+409510
+
+User \[user\_id\] already has a source with id \[source\_id\] which has a contact with contactId \[contact\_id\]
+
+409500
+
+\[Resource\] \[resource\_id\] is used by \[conflicted\_resources\]
+
+409520
+
+User \[user\_id\] already has a source with sourceId \[source\_id\]
+
+409530
+
+User \[user\_id\] already has a conversation with peerId \[conversation\_peer\_id\]
+
+409540
+
+User \[user\_id\] is already in group \[group\_id\]
+
+409550
+
+System \[system\_id\] already has a phoneNumber with shortNumber \[short\_number\]
+
+409551
+
+Pbx \[pbx\_id\] already has a phoneNumber with shortNumber \[short\_number\]
+
+409552
+
+internalNumber \[internal\_number\] is already used by another phoneNumber within the system group
+
+409553
+
+internalNumber \[internal\_number\] is readonly because it belongs to a multi-tenant system
+
+409555
+
+Phone Number E164 \[phone\_number\_e164\] already exists
+
+409556
+
+Company \[company\_id\] already has a \[Cloud/OXO Managed\] PBX
+
+409557
+
+User \[user\_id\] is associated to Cloud PBX \[system\_id\] ; so user deletion is not authorized
+
+409558
+
+Web Rtc Gateway \[webRtcgwId\] is still used by some Cloud PBX webrtc devices, deletion is not authorized
+
+409559
+
+Cannot create a subscriber with this shortNumber \[shortNumber\] as it is an Emergency Number
+
+409560
+
+A device with this macAddress \[macAddress\] is already existing
+
+409561
+
+This Device with MacAddress \[macAddress\] is STILL used by user
+
+409562
+
+Device \[macAddress\] is already used
+
+409563
+
+Device is already used by another system
+
+409570
+
+Key \[keyNum\] already configured on device \[deviceId\]
+
+409599
+
+Several users have been found with uid=\[userIdentifier\]
+
+409600
+
+A user with email \[user\_email\] already exist, not able to send self register email
+
+409601
+
+User invitation to email \[user\_email\] has already been sent by logged in user, do not send email again
+
+409602
+
+User \[user\_email\] is already visible by logged in user, do not send invitation email
+
+409603
+
+User invitation to email \[user\_email\] has already been sent by logged in user in the last 3600 seconds, do not send email again
+
+409604
+
+User invitation \[invitation\_id\] is no longer pending, not able to re-send invitation
+
+409605
+
+User invitation \[invitation\_id\] is no longer pending, not able to accept it
+
+409606
+
+User invitation \[invitation\_id\] is no longer pending, not able to decline it
+
+409607
+
+User invitation \[invitation\_id\] is no longer pending, not able to cancel it
+
+409608
+
+User invitation \[invitation\_id\] is already failed or no longer pending \[status\], not able to tag it
+
+409609
+
+User invitation \[invitation\_id\] has a bad type \[type\], not able to tag it
+
+409610
+
+User \[user\_email\] can't be administrator of the company \[company\_name\]. (Detail: Max number of admin reached for a Freemium company - \[threshold\])
+
+409620
+
+Company \[companyId\] has already subscribed to offer \[offerId\]
+
+409621
+
+Developer user \[userId\] has already a Zuora account.
+
+409622
+
+Developer user \[userId\] has already subscribed to CPaaS offer for application \[appId\]
+
+409623
+
+Company \[companyId\] has already subscribed to a conference offer
+
+409624
+
+Sorry, you cannot create another subscription for this BP account, because you have reached the system limit of \[max\_allowed\_subscriptions\] subscriptions allowed per BP account.
+
+409625
+
+Subscription \[bsSubscriptionId\] cannot be updated because there is a lock competition. Please retry later.
+
+409630
+
+Payment methods APIs can only be used for BP DR or BP VAD companies
+
+409625
+
+Subscription \[subscriptionId\] of company \[companyId\] is still synchronizing from previous creation / update
+
+409626
+
+\[autoRenew\_or\_prepaidRenewalOption\_or\_renewalTermOption\] for subscription \[subscriptionId\] of company \[companyId\] is already \[value\]
+
+409627
+
+User \[userId\] profile is already assigned to subscription \[subscriptionId\].
+
+409628
+
+User \[userId\] profile is already assigned to a \[conference or voice\] subscription.
+
+409629
+
+User \[userId\] profile is already assigned to an exclusive subscription.
+
+409650
+
+Logged in user has already sent a request to join company \[companyId\], do not send request again
+
+409655
+
+Join company request \[request\_id\] is no longer pending, not able to accept it
+
+409656
+
+Join company request \[request\_id\] is no longer pending, not able to decline it
+
+409660
+
+User \[user\_email\] already shares his presence with user \[user\_email\]
+
+409661
+
+A Presence request to \[user\_email\] has been already sent by logged in user, do not send request again
+
+409662
+
+Presence request \[presence\_req\_id\] is already canceled, not able to cancel it"
+
+409663
+
+Presence request \[presence\_req\_id\] is not pending (status: \[status\]), not able to decline it"
+
+409700
+
+Company \[companyId\] is already (not) visible by company \[companyId\]
+
+409701
+
+A visibility request has already been sent by \[user\_email\] to \[user\_email\]
+
+409702
+
+Companies \[companyId\] and \[companyId\] can already see each other
+
+409710
+
+A 'Developers' organisation already exists (id=\[organisationId\])
+
+409800
+
+Company \[companyName\] isn't a BP \[bpType\] company.
+
+409801
+
+Company \[companyName\] isn't linked to BP \[companyId\].
+
+409802
+
+Admin \[loginEmail\] isn't linked to company \[companyName\].
+
+409803
+
+Company \[companyId\] does not have the requested name \[companyName\].
+
+409817
+
+Resource already existing on OXO PBX.
+
+409818
+
+Resource is still associated on OXO PBX.
+
+409819
+
+User \[userId\] continue to have or will have attendant role; so company change is not authorized.
+
+409900
+
+Domain \[domainName\] does not belong to requested reseller \[givenResellerId\].
+
+413
+
+413000
+
+File too large. Max size allowed for this file is \[limit\] bytes.
+
+413001
+
+Greeting file duration (\[duration\] seconds) exceeds the limit (\[greeting\_max\_duration\] seconds)
+
+416
+
+416000
+
+Requested Range not satisfiable while getting object
+
+416001
+
+File with descriptor \[fileId\] is uploaded but empty.
+
+500
+
+500001
+
+Impossible to render the custom email template \[templateName\]. (detail : \[err\])
+
+500002
+
+Error during pass codes update at provider side: \[err\]
+
+500003
+
+Media Pillar \[mediaPillarId\] internal error: \[err\]
+
+500004
+
+Ad hoc conference \[confEndpointId\] internal error: \[err\]
+
+500811
+
+OXO PBX internal server error.
+
+503
+
+503001
+
+System \[systemId\] not connected.
+
+503002
+
+Media Pillar \[mediaPillarId\] not connected: \[err\]
+
+503821
+
+OXO PBX service not available.
+
+507
+
+507815
+
+Insufficient free space on OXO PBX storage
+
+### Sur cette page
+
+-   [Errors list](/docs/sdk/csharp#name-errors-list-0)
+-   [SDK errors list](/docs/sdk/csharp#name-sdk-errors-list-41)
+-   [Server errors list](/docs/sdk/csharp#name-server-errors-list-369)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

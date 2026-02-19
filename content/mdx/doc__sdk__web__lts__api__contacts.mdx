@@ -1,0 +1,585 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/contacts"
+lastSynced: "2026-02-19T22:35:15.143Z"
+---
+# Documentation
+
+Contacts service
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Contacts
+
+This service gives access to the information of the connected user and to all of his contacts. In addition, this service manages the network of the connected user through invitations The main methods and events proposed in that service allow to:  
+\- Retrieve the user connected information including his associated PBX phone if registered,  
+\- Retrieve the contacts information,  
+\- Search for contacts on the server,  
+\- Invite contacts, manage invitations,  
+\- Manage own contact list (roster),  
+\- Listen to the contacts information changes to be able to update your application if needed,  
+\- Listen to invitations coming from contacts
+
+**Emits**: `event:RAINBOW_ONCONTACTINFORMATIONCHANGED`, `event:RAINBOW_ONINFORMATIONCHANGED`, `event:RAINBOW_ONCONTACTINVITATIONRECEIVED`, `event:RAINBOW_ONCONTACTINVITATIONNUMBERCHANGED`
+
+-   [Contacts](#module_Contacts)
+    -   [getContactByJID(strJID)](#module_Contacts+getContactByJID) ⇒ `object`
+    -   [getContactById(contactId)](#module_Contacts+getContactById) ⇒ `Promise`
+    -   [getNetworkContacts()](#module_Contacts+getNetworkContacts) ⇒ `Promise`
+    -   [getAll()](#module_Contacts+getAll) ⇒ `Array`
+    -   [getConnectedUser()](#module_Contacts+getConnectedUser) ⇒ `object`
+    -   [getConnectedUserPhone()](#module_Contacts+getConnectedUserPhone) ⇒ `object`
+    -   [searchByName(strName, limit, addRosters, companyId, excludeCompanyId)](#module_Contacts+searchByName) ⇒ `Promise`
+    -   [searchPhonebook(strPattern)](#module_Contacts+searchPhonebook) ⇒ `Promise`
+    -   [searchOffice365(strPattern)](#module_Contacts+searchOffice365) ⇒ `Promise`
+    -   [searchCompanyDirectory(strPattern, companyId)](#module_Contacts+searchCompanyDirectory) ⇒ `Promise`
+    -   [searchByLogin(strLogin)](#module_Contacts+searchByLogin) ⇒ `Promise`
+    -   [searchByJid(strJid)](#module_Contacts+searchByJid) ⇒ `Promise`
+    -   [searchById(strId)](#module_Contacts+searchById) ⇒ `Promise`
+    -   [acceptInvitation(invitationId)](#module_Contacts+acceptInvitation) ⇒ `Promise`
+    -   [declineInvitation(invitationId)](#module_Contacts+declineInvitation) ⇒ `Promise`
+    -   [addToNetwork(contactId)](#module_Contacts+addToNetwork) ⇒ `Promise`
+    -   [sendInvitationByEmail(email, customMessage)](#module_Contacts+sendInvitationByEmail) ⇒ `Promise`
+    -   [removeFromNetwork(contactId)](#module_Contacts+removeFromNetwork) ⇒ `Promise`
+    -   [getInvitationById(invitationId)](#module_Contacts+getInvitationById) ⇒ `object`
+    -   [getInvitationsReceived()](#module_Contacts+getInvitationsReceived) ⇒ `Array`
+    -   [cancelInvitation(invitationId)](#module_Contacts+cancelInvitation) ⇒ `Promise`
+    -   [getInvitationsSent()](#module_Contacts+getInvitationsSent) ⇒ `Array`
+    -   [updateUserCustomData(customData)](#module_Contacts+updateUserCustomData) ⇒ `Promise`
+    -   [updateUserAutoDndCalendarSetting(activate)](#module_Contacts+updateUserAutoDndCalendarSetting) ⇒ `Promise`
+    -   [getUserAutoDndCalendarSetting()](#module_Contacts+getUserAutoDndCalendarSetting) ⇒ `boolean`
+    -   [updateUserMSTeamsPresenceSetting(activate)](#module_Contacts+updateUserMSTeamsPresenceSetting) ⇒ `Promise`
+    -   [getUserMSTeamsPresenceSetting()](#module_Contacts+getUserMSTeamsPresenceSetting) ⇒ `boolean`
+    -   [isCalendarSharingActivated()](#module_Contacts+isCalendarSharingActivated) ⇒ `boolean`
+
+### contacts.getContactByJID(strJID) ⇒ `object`
+
+***Deprecated***
+
+Get a contact by his JID locally from the network or from opened conversations. If the contact is not found, you can call the searchByJID() method to try to find it on server side.
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `object` - Return a Contact object representing the contact information or null if no contact has been found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strJID
+
+`string`
+
+The JID of the contact to get
+
+### contacts.getContactById(contactId) ⇒ `Promise`
+
+Get a contact by his ID (dbId) locally from the network or from opened conversations. If the contact is not found, you can call the searchById() method to try to find him on server side.
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Promise` - Return a promise containing a contact object representing the contact information or null if no contact has been found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contactId
+
+`string`
+
+The ID of the contact to get
+
+### contacts.getNetworkContacts() ⇒ `Promise`
+
+Returns a list of contacts that are in the network of the connected user
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Promise` - A promise with an array of contacts found or an empty array if no contact has been found  
+**Access**: public  
+
+### contacts.getAll() ⇒ `Array`
+
+Returns a list of users. It includes the contacts that are in the network of the connected user and the contacts that the connected user has opened conversation with.
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Array` - Array of Contact object  
+**Access**: public  
+
+### contacts.getConnectedUser() ⇒ `object`
+
+Get the connected user information
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `object` - Contact object representing the connected user information or null if not connected  
+**Access**: public  
+
+### contacts.getConnectedUserPhone() ⇒ `object`
+
+Get the connected user phone information or null if not exists
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `object` - Object containing phoneNumber and pbxId keys  
+**Access**: public  
+
+### contacts.searchByName(strName, limit, addRosters, companyId, excludeCompanyId) ⇒ `Promise`
+
+Search for a contact by name or firstname on the server. Depending the privacy rules, you can receive more or less information for each contact. Please refer to [Rainbow for Developers privacy](/docs/hub/users-visibility-and-privacy%20%22Rainbow%20for%20Developers%20privacy%20page%22)
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Promise` - A promise with an array of contacts found or an empty array if no contact has been found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strName
+
+`string`
+
+The beginning of the name or the first name to search
+
+limit
+
+`number`
+
+optional, allow to specify the maximum number of contacts to retrieve. 20 by default. A maximum of 1000 results can be retrieved.
+
+addRosters
+
+`boolean`
+
+\[optional\] whether or not to include our contact roster in the search. Default: false
+
+companyId
+
+`string`
+
+ID of company to search. Default = ""
+
+excludeCompanyId
+
+`string`
+
+ID of company to search. Default = ""
+
+### contacts.searchPhonebook(strPattern) ⇒ `Promise`
+
+Search for a contact in your Phonebook
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Promise` - A promise with an array of contacts found or an empty array if no contact has been found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strPattern
+
+`string`
+
+Pattern to search for
+
+### contacts.searchOffice365(strPattern) ⇒ `Promise`
+
+Search for a contact in Office365 register
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Promise` - A promise with an array of contacts found or an empty array if no contact has been found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strPattern
+
+`string`
+
+Pattern to search for
+
+### contacts.searchCompanyDirectory(strPattern, companyId) ⇒ `Promise`
+
+Search for a contact in your company directory
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Promise` - A promise with an array of contacts found or an empty array if no contact has been found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strPattern
+
+`string`
+
+Pattern to search for
+
+companyId
+
+`string`
+
+Id of the company
+
+### contacts.searchByLogin(strLogin) ⇒ `Promise`
+
+Search a contact by his login email on the server. Depending the privacy rules, you can receive more or less information for each contact. Please refer to [Rainbow for Developers privacy](/docs/hub/users-visibility-and-privacy%20%22Rainbow%20for%20Developers%20privacy%20page%22) Return a Promise
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Promise` - Return a promise with a contact if found (null in case of no contact) or an object describing the error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strLogin
+
+`string`
+
+The login to search for
+
+### contacts.searchByJid(strJid) ⇒ `Promise`
+
+***Deprecated***
+
+Search a contact by his jid on the server. Depending the privacy rules, you can receive more or less information for each contact. Please refer to [Rainbow for Developers privacy](/docs/hub/users-visibility-and-privacy%20%22Rainbow%20for%20Developers%20privacy%20page%22) Return a Promise
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Promise` - Return a promise with a contact if found or an object describing the error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strJid
+
+`string`
+
+The jid to search for
+
+### contacts.searchById(strId) ⇒ `Promise`
+
+Search a contact by his Id (dbId) on the server. Depending the privacy rules, you can receive more or less information for each contact. Please refer to [Rainbow for Developers privacy](/docs/hub/users-visibility-and-privacy%20%22Rainbow%20for%20Developers%20privacy%20page%22) Return a Promise
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Promise` - Return a promise containing a contact object representing the contact information or null if no contact has been found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strId
+
+`string`
+
+The id to search for
+
+### contacts.acceptInvitation(invitationId) ⇒ `Promise`
+
+Accept a an invitation from an other Rainbow user to mutually join the network Once accepted, the user will be part of your network. Return a promise
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Promise` - A promise that contains SDK.OK in case of success or an error in case of failure  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+invitationId
+
+`string`
+
+ID of the invitation to accept
+
+### contacts.declineInvitation(invitationId) ⇒ `Promise`
+
+Decline an invitation from an other Rainbow user to mutually join the network Once declined, the user will not be part of your network. Return a promise
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Promise` - A promise that contains SDK.OK in case of success or an error in case of failure  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+invitationId
+
+`string`
+
+ID of the invitation to decline
+
+### contacts.addToNetwork(contactId) ⇒ `Promise`
+
+Send an invitation to a Rainbow user for joining his network. The user will receive an invitation that can be accepted or declined In return, when accepted, he will be part of your network When in the same company, invitation is automatically accepted (ie: can't be declined)
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Promise` - A promise that contains the contact added or an object describing an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contactId
+
+`string`
+
+ID of the contact
+
+### contacts.sendInvitationByEmail(email, customMessage) ⇒ `Promise`
+
+Send an invitation email as UCaaS
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Promise` - A promise that contains the contact added or an object describing an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+email
+
+`string`
+
+The email
+
+customMessage
+
+`string`
+
+The email text (optional)
+
+### contacts.removeFromNetwork(contactId) ⇒ `Promise`
+
+Remove a contact from the list of contacts and unsubscribe from the contact's presence
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Promise` - A promise that contains nothing if removed or an object describing an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contactId
+
+`string`
+
+ID of the contact
+
+### contacts.getInvitationById(invitationId) ⇒ `object`
+
+Get an invitation by its ID
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `object` - The invitation if found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+invitationId
+
+`string`
+
+ID of the invitation to retrieve
+
+### contacts.getInvitationsReceived() ⇒ `Array`
+
+Get the invitation received from Rainbow users
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Array` - The list of invitations received  
+**Access**: public  
+
+### contacts.cancelInvitation(invitationId) ⇒ `Promise`
+
+Cancel an invitation sent
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Promise` - Promise resolution or an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+invitationId
+
+`string`
+
+ID of the invitation to cancel
+
+### contacts.getInvitationsSent() ⇒ `Array`
+
+Get the invites sent to others Rainbow users
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Array` - The list of invitations sent  
+**Access**: public  
+
+### contacts.updateUserCustomData(customData) ⇒ `Promise`
+
+Update customData property of connected user
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Promise` - Promise resolution or an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+customData
+
+`object`
+
+object representing customData, i.e. { key1: true, key2: false }
+
+### contacts.updateUserAutoDndCalendarSetting(activate) ⇒ `Promise`
+
+Update the user auto dnd calendar settings. If activated, and if the user is sharing with Rainbow his current calendar (Office 365 or Google Calendar), the presence will automatically go to DND in case of a meeting scheduled in the calendar. NB: The user can "exit" the current DND state by simply changing his presence (this will not deactivate the settings, but will "disable" it for the current meeting, until the next one) NB: The change of the parameter does not affect the current meeting! It's taken into account for the next one
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Promise` - Promise resolution with the new state or an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+activate
+
+`boolean`
+
+boolean that will activate / deactivate the settings
+
+### contacts.getUserAutoDndCalendarSetting() ⇒ `boolean`
+
+Get the user auto dnd calendar settings. If activated, and if the user is sharing with Rainbow his current calendar (Office 365 or Google Calendar), the presence will automatically go to DND in case of a meeting scheduled in the calendar. For more information check updateUserAutoDndCalendarSetting API
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `boolean` - boolean True in case the settings is activated  
+**Access**: public  
+
+### contacts.updateUserMSTeamsPresenceSetting(activate) ⇒ `Promise`
+
+Update the user MS Teams presence calendar settings. If activated, and if the user is sharing with Rainbow his current calendar (Office 365), the presence from his MS Teams client is managed and the Rainbow application will go to busy or DND in case the presence in teams change;
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `Promise` - Promise resolution with the new state or an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+activate
+
+`boolean`
+
+boolean that will activate / deactivate the settings
+
+### contacts.getUserMSTeamsPresenceSetting() ⇒ `boolean`
+
+Get the user MS Teams presence calendar settings. If activated, and if the user is sharing with Rainbow his current calendar (Office 365), the presence from his MS Teams client is managed and the Rainbow application will go to busy or DND in case the presence in his Teams client change;
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `boolean` - boolean True in case the settings is activated  
+**Access**: public  
+
+### contacts.isCalendarSharingActivated() ⇒ `boolean`
+
+Provides an information if the user is sharing his current calendar (Office 365 or Google Calendar).
+
+**Kind**: instance method of [`Contacts`](#module_Contacts)  
+**Returns**: `boolean` - True in case the calendar sharing is activated  
+**Access**: public
+
+### Sur cette page
+
+-   [Contacts](/docs/sdk/web#name-contacts-3)
+-   [contacts.getContactByJID(strJID) ⇒ object](/docs/sdk/web#name-contacts.getcontactbyjidstrjid--object-164)
+-   [contacts.getContactById(contactId) ⇒ Promise](/docs/sdk/web#name-contacts.getcontactbyidcontactid--promise-207)
+-   [contacts.getNetworkContacts() ⇒ Promise](/docs/sdk/web#name-contacts.getnetworkcontacts--promise-247)
+-   [contacts.getAll() ⇒ Array](/docs/sdk/web#name-contacts.getall--array-256)
+-   [contacts.getConnectedUser() ⇒ object](/docs/sdk/web#name-contacts.getconnecteduser--object-265)
+-   [contacts.getConnectedUserPhone() ⇒ object](/docs/sdk/web#name-contacts.getconnecteduserphone--object-274)
+-   [contacts.searchByName(strName, limit, addRosters, companyId, excludeCompanyId) ⇒ Promise](/docs/sdk/web#name-contacts.searchbynamestrname-limit-addrosters-companyid-excludecompanyid--promise-283)
+-   [contacts.searchPhonebook(strPattern) ⇒ Promise](/docs/sdk/web#name-contacts.searchphonebookstrpattern--promise-367)
+-   [contacts.searchOffice365(strPattern) ⇒ Promise](/docs/sdk/web#name-contacts.searchoffice365strpattern--promise-407)
+-   [contacts.searchCompanyDirectory(strPattern, companyId) ⇒ Promise](/docs/sdk/web#name-contacts.searchcompanydirectorystrpattern-companyid--promise-447)
+-   [contacts.searchByLogin(strLogin) ⇒ Promise](/docs/sdk/web#name-contacts.searchbyloginstrlogin--promise-498)
+-   [contacts.searchByJid(strJid) ⇒ Promise](/docs/sdk/web#name-contacts.searchbyjidstrjid--promise-538)
+-   [contacts.searchById(strId) ⇒ Promise](/docs/sdk/web#name-contacts.searchbyidstrid--promise-581)
+-   [contacts.acceptInvitation(invitationId) ⇒ Promise](/docs/sdk/web#name-contacts.acceptinvitationinvitationid--promise-621)
+-   [contacts.declineInvitation(invitationId) ⇒ Promise](/docs/sdk/web#name-contacts.declineinvitationinvitationid--promise-661)
+-   [contacts.addToNetwork(contactId) ⇒ Promise](/docs/sdk/web#name-contacts.addtonetworkcontactid--promise-701)
+-   [contacts.sendInvitationByEmail(email, customMessage) ⇒ Promise](/docs/sdk/web#name-contacts.sendinvitationbyemailemail-custommessage--promise-741)
+-   [contacts.removeFromNetwork(contactId) ⇒ Promise](/docs/sdk/web#name-contacts.removefromnetworkcontactid--promise-792)
+-   [contacts.getInvitationById(invitationId) ⇒ object](/docs/sdk/web#name-contacts.getinvitationbyidinvitationid--object-832)
+-   [contacts.getInvitationsReceived() ⇒ Array](/docs/sdk/web#name-contacts.getinvitationsreceived--array-872)
+-   [contacts.cancelInvitation(invitationId) ⇒ Promise](/docs/sdk/web#name-contacts.cancelinvitationinvitationid--promise-881)
+-   [contacts.getInvitationsSent() ⇒ Array](/docs/sdk/web#name-contacts.getinvitationssent--array-921)
+-   [contacts.updateUserCustomData(customData) ⇒ Promise](/docs/sdk/web#name-contacts.updateusercustomdatacustomdata--promise-930)
+-   [contacts.updateUserAutoDndCalendarSetting(activate) ⇒ Promise](/docs/sdk/web#name-contacts.updateuserautodndcalendarsettingactivate--promise-970)
+-   [contacts.getUserAutoDndCalendarSetting() ⇒ boolean](/docs/sdk/web#name-contacts.getuserautodndcalendarsetting--boolean-1010)
+-   [contacts.updateUserMSTeamsPresenceSetting(activate) ⇒ Promise](/docs/sdk/web#name-contacts.updateusermsteamspresencesettingactivate--promise-1019)
+-   [contacts.getUserMSTeamsPresenceSetting() ⇒ boolean](/docs/sdk/web#name-contacts.getusermsteamspresencesetting--boolean-1059)
+-   [contacts.isCalendarSharingActivated() ⇒ boolean](/docs/sdk/web#name-contacts.iscalendarsharingactivated--boolean-1068)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

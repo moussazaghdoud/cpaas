@@ -1,0 +1,365 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Getting_started"
+lastSynced: "2026-02-19T22:35:13.282Z"
+---
+# Documentation
+
+Getting started
+
+LTS release 2.47.0Publiée le 2024-04-20
+
+## Getting Started
+
+---
+
+Welcome to the Alcatel-Lucent Enterprise **Rainbow Software Development Kit (SDK) for Android** documentation! We're thrilled to have you here.
+
+This comprehensive guide is designed to assist you in harnessing the full potential of our software library, empowering you to create, innovate, and streamline your projects with ease.
+
+Whether you're a seasoned developer or just starting your coding journey, this documentation serves as your compass, offering clear insights, detailed explanations, and practical examples to navigate through our library's functionalities effectively.
+
+Dive in, explore, and embark on a rewarding journey of discovery and implementation. We're excited to support you every step of the way!
+
+### About Rainbow Android SDK
+
+Our SDK provides an overall communication experience tailored to your needs. Seamlessly chat, initiate high-quality audio, and video calls, exchange files effortlessly, and embark on collaborative sessions with unmatched ease.
+
+Whether you're connecting with colleagues, friends or customers, our platform offers a dynamic range of features that opens doors to limitless possibilities, enhancing connectivity and collaboration like never before.
+
+*Note: The Rainbow SDK for Android also embeds the WebRTC audio/video stack from **Google***
+
+### Preamble
+
+---
+
+The Alcatel-Lucent Enterprise (ALE) Rainbow Software Development Kit (SDK) is a library developed in **Kotlin** and **Java** to connect your native **Android** application to Rainbow.
+
+With its robust APIs, you can craft high-level Android applications that connect to [Rainbow's ecosystem](https://www.openrainbow.com). This tutorial serves as a comprehensive guide to kickstart your journey with the ALE Rainbow SDK for Android, assisting in setting up your environment and diving into development.
+
+### Prerequisites
+
+---
+
+#### Android
+
+The Rainbow SDK for Android operates with Android versions up to Marshmallow (API 23), ensuring compatibility and functionality across a wide range of Android devices.
+
+Pre-requisites
+
+Minimum version supported
+
+API Level
+
+Android
+
+6 (Marshmallow)
+
+**23**
+
+#### Android Studio
+
+We keep up to date with the latest release versions of Android Studio, ensuring our SDK remains fully compatible and optimized for the newest developments and features in the Android development environment.
+
+We recommend ensuring that your IDE remains updated for optimal performance. Access the latest version for download [here](https://developer.android.com/studio).
+
+#### Platforms supported
+
+Platforms
+
+Supported
+
+Smartphone (Android)
+
+**Yes**
+
+Tablet (Android)
+
+**Yes**
+
+TV (AndroidTV)
+
+**Yes**
+
+Watch (WearOS)
+
+**Partially**
+
+Car (AndroidAuto)
+
+**Partially**
+
+#### Language compatibility
+
+Given its development in **Kotlin** and **Java**, you have the flexibility to develop your applications using any of these languages.
+
+Have a look to our [First Android Project](#first-android-project---configuration) guide that will describe how to develop your first application using either Kotlin or Java.
+
+Additional samples can be found on our [Github repository for Android](https://github.com/Rainbow-CPaaS/Rainbow-Android-SDK-Samples).
+
+#### Rainbow developer account and application
+
+You need a **Rainbow developer account** and a **Rainbow application** in order to use the Rainbow SDK for Android.
+
+Connect to the [Rainbow for developers](/login) to sign-up for a Rainbow developer account and for creating and managing your Rainbow applications.
+
+### First Android Project - Configuration
+
+---
+
+#### Define the minimum SDK version for your application
+
+The Rainbow SDK requires a minimum version of **23**. Ensure your version is at least this number or higher for compatibility.
+
+Within your `./<project_folder>/app/build.gradle` file, insert the following line to set the minimal Android SDK version:
+
+-   [kts](#codegroupTab-defaultconfig_kts)
+-   [groovy](#codegroupTab-defaultconfig_groovy)
+
+```kts
+android {
+    // ...
+    defaultConfig {
+        minSdk = 26
+        // ...
+    }
+}
+```
+
+```groovy
+android {
+    // ...
+    defaultConfig {
+        minSdk 26
+        // ...
+    }
+}
+```
+
+#### Include the Rainbow Maven repository
+
+Within your `./<project_folder>/settings.gradle` file, insert the following line to incorporate the Rainbow Maven repository into your project:
+
+-   [kts](#codegroupTab-maven_repository_kts)
+-   [groovy](#codegroupTab-maven_repository_kts)
+
+```kts
+// ...
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        // ...
+        maven("https://maven.openrainbow.io")
+        maven("https://jitpack.io")
+    }
+}
+```
+
+```groovy
+// ...
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        // ...
+        maven { url "https://maven.openrainbow.io"}
+        maven { url "https://jitpack.io"}
+    }
+}
+```
+
+*To explore further details on integrating custom repositories, please refer to [this link](https://docs.gradle.org/4.10/userguide/declaring_repositories.html#sec:declaring_custom_repository).*
+
+#### Incorporate the Rainbow SDK as a Gradle dependency
+
+Within your `./<project_folder>/app/build.gradle` file, include this line to integrate the Rainbow SDK dependency into your project:
+
+-   [kts](#codegroupTab-maven_repository_kts)
+-   [groovy](#codegroupTab-maven_repository_groovy)
+
+```kts
+// ...
+dependencies {
+    implementation("com.ale:rainbowsdk:2.61.0")
+    // ...
+}
+```
+
+```groovy
+// ...
+dependencies {
+    implementation 'com.ale:rainbowsdk:2.61.0'
+    // ...
+}
+```
+
+*For more information about adding dependencies, you can check [this link](https://developer.android.com/studio/build/dependencies).*
+
+It's highly recommended to use the latest version available. Ensure to replace `2.41.0` with the most recent version number. Referencing the [Changelog](/docs/sdk/android) will provide insights into the newest features and improvements. Using the latest version ensures access to the most updated functionalities and enhancements.
+
+#### Establish Java Compilation Compatibility
+
+As the Rainbow SDK for Android contains Java 17 bytecode. We recommend that you implement these compilation options within your `./<project_folder>/app/build.gradle` file.
+
+-   [kts](#codegroupTab-compile_options_kts)
+-   [groovy](#codegroupTab-compile_options_groovy)
+
+```kts
+android {
+    // ...
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+```
+
+```groovy
+android {
+    // ...
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+```
+
+After that, proceed to click on **Sync Now** and start to use the Rainbow SDK in your project.
+
+#### Add required SDK permissions
+
+Add the following permissions in your `AndroidManifest.xml` file.
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS"/>
+
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+    <!-- ... -->
+
+</manifest>
+```
+
+### First Android Project - Initialization
+
+---
+
+#### Implement an Application class
+
+*Note: If your app already has an existing class that extends `android.app.Application`, you may omit this step.*
+
+Generate a `Kotlin` or `Java` class within your project that extends the [Application](https://developer.android.com/reference/android/app/Application) Android class (*e.g., `MyApp.kt`*).
+
+In your `AndroidManifest.xml` integrate a reference to your custom `Application` class:
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- permissions -->
+
+    <application
+        android:name=".MyApp">
+        <!-- Activities -->
+    </application>
+
+</manifest>
+```
+
+You're almost there - your application will soon be ready to connect with Rainbow! **Congratulations** on this achievement!
+
+#### Creating a Rainbow developers application
+
+To initialize the SDK you'll require an `applicationID` and a `secretKey` obtainable from the [Rainbow for developers](/applications). These details serve to identify your application and grant access to the Rainbow platform. For comprehensive guide on application lifecycle, creation steps, and acquiring the application ID and secret key, refer to the [Applications lifecycle](/docs/hub/application-lifecycle) documentation.
+
+There's just one more step and your application will be ready to communicate with Rainbow.
+
+#### Initialize the SDK
+
+Inside the `onCreate()` method of your application class (`MyApp`), you need to initialize the Rainbow SDK.
+
+-   [kotlin](#codegroupTab-rainbowApplication_kts)
+-   [java](#codegroupTab-rainbowApplication_java)
+
+```kotlin
+class RainbowApplication : Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+        RainbowSdk().initialize(
+            applicationContext = this,
+            applicationId = "YOUR_APP_ID",
+            applicationSecret = "YOUR_APP_SECRET"
+        )
+    }
+}
+```
+
+```java
+public class MyApp extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        RainbowSdk.instance().initialize(this, "YOUR_APP_ID", "YOUR_APP_SECRET");
+    }
+}
+```
+
+*Note: `YOUR_APP_ID` and `YOUR_APP_SECRET` is from your Rainbow application created in the previous step.*
+
+**Congratulations on successfully completing this step-by-step guide! You can now start your Rainbow developer journey.**
+
+---
+
+### See also
+
+-   [Connect to Rainbow](/docs/sdk/android)
+-   [Manage Notifications](/docs/sdk/android)
+-   [Enable Push notifications](/docs/sdk/android)
+
+*Last updated January, 2024*
+
+### Sur cette page
+
+-   [Getting Started](/docs/sdk/android#name-getting-started-0)
+-   [About Rainbow Android SDK](/docs/sdk/android#name-about-rainbow-android-sdk-16)
+-   [Preamble](/docs/sdk/android#name-preamble-28)
+-   [Prerequisites](/docs/sdk/android#name-prerequisites-38)
+-   [Android](/docs/sdk/android#name-android-42)
+-   [Android Studio](/docs/sdk/android#name-android-studio-76)
+-   [Platforms supported](/docs/sdk/android#name-platforms-supported-85)
+-   [Language compatibility](/docs/sdk/android#name-language-compatibility-142)
+-   [Rainbow developer account and application](/docs/sdk/android#name-rainbow-developer-account-and-application-154)
+-   [First Android Project - Configuration](/docs/sdk/android#name-first-android-project---configuration-163)
+-   [Define the minimum SDK version for your application](/docs/sdk/android#name-define-the-minimum-sdk-version-for-your-application-167)
+-   [Include the Rainbow Maven repository](/docs/sdk/android#name-include-the-rainbow-maven-repository-177)
+-   [Incorporate the Rainbow SDK as a Gradle dependency](/docs/sdk/android#name-incorporate-the-rainbow-sdk-as-a-gradle-dependency-187)
+-   [Establish Java Compilation Compatibility](/docs/sdk/android#name-establish-java-compilation-compatibility-200)
+-   [Add required SDK permissions](/docs/sdk/android#name-add-required-sdk-permissions-210)
+-   [First Android Project - Initialization](/docs/sdk/android#name-first-android-project---initialization-217)
+-   [Implement an Application class](/docs/sdk/android#name-implement-an-application-class-221)
+-   [Creating a Rainbow developers application](/docs/sdk/android#name-creating-a-rainbow-developers-application-237)
+-   [Initialize the SDK](/docs/sdk/android#name-initialize-the-sdk-246)
+-   [See also](/docs/sdk/android#name-see-also-260)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

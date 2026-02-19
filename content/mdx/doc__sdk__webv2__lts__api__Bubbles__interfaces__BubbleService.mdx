@@ -1,0 +1,274 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/Bubbles/interfaces/BubbleService"
+lastSynced: "2026-02-19T22:35:16.364Z"
+---
+# Documentation
+
+BubbleService
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [Bubbles](doc/sdk/webv2/lts/api/Bubbles/index) / BubbleService
+
+# Interface: BubbleService
+
+The `BubbleService` interface defines the Rainbow SDK BubbleService API
+
+## Methods
+
+### createBubble()
+
+> **createBubble**(`bubbleName`, `createBubbleData`?): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+Create a new bubble; This API also sends BubbleServiceEvents.ON\_NEW\_BUBBLE\_CREATED event
+
+#### Parameters
+
+• **bubbleName**: `string`
+
+The name of the bubble
+
+• **createBubbleData?**: [`CreateBubbleData`](doc/sdk/webv2/lts/api/Bubbles/interfaces/CreateBubbleData)
+
+The name of the bubble
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+---
+
+### demoteAllUsers()
+
+> **demoteAllUsers**(`bubble`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+Demote all moderators to Users role. API available only for the owner of the bubble
+
+#### Parameters
+
+• **bubble**: [`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+---
+
+### getAllServerBubbles()
+
+> **getAllServerBubbles**(`status`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Load all bubble from server in a given status
+
+#### Parameters
+
+• **status**: `string`
+
+values: 'invited', 'accepted','unsubscribed'
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### getBubble()
+
+> **getBubble**(`bubbleRef`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+Async method -which get get a bubble. The bubble is first search in service cache then server side.
+
+#### Parameters
+
+• **bubbleRef**: `string`
+
+The bubble dbId or bubble JID
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+---
+
+### getBubbleFromCache()
+
+> **getBubbleFromCache**(`id`): [`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)
+
+Synchronous method used to get a existing bubble from the cache
+
+#### Parameters
+
+• **id**: `string`
+
+Should be the bubble id or dbId
+
+#### Returns
+
+[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)
+
+---
+
+### getBubbleInvitations()
+
+> **getBubbleInvitations**(): [`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\[\]
+
+Return an array of all bubbles where user is currently invited to participants (in "invited" state)
+
+#### Returns
+
+[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\[\]
+
+---
+
+### getBubbles()
+
+> **getBubbles**(): [`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\[\]
+
+Return an array of all bubbles already in the cache
+
+#### Returns
+
+[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\[\]
+
+---
+
+### getBubblesWithActiveConference()
+
+> **getBubblesWithActiveConference**(): [`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\[\]
+
+Return an array of all bubbles with an active conference at the moment
+
+#### Returns
+
+[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\[\]
+
+---
+
+### getMyBubbles()
+
+> **getMyBubbles**(): [`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\[\]
+
+Return an array of all MY bubbles
+
+#### Returns
+
+[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\[\]
+
+---
+
+### isStarted()
+
+> **isStarted**(): `boolean`
+
+Return the service start state
+
+#### Returns
+
+`boolean`
+
+---
+
+### promoteAllUsers()
+
+> **promoteAllUsers**(`bubble`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+Promote all users to Moderator role. API available only for the owner of the bubble
+
+#### Parameters
+
+• **bubble**: [`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+---
+
+### searchBubbles()
+
+> **searchBubbles**(`searchPattern`, `options`?): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`BubbleSearchResult`](doc/sdk/webv2/lts/api/Bubbles/interfaces/BubbleSearchResult)\[\]>
+
+This API allows to search Rainbow bubbles that match a search criteria applied on some name properties such as the name of the bubble or the names of bubble participants for example. One or more name properties can be optionally specified to define the scope of the search. If no scope is specified, the search is performed by default on the name of the bubble only. It is also possible to optionally specify how the list of bubbles returned as results should be sorted. By default, the bubbles list will be sorted by bubble name.
+
+#### Parameters
+
+• **searchPattern**: `string`
+
+The search criteria
+
+• **options?**: [`SearchBubblesOptions`](doc/sdk/webv2/lts/api/Bubbles/interfaces/SearchBubblesOptions)
+
+Options to specify the scope of the search and how the results are to be returned.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`BubbleSearchResult`](doc/sdk/webv2/lts/api/Bubbles/interfaces/BubbleSearchResult)\[\]>
+
+---
+
+### subscribe()
+
+> **subscribe**(`handler`, `eventNames`?): `Subscription`
+
+Subscribe to the invitations updates; All events send to the callback are of type `RBEvent`
+
+#### Parameters
+
+• **handler**
+
+• **eventNames?**: [`BubbleServiceEvents`](doc/sdk/webv2/lts/api/Bubbles/enumerations/BubbleServiceEvents) | [`BubbleServiceEvents`](doc/sdk/webv2/lts/api/Bubbles/enumerations/BubbleServiceEvents)\[\]
+
+#### Returns
+
+`Subscription`
+
+### Sur cette page
+
+-   [Methods](/docs/sdk/web#name-methods-13)
+-   [createBubble()](/docs/sdk/web#name-createbubble-16)
+-   [Parameters](/docs/sdk/web#name-parameters-27)
+-   [Returns](/docs/sdk/web#name-returns-42)
+-   [demoteAllUsers()](/docs/sdk/web#name-demoteallusers-49)
+-   [Parameters](/docs/sdk/web#name-parameters-60)
+-   [Returns](/docs/sdk/web#name-returns-66)
+-   [getAllServerBubbles()](/docs/sdk/web#name-getallserverbubbles-73)
+-   [Parameters](/docs/sdk/web#name-parameters-84)
+-   [Returns](/docs/sdk/web#name-returns-93)
+-   [getBubble()](/docs/sdk/web#name-getbubble-100)
+-   [Parameters](/docs/sdk/web#name-parameters-111)
+-   [Returns](/docs/sdk/web#name-returns-120)
+-   [getBubbleFromCache()](/docs/sdk/web#name-getbubblefromcache-127)
+-   [Parameters](/docs/sdk/web#name-parameters-138)
+-   [Returns](/docs/sdk/web#name-returns-147)
+-   [getBubbleInvitations()](/docs/sdk/web#name-getbubbleinvitations-154)
+-   [Returns](/docs/sdk/web#name-returns-165)
+-   [getBubbles()](/docs/sdk/web#name-getbubbles-172)
+-   [Returns](/docs/sdk/web#name-returns-183)
+-   [getBubblesWithActiveConference()](/docs/sdk/web#name-getbubbleswithactiveconference-190)
+-   [Returns](/docs/sdk/web#name-returns-201)
+-   [getMyBubbles()](/docs/sdk/web#name-getmybubbles-208)
+-   [Returns](/docs/sdk/web#name-returns-219)
+-   [isStarted()](/docs/sdk/web#name-isstarted-226)
+-   [Returns](/docs/sdk/web#name-returns-237)
+-   [promoteAllUsers()](/docs/sdk/web#name-promoteallusers-244)
+-   [Parameters](/docs/sdk/web#name-parameters-255)
+-   [Returns](/docs/sdk/web#name-returns-261)
+-   [searchBubbles()](/docs/sdk/web#name-searchbubbles-268)
+-   [Parameters](/docs/sdk/web#name-parameters-279)
+-   [Returns](/docs/sdk/web#name-returns-294)
+-   [subscribe()](/docs/sdk/web#name-subscribe-301)
+-   [Parameters](/docs/sdk/web#name-parameters-312)
+-   [Returns](/docs/sdk/web#name-returns-321)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,459 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/guides/Hello_world_legacy"
+lastSynced: "2026-02-19T22:35:15.920Z"
+---
+# Documentation
+
+Hello World (legacy)
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+# Hello, World!
+
+Following the decades-long tradition, we are pleased to present the "Hello, World!" tutorial that will walk you through the basic steps required to launch your first application that uses Rainbow Web SDK.
+
+If you wonder how to set up the development environment and basic application structure, you are in the right place. If you have already built an app, this article will reiterate through the fundamental app structure in case you got lost on the way.
+
+At the end of this tutorial you will have a working application that could be considered as a starting point for developing an app using **Rainbow Web SDK**. You will also get the basic notion of the key Rainbow Web SDK concepts.
+
+The goal is to keep it simple, therefore we will be using the basic folder structure and vanilla JavaScript. This will be less disturbing for the new developers and expose the Rainbow Web SDK features to the veterans.
+
+### Set up your development environment
+
+Before you start using Rainbow Web SDK, you need to make sure you have installed the required software tools.
+
+##### Install Node.js and NPM
+
+Make sure you have installed Node.js and NPM on your computer by running the following commands:
+
+```shell
+$ node --version
+> v8.10.0
+$ npm --version
+> 3.5.2
+```
+
+If any of those commands does not return a version number, follow the installation guides ([Node](https://nodejs.org/en/download/), [NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm))
+
+##### Browser
+
+We will be using Chrome or Firefox to develop, but you can use any of the browsers supported by Rainbow Web SDK.
+
+##### Text editor
+
+Rainbow Web SDK is a JavaScript library, therefore you can use any IDE to develop your first project.
+
+### Create your web application
+
+As mentioned above, the project is going to use a basic structure of a simple JavaScript application. We will need a basic HTML structure that would load all the necessary libraries.
+
+Go on and create a new folder. We recommend using command line tools.
+
+Open a shell console and execute the following commands:
+
+```shell
+$ mkdir myFirstRainbowProject
+$ cd myFirstRainbowProject
+$ npm init
+```
+
+Answer the asked questions. Once finished, you should have your JSON file `package.json` filled with the information. This step is required to install the required NPM libraries.
+
+#### Install Rainbow Web SDK
+
+Now, it's time to install the Rainbow Web SDK library.
+
+Starting Rainbow 1.29, the SDK for Web is available as an NPM package to make the installation and updates easier.
+
+To install it, execute the following command (make sure you navigate to your project folder first):
+
+```shell
+$ npm i -s rainbow-web-sdk
+```
+
+Once Rainbow Web SDK has been installed, your project directory should look like this:
+
+```shell
+.
+├── node_modules
+│   └── rainbow-web-sdk
+│       ├── dist-legacy
+│       │   └── lib
+│       │       ├── loader-sdk.min.js
+│       │       ├── rainbow-sdk.min.js
+│       │       └── vendors-sdk.min.js
+│       ├── src
+│       │    ├── loader-sdk.min.js
+│       │    ├── rainbow-sdk.min.js
+│       │    └── vendors-sdk.min.js
+│       ├── LICENSE
+│       └── package.json
+└── package.json
+```
+
+The Rainbow Web SDK has been added to your folder `node_modules`. This folder contains all the packages installed from NPM
+
+#### Installing a local Web server
+
+To test your application, you will need an HTTP Web server.
+
+You can install one (HTTP-Server) by executing the following command:
+
+```shell
+$ npm i -D http-server
+```
+
+#### Copying SDK files
+
+If you're building a Web application without using tools like `Grunt`, `Gulp`, `Brunch` or `Webpack` or without using JavaScript framework like `React`, you need to manually copy the Rainbow Web SDK files to your `public` directory.
+
+You can execute the following command:
+
+```shell
+$ mkdir public
+$ cp ./node_modules/rainbow-web-sdk/dist-legacy/vendors-sdk.min.js public/
+$ cp ./node_modules/rainbow-web-sdk/dist-legacy/rainbow-sdk.min.js public/
+```
+
+#### Create your first HTML file
+
+We have installed all the basic libraries necessary to create a simple project. We can now focus on creating a HTML skeleton file that would hold our app intact.
+
+Open a shell console and execute the following commands:
+
+```shell
+$ cd public
+$ touch index.html
+```
+
+#### Loading the Rainbow Web SDK library
+
+Open the file `public/index.html` with your text editor of choice and add the following lines to load the Rainbow Web SDK library:
+
+```html
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>My First Rainbow Application</title>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/es6-promise/4.0.5/es6-promise.min.js"></script>
+        <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+        <script src="//cdn.jsdelivr.net/momentjs/2.15.1/moment-with-locales.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.5/angular.min.js"></script>
+        <script src="./vendors-sdk.min.js"></script>
+        <script src="./rainbow-sdk.min.js"></script>
+    </head>
+    <body>
+        <h1>My First Rainbow Application</h1>
+    </body>
+</html>
+```
+
+Rainbow Web SDK depends on some libraries that have to be loaded first like `jQuery`, `moment` and `AngularJS`. To have a complete compatibility with all browsers, the libraries `es5-shim` and `es6-shim` are loaded too.
+
+Be careful to use the correct version of `jQuery`, `moment` and `AngularJS` specified here to avoid compatibility issues.
+
+To simplify this sample, these libraries are loaded from a CDN.
+
+#### Run your local HTTP server
+
+```shell
+$ cd ..
+$ ./node_modules/http-server/bin/http-server public/ -p 8887
+```
+
+This command will start your web server on port `8887` and serve files in directory `dist`.
+
+Open your browser and go to `localhost:8887`. You should see a white screen with a title.
+
+#### Starting the Rainbow Web SDK library
+
+Once everything is ready and going, let's use Rainbow Web SDK and try out its possibilities.
+
+Open a shell console and execute the following commands:
+
+```shell
+$ cd public/
+$ touch index.js
+```
+
+Then, load that file from your `index.html` file like in the following code:
+
+```html
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>My First Rainbow Application</title>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/es6-promise/4.0.5/es6-promise.min.js"></script>
+        <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+        <script src="//cdn.jsdelivr.net/momentjs/2.15.1/moment-with-locales.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.5/angular.min.js"></script>
+        <script src="./vendors-sdk.min.js"></script>
+        <script src="./rainbow-sdk.min.js"></script>
+
+        <script src="./index.js"></script>
+
+    </head>
+    <body>
+        <h1>My First Rainbow Application</h1>
+    </body>
+</html>
+```
+
+Finally, you have to add the following lines of code to your `index.js` file:
+
+```javascript
+/* Wait for the page to load */
+$(function() {
+    console.log("[DEMO] :: Rainbow Application started!");
+
+
+    // Update the variables below with your applicationID and applicationSecret strings
+    var applicationID = "",
+        applicationSecret = "";
+
+    /* Bootstrap the SDK */
+    angular.bootstrap(document, ["sdk"]).get("rainbowSDK");
+
+    /* Callback for handling the event 'RAINBOW_ONREADY' */
+    var onReady = function onReady() {
+        console.log("[DEMO] :: On SDK Ready !");
+        // do something when the SDK is ready
+    };
+
+    /* Callback for handling the event 'RAINBOW_ONCONNECTIONSTATECHANGED' */
+    var onLoaded = function onLoaded() {
+        console.log("[DEMO] :: On SDK Loaded !");
+
+        // Activate full SDK log
+        rainbowSDK.setVerboseLog(true);
+
+        rainbowSDK
+            .initialize(applicationID, applicationSecret)
+            .then(function() {
+                console.log("[DEMO] :: Rainbow SDK is initialized!");
+            })
+            .catch(function(err) {
+                console.log("[DEMO] :: Something went wrong with the SDK...", err);
+            });
+    };
+
+    /* Listen to the SDK event RAINBOW_ONREADY */
+    document.addEventListener(rainbowSDK.RAINBOW_ONREADY, onReady)
+
+    /* Listen to the SDK event RAINBOW_ONLOADED */
+    document.addEventListener(rainbowSDK.RAINBOW_ONLOADED, onLoaded)
+
+    /* Load the SDK */
+    rainbowSDK.load();
+});
+```
+
+Go back to your browser and refresh the page.
+
+Open your browser console (F12). You should see the following logs:
+
+```shell
+[DEMO] :: Rainbow Application started!
+...
+[DEMO] :: On SDK Loaded !
+...
+[DEMO] :: On SDK Ready !
+...
+[DEMO] :: Rainbow SDK is initialized!
+```
+
+The previous sample code does several things:
+
+-   First, it **bootstraps** the Rainbow Web SDK because it relies on AngularJS.
+    
+-   Second, it **subscribes** to listeners for handling, starting and initializing events.
+    
+-   Third, it **loads** and **initializes** Rainbow Web SDK.
+    
+
+The following paragraphs will give you more details on these steps.
+
+#### Bootstrapping the SDK
+
+The Rainbow Web SDK relies on the Rainbow source code that is an AngularJS application.
+
+Starting the SDK for Web in an non-AngularJS application needs an extra step that have to be done manually in order to be able to use it. This step is called the "bootstrap" step. Normally in an AngularJS app, this step is done automatically by adding the `ng-app` attribute in your index.html page, but here, we have to do it ourselves.
+
+Therefore this line is **mandatory** and needs to be added at the beginning of your application (before using the SDK):
+
+```javascript
+/* Bootstrap the SDK */
+angular.bootstrap(document, ["sdk"]).get("rainbowSDK");
+```
+
+Once bootstrap is done, you can access the Rainbow Web SDK JavaScript Object just by calling the global variable `rainbowSDK`.
+
+To check if everything works fine, you can open a console and just type `rainbowSDK`. You will get an `Object` representing the entry point for calling the APIs. If you get an error message `Uncaught ReferenceError: rainbowSDK is not defined(...)`, it means that something went wrong. Keep calm and read again this tutorial before throwing your computer through the window.
+
+#### Subscribing to events
+
+The Rainbow Web SDK fires events each time something happens in Rainbow.
+
+To handle them, you need to add listeners somewhere in your code.
+
+Here is the basic thing for subscribing to Rainbow events: you need to know the name of the event to subscribe and to define a callback that will be called when the Rainbow event will be caught by the SDK.
+
+```javascript
+document.addEventListener(rainbowSDK.<EVENT_NAME>, <my-callback>)
+```
+
+Here is the list of the events you need to listen in order to know if you SDK has been correctly initialized
+
+**Class**
+
+**Event**
+
+**Value (String)**
+
+**Description**
+
+**sdk**
+
+`RAINBOW_ONLOADED`
+
+"loaded"
+
+The SDK has been loaded by the browser
+
+**sdk**
+
+`RAINBOW_ONREADY`
+
+"ready"
+
+The SDK has been initialized
+
+**RAINBOW\_ONLOADED**
+
+This event is fired when the files of the SDK have been successfully loaded. If some dependencies are missing, this step will fail.
+
+Once you receive this event, you can initialize the SDK by calling the method `initialize()`.
+
+The initializing is done automatically if you are using the SDK Loader (for AngularJS) application.
+
+**RAINBOW\_ONREADY**
+
+This event is fired when the initialization step has been done successfully.
+
+The SDK is now ready to be used. You can call the `login()` method.
+
+#### Loading the SDK
+
+---
+
+Before using the SDK, you need to load it by calling the method `load()` and listen to the event `RAINBOW_ONLOADED` to know when it is done.
+
+You need to subscribe to it because when the SDK Web has been loaded successfully, you will need to initialize it.
+
+```javascript
+var onLoaded = function onLoaded() {
+    console.log("[DEMO] :: On SDK Loaded !");
+    // Do something when the SDK has been loaded
+};
+
+/* Listen to the SDK event RAINBOW_ONLOADED */
+document.addEventListener(rainbowSDK.RAINBOW_ONLOADED, onLoaded)
+
+/* Load the SDK */
+rainbowSDK.load();
+```
+
+#### Initializing the SDK
+
+---
+
+Once loaded, you need to initialize the SDK by calling the method `initialize()`.
+
+This method is important because you need to provide an **ApplicationID** and a **App secret key**. This is mandatory to connect your application to Rainbow.
+
+You will need to listen to the event `RAINBOW_ONREADY` to know if the SDK is ready to be used (initialization step is complete).
+
+At this stage, you can activate or not the full SDK and Rainbow logs by calling the method `setVerboseLog()`.
+
+Use the following code to initialize the SDK and to listen when ready:
+
+```javascript
+var applicationID = "",
+    applicationSecret = "";
+
+var onReady = function onReady() {
+    console.log("[DEMO] :: On SDK Ready !");
+    // do something when the SDK is ready
+};
+
+/* Listen to the SDK event RAINBOW_ONREADY */
+document.addEventListener(rainbowSDK.RAINBOW_ONREADY, onReady)
+
+// Activate full SDK log
+rainbowSDK.setVerboseLog(true);
+
+rainbowSDK
+    .initialize(applicationID, applicationSecret)
+    .then(function() {
+        console.log("[DEMO] :: Rainbow SDK is initialized!");
+    })
+    .catch(function(err) {
+        console.log("[DEMO] :: Something went wrong with the SDK...", err);
+    });
+```
+
+## Further steps
+
+From now on, you can use `rainbowSDK` global variable. It gives you access to all the services and APIs to use in your application. Please refer to the menu on the left to find out what other tutorials are available.
+
+### See also
+
+---
+
+-   [Injecting Application ID and Secret Key](doc/sdk/web/lts/guides/Adding_id_and_secret_key)
+    
+-   [Integrating JavaScript frameworks](doc/sdk/web/lts/guides/Integrating_JS_frameworks)
+    
+-   [Integrating AngularJS applications](doc/sdk/web/lts/guides/Loading_Angular_1x_applications)
+    
+-   [Connecting to Rainbow](doc/sdk/web/lts/guides/Connecting_to_Rainbow)
+    
+
+---
+
+*Last updated May, 24th 2019*
+
+### Sur cette page
+
+-   [Set up your development environment](/docs/sdk/web#name-set-up-your-development-environment-15)
+-   [Create your web application](/docs/sdk/web#name-create-your-web-application-43)
+-   [Install Rainbow Web SDK](/docs/sdk/web#name-install-rainbow-web-sdk-59)
+-   [Installing a local Web server](/docs/sdk/web#name-installing-a-local-web-server-79)
+-   [Copying SDK files](/docs/sdk/web#name-copying-sdk-files-89)
+-   [Create your first HTML file](/docs/sdk/web#name-create-your-first-html-file-99)
+-   [Loading the Rainbow Web SDK library](/docs/sdk/web#name-loading-the-rainbow-web-sdk-library-109)
+-   [Run your local HTTP server](/docs/sdk/web#name-run-your-local-http-server-125)
+-   [Starting the Rainbow Web SDK library](/docs/sdk/web#name-starting-the-rainbow-web-sdk-library-135)
+-   [Bootstrapping the SDK](/docs/sdk/web#name-bootstrapping-the-sdk-183)
+-   [Subscribing to events](/docs/sdk/web#name-subscribing-to-events-202)
+-   [Loading the SDK](/docs/sdk/web#name-loading-the-sdk-287)
+-   [Initializing the SDK](/docs/sdk/web#name-initializing-the-sdk-298)
+-   [Further steps](/docs/sdk/web#name-further-steps-318)
+-   [See also](/docs/sdk/web#name-see-also-324)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

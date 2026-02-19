@@ -1,0 +1,118 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { NAV_ITEMS, SITE_NAME } from "@/lib/constants";
+import { cn } from "@/lib/utils";
+import { SearchModal } from "@/components/ui/SearchModal";
+
+export function Header() {
+  const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  return (
+    <>
+      <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2.5 font-bold text-lg tracking-tight">
+            <span className="inline-block h-7 w-7 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500" />
+            <span>{SITE_NAME}</span>
+          </Link>
+
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-1">
+            {NAV_ITEMS.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                  pathname.startsWith(item.href)
+                    ? "text-foreground bg-muted"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                )}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Actions */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="hidden sm:flex items-center gap-2 px-3 py-1.5 text-sm text-muted-foreground border border-border rounded-lg hover:bg-muted transition-colors"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <span>Search...</span>
+              <kbd className="ml-2 text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
+                Ctrl K
+              </kbd>
+            </button>
+
+            <Link
+              href="https://developers.openrainbow.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+            >
+              Get API Keys
+            </Link>
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="md:hidden p-2 text-muted-foreground hover:text-foreground"
+              aria-label="Toggle menu"
+            >
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                {mobileOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile nav */}
+        {mobileOpen && (
+          <div className="md:hidden border-t border-border bg-background">
+            <nav className="flex flex-col p-4 gap-1">
+              {NAV_ITEMS.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={cn(
+                    "px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                    pathname.startsWith(item.href)
+                      ? "text-foreground bg-muted"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <Link
+                href="https://developers.openrainbow.com"
+                target="_blank"
+                className="mt-2 px-4 py-2 text-sm font-medium text-center bg-primary text-primary-foreground rounded-lg"
+              >
+                Get API Keys
+              </Link>
+            </nav>
+          </div>
+        )}
+      </header>
+
+      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
+    </>
+  );
+}

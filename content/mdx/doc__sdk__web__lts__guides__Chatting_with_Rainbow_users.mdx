@@ -1,0 +1,412 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/guides/Chatting_with_Rainbow_users"
+lastSynced: "2026-02-19T22:35:15.751Z"
+---
+# Documentation
+
+Chatting with Rainbow users
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Chatting with Rainbow users
+
+---
+
+Using the Rainbow SDK for Web, you can send and receive messages to Rainbow users. This tutorial explains in details how to make it work.
+
+### Steps
+
+---
+
+To be able to reach someone by chat, you need to do the following steps:
+
+1.  Get a reference to the Rainbow `Contact` object representing the person you want to join.
+    
+2.  Retrieve the associated `Conversation` object with that person or create a new one if it is the first interaction with that person.
+    
+3.  Send the message to that person.
+    
+4.  Manage the receipts.
+    
+
+If the objects / models `Call`, `Contact`, `Conversation` are not accessible **in your non-AngularJS application** (to access enums), you can get it with this:
+
+```javascript
+var Call = angular.element(document.querySelector('body')).injector().get('Call');
+var Contact = angular.element(document.querySelector('body')).injector().get('Contact');
+var Conversation = angular.element(document.querySelector('body')).injector().get('Conversation');
+```
+
+### Retrieving the contact object
+
+---
+
+There are several possibilities in Rainbow to retrieve a `Contact` object associated to a person depending on the fact whether or not this person is in your network. The next paragraphs will describe the different methods.
+
+#### Getting a contact from your network
+
+---
+
+If the person is in your network, when the Rainbow SDK is **started**, you can directly access him by using the following method: `getContactById()`. If the contact is not in your list, these methods will return `null`. If you want to iterate through your list of contacts, you can call the method `getAll()` that will return an array containing the entire list of contacts that are in your network.
+
+In the following code sample, imagine your app displays a hardcoded list of contacts with only a name, a photo and a Rainbow Id and when the user clicks on a contact in that list, you want to display the associated conversation for chatting with that person. The function `onContactSelected` is called with the id of the contact when the user pressed on a contact item in your list. So, from that, it is easy to get the associated `Contact` object.
+
+```javascript
+var selectedContact = null;
+
+    /* Handler called when user clicks on a contact */
+    var onContactSelected = function(contactId) {
+    selectedContact = rainbowSDK.contacts.getContactById(contactId)
+        .then(contact => {
+            // Do something with the retrieved contact object
+        })
+        .catch(err => {
+            // Search failed
+        });
+    }
+```
+
+#### Searching for a contact
+
+---
+
+If the contact is not in your network, you have to send a request to Rainbow to retrieve it. Depending the information you have you can call different APIs: `searchContactById()` or `searchContactByName()`. The two first methods will return the contact or `null` if it is found and the last one will return potentially several contacts or an empty array.
+
+The difference between these methods and the methods seen for getting a network's contact is that searching a contact is an asynchronous task. We need to wait for the answer coming from the server, so these 3 methods here are Promise based methods.
+
+The previous code can be updated like that:
+
+```javascript
+var selectedContact = null;
+
+    /* Handler called when the user clicks on a contact */
+    var onContactSelected = function(contactId) {
+        selectedContact = rainbowSDK.contacts.getContactById(contactId);
+
+        // Contact not found locally, ask to the server
+        if(!selectedContact) {
+            rainbowSDK.contacts.searchContactById(contactId).then(function(contact) {
+                selectedContact = contact;
+
+                if(selectedContact) {
+                    // Ok, we have the contact object
+                    ...
+                }
+                else {
+                    // Strange, no contact with that Id. Are you sure that the id is correct?
+                    ...
+                }
+
+            }).catch(function(err) {
+                //Something when wrong with the server. Handle the trouble here
+                ...
+            });;
+        }
+    }
+```
+
+### Retrieving the conversation object
+
+---
+
+Once we have the contact, the next step is easy, we just have to call the `getConversationByContactId()` API by passing the contact found previously.
+
+This method is asynchronous too.
+
+```javascript
+var associatedConversation = null;
+
+    ...
+    rainbow.conversations.getConversationByContactId(contactId).then(function(conversation) {
+        associatedConversation = conversation;
+    }).catch(function(err) {
+        //Something when wrong with the server. Handle the trouble here
+    });
+```
+
+The retrieved `Conversation` object will never be null because if there was no previous interaction with that person, a new conversation will automatically be created and returned.
+
+### Getting the previous messages exchanged
+
+---
+
+By default when receiving the conversation associated to a user and if it exists, you can display the latest message exchanged by accessing the property `lastMessageText`:
+
+```javascript
+...
+    var lastMessage = conversation.lastMessage;
+```
+
+If you need the messages history (messages already exchanged with that person), you need to call the API `getMessagesFromConversation()` that takes the `Conversation` object as a parameter and the number of messages to retrieve. By default, you can get the last 30 messages. You can retrieve up to 100 messages at a time. If there is more messages, you need to call this methods several times to retrieve the complete log of messages.
+
+Each time you call this API, the conversation is updated and the whole list of messages received can be accessed using the property `messages` which contains an array of `Message` object.
+
+```javascript
+...
+    var currentPage = 0;
+
+    rainbowSDK.im.getMessagesFromConversation(associatedConversation.id, 30).then(function() {
+        // The conversation object is updated with the messages retrieved from the server (same reference)
+        ...
+        // Call a function to display the new messages received
+        displayMessages(associatedConversation, currentPage);
+
+        // Display something if there is possibly more messages on the server
+        if(!associatedConversation.historyAboveComplete) {
+            // e.g. display a button to get more messages
+        }
+    }
+```
+
+If the value of the property `historyAboveComplete` of the `Conversation` object is set to true, it means that all messages have been retrieved from the server. Calling the API `getMessagesFromConversation()` again will throw an error by rejecting the Promise. If the value is false, potentially, other messages can be retrieved.
+
+Note: Once you read all the messages from a conversation, you only have to listen to the incoming message event in order to receive the message. You don't need to call the API `getMessagesFromConversation()` again. See the next paragraph.
+
+### Listening for new messages
+
+---
+
+Once you have displayed the existing messages, you have to be ready to listen for incoming new messages.
+
+Add the following code to be able to handle new incoming messages:
+
+```javascript
+let onNewMessageReceived = function(event) {
+        let message = event.detail.message;
+        let conversation = event.detail.conversation
+
+        // Do something with the new message received
+    };
+
+    document.addEventListener(rainbowSDK.im.RAINBOW_ONNEWIMMESSAGERECEIVED, onNewMessageReceived)
+```
+
+As you can see, you receive a `Message` object and the `Conversation` object in which the message has been added. So you have all the information to display the message content in the right conversation.
+
+### Sending a receipt
+
+---
+
+When receiving a new message, you have to inform your recipient that you have successfully received it and read it.
+
+By default, the SDK for Web automatically sends the receipt of type `RECEIVED`. We prefer this way in order to not disturb our Rainbow applications that act in that way.
+
+However, we let you handle sending the receipt of type `READ`.
+
+To do that, simply copy the following code.
+
+```javascript
+// Send a read receipt on a message received
+    rainbowSDK.im.markMessageFromConversationAsRead(associatedConversation.id, message.id);
+```
+
+Note: A receipt of type `READ` has to be sent for each message received if you want to reproduce our Rainbow Application behavior.
+
+### Sending a new message
+
+---
+
+Now that incoming messages are well taken into account, we can have a look to how we can send new messages in that conversation.
+
+This can be done by using the `sendMessageToConversation()` API like in the following code that automatically answers to incoming message:
+
+```javascript
+let onNewMessageReceived = function(event) {
+
+        let message = event.detail.message;
+        let conversation = event.detail.conversation;
+        let messageContent = "";
+
+        // Acknowledge it
+        rainbowSDK.im.markMessageFromConversationAsRead(conversation.id, message.id);
+
+        // Text message received
+        messageContent = message.data;
+
+        // Send an answer
+        rainbowSDK.im.sendMessageToConversation(conversation.id, messageContent + " read!");
+
+    };
+
+    document.addEventListener(rainbowSDK.im.RAINBOW_ONNEWIMMESSAGERECEIVED, onNewMessageReceived)
+```
+
+### Receiving receipts
+
+---
+
+When you send a message to a recipient, you can receive up to 3 receipts that will help you verify whether your message has been successfully delivered and read.
+
+-   `server`: Receiving a receipt of type `server` means that your message has been successfully delivered to Rainbow.
+    
+-   `received`: Receiving a receipt of type `received` means that your message has been successfully received by the recipient application. (i.e. the recipient application sent a receipt of type `received`).
+    
+-   `read`: Receiving a receipt of type `read` means that your message has been successfully read by your recipient user. (i.e. the recipient application sent a receipt of type `read`).
+    
+
+In order to listen to these events, add the following code to your app:
+
+```javascript
+let onNewMessageReceiptReceived = function(event) {
+
+       let message = event.detail.message;
+       let conversation = event.detail.conversation;
+       let type = event.detail.type;
+
+       switch (type) {
+           case "server":
+               // Do something when Rainbow receives your message
+               ...
+               break;
+           case "received":
+               // Do something when the recipient application receives your message
+               ...
+               break;
+           case "read":
+               // Do something when the recipient application or the recipient user reads your message
+               ...
+               break;
+           default:
+               break;
+       }
+   };
+
+   document.addEventListener(rainbowSDK.im.RAINBOW_ONNEWIMRECEIPTRECEIVED, onNewMessageReceiptReceived)
+```
+
+### Sending 'is typing' messages
+
+It is possible to see whether the other person is in the middle of composing a new message by sending a 'is typing' message when, for example, the user is adding new characters to an input form on the website.
+
+To send such message, all you need to do is to use `sendIsTypingStateInConversation()` method that accepts two arguments: a `conversation` object and a boolean indicating whether or not the user is composing a new message.
+
+```javascript
+rainbowSDK.im.sendIsTypingStateInConversation(conversation.id, true)
+        .then( //  do something when the state is changed )
+        .catch( // do something in case of an error )
+```
+
+Analogically, you can set the status to the standard one (in the meaning that the other participant is not typing) by passing false as the second argument:
+
+```javascript
+rainbowSDK.im.sendIsTypingStateInConversation(conversation.id, false)
+        .then( //  do something when the state is changed )
+        .catch( // do something in case of an error )
+```
+
+You can stay up to date with the changes sent by the other participant of the conversation by listening to `RAINBOW_ONNEWPARTICIPANTSTATUS` event as in the example below:
+
+```javascript
+var onNewParticipantStatus = function (event) {
+
+        let status = event.detail.status;
+
+        if (status === "composing") {
+            // this means the other participant is typing, do something about it
+        } else if (status === "active"){
+            // the other participant stopped typing
+        }
+
+    }
+
+    document.addEventListener(rainbowSDK.im.RAINBOW_ONNEWPARTICIPANTSTATUS, onNewParticipantStatus)
+```
+
+Please note that the `status` parameter passed in the event is a string defining the status of the typing activity of the other user- it can be set to `composing` (when the participant is typing) or `active` (i.e. when the participant quits the chat form).
+
+### Modifying sent messages
+
+Sometimes you want to update the content of a message that has been already sent. Our SDK for Web allows you to modify it by changing its content (this method works only with the last message sent by the logged in user). To do so, use `sendCorrectedChatMessage()` method provided by WebRTC service. This function accepts three parameters which are obligatory for it to work: `conversation` object, `messageString` which is a string containing the new content of the modified message and the original `messageId` string.
+
+```javascript
+rainbowSDK.im.sendCorrectedChatMessage(conversation.id, messageString, messageId);
+```
+
+### Replying to received messages
+
+It is possible to reply a particular message by calling `replyToMessage()` method by passing the following parameters: `conversation` object, `strMessage` string and `message` object. The method returns a promise with a new `message` object.
+
+```javascript
+var conversation = rainbowSDK.conversations.getConversation('conversationStringID');
+    var message = rainbowSDK.im.getMessageFromConversationById('messageStringID');
+
+    // reply to a message:
+
+    rainbowSDK.im.replyToMessage(conversation, 'REPLY_MESSAGE_STRING', message)
+        .then(function (message) {
+                //do something with the message
+        })
+        .catch(function(error) {
+                //do something in case of error
+                console.log(error)
+        })
+```
+
+To check whether or not the given message is a reply to another message, check if the `message` object properties `answeredMsgId` and `answeredMsgDate` are not null. When the message is a reply to another one, its instance should have those values filled.
+
+### Deleting sent messages
+
+To delete the last (this method works only with the last message sent by the logged in user) message from the conversation, use the same function as above but instead of a new message content, pass an empty string as the `messageString` parameter.
+
+```javascript
+rainbowSDK.im.deleteMessage(conversation, messageId);
+```
+
+**Important!** This action will not delete a message from Rainbow servers. It will still be available from the level of the app. It means that you the users still will be able to retrieve the `message` object (for example by calling `getMessageFromConversationById()` method).
+
+In the application you can use a method implemented in `message` object's prototype: `isDeleted()` that would return a `boolean` providing you information about the current state of the message.
+
+```javascript
+var message = getMessageFromConversationById('stringID');
+    message.isDeleted() // returns a boolean
+```
+
+### Removing messages from a conversation
+
+If you need to erase all messages from the conversation (restart a fresh conversation with no old messages), you can call the following API `removeAllMessagesFromConversation()` like in the code below:
+
+```javascript
+rainbowSDK.im.removeAllMessagesFromConversation(conversation.id).then(function() {
+        // Do something when all messages are deleted
+        ...
+    }).catch(function(err) {
+        // Do something if there is a server issue when removing the messages
+        ...
+    });
+```
+
+Note: Messages are only erased on your side. It does not affect the recipient's messages. So your recipient will still see all the messages on his side.
+
+This tutorial has described the basic to chat with Rainbow users. You have now all the aces in your hand to build amazing chat applications!
+
+---
+
+*Last updated April, 29th 2021*
+
+### Sur cette page
+
+-   [Chatting with Rainbow users](/docs/sdk/web#name-chatting-with-rainbow-users-0)
+-   [Steps](/docs/sdk/web#name-steps-7)
+-   [Retrieving the contact object](/docs/sdk/web#name-retrieving-the-contact-object-40)
+-   [Getting a contact from your network](/docs/sdk/web#name-getting-a-contact-from-your-network-47)
+-   [Searching for a contact](/docs/sdk/web#name-searching-for-a-contact-58)
+-   [Retrieving the conversation object](/docs/sdk/web#name-retrieving-the-conversation-object-72)
+-   [Getting the previous messages exchanged](/docs/sdk/web#name-getting-the-previous-messages-exchanged-86)
+-   [Listening for new messages](/docs/sdk/web#name-listening-for-new-messages-107)
+-   [Sending a receipt](/docs/sdk/web#name-sending-a-receipt-121)
+-   [Sending a new message](/docs/sdk/web#name-sending-a-new-message-141)
+-   [Receiving receipts](/docs/sdk/web#name-receiving-receipts-152)
+-   [Sending 'is typing' messages](/docs/sdk/web#name-sending-is-typing-messages-180)
+-   [Modifying sent messages](/docs/sdk/web#name-modifying-sent-messages-201)
+-   [Replying to received messages](/docs/sdk/web#name-replying-to-received-messages-208)
+-   [Deleting sent messages](/docs/sdk/web#name-deleting-sent-messages-218)
+-   [Removing messages from a conversation](/docs/sdk/web#name-removing-messages-from-a-conversation-232)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

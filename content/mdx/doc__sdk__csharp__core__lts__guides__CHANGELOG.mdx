@@ -1,0 +1,681 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/core/lts/guides/CHANGELOG"
+lastSynced: "2026-02-19T22:35:14.110Z"
+---
+# Documentation
+
+Changelog
+
+LTS release 3.XPubliée le 2025-03-17Comparer
+
+## SDK (Core) for C#
+
+### \[3.7.0\] - 2026-01-16
+
+#### Added
+
+-   `Administration` service:
+    -   `SetExternalPresenceAsync()`, `GetExternalPresenceAsync()` and `RemoveExternalPresenceAsync()` methods to manage "external presence"
+-   `Application` service:
+    -   Add optional parameter **logoutUrl** in `LoginWithTokenAsync()`, `LoginWithTokenWithoutEventPipeAsync()`, `LoginWithTokenAsync()` and `LoginWithTokenWithoutEventPipeAsync()` methods
+    -   `UserCredentials` object: add `LogoutUrl` and `ApplicationToken` properties
+-   `Bubbles` service:
+    -   `AutoClearBubbleContentAsync()`, `ClearBubbleContentAsync()` methods
+    -   `ConferenceDetails` object: `ContentToAutoClear` property
+    -   `BubbleAffiliation` object: `Reason` property - possible values: "deactivated", "resumed" or empty
+-   `Contacts` service:
+    -   `CustomStatusUpdated` event, `CreateCustomStatus()`, `UpdateCustomStatusAsync()`, `DeleteCustomStatusAsync()` and `GetCustomStatusesAsync()` methods to manage custom statuses
+-   `FileStorage` service:
+    -   `AddViewerAsync()`, `RemoveViewerAsync()` and `GetFileDescriptorSync()` methods
+-   `InstantMessaging` service:
+    -   `ForwardMessageAsync()` method: add optional parameter **anonymously** (True by default)
+    -   `Message` object: add `ForwardedFromContact` property
+-   `Peer` object:
+    -   `IsChannel()`, `IsChannelWithId()`, `IsChannelWithJid()`, `IsChannelWithIdAndJid()`, static methods
+    -   `IsEntity()`, `IsEntityWithId()`, `IsEntityWithJid()`, `IsEntityWithIdAndJid()`, static methods
+
+#### Fixed
+
+-   `Application` service:
+    -   if used, ensure to check Turn Servers configuration based on theirs TTL
+-   `Bubble` service:
+    -   join automatically a bubble which is no more inactive
+    -   avoid to trigger several times same `BubbbleAffiliationChanged` event
+-   `Conferences` service:
+    -   Before to start a conference, ensure to set as active the associated bubble if necessary
+-   `Contacts` service:
+    -   about presence correctly manage **away** versus **away inactive** states
+-   `FileStorage` service:
+    -   avoid to trigger several times same `FileStorageUpdated` event
+-   `InstantMessaging` service:
+    -   Store message in cache only if **StorageMode** is set to **Store**
+    -   Avoid to store message sent with <CDATA> section
+    -   Mark automatically message as read (if specified) only if **StorageMode** is **Store** or **NoPermanentStore**
+    -   When forwarding a message with a file, ensure to set the receiver as viewer of this file
+    -   Before to send a message to a bubble, ensure to set it as active if necessary
+
+#### Removed
+
+-   `ConferenceDetails` object:
+    -   **Breaking** `Scheduled`, `ScheduledStartDate` , `ScheduledEndDate` , `ScheduledDuration` , `MediaType` , `LastUpdateDate`, `Sessions` properties
+-   **Breaking** `ConferenceSession` object::
+
+---
+
+### \[3.6.0\] - 2025-11-20
+
+#### Info
+
+-   New `RPC` service (Remote Procedure Call)
+    -   As client permits to request RPC method of a Peer and get the result
+    -   As server permits to add / remove new RPC method: possibility to restrict access according RPC method and / or Peer
+    -   It's possible to be client and server in same time
+    -   Interaction between CPaaS Rainbow client (Web Client, Desktop Client) and SDK
+        -   CPaaS client offers default RPC Methods (make call for example) which can be requested from SDK
+        -   CPaaS client can request SDK RPC Methods using custom manifest file
+-   `Guest` updates:
+    -   Can no more be created using `CreateGuestUserAsync()` and `CreateAnonymousGuestUserAsync()` in `Administration` service
+    -   Contacts with `GuestMode` still exist which are created using Bubble Link: see `CreateUserWithBubbleLinkAsync()` in `Administration` service
+
+#### Fixed
+
+-   `Jingle` service:
+    -   add more tests when sendinq Iq (to avoid use of null value for jid or resource)
+
+#### Added
+
+-   Added .Net 10.0 as target framework
+-   `Alerts` service:
+    -   `RemoveDevicesTagsAsync()`, `RenameDevicesTagsAsync()` and `GetDevicesTagsStatisticsAsync()` methods
+    -   `AlertFilter` object with new field `IpAddresses`
+    -   `AlertDevicesTagCount`, `AlertDevicesTagsStatistics`, `AlertFilterIpAddresses` and `AlertFilterIpAddresseRange` objects
+-   `Contacts` service:
+    -   `IsCompanyAdminAsync()` and `IsCompanyAdminSync()` methods
+-   `FileStorage` service:
+    -   `CreateArchiveAsync()` method
+    -   `QuotaConsumption` object: add `Recordings` and `Others` properties
+-   `InstantMessaging` service:
+    -   `PrivateMessageReceived` event
+    -   `SendPrivateMessageAsync(), AnswerToPrivateMessageAsync()` methods
+    -   `Message` object with new field `PrivateMessage`
+-   `JSONNode` object:
+    -   `Escape()` method
+-   `Peer` object:
+    -   `IsContactWithIdAndJid()`, `IsBubbleWithIdAndJid()` methods
+-   `Restrictions` object:
+    -   `UseRPC` property (false by default)
+-   `RPC` service:
+    -   `CallMethodAsync()`, `ListMethodsAsync()`, `GetMethodHelpAsync()`, `GetMethodSignaturesAsync()`, `RestRequestAsync()` methods (for RPC client)
+    -   `AddMethod()`, `RemoveMethod()`, `DefineDelegateToAllowRPCRequests()`, `AllowAllRPCRequests()` methods and `AllowRestRequestAsRpcMethod` property (for RPC server)
+    -   `Base64`, `RPCRestRequest`, `RPCRestResponse` objects
+-   `SdkInternalErrorEnum` enum:
+    -   `XMPP_IQ_ERROR`, `XMPP_IQ_TIMEOUT`: to provide more error details in IQ context
+    -   `RPC_PARSING_ERROR_METHODCALL_NODE`, `RPC_PARSING_ERROR_VALUE_NODE_TO_OBJECT`, `RPC_PARSING_ERROR_OBJECT_TO_VALUE_NODE`, `RPC_NO_METHOD_FOUND`, `RPC_NO_METHOD_FOUND_WITH_CORRECT_SIGNATURE`, `RPC_EXCEPTION_IN_METHOD`, `RPC_PARSING_METHOD_RESULT`, `RPC_UNEXPECTED_ERROR`, `RPC_NOT_ALLOWED`
+-   `Util` object:
+    -   `XmlEncode()` and `XmlDecode()` methods
+
+#### Changed
+
+-   `Conferences` service:
+    -   `GetMediaPublications()` method: if at least one Video MediaPublication is available, add to the list a MediaPublication useable as DynamicFeed.
+-   `FileStorage` service:
+    -   `GetAllFileDescriptors()` method: add new optional parameter **withRecordFiles** (false by default)
+    -   `GetAllFileDescriptorsReceived(), GetAllFileDescriptors(), GetFileDescriptorsAsync(), GetFileDescriptorsReceived(), GetFileDescriptorsReceivedAsync()` methods: add new optional parameter **recordingFiles** (false by default)
+
+#### Removed
+
+-   `Administration` service:
+    -   **Breaking** `CreateGuestUserAsync()` and `CreateAnonymousGuestUserAsync()` methods
+-   **Breaking** `AsyncCountdownEvent` object
+-   **Breaking** `AsyncManualResetEvent` object
+-   `Bubbles` service:
+    -   **Breaking** `IsGuest()` methods
+-   `Contact` object:
+    -   **Breaking** `Guest` property
+-   **Breaking** `GuestCreated` object
+
+---
+
+### \[3.5.0\] - 2025-09-01
+
+#### Info
+
+-   New `Sms` service permits to send SMS. Specific rights must be defined to use this new service.
+-   Add resilience at HTTP request level:
+    -   If necessary up to 4 more attempts are automatically made by the SDK (after 200, 400, 800 and 1600 ms or using **RetryAfter** header value returned by the server).
+    -   It's possible to define your own logic (for tests, depending on the domain used, etc.) by defining your own `Http.DelegatingHandler` - see `HttpRetryMessageHandler` object for more details.
+-   It's now possible to join several conferences in same time using the same account - need to set `JoinMultipleConferences` to true in `Restrictions` object
+
+#### Fixed
+
+-   `Application` service:
+    -   Avoid crash if xmpp or auto-reconnection object has been been already closed / disposed.
+-   `Bubbles` service:
+    -   Request information from server about an unknown `Bubble` when a message about user management is received (can occurred when guests are used).
+    -   Avoid crash when guests are used.
+    -   Avoid to request too often conference snapshot.
+    -   `BubbleLink` can be **public** (owner and moderators can acces to it) when created by the bubble's owner or **private** when created by a moderator (only visible to him).
+-   `Conversations` service:
+    -   Check Peer's Id validity before to request server to create a conversation.
+    -   When adding a `Conversation` to the cache, ensure to know the associated `Peer` (as `Contact` or `Bubble`).
+-   `InstantMessaging` service:
+    -   Use cache first to get a `Conversation` instead to always create it.
+-   `MediaPublication` object:
+    -   Ensure to set empty string for **MediaId, MediaName, MediaDescription, PeerResource** instead of null.
+
+#### Added
+
+-   Log Http Headers set specifically using the SDK
+-   `Administration` service:
+    -   `UpdateApplicationAsync()` method
+-   `Application` service:
+    -   `GetIniFullPath()` method
+-   `Bubbles` service:
+    -   `GetBubbleLinkAsync()`: optional parameter **asPublic** (true by default) to get **public** (created by the owner) or **private** (created by a moderator) Bubble Link
+-   `HttpClient` object:
+    -   `SetDelegatingHandler()`, `DefaultDelegatingHandler()` methods
+-   `HttpRetryMessageHandler` object:
+    -   used as default `Http.DelegatingHandler` by the `HttpClient`
+-   `Peer` object:
+    -   `CanBeUsedInConversation()`, `HasValidId()`, `HasValidJid()`, `HasValidIdentifier()` static methods
+    -   `IsContact()`, `IsContactWithId()`, `IsContactWithJid()` static methods
+    -   `IsBubble()`, `IsBubbleWithId()`, `IsBubbleWithJid()`, `FromBubbleId()`, `FromBubbleJid` static methods
+    -   Implicit operator to get `Peer` from `ConferenceTalkerParticipant`
+-   `Restrictions` object:
+    -   `JoinMultipleConferences` property (false by default)
+-   `SdkInternalErrorEnum` enum:
+    -   `GENERIC_ERROR` entry
+-   `Sms` service
+    -   `SendSmsAsync()`, `SendSmsAndWaitSentConfirmationStatusAsync()`, `GetSmsProvidersAsync` methods
+    -   `SmsProvider` object
+
+#### Changed
+
+-   `LogRequest` object - used in `CustomerCare` service:
+    -   **Breaking** `DeviceDetails` field is now a `LogRequestData` object
+    -   **Breaking** `Data` field has been removed
+
+---
+
+### \[3.4.0\] - 2025-07-07
+
+#### Info
+
+-   `HubTelephony` service is no more in alpha version:
+    -   Track ongoing calls
+    -   Voicemail information
+    -   Device status
+    -   3PCC (Third Party Call Control)
+-   New `CustomerCare` service (for user and admin account) permits
+    -   As admin
+        -   to ask user using a specific device to provide its logs
+        -   to get available log request by user and close them eventually
+    -   As user
+        -   to store log as feedback on server
+        -   to acknowledge / reject log request asked by an admin
+-   New `WebHookEventPipe` service (for admin account only) permits to get all events (according subscription event type used) at a Company level (so for all users in this company):
+    -   **device\_state** to get the status of all devices in Hub Telephony context only (in service, out of service).
+    -   **presence** to get the presence of all users including telephony (Hub or Hybrid), calendar (Office 365 or Google) and Microsoft Teams.
+    -   **callog** to get all call logs including telephony (Hub or Hybrid) and WebRTC.
+
+#### Fixed
+
+-   In very few cases, **SdkResult<Boolean>** may contain a **true** value instead of **false**
+-   `JSON`: fix implicit constructors when parsing null objects
+-   `Bubbles` service:
+    -   If bubble affiliation (i.e. "join all bubbles" presence message) failed, event `ConnectionStateChanged` is triggered including `ConnectionState` object with a **fatal** reason and a specific `SdkError`.
+    -   Use correct Jid for MCU service when sending "join all bubbles" presence message
+-   `Contacts` service:
+    -   fix bad parsing in `GetTeamsPresenceStatesAsync()` and `GetCalendarStatesAsync()` methods
+    -   `Contact` object
+        -   `InRoster` could store invalid value
+        -   Its parsing is no longer interrupted if `Formatfull` is not equal to **true**. Some properties may therefore be read even if they are not expected.
+    -   `ContactAvatarUpdated` event could be not triggered
+-   `Presence` object: when `PresenceLevel` was equal to **unavailable**, `ToString()` and `ToLogString()` methods provided bad results.
+
+#### Added
+
+-   `Administration` service:
+    -   `UpdateCompanyEventWebHookAsync()`, `UpdateCompanyEventSubscriptionAsync()`, `GetCompanyEventSubscriptionStatusAsync()` methods
+    -   `CompanyEventWebHook` object: **Token** property
+    -   `CompanyEventSubscription` object: **EventType**, **Domain**, **SubscribedId** properties
+    -   `CompanyEventSubscriptionStatus` object
+    -   `GetResourcesFromUserAsync()` method
+-   `Application` service:
+    -   `GetWebHookEventPipe()` method to access new `WebHookEventPipe` service
+    -   Even if no **EventMode** is used, ask server about contacts in Roster in login progress
+-   `Bubbles` service:
+    -   `Bubble` object: `IsOwnedByGroup` and`GroupId` properties
+-   `CallLogs` service:
+    -   `CallLogAdded` event
+    -   `CallLog` object: `RemoteContact`, `RemotePhoneNumber` and `Media` properties
+-   `Contacts` service:
+    -   `GetResources()` method
+    -   `Contact` object: `CompanyNameOfGuest` properties
+-   `Conversations` service: when adding a conversation with an unknown contact, a request is then made to the server to know them.
+-   `CustomerCare` service:
+    -   `LogRequestAsked`, `LogRequestAccepted`, `LogRequestRejected` events
+    -   `AcknowledgeLogRequestAskedAsync()`, `AskLogRequestForUserAsync()`, `CompleteLogRequestAskedAsync()`, `RejectLogRequestAskedAsync()`, `UploadFileForLogRequestAskedAsync()` methods
+    -   `StoreLogRequestFeedbackAsync()`, `UploadFileForLogRequestFeedbackAsync()` methods
+    -   `CloseLogRequestAsync()`, `GetLogRequestAsync()`, `GetLogRequestsListAsync()` methods
+    -   `LogRequest`, `LogRequestData`, `LogRequestHardware`, `LogRequestInfo`, `LogRequestListData` objects
+-   `FileTags` object:
+    -   `Purpose` property
+-   `HttpClient` object:
+    -   `AddHttpHeader()`, `RemoveHttpHeader()` and `GetHttpHeaders()` methods
+-   `HubTelephony` service:
+    -   `CallUpdated`, , `SupervisionCallUpdated`, `VoiceMessageNumberUpdated`, `GroupVoiceMessageNumberUpdated` events
+    -   `PBXAgentInfoUpdated` event and `GetPBXAgentInformation()` method
+    -   `HubCall`, `HubDeviceState`, `HubEndPoint`, `HubGroupInfo` , `HubLeg`, `HubPartyInfo`, `HubSupervisionCall`, `HubVoiceMessage`, `HubVoiceMessageNumber` objects
+    -   `GetCallLineIdentificationRestrictionAsync()`, `SetCallLineIdentificationRestrictionAsync()`, `GetCallLineIdentificationsAsync()`, `SetCurrentCallLineIdentificationsAsync()` methods and `CallLineIdentificationRestrictionUpdated` event
+    -   `VoiceMailAvailable()`, `GetVoiceMailPhoneNumber()`, `GetNumberOfVoiceMessages()`, `GetVoiceMessagesListAsync()`, `DeleteVoiceMessageAsync()`, `DeleteAllVoiceMessagesAsync()`, `MarkVoiceMessageAsReadAsync()` methods
+    -   `GetEmergencyNumbersAndOptionsAsync()` method
+-   `PhoneNumber` object: `IsCloudPbxDefault`, `IsCloudPbxDDI` and `ExternalTrunkId` properties
+-   `Util` object:
+    -   `StripNS()`, `ToXmlElement()` and `ToXElement()` to facilitate XML parsing
+-   `WebHookEventPipe` service
+
+#### Changed
+
+-   For very few specific cases, 429 HTTP Status code is not managed as global connection error
+-   `Administration` service:
+    -   **Breaking** `CreateUserWithBubbleLinkAsync()`: new optional parameters **companyNameOfGuest** (default value: **null**)
+    -   `CreateCompanyEventSubscriptionAsync()`: new optional parameters **eventType** (default value: **presence**) and **domain** (default value: **company**)
+    -   `CreateCompanyEventWebHookAsync()`: new optional parameter **token** (default value: **null**)
+-   `FileStorage` service:
+    -   `UploadFileAsync()`: new optional parameter **options** (default value: **null**)
+    -   `CreateFileDescriptorAsync()`: new optional parameter **options** (default value: **null**)
+-   `HybridTelephony` service:
+    -   **Breaking** `HybridPbxAgentInfo` object:
+        -   renamed to `PbxAgentInfo`
+        -   `IsOXE` and `IsOXO` properties have been replaced by `Type` which can be set to **OXE**, **OXO** or **RVCP**
+-   `SdkError` object:
+    -   **Breaking** `CorrelationId` and `RequesId` properties have been removed. Replaced by `HttpHeaders`
+
+---
+
+### \[3.3.0\] - 2025-05-13
+
+#### Info
+
+-   Add support of waiting room / lobby in Bubble
+    -   Once a bubble link is created, the owner can activate/deactivate a waiting room / lobby
+    -   Moderators can then accept all or contacts one by one from this waiting room / lobby
+-   Rework of search in `Contacts` service: (by name, tag, email or phone number)
+    -   New methods permit to get only a list of **ContactFound** (by name, tag, email or phone number)
+    -   `ContactFound` object has new properties to get sub-object if necessary: **Contact**, **DirectoryContact**, **O365AdContact** or **Phonebook**
+    -   Personal user directory (if any) is now used if search is done by name or by phone
+    -   Previous methods are still available but they are now deprecated
+    -   Examples are available to understand how to use them
+
+#### Fix
+
+-   `Administration` service:
+    -   Bad parsing in `GetHubDeviceRegistrationAsync()`
+    -   removes use of body in `GetJoinCompanyLinksAsync()`, `GetHubCloudPBXAsync()`, `GetHubDevicesAsync()`
+-   `Bubble` object: **PeerOwner.Type** was badly set to **EntityType.Bubble** instead of **EntityType.User**
+-   `Bubbles` service:
+    -   Update **BubbleMember.DisplayName** for each **BubbleMember** in all **Bubbles** when event `Comparers.ContactComparerUpdated` is triggere d
+    -   Event **BubbleMemberUpdated** was not triggered when bubble's owner has changed
+-   `Contact` object: **isTv** property was not stored when contacts are retrieved with **formatFull** not set to true
+
+#### Added
+
+-   `Bubble` object: `HasLobby` and `AutoRegister` properties
+-   `BubbleJoinedByPublicUrl` object: `IsWaitingInTheLobby` property
+-   `Bubbles` service:
+    -   `ActivateLobbyAsync()`, `GetContactsInLobbyAsync()`, `AcceptUsersInLobbyAsync()`, `DenyUsersInLobbyAsync()`, `GetBubblesLobbyListAsync()`, `CancelBubbleAccessRequestAsync()` methods and `BubbleLobbyUpdated` event
+    -   `AutoRegisterUsingBubbleLinkAsync()` method
+    -   `GetTvsAsContact()` and `GetTvs()` methods
+-   `Comparers` service: `ConversationComparer` property which uses by default `ConversationComparerByDate`
+-   `Consts.UserSetting` object: to store common user settings name
+-   `ContactFound` object: `Type`, `SubType` and `Value` properties. Useful only when new search methods are used
+-   `Contacts` service:
+    -   Manage all user settings available (not just only 5 hardcoded)
+    -   `GetUserSetting()` method (to get user setting by **Object**). `GetUserSettingBooleanValue()` and `GetUserSettingStringValue()` methods are still available e
+    -   `SearchByDisplayNameAsync()`, `SearchByEmailsAsync()`, `SearchByPhoneNumberAsync()` and `SearchByTagAsync()` methods
+-   `Conversation` object: `LastMessagePeerJid` property
+-   `Conversations` service: Take into account server event related to message bookmarks
+-   `InstantMessaging` service: `BookmarkMessageAsync()` and `RemoveBookmarkAsync()` methods
+-   `SearchContactsResults` object: `PersonalDirectoryContactsList` property
+
+#### Changed
+
+-   `Contacts` service: deprecated methods `SearchContactsByDisplayNameAsync()`, `SearchContactsByEmailsAsync()`, `SearchContactsByPhoneNumberAsync()` and `SearchContactsByTagAsync()`
+-   `Conversations` service: `GetAllConversationsAsync()` and `GetAllConversations` methods now use `Comparers.ConversationComparer` to sort result
+
+---
+
+### \[3.2.0\] - 2025-04-23
+
+#### Fix
+
+-   `Contacts` service: Bad display name set when using `SearchContactsByDisplayNameAsync()`, `SearchContactsByTagAsync()`, `SearchContactsByPhoneNumberAsync()` or `SearchContactsByEmailsAsync()` methods
+-   `HttpClient`: Bad test when an empty request content type is used
+-   `HybridTelephony` service: on internal event `established` ensure to set **CallType.Phone** and set only one participant
+-   `HybridTelephony` service: on internal event `transferCall` ensure to set **CallStatus.UNKNOWN** for held call (if any)
+-   `HybridTelephony` service: when asking call in progress, **CallStatus.PUT\_ON\_HOLD** is set instead of **CallStatus.HOLD** and the opposite.
+
+#### Added
+
+-   In S2S or in XMPP event mode, use only one request/stanza to join all bubbles (in connection or reconnection context)
+-   `Application` service: `GetCapability()` method
+-   `Const.Capability` object: `ComputerMode`, `OtherPhoneMode`, `SoftPhoneMode`, `ExternalStorage`, `RainbowStorage` and `MainStorage` properties
+-   `Contacts` service: `UpdateDisplayName()` method
+-   `PhoneNumber` object: `IsNomadic`, `IsVoipNomadic`, `CcdMode`, `CcdRole` and `UserType` properties (for Hybrid Telephony context only)
+-   `HybridNomadicStatus` object: `OtherPhoneModeDenied` property
+-   `HybridPbxAgentInfo` object: `PbxId` property
+-   `HybridTelephony` service: `AlternateCallAsync()`, `HybridNomadicOnOfficePhoneAvailable()`, `HybridNomadicOnOtherPhoneAvailable()`, `IsCCDAgent()` methods
+
+#### Changed
+
+-   **Breaking** `Application` service:
+    -   renamed `GetHostName()` to `HostName` property
+    -   removed `GetUserLogin()` and `GetUserPassword()`. Use instead `UserCredentials` property
+-   **Breaking** `Contacts` service: `SetPresenceLevelAsync()`, `SetBusyPresenceAccordingMediasAsync()` and `RollbackPresenceSavedAsync()` methods now return **SdkResult<Presence>** instead of **SdkResult<Boolean>**
+-   **Breaking** `HybridTelephony` service: `GetHybridTelephonyStatus()`, `DeflectCallAvailable()`, `TransferCallAvailable()` and `ConferenceCallAvailable()` methods now return **Boolean?** instead of **Boolean**
+-   **Breaking** `HybridTelephony` service: `HybridTelephonyStatusUpdated()` events now use **Boolean?** instead of **Boolean**
+
+---
+
+### \[3.1.0\] - 2025-03-27
+
+#### Fix
+
+-   `ApplicationToken`: In SSO context, its parsing is failing.
+-   `Conferences` service: Internally, the list of **MediaPublication** could be incorrectly managed which prevents the audio stream subscription from the conference.
+-   `JSON`: fix implicit conversion from JsonNode to Dictionary when a value is null, fix JSONNode to JSON when an object (included itself in a object) has only one key with a null value and avoiNull is set to true.
+
+#### Added
+
+-   `Administration` service: `DeleteApiKeyAsync()` and `GetApiKeysAsync()` methods
+-   `Application` service: `IsSSOAvailableAsync()`, `GetOAuthAuthorizationEndPoint()`, `GetOAuthAccessTokenEndPoint()`, `GetOAuthAuthorizationUrl()`, `LoginWithOauthAuthorizationCodeAsync()` and `LoginWithOauthAuthorizationCodeWithoutEventPipeAsync()` methods
+-   `Application` service: `DeleteApiKeyAsync()`, `CreateApiKeyAsync()`, `UpdateApiKeyAsync()`, `GetApiKeyAsync()` and `GetApiKeysAsync()` methods
+-   `ApplicationToken` object: `OAuth`, `RefreshToken` and `RedirectUri` properties
+-   `HttpRequestDescriptor` object: `FormUrlEncodedRequest()` method
+-   `UserCredentials` object
+
+#### Changed
+
+-   **Breaking** `Application` service: renamed `GetHostName()` to `HostName` property
+-   **Breaking** `Application` service: removed `GetUserLogin()` and `GetUserPassword()`. Use instead `UserCredentials` property
+-   **Breaking** `Contacts` service: `SetPresenceLevelAsync()`, `SetBusyPresenceAccordingMediasAsync()` and `RollbackPresenceSavedAsync()` methods now return **SdkResult<Presence>** instead of **SdkResult<Boolean>**
+
+---
+
+### \[3.0.0\] - 2025-03-17
+
+#### Info
+
+-   Major rework of JSON parser to facilitate its use. All common language runtime types are supported (implicit operators are used)
+-   Documentation enhancement: each services (Application, AutoReconnection, Bubbles, Contacts ...) documentation are now splitted by category
+
+#### Fix
+
+-   Use now UTF8 encoding when creating security token or MD5: allow to support more caracters in password.
+-   Avoid crash when dealing with internal list of data (Bubbles, Contacts, ...) which could by modifed in the same time
+-   Take into account VCard updates of Guest user
+-   `Application` service: in `LoginUsingPreviousCredentialsAsync()` avoid to remove from INI file **UserLogin** and **UserPassword**
+-   `Bubbles` service: fix affiliation deletion / removal
+-   `Bubbles` service: `AddMembersAsync()` method when using **Moderator** as privilege
+-   `Bubbles` service: `IsGuest()` and `IsGuestMode()`
+-   `Bubbles` service: `BubbleMemberUpdated` event could be not triggered
+-   `Contacts` service: `ContactAggregatedPresenceUpdated()` event could be not triggered when a device is going automatically to "away"
+-   `HttpClient` object: dissociate totally Main and Secondary Http client
+-   `SimpleJson`: Fix parsing when null objects are used instead of **List<T>, Dictionary<String, String>** or **Dictionary<String, Object>**
+
+#### Added
+
+-   `Administration` service: `GetHubCloudPBXAsync()`, `GetHubDevicesAsync()`, `GetHubDeviceAsync()` and `GetHubDeviceRegistrationAsync()`
+-   `Administration` service: `GetOrganisationAsync()`
+-   `CreateGuestUserAsync` service: Add **companyId** optional parameter for `CreateGuestUserAsync()` and `CreateAnonymousGuestUserAsync` methods.
+-   `Application` service: `ApplicationTokenUpdated` event
+-   `ApplicationMessage` object (before a Tuple was used instead)
+-   `Bubbles` service: Unknown contacts found in Bubbles are automatically retrieved (by pack of 500) once event **Application.ConnectionStateChanged** with **Consts.ConnectionStatus.Connected** value is triggered
+-   `Bubbles` service: `UnknownContactsFound` event once all Unknown contacts found are retrieved
+-   `BubbleInvitation` object (before a Tuple was used instead)
+-   `BubbleMember` object: `PeerInviting` property (as Peer object)
+-   `Conferences` service: `GetDataChannelPublisherDetails()` method, `ConferenceMediaPublicationSubscribersUpdated` event
+-   `Contacts` service: `GetContactsByJidListAsync()` and `GetContactsByIdListAsync()` methods always return a **ContactsListData** object
+-   `Contacts`: `withPresence` optional parameter (default: false) has been added to `SearchContactsByDisplayNameAsync()` and `SearchContactsByTagAsync()` methods
+-   `FileStorage` service: `RemoveAllFileDescriptorsAsync()` method
+-   `HttpRequestDescriptor` object: now accept also \*, \*/\* or \[type\]/\* as valid content type
+-   `InstantMessaging` service: `AnswerToMessageWithAlternativeContentsAsync()`, `AnswerToMessageAsync()`, `AnswerToMessageWithFileAsync()` and `AnswerToMessageWithStreamAsync()` with `Message` object as first parameter to allow to send a new one in the same context than the message received
+-   `InstantMessaging` service: `AnswerToApplicationMessageAsync()` with `ApplicationMessage` object as first parameter to allow to send a new one in the same context than the message received
+-   `InstantMessaging` service: All methods allowing to send a IM has a new parameter to set its storage mode (**SdkMessageStorageMode.Store** by default)
+-   `MediaPublication` object: `MediaId`, `MediaName`, `MediaDescription` and `PeerResource` properties
+-   `MediaPublicationSubscriber` object
+-   `SimpleJson`: add implicit support of Dictionary<String, String>.
+
+#### Changed
+
+-   **Breaking** `Administration` service: `CreateSelfRegisteredUserAsync()` has been removed to be splitted in two specific methods `CreateUserWithCompanyLinkAsync()` and `CreateUserWithBubbleLinkAsync()`
+-   **Breaking** `Bubble` object: `OwnerId` property (as String) has been replaced by `PeerOwner` (as Peer object)
+-   **Breaking** `FileStorage` service: `FileStorageUpdated` and `VoiceMessageUpdated` events now manage list of elements when several are updated in same time.
+-   **Breaking** `UtilJson`: This utility class has been removed (no more necessary). Use `JSON`, `JSONNode`, `JSONObject` or `JSONArray` instead
+-   **Breaking** `Restrictions`: **MessageStorageMode** has been removed since it's now possible to set it when sendind an IM (default value is still the same: **SdkMessageStorageMode.Store**)
+-   **Breaking** `SearchContactsResult`: provides now a list of **ContactFound** (inherited of **Contact**) and no more a list **Contact**
+-   `Bubbles` and `Conferences` service: use **Consts.BubbleMemberPrivilege** for **BubbleMember.Privilege** field and use **Consts.ConferenceParticipantPrivilege** for **ConferenceParticipant.Privilege** field
+-   Log entries about XMPP incoming messages are now added when they are dequeued (and no more when they are queued) to facilitate debugging.
+
+---
+
+### \[3.0.0-sts.4.2\] - 2024-12-11
+
+#### Fix
+
+-   Avoid null object when JSON is created
+-   Avoid to call `ToStringInternal()` with Peer and Call objects which are null
+-   Fix log entry about event parameter when a String is used since it's also an IEnumerable<char>
+
+#### Added
+
+-   `ErrorDetails` property returned by server is mainly just a String but could also be an Object or an Array. All cases are now managed.
+
+### \[3.0.0-sts.4.1\] - 2024-11-26
+
+#### Fix
+
+-   `UtilJSON` service: Fix `AsJsonNode()` when using a String with null value
+
+---
+
+### \[3.0.0-sts.4\] - 2024-11-22
+
+#### Fix
+
+-   Ensure to send one by one message to XMPP server (when XMPP event mode is used)
+-   Support by default HTTP Status 204 (No Content)
+-   `Alerts` service: `SendAlertFeedbackAsync()` used `AlertMessage` object parameter instead of an `Alert` object
+-   `Application` service: avoid to set default presence to `Offline`. Use `Online` instead
+-   `AutoReconnection` service: badly managed `401 Unauthorized` when renewing authentication token
+-   `Bubbles` service: avoid triggering `BubbleAffiliationChanged` in inappropriate cases
+-   `CallsLog` service: correctly manage events sent by the server several time for the same call log
+-   `Contacts` service: correctly manage `Unavailable` presence (i.e. when a user logout from a device)
+-   `Conferences` service: don't use it if `Restrictions.UseConferences` is not set to true
+-   `Conferences` service: avoid triggering `ConferenceUpdated`, `ConferenceParticipanstUpdated` and `ConferenceMediaPublicationsUpdated` in inappropriate cases
+-   `InstantMessaging` service: fix MaM (message archive management)
+-   `Jingle` service: some internal events were triggered in a bad order.
+
+#### Added
+
+-   `Administration` service: `CreateCompanyEventWebHookAsync()`, `GetCompanyEventWebHookAsync()`, `DeleteCompanyEventWebHookAsync()`
+-   `Administration` service: `CreateCompanyEventSubscriptionAsync()`, `GetCompanyEventSubscriptionAsync()`, `DeleteCompanyEventSubscriptionAsync()`
+-   `HubTelephony` service: new service to handle Hub Telephony device - first little step as ALPHA VERSION. Cannot be used in production
+-   `InstantMessagin` service: `AckMessage` support has been added: `AckMessageReceived` event, `SendAckMessageAsync()` and `AnswerToAckMessageAsync()` methods
+-   `Restrictions` object: `LogEventParameters` (true by default) to log parameters used in event raised by the SDK
+-   `Restrictions` object: `LogEventStackTrace` (true by default) to log the stack trace when an event is raised by the SDK
+-   `S2S` service: it's now multi tenant. One callback url (webhook) to manage several users (it's still possible to use a different one by user). Enhance connection process and stop it if there is no answer in the callback URL after 5 seconds.
+-   `S2S` service: `Message` objects now contains also urgency, subject, reply of, deleted, modified and forwarded data
+-   `S2S` service: User Invitation are now managed and it's possible to know when a contact has been added / removed from roster
+-   `S2S` service: It's now possible to reply, forward, delete or modify a message already sent.
+-   `UtilJSON` service: Support more objects (directly manage **IDictionary** and **IList** when necessary)
+-   `UtilJSON` service: `AsIntList()`, `AsDoubleList()`, `AsFloatList()`, `AsLongList()` methods
+
+#### Changed
+
+-   **Breaking** `Telephony` service: Rename the service to `HybridTelephony` (events and methods have been renamed to use **Hybrid** in their names to avoid any confusion with `HubTelephony`)
+-   **Breaking** `UtilJSON` service: For simplification rename all methods starting with `JsonStringFrom___()` to `ToJson()`
+-   **Breaking** `UtilJSON` service: For simplification rename all methods starting with `AsJsonNodeFrom___()` to `AsJsonNode()`
+
+---
+
+### \[3.0.0-sts.3\] - 2024-10-01
+
+#### Info
+
+-   In more than 30 objects add `ToString(details)` (no data hidden) and `ToLogString(details)` (critical data hidden) with **details** parameter which could be `DetailsLevel.Small`, `DetailsLevel.Medium` (default) or `DetailsLevel.Full`
+
+#### Fix
+
+-   Correctly manage 404 HTTP Status code when downloading Avatars (Contacts, Bubbles, ...)
+-   `Bubbles` service: correclty set owner privilege in `Bubble.Users` list
+-   `Bubbles` service: avoid to store **Bubble** where the current user is no more subscribed
+-   `Channels` service: Bad **LastAvatarUpdateDate** when event `ChannelAvatarUpdated` is triggered
+-   `Contacts` service: Bad **LastAvatarUpdateDate** when event `ContactAvatarUpdated` is triggered
+-   `Contacts` service: Bad aggregated/unified presence when an user is removed from roster/network
+-   `InstantMessage` service: Bad XML parsing
+-   `Invitations` service: Bar URI used in `CancelInvitationAsync()`
+-   `Jingle` service: Remove from SDP hardcoded RTP Header extension
+-   `Jingle` service: Raise internal events in correct order.
+
+#### Added
+
+-   `Bubbles` service: `BubbleInvitationAccepted` and `BubbleInvitationRejected` events
+-   `Bubbles` service: `GetPendingBubbleInvitations()` methods
+-   `Channels` service: `GetAllChannelsAsync()` to get Subscribed and Invited channels in one call
+-   `Contact` object: **FormatFull** boolean property to know if the object contains all information or only a part
+-   `Contact` object: `LastLoginDate`, `LoggedSince` and `LastSeenDate` properties
+-   `Conferences` service: new optionnal parameter **mediasList** in `JoinConferenceAsync()`
+-   `Conferences` service: `AddAudioAsync()`
+-   `Contacts` service: `UpdateCustomDataAsync()`, `DeleteCustomDataAsync()`, `GetUnknownContactIdList()` and `GetUnknownContactJidList()` methods
+-   `Contacts` service: Trigger `ContactAggregatedPresenceUpdated` event with `Unavailable` PresenceLevel when a Contact is removed from roster
+-   `Favorites` service: `DeleteFavoriterAsync()` using a `Peer` object.
+-   `Invitations` service: `GetReceivedInvitations()`, `GetReceivedInvitation(peer)`, `GetSentInvitations()` and `GetSentInvitation(peer)` methods
+-   `PhoneNumber` object: `IsMonitored` property
+-   `PresenceLevel` object: `Unavailable` property
+
+#### Changed
+
+-   **Breaking** `Channels` service: Rename `GetBubbleByPeer()` (badly named !) to `GetChannelByPeer()`
+-   **Breaking** `Contacts` service: Rename `ContactInfoUpdated` event to `ContactUpdated`
+-   **Breaking** `Contacts` service: `CreatePresence()` - **apply** parameter has been removed
+-   **Breaking** `Groups` service: `GetAllMemberAsync()` now returns **List<Peer>** instead of **List<String>** (User ID list)
+-   **Breaking** `Group` object: `Users` is now a **List<Peer>** instead of **List<String>** (User ID list)
+-   Several services use now internally awaitable methods from **Sharp.WS.Xmpp** package
+
+---
+
+### \[3.0.0-sts.2\] - 2024-07-17
+
+#### Info
+
+-   Add notion of **stackable** and **unstackable** events - both to avoid to trigger several times same event in short period.
+    -   **stackable** event: it's triggered only once with all stacked datas - example `ContactsAdded` event provides a list of contacts
+    -   **unstackable** event: it's triggered only once with the final state - example `ContactAggregatedPresenceUpdated` event provides the last aggregated presence for one contact
+    -   Nothing has changed about the way to use them. Only implementation in SDK has changed
+-   Add List extension to sort easily and efficiently any **IList object** using any property (use **Comparer<T>** and **IComparable<T>** interface)
+-   Add comparers to sort Contact, Bot, Bubble, Tv, DirectoryContact, Phonebook, O365AdContact with the possibility to change defaults one
+-   Internally avoid any use of **Task.Wait()**, **Task.Result** and **TastCompletionSource** not async
+-   Enhance performance to fetch all messages archived in a conversation
+
+#### Fixed
+
+-   Internaly use **XmlElement** object instead of String from XML to avoid parsing exception
+-   `Administration` service: Fix `UpdateCompanySubscriptionAsync()` and `CreateSelfRegisteredUserAsync()`: bad JSON parsing
+-   `InstantMessaging` service: Fix bad sort when fetching archived messages
+-   `Conversation` service: Avoid crash when a message is null
+
+#### Added
+
+-   `AsyncCountdownEvent` object: to provide async **CountdownEvent** object
+-   `AsyncHelper` object: new static class to easily use synchronously asynchronous method
+-   `AsyncManualResetEvent` object: new class to provide async **ManualResetEvent** object
+-   `Bubbles` service: `GetMembersAsContactsAsync()`, `GetModeratorsAsContactsAsync()` and `GetUnknownContactsAsync()` metohds
+-   `CancelableDelay` object: `StartAfter()` now supports also async task
+-   `Company` object: `AutoAddToUserNetwork` property
+-   `Comparers` object: To store all comparers
+-   `Contacts` service: `GetContactsByIdList()`, `GetContactsByIdListAsync()` and `GetContactsByJidListAsync()` methods
+-   `Conversation` service: `GetOrCreateConversationFromPeerSync()` method
+-   `InstantMessaging` service: `GetMessagesAsync()` method
+-   `InstantMessaging` service: Ensure to know all members' bubble when fetching messages archived
+-   `Message` object: Inherits from **IComparable<T>** interface using **Date** property for the comparison.
+-   `Peer` object: Implicit operator from `BubbleMember` and `Conference` objects
+-   `Util` object: `RaiseEvent()` with list of objects, `RaiseStackableEvent()` and `RaiseUnstackableEvent()` methods
+-   `Util` object: `RemoveDiacritics()` method
+-   `UtilJson` object: `AddNode()` now supports **List<Dictionary<String, String>>** and **List<Dictionary<String, Object>>**
+-   `UtilJson` object: `AsJsonNodeFromListOfDictionaryOfString()` and `AsJsonNodeFromListOfDictionaryOfObjects()` methods
+
+#### Changed
+
+-   **Breaking** `AutoReconnection` service: when service is stopped volontarily (logout / cancel), `Cancelled` event provide a **NoError**
+-   **Breaking** `Bubbles` service: Renamed `AddContactAsync()` to `AddMemberAsync()`
+-   **Breaking** `Bubbles` service: Renamed `RemoveContactByIdAsync()` to `RemoveMemberAsync()`
+-   **Breaking** `Bubbles` service: Renamed `UpdateContactPrivilegeAsync()` to `UpdateMemberPrivilegeAsync()`
+-   **Breaking** `Bubbles` service: `GetAllBubblesAsync()` and `GetAllBubbles()` - Add **memberStatus** and **memberPrivilege** filter parameters
+-   **Breaking** `Bubbles` service: `GetMembers()` method: Add **memberStatus** and **memberPrivilege** filter parameters
+-   `Bubbles` service: When possible use Peer object instead of Bubble object as parameter in all methods
+-   `CancelableDelay` object: avoid to throw exception when cancelled
+-   **Breaking** `ChannelsListsData` object renamed to `ChannelsListData` (without an extra **s** - typo error)
+-   **Breaking** `Conferences` service: `ConferenceSharingTransfertStatusUpdated` object renamed to `ConferenceSharingTransferStatusUpdated` (without an extra **t** - typo error)
+-   **Breaking** `Conferences` service: `SendSharingTransfertStatusAsync` object renamed to `SendSharingTransferStatusAsync` (without an extra **t** - typo error)
+-   **Breaking** `Contacts` service: `ContactAdded` event replaced by `ContactsAdded` (used as stackable event)
+-   **Breaking** `Contacts` service: `RosterContactAdded` event replaced by `RosterContactsAdded` (used as stackable event)
+-   **Breaking** `Contacts` service: `RosterContactRemoved`event replaced by `RosterContactsRemoved` (used as stackable event)
+-   `Contacts` service: `ContactAggregatedPresenceUpdated` is now used as an unstackable event
+-   `Contacts` service: Avoid to trigger `ContactPresenceUpdated` and `ContactAggregatedPresenceUpdated` events if not necessary
+-   `Contacts` service: `GetAllContacts()` accepts two option parameters: **inRoster** and **notInRoster**
+
+---
+
+### \[3.0.0-sts.1\] - 2024-07-01
+
+#### Info
+
+-   Contains nearly all features of v2.X
+-   New features will only been added in V3.X
+-   Simplification is the goal of this new release:
+    -   Use Async/Await pattern
+    -   No more needs to wait `InitializationPerformed`. Waiting the end of the login is enough.
+    -   `Peer` object is used centrally to describe a `Bot`, `Bubble`, `CallParticipant`, `Channel`, `ConferenceParticipant`, `Contact`, `Conversation`, `MediaService` (WebRTC context), `DynamicFeed` (WebRTC context) or a user known only by a phone number.
+    -   Implicit operator permits to create `Peer` object from `Bot`, `Bubble`, `CallParticipant`, `Channel`, `ConferenceParticipant`, `Contact`, `Conversation`
+    -   Avoid usage of id/jid in methods and used objects instead
+-   Samples will be updated in consequence
+
+#### Removed
+
+-   `AckMessage` features in `InstantMessaging` service. Use instead `ApplicationMessage` - more versatile and simple
+-   `AdHocCommand` features in `InstantMessaging` service. Use instead `ApplicationMessage` - more versatile and simple
+-   `InitializationPerformed` event from `Application` service. `ConnectionStateChanged` event is enough.
+
+#### Added
+
+-   `Restrictions` object: `AcceptBubbleInvitation` (False by default). If set to True, automatically accept pending bubble invitation.
+-   `Restrictions` object: `AcceptUserInvitation` (False by default). If set to True, automatically accept pending user invitation.
+
+### Sur cette page
+
+-   [SDK (Core) for C#](/docs/sdk/csharp#name-sdk-core-for-c-0)
+-   [\[3.7.0\] - 2026-01-16](/doc/sdk/csharp/core/lts/guides/CHANGELOG#name-3.7.0---2026-01-16-3)
+-   [\[3.6.0\] - 2025-11-20](/doc/sdk/csharp/core/lts/guides/CHANGELOG#name-3.6.0---2025-11-20-245)
+-   [\[3.5.0\] - 2025-09-01](/doc/sdk/csharp/core/lts/guides/CHANGELOG#name-3.5.0---2025-09-01-587)
+-   [\[3.4.0\] - 2025-07-07](/doc/sdk/csharp/core/lts/guides/CHANGELOG#name-3.4.0---2025-07-07-868)
+-   [\[3.3.0\] - 2025-05-13](/doc/sdk/csharp/core/lts/guides/CHANGELOG#name-3.3.0---2025-05-13-1343)
+-   [\[3.2.0\] - 2025-04-23](/doc/sdk/csharp/core/lts/guides/CHANGELOG#name-3.2.0---2025-04-23-1559)
+-   [\[3.1.0\] - 2025-03-27](/doc/sdk/csharp/core/lts/guides/CHANGELOG#name-3.1.0---2025-03-27-1675)
+-   [\[3.0.0\] - 2025-03-17](/doc/sdk/csharp/core/lts/guides/CHANGELOG#name-3.0.0---2025-03-17-1754)
+-   [\[3.0.0-sts.4.2\] - 2024-12-11](/doc/sdk/csharp/core/lts/guides/CHANGELOG#name-3.0.0-sts.4.2---2024-12-11-1983)
+-   [\[3.0.0-sts.4.1\] - 2024-11-26](/doc/sdk/csharp/core/lts/guides/CHANGELOG#name-3.0.0-sts.4.1---2024-11-26-2016)
+-   [\[3.0.0-sts.4\] - 2024-11-22](/doc/sdk/csharp/core/lts/guides/CHANGELOG#name-3.0.0-sts.4---2024-11-22-2030)
+-   [\[3.0.0-sts.3\] - 2024-10-01](/doc/sdk/csharp/core/lts/guides/CHANGELOG#name-3.0.0-sts.3---2024-10-01-2184)
+-   [\[3.0.0-sts.2\] - 2024-07-17](/doc/sdk/csharp/core/lts/guides/CHANGELOG#name-3.0.0-sts.2---2024-07-17-2358)
+-   [\[3.0.0-sts.1\] - 2024-07-01](/doc/sdk/csharp/core/lts/guides/CHANGELOG#name-3.0.0-sts.1---2024-07-01-2614)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,146 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/Bubbles/enumerations/BubbleServiceEvents"
+lastSynced: "2026-02-19T22:35:16.211Z"
+---
+# Documentation
+
+BubbleServiceEvents
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [Bubbles](doc/sdk/webv2/lts/api/Bubbles/index) / BubbleServiceEvents
+
+# Enumeration: BubbleServiceEvents
+
+Bubble service events send to other services Can listen to it via `bubbleService.subscribe()` API
+
+## Events
+
+### ON\_INVITATION\_RECEIVED
+
+> **ON\_INVITATION\_RECEIVED**: `"ON_INVITATION_RECEIVED"`
+
+This RBEvent is send when there's a new invitation to join bubble that is received
+
+#### Param
+
+the bubble related
+
+---
+
+### ON\_MY\_USER\_PRIVILEGE\_UPDATE
+
+> **ON\_MY\_USER\_PRIVILEGE\_UPDATE**: `"ON_MY_USER_PRIVILEGE_UPDATE"`
+
+This `RBEvent` is send when a there's an update on my user privilege (owner, moderator, user)
+
+#### Param
+
+the bubble related
+
+#### Param
+
+the user privilege
+
+#### Param
+
+the user status
+
+---
+
+### ON\_MY\_USER\_STATUS\_UPDATE
+
+> **ON\_MY\_USER\_STATUS\_UPDATE**: `"ON_MY_USER_STATUS_UPDATE"`
+
+This `RBEvent` is send when a there's an update on my user status (invited, accepted, deleted,...)
+
+#### Param
+
+the bubble related
+
+#### Param
+
+the user status
+
+---
+
+### ON\_NEW\_BUBBLE\_CREATED
+
+> **ON\_NEW\_BUBBLE\_CREATED**: `"ON_NEW_BUBBLE_CREATED"`
+
+This RBEvent is send when there's a new bubble is created
+
+#### Param
+
+the new bubble related
+
+#### Param
+
+if TRUE, that means that the new bubble is created but some/all of the invited users are not successfully added; Only for bubbles/rooms created by the user
+
+#### Param
+
+The DbId of the contacts that could not be invited to the bubble
+
+---
+
+### ON\_SERVICE\_STARTED
+
+> **ON\_SERVICE\_STARTED**: `"ON_SERVICE_STARTED"`
+
+This `RBEvent` is send when the bubble service is started and ready to be used (also fired after loss of network and reconnection)
+
+---
+
+### ON\_USER\_STATUS\_UPDATE
+
+> **ON\_USER\_STATUS\_UPDATE**: `"ON_USER_STATUS_UPDATE"`
+
+This `RBEvent` is send when a there's an update on the bubbles participants status (invited, accepted, etc)
+
+#### Param
+
+the bubble related
+
+#### Param
+
+the user inside the bubble related
+
+#### Param
+
+the user status
+
+### Sur cette page
+
+-   [Events](/docs/sdk/web#name-events-13)
+-   [ON\_INVITATION\_RECEIVED](/docs/sdk/web#name-on_invitation_received-16)
+-   [Param](/docs/sdk/web#name-param-27)
+-   [ON\_MY\_USER\_PRIVILEGE\_UPDATE](/docs/sdk/web#name-on_my_user_privilege_update-34)
+-   [Param](/docs/sdk/web#name-param-45)
+-   [Param](/docs/sdk/web#name-param-51)
+-   [Param](/docs/sdk/web#name-param-57)
+-   [ON\_MY\_USER\_STATUS\_UPDATE](/docs/sdk/web#name-on_my_user_status_update-64)
+-   [Param](/docs/sdk/web#name-param-75)
+-   [Param](/docs/sdk/web#name-param-81)
+-   [ON\_NEW\_BUBBLE\_CREATED](/docs/sdk/web#name-on_new_bubble_created-88)
+-   [Param](/docs/sdk/web#name-param-99)
+-   [Param](/docs/sdk/web#name-param-105)
+-   [Param](/docs/sdk/web#name-param-111)
+-   [ON\_SERVICE\_STARTED](/docs/sdk/web#name-on_service_started-118)
+-   [ON\_USER\_STATUS\_UPDATE](/docs/sdk/web#name-on_user_status_update-130)
+-   [Param](/docs/sdk/web#name-param-141)
+-   [Param](/docs/sdk/web#name-param-147)
+-   [Param](/docs/sdk/web#name-param-153)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

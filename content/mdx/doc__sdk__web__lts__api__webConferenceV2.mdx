@@ -1,0 +1,811 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/webConferenceV2"
+lastSynced: "2026-02-19T22:35:15.541Z"
+---
+# Documentation
+
+Web Conference service (v2)
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## WebConferenceServiceV2
+
+This service manages web conferences in Rainbow (web conferences that take place in bubbles). Any Rainbow user in the bubble can take part of the conference (the maximum number of participants is based on the licence of the organiser of the conference) In each conference, there's only one "organizer" (the user that has started the conference), but every administrator in the bubble is allowed to make additional actions on all other participants (like drop, mute, etc) Only the organizer of the conference can stop the conference, or delegate it to another user.
+
+```
+By default, the web conference service is going to use a web conference helper service that will manage 
+ an automatic subscription to all available videos, the management of the dynamic feed.
+ This service configuration can be managed by setHelperServiceConfiguration API
+ 
+ NB !! The CPU and bandwidth consumption should/can be managed via additionnal APIs that can be used so that the application is adapted;
+ As all incoming videos are available in 3 sublayers (high HD, medium VGA and low QVGA) the user can change the sublayer he wants to receive from the server (managed by the Method updateParticipant)
+ In addition, some session can be put on hold / unhold so that the user can "pause" all incoming videos that are not needed at the moment (managed by putRemoteVideoSessionOnHold)
+```
+
+**Emits**: `event:RAINBOW_ONWEBCONFERENCESTATUSUPDATED`, `event:RAINBOW_ONWEBCONFERENCEPARTICIPANTLISTUPDATED`, `event:RAINBOW_ONWEBCONFERENCEPUBLISHERSADDED`, `event:RAINBOW_ONWEBCONFERENCEPUBLISHERSREMOVED`, `event:RAINBOW_ONWEBCONFERENCELOCKSTATEUPDATED`, `event:RAINBOW_ONWEBCONFERENCELOCALMEDIAUPDATE`  
+**Access**: public
+
+-   [WebConferenceServiceV2](#module_WebConferenceServiceV2)
+    -   [subscribe(handler)](#module_WebConferenceServiceV2+subscribe) ⇒ `Subscription`
+    -   [sendCustomEvent(name, data)](#module_WebConferenceServiceV2+sendCustomEvent)
+    -   [attachVideoSessionToHtmlElement(elementId, videoSession)](#module_WebConferenceServiceV2+attachVideoSessionToHtmlElement)
+    -   [getConferenceLeaderContact(webConferenceSession)](#module_WebConferenceServiceV2+getConferenceLeaderContact) ⇒ `Contact`
+    -   [setHelperServiceConfiguration(disableDynamicFeed, disableAutoSubscriptions)](#module_WebConferenceServiceV2+setHelperServiceConfiguration)
+    -   [getWebConferenceSessionById(id)](#module_WebConferenceServiceV2+getWebConferenceSessionById) ⇒ `WebConferenceSession` | `null`
+    -   [hasActiveWebConferenceSession()](#module_WebConferenceServiceV2+hasActiveWebConferenceSession) ⇒ `boolean`
+    -   [getActiveWebConferenceSession()](#module_WebConferenceServiceV2+getActiveWebConferenceSession) ⇒ `WebConferenceSession`
+    -   [stopWebConference(room)](#module_WebConferenceServiceV2+stopWebConference) ⇒ `Promise`
+    -   [startOrJoinWebConference(room)](#module_WebConferenceServiceV2+startOrJoinWebConference) ⇒ `Promise`
+    -   [startWebConference(room)](#module_WebConferenceServiceV2+startWebConference) ⇒ `Promise`
+    -   [joinWebConference(room, noAudio)](#module_WebConferenceServiceV2+joinWebConference) ⇒ `Promise`
+    -   [joinWebConferenceByPhone(room)](#module_WebConferenceServiceV2+joinWebConferenceByPhone) ⇒ `Promise`
+    -   [addPSTNParticipantToConference(webConferenceSession, participantPhoneNumber)](#module_WebConferenceServiceV2+addPSTNParticipantToConference) ⇒ `Promise`
+    -   [declineInvitationToJoinConference(room)](#module_WebConferenceServiceV2+declineInvitationToJoinConference) ⇒ `Promise`
+    -   [addAudioToWebConferenceSession(webConferenceSession)](#module_WebConferenceServiceV2+addAudioToWebConferenceSession)
+    -   [addMediaToWebConferenceSession(webConferenceSession, mediaType, existingStream)](#module_WebConferenceServiceV2+addMediaToWebConferenceSession)
+    -   [removeMediaFromConferenceSession(webConferenceSession, mediaType)](#module_WebConferenceServiceV2+removeMediaFromConferenceSession)
+    -   [leaveWebConference(webConferenceSession)](#module_WebConferenceServiceV2+leaveWebConference) ⇒ `Promise`
+    -   [disconnectUserFromWebConference(webConferenceSession, participantId)](#module_WebConferenceServiceV2+disconnectUserFromWebConference) ⇒ `Promise`
+    -   [subscribeToDynamicFeed(webConferenceSession)](#module_WebConferenceServiceV2+subscribeToDynamicFeed) ⇒ `Promise.<any>`
+    -   [subscribeToService(webConferenceSession, serviceId)](#module_WebConferenceServiceV2+subscribeToService) ⇒ `Promise.<any>`
+    -   [subscribeToParticipantVideo(webConferenceSession, participant)](#module_WebConferenceServiceV2+subscribeToParticipantVideo) ⇒ `Promise.<any>`
+    -   [updateParticipant(webConferenceSession, participantId, option, media, bitRate, subStreamLevel, publisherId)](#module_WebConferenceServiceV2+updateParticipant) ⇒ `Promise.<void>`
+    -   [updateConferenceParameters(webConferenceSession, option)](#module_WebConferenceServiceV2+updateConferenceParameters) ⇒ `Promise.<void>`
+    -   [delegateConferenceToParticipant(webConferenceSession, participantId)](#module_WebConferenceServiceV2+delegateConferenceToParticipant) ⇒ `Promise.<void>`
+    -   [getConferenceTalkingTimeStats(roomDbId)](#module_WebConferenceServiceV2+getConferenceTalkingTimeStats) ⇒ `Promise.<void>`
+    -   [startMediaEchoTest()](#module_WebConferenceServiceV2+startMediaEchoTest) ⇒ `Promise.<void>`
+    -   [stopMediaEchoTest()](#module_WebConferenceServiceV2+stopMediaEchoTest) ⇒ `Promise.<void>`
+    -   [putAllRemoteVideoSessionsOnHold(webConferenceSession)](#module_WebConferenceServiceV2+putAllRemoteVideoSessionsOnHold) ⇒ `void`
+    -   [putRemoteVideoSessionOnHold(participant)](#module_WebConferenceServiceV2+putRemoteVideoSessionOnHold) ⇒ `void`
+    -   [putRemoteVideoSessionOnUnhold(participant)](#module_WebConferenceServiceV2+putRemoteVideoSessionOnUnhold) ⇒ `void`
+
+### webConferenceServiceV2.subscribe(handler) ⇒ `Subscription`
+
+Subscribe to updates on the current web conference sessions (all events are of RBEvent type {name: string, data:any}); All public events that are fired by this service are described in the documentation. NB There might be some events that are not documented here, they should be ignored
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `Subscription` - Returns RxJS Subscription  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+handler
+
+`any`
+
+The call-back function that will be subscribed to the RxJS subject
+
+### webConferenceServiceV2.sendCustomEvent(name, data)
+
+Allows to send a custom event via (of type RBEvent) the RX subject of the instance, and to be captured by subscribe
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+name
+
+`string`
+
+The name of the event
+
+data
+
+`any`
+
+The data
+
+### webConferenceServiceV2.attachVideoSessionToHtmlElement(elementId, videoSession)
+
+Attach the video session to a given HTML tag element (by id)
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+elementId
+
+`string`
+
+the ID of the HTML video tag element (should be found by document.getElementById)
+
+videoSession
+
+`any`
+
+the videoSession object that is inside the WebConferenceParticipant object
+
+### webConferenceServiceV2.getConferenceLeaderContact(webConferenceSession) ⇒ `Contact`
+
+Get the owner contact for the webConference session
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `Contact` - the Contact that is the "owner" / leader of the web conference  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+webConferenceSession
+
+`WebConferenceSession`
+
+the ID of the HTML video tag element (should be found by document.getElementById)
+
+### webConferenceServiceV2.setHelperServiceConfiguration(disableDynamicFeed, disableAutoSubscriptions)
+
+API used to update the webConferenceHelper configuration
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+disableDynamicFeed
+
+`boolean`
+
+If true, the webConferenceHelper will disable the subscription mecanisme for the dynamic feed In case the subscription is already done, this will not effect the current session; NB The default value is FALSE for all conferences (i.e. by default, dynamic feed is activated)
+
+disableAutoSubscriptions
+
+`boolean`
+
+If true, the webConferenceHelper will disable the auto subscription mecanisme for all incoming publishers (except sharing) In case the subscription is already done, this will not effect the current session; NB The default value is FALSE for all conferences (i.e. by default, subscription is done for all publsihers)
+
+### webConferenceServiceV2.getWebConferenceSessionById(id) ⇒ `WebConferenceSession` | `null`
+
+Get the web conference session by it's ID
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `WebConferenceSession` | `null` - Returns the WebConferenceSession (or null otherwise)  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The ID of the web conference session (i.e. also equal to the DB ID of the room)
+
+### webConferenceServiceV2.hasActiveWebConferenceSession() ⇒ `boolean`
+
+Returns true if the user is currenty participating in any web conference
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `boolean` - Returns true if the user is currenty participating in any web conference  
+**Access**: public  
+
+### webConferenceServiceV2.getActiveWebConferenceSession() ⇒ `WebConferenceSession`
+
+Returns WebConferenceSession if the user has an active web conference session (that he has joined)
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `WebConferenceSession` - Returns WebConferenceSession or null instead  
+**Access**: public  
+
+### webConferenceServiceV2.stopWebConference(room) ⇒ `Promise`
+
+Stop a web conference in the given bubble
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `Promise` - Return  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+room
+
+`Room`
+
+The room/bubble where the user wants to end the conference
+
+### webConferenceServiceV2.startOrJoinWebConference(room) ⇒ `Promise`
+
+If no conference in the bubble, start one (if allowed) If active conference in the bubble, join it
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `Promise` - Returns WebConferenceSession object that is related to the web conference session in that room/bubble  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+room
+
+`Room`
+
+The room/bubble where the user is going to start/join the conference
+
+### webConferenceServiceV2.startWebConference(room) ⇒ `Promise`
+
+Start a web conference in the given bubble
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `Promise` - Returns WebConferenceSession object that is related to the web conference session in that room/bubble  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+room
+
+`Room`
+
+The room/bubble where the user is going to start the conference
+
+### webConferenceServiceV2.joinWebConference(room, noAudio) ⇒ `Promise`
+
+Joins a web conference in the given bubble
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `Promise` - Returns WebConferenceSession object that is related to the web conference session in that room/bubble  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+room
+
+`Room`
+
+The room/bubble where the user wants to join a conference (there should be an active conference in the room/bubble)
+
+noAudio
+
+`boolean`
+
+If true, the user will join with no audio (he'll be able to see all videos / sharing and also share his video, but the audio session will be "empty"
+
+### webConferenceServiceV2.joinWebConferenceByPhone(room) ⇒ `Promise`
+
+Joins a web conference in the given bubble by his deskphone (only for RB Hub users); The user will also join the bubble in "no audio mode"
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `Promise` - Returns WebConferenceSession object that is related to the web conference session in that room/bubble  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+room
+
+`Room`
+
+The room/bubble where the user wants to join a conference (there should be an active conference in the room/bubble)
+
+### webConferenceServiceV2.addPSTNParticipantToConference(webConferenceSession, participantPhoneNumber) ⇒ `Promise`
+
+Add PSTN participant in the conference
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `Promise` - Returns on API call success  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+webConferenceSession
+
+`WebConferenceSession`
+
+The web conference where we want to add the phone number participant
+
+participantPhoneNumber
+
+`string`
+
+The phone number to be added to the conference
+
+### webConferenceServiceV2.declineInvitationToJoinConference(room) ⇒ `Promise`
+
+Decline incoming invitation to join a web conference. This API will send update to all other connected devices to the user to notify;
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `Promise` - Returns on API call success  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+room
+
+`Room`
+
+The room/bubble to decline the web conference invitation
+
+### webConferenceServiceV2.addAudioToWebConferenceSession(webConferenceSession)
+
+Add audio to an existing web conference session (ONLY IN CASE THE JOIN IS DONE VIA NOAUDIO OPTION)
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+webConferenceSession
+
+`WebConferenceSession`
+
+the WebConferenceSession object where we want to add the media
+
+### webConferenceServiceV2.addMediaToWebConferenceSession(webConferenceSession, mediaType, existingStream)
+
+Add media (video or sharing) to an existing web conference session
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+webConferenceSession
+
+`WebConferenceSession`
+
+the WebConferenceSession object where we want to add the media
+
+mediaType
+
+`string`
+
+the type of the media to be added. Accepted values are 'video' or 'sharing';
+
+existingStream
+
+`any`
+
+\[OPTIONAL\] if we want to use an already existing stream
+
+### webConferenceServiceV2.removeMediaFromConferenceSession(webConferenceSession, mediaType)
+
+Remove Media from the current web conference session. It could be either 'video' or 'sharing'
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+webConferenceSession
+
+`WebConferenceSession`
+
+The Web conference session
+
+mediaType
+
+`string`
+
+the media to be removed 'video' or 'sharing'
+
+### webConferenceServiceV2.leaveWebConference(webConferenceSession) ⇒ `Promise`
+
+Removes me from the current conference. A "shortcut" for API disconnectUserFromWebConference
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `Promise` - Return  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+webConferenceSession
+
+`WebConferenceSession`
+
+The current web conference session
+
+### webConferenceServiceV2.disconnectUserFromWebConference(webConferenceSession, participantId) ⇒ `Promise`
+
+Removes a user from the web conference in the given bubble; This API can be used by the moderators of the bubble to remove other participants too
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `Promise` - Return promise  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+webConferenceSession
+
+`WebConferenceSession`
+
+The current web conference session
+
+participantId
+
+`string`
+
+The participant ID that should be removed from the conference
+
+### webConferenceServiceV2.subscribeToDynamicFeed(webConferenceSession) ⇒ `Promise.<any>`
+
+API used to subscribe to the dynamic feed (if not done already)
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `Promise.<any>` - a promise that resolve when action is accepted by server  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+webConferenceSession
+
+`WebConferenceSession`
+
+The Web Conference session
+
+### webConferenceServiceV2.subscribeToService(webConferenceSession, serviceId) ⇒ `Promise.<any>`
+
+Subscribe to a conference service (like the grid 49 / mozaic)
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `Promise.<any>` - a promise that resolve when action is accepted by server  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+webConferenceSession
+
+`WebConferenceSession`
+
+The Web Conference session
+
+serviceId
+
+`string`
+
+The serviceId to who we want to subscribe
+
+### webConferenceServiceV2.subscribeToParticipantVideo(webConferenceSession, participant) ⇒ `Promise.<any>`
+
+Subscribe to a video of a participant
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `Promise.<any>` - a promise that resolve when action is accepted by server  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+webConferenceSession
+
+`WebConferenceSession`
+
+The Web Conference session
+
+participant
+
+`WebConferenceParticipant`
+
+The WebConferenceParticipant to who we want to subscribe
+
+### webConferenceServiceV2.updateParticipant(webConferenceSession, participantId, option, media, bitRate, subStreamLevel, publisherId) ⇒ `Promise.<void>`
+
+Api used to update a conference participant (ourself, or any other participant if the user is a moderator of the conference)
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `Promise.<void>` - a promise that resolve when particpant state is updated  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+webConferenceSession
+
+`WebConferenceSession`
+
+The Web Conference session
+
+participantId
+
+`string`
+
+ID of particpant to update
+
+option
+
+`string`
+
+update data ( could be on of: mute, unmute, hold, retrieve, plug, unplug, update); With 'update' option we can :  
+\- Update media bandwidth as publisher. Two parameters must be present: media and bitRate  
+\- Update substream level as subscriber. One parameter must be present: subStreamLevel. Parameter publisherId is optional.
+
+media
+
+`string`
+
+(optional) type of media to be updated (video/sharing)
+
+bitRate
+
+`string`
+
+(optional) the max bitrate to be set (0 is unlimited)
+
+subStreamLevel
+
+`string`
+
+(optional) set new sub-stream level. Only available for publishers and in simulcast mode (0 - low, 1 - medium, 2 - high)
+
+publisherId
+
+`string`
+
+(optional) the publisher id related to the update
+
+### webConferenceServiceV2.updateConferenceParameters(webConferenceSession, option) ⇒ `Promise.<void>`
+
+API used to update the conference parameters (can be used by the conference moderator)
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `Promise.<void>` - a promise that resolve when conference parameters are updated  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+webConferenceSession
+
+`WebConferenceSession`
+
+The Web Conference session
+
+option
+
+`string`
+
+could be one of:  
+\- mute (Mutes all participants, except requester.)  
+\- unmute (Unmutes all participants)  
+\- lock (Disables any future participant from joining conference)  
+\- unlock (Unlocks the conference)
+
+### webConferenceServiceV2.delegateConferenceToParticipant(webConferenceSession, participantId) ⇒ `Promise.<void>`
+
+Method used to delegate the conference to another participant
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `Promise.<void>` - a promise  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+webConferenceSession
+
+`WebConferenceSession`
+
+The Web conference session
+
+participantId
+
+`string`
+
+\[required\] the ID of the participant to whom we will delegate the conference
+
+### webConferenceServiceV2.getConferenceTalkingTimeStats(roomDbId) ⇒ `Promise.<void>`
+
+Method used to stop the echo test
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `Promise.<void>` - a promise  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+roomDbId
+
+`string`
+
+\[required\] the DB Id of the room where we want to get the stats
+
+### webConferenceServiceV2.startMediaEchoTest() ⇒ `Promise.<void>`
+
+Method used to start the echo test
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `Promise.<void>` - a promise  
+**Access**: public  
+
+### webConferenceServiceV2.stopMediaEchoTest() ⇒ `Promise.<void>`
+
+Method used to stop the echo test
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `Promise.<void>` - a promise  
+**Access**: public  
+
+### webConferenceServiceV2.putAllRemoteVideoSessionsOnHold(webConferenceSession) ⇒ `void`
+
+Method used to put all current incoming video sessions on hold
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `void` - returns when all sessions are put on hold  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+webConferenceSession
+
+`WebConferenceSession`
+
+The Web conference session
+
+### webConferenceServiceV2.putRemoteVideoSessionOnHold(participant) ⇒ `void`
+
+Method used to put the video session of the participant on hold; Cannot be done on sharing session !
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `void` - returns when it's done  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+participant
+
+`WebConferenceParticipant`
+
+The Web conference participant
+
+### webConferenceServiceV2.putRemoteVideoSessionOnUnhold(participant) ⇒ `void`
+
+Method used to unhold the remote video session for participant; Cannot be done on sharing session !
+
+**Kind**: instance method of [`WebConferenceServiceV2`](#module_WebConferenceServiceV2)  
+**Returns**: `void` - returns when it's done  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+participant
+
+`WebConferenceParticipant`
+
+The Web conference participant
+
+### Sur cette page
+
+-   [WebConferenceServiceV2](/docs/sdk/web#name-webconferenceservicev2-3)
+-   [webConferenceServiceV2.subscribe(handler) ⇒ Subscription](/docs/sdk/web#name-webconferenceservicev2.subscribehandler--subscription-185)
+-   [webConferenceServiceV2.sendCustomEvent(name, data)](/docs/sdk/web#name-webconferenceservicev2.sendcustomeventname-data-225)
+-   [webConferenceServiceV2.attachVideoSessionToHtmlElement(elementId, videoSession)](/docs/sdk/web#name-webconferenceservicev2.attachvideosessiontohtmlelementelementid-videosession-276)
+-   [webConferenceServiceV2.getConferenceLeaderContact(webConferenceSession) ⇒ Contact](/docs/sdk/web#name-webconferenceservicev2.getconferenceleadercontactwebconferencesession--contact-327)
+-   [webConferenceServiceV2.setHelperServiceConfiguration(disableDynamicFeed, disableAutoSubscriptions)](/docs/sdk/web#name-webconferenceservicev2.sethelperserviceconfigurationdisabledynamicfeed-disableautosubscriptions-367)
+-   [webConferenceServiceV2.getWebConferenceSessionById(id) ⇒ WebConferenceSession | null](/docs/sdk/web#name-webconferenceservicev2.getwebconferencesessionbyidid--webconferencesession--null-418)
+-   [webConferenceServiceV2.hasActiveWebConferenceSession() ⇒ boolean](/docs/sdk/web#name-webconferenceservicev2.hasactivewebconferencesession--boolean-458)
+-   [webConferenceServiceV2.getActiveWebConferenceSession() ⇒ WebConferenceSession](/docs/sdk/web#name-webconferenceservicev2.getactivewebconferencesession--webconferencesession-467)
+-   [webConferenceServiceV2.stopWebConference(room) ⇒ Promise](/docs/sdk/web#name-webconferenceservicev2.stopwebconferenceroom--promise-476)
+-   [webConferenceServiceV2.startOrJoinWebConference(room) ⇒ Promise](/docs/sdk/web#name-webconferenceservicev2.startorjoinwebconferenceroom--promise-516)
+-   [webConferenceServiceV2.startWebConference(room) ⇒ Promise](/docs/sdk/web#name-webconferenceservicev2.startwebconferenceroom--promise-556)
+-   [webConferenceServiceV2.joinWebConference(room, noAudio) ⇒ Promise](/docs/sdk/web#name-webconferenceservicev2.joinwebconferenceroom-noaudio--promise-596)
+-   [webConferenceServiceV2.joinWebConferenceByPhone(room) ⇒ Promise](/docs/sdk/web#name-webconferenceservicev2.joinwebconferencebyphoneroom--promise-647)
+-   [webConferenceServiceV2.addPSTNParticipantToConference(webConferenceSession, participantPhoneNumber) ⇒ Promise](/docs/sdk/web#name-webconferenceservicev2.addpstnparticipanttoconferencewebconferencesession-participantphonenumber--promise-687)
+-   [webConferenceServiceV2.declineInvitationToJoinConference(room) ⇒ Promise](/docs/sdk/web#name-webconferenceservicev2.declineinvitationtojoinconferenceroom--promise-738)
+-   [webConferenceServiceV2.addAudioToWebConferenceSession(webConferenceSession)](/docs/sdk/web#name-webconferenceservicev2.addaudiotowebconferencesessionwebconferencesession-778)
+-   [webConferenceServiceV2.addMediaToWebConferenceSession(webConferenceSession, mediaType, existingStream)](/docs/sdk/web#name-webconferenceservicev2.addmediatowebconferencesessionwebconferencesession-mediatype-existingstream-818)
+-   [webConferenceServiceV2.removeMediaFromConferenceSession(webConferenceSession, mediaType)](/docs/sdk/web#name-webconferenceservicev2.removemediafromconferencesessionwebconferencesession-mediatype-880)
+-   [webConferenceServiceV2.leaveWebConference(webConferenceSession) ⇒ Promise](/docs/sdk/web#name-webconferenceservicev2.leavewebconferencewebconferencesession--promise-931)
+-   [webConferenceServiceV2.disconnectUserFromWebConference(webConferenceSession, participantId) ⇒ Promise](/docs/sdk/web#name-webconferenceservicev2.disconnectuserfromwebconferencewebconferencesession-participantid--promise-971)
+-   [webConferenceServiceV2.subscribeToDynamicFeed(webConferenceSession) ⇒ Promise.<any>](/docs/sdk/web#name-webconferenceservicev2.subscribetodynamicfeedwebconferencesession--promise.any-1022)
+-   [webConferenceServiceV2.subscribeToService(webConferenceSession, serviceId) ⇒ Promise.<any>](/docs/sdk/web#name-webconferenceservicev2.subscribetoservicewebconferencesession-serviceid--promise.any-1062)
+-   [webConferenceServiceV2.subscribeToParticipantVideo(webConferenceSession, participant) ⇒ Promise.<any>](/docs/sdk/web#name-webconferenceservicev2.subscribetoparticipantvideowebconferencesession-participant--promise.any-1113)
+-   [webConferenceServiceV2.updateParticipant(webConferenceSession, participantId, option, media, bitRate, subStreamLevel, publisherId) ⇒ Promise.<void>](/docs/sdk/web#name-webconferenceservicev2.updateparticipantwebconferencesession-participantid-option-media-bitrate-substreamlevel-publisherid--promise.void-1164)
+-   [webConferenceServiceV2.updateConferenceParameters(webConferenceSession, option) ⇒ Promise.<void>](/docs/sdk/web#name-webconferenceservicev2.updateconferenceparameterswebconferencesession-option--promise.void-1270)
+-   [webConferenceServiceV2.delegateConferenceToParticipant(webConferenceSession, participantId) ⇒ Promise.<void>](/docs/sdk/web#name-webconferenceservicev2.delegateconferencetoparticipantwebconferencesession-participantid--promise.void-1321)
+-   [webConferenceServiceV2.getConferenceTalkingTimeStats(roomDbId) ⇒ Promise.<void>](/docs/sdk/web#name-webconferenceservicev2.getconferencetalkingtimestatsroomdbid--promise.void-1372)
+-   [webConferenceServiceV2.startMediaEchoTest() ⇒ Promise.<void>](/docs/sdk/web#name-webconferenceservicev2.startmediaechotest--promise.void-1412)
+-   [webConferenceServiceV2.stopMediaEchoTest() ⇒ Promise.<void>](/docs/sdk/web#name-webconferenceservicev2.stopmediaechotest--promise.void-1421)
+-   [webConferenceServiceV2.putAllRemoteVideoSessionsOnHold(webConferenceSession) ⇒ void](/docs/sdk/web#name-webconferenceservicev2.putallremotevideosessionsonholdwebconferencesession--void-1430)
+-   [webConferenceServiceV2.putRemoteVideoSessionOnHold(participant) ⇒ void](/docs/sdk/web#name-webconferenceservicev2.putremotevideosessiononholdparticipant--void-1470)
+-   [webConferenceServiceV2.putRemoteVideoSessionOnUnhold(participant) ⇒ void](/docs/sdk/web#name-webconferenceservicev2.putremotevideosessiononunholdparticipant--void-1510)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,697 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/core/lts/guides/040_managing_personal_profile"
+lastSynced: "2026-02-19T22:35:13.777Z"
+---
+# Documentation
+
+Managing personal profile
+
+LTS release 3.XPubliée le 2025-03-17
+
+## Managing personal profile
+
+## Prerequisite
+
+You must first know how to connect and manage auto-reconnection service using the SDK:
+
+-   [Connect to Rainbow](/docs/sdk/csharp).
+-   [Auto Reconnection](/docs/sdk/csharp).
+
+## Introduction
+
+This guide will explain:
+
+-   How to get and update information of the current contact (the one connected to the server)
+-   How to get and update his avatar
+-   How to get and change his presence
+-   How to get login/password from the INI file
+-   How to know when the password has been changed even from another device
+
+At then end of this guide, a full example is available (a console application working on Windows, Linux and MacOs)
+
+### Get/Update information of the current contact
+
+Once connected, you can get a [`Contact`](/docs/sdk/csharp) object using [`GetCurrentContact()`](/docs/sdk/csharp#Rainbow.Contacts.GetCurrentContact\(\)) method from [`Contacts`](/docs/sdk/csharp) service.
+
+This objects contains several properties
+
+-   `FirstName`
+-   `LastName`
+-   `NickName`
+-   etc ...
+
+You just have to update some of them and use [`UpdateCurrentContactAsync()`](/docs/sdk/csharp#Rainbow.Contacts.UpdateCurrentContactAsync\(Rainbow.Model.Contact\)) method to ask Rainbow server to do it.
+
+**Code snippet:** (full example at the end of the guide)
+
+```csharp
+var RbApplication = new Application(iniFileFolder, iniFileName);
+var RbContacts = RbApplication.GetContacts();
+Contact? currentContact = null;
+...
+// Once connected
+
+// Get current contact
+currentContact = RbContacts.GetCurrentContact();
+
+// Get Firt Name
+var firstName = myContact.FirstName;
+
+// We want to update the first name
+currentContact.FirstName = currentContact.FirstName + " - Update using SDK C#";
+var contactSdkResult = await RbContacts.UpdateCurrentContactAsync(currentContact);
+if (contactSdkResult.Success)
+{
+    // Operation done successfully
+    
+}
+else
+{
+    // Error to manage
+}
+```
+
+### Get/Update Avatar of the current contact
+
+Once connected you can get the Avatar (if any) in PNG format of the current contact using [`GetAvatarAsync()`](/docs/sdk/csharp#Rainbow.Contacts.GetAvatarAsync\(Rainbow.Model.Contact-_Int32\)) method.
+
+You can update it using byte array from a valid `JPG`, `JPEG` or `PNG` file using [`UpdateAvatarAsync()`](/docs/sdk/csharp#Rainbow.Contacts.UpdateAvatarAsync\(Byte---_String\)) method.
+
+And delete it using [`DeleteAvatarAsync()`](/docs/sdk/csharp#Rainbow.Contacts.DeleteAvatarAsync\(\)) method.
+
+**Code snippet:** (full example at the end of the guide)
+
+```csharp
+var RbApplication = new Application(iniFileFolder, iniFileName);
+var RbContacts = RbApplication.GetContacts();
+Contact? currentContact = null;
+...
+// Once connected
+
+// Get current contact
+currentContact = RbContacts.GetCurrentContact();
+
+// Get avatar (if any) of the current contact
+var avatarSdkResult = await RbContacts.GetAvatarAsync(); // We wait here the result from server
+if(avatarSdkResult.Success)
+{
+    // Get Avatar as byte[]
+    var avatar = avatarSdkResult.Data;
+
+    // Get current directory to save this avatar using Id of the current cotnact
+    var avatarPath = Path.Combine(Directory.GetCurrentDirectory(), currentContact.Peer.Id + ".png");
+    try
+    {
+        File.WriteAllBytes(avatarPath, avatar);
+    }
+    catch(Exception exc)
+    {
+    }
+}
+else
+{
+    // Error to manage
+}
+
+
+// Update Avatar
+String avatarFilePath = @"C:\media\Avatar\avatar_02.png"; // Set a valid Path to an image file (PNG, JPG or JPEG)
+if(File.Exists(avatarFilePath))
+{
+    var bytes = File.ReadAllBytes(avatarFilePath);
+    var booleanSdkResult = await RbContacts.UpdateAvatarAsync(bytes, "JPG");
+    if (booleanSdkResult.Success)
+    {
+        // Avatar has been updated
+    }
+    else
+        // Error to manage
+}
+
+// Delete Avatar
+var booleanSdkResult = await RbContacts.DeleteAvatarAsync();
+if (booleanSdkResult.Success)
+{
+    // Avatar has been deleted
+}
+else
+    // Error to manage
+```
+
+### Get/Change presence of the current contact
+
+You can change your Rainbow presence by calling [`SetPresenceLevelAsync()`](/docs/sdk/csharp#Rainbow.Contacts.SetPresenceLevelAsync\(Rainbow.Model.Presence-_Int32\)) method or [`SetBusyPresenceAccordingMediasAsync()`](/docs/sdk/csharp#Rainbow.Contacts.SetBusyPresenceAccordingMediasAsync\(Int32\)) method.
+
+[`Presence`](/docs/sdk/csharp) object contains properties `PresenceLevel` and `PresenceDetails`
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+  Rainbow.Contacts contacts = myApp.GetContacts();
+  ...
+  // Once connected / initialized
+  contacts.SetBusyPresenceAccordingMediasAsync(Call.Media.AUDIO);
+  ...
+  contacts.SetBusyPresenceAccordingMediasAsync(Call.Media.VIDEO);
+  ...
+  contacts.SetPresenceLevelAsync(contacts.CreatePresence(true, PresenceLevel.Online));
+  ...
+  contacts.SetPresenceLevelAsync(contacts.CreatePresence(true, PresenceLevel.Dnd));
+```
+
+### Listen if the user password has been changed
+
+To do it, you should listen to event `PasswordUpdated` from `Application` class.
+
+When this event is fired it's mandatory to logout and to login to continue to use the Rainbow service
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+
+myApp.PasswordUpdated += MyApp_PasswordUpdated;
+...
+
+private void MyApp_PasswordUpdated()
+{
+    // The current contact password has been changed ...
+    // Need to logout and to login again with new credentials
+}
+```
+
+### Get the last credentials saved in cache
+
+You can retrieve the login and password saved in cache. It corresponds to the last credentials logged in.
+
+It allows you to connect automatically if you want to hide the login screen and if the user has already logged in once.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();                   
+
+String login = myApp.GetUserLogin();
+String password =  myApp.GetUserPassword();
+```
+
+## Code Example
+
+This example is based on code explained in these guides:
+
+-   [Connect to Rainbow](/docs/sdk/csharp).
+-   [Auto Reconnection](/docs/sdk/csharp).
+
+Previous example permit to understand:
+
+-   To get all contacts and all bubbles once connected
+-   How to login to Rainbow Server and in case of problem the reason why it didn't work
+-   To know when you are connected / disconnected
+-   To know when the Autorecoonection service is started and when is cancelled
+
+They have been enhanced to demonstrate all to get/update data explained in this guide:
+
+It's the code of a console application working on Windows, Linux and MacOs.
+
+```csharp
+using Rainbow;
+using Rainbow.Consts;
+using Rainbow.Model;
+
+String appId = ""; // To set according your settings
+String appSecretKey = ""; // To set according your settings
+String hostName = ""; // To set according your settings
+
+String login = ""; // To set according your settings
+String password = ""; // To set according your settings
+
+Boolean endProgram = false;// To know when to quit the app
+Boolean displayLoginResult = true; // To display login result information only once
+Object consoleLockObject = new Object(); // To lock until the the current consoly dislay is performed
+
+// Define INI File used by this example
+String iniFileFolder = Directory.GetCurrentDirectory();
+String iniFileName = "PersonalProfileExample.ini";
+
+// Create Rainbow SDK objects
+var RbApplication = new Application(iniFileFolder, iniFileName);
+var RbAutoReconnection = RbApplication.GetAutoReconnection();
+var RbBubbles = RbApplication.GetBubbles();
+var RbContacts = RbApplication.GetContacts();
+
+Contact? currentContact = null;
+bool usingCache = false;
+String cr = Rainbow.Util.CR; // Carriage return in multi-environment
+
+// Set events that we want to follow
+RbApplication.AuthenticationFailed += RbApplication_AuthenticationFailed; // Triggered when the authentication process will fail
+RbApplication.AuthenticationSucceeded += RbApplication_AuthenticationSucceeded; // Triggered when the authentication process will succeed
+RbApplication.ConnectionStateChanged += RbApplication_ConnectionStateChanged; // Triggered when the Connection State will change
+RbApplication.PasswordUpdated += RbApplication_PasswordUpdated; // Triggered when the password of the current user has been updated
+
+RbContacts.ContactAggregatedPresenceUpdated += RbContacts_ContactAggregatedPresenceUpdated;
+RbContacts.ContactPresenceUpdated += RbContacts_ContactPresenceUpdated;
+
+RbAutoReconnection.Cancelled += RbAutoReconnection_Cancelled;
+
+// Set global configuration info
+RbApplication.SetApplicationInfo(appId, appSecretKey);
+RbApplication.SetHostInfo(hostName);
+
+WriteBlue($"Use [ESC] at anytime to quit{cr}");
+WriteBlue($"Once connected [P] to display presence options{cr}");
+
+// You can retrieve INI File name and Path used:
+// This both methods can be called before to be connected
+iniFileFolder = RbApplication.GetIniPathFolder();
+iniFileName = RbApplication.GetIniFileName();
+
+// Retrieve login and password saved in INI File (it's encrypted).
+// This both methods can be called before to be connected
+// If it's the first time you launch this example, loginInCache and pwdInCache will be empty
+var loginInCache = RbApplication.GetUserLogin();
+var pwdInCache = RbApplication.GetUserPassword();
+
+
+// Start login
+Task<SdkResult<Boolean>> loginTask;
+if (String.IsNullOrEmpty(loginInCache) || String.IsNullOrEmpty(pwdInCache))
+{
+    usingCache = false;
+    WriteWhite($"Starting login - Login:[{login}] - Pwd:[{password}] ...");
+    loginTask = RbApplication.LoginAsync(login, password); // We don't wait here since we want to quit at any time using ESC key
+}
+else
+{
+    usingCache = true;
+    WriteYellow($"Starting login USING CACHE - Login:[{loginInCache}] - Pwd:[{pwdInCache}] ...");
+    loginTask = RbApplication.LoginAsync(loginInCache, pwdInCache); // We don't wait here since we want to quit at any time using ESC key
+}
+
+do
+{
+    Thread.Sleep(200);
+
+    await CheckInputKeys();
+
+    // Check if the login's task is finished AND if we need to display the result (if not already done)
+    if (loginTask.IsCompleted && displayLoginResult)
+    {
+
+        displayLoginResult = false;
+
+        // Get SdkResult Object from the task
+        var loginSdkResult = loginTask.Result;
+        if (loginSdkResult.Success)
+        {
+            // We can now use the SDK
+
+            // Get current contact/user
+            currentContact = RbContacts.GetCurrentContact();
+            WriteWhite($"Current contact:[{currentContact}]");
+
+            // Get presence of the current contact using this device
+            Presence presence;
+            presence = RbContacts.GetPresence();
+            if (presence != null)
+            {
+                WriteWhite($"Current presence:{cr}Full details:[{presence.ToString(DetailsLevel.Full)}]{cr}");
+                WriteWhite($"Current presence:{cr}Small details:[{presence.ToString(DetailsLevel.Small)}]{cr}");
+            }
+
+            // Get aggregated/unified presence of the current contact (resume based on all devices of the current contact)
+            var aggregatedPresence = RbContacts.GetAggregatedPresence();
+            if (aggregatedPresence != null)
+            {
+                WriteWhite($"Aggregated presence:{cr}Full details:[{aggregatedPresence.ToString(DetailsLevel.Full)}]{cr}");
+                WriteWhite($"Aggregated presence:{cr}Small details:[{aggregatedPresence.ToString(DetailsLevel.Small)}]{cr}");
+            }
+
+
+            //// Get avatar (if any) of the current contact
+            //var avatarSdkResult = await RbContacts.GetAvatarAsync(); // We wait here the result from server
+            //if(avatarSdkResult.Success)
+            //{
+            //    // Get Avatar as byte[]
+            //    var avatar = avatarSdkResult.Data;
+
+            //    // Get current directory to save this avatar using Id of the current cotnact
+            //    var avatarPath = Path.Combine(Directory.GetCurrentDirectory(), currentContact.Peer.Id + ".png");
+            //    try
+            //    {
+            //        File.WriteAllBytes(avatarPath, avatar);
+            //        WriteWhite($"Avatar of the current user saved here:[{avatarPath}]");
+            //    }
+            //    catch(Exception exc)
+            //    {
+            //        WriteRed($"Avatar of the current user note saved - Exception:{cr}{Rainbow.Util.SerializeException(exc)}]");
+            //    }
+            //}
+            //else
+            //    WriteRed($"Cannot get Avatar of the current user - SdkError:[{avatarSdkResult.Result}]");
+
+
+            // Change presence
+            SdkResult<Boolean> booleanSdkResult;
+
+            // Here we want to change presense to Busy - In Video
+            //booleanSdkResult = await RbContacts.SetBusyPresenceAccordingMedias(Media.VIDEO);
+            //if(booleanSdkResult.Success)
+            //{
+            //    WriteWhite($"Presence has been updated to Busy - In Video");
+            //}
+
+            // Here we want to change presense to Dnd
+            //presence = RbContacts.CreatePresence(true, PresenceLevel.Dnd);
+            //booleanSdkResult = await RbContacts.SetPresenceLevelAsync(presence);
+            //if (booleanSdkResult.Success)
+            //{
+            //    WriteWhite($"Presence has been updated to Dnd");
+            //}
+            
+
+            // Update Personal Information
+            //currentContact.FirstName = currentContact.FirstName + " - Update using SDK C#";
+            //currentContact.LastName = currentContact.LastName + " - Update using SDK C#";
+            //var contactSdkResult = await RbContacts.UpdateCurrentContactAsync(currentContact);
+            //if (contactSdkResult.Success)
+            //{
+            //    WriteWhite($"Contact Personal Information has been updated");
+            //}
+            //else
+            //    WriteRed($"Contact Personal Information has not been updated: [{contactSdkResult.Result}]");
+
+            // Update Avatar
+            //String avatarFilePath = @"C:\media\Avatar\avatar_02.png"; // Set a valid Path to an image file (PNG, JPG or JPEG)
+            //if(File.Exists(avatarFilePath))
+            //{
+            //    var bytes = File.ReadAllBytes(avatarFilePath);
+            //    booleanSdkResult = await RbContacts.UpdateAvatarAsync(bytes, "JPG");
+            //    if (booleanSdkResult.Success)
+            //    {
+            //        WriteWhite($"Avatar has been updated using this file: [{avatarFilePath}]");
+            //    }
+            //    else
+            //        WriteRed($"Avatar not updated - SdkError: [{booleanSdkResult.Result}]");
+            //}
+            //else
+            //    WriteRed($"Avatar not updated - File not found: [{avatarFilePath}]");
+
+        }
+        else
+        {
+            endProgram = true; // We want to quit since we cannot login
+
+            // Display the reason
+            if (loginSdkResult.Result.Type == Rainbow.Enums.SdkErrorType.Exception)
+                WriteRed($"LoginAsync - Exception occurs: [{loginSdkResult.Result}]");
+            else
+            {
+                if (loginSdkResult.Result.IncorrectUseError.ErrorCode == 1000)
+                    WriteRed($"LoginAsync - SDK triggered an error:{loginSdkResult.Result}");
+                else
+                    WriteRed($"LoginAsync - Server triggered an error:{loginSdkResult.Result}");
+            }
+        }
+    }
+
+} while (!endProgram); // Loop until we want to quit
+
+
+#region DEFINE METHODS TO RECEIVE EVENTS FROM RAINBOW SDK
+// Now we define methods which will be called by events defined previously
+void RbApplication_ConnectionStateChanged(Rainbow.Model.ConnectionState connectionState)
+{
+    // We log connection state in the console - use differnte color according the status
+    ConsoleColor color;
+    switch (connectionState.Status)
+    {
+        case ConnectionStatus.Connected:
+            color = ConsoleColor.Blue;
+            break;
+
+        case ConnectionStatus.Disconnected:
+            color = ConsoleColor.Red;
+            break;
+
+        case ConnectionStatus.Connecting:
+        default:
+            color = ConsoleColor.Green;
+            break;
+
+    }
+    WriteToConsole($"Event Application.ConnectionStateChanged triggered - Connection Status: [{connectionState.Status}]", color);
+}
+
+void RbApplication_AuthenticationSucceeded()
+{
+    // Authentication Succeeded- we display in the console the info
+    WriteBlue($"Event Application.AuthenticationSucceeded triggered");
+}
+
+void RbApplication_AuthenticationFailed(SdkError sdkError)
+{
+    // Authentication failed - we display in the console the reason
+    WriteRed($"Event Application.AuthenticationFailed triggered - SdkError:{cr}[{sdkError}");
+}
+
+void RbApplication_PasswordUpdated()
+{
+    WriteYellow($"Event Application.RbApplication_PasswordUpdated triggered");
+    // The current contact password has been changed ...
+    // Need to logout and to login again with new credentials
+}
+
+void RbContacts_ContactPresenceUpdated(Rainbow.Model.Presence presence)
+{
+    // We want to display presence information for the current contact only
+    if(currentContact != null)
+    {
+        if(presence.Contact.Peer == currentContact.Peer)
+        {
+            var displayName = presence.Contact.Peer.DisplayName;
+            var presenceStr = Rainbow.Util.SerializePresence(presence, DetailsLevel.Medium);
+            WriteGreen($"Event ContactPresenceUpdated triggered: {displayName}{presenceStr}");
+        }
+    }
+}
+
+void RbContacts_ContactAggregatedPresenceUpdated(Rainbow.Model.Presence presence)
+{
+    // We want to display aggregated presence information for the current contact only
+    if (currentContact != null)
+    {
+        if (presence.Contact.Peer == currentContact.Peer)
+        {
+            var displayName = presence.Contact.Peer.DisplayName;
+            var presenceStr = Rainbow.Util.SerializePresence(presence, DetailsLevel.Medium);
+            WriteYellow($"Event ContactAggregatedPresenceUpdated triggered: {displayName}{presenceStr}");
+        }
+    }
+}
+
+void RbAutoReconnection_Cancelled(SdkError sdkError)
+{
+    WriteRed($"Event AutoReconnection_Cancelled triggered - SdkError:{cr}[{sdkError}");
+
+    // If we are using cache, we can delete the INI File
+    if(usingCache)
+    {
+        var filePath = Path.Combine(iniFileFolder, iniFileName);
+        try
+        {
+            File.Delete(filePath);
+            WriteYellow($"INI file has been deleted path:[{filePath}]");
+        }
+        catch (Exception exc) 
+        {
+            WriteRed($"Cannot deete INI file path:[{filePath}]:{cr}Exception:{cr}{exc}");
+        }
+    }
+}
+
+#endregion DEFINE METHODS TO RECEIVE EVENTS FROM RAINBOW SDK
+
+#region UTILITY METHODS
+
+async Task CheckInputKeys()
+{
+    while (Console.KeyAvailable)
+    {
+        var userInput = Console.ReadKey(true);
+        if (userInput.Key == ConsoleKey.Escape)
+        {
+            WriteBlue($"Asked to end process using [ESC] key");
+            System.Environment.Exit(0);
+        }
+        else if (userInput.Key == ConsoleKey.Enter)
+        {
+            WriteWhite("");
+        }
+        else if (RbApplication.IsConnected())
+        {
+            Presence newPresence;
+            SdkResult<Boolean> booleanSdkResult = null;
+            String message = "";
+            switch (userInput.Key)
+            {
+                // Display Presence options
+                case ConsoleKey.P:
+                    WriteBlue($"Change Presence To:{cr}\tO - Online{cr}\tA - Away{cr}\tI - Inactive / Away{cr}\tB - Busy (media random){cr}\tX - Xa / Invisible{cr}\tD - DnD");
+                    break;
+
+                // Change Presence to Online
+                case ConsoleKey.O:
+                    newPresence = RbContacts.CreatePresence(true, PresenceLevel.Online);
+                    booleanSdkResult = await RbContacts.SetPresenceLevelAsync(newPresence);
+                    message = "Online";
+                    break;
+
+                // Change Presence to Away
+                case ConsoleKey.A:
+                    newPresence = RbContacts.CreatePresence(true, PresenceLevel.Away);
+                    booleanSdkResult = await RbContacts.SetPresenceLevelAsync(newPresence);
+                    message = "Away";
+                    break;
+
+                // Change Presence to Inactive / Away
+                case ConsoleKey.I:
+                    newPresence = RbContacts.CreatePresence(true, PresenceLevel.Away, PresenceDetails.Inactive);
+                    booleanSdkResult = await RbContacts.SetPresenceLevelAsync(newPresence);
+                    message = "Inactive / Away";
+                    break;
+
+                // Change Presence to Busy (with random media)
+                case ConsoleKey.B:
+                    
+                    int medias = Media.NONE;
+                    // Randomly choose if None, Video or Sharing is used
+                    var rdm = Rainbow.Util.RandomNext(1, 4);
+                    switch(rdm)
+                    {
+                        case 1:
+                            medias = Media.NONE; 
+                            break;
+                        case 2:
+                            medias = Media.VIDEO;
+                            message = "Video";
+                            break;
+                        case 3:
+                            medias = Media.SHARING;
+                            message = "Sharing";
+                            break;
+                    }
+
+                    // At least we havte to have Audio medias
+                    if (medias == Media.NONE)
+                    {
+                        medias = Media.AUDIO;
+                        message = "Audio";
+                    }
+                    else
+                    {
+                        // Randomly choose if Audio media is also used
+                        rdm = Rainbow.Util.RandomNext(1, 3);
+                        if (rdm == 1)
+                        {
+                            medias += Media.AUDIO;
+                            message = "Audio+" + message;
+                        }
+                        else
+                            medias += Media.NONE;
+                    }
+
+                    var media = Rainbow.Util.RandomNext(1, 4);
+                    if (media == 3) media = 4; // 
+                    booleanSdkResult = await RbContacts.SetBusyPresenceAccordingMediasAsync(medias);
+                    message = "Busy " + message;
+                    break;
+
+                // Change Presence to Xa / Invisible
+                case ConsoleKey.X:
+                    newPresence = RbContacts.CreatePresence(true, PresenceLevel.Xa);
+                    booleanSdkResult = await RbContacts.SetPresenceLevelAsync(newPresence);
+                    message = "Xa / Invisible";
+                    break;
+
+                // Change Presence to DnD
+                case ConsoleKey.D:
+                    newPresence = RbContacts.CreatePresence(true, PresenceLevel.Dnd);
+                    booleanSdkResult = await RbContacts.SetPresenceLevelAsync(newPresence);
+                    message = "DnD";
+                    break;
+            }
+
+            if (booleanSdkResult?.Success == true)
+                WriteWhite($"Presence for this device has been updated to {message}");
+        }
+    }
+}
+
+void WriteYellow(String message)
+{
+    WriteToConsole(message, ConsoleColor.Yellow);
+}
+
+void WriteWhite(String message)
+{
+    WriteToConsole(message, ConsoleColor.White);
+}
+
+void WriteRed(String message)
+{
+    WriteToConsole(message, ConsoleColor.Red);
+}
+
+void WriteGreen(String message)
+{
+    WriteToConsole(message, ConsoleColor.Green);
+}
+
+void WriteBlue(String message)
+{
+    WriteToConsole(message, ConsoleColor.Blue);
+}
+
+void WriteToConsole(String message, ConsoleColor? foregroundColor = null, ConsoleColor? backgroundColor = null)
+{
+    if (message == null)
+        return;
+
+    lock (consoleLockObject)
+    {
+        if (foregroundColor != null)
+            Console.ForegroundColor = foregroundColor.Value;
+
+        if (backgroundColor != null)
+            Console.BackgroundColor = backgroundColor.Value;
+
+        Console.WriteLine(message);
+        Console.ResetColor();
+    }
+}
+#endregion UTILITY METHODS
+...
+
+
+### Examples
+
+You can take a look to several examples available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/SDK%20V3.X/README.md)
+```
+
+### Sur cette page
+
+-   [Managing personal profile](/docs/sdk/csharp#name-managing-personal-profile-0)
+-   [Prerequisite](/docs/sdk/csharp#name-prerequisite-3)
+-   [Introduction](/docs/sdk/csharp#name-introduction-21)
+-   [Get/Update information of the current contact](/docs/sdk/csharp#name-getupdate-information-of-the-current-contact-57)
+-   [Get/Update Avatar of the current contact](/docs/sdk/csharp#name-getupdate-avatar-of-the-current-contact-95)
+-   [Get/Change presence of the current contact](/docs/sdk/csharp#name-getchange-presence-of-the-current-contact-111)
+-   [Listen if the user password has been changed](/docs/sdk/csharp#name-listen-if-the-user-password-has-been-changed-121)
+-   [Get the last credentials saved in cache](/docs/sdk/csharp#name-get-the-last-credentials-saved-in-cache-131)
+-   [Code Example](/docs/sdk/csharp#name-code-example-141)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

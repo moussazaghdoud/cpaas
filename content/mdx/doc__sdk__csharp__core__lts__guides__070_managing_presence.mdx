@@ -1,0 +1,247 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/core/lts/guides/070_managing_presence"
+lastSynced: "2026-02-19T22:35:13.828Z"
+---
+# Documentation
+
+Csharp > core > lts > guides > 070\_managing\_presence
+
+## Managing Presence
+
+This guide explains how to get presence of contacts in your Roster and how to set the Presence of the current contact.
+
+It's based on a full example available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/blob/master/SDK%20V3.X/ConsoleApp/Get%20and%20set%20presence/README.md)
+
+### Roster
+
+---
+
+The Roster is the list of contacts who share their presence with the current contact.
+
+It's not possible to get presence of a contact which is not your Roster.
+
+To get the list of contacts in you Roster, you need to use the `Contacts` service and use `GetAllContactsInRoster` method.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = myApp.GetContacts();
+...
+// You need to log first on the server ... 
+
+var list = RbContacts.GetAllContactsInRoster();
+if(list.Count > 0)
+{
+    Util.WriteDarkYellow($"{CR}Nb Contacts in your roster:[{list.Count}]");
+}
+```
+
+Note: When you have a `Contact` object, it's easy to know if it's in your Roster using the property `InRoster`.
+
+### Get Contact Presence by devices
+
+---
+
+It's possible to get Contact Presence using `GetPresencesList(Peer peer)`, `GetPresencesList(string contactJid)` or `GetPresencesListAsync(Peer peer)` of `Contacts` service.
+
+These methods returns a Dictionary of `Presence` object and not just one `Presence` object since a Contact can be connected to the Rainbow server using one or several devices.
+
+The Dictionary is indexed using the resource ID of each devices using by this contact. This Dictionary is useful if you want to know specifically the contact presence for a specific device.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Contacts contacts = myApp.GetContacts();
+...
+Rainbow.Model.Contact contact; // A Contact in the Roster
+
+// You need to log first on the server ... 
+
+Dictionary<String, Presence> presences = RbContacts.GetPresencesList(contact);
+
+// Loop on each Presence object in the Dictionary
+foreach (Presence presence in presences.Values)
+{
+    // presence.Contact                                   => Contact's related to this presence
+    // presence.Apply                                     => True, if this presence must be used to build the aggregated presence.
+    // presence.Date                                      => The Date when the presence has been set
+    // presence.PresenceDetails / presence.PresenceLevel  => The IM Presence
+    // presence.PresencePhoneState                        => The presence state of the phone (if any)
+    // presence.Resource                                  => Resource Id specific of the contact device used
+    // presence.Until                                     => in UTC format - The validity date until this presence is valid (if not equals to DateTime.MinValue). For calendar presence, if date is passed, it means that the user is "available" from a calendra presence point of view
+
+}
+```
+
+### Get Aggregated Presence
+
+---
+
+If you don't need to know the Contact Presence by Device but just a summary, use the aggregated Presence information.
+
+For this, use one of these methods `GetAggregatedPresence(Peer peer)` of `Contacts` service. Only one `Presence` object is returned is this case.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Contacts contacts = myApp.GetContacts();
+...
+Rainbow.Model.Contact contact; // A Contact in the Roster
+
+// You need to log on the server ... 
+
+Presence presence = contacts.GetAggregatedPresence(contact);
+  // presence.Contact                                   => Contact's related to this presence
+  // presence.Apply                                     => True, if this presence must be used to build the aggregated presence.
+  // presence.Date                                      => The Date when the presence has been set
+  // presence.PresenceDetails / presence.PresenceLevel  => The IM Presence
+  // presence.PresencePhoneState                        => The presence state of the phone (if any)
+  // presence.Resource                                  => Resource Id specific of the contact device used
+  // presence.Until                                     => in UTC format - The validity date until this presence is valid (if not equals to DateTime.MinValue). For calendar presence, if date is passed, it means that the user is "available" from a calendra presence point of view
+
+}
+```
+
+### Manage events related to presence
+
+---
+
+To be informed of Contact Presence update, you need to manage these events `ContactPresenceUpdated`, `ContactAggregatedPresenceUpdated` of `Contacts` service.
+
+`ContactPresenceUpdated` is raised when the presence of a Contact is changed on one of its device. It's useful only if you want to know Contact Presence by device.
+
+`ContactAggregatedPresenceUpdated` is raised when the aggregated presence of a Contact is changed. It's useful only if you want to know the update of the Contact Presence summary.
+
+So it's possible to have the event `ContactPresenceUpdated` raised several times but not the event `ContactAggregatedPresenceUpdated`.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Contacts contacts = myApp.GetContacts();
+...
+
+// We want to be informed of Contact Presence update by device
+contacts.ContactPresenceUpdated += Contacts_ContactPresenceUpdated; 
+
+// We want to be informed of Contact Presence summary update
+contacts.ContactAggregatedPresenceUpdated += Contacts_ContactAggregatedPresenceUpdated;
+
+// Handle Contact Presence update by device 
+private void Contacts_ContactPresenceUpdated(Rainbow.Model.Presence presence)
+{
+  // presence.Contact                                   => Contact's related to this presence
+  // presence.Apply                                     => True, if this presence must be used to build the aggregated presence.
+  // presence.Date                                      => The Date when the presence has been set
+  // presence.PresenceDetails / presence.PresenceLevel  => The IM Presence
+  // presence.PresencePhoneState                        => The presence state of the phone (if any)
+  // presence.Resource                                  => Resource Id specific of the contact device used
+  // presence.Until   
+}
+
+// Handle Contact Presence summary update 
+private void Contacts_ContactAggregatedPresenceUpdated(Rainbow.Model.Presence presence)
+{
+  // presence.Contact                                   => Contact's related to this presence
+  // presence.Apply                                     => True, if this presence must be used to build the aggregated presence.
+  // presence.Date                                      => The Date when the presence has been set
+  // presence.PresenceDetails / presence.PresenceLevel  => The IM Presence
+  // presence.PresencePhoneState                        => The presence state of the phone (if any)
+  // presence.Resource                                  => Resource Id specific of the contact device used
+  // presence.Until   
+}
+```
+
+### Manage Presence of the current contact
+
+---
+
+To manage the Presence of the current contact of you have these methods in `Contacts` service:
+
+-   `GetPresencesList(null)`: To get the Dictionary of the current Contact Presence (so to know by device the Presence)
+-   `GetAggregatedPresence(null)`: to get the current Contact summary Presence
+
+Same events, explained in previous chapter, must be used to know the update of the current contact from `Contacts` service: `ContactPresenceUpdated`, `ContactAggregatedPresenceUpdated`.
+
+To set the Presence of the current Contact, use `SetPresenceLevelAsync` or in `SetBusyPresenceAccordingMediasAsync` `Contacts` service.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = myApp.GetContacts();
+
+// Need to log on the server ...
+
+// Define the Presence of the current contact - here in "Do Not Disturb (in Presentation)"
+String presenceLevel = Rainbow.Model.PresenceLevel.Dnd;
+String presenceDetails = Rainbow.Model.PresenceDetails.Presentation;  
+
+contacts.SetBusyPresenceAccordingMediasAsync(Call.Media.VIDEO);
+
+var sdkResultBusy = await contacts.SetBusyPresenceAccordingMediasAsync(newPresence);
+if (!sdkResultBusy.Success)
+{
+    if (sdkResultBusy.Result.IncorrectUseError != null)
+    {
+        // We try to set an invalid presence
+        Util.WriteRed($"SetBusyPresenceAccordingMediasAsync - SdkError:[{sdkResultBusy.Result}]");
+    }
+    else
+    {
+        // Pb with the server
+        Util.WriteRed($"SetBusyPresenceAccordingMediasAsync - SdkError:[{sdkResultBusy.Result}]");
+    }
+}
+
+...
+
+Presence newPresence = contacts.CreatePresence(PresenceLevel.Busy, PresenceDetails.Audio);
+// newPresence = contacts.CreatePresence(PresenceLevel.Away);
+// newPresence = contacts.CreatePresence(PresenceLevel.Dnd);
+// newPresence = contacts.CreatePresence(PresenceLevel.Online);
+
+var sdkResult = await contacts.SetPresenceLevelAsync(newPresence);
+if (!sdkResult.Success)
+{
+    if (sdkResult.Result.IncorrectUseError != null)
+    {
+        // We try to set an invalid presence
+        Util.WriteRed($"SetPresenceLevelAsync - SdkError:[{sdkResult.Result}]");
+    }
+    else
+    {
+        // Pb with the server
+        Util.WriteRed($"SetPresenceLevelAsync - SdkError:[{sdkResult.Result}]");
+    }
+}
+```
+
+### Set default presence once connected to the server
+
+---
+
+By default the default presence set once onnected to the server is **Online**.
+
+It's possible to set another default presence using `SetDefaultPresenceLevel` method from `Application` object
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Contacts contacts = myApp.GetContacts();
+
+// Create a defautl presence level
+Presence defaultPresence = new Presence(contacts.CreatePresence(PresenceLevel.Away));
+
+// Set it in Application object
+myApp.SetDefaultPresenceLevel(defaultPresence);
+```
+
+### Examples
+
+You can take a look to several examples available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/SDK%20V3.X/README.md)
+
+### Sur cette page
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

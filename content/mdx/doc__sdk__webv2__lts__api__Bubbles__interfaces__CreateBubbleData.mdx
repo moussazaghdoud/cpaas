@@ -1,0 +1,143 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/Bubbles/interfaces/CreateBubbleData"
+lastSynced: "2026-02-19T22:35:16.415Z"
+---
+# Documentation
+
+CreateBubbleData
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [Bubbles](doc/sdk/webv2/lts/api/Bubbles/index) / CreateBubbleData
+
+# Interface: CreateBubbleData
+
+The `CreateBubbleData` interface describes the data that can be send to the create bubble API
+
+## Example
+
+```ts
+const data = {
+     "topic": "my bubble topic",
+     "createConversation": true,
+     "autoAcceptInvitation": true
+}
+createBubble("my bubble name", data);
+```
+
+## Properties
+
+### autoAcceptInvitation?
+
+> `optional` **autoAcceptInvitation**: `boolean`
+
+When set to true, allows to automatically add participants in the bubble (default behavior is that participants need to accept the bubble invitation first before being a member of this bubble) `Default : FALSE`
+
+---
+
+### bubbleAvatar?
+
+> `optional` **bubbleAvatar**: `any`
+
+Avatar image for the bubble
+
+---
+
+### contacts?
+
+> `optional` **contacts**: `Contact`\[\]
+
+List of contacts that we want to invite to the bubble
+
+---
+
+### disableTimeStats?
+
+> `optional` **disableTimeStats**: `boolean`
+
+If TRUE, in case of conference in this bubble the talking time stats will be disabled `Default : FALSE`
+
+---
+
+### guestEmails?
+
+> `optional` **guestEmails**: `string`\[\]
+
+List of emails that we want to invite to the bubble (will receive an invitation email)
+
+---
+
+### muteUponEntry?
+
+> `optional` **muteUponEntry**: `boolean`
+
+In case of conference in this bubble, all participants will be muted upon join `Default : FALSE`
+
+---
+
+### noConversation?
+
+> `optional` **noConversation**: `boolean`
+
+If TRUE, the server will NOT create a conversation for this bubble `Default : FALSE`
+
+---
+
+### noEntryTone?
+
+> `optional` **noEntryTone**: `boolean`
+
+In case of conference in this bubble, a local tone should be played when user joins. `Default : TRUE`
+
+---
+
+### noHistory?
+
+> `optional` **noHistory**: `boolean`
+
+If TRUE, the old history will NOT be shown to new users `Default : FALSE`
+
+---
+
+### privilege?
+
+> `optional` **privilege**: [`BubbleUserPrivilege`](doc/sdk/webv2/lts/api/Bubbles/enumerations/BubbleUserPrivilege)
+
+Add optional body parameter privilege ('user', 'moderator'). By default, all users get the simple 'user' privilege. Using 'privilege' parameter all invited users may have the same privilege in this bulk.
+
+---
+
+### topic?
+
+> `optional` **topic**: `string`
+
+The bubble description
+
+### Sur cette page
+
+-   [Example](/docs/sdk/web#name-example-13)
+-   [Properties](/docs/sdk/web#name-properties-17)
+-   [autoAcceptInvitation?](/docs/sdk/web#name-autoacceptinvitation-20)
+-   [bubbleAvatar?](/docs/sdk/web#name-bubbleavatar-32)
+-   [contacts?](/docs/sdk/web#name-contacts-44)
+-   [disableTimeStats?](/docs/sdk/web#name-disabletimestats-56)
+-   [guestEmails?](/docs/sdk/web#name-guestemails-68)
+-   [muteUponEntry?](/docs/sdk/web#name-muteuponentry-80)
+-   [noConversation?](/docs/sdk/web#name-noconversation-92)
+-   [noEntryTone?](/docs/sdk/web#name-noentrytone-104)
+-   [noHistory?](/docs/sdk/web#name-nohistory-116)
+-   [privilege?](/docs/sdk/web#name-privilege-128)
+-   [topic?](/docs/sdk/web#name-topic-140)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

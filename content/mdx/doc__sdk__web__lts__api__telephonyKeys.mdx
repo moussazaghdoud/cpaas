@@ -1,0 +1,134 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/telephonyKeys"
+lastSynced: "2026-02-19T22:35:15.409Z"
+---
+# Documentation
+
+Telephony Keys service
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## TelephonyKeys
+
+This module is the basic module for handling Telephony Keys (speed dial) in Rainbow. SDK supports only the APIs listed in the \_sdkApis array (you can access it through i.e. rainbowSDK.telephonyKeys.\_sdkApis)
+
+-   [TelephonyKeys](#module_TelephonyKeys)
+    -   [createSpeedDialKey(name, number)](#module_TelephonyKeys+createSpeedDialKey) ⇒ `Promise`
+    -   [updateKey(keyId, key)](#module_TelephonyKeys+updateKey) ⇒ `Promise`
+    -   [updateKeyPosition(keyId, position)](#module_TelephonyKeys+updateKeyPosition) ⇒ `Promise`
+    -   [deleteKey(keyId)](#module_TelephonyKeys+deleteKey) ⇒ `Promise`
+
+### telephonyKeys.createSpeedDialKey(name, number) ⇒ `Promise`
+
+Create speed dial key
+
+**Kind**: instance method of [`TelephonyKeys`](#module_TelephonyKeys)  
+**Returns**: `Promise` - Promise with all speed dial keys or error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+name
+
+`string`
+
+Name of the key
+
+number
+
+`string`
+
+Key number (must be string)
+
+### telephonyKeys.updateKey(keyId, key) ⇒ `Promise`
+
+Update existing speed dial key
+
+**Kind**: instance method of [`TelephonyKeys`](#module_TelephonyKeys)  
+**Returns**: `Promise` - Promise with all telephony keys or error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+keyId
+
+`string`
+
+ID of the key
+
+key
+
+`string`
+
+Key number (must be string)
+
+### telephonyKeys.updateKeyPosition(keyId, position) ⇒ `Promise`
+
+Update existing speed dial key position
+
+**Kind**: instance method of [`TelephonyKeys`](#module_TelephonyKeys)  
+**Returns**: `Promise` - Promise with all telephony keys or error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+keyId
+
+`string`
+
+ID of the key
+
+position
+
+`number`
+
+Position number
+
+### telephonyKeys.deleteKey(keyId) ⇒ `Promise`
+
+Delete existing speed dial key
+
+**Kind**: instance method of [`TelephonyKeys`](#module_TelephonyKeys)  
+**Returns**: `Promise` - Promise with all telephony keys or error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+keyId
+
+`string`
+
+ID of the key
+
+### Sur cette page
+
+-   [TelephonyKeys](/docs/sdk/web#name-telephonykeys-3)
+-   [telephonyKeys.createSpeedDialKey(name, number) ⇒ Promise](/docs/sdk/web#name-telephonykeys.createspeeddialkeyname-number--promise-41)
+-   [telephonyKeys.updateKey(keyId, key) ⇒ Promise](/docs/sdk/web#name-telephonykeys.updatekeykeyid-key--promise-92)
+-   [telephonyKeys.updateKeyPosition(keyId, position) ⇒ Promise](/docs/sdk/web#name-telephonykeys.updatekeypositionkeyid-position--promise-143)
+-   [telephonyKeys.deleteKey(keyId) ⇒ Promise](/docs/sdk/web#name-telephonykeys.deletekeykeyid--promise-194)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

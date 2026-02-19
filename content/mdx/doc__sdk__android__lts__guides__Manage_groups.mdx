@@ -1,0 +1,262 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Manage_groups"
+lastSynced: "2026-02-19T22:35:13.347Z"
+---
+# Documentation
+
+Manage groups
+
+LTS release 2.61.0Publiée le 202-04-06
+
+## Manage contact groups
+
+---
+
+Welcome to the **Rainbow SDK for Android** guide on managing contact groups. This guide will walk you through how to handle contact groups in your application, including creating, organizing, and managing groups of Rainbow contacts.
+
+**Rainbow concept**
+
+**Description**
+
+**Group**
+
+Represents a list of Rainbow contacts. Users can create and manage their own contact groups within the app. These groups are private, meaning only the creator can see and use them.
+
+**Contact within a Group**
+
+A Rainbow contact that has been added to a specific group for easier communication or categorization. A contact can belong to multiple groups.
+
+### Preamble
+
+---
+
+This tutorial assumes that you have completed the **Getting Started** and **Connect to Rainbow** tutorials, and that you have an active Rainbow application. Before diving into call log management, ensure the following:
+
+-   Your development environment is set up according to the guidelines provided in the [Getting Started](/docs/sdk/android) tutorial.
+-   You have successfully connected your application to the Rainbow platform as described in the [Connect to Rainbow](/docs/sdk/android) tutorial.
+-   You have the necessary authentication credentials and API keys.
+
+With these prerequisites met, you're ready to manage contact groups using the Rainbow SDK for Android. In this guide, we will cover how to create, update, and delete groups, as well as how to add contacts to a group and delete contacts from an existing group.
+
+### Retrieve user groups
+
+---
+
+The user's contact groups are automatically retrieved when the SDK connects. By default, the first 100 groups are fetched. If this is insufficient for your needs, you can use the `fetchGroups()` method from the `Groups` module, which allows you to specify an offset and a limit.
+
+```kotlin
+RainbowSdk().groups().fetchGroups(offset = 100, limit = 100) // Fetches 100 more groups
+```
+
+You can also add a listener to retrieve the data returned by the server. However, it is simpler to listen for changes directly from the `RainbowSdk().groups().groups` list.
+
+```kotlin
+private val groupsListener = IItemListChangeListener {
+    RainbowSdk().groups().groups.copyOfDataList // Contains the latest updates to the group list
+}
+
+RainbowSdk().groups().groups.registerChangeListener(groupsListener)
+
+
+// Don't forget to unregister the listener later
+RainbowSdk().groups().groups.unregisterChangeListener(groupsListener)
+```
+
+### Retrieve the latest information for a group
+
+---
+
+Groups are kept up to date as long as the connection remains open. If a group is modified on another client, the Android SDK will automatically fetch the latest updates. However, if you wish to manually refresh the data, you can retrieve a group's information by using its ID.
+
+```kotlin
+RainbowSdk().groups().groups.fetchGroupById(groupId, object : RainbowListener<Group, Unit> {
+    override fun onSuccess(data: Group) {
+        // Do something with the new data
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle error cases
+    }
+})
+```
+
+It’s important to note that when retrieving a group or fetching a group by its ID, the Rainbow SDK will resolve the contacts within that group. This resolution can be asynchronous if the contacts are not cached, and once the resolution is complete, the group will be updated.
+
+### Create a new group
+
+---
+
+A new group can be created using the `createGroup()` method. A group must have a name between 1 and 255 characters, and it can have an optional description up to 255 characters.
+
+Creating a group is a two-step process. First, the group is created by specifying its name. Once the group is retrieved from the server, participants can be added to it.
+
+```kotlin
+RainbowSdk().groups().createGroup("A name", "An optional description", object : RainbowListener<Group, Unit> {
+    override fun onSuccess(data: Group) {
+
+        // Now we can add contacts to the group
+        RainbowSdk().groups().addContactsToGroup(data.id, contactIds, object : RainbowListener<Unit, List<RainbowError<Unit>>> {
+            override fun onSuccess(data: Unit) {
+                // Handle success
+            }
+
+            override fun onError(error: RainbowError<List<RainbowError<Unit>>>) {
+                // Handle error
+            }
+        })
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle error
+    }
+})
+```
+
+In this example, once the group is successfully created, the `addContactsToGroup()` method is called to add participants to the group. Both success and error scenarios are handled in the respective callback methods.
+
+### Add a contact to a group
+
+---
+
+There is a method for adding a single contact to a group:
+
+```kotlin
+RainbowSdk().groups().addContactToGroup(groupId, contactId, object : RainbowListener<Unit, Unit> {
+    override fun onSuccess(data: Unit) {
+        // Handle success
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle error
+    }
+})
+```
+
+In this example, the `addContactToGroup()` method is used to add a specific contact (identified by contactId) to a group (identified by groupId). The success and error scenarios are handled in the respective callback methods.
+
+### Remove contacts from a group
+
+---
+
+Removing contacts follows a similar mechanism to adding them. There are methods for both multiple and single contact removal:
+
+```kotlin
+// Remove multiple contacts
+RainbowSdk().groups().deleteContactsFromGroup(groupId, contactIds, object : RainbowListener<Unit, List<RainbowError<Unit>>> {
+    override fun onSuccess(data: Unit) {
+        // Handle success
+    }
+
+    override fun onError(error: RainbowError<List<RainbowError<Unit>>>) {
+        // Handle error
+    }
+})
+
+// Remove a single contact
+RainbowSdk().groups().deleteContactFromGroup(groupId, contactId, object : RainbowListener<Unit, Unit> {
+    override fun onSuccess(data: Unit) {
+        // Handle success
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle error
+    }
+})
+```
+
+In these examples:
+
+-   `deleteContactsFromGroup()` is used to remove multiple contacts from a group.
+-   `deleteContactFromGroup()` is used to remove a single contact from a group.
+
+The success and error scenarios are handled in the respective callback methods for each case.
+
+### Get groups locally
+
+---
+
+You can retrieve groups locally either by their ID or by their name.
+
+```kotlin
+// Find a group by ID
+val group = RainbowSdk().groups().findGroupById(groupId)
+```
+```kotlin
+// Find a group by name
+val group = RainbowSdk().groups().findGroupByName(groupName)
+```
+
+Once you have the `Group` object, you can access the list of contacts within the group using the `groupMembers` property.
+
+### Update a group
+
+---
+
+In addition to adding or removing contacts from a group, you can also update a group's name and description. The `updateGroup()` API adheres to the same rules for the name (1 to 255 characters) and description (0 to 255 characters).
+
+```kotlin
+RainbowSdk().groups().updateGroup(groupId, newName, newDescription, object : RainbowListener<Group, Unit> {
+    override fun onSuccess(data: Group) {
+        // Handle success
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle error
+    }
+})
+```
+
+### Delete a group
+
+---
+
+To delete a group, simply call the `deleteGroup()` method with the group's ID.
+
+```kotlin
+RainbowSdk().groups().deleteGroup(groupId, object : RainbowListener<Unit, Unit> {
+    override fun onSuccess(data: Unit) {
+        // Handle success
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle error
+    }
+})
+```
+
+### Conclusion
+
+---
+
+**Great job! You've now mastered the Groups Management guide.**
+
+In this guide, you’ve explored how to create, update, and delete groups, and efficiently manage contacts within them. You’ve learned how to add and remove contacts, find groups locally, and update group details as needed.
+
+Keep diving into the Rainbow SDK's capabilities, and if you ever need assistance or have questions, our support team is always here to help.
+
+Happy coding!
+
+*Last updated September, 2024*
+
+### Sur cette page
+
+-   [Manage contact groups](/docs/sdk/android#name-manage-contact-groups-0)
+-   [Preamble](/docs/sdk/android#name-preamble-37)
+-   [Retrieve user groups](/docs/sdk/android#name-retrieve-user-groups-64)
+-   [Retrieve the latest information for a group](/docs/sdk/android#name-retrieve-the-latest-information-for-a-group-76)
+-   [Create a new group](/docs/sdk/android#name-create-a-new-group-87)
+-   [Add a contact to a group](/docs/sdk/android#name-add-a-contact-to-a-group-101)
+-   [Remove contacts from a group](/docs/sdk/android#name-remove-contacts-from-a-group-112)
+-   [Get groups locally](/docs/sdk/android#name-get-groups-locally-138)
+-   [Update a group](/docs/sdk/android#name-update-a-group-150)
+-   [Delete a group](/docs/sdk/android#name-delete-a-group-158)
+-   [Conclusion](/docs/sdk/android#name-conclusion-166)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

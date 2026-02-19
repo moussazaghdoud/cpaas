@@ -1,0 +1,541 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/Conversations/interfaces/Conversation"
+lastSynced: "2026-02-19T22:35:17.035Z"
+---
+# Documentation
+
+Webv2 > lts > api > Conversations > interfaces > Conversation
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [Conversations](doc/sdk/webv2/lts/api/Conversations/index) / Conversation
+
+# Interface: Conversation
+
+A conversation modelize an interaction between one or more Rainbow users. In the Rainbow ecosystem we'll come across two types of conversations:
+
+-   The "peer-to-peer" (P2P) conversations : where two Rainbow users interact with each other.
+-   The "bubble" conversations : where several users interact all together.
+
+## Properties
+
+### bookmark
+
+> **bookmark**: [`ConversationBookmark`](doc/sdk/webv2/lts/api/Conversations/classes/ConversationBookmark)
+
+The bookmarked message in the conversation
+
+---
+
+### bubble?
+
+> `optional` `readonly` **bubble**: [`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)
+
+(Bubble conversation only) The conversation Bubble if any
+
+---
+
+### call
+
+> **call**: `CallRB`
+
+---
+
+### capabilities?
+
+> `optional` `readonly` **capabilities**: [`ConversationCapabilities`](doc/sdk/webv2/lts/api/Conversations/classes/ConversationCapabilities)
+
+The capabilities of the conversation
+
+---
+
+### creationDate?
+
+> `optional` `readonly` **creationDate**: [`Date`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
+
+The date of the creation of the conversation
+
+---
+
+### dbId?
+
+> `optional` `readonly` **dbId**: `string`
+
+The database ID
+
+---
+
+### filterName
+
+> `readonly` **filterName**: `string`
+
+The name of the conversation (the display name of the recipient for P2P conversation or the room name for a BUBBLE conversation)
+
+---
+
+### forwardedMessage
+
+> `readonly` **forwardedMessage**: `string`
+
+The last message forwarded
+
+---
+
+### id
+
+> `readonly` **id**: `string`
+
+The conversation ID
+
+---
+
+### isFavorite
+
+> `readonly` **isFavorite**: `boolean`
+
+TRUE if conversation favorite
+
+---
+
+### isForwardedMessageFile
+
+> `readonly` **isForwardedMessageFile**: `boolean`
+
+If the last message that is forwarded is a file
+
+---
+
+### isWebinarConversation
+
+> `readonly` **isWebinarConversation**: `boolean`
+
+True if this conversation is a webinar conversation
+
+---
+
+### lastMessage
+
+> `readonly` **lastMessage**: [`ConversationLastMessage`](doc/sdk/webv2/lts/api/Conversations/classes/ConversationLastMessage)
+
+The last message received of the conversation
+
+---
+
+### lastModification?
+
+> `optional` `readonly` **lastModification**: [`Date`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
+
+The date of the last modification of the conversation
+
+---
+
+### messages
+
+> `readonly` **messages**: `Message`\[\]
+
+The list of messages downloaded for this conversation
+
+---
+
+### missedCounter
+
+> `readonly` **missedCounter**: `number`
+
+The number of instant messages not read
+
+---
+
+### name?
+
+> `optional` `readonly` **name**: `string`
+
+The conversation name
+
+---
+
+### status
+
+> `readonly` **status**: [`ConversationStatus`](doc/sdk/webv2/lts/api/Conversations/enumerations/ConversationStatus)
+
+The status of the conversation
+
+---
+
+### type?
+
+> `optional` `readonly` **type**: [`ConversationType`](doc/sdk/webv2/lts/api/Conversations/enumerations/ConversationType)
+
+The type of the conversation. Can be P2P (0), BUBBLE (1) or BOT (2)
+
+---
+
+### user?
+
+> `optional` `readonly` **user**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)
+
+(P2P conversation only) The recipient of the conversation
+
+---
+
+### webinar?
+
+> `optional` `readonly` **webinar**: `Webinar`
+
+The webinar associated to this conversation (if any)
+
+## Methods
+
+### ackReadMessage()
+
+> **ackReadMessage**(`message`): `void`
+
+This method permits to send a ACK READ status for message to mark it as READ
+
+#### Parameters
+
+• **message**: `Message`
+
+the chat message to "ACK read"
+
+#### Returns
+
+`void`
+
+---
+
+### ackReadMessages()
+
+> **ackReadMessages**(): `boolean`
+
+This method permits to send a ACK READ all received messages inside the conversation
+
+#### Returns
+
+`boolean`
+
+---
+
+### deleteAllMessages()
+
+> **deleteAllMessages**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Remove all message of the conversation
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### deleteBookmark()
+
+> **deleteBookmark**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Method to delete a conversation bookmark
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### deleteMessage()
+
+> **deleteMessage**(`message`): `void`
+
+Remove given message from the conversation (should be a message that the user has sent)
+
+#### Parameters
+
+• **message**: `Message`
+
+the message we want to delete
+
+#### Returns
+
+`void`
+
+---
+
+### forwardMessage()
+
+> **forwardMessage**(`destConv`, `message`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`Message`\>
+
+This method permits to forward a Message to another conversation
+
+#### Parameters
+
+• **destConv**: [`Conversation`](doc/sdk/webv2/lts/api/Conversations/interfaces/Conversation)
+
+conversation to which the Message is forwarded
+
+• **message**: `Message`
+
+the message to forward
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`Message`\>
+
+---
+
+### getHistoryPage()
+
+> **getHistoryPage**(`nbMessages`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+This method allows us to retrieve archived message pages. By default, no message history is loaded, but this method will allow us to retrieve them page by page.
+
+#### Parameters
+
+• **nbMessages**: `number`
+
+the number of messages to get in this page
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### getMessageById()
+
+> **getMessageById**(`messId`, `searchInCache`?): `Message`
+
+Return the message with the corresponding identifier
+
+#### Parameters
+
+• **messId**: `string`
+
+the message identifier
+
+• **searchInCache?**: `boolean`
+
+if true this methods start to search in cacheMessage
+
+#### Returns
+
+`Message`
+
+the search message if founded undefined else
+
+---
+
+### getMessages()
+
+> **getMessages**(): `Message`\[\]
+
+Return all the already loaded messages
+
+#### Returns
+
+`Message`\[\]
+
+---
+
+### loadHistoryMessagesAroundGivenMessage()
+
+> **loadHistoryMessagesAroundGivenMessage**(`timestamp`, `nbMessages`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Method used to load the messages around a given timestamp. Can be used when we search for a message via API searchForTextInConversation and then we want to load the message (or also the messages around it); This API will load the messages in the conversation list of messages and resolve once it's done;
+
+#### Parameters
+
+• **timestamp**: `number`
+
+the timestamp of the message to be loaded
+
+• **nbMessages**: `number`
+
+the number of messages to load before and after this one
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### modifyMessage()
+
+> **modifyMessage**(`message`, `newMessageText`?, `messageData`?): `Message`
+
+This API can be used to modify an already existing sent message; The user is allowed to modify the text of the message, the additional content and the mentions; NB The new SendMessageData will replace the existing data, so all the existing informations (additionalContent or mentions) should also be added in the data otherwise they'll be removed
+
+#### Parameters
+
+• **message**: `Message`
+
+The Message we want to modify
+
+• **newMessageText?**: `string`
+
+The new text of the message
+
+• **messageData?**: [`SendMessageData`](doc/sdk/webv2/lts/api/Conversations/interfaces/SendMessageData)
+
+the updated send message data
+
+#### Returns
+
+`Message`
+
+the updated message or undefined in case of issue
+
+---
+
+### searchForText()
+
+> **searchForText**(`searchedText`, `limit`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`SearchTextResult`\>
+
+Method used to search for text in a given conversation P2P or bulle. The searched text length should be 3+ characters. This API will return a SearchTextResult that contains the list of IDs of messages to be searched after that
+
+#### Parameters
+
+• **searchedText**: `string`
+
+the text to be searched
+
+• **limit**: `number`
+
+number of results to get; Default value is 20;
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`SearchTextResult`\>
+
+---
+
+### sendByEmail()
+
+> **sendByEmail**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+This API permit to send the text content of the conversation at the connectUser e-mail address.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### sendFileMessage()
+
+> **sendFileMessage**(`messageData`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`Message`\>
+
+This method permits to send a file Message
+
+#### Parameters
+
+• **messageData**: [`SendFileMessageData`](doc/sdk/webv2/lts/api/Conversations/interfaces/SendFileMessageData)
+
+The file message data to be send
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`Message`\>
+
+---
+
+### sendIsTypingState()
+
+> **sendIsTypingState**(`isTypingState`): `void`
+
+This method permits to send a "typing" (or remove it) state to the distant party;
+
+#### Parameters
+
+• **isTypingState**: `boolean`
+
+if the user is currently "typing" inside the conversation
+
+#### Returns
+
+`void`
+
+---
+
+### sendMessage()
+
+> **sendMessage**(`messageText`, `messageData`?): `Message`
+
+This method permits to send a chat Message
+
+#### Parameters
+
+• **messageText**: `string`
+
+the text to be send
+
+• **messageData?**: [`SendMessageData`](doc/sdk/webv2/lts/api/Conversations/interfaces/SendMessageData)
+
+the message data object
+
+#### Returns
+
+`Message`
+
+the sent message (or undefined in case of an issue)
+
+---
+
+### setBookmark()
+
+> **setBookmark**(`message`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Method to set or replace conversation bookmark This API will provoque an update on the conversation object (event of type ConversationEvents.ON\_MESSAGE\_BOOKMARKED)
+
+#### Parameters
+
+• **message**: `Message`
+
+the message to bookmark
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### subscribe()
+
+> **subscribe**(`handler`, `filterEvent`?): `Subscription`
+
+Subscribe to updates on the current conversation (all events are of RBEvent type);
+
+#### Parameters
+
+• **handler**
+
+The call-back function that will be subscribed to the RxJS subject
+
+• **filterEvent?**: [`ConversationEvents`](doc/sdk/webv2/lts/api/Conversations/enumerations/ConversationEvents) | [`ConversationEvents`](doc/sdk/webv2/lts/api/Conversations/enumerations/ConversationEvents)\[\]
+
+a list of event names that the user wants to receive when subscribing (used a filter)
+
+#### Returns
+
+`Subscription`
+
+---
+
+### toJSON()
+
+> **toJSON**(): `any`
+
+JSON serialisation of conversation for debug purpose
+
+#### Returns
+
+`any`
+
+### Sur cette page
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

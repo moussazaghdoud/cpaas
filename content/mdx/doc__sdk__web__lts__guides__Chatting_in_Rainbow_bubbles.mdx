@@ -1,0 +1,857 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/guides/Chatting_in_Rainbow_bubbles"
+lastSynced: "2026-02-19T22:35:15.715Z"
+---
+# Documentation
+
+Chatting in Rainbow bubbles
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Chatting in Rainbow bubbles
+
+---
+
+Using the Rainbow SDK for Web, you can have discussions and share files with several persons in a "private" area called a Bubble.
+
+A Bubble is a "collaboration space" where you can invite Rainbow users to discuss and share files together.
+
+This tutorial will explain in details how to create a new bubble, invite Rainbow users and discuss together.
+
+If the objects / models `Call`, `Contact`, `Conversation` aren't accessible **in your non-AngularJS application** (to access enums), you can get it with this:
+
+```javascript
+var Call = angular.element(document.querySelector('body')).injector().get('Call');
+var Contact = angular.element(document.querySelector('body')).injector().get('Contact');
+var Conversation = angular.element(document.querySelector('body')).injector().get('Conversation');
+```
+
+### Creating a new bubble
+
+---
+
+Creating a new bubble can be done using the API `createBubble()`. You have to provide a name and a description.
+
+#### Create a new bubble without history
+
+---
+
+By default, when you create a bubble, newcomers do not see previous messages exchanged in that bubble before they join. Creating a new bubble without history can be done this way:
+
+```javascript
+var ownedBubble;
+
+    /* Handler called when the user clicks on a contact */
+    rainbowSDK.bubbles.createBubble("My New Bubble", "The description of my bubble").then(function(bubble) {
+        ownedBubble = bubble;
+        // Do something when the bubble has been created
+        ...
+    }).catch(function(err) {
+        // Do something if there is a server issue when creating the new bubble
+        ...
+    });
+```
+
+Note: You can't create several bubbles with the same name.
+
+#### Create a new bubble with history
+
+---
+
+An optional parameter can be used to specify if the newcomers have the possibility to get the old messages exchanged in the bubble before they join. This example creates a bubble with history.
+
+```javascript
+let ownedBubble;
+
+    /* Handler called when the user clicks on a contact */
+    rainbowSDK.bubbles.createBubble("My New Bubble with history", "The description of my bubble", true).then(bubble => {
+        ownedBubble = bubble;
+        // Do something when the bubble has been created
+    }).catch(err => {
+        // Do something if there is a server issue while creating a new bubble
+    });
+```
+
+#### Optional parameters
+
+`CreateBubble()` method accepts a number of optional parameters. Here is the list of them all with a brief explanation:
+
+```javascript
+let strName = 'Bubble name' // The name of the bubble
+let strDescription = 'Bubble Description' // The description of the bubble
+let boolWithHistory = false // True to have full messages history for newcomers
+let disableNotifications=false // When set to true, there is no more notifications to be sent by a room in all cases with text body (user join/leave, conference start/end)
+let urlAvatar=null //  The avatar URL or null (in case of invalid URL or image it may fail)
+let autoAcceptInvitation=false  // Set to 'true' to automatically invite other users to the bubble (without asking them to accept the invitation)
+
+
+let ownedBubble;
+
+/* Handler called when the user clicks on a contact */
+rainbowSDK.bubbles.createBubble(strName, strDescription, boolWithHistory, disableNotifications, urlAvatar, autoAcceptInvitation).then(bubble => {
+    ownedBubble = bubble;
+    // Do something when the bubble has been created
+}).catch(err => {
+    // Do something if there is a server issue while creating a new bubble
+});
+```
+
+### Inviting Rainbow users in a bubble
+
+---
+
+Once the bubble is created, you have to invite users in order to be able to discuss with them. Users can't join a bubble directly. They must be invited by a moderator of that bubble to become a member.
+
+You can invite a Rainbow user as a member with **Participant** privilege which is the default case or with **Moderator** privilege.
+
+#### Inviting a new participant
+
+---
+
+To invite a Rainbow user as a participant, add the following code:
+
+```javascript
+var invitationBubble;
+    var contact = ...   // A contact got using Contacts API
+
+    /* Handler called when the user clicks on a contact */
+    rainbowSDK.bubbles.inviteContactToBubble(contact.id, ownedBubble).then(function(updatedBubble) {
+        ownedBubble = updatedBubble;
+        // Do something when the invitation has been sent successfully
+        ...
+    }).catch(function(err) {
+        // Do something if there is a server issue when sending the invitation
+        ...
+    });
+```
+
+Members with participant privilege can only collaborate in the bubble:
+
+-   Sending and receiving messages
+    
+-   Sending and downloading files
+    
+
+#### Inviting a new moderator
+
+---
+
+To invite a Rainbow user as a moderator, add the following code:
+
+```javascript
+var ownedBubble;
+    var contact = ...   // A contact got using Contacts API
+    var asModerator = true;
+
+    /* Handler called when the user clicks on a contact */
+    rainbowSDK.bubbles.inviteContactToBubble(contact.id, ownedBubble, asModerator).then(function(updatedBubble) {
+        ownedBubble = updatedBubble;
+        // Do something when the invitation has been sent successfully
+        ...
+    }).catch(function(err) {
+        // Do something if there is a server issue when sending the invitation
+        ...
+    });
+```
+
+Members with moderator privilege can collaborate and administrate the bubble. Administrative tasks reserved to moderator are:
+
+-   Changing the description of the bubble
+    
+-   Inviting new users
+    
+-   Removing existing users
+    
+
+#### Adding a member to a bubble without sending an invitation
+
+---
+
+Depending on your case, it can be interesting to add a member to a bubble instead of sending him an invitation.
+
+When you add a contact to a bubble, the user will not receive a invitation to accept or to decline. He will be added automatically to the bubble.
+
+Add the following code to do that:
+
+```javascript
+var ownedBubble;
+    var contact = ...   // A contact got using Contacts API
+    var asModerator = true;
+    var withAnInvitation = false;
+
+    /* Handler called when the user clicks on a contact */
+    rainbowSDK.bubbles.inviteContactToBubble(contact.id, ownedBubble, asModerator, withAnInvitation).then(function(updatedBubble) {
+        ownedBubble = updatedBubble;
+        // Do something when the contact has been automatically added to the bubble
+        ...
+    }).catch(function(err) {
+        // Do something if there is a server issue when sending the invitation
+        ...
+    });
+```
+
+### Listening to bubble invitation and answering
+
+---
+
+As a Rainbow user, you can receive invitations to join a bubble that come from other Rainbow users. Once received, you need to accept it to be able to participate to that bubble and so to become a member. This paragraph describes how to handle an invitation and to accept or decline it.
+
+#### Handling a bubble invitation
+
+---
+
+To handle an incoming invitation to a bubble, add the following code:
+
+```javascript
+var invitationBubble;
+
+    var onInvitationReceived = function(event) {
+        invitationBubble = event.detail;
+        // Do something when receiving a new invitation to join a bubble
+        ...
+    };
+
+    document.addEventListener(rainbowSDK.bubbles.RAINBOW_ONBUBBLEINVITATIONTOJOINRECEIVED, onInvitationReceived)
+```
+
+Each time a Rainbow user invites you in a bubble, this event will be triggered.
+
+If you miss an invitation (i.e. application is disconnected or not started), the list of pending bubbles (bubbles that you were invited to join) can be retrieved using the API `getAllPendingBubbles()`:
+
+```javascript
+var invitationBubbles = rainbowSDK.bubbles.getAllPendingBubbles();
+    // Do something with that list of bubbles
+    ...
+```
+
+#### Accepting an invitation to join a bubble
+
+---
+
+Once you have a bubble where you are invited (e.g. property `status` of the Bubble object is equal to `invited`), you can accept this invitation by using the API `acceptInvitationToJoinBubble()` on the received bubble:
+
+```javascript
+var bubble;
+
+    var onInvitationReceived = function(event) {
+        bubble = event.detail;
+        // Do something when receiving a new invitation to join a bubble
+        rainbowSDK.bubbles.acceptInvitationToJoinBubble(bubble).then(function(updatedBubble) {
+            // Do something when you have accepted the invitation
+            bubble = updatedBubble;
+            ...
+        }).catch(function() {
+            // Do something when there is a server issue during this request
+            ...
+        });
+    };
+
+    document.addEventListener(rainbowSDK.bubbles.RAINBOW_ONBUBBLEINVITATIONTOJOINRECEIVED, onInvitationReceived)
+```
+
+Once accepted, you can go on the next paragraph to see how to send and receive message in that bubble
+
+#### Declining an invitation to join a bubble
+
+---
+
+If you don't want to accept this invitation (you don't want to enter the bubble), you can use the API `declineInvitationToJoinBubble()` on the received bubble:
+
+```javascript
+var bubble;
+
+    var onInvitationReceived = function(event) {
+        bubble = event.detail;
+        // Do something when receiving a new invitation to join a bubble
+        rainbowSDK.bubbles.declineInvitationToJoinBubble(bubble).then(function(updatedBubble) {
+            // Do something when you have declined the invitation
+            bubble = updatedBubble;
+            ...
+        }).catch(function() {
+            // Do something when there is a server issue during this request
+            ...
+        });
+    };
+
+    document.addEventListener(rainbowSDK.bubbles.RAINBOW_ONBUBBLEINVITATIONTOJOINRECEIVED, onInvitationReceived)
+```
+
+Once declined, you can't do anything with that bubble.
+
+### Discussing in a bubble
+
+---
+
+As a member of a bubble, you can send messages to others participants and receive their messages.
+
+#### Sending a message
+
+---
+
+To send a message in a bubble, you have to call the `sendMessageToBubble()` API.
+
+```javascript
+// using a previous bubble
+    var bubble = "...";
+
+    rainbowSDK.im.sendMessageToBubble(bubble, "Hello all!").then(function(message) {
+        // Do something once the message has been sent
+        ...
+    }).catch(function(err) {
+        // Do something if there is a trouble when sending the message
+    });
+```
+
+#### Receiving message receipt
+
+---
+
+You can listen for receipts exactly as in the case of conversation with a single participant- by using the `RAINBOW_ONNEWIMRECEIPTRECEIVED` event:
+
+```javascript
+let onNewMessageReceiptReceived = function(event) {
+        let type = event.detail.evt;
+
+
+        switch (type) {
+            case "server":
+                // Do something when Rainbow received your message
+                break;
+            case "received":
+                // Do something when someone in the bubble received your message
+                break;
+            case "read":
+                // Do something when someone in the bubble read your message
+                break;
+            default:
+                break;
+        }
+    };
+
+    document.addEventListener(rainbowSDK.im.RAINBOW_ONNEWIMRECEIPTRECEIVED, onNewMessageReceiptReceived)
+```
+
+Note: At the time of writing, it is not possible to distinguish which users of the bubble have received or read the message. You can only rely on the number received of the message and compare to the number of active users in the Bubble. Receipts of type 'server' are relevant.
+
+#### Listening to new messages
+
+---
+
+You can listen for new messages in the bubble by using the event `RAINBOW_ONNEWIMMESSAGERECEIVED`:
+
+```javascript
+let onNewMessageReceived = function(event) {
+
+        let messageContent = "";
+        let conversation = event.detail.conversation;
+        let message = event.detail.message;
+
+
+        // Acknowledge it
+        rainbowSDK.im.markMessageFromConversationAsRead(conversation.id, message.id);
+
+        // Text message received
+        messageContent = message.data;
+
+        // Send an answer
+        rainbowSDK.im.sendMessageToConversation(conversation.id, messageContent + " read!");
+
+    };
+
+    document.addEventListener(rainbowSDK.im.RAINBOW_ONNEWIMMESSAGERECEIVED, onNewMessageReceived)
+```
+
+As you can see, in that example, we are using the received `Conversation` reference instead of the `Bubble` reference to send the answer.
+
+But you can answer using the bubble if you want, because the `Conversation` object contains a reference to the `Bubble` object.
+
+```javascript
+let onNewMessageReceived = function(event) {
+
+        let messageContent = "";
+        let conversation = event.detail.conversation;
+        let message = event.detail.message;
+
+        // Acknowledge it
+        rainbowSDK.im.markMessageFromConversationAsRead(conversation.id, message.id);
+
+        // Text message received
+        messageContent = message.data;
+
+        // Send an answer
+        rainbowSDK.im.sendMessageToBubble(conversation.room, messageContent + " read!").then(function() {
+            console.log("[DEMO] :: new message sent", message);
+        }).catch(function(err) {
+            console.log("[DEMO] :: Error", err);
+        });
+
+    };
+
+    document.addEventListener(rainbowSDK.im.RAINBOW_ONNEWIMMESSAGERECEIVED, onNewMessageReceived)
+```
+
+#### Distinguishing specific bubble messages
+
+---
+
+In a bubble, you can receive two types of messages: User or Admin.
+
+To determine the type of message received, you have to look at the property `message.side` as described in the table below:
+
+Type
+
+Side
+
+Description
+
+**User message**
+
+**LEFT**
+
+A message sent by a Rainbow user that is a member of this bubble
+
+**Admin message**
+
+**ADMIN**
+
+A message sent by the bubble when a user has been invited (moderator) or has entered or leaved a bubble (all members)
+
+The content of 'User messages' can be added directly to your application. But for 'Admin' message, you need to do an additional task to display it correctly because you will receive only a value describing the action done. And in order for your application to display a *kindly* message, you have to look at the property `message.data` that can contain one of the following values:
+
+Value
+
+Description
+
+**leaveMsgRoom**
+
+A member has exited the bubble
+
+**invitationMsgRoom**
+
+A member has been invited to the bubble **only for moderator**
+
+**joinMsgRoom**
+
+A new member has joined the bubble
+
+**closeMsgRoom**
+
+The bubble has been closed
+
+**welcomeMsgRoom**
+
+You have been granted access to the bubble **only for the user that accepts the invitation**
+
+Don't forget to look at the property `message.from` to know the sender of the message.
+
+### Sending 'is typing' messages
+
+Similarly to a standard peer-to-peer conversations, you can exchange the 'isTyping' messages between users in the bubbles. That can define whether one or more participants are typing at the given moment.
+
+To send such message, all you need to do is to use `sendIsTypingStateInBubble()` method that accepts two arguments: a `bubble` object and a boolean indicating whether or not the user is composing a new message.
+
+```javascript
+rainbowSDK.im.sendIsTypingStateInBubble(bubble, true)
+        .then( //  do something when the state is changed )
+        .catch( // do something in case of an error )
+```
+
+Analogically, you can set the status to the standard one (in the meaning that the participant is not typing) by passing false as the second argument:
+
+```javascript
+rainbowSDK.im.sendIsTypingStateInBubble(bubble, false)
+        .then( //  do something when the state is changed )
+        .catch( // do something in case of an error )
+```
+
+You can stay up to date with the changes sent by the other participant of the conversation by listening to `RAINBOW_ONNEWPARTICIPANTSTATUS` event as in the example below:
+
+```javascript
+let onNewParticipantStatus = function (event) {
+
+        let status = event.detail.status;
+
+        if (status === "composing") {
+            // this means the other participant is typing, do something about it
+        } else if (status === "active"){
+            // the other participant stopped typing
+        }
+    }
+
+    document.addEventListener(rainbowSDK.im.RAINBOW_ONNEWPARTICIPANTSTATUS, onNewParticipantStatus)
+```
+
+To see to which bubble is the incoming event attached, just check the `room` property of the `conversation` object passed by an event. It contains an instance of your `bubble` object.
+
+Please note that the `status` parameter passed in the event is a string defining the status of the typing activity of the other user- it can be set to `composing` (when the participant is typing) or `active` (i.e. when the participant quits the chat form).
+
+### Listening to Bubble change
+
+---
+
+When modification occurs in a Bubble (e.g. when custom data have been changed, the title or the topic of the bubble has changed etc.), you can listen to the event `RAINBOW_ONBUBBLEUPDATED` in order to keep your `Bubble` reference up to date with these changes. Just add the following code:
+
+```javascript
+var bubble : ... // existing reference to the bubble
+
+    var onBubbleUpdated = function(event) {
+        bubble = event.detail;
+        // Do something when bubble changes
+        ...
+    };
+
+    document.addEventListener(rainbowSDK.bubbles.RAINBOW_ONBUBBLEUPDATED, onBubbleUpdated)
+```
+
+### Removing a user from a bubble
+
+---
+
+If you are a moderator, you can remove a user from a bubble.
+
+A member removed can still have access to the bubble to see existing messages posted before he was removed, but can not see new messages posted after he has been removed and can not post new message too.
+
+You have to use the `removeContactFromBubble()` API like in the following code:
+
+```javascript
+var bubble : ... // existing reference to the bubble
+    var contactToRemove: ... // existing reference to the contact to remove
+
+    rainbowSDK.bubbles.removeContactFromBubble(contact.id, bubble).then(function(bubble) {
+        // Do something when the contact has been removed from the bubble
+        ...
+    }).catch(function(err) {
+        // Do something if there is an issue when removing the contact
+        ...
+    });
+```
+
+Once removed, the `status` of the removed member will change to `unsubscribed`.
+
+All members of the bubble will then receive an `ADMIN` message (including the member that has been removed) in order to understand the change that occurred in the bubble.
+
+### Closing a bubble
+
+---
+
+As a member with moderator privilege, you can close a bubble.
+
+When closing a bubble, all of its members will be removed from the bubble including the user who executes this action.
+
+All members can still read existing messages but nobody can post new messages.This action is irreversible.
+
+Use the API `closeBubble()` to close a bubble in which you have moderator privilege.
+
+```javascript
+var bubble : ... // existing reference to the bubble
+
+    rainbowSDK.bubbles.closeBubble(bubble).then(function(updatedBubble) {
+        bubble = updatedBubble;
+        // Do something when the bubble has been closed
+        ...
+    }).catch(function(err) {
+        // Do something if there is an issue when closing the bubble
+        ...
+    });
+```
+
+Once the bubble closed, the `status` of each member will change to `unsubscribed`.
+
+All members of the bubble will then receive an `ADMIN` message in order to understand the change that occurred in the bubble.
+
+### Leaving a bubble
+
+---
+
+As a member with participant privilege, you can leave a bubble without any restriction.
+
+As a member with moderator privilege, you can leave a bubble only if there is an other active moderator.
+
+Leaving a bubble can be done by calling the API `leaveBubble()` like in the following code:
+
+```javascript
+var bubble : ... // existing reference to the bubble
+
+    rainbowSDK.bubbles.leaveBubble(bubble).then(function(leavedBubble) {
+        bubble = leavedBubble;
+        // Do something when the bubble has been left
+        ...
+    }).catch(function(err) {
+        // Do something if there is an issue when leaving the bubble
+        ...
+    });
+```
+
+Once left, your bubble `status` will be changed to `unsubscribed`.
+
+All members of the bubble will then receive an `ADMIN` message in order to understand the change that occurred in the bubble.
+
+### Deleting a bubble
+
+---
+
+As a member with moderator privilege, you can delete a bubble.
+
+When deleted, existing bubble's members are removed from that bubble and the bubble is no more accessible for consulting messages.
+
+You can delete a bubble by calling the API `deleteBubble()`:
+
+```javascript
+var bubble : ... // existing reference to the bubble
+
+    rainbowSDK.bubbles.deleteBubble(bubble).then(function(leavedBubble) {
+        bubble = leavedBubble;
+        // Do something when the bubble has been left
+        ...
+    }).catch(function(err) {
+        // Do something if there is an issue when leaving the bubble
+        ...
+    });
+```
+
+Once deleted, the `status` of each member will change to `unsubscribed`.
+
+All members of the bubble will then receive an `ADMIN` message in order to understand the change that occurred in the bubble.
+
+### Updating a bubble
+
+---
+
+A bubble can be updated by a moderator at any time. The following paragraph describes the parameters that can be changed.
+
+Please note that each time a bubble is modified, each member is notified including the one who did the modification. To listen to any bubble modification, don't forget to subscribe to the event `RAINBOW_ONBUBBLEUPDATED`.
+
+#### Updating the Bubble's description
+
+---
+
+The description of the bubble can be changed by calling the `updateDescriptionForBubble()` API like in the following:
+
+```javascript
+var bubble : ... // existing reference to the bubble
+
+    rainbowSDK.bubbles.updateDescriptionForBubble("My new description", bubble).then(function(bubbleUpdated) {
+        // Do something once the description has been changed.
+        ...
+    }).catch(function(err) {
+        // Do something if there is an issue when updating the bubble
+        ...
+    });
+```
+
+#### Updating the Bubble's custom data
+
+---
+
+Bubble can contain additional custom data that can be set by a moderator of that bubble depending your need.
+
+For doing that, you have to specify a valid `JSON` object and use the API `updateCustomDataForBubble()` like in the following code:
+
+```js
+...
+let customData = {
+    "aString": "The One",
+    "aNumber" : 1,
+    "anObject": {
+        "aSubKey": "ASubValue"
+    }
+};
+
+rainbowSDK.bubbles.updateCustomDataForBubble(customData, bubble).then(function(updatedBubble) {
+    // do something with the updated bubble
+    ...
+}).catch(function(err) {
+    // do something if there is an issue while adding custom data (e.g. too many keys)
+    ...
+});
+```
+
+Please note that there are some [limits](/docs/hub/features-limits) regarding the custom data to avoid abuse.
+
+Be careful, each time you call the API `updateCustomDataForBubble()`, the old keys are removed and replaced by the new keys set.
+
+#### Removing Custom data of a bubble
+
+---
+
+If you want to erase all the custom data of a bubble, you have two possibilities:
+
+-   Calling the `updateCustomDataForBubble()` API with a customData value that equals to `{}`.
+    
+-   Calling the `deleteCustomDataForBubble()` API.
+    
+
+Here is an example of using the `deleteCustomDataForBubble()` API to delete custom data:
+
+```js
+...
+rainbowSDK.bubbles.deleteCustomDataForBubble(bubble).then(function(updatedBubble) {
+    // do something with the updated bubble
+    ...
+}).catch(function(err) {
+    //do something if there is an issue when removing custom data
+    ...
+});
+```
+
+### Checking whether a Bubble is active
+
+You can check whether or not any given Bubble you have the access to is active by verifying its `isActive` parameter as in the code below:
+
+```javascript
+var myBubble = {}//your bubble object
+
+    if (myBubble.isActive) {
+        // Bubble is active, you can use it normally
+    } else {
+        // Bubble has become inactive!
+    }
+```
+
+`isActive` flag value becomes `false` after 60 days of inactivity of any of the Bubble's members. A Bubble can be reactivated by simply sending a message (`rainbowSDK.im.sendMessageToBubble()`).
+
+Please note that it is not possible to manually switch `isActive` flag to `false`.
+
+A `RAINBOW_ONBUBBLEDEACTIVATED` event will be sent to all the participants once the Bubble's `isActive` property turns from `true` to `false`.
+
+Analogically, a `RAINBOW_ONBUBBLEUPDATED` event will be sent to all the participants once the Bubble's `isActive` property turns from `false` to `true`.
+
+### Bubble at a glance
+
+---
+
+Here is a summary of all the useful information regarding a bubble:
+
+#### Bubbles limits
+
+To consult the exact limits concerning the Rainbow Bubbles, visit [this link](/docs/hub/features-limits)
+
+There is a limit regarding the number of users that can be invited in a bubble.
+
+Profile
+
+Rules
+
+**Essential** with or without option **Business**
+
+As a moderator, you can invite up to 20 users to a bubble
+
+**Essential** with option **Conference**
+
+As a moderator, you can invite up to 100 users to a bubble
+
+**Enterprise**
+
+As a moderator, you can invite up to 100 users to a bubble
+
+#### Maximum number of active bubbles per user
+
+---
+
+Any Rainbow user from any profile can join a maximum number of 300 Bubbles at a time.
+
+If the user has more than 300 Bubbles, the remaining Bubbles will be considered as inactive and so the user will not be notified from incoming messages received in these Bubbles.
+
+To limit the number of active Bubbles, the connected user has to leave them or close them if there no active discussion.
+
+To consult the exact limitations concerning the Rainbow Bubbles, visit [this link](/docs/hub/features-limits)
+
+#### Member privilege
+
+---
+
+A member of a bubble can have one of the following privilege:
+
+Privilege
+
+Description
+
+**Moderator**
+
+A member who has been invited with a role of **moderator** can administrate the Bubble (e.g. invite others Rainbow users, rename the bubble's description information etc.) and collaborate with others members
+
+**Participant**
+
+A member who has been invited with a role of **participant** can only collaborate with others members (e.g. chat, share files but can not do administrative tasks in the Bubble)
+
+Note: The Rainbow user who creates the bubble is the owner. But once created, the owner becomes a member with **moderator** privilege in that bubble.
+
+#### Member status
+
+---
+
+A member of a bubble can have one of the following status:
+
+Status
+
+Description
+
+**invited**
+
+The member has been invited to the bubble by a moderator but has still not accepted or declined the invitation yet
+
+**accepted**
+
+The member has accepted the invitation and is an active member in the bubble
+
+**rejected**
+
+The member has rejected the invitation
+
+**unsubscribed**
+
+The member has left the bubble (by his own or by a moderator action)
+
+**deleted**
+
+The member has been removed from the bubble by a moderator without having accepted or declined the invitation received
+
+---
+
+*Last updated January, 29th 2020*
+
+### Sur cette page
+
+-   [Chatting in Rainbow bubbles](/docs/sdk/web#name-chatting-in-rainbow-bubbles-0)
+-   [Creating a new bubble](/docs/sdk/web#name-creating-a-new-bubble-17)
+-   [Create a new bubble without history](/docs/sdk/web#name-create-a-new-bubble-without-history-24)
+-   [Create a new bubble with history](/docs/sdk/web#name-create-a-new-bubble-with-history-35)
+-   [Optional parameters](/docs/sdk/web#name-optional-parameters-43)
+-   [Inviting Rainbow users in a bubble](/docs/sdk/web#name-inviting-rainbow-users-in-a-bubble-50)
+-   [Inviting a new participant](/docs/sdk/web#name-inviting-a-new-participant-60)
+-   [Inviting a new moderator](/docs/sdk/web#name-inviting-a-new-moderator-83)
+-   [Adding a member to a bubble without sending an invitation](/docs/sdk/web#name-adding-a-member-to-a-bubble-without-sending-an-invitation-111)
+-   [Listening to bubble invitation and answering](/docs/sdk/web#name-listening-to-bubble-invitation-and-answering-125)
+-   [Handling a bubble invitation](/docs/sdk/web#name-handling-a-bubble-invitation-132)
+-   [Accepting an invitation to join a bubble](/docs/sdk/web#name-accepting-an-invitation-to-join-a-bubble-147)
+-   [Declining an invitation to join a bubble](/docs/sdk/web#name-declining-an-invitation-to-join-a-bubble-158)
+-   [Discussing in a bubble](/docs/sdk/web#name-discussing-in-a-bubble-169)
+-   [Sending a message](/docs/sdk/web#name-sending-a-message-176)
+-   [Receiving message receipt](/docs/sdk/web#name-receiving-message-receipt-184)
+-   [Listening to new messages](/docs/sdk/web#name-listening-to-new-messages-195)
+-   [Distinguishing specific bubble messages](/docs/sdk/web#name-distinguishing-specific-bubble-messages-210)
+-   [Sending 'is typing' messages](/docs/sdk/web#name-sending-is-typing-messages-319)
+-   [Listening to Bubble change](/docs/sdk/web#name-listening-to-bubble-change-343)
+-   [Removing a user from a bubble](/docs/sdk/web#name-removing-a-user-from-a-bubble-351)
+-   [Closing a bubble](/docs/sdk/web#name-closing-a-bubble-371)
+-   [Leaving a bubble](/docs/sdk/web#name-leaving-a-bubble-394)
+-   [Deleting a bubble](/docs/sdk/web#name-deleting-a-bubble-414)
+-   [Updating a bubble](/docs/sdk/web#name-updating-a-bubble-434)
+-   [Updating the Bubble's description](/docs/sdk/web#name-updating-the-bubbles-description-444)
+-   [Updating the Bubble's custom data](/docs/sdk/web#name-updating-the-bubbles-custom-data-452)
+-   [Removing Custom data of a bubble](/docs/sdk/web#name-removing-custom-data-of-a-bubble-469)
+-   [Checking whether a Bubble is active](/docs/sdk/web#name-checking-whether-a-bubble-is-active-492)
+-   [Bubble at a glance](/docs/sdk/web#name-bubble-at-a-glance-511)
+-   [Bubbles limits](/docs/sdk/web#name-bubbles-limits-518)
+-   [Maximum number of active bubbles per user](/docs/sdk/web#name-maximum-number-of-active-bubbles-per-user-565)
+-   [Member privilege](/docs/sdk/web#name-member-privilege-581)
+-   [Member status](/docs/sdk/web#name-member-status-621)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

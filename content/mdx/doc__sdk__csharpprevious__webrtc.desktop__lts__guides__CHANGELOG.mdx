@@ -1,0 +1,148 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharpprevious/webrtc.desktop/lts/guides/CHANGELOG"
+lastSynced: "2026-02-19T22:35:14.751Z"
+---
+# Documentation
+
+Changelog
+
+LTS release 0.0.6Publiée le 2024-07-01Comparer
+
+## SDK.WebRTC.Desktop for C#
+
+### \[1.0.0\] - 2024-07-01
+
+#### Changed
+
+-   **.Net 6.0** as target plateform has been removed (obsolete). **.Net Std 2.0, 2.1** and **.Net 8.0** are still in targets platform.
+
+---
+
+### \[0.0.6-STS\] - 2024-05-27
+
+#### Changed
+
+-   Use **SIPSorcery v6.2.4** (from v6.2.1)
+
+---
+
+### \[0.0.5-STS\] - 2024-03-19
+
+#### Changed
+
+-   **Breaking** `DataChannel`: No more available. Use instead the one from **Rainbow.SDK.WebRTC** package
+-   Enhance the way to create SDP used by FFmpeg lib to decode incoming RTP packets: use dynamic payload and mid values
+-   Use **SIPSorcery v6.2.1** (from v6.0.12)
+
+---
+
+### \[0.0.4.1-STS\] - 2024-01-17
+
+#### Fixed
+
+-   Media status badly set when new track is added
+
+---
+
+### \[0.0.4-STS\] - 2024-01-15
+
+#### Added
+
+-   Add .Net 8.0 as target plateform (.Net Std 2.0, 2.1 and .Net 6.0 are still in targets platform) .Net 6.0 target platform will be removed in April.
+-   (Alpha support) Allow to manage DataChannel in a Conference . Only one DataChannel can be created for the moment by user but several can be subscribed.
+
+#### Fixed
+
+-   PeerConnection are closed/disposed in a better way
+-   in P2P and Conference, media status are set correctly: SendRecv, SendOnly, RecvOnly, Inactive
+
+---
+
+### \[0.0.3-STS\] - 2023-09-05
+
+#### Changed
+
+-   Use last version of SDK.Medias to use FFmpeg v6.0 libraries
+-   VideoStreamTrack: Add SetVideoBitRate()
+
+---
+
+### \[0.0.2\] - STS - 2023-07-07
+
+---
+
+-   .Net Core App 3.1 is no more targetted (already deprecated by Microsoft).
+-   .Net Standardd 2.0 / 2.1 and .Net 6.0 are still targetted
+
+### \[0.0.1\] - STS - 2023-05-26
+
+---
+
+Implements interfaces and uses objects defined in **Rainbow.CSharp.SDK.WebRTC.Abstractions** to allow WebRTC communications (**Peer To Peer** or in a **Conference**).
+
+Targets **Windows, MacOS** and **Linux** (x64 version only)
+
+**Peer To Peer communication features**:
+
+-   Answer, Decline, Make, Retract, Hang up call
+    
+-   Add / Remove Video or Sharing
+    
+-   Mute / Unmute Audio, Video or Sharing
+    
+-   Call status: Ringing incoming, ringing outgoing, in progress, ...
+    
+-   Audio Stream: Output and Input are supported
+    
+-   Video Stream: Output and Input are supported
+    
+
+**Conference features**:
+
+-   Start, Join Conference
+    
+-   Participants list
+    
+-   Publishers list
+    
+-   Mute / Unmute: current user but also other Peers if current user is a moderator of the conference
+    
+-   Call status: Ringing incoming, ringing outgoing, in progress, ...
+    
+-   Display Active Talker. **Current user of this SDK is never seen as Active Talker** (work still in progress)
+    
+-   Add / Remove Video or Sharing
+    
+-   Subscribe (automatically or manualy) to publication of Peers (Video or Sharing)
+    
+-   Request / Refuse / Accept Sharing transfert
+    
+-   Conference delegation
+    
+-   Audio Stream: Output and Input are supported
+    
+-   Video Stream: Ouput and Input are supported
+    
+
+**Samples available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/WebRTC)**
+
+### Sur cette page
+
+-   [SDK.WebRTC.Desktop for C#](/docs/sdk/csharp#name-sdk.webrtc.desktop-for-c-0)
+-   [\[1.0.0\] - 2024-07-01](/doc/sdk/csharpprevious/webrtc.desktop/lts/guides/CHANGELOG#name-1.0.0---2024-07-01-3)
+-   [\[0.0.6-STS\] - 2024-05-27](/doc/sdk/csharpprevious/webrtc.desktop/lts/guides/CHANGELOG#name-0.0.6-sts---2024-05-27-17)
+-   [\[0.0.5-STS\] - 2024-03-19](/doc/sdk/csharpprevious/webrtc.desktop/lts/guides/CHANGELOG#name-0.0.5-sts---2024-03-19-31)
+-   [\[0.0.4.1-STS\] - 2024-01-17](/doc/sdk/csharpprevious/webrtc.desktop/lts/guides/CHANGELOG#name-0.0.4.1-sts---2024-01-17-55)
+-   [\[0.0.4-STS\] - 2024-01-15](/doc/sdk/csharpprevious/webrtc.desktop/lts/guides/CHANGELOG#name-0.0.4-sts---2024-01-15-69)
+-   [\[0.0.3-STS\] - 2023-09-05](/doc/sdk/csharpprevious/webrtc.desktop/lts/guides/CHANGELOG#name-0.0.3-sts---2023-09-05-103)
+-   [\[0.0.2\] - STS - 2023-07-07](/doc/sdk/csharpprevious/webrtc.desktop/lts/guides/CHANGELOG#name-0.0.2---sts---2023-07-07-123)
+-   [\[0.0.1\] - STS - 2023-05-26](/doc/sdk/csharpprevious/webrtc.desktop/lts/guides/CHANGELOG#name-0.0.1---sts---2023-05-26-139)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

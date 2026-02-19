@@ -1,0 +1,181 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharpprevious/medias/lts/guides/CHANGELOG"
+lastSynced: "2026-02-19T22:35:14.710Z"
+---
+# Documentation
+
+Changelog
+
+LTS release 1.XPubliée le 2024-07-01Comparer
+
+## SDK.Medias for C#
+
+### \[1.0.0\] - 2024-07-01
+
+#### Fixed
+
+-   Improves the way to get/calculate Fps.
+-   Avoid to use several streams when grabbing remote videos (for CCTV for example)
+
+#### Changed
+
+-   Use `FFmpeg.AutoGen` package v7.0.0 (from v6.0.0.2)
+-   Use `FFmpeg v7.0.1` shared libraries (from v6.0)
+-   **.Net 6.0** as target plateform has been removed (obsolete). **.Net Std 2.0, 2.1** and **.Net 8.0** are still in targets platform.
+
+---
+
+### \[0.0.9-STS\] - 2024-03-19
+
+#### Fixed
+
+-   Allow to stream as video a JPG file (already possible with BMP, TIFF, PNG, WEBP (with one image), ...). GIF are also supported but not WEBP with animation due to FFmpeg limitation
+
+#### Changed
+
+-   Use **Microsoft.Extensions.Logging.Abstractions v8.0.0.0** (from v7.0.0.0)
+
+---
+
+### \[0.0.8-STS\] - 2024-01-15
+
+#### Added
+
+-   Add .Net 8.0 as target plateform (.Net Std 2.0, 2.1 and .Net 6.0 are still in targets platform) .Net 6.0 target platform will be removed in April.
+
+---
+
+### \[0.0.7-STS\] - 2023-10-18
+
+#### Added
+
+-   MediaInput: allow to set widht, height, fps and bit rate used in encoding process. Take into account options set in the device
+-   InputStreamDevice: Allow to set options
+
+---
+
+### \[0.0.6-STS\] - 2023-09-05
+
+#### Added
+
+-   Add SetVideoBitRate() in MediaInput, MediaRtpInput and MediaFiltered
+
+#### Changed
+
+-   Use FFmpeg.AutoGen v6.0.0.2.
+-   Use FFmpeg v6.0 libraries.
+-   Enhancement in parser used to set filters
+
+---
+
+### \[0.0.5\] - STS - 2023-07-07
+
+---
+
+-   .Net Core App 3.1 is no more targetted (already deprecated by Microsoft).
+-   .Net Standardd 2.0 / 2.1 and .Net 6.0 are still targetted
+
+### \[0.0.4\] - STS - 2023-05-26
+
+---
+
+## Fix
+
+-   **MediaRTPInput**: Some internal values was not resetted correctly
+    
+-   **MediaFiltered**: When a new filter is set, it's necessary to dispose ALL previous objects to ensure to build correct frames
+    
+
+### \[0.0.3\] - STS - 2023-02-10
+
+---
+
+## Enhancements
+
+It's now possible **to decode RTP packets** (Audio and/or Video) using **MediaRtpInput** object.
+
+A valid SDP must be provided which describes codecs to use to decode them. It possible for the moment to manage only one Audio track and/or one Video Track.
+
+If you have several tracks for a same media, it's possible to specify which one to use using an index.
+
+### \[0.0.2\] - STS - 2023-01-20
+
+---
+
+## Enhancements
+
+-   Major rework to avoid memory leak. Use of **IDisposable** interface in objects using unmanaged objects to ensure to dispose them.
+    
+-   Rework interfaces (IMedia, IMediaVideo, IMediaAudio, IMediaVideoOutput, IMediaAudioOutput) and inheritances in major objects: **MediaInput**, **MediaFiltered** and **MediaOutput**
+    
+
+## API In details
+
+-   **IMedia** interface (now inherits from **IDisposable**)
+    
+    -   `Loop`: **added** To know if we loop automatically if the end of file is reached
+        
+    -   `Duration`: **added** Duration in seconds of the Media (if not a life stream)
+        
+    -   `LiveStream`: **added** To know the Media is a 'live steam' i.e. a remote stream for a live stream server, live camera or an IPTV for example
+        
+    -   `OnEndOfFile`: **added** Event raised when the Media as reached the end of the file.
+        
+    -   `Init`: **added** To init the media.
+        
+-   **IMediaVideo** interface:
+    
+    -   `Loop`: **removed**
+        
+    -   `Duration`: **removed**
+        
+    -   `LiveStream`: **removed**
+        
+    -   `Init`: **removed**
+        
+-   **IMediaVideoOutput** interface: **added**
+    
+    -   `GotVideoFrame`: **added** To add Video Frame to this Media Video Output
+-   **MediaFiltered** now inherits from **IMediaVideo** and **IMediaAudio**
+    
+-   **SDL2AudioInput** implements **IMedia** interface
+    
+-   **SDL2AudioOutput** implements **IMedia** interface
+    
+-   **MediaFormat** static class: **remoced** data/methods are now in **Helper** class
+    
+
+### \[0.0.1\] - STS - 2022-12-07
+
+---
+
+This is the first version of this SDK.
+
+Please refer to the "getting started" guides for feature details
+
+### Sur cette page
+
+-   [SDK.Medias for C#](/docs/sdk/csharp#name-sdk.medias-for-c-0)
+-   [\[1.0.0\] - 2024-07-01](/doc/sdk/csharpprevious/medias/lts/guides/CHANGELOG#name-1.0.0---2024-07-01-3)
+-   [\[0.0.9-STS\] - 2024-03-19](/doc/sdk/csharpprevious/medias/lts/guides/CHANGELOG#name-0.0.9-sts---2024-03-19-42)
+-   [\[0.0.8-STS\] - 2024-01-15](/doc/sdk/csharpprevious/medias/lts/guides/CHANGELOG#name-0.0.8-sts---2024-01-15-66)
+-   [\[0.0.7-STS\] - 2023-10-18](/doc/sdk/csharpprevious/medias/lts/guides/CHANGELOG#name-0.0.7-sts---2023-10-18-80)
+-   [\[0.0.6-STS\] - 2023-09-05](/doc/sdk/csharpprevious/medias/lts/guides/CHANGELOG#name-0.0.6-sts---2023-09-05-99)
+-   [\[0.0.5\] - STS - 2023-07-07](/doc/sdk/csharpprevious/medias/lts/guides/CHANGELOG#name-0.0.5---sts---2023-07-07-134)
+-   [\[0.0.4\] - STS - 2023-05-26](/doc/sdk/csharpprevious/medias/lts/guides/CHANGELOG#name-0.0.4---sts---2023-05-26-150)
+-   [Fix](/docs/sdk/csharp#name-fix-154)
+-   [\[0.0.3\] - STS - 2023-02-10](/doc/sdk/csharpprevious/medias/lts/guides/CHANGELOG#name-0.0.3---sts---2023-02-10-169)
+-   [Enhancements](/docs/sdk/csharp#name-enhancements-173)
+-   [\[0.0.2\] - STS - 2023-01-20](/doc/sdk/csharpprevious/medias/lts/guides/CHANGELOG#name-0.0.2---sts---2023-01-20-185)
+-   [Enhancements](/docs/sdk/csharp#name-enhancements-189)
+-   [API In details](/docs/sdk/csharp#name-api-in-details-204)
+-   [\[0.0.1\] - STS - 2022-12-07](/doc/sdk/csharpprevious/medias/lts/guides/CHANGELOG#name-0.0.1---sts---2022-12-07-300)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

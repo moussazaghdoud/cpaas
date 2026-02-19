@@ -1,0 +1,249 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/Connection/interfaces/ConnectionService"
+lastSynced: "2026-02-19T22:35:16.799Z"
+---
+# Documentation
+
+ConnectionService
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [Connection](doc/sdk/webv2/lts/api/Connection/index) / ConnectionService
+
+# Interface: ConnectionService
+
+## Methods
+
+### getServer()
+
+> **getServer**(): `string`
+
+Get the splatform server connection
+
+#### Returns
+
+`string`
+
+The server
+
+---
+
+### getState()
+
+> **getState**(): [`ConnectionState`](doc/sdk/webv2/lts/api/Connection/classes/ConnectionState)
+
+Get the current connection state with the Rainbow Cloud Services
+
+#### Returns
+
+[`ConnectionState`](doc/sdk/webv2/lts/api/Connection/classes/ConnectionState)
+
+The connection state
+
+---
+
+### getToken()
+
+> **getToken**(): `string`
+
+Get the current token associated with the connection
+
+#### Returns
+
+`string`
+
+The token
+
+---
+
+### logon()
+
+> **logon**(`login`, `password`, `rememberMe`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`ConnectedUser`](doc/sdk/webv2/lts/api/User/interfaces/ConnectedUser)\>
+
+Allow to sign-on to Rainbow from a user account that already exists.
+
+#### Parameters
+
+• **login**: `string`
+
+Rainbow hosted user login.
+
+• **password**: `string`
+
+Rainbow hosted user password.
+
+• **rememberMe**: `boolean`
+
+(default: false) When set to true, user token will be stored in local storage for further connections.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`ConnectedUser`](doc/sdk/webv2/lts/api/User/interfaces/ConnectedUser)\>
+
+---
+
+### logonWithBubbleLink()
+
+> **logonWithBubbleLink**(`bubblelink`, `rememberMe`?): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`ConnectedUser`](doc/sdk/webv2/lts/api/User/interfaces/ConnectedUser)\>
+
+Permits to log-on as "guest" in a bubble
+
+#### Parameters
+
+• **bubblelink**: `string`
+
+The bubble link.
+
+• **rememberMe?**: `boolean`
+
+when set to true, the auth token will be stored in localStorage for further connections.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`ConnectedUser`](doc/sdk/webv2/lts/api/User/interfaces/ConnectedUser)\>
+
+---
+
+### logonWithToken()
+
+> **logonWithToken**(`token`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`ConnectedUser`](doc/sdk/webv2/lts/api/User/interfaces/ConnectedUser)\>
+
+Allow to sign-on with JWT token to Rainbow from a user account that already exists.
+
+#### Parameters
+
+• **token**: `string`
+
+Rainbow user existing JWT token.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`ConnectedUser`](doc/sdk/webv2/lts/api/User/interfaces/ConnectedUser)\>
+
+---
+
+### logout()
+
+> **logout**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Allow to sign-on with JWT token to Rainbow from a user account that already exists.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+A promise that resolve when user is log-out.
+
+---
+
+### setRenewedToken()
+
+> **setRenewedToken**(`token`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Use this method to update the OAuth token which is being used. It is obligatory to update the token after each renewing. If the token is not renewed, an event AUTH\_TOKEN\_EXPIRE will be emitted and the user will be disconnected
+
+#### Parameters
+
+• **token**: `string`
+
+String representing the new AuthToken received after the renewing
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+A promise that resolve when token is renewed.
+
+---
+
+### start()
+
+> **start**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`ConnectedUser`](doc/sdk/webv2/lts/api/User/interfaces/ConnectedUser)\>
+
+Allow to start the RainbowSDK.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`ConnectedUser`](doc/sdk/webv2/lts/api/User/interfaces/ConnectedUser)\>
+
+a promise that resolve when RainbowSDK is started and ready to use. Return the authenticated contact if the autolog success.
+
+---
+
+### stop()
+
+> **stop**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Allow to stop the RainbowSDK.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+a promise that resolve when RainbowSDK is stopped.
+
+---
+
+### subscribe()
+
+> **subscribe**(`handler`, `eventName`?): `Subscription`
+
+Register a evenbt handler function for when the connectionService state change.
+
+#### Parameters
+
+• **handler**: [`ConnectionServiceEventHandler`](doc/sdk/webv2/lts/api/Connection/type-aliases/ConnectionServiceEventHandler)
+
+The handler function to register.
+
+• **eventName?**: `string`
+
+(optional) the name of the event to subscribe on.
+
+#### Returns
+
+`Subscription`
+
+### Sur cette page
+
+-   [Methods](/docs/sdk/web#name-methods-10)
+-   [getServer()](/docs/sdk/web#name-getserver-13)
+-   [Returns](/docs/sdk/web#name-returns-24)
+-   [getState()](/docs/sdk/web#name-getstate-34)
+-   [Returns](/docs/sdk/web#name-returns-45)
+-   [getToken()](/docs/sdk/web#name-gettoken-55)
+-   [Returns](/docs/sdk/web#name-returns-66)
+-   [logon()](/docs/sdk/web#name-logon-76)
+-   [Parameters](/docs/sdk/web#name-parameters-87)
+-   [Returns](/docs/sdk/web#name-returns-108)
+-   [logonWithBubbleLink()](/docs/sdk/web#name-logonwithbubblelink-115)
+-   [Parameters](/docs/sdk/web#name-parameters-126)
+-   [Returns](/docs/sdk/web#name-returns-141)
+-   [logonWithToken()](/docs/sdk/web#name-logonwithtoken-148)
+-   [Parameters](/docs/sdk/web#name-parameters-159)
+-   [Returns](/docs/sdk/web#name-returns-168)
+-   [logout()](/docs/sdk/web#name-logout-175)
+-   [Returns](/docs/sdk/web#name-returns-186)
+-   [setRenewedToken()](/docs/sdk/web#name-setrenewedtoken-196)
+-   [Parameters](/docs/sdk/web#name-parameters-207)
+-   [Returns](/docs/sdk/web#name-returns-216)
+-   [start()](/docs/sdk/web#name-start-226)
+-   [Returns](/docs/sdk/web#name-returns-237)
+-   [stop()](/docs/sdk/web#name-stop-247)
+-   [Returns](/docs/sdk/web#name-returns-258)
+-   [subscribe()](/docs/sdk/web#name-subscribe-268)
+-   [Parameters](/docs/sdk/web#name-parameters-279)
+-   [Returns](/docs/sdk/web#name-returns-294)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,234 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/deviceManagement"
+lastSynced: "2026-02-19T22:35:15.186Z"
+---
+# Documentation
+
+Device Management service (audio/video)
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## DeviceManagementService
+
+This service manages the input / output audio and video devices used by the application
+
+**Emits**: `event:RAINBOW_ONAUDIOVIDEODEVICEACCESSERROR`, `event:RAINBOW_ONAUDIOVIDEODEVICELISTUPDATE`, `event:RAINBOW_ONNEWAUDIOVIDEODEVICESELECTED`, `event:RAINBOW_ONNEWSECONDARYOUTPUTDEVICESELECTED`  
+**Access**: public
+
+-   [DeviceManagementService](#module_DeviceManagementService)
+    -   [subscribe(handler)](#module_DeviceManagementService+subscribe) ⇒ `Subscription`
+    -   [setSetSinkIdForAudioElement(element, outputDevice)](#module_DeviceManagementService+setSetSinkIdForAudioElement)
+    -   [getCurrentAudioInputDevice()](#module_DeviceManagementService+getCurrentAudioInputDevice) ⇒ `MediaDeviceInfo`
+    -   [setCurrentAudioInputDevice(device)](#module_DeviceManagementService+setCurrentAudioInputDevice)
+    -   [getAllAudioInputDevices()](#module_DeviceManagementService+getAllAudioInputDevices) ⇒ `Array.<MediaDeviceInfo>`
+    -   [getCurrentAudioOutputDevice()](#module_DeviceManagementService+getCurrentAudioOutputDevice) ⇒ `MediaDeviceInfo`
+    -   [setCurrentAudioOutputDevice(device)](#module_DeviceManagementService+setCurrentAudioOutputDevice)
+    -   [getAllAudioOutputDevices()](#module_DeviceManagementService+getAllAudioOutputDevices) ⇒ `Array.<MediaDeviceInfo>`
+    -   [getCurrentVideoInputDevice()](#module_DeviceManagementService+getCurrentVideoInputDevice) ⇒ `MediaDeviceInfo`
+    -   [setCurrentVideoInputDevice(device)](#module_DeviceManagementService+setCurrentVideoInputDevice)
+    -   [getAllVideoInputDevices()](#module_DeviceManagementService+getAllVideoInputDevices) ⇒ `Array.<MediaDeviceInfo>`
+    -   [getCurrentSecondaryOutputDevice()](#module_DeviceManagementService+getCurrentSecondaryOutputDevice) ⇒ `MediaDeviceInfo`
+    -   [setCurrentSecondaryOutputDevice(device)](#module_DeviceManagementService+setCurrentSecondaryOutputDevice)
+
+### deviceManagementService.subscribe(handler) ⇒ `Subscription`
+
+Subscribe to updates on the input/output devices (all events are of RBEvent type {name: string, data:any}); All public events that are fired by this service are described in the documentation. NB There might be some events that are not documented here, they should be ignored
+
+**Kind**: instance method of [`DeviceManagementService`](#module_DeviceManagementService)  
+**Returns**: `Subscription` - Returns RxJS Subscription  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+handler
+
+`any`
+
+The call-back function that will be subscribed to the RxJS subject
+
+### deviceManagementService.setSetSinkIdForAudioElement(element, outputDevice)
+
+Set the output sinkID of the audio element with the output device given
+
+**Kind**: instance method of [`DeviceManagementService`](#module_DeviceManagementService)  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+element
+
+`HTMLAudioElement`
+
+The Audio element to whom we want to change the output ID
+
+outputDevice
+
+`MediaDeviceInfo`
+
+The output device to be used
+
+### deviceManagementService.getCurrentAudioInputDevice() ⇒ `MediaDeviceInfo`
+
+Return the current audio input device selected (that's used in all VoIP calls)
+
+**Kind**: instance method of [`DeviceManagementService`](#module_DeviceManagementService)  
+**Returns**: `MediaDeviceInfo` - The current microphone MediaDeviceInfo or null if none  
+**Access**: public  
+
+### deviceManagementService.setCurrentAudioInputDevice(device)
+
+This API can be used to modify the current audio input device. This will result in sending an update event of type RAINBOW\_ONNEWAUDIOVIDEODEVICESELECTED
+
+**Kind**: instance method of [`DeviceManagementService`](#module_DeviceManagementService)  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+device
+
+`MediaDeviceInfo`
+
+The new device to be used; Should be of type audioinput
+
+### deviceManagementService.getAllAudioInputDevices() ⇒ `Array.<MediaDeviceInfo>`
+
+Return all available audio input devices (type MediaDeviceInfo)
+
+**Kind**: instance method of [`DeviceManagementService`](#module_DeviceManagementService)  
+**Returns**: `Array.<MediaDeviceInfo>` - The list of all microphone MediaDeviceInfo or \[\]  
+**Access**: public  
+
+### deviceManagementService.getCurrentAudioOutputDevice() ⇒ `MediaDeviceInfo`
+
+Return the current audio output device selected (that's used in all VoIP calls)
+
+**Kind**: instance method of [`DeviceManagementService`](#module_DeviceManagementService)  
+**Returns**: `MediaDeviceInfo` - The current audio output MediaDeviceInfo or null if none  
+**Access**: public  
+
+### deviceManagementService.setCurrentAudioOutputDevice(device)
+
+This API can be used to modify the current audio output device. This will result in sending an update event of type RAINBOW\_ONNEWAUDIOVIDEODEVICESELECTED
+
+**Kind**: instance method of [`DeviceManagementService`](#module_DeviceManagementService)  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+device
+
+`MediaDeviceInfo`
+
+The new device to be used; Should be of type audiooutput
+
+### deviceManagementService.getAllAudioOutputDevices() ⇒ `Array.<MediaDeviceInfo>`
+
+Return all available audio output devices (type MediaDeviceInfo)
+
+**Kind**: instance method of [`DeviceManagementService`](#module_DeviceManagementService)  
+**Returns**: `Array.<MediaDeviceInfo>` - The list of all audio output devices MediaDeviceInfo or \[\]  
+**Access**: public  
+
+### deviceManagementService.getCurrentVideoInputDevice() ⇒ `MediaDeviceInfo`
+
+Return the current video input device selected (that's used in all VoIP calls)
+
+**Kind**: instance method of [`DeviceManagementService`](#module_DeviceManagementService)  
+**Returns**: `MediaDeviceInfo` - The current video input MediaDeviceInfo or null if none  
+**Access**: public  
+
+### deviceManagementService.setCurrentVideoInputDevice(device)
+
+This API can be used to modify the currentvideo input device. This will result in sending an update event of type RAINBOW\_ONNEWAUDIOVIDEODEVICESELECTED
+
+**Kind**: instance method of [`DeviceManagementService`](#module_DeviceManagementService)  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+device
+
+`MediaDeviceInfo`
+
+The new device to be used; Should be of type videoinput
+
+### deviceManagementService.getAllVideoInputDevices() ⇒ `Array.<MediaDeviceInfo>`
+
+Return all available video input devices (type MediaDeviceInfo)
+
+**Kind**: instance method of [`DeviceManagementService`](#module_DeviceManagementService)  
+**Returns**: `Array.<MediaDeviceInfo>` - The list of all video inputs MediaDeviceInfo or \[\]  
+**Access**: public  
+
+### deviceManagementService.getCurrentSecondaryOutputDevice() ⇒ `MediaDeviceInfo`
+
+Return the secondary output device to be used for incoming calls / IMs to play sound on
+
+**Kind**: instance method of [`DeviceManagementService`](#module_DeviceManagementService)  
+**Returns**: `MediaDeviceInfo` - The current video input MediaDeviceInfo or null if none  
+**Access**: public  
+
+### deviceManagementService.setCurrentSecondaryOutputDevice(device)
+
+This API can be used to modify the currentvideo input device. This will result in sending an update event of type RAINBOW\_ONNEWAUDIOVIDEODEVICESELECTED
+
+**Kind**: instance method of [`DeviceManagementService`](#module_DeviceManagementService)  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+device
+
+`MediaDeviceInfo`
+
+The new device to be used; Should be of type audiooutput
+
+### Sur cette page
+
+-   [DeviceManagementService](/docs/sdk/web#name-devicemanagementservice-3)
+-   [deviceManagementService.subscribe(handler) ⇒ Subscription](/docs/sdk/web#name-devicemanagementservice.subscribehandler--subscription-89)
+-   [deviceManagementService.setSetSinkIdForAudioElement(element, outputDevice)](/docs/sdk/web#name-devicemanagementservice.setsetsinkidforaudioelementelement-outputdevice-129)
+-   [deviceManagementService.getCurrentAudioInputDevice() ⇒ MediaDeviceInfo](/docs/sdk/web#name-devicemanagementservice.getcurrentaudioinputdevice--mediadeviceinfo-180)
+-   [deviceManagementService.setCurrentAudioInputDevice(device)](/docs/sdk/web#name-devicemanagementservice.setcurrentaudioinputdevicedevice-189)
+-   [deviceManagementService.getAllAudioInputDevices() ⇒ Array.<MediaDeviceInfo>](/docs/sdk/web#name-devicemanagementservice.getallaudioinputdevices--array.mediadeviceinfo-229)
+-   [deviceManagementService.getCurrentAudioOutputDevice() ⇒ MediaDeviceInfo](/docs/sdk/web#name-devicemanagementservice.getcurrentaudiooutputdevice--mediadeviceinfo-238)
+-   [deviceManagementService.setCurrentAudioOutputDevice(device)](/docs/sdk/web#name-devicemanagementservice.setcurrentaudiooutputdevicedevice-247)
+-   [deviceManagementService.getAllAudioOutputDevices() ⇒ Array.<MediaDeviceInfo>](/docs/sdk/web#name-devicemanagementservice.getallaudiooutputdevices--array.mediadeviceinfo-287)
+-   [deviceManagementService.getCurrentVideoInputDevice() ⇒ MediaDeviceInfo](/docs/sdk/web#name-devicemanagementservice.getcurrentvideoinputdevice--mediadeviceinfo-296)
+-   [deviceManagementService.setCurrentVideoInputDevice(device)](/docs/sdk/web#name-devicemanagementservice.setcurrentvideoinputdevicedevice-305)
+-   [deviceManagementService.getAllVideoInputDevices() ⇒ Array.<MediaDeviceInfo>](/docs/sdk/web#name-devicemanagementservice.getallvideoinputdevices--array.mediadeviceinfo-345)
+-   [deviceManagementService.getCurrentSecondaryOutputDevice() ⇒ MediaDeviceInfo](/docs/sdk/web#name-devicemanagementservice.getcurrentsecondaryoutputdevice--mediadeviceinfo-354)
+-   [deviceManagementService.setCurrentSecondaryOutputDevice(device)](/docs/sdk/web#name-devicemanagementservice.setcurrentsecondaryoutputdevicedevice-363)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

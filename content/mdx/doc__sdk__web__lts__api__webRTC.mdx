@@ -1,0 +1,609 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/webRTC"
+lastSynced: "2026-02-19T22:35:15.582Z"
+---
+# Documentation
+
+WebRTC service
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## WebRTC
+
+This module manages WebRTC audio and video communication in a conversation. At this time of writing, only Chrome and Firefox browsers support these services in Rainbow. The main methods and events proposed in that service allow to: - Know if your application (in fact your browser) can use these services, - Detect if a webcam or at least a microphone is available, - Handle the basic audio video services: Call a contact in audio or in audio and video and release the call, - Allow to show and hide the local and remote video, - Mute and unmute audio and video stream, - Listen to the call state change, - Record a call - Enumerate the available devices and allow to select the ones to use You have to use the media device selector proposed by your browser in order to select the device to use when in communication (Firefox) or you will use the default configured device (Chrome)
+
+**Emits**: `event:RAINBOW_ONWEBRTCCALLSTATECHANGED`, `event:RAINBOW_ONWEBRTCERRORHANDLED`, `event:RAINBOW_ONWEBRTCSTREAMADDED`, `event:RAINBOW_ONWEBRTCTRACKCHANGED`, `event:RAINBOW_ONCHROMESTOPSCREENSHARINGTRIGGERED`, `event:RAINBOW_ONWEBRTCTMEDIAERROROCCURED`, `event:RAINBOW_ONWEBRTCTRECORDDONE`, `event:RAINBOW_ONWEBRTCTRECORDERROR`, `event:RAINBOW_ONWEBRTCTRECORDSTARTED`, `event:RAINBOW_ONWEBRTCTRECORDSTOPPED`, `event:RAINBOW_ONWEBRTCTRECORDREMOTESTARTED`, `event:RAINBOW_ONWEBRTCTRECORDREMOTESTOPPED`
+
+-   [WebRTC](#module_WebRTC)
+    -   [canMakeAudioVideoCall()](#module_WebRTC+canMakeAudioVideoCall) ⇒ `boolean`
+    -   [hasAMicrophone()](#module_WebRTC+hasAMicrophone) ⇒ `boolean`
+    -   [hasACamera()](#module_WebRTC+hasACamera) ⇒ `boolean`
+    -   [callInAudio(contactId, \[subject\])](#module_WebRTC+callInAudio) ⇒ `Promise`
+    -   [callInVideo(contactId, \[subject\])](#module_WebRTC+callInVideo) ⇒ `Promise`
+    -   [callInSharing(contactId)](#module_WebRTC+callInSharing) ⇒ `Promise`
+    -   [callinAudioWithSharing(contactId)](#module_WebRTC+callinAudioWithSharing) ⇒ `Promise`
+    -   [answerInAudio(callId)](#module_WebRTC+answerInAudio) ⇒ `object`
+    -   [answerInVideo(callId)](#module_WebRTC+answerInVideo) ⇒ `object`
+    -   [getPeerConnectionForCall(callId)](#module_WebRTC+getPeerConnectionForCall) ⇒ `object`
+    -   [showLocalVideo()](#module_WebRTC+showLocalVideo) ⇒ `object`
+    -   [hideLocalVideo()](#module_WebRTC+hideLocalVideo) ⇒ `object`
+    -   [showRemoteVideo(callId)](#module_WebRTC+showRemoteVideo) ⇒ `object`
+    -   [hideRemoteVideo(callId)](#module_WebRTC+hideRemoteVideo) ⇒ `object`
+    -   [addVideoToCall(callId)](#module_WebRTC+addVideoToCall) ⇒ `object`
+    -   [addSharingToCall(callId)](#module_WebRTC+addSharingToCall) ⇒ `object`
+    -   [removeVideoFromCall(callId)](#module_WebRTC+removeVideoFromCall) ⇒ `object`
+    -   [removeSharingFromCall(callId)](#module_WebRTC+removeSharingFromCall) ⇒ `object`
+    -   [release(callId)](#module_WebRTC+release) ⇒ `object`
+    -   [muteAudioCall(callId)](#module_WebRTC+muteAudioCall) ⇒ `object`
+    -   [unmuteAudioCall(callId)](#module_WebRTC+unmuteAudioCall) ⇒ `object`
+    -   [getLocalStreamsFromCall(callId)](#module_WebRTC+getLocalStreamsFromCall) ⇒ `Array.<MediaStream>`
+    -   [getRemoteStreamsFromCall(callId)](#module_WebRTC+getRemoteStreamsFromCall) ⇒ `object`
+    -   [getCallById(callId)](#module_WebRTC+getCallById) ⇒ `CallSDK` | `Call`
+    -   [canMakeDesktopSharingCall()](#module_WebRTC+canMakeDesktopSharingCall) ⇒ `object`
+    -   [startRecording(callId, fileName, \[recordRemote\], \[toUpload\], \[onlyAudio\], \[mimeType\])](#module_WebRTC+startRecording) ⇒ `object`
+    -   [stopRecording(callId)](#module_WebRTC+stopRecording) ⇒ `object`
+
+### webRTC.canMakeAudioVideoCall() ⇒ `boolean`
+
+Return true if the browser can use WebRTC to make audio and video call AND the page uses HTTPS protocol
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `boolean` - True if audio and video calls are supported  
+**Access**: public  
+
+### webRTC.hasAMicrophone() ⇒ `boolean`
+
+Return true if at least one microphone is detected and can be used
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `boolean` - True if a microphone has been detected  
+**Access**: public  
+
+### webRTC.hasACamera() ⇒ `boolean`
+
+Return true if at least one camera is detected and can be used
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `boolean` - True if a camera has been detected  
+
+### webRTC.callInAudio(contactId, \[subject\]) ⇒ `Promise`
+
+Call a contact in audio only using WebRTC canMakeAudioVideoCall() must be true Not supported on IE 11
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `Promise` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Default
+
+Description
+
+contactId
+
+`string`
+
+ID of the contact to call in audio
+
+\[subject\]
+
+`string`
+
+\[optional\] add a subject/correlator to the call
+
+### webRTC.callInVideo(contactId, \[subject\]) ⇒ `Promise`
+
+Call a contact in audio & video using WebRTC canMakeAudioVideoCall() must be true Not supported on IE 11
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `Promise` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Default
+
+Description
+
+contactId
+
+`string`
+
+ID of the contact to call in video
+
+\[subject\]
+
+`string`
+
+\[optional\] add a subject/correlator to the call
+
+### webRTC.callInSharing(contactId) ⇒ `Promise`
+
+Call a contact in sharing without audio using WebRTC For Chrome versions < 72 use setChromeExtensionIdForSharing prior this method canMakeAudioVideoCall() must be true Not supported on IE 11 and Safari
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `Promise` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contactId
+
+`string`
+
+ID of the contact to call in sharing
+
+### webRTC.callinAudioWithSharing(contactId) ⇒ `Promise`
+
+Call a contact in sharing with audio using WebRTC For Chrome versions < 72 use setChromeExtensionIdForSharing prior this method canMakeAudioVideoCall() must be true Not supported on IE 11 and Safari
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `Promise` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contactId
+
+`string`
+
+ID of the contact to call in sharing
+
+### webRTC.answerInAudio(callId) ⇒ `object`
+
+Answer a call in audio only using WebRTC canMakeAudioVideoCall() must be true Not supported on IE 11
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `object` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+ID of the call to answer
+
+### webRTC.answerInVideo(callId) ⇒ `object`
+
+Answer a call in audio & video using WebRTC canMakeAudioVideoCall() must be true Not supported on IE 11
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `object` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+Id of the call to answer
+
+### webRTC.getPeerConnectionForCall(callId) ⇒ `object`
+
+get the call's peerconnection object containing the statistics
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `object` - return the peerconnection object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+The call object
+
+### webRTC.showLocalVideo() ⇒ `object`
+
+Display the local video (Picture in picture) canMakeAudioVideoCall() must be true Not supported on IE 11
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `object` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public  
+
+### webRTC.hideLocalVideo() ⇒ `object`
+
+Hide the local video (Picture in picture) canMakeAudioVideoCall() must be true Not supported on IE 11
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `object` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public  
+
+### webRTC.showRemoteVideo(callId) ⇒ `object`
+
+Show the remote video associated to the call canMakeAudioVideoCall() must be true Not supported on IE 11
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `object` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+The call to show
+
+### webRTC.hideRemoteVideo(callId) ⇒ `object`
+
+Hide the remote video associated to the call canMakeAudioVideoCall() must be true Not supported on IE 11
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `object` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+callId
+
+`object`
+
+ID of the call
+
+### webRTC.addVideoToCall(callId) ⇒ `object`
+
+Add the video to an existing call canMakeAudioVideoCall() must be true Not supported on IE 11
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `object` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+ID of the call
+
+### webRTC.addSharingToCall(callId) ⇒ `object`
+
+Add the sharing to an existing call For Chrome versions < 72 use setChromeExtensionIdForSharing prior this method canMakeAudioVideoCall() must be true Not supported on IE 11 and Safari
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `object` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+ID of the call to escalade to sharing
+
+### webRTC.removeVideoFromCall(callId) ⇒ `object`
+
+Remove the video from the call Not supported on IE 11 canMakeAudioVideoCall() must be true
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `object` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+The call to remove the video
+
+### webRTC.removeSharingFromCall(callId) ⇒ `object`
+
+Remove the sharing to an existing call For Chrome versions < 72 use setChromeExtensionIdForSharing prior this method canMakeAudioVideoCall() must be true Not supported on IE 11 and Safari
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `object` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+The call where sharing should be removed
+
+### webRTC.release(callId) ⇒ `object`
+
+Release a call canMakeAudioVideoCall() may be false to allow to reject an incoming all as if WebRTC is not supported.
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `object` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+ID of the call to release
+
+### webRTC.muteAudioCall(callId) ⇒ `object`
+
+Mute an audio only call canMakeAudioVideoCall() must be true
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `object` - Return the Call object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+ID of the call to mute
+
+### webRTC.unmuteAudioCall(callId) ⇒ `object`
+
+Unmute an audio only call canMakeAudioVideoCall() must be true
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `object` - Return the updated Call object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+ID of the call to unmute
+
+### webRTC.getLocalStreamsFromCall(callId) ⇒ `Array.<MediaStream>`
+
+Get the local streams associated to this call (for advanced webRTC developers)
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `Array.<MediaStream>` - Return an array of local streams (MediaStream) or an empty array in case of no streams  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+ID of the call to get the streams
+
+### webRTC.getRemoteStreamsFromCall(callId) ⇒ `object`
+
+Get the remote streams associated to this call (for advanced WebRTC developers)
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `object` - Return an object with remoteStreams (0: Audio, 1: Video, 2: Sharing)  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+ID of the call to get the streams
+
+### webRTC.getCallById(callId) ⇒ `CallSDK` | `Call`
+
+Get the call object by its ID
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `CallSDK` | `Call` - Return the call or null in case of no call with the associated ID found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+ID of the call
+
+### webRTC.canMakeDesktopSharingCall() ⇒ `object`
+
+Check if the desktop sharing extension is installed or not (Chrome only) For Chrome versions < 72 use setChromeExtensionIdForSharing prior this method
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `object` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public  
+**Since**: 1.29.0  
+
+### webRTC.startRecording(callId, fileName, \[recordRemote\], \[toUpload\], \[onlyAudio\], \[mimeType\]) ⇒ `object`
+
+Start recording a WebRTC call. Only works for calls with a single recipient (doesn't work with web confernce call)
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `object` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public  
+**Since**: 1.48.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+callId
+
+`string`
+
+ID of the call to record
+
+fileName
+
+`string`
+
+The name of the file
+
+\[recordRemote\]
+
+`boolean`
+
+`true`
+
+True to record the remote stream, false to record the local stream
+
+\[toUpload\]
+
+`boolean`
+
+`true`
+
+True to upload the record to Rainbow cloud storage, false to save the file locally
+
+\[onlyAudio\]
+
+`boolean`
+
+`false`
+
+True to record only the audio leg, false to record audio and video leg
+
+\[mimeType\]
+
+`string`
+
+`video/webm;codecs=vp9`
+
+Mimetype of the recorded file. Other supported formats are 'video/webm;codecs=vp8', 'video/webm;codecs=h264', 'video/mpeg', 'video/webm' and `audio/webm`
+
+### webRTC.stopRecording(callId) ⇒ `object`
+
+Stop recording a call
+
+**Kind**: instance method of [`WebRTC`](#module_WebRTC)  
+**Returns**: `object` - SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+ID of the recorded call
+
+### Sur cette page
+
+-   [WebRTC](/docs/sdk/web#name-webrtc-3)
+-   [webRTC.canMakeAudioVideoCall() ⇒ boolean](/docs/sdk/web#name-webrtc.canmakeaudiovideocall--boolean-159)
+-   [webRTC.hasAMicrophone() ⇒ boolean](/docs/sdk/web#name-webrtc.hasamicrophone--boolean-168)
+-   [webRTC.hasACamera() ⇒ boolean](/docs/sdk/web#name-webrtc.hasacamera--boolean-177)
+-   [webRTC.callInAudio(contactId, \[subject\]) ⇒ Promise](/doc/sdk/web/lts/api/webRTC#name-webrtc.callinaudiocontactid-subject--promise-186)
+-   [webRTC.callInVideo(contactId, \[subject\]) ⇒ Promise](/doc/sdk/web/lts/api/webRTC#name-webrtc.callinvideocontactid-subject--promise-246)
+-   [webRTC.callInSharing(contactId) ⇒ Promise](/docs/sdk/web#name-webrtc.callinsharingcontactid--promise-306)
+-   [webRTC.callinAudioWithSharing(contactId) ⇒ Promise](/docs/sdk/web#name-webrtc.callinaudiowithsharingcontactid--promise-346)
+-   [webRTC.answerInAudio(callId) ⇒ object](/docs/sdk/web#name-webrtc.answerinaudiocallid--object-386)
+-   [webRTC.answerInVideo(callId) ⇒ object](/docs/sdk/web#name-webrtc.answerinvideocallid--object-426)
+-   [webRTC.getPeerConnectionForCall(callId) ⇒ object](/docs/sdk/web#name-webrtc.getpeerconnectionforcallcallid--object-466)
+-   [webRTC.showLocalVideo() ⇒ object](/docs/sdk/web#name-webrtc.showlocalvideo--object-506)
+-   [webRTC.hideLocalVideo() ⇒ object](/docs/sdk/web#name-webrtc.hidelocalvideo--object-515)
+-   [webRTC.showRemoteVideo(callId) ⇒ object](/docs/sdk/web#name-webrtc.showremotevideocallid--object-524)
+-   [webRTC.hideRemoteVideo(callId) ⇒ object](/docs/sdk/web#name-webrtc.hideremotevideocallid--object-564)
+-   [webRTC.addVideoToCall(callId) ⇒ object](/docs/sdk/web#name-webrtc.addvideotocallcallid--object-604)
+-   [webRTC.addSharingToCall(callId) ⇒ object](/docs/sdk/web#name-webrtc.addsharingtocallcallid--object-644)
+-   [webRTC.removeVideoFromCall(callId) ⇒ object](/docs/sdk/web#name-webrtc.removevideofromcallcallid--object-684)
+-   [webRTC.removeSharingFromCall(callId) ⇒ object](/docs/sdk/web#name-webrtc.removesharingfromcallcallid--object-724)
+-   [webRTC.release(callId) ⇒ object](/docs/sdk/web#name-webrtc.releasecallid--object-764)
+-   [webRTC.muteAudioCall(callId) ⇒ object](/docs/sdk/web#name-webrtc.muteaudiocallcallid--object-804)
+-   [webRTC.unmuteAudioCall(callId) ⇒ object](/docs/sdk/web#name-webrtc.unmuteaudiocallcallid--object-844)
+-   [webRTC.getLocalStreamsFromCall(callId) ⇒ Array.<MediaStream>](/docs/sdk/web#name-webrtc.getlocalstreamsfromcallcallid--array.mediastream-884)
+-   [webRTC.getRemoteStreamsFromCall(callId) ⇒ object](/docs/sdk/web#name-webrtc.getremotestreamsfromcallcallid--object-924)
+-   [webRTC.getCallById(callId) ⇒ CallSDK | Call](/docs/sdk/web#name-webrtc.getcallbyidcallid--callsdk--call-964)
+-   [webRTC.canMakeDesktopSharingCall() ⇒ object](/docs/sdk/web#name-webrtc.canmakedesktopsharingcall--object-1004)
+-   [webRTC.startRecording(callId, fileName, \[recordRemote\], \[toUpload\], \[onlyAudio\], \[mimeType\]) ⇒ object](/doc/sdk/web/lts/api/webRTC#name-webrtc.startrecordingcallid-filename-recordremote-toupload-onlyaudio-mimetype--object-1013)
+-   [webRTC.stopRecording(callId) ⇒ object](/docs/sdk/web#name-webrtc.stoprecordingcallid--object-1129)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

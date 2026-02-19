@@ -1,0 +1,52 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/presence"
+lastSynced: "2026-02-19T22:35:15.371Z"
+---
+# Documentation
+
+Presence service
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Presence
+
+This service manages with your Rainbow presence and the presence of your contacts. The presence in Rainbow reflects your activity or the possibility or not to be joined in a conversation (using IM, an audio/video call or a PBX call). The main methods and events proposed in that service allow to:  
+\- Retrieve and set the presence of the connected user,  
+\- Retrieve the presence of the contacts,  
+\- Listen to the contacts presence change
+
+**Emits**: `event:RAINBOW_ONPRESENCECHANGED`, `event:RAINBOW_ONCONTACTPRESENCECHANGED`, `event:RAINBOW_ONRICHPRESENCECHANGED`, `event:RAINBOW_ONCONTACTRICHPRESENCECHANGED`, `event:RAINBOW_ONMYCONTACTPRESENCECHANGED`  
+
+### presence.setPresenceTo(strPresenceState) ⇒ `object`
+
+Allow to change the presence of the connected user manually Only the following values are authorized: RAINBOW\_PRESENCE\_ONLINE, RAINBOW\_PRESENCE\_OFFLINE (invisible), RAINBOW\_PRESENCE\_DONOTDISTURB or RAINBOW\_PRESENCE\_AWAY
+
+**Kind**: instance method of [`Presence`](#module_Presence)  
+**Returns**: `object` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strPresenceState
+
+`string`
+
+The presence value to set i.e: 'online', 'xa', or 'dnd'
+
+### Sur cette page
+
+-   [Presence](/docs/sdk/web#name-presence-3)
+-   [presence.setPresenceTo(strPresenceState) ⇒ object](/docs/sdk/web#name-presence.setpresencetostrpresencestate--object-12)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

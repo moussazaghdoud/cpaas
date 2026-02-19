@@ -1,0 +1,286 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/UserNetwork/interfaces/UserNetworkService"
+lastSynced: "2026-02-19T22:35:17.631Z"
+---
+# Documentation
+
+UserNetworkService
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [UserNetwork](doc/sdk/webv2/lts/api/UserNetwork/index) / UserNetworkService
+
+# Interface: UserNetworkService
+
+## Methods
+
+### acceptInvitation()
+
+> **acceptInvitation**(`invitation`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+API used to accept a received invitation (which is not accepted or rejected yet)
+
+#### Parameters
+
+• **invitation**: [`NetworkInvitation`](doc/sdk/webv2/lts/api/UserNetwork/classes/NetworkInvitation)
+
+The received invitation that we want to accept
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### cancelInvitation()
+
+> **cancelInvitation**(`invitation`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+API used to cancel a send invitation (which is not accepted yet)
+
+#### Parameters
+
+• **invitation**: [`NetworkInvitation`](doc/sdk/webv2/lts/api/UserNetwork/classes/NetworkInvitation)
+
+The invitation that we want to cancel
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### declineInvitation()
+
+> **declineInvitation**(`invitation`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+API used to decline a received invitation (which is not accepted or rejected yet)
+
+#### Parameters
+
+• **invitation**: [`NetworkInvitation`](doc/sdk/webv2/lts/api/UserNetwork/classes/NetworkInvitation)
+
+The received invitation that we want to decline
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### getReceivedInvitations()
+
+> **getReceivedInvitations**(): [`NetworkInvitation`](doc/sdk/webv2/lts/api/UserNetwork/classes/NetworkInvitation)\[\]
+
+Returns the list of received invitations for this user
+
+#### Returns
+
+[`NetworkInvitation`](doc/sdk/webv2/lts/api/UserNetwork/classes/NetworkInvitation)\[\]
+
+---
+
+### getSentInvitations()
+
+> **getSentInvitations**(): [`NetworkInvitation`](doc/sdk/webv2/lts/api/UserNetwork/classes/NetworkInvitation)\[\]
+
+Returns the list of send invitations
+
+#### Returns
+
+[`NetworkInvitation`](doc/sdk/webv2/lts/api/UserNetwork/classes/NetworkInvitation)\[\]
+
+---
+
+### getUsers()
+
+> **getUsers**(`includePersonnalDirectoryUsers`?): [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)\[\]
+
+Returns a list of users that are in the network of the connected user
+
+#### Parameters
+
+• **includePersonnalDirectoryUsers?**: `boolean`
+
+f true, the API will return all users in the user's network including all his personnal directory contacts
+
+#### Returns
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User)\[\]
+
+an array of users found or an empty array if no user has been found
+
+---
+
+### reSendInvitation()
+
+> **reSendInvitation**(`invitation`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+API used to resend an invitations
+
+#### Parameters
+
+• **invitation**: [`NetworkInvitation`](doc/sdk/webv2/lts/api/UserNetwork/classes/NetworkInvitation)
+
+The invitation to resend
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### removeUser()
+
+> **removeUser**(`user`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Remove given user from our network. This means that the user will no longer receive any presence updates for this user etc.
+
+#### Parameters
+
+• **user**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)
+
+the contact to be removed from our network
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### sendBulkInvitations()
+
+> **sendBulkInvitations**(`emails`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+API used to send invitations to list of emails; Limit is 100 emails
+
+#### Parameters
+
+• **emails**: `string`\[\]
+
+The list of emails to send the invitations; Limit is 100 emails
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### sendInvitation()
+
+> **sendInvitation**(`user`, `customMessage`?): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+API used to invite a Rainbow user to join our network. In the case of same company, the invitation will be auto-accepted by the distant; In case of different companies, this will send an invitation and email to the distant user; This API will send an 'update' event on the contact object
+
+#### Parameters
+
+• **user**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)
+
+The rainbow user to invite
+
+• **customMessage?**: `string`
+
+A custom message that will be send to the distant user via email
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### sendInvitationByEmail()
+
+> **sendInvitationByEmail**(`email`, `customMessage`?): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+API used to send invitation to join rainbow to an email.
+
+#### Parameters
+
+• **email**: `string`
+
+The email to send the invitation
+
+• **customMessage?**: `string`
+
+A custom message that will be send to the distant user via email
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### subscribe()
+
+> **subscribe**(`handler`, `eventNames`?): `Subscription`
+
+Subscribe to the invitations updates; All events send to the callback are of type RB Event Events that will be received in the subscribe :
+
+-   'RAINBOW\_ON\_INVITATION\_RECEIVED' with data {invitation:Invitation, contact:Contact}: A new invitation from 'contact' is received
+-   'RAINBOW\_ON\_INVITATION\_ACCEPTED' with data {invitation:Invitation, contact:Contact}: The invitation (from / to) contact is accepted
+-   'RAINBOW\_ON\_INVITATIONS\_LIST\_UPDATED' with no data: The invitation list (received/send) is updated
+
+#### Parameters
+
+• **handler**
+
+The callback function that will be called when events are received
+
+• **eventNames?**: [`UserNetworkServiceEvents`](doc/sdk/webv2/lts/api/UserNetwork/enumerations/UserNetworkServiceEvents) | [`UserNetworkServiceEvents`](doc/sdk/webv2/lts/api/UserNetwork/enumerations/UserNetworkServiceEvents)\[\]
+
+EventName, or list of EventName to subscribe to
+
+#### Returns
+
+`Subscription`
+
+### Sur cette page
+
+-   [Methods](/docs/sdk/web#name-methods-10)
+-   [acceptInvitation()](/docs/sdk/web#name-acceptinvitation-13)
+-   [Parameters](/docs/sdk/web#name-parameters-24)
+-   [Returns](/docs/sdk/web#name-returns-33)
+-   [cancelInvitation()](/docs/sdk/web#name-cancelinvitation-40)
+-   [Parameters](/docs/sdk/web#name-parameters-51)
+-   [Returns](/docs/sdk/web#name-returns-60)
+-   [declineInvitation()](/docs/sdk/web#name-declineinvitation-67)
+-   [Parameters](/docs/sdk/web#name-parameters-78)
+-   [Returns](/docs/sdk/web#name-returns-87)
+-   [getReceivedInvitations()](/docs/sdk/web#name-getreceivedinvitations-94)
+-   [Returns](/docs/sdk/web#name-returns-105)
+-   [getSentInvitations()](/docs/sdk/web#name-getsentinvitations-112)
+-   [Returns](/docs/sdk/web#name-returns-123)
+-   [getUsers()](/docs/sdk/web#name-getusers-130)
+-   [Parameters](/docs/sdk/web#name-parameters-141)
+-   [Returns](/docs/sdk/web#name-returns-150)
+-   [reSendInvitation()](/docs/sdk/web#name-resendinvitation-160)
+-   [Parameters](/docs/sdk/web#name-parameters-171)
+-   [Returns](/docs/sdk/web#name-returns-180)
+-   [removeUser()](/docs/sdk/web#name-removeuser-187)
+-   [Parameters](/docs/sdk/web#name-parameters-198)
+-   [Returns](/docs/sdk/web#name-returns-207)
+-   [sendBulkInvitations()](/docs/sdk/web#name-sendbulkinvitations-214)
+-   [Parameters](/docs/sdk/web#name-parameters-225)
+-   [Returns](/docs/sdk/web#name-returns-234)
+-   [sendInvitation()](/docs/sdk/web#name-sendinvitation-241)
+-   [Parameters](/docs/sdk/web#name-parameters-252)
+-   [Returns](/docs/sdk/web#name-returns-267)
+-   [sendInvitationByEmail()](/docs/sdk/web#name-sendinvitationbyemail-274)
+-   [Parameters](/docs/sdk/web#name-parameters-285)
+-   [Returns](/docs/sdk/web#name-returns-300)
+-   [subscribe()](/docs/sdk/web#name-subscribe-307)
+-   [Parameters](/docs/sdk/web#name-parameters-335)
+-   [Returns](/docs/sdk/web#name-returns-350)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

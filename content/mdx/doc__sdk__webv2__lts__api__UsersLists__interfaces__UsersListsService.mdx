@@ -1,0 +1,132 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/UsersLists/interfaces/UsersListsService"
+lastSynced: "2026-02-19T22:35:17.702Z"
+---
+# Documentation
+
+UsersListsService
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [UsersLists](doc/sdk/webv2/lts/api/UsersLists/index) / UsersListsService
+
+# Interface: UsersListsService
+
+## Methods
+
+### createUsersList()
+
+> **createUsersList**(`profile`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`any`\>
+
+Create a new list of users Only the name of the users list is mandatory. The other information (description and favorite status) are optional and can be set afterwards using the 'updateUsersListInfo' method. A ON\_USERS\_LIST\_CREATED event is sent afterwards at the completion of the operation to notify about the users list creation.
+
+#### Parameters
+
+• **profile**: [`UsersListProfile`](doc/sdk/webv2/lts/api/UsersLists/interfaces/UsersListProfile)
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`any`\>
+
+---
+
+### deleteUsersList()
+
+> **deleteUsersList**(`listRef`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`any`\>
+
+Delete a users list specified either by its reference or by its unique identifier. A ON\_USERS\_LIST\_DELETED event is sent afterwards at the completion of the operation to notify about the users list deletion.
+
+#### Parameters
+
+• **listRef**: `string` | [`UsersList`](doc/sdk/webv2/lts/api/UsersLists/interfaces/UsersList)
+
+Reference or identifier of the users list to delete
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`any`\>
+
+---
+
+### getUsersListById()
+
+> **getUsersListById**(`id`): [`UsersList`](doc/sdk/webv2/lts/api/UsersLists/interfaces/UsersList)
+
+Get the data associated with the specified users list.
+
+#### Parameters
+
+• **id**: `string`
+
+The id of the users list
+
+#### Returns
+
+[`UsersList`](doc/sdk/webv2/lts/api/UsersLists/interfaces/UsersList)
+
+---
+
+### getUsersLists()
+
+> **getUsersLists**(): [`UsersList`](doc/sdk/webv2/lts/api/UsersLists/interfaces/UsersList)\[\]
+
+Get all users lists with all their properties.
+
+#### Returns
+
+[`UsersList`](doc/sdk/webv2/lts/api/UsersLists/interfaces/UsersList)\[\]
+
+---
+
+### subscribe()
+
+> **subscribe**(`callback`, `eventNames`?): `Subscription`
+
+Subscribe to the users lists updates, all events are of RBEvent
+
+#### Parameters
+
+• **callback**
+
+The callback function that will be called when events are received
+
+• **eventNames?**: [`UsersListsServiceEvents`](doc/sdk/webv2/lts/api/UsersLists/enumerations/UsersListsServiceEvents) | [`UsersListsServiceEvents`](doc/sdk/webv2/lts/api/UsersLists/enumerations/UsersListsServiceEvents)\[\]
+
+(optional) array of event to listen
+
+#### Returns
+
+`Subscription`
+
+Returns RxJS Subscription
+
+### Sur cette page
+
+-   [Methods](/docs/sdk/web#name-methods-10)
+-   [createUsersList()](/docs/sdk/web#name-createuserslist-13)
+-   [Parameters](/docs/sdk/web#name-parameters-24)
+-   [Returns](/docs/sdk/web#name-returns-30)
+-   [deleteUsersList()](/docs/sdk/web#name-deleteuserslist-37)
+-   [Parameters](/docs/sdk/web#name-parameters-48)
+-   [Returns](/docs/sdk/web#name-returns-57)
+-   [getUsersListById()](/docs/sdk/web#name-getuserslistbyid-64)
+-   [Parameters](/docs/sdk/web#name-parameters-75)
+-   [Returns](/docs/sdk/web#name-returns-84)
+-   [getUsersLists()](/docs/sdk/web#name-getuserslists-91)
+-   [Returns](/docs/sdk/web#name-returns-102)
+-   [subscribe()](/docs/sdk/web#name-subscribe-109)
+-   [Parameters](/docs/sdk/web#name-parameters-120)
+-   [Returns](/docs/sdk/web#name-returns-135)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

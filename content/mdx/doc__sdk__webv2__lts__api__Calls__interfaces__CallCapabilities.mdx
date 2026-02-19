@@ -1,0 +1,220 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/Calls/interfaces/CallCapabilities"
+lastSynced: "2026-02-19T22:35:16.645Z"
+---
+# Documentation
+
+CallCapabilities
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [Calls](doc/sdk/webv2/lts/api/Calls/index) / CallCapabilities
+
+# Interface: CallCapabilities
+
+Call capabilities representing all the actions that could be done for the call given the state
+
+## Properties
+
+### addAudio
+
+> `readonly` **addAudio**: `boolean`
+
+Indicates if we can add the audio media to the call.  
+This could happen if there's no audio, for example in case of sharing only call.
+
+---
+
+### addParticipantsToCall
+
+> `readonly` **addParticipantsToCall**: `boolean`
+
+Indicates if we can make a conference call from the current call by adding any other contact or number (that we dont have currently call with).  
+This will remove the current call and create a web conference call instead.
+
+---
+
+### addSharing
+
+> `readonly` **addSharing**: `boolean`
+
+Indicates if we can add the sharing media to the call.
+
+---
+
+### addVideo
+
+> `readonly` **addVideo**: `boolean`
+
+Indicates if we can add the video media to the call.
+
+---
+
+### answer
+
+> `readonly` **answer**: `boolean`
+
+Indicates if the incoming call can be answered.
+
+---
+
+### blindTransfer
+
+> `readonly` **blindTransfer**: `boolean`
+
+Indicates if we can make a blind transfer of this call (transfer it to some other contact without having a call with them beforehand).  
+This will remove the current call, and the other party will be transferred to the other contact / number.
+
+---
+
+### deflectPhoneNumberDestinations
+
+> `readonly` **deflectPhoneNumberDestinations**: \[`Object?`\]
+
+The list of phone numbers where we can deflect the call
+
+---
+
+### deflectToPhoneNumber
+
+> `readonly` **deflectToPhoneNumber**: `boolean`
+
+Indicates if we can deflect the incoming call to a phone number.  
+The possible destinations numbers for call deflection are available in the 'deflectPhoneNumberDestinations' data.
+
+---
+
+### deflectToVoicemail
+
+> `readonly` **deflectToVoicemail**: `boolean`
+
+Indicates if we can deflect the incoming call to the VoiceMail.  
+Only available for HYBRID systems (for Cloud telephony, the release action will follow the system/user configuration)
+
+---
+
+### dtmf
+
+> `readonly` **dtmf**: `boolean`
+
+Indicates if we can send dtmf for the call.
+
+---
+
+### hold
+
+> `readonly` **hold**: `boolean`
+
+Indicates if we can put the call on hold.
+
+---
+
+### mergeCalls
+
+> `readonly` **mergeCalls**: `boolean`
+
+Indicates if we can make a conference call from the current call and one other call in progress for the current user (can be used to merge the 2 calls).  
+This will remove the 2 calls and create one single call (for hybride systems) or web conference.
+
+---
+
+### mute
+
+> `readonly` **mute**: `boolean`
+
+Indicates if we can mute the call
+
+---
+
+### release
+
+> `readonly` **release**: `boolean`
+
+Indicates if the call can be released / ended / declined.
+
+---
+
+### removeSharing
+
+> `readonly` **removeSharing**: `boolean`
+
+Indicates if we can remove the sharing media from the call.
+
+---
+
+### removeVideo
+
+> `readonly` **removeVideo**: `boolean`
+
+Indicates if we can remove the video media from the call.
+
+---
+
+### retrieve
+
+> `readonly` **retrieve**: `boolean`
+
+Indicates if we can retrieve the call (if it is on hold).
+
+---
+
+### transferCallDestinations
+
+> `readonly` **transferCallDestinations**: `CallRB`\[\]
+
+The list of calls where we can transfer this call;
+
+---
+
+### transferToOtherCall
+
+> `readonly` **transferToOtherCall**: `boolean`
+
+Indicates if we can transfer the current call to the other call.  
+If the call is on HOLD, then the tranfer is always made towards the ACTIVE call.  
+Otherwise, we can transfer this call to any other call from the transferCallDestinations list.
+
+---
+
+### unmute
+
+> `readonly` **unmute**: `boolean`
+
+Indicates if we can unmute the call
+
+### Sur cette page
+
+-   [Properties](/docs/sdk/web#name-properties-13)
+-   [addAudio](/docs/sdk/web#name-addaudio-16)
+-   [addParticipantsToCall](/docs/sdk/web#name-addparticipantstocall-28)
+-   [addSharing](/docs/sdk/web#name-addsharing-40)
+-   [addVideo](/docs/sdk/web#name-addvideo-52)
+-   [answer](/docs/sdk/web#name-answer-64)
+-   [blindTransfer](/docs/sdk/web#name-blindtransfer-76)
+-   [deflectPhoneNumberDestinations](/docs/sdk/web#name-deflectphonenumberdestinations-88)
+-   [deflectToPhoneNumber](/docs/sdk/web#name-deflecttophonenumber-100)
+-   [deflectToVoicemail](/docs/sdk/web#name-deflecttovoicemail-112)
+-   [dtmf](/docs/sdk/web#name-dtmf-124)
+-   [hold](/docs/sdk/web#name-hold-136)
+-   [mergeCalls](/docs/sdk/web#name-mergecalls-148)
+-   [mute](/docs/sdk/web#name-mute-160)
+-   [release](/docs/sdk/web#name-release-172)
+-   [removeSharing](/docs/sdk/web#name-removesharing-184)
+-   [removeVideo](/docs/sdk/web#name-removevideo-196)
+-   [retrieve](/docs/sdk/web#name-retrieve-208)
+-   [transferCallDestinations](/docs/sdk/web#name-transfercalldestinations-220)
+-   [transferToOtherCall](/docs/sdk/web#name-transfertoothercall-232)
+-   [unmute](/docs/sdk/web#name-unmute-244)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,173 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/webrtc.desktop/lts/guides/CHANGELOG"
+lastSynced: "2026-02-19T22:35:14.244Z"
+---
+# Documentation
+
+Changelog
+
+LTS release 2.XPubliée le 2025-03-17Comparer
+
+## SDK.WebRTC.Desktop for C#
+
+### \[2.5.0\] - 2026-01-16
+
+#### Added
+
+-   `WebRTCFactory`
+    -   `CreateAudioTrack()` method to create **IAudioStreamTrack** using **IMediaAudio** object
+    -   `CreateVideoTrack()` method to create **IVideoStreamTrack** using **IMediaVideo** object
+
+#### Changed
+
+-   Update code to remove compilation warnings
+
+---
+
+### \[2.4.0\] - 2025-11-20
+
+#### Changed
+
+-   `VideoStreamTrack`: Avoid to register to events (like `OnVideoSampleConverted`) of internal objects (`MediaRtpInput` or `MediaFiltered`) if it's not necessary
+
+#### Added
+
+-   Added .Net 10.0 as target framework
+
+---
+
+### \[2.3.0\] - 2025-09-01
+
+#### Added
+
+-   `PeerConnection` object : implements `RestartIce()` method
+
+#### Changed
+
+-   Use `SIPsorcery` **v8.0.23** (from v8.0.10): now compatible when media in P2P media are added/removed
+
+---
+
+### \[2.2.1\] - 2025-07-15
+
+#### Fixed
+
+-   Use `SIPsorcery` **v8.0.10** (from v8.0.22): Adding / removing media in P2P failed
+
+---
+
+### \[2.2.0\] - 2025-07-07
+
+#### Added
+
+-   `WebRTCFactory` object:
+    -   `SetRTPAudioOptions` and `SetRTPVideoOptions` methods (used by ffmpeg when RTP input stream is opened)
+-   `PeerConnection` object:
+    -   in constructor add two optionals paramaters `audioOptions` and `videoOptions` (used by ffmpeg when RTP input stream is opened)
+
+#### Changed
+
+-   Use `SIPsorcery` **v8.0.22** (from v8.0.0)
+
+---
+
+### \[2.1.0\] - 2025-04-23
+
+#### Added
+
+-   `WebRTCFactory` service: `SetLoggerFactory()`
+-   Internally use logger prefix and logger factory when creating Audio or Video track
+
+---
+
+### \[2.0.1\] - 2025-03-27
+
+#### Changed
+
+-   Technical delivery to ensure to use Rainbow.CSharp.SDK V3.1.0
+
+---
+
+### \[2.0.0\] - 2025-03-12
+
+#### Fixed
+
+-   Fix `Dispose()` method of `PeerConnection`
+
+#### Changed
+
+-   `DataChannel` object: use lock when disposing object
+-   `MediaDevice` object: Allow to create them using with `forceLiveStream` parameter
+-   `WebRTCFactory` object: use `MediaInput.FromScreenDevice()` and `MediaInput.FromWebcamDevice()`
+-   `WebRTCFactory` object: permits to create Audio and Video tracks using the same device and with `forceLiveStream` parameter
+
+---
+
+### \[2.0.0-sts.4\] - 2024-11-22
+
+#### Fix
+
+-   `MediaStreamTrack` object: when disposing, release internal `Rainbow.Medias.IMedia` object
+-   Restrict video size and/or framerate when `Screen` or `WebCam` devices are used to avoid poor quality due to server restrictions
+
+#### Changed
+
+-   **Breaking** `WebRTCFactory` object: **CreateAudioTack()** with **IMedia** object is no more possible. Needs a **Device** object
+-   **Breaking** `WebRTCFactory` object: **CreateVideoTack()** with **IMedia** object is no more possible. Needs a **Device** object
+
+---
+
+### \[2.0.0-sts.3\] - 2024-10-01
+
+#### Added
+
+-   Automatically rotate incoming video according data describing Coordination of Video Rotation of the remote peer
+
+#### Changed
+
+-   `VideoStreamTrack` object: add **VideoStreamPixelFormat**, **VideoStreamTimeBase** and **VideoStreamSampleAspectRatio** properties since if inherits of `IMediaVideoBase` interface.
+-   `VideoStreamTrack` object: now internally use a `MediaFiltered` object to manage rotation
+-   Use `SIPsorcery` **v8.0** (from v6.2.1)
+
+---
+
+### \[2.0.0-sts.2\] - 2024-07-17
+
+#### Info
+
+-   Technical delivery to ensure to use Rainbow.CSharp.SDK 3.0.0-sts.2
+
+---
+
+### \[2.0.0-sts.1\] - 2024-07-01
+
+#### Info
+
+-   Contains all features of v1.X
+-   New features will only been added in V2.X
+-   Use Async/Await pattern
+
+### Sur cette page
+
+-   [SDK.WebRTC.Desktop for C#](/docs/sdk/csharp#name-sdk.webrtc.desktop-for-c-0)
+-   [\[2.5.0\] - 2026-01-16](/doc/sdk/csharp/webrtc.desktop/lts/guides/CHANGELOG#name-2.5.0---2026-01-16-3)
+-   [\[2.4.0\] - 2025-11-20](/doc/sdk/csharp/webrtc.desktop/lts/guides/CHANGELOG#name-2.4.0---2025-11-20-39)
+-   [\[2.3.0\] - 2025-09-01](/doc/sdk/csharp/webrtc.desktop/lts/guides/CHANGELOG#name-2.3.0---2025-09-01-63)
+-   [\[2.2.1\] - 2025-07-15](/doc/sdk/csharp/webrtc.desktop/lts/guides/CHANGELOG#name-2.2.1---2025-07-15-87)
+-   [\[2.2.0\] - 2025-07-07](/doc/sdk/csharp/webrtc.desktop/lts/guides/CHANGELOG#name-2.2.0---2025-07-07-101)
+-   [\[2.1.0\] - 2025-04-23](/doc/sdk/csharp/webrtc.desktop/lts/guides/CHANGELOG#name-2.1.0---2025-04-23-144)
+-   [\[2.0.1\] - 2025-03-27](/doc/sdk/csharp/webrtc.desktop/lts/guides/CHANGELOG#name-2.0.1---2025-03-27-163)
+-   [\[2.0.0\] - 2025-03-12](/doc/sdk/csharp/webrtc.desktop/lts/guides/CHANGELOG#name-2.0.0---2025-03-12-177)
+-   [\[2.0.0-sts.4\] - 2024-11-22](/doc/sdk/csharp/webrtc.desktop/lts/guides/CHANGELOG#name-2.0.0-sts.4---2024-11-22-216)
+-   [\[2.0.0-sts.3\] - 2024-10-01](/doc/sdk/csharp/webrtc.desktop/lts/guides/CHANGELOG#name-2.0.0-sts.3---2024-10-01-250)
+-   [\[2.0.0-sts.2\] - 2024-07-17](/doc/sdk/csharp/webrtc.desktop/lts/guides/CHANGELOG#name-2.0.0-sts.2---2024-07-17-284)
+-   [\[2.0.0-sts.1\] - 2024-07-01](/doc/sdk/csharp/webrtc.desktop/lts/guides/CHANGELOG#name-2.0.0-sts.1---2024-07-01-298)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,84 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/Conversations/interfaces/SendMessageData"
+lastSynced: "2026-02-19T22:35:17.075Z"
+---
+# Documentation
+
+SendMessageData
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [Conversations](doc/sdk/webv2/lts/api/Conversations/index) / SendMessageData
+
+# Interface: SendMessageData
+
+## Properties
+
+### additionalContent?
+
+> `optional` **additionalContent**: `MessageAdditionalContent`
+
+Additional content (like markdown or vcard) to be added to the message
+
+---
+
+### mentions?
+
+> `optional` **mentions**: `Mention`\[\]
+
+The list of mentions inside the message
+
+---
+
+### repliedMessage?
+
+> `optional` **repliedMessage**: `Message`
+
+In case we want to reply to a given message
+
+---
+
+### urgency?
+
+> `optional` **urgency**: `Urgency`
+
+The urgency of the message; Allowed values are (standard) 'std', (notify) 'low', (warning) 'middle', (emergency) 'high'; Default value is "std"
+
+---
+
+### urgencyAckType?
+
+> `optional` **urgencyAckType**: `"ack"` | `"ignore"`
+
+In case of urgency ACK message, the type of the ACK to send; Accepted values are "ack" or "ignore"
+
+---
+
+### urlMetadata?
+
+> `optional` **urlMetadata**: `UrlMetaData`
+
+URL Meta data in case of sending URL
+
+### Sur cette page
+
+-   [Properties](/docs/sdk/web#name-properties-10)
+-   [additionalContent?](/docs/sdk/web#name-additionalcontent-13)
+-   [mentions?](/docs/sdk/web#name-mentions-25)
+-   [repliedMessage?](/docs/sdk/web#name-repliedmessage-37)
+-   [urgency?](/docs/sdk/web#name-urgency-49)
+-   [urgencyAckType?](/docs/sdk/web#name-urgencyacktype-61)
+-   [urlMetadata?](/docs/sdk/web#name-urlmetadata-73)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

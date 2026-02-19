@@ -1,0 +1,108 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "docs-hub"
+source: "https://developers.openrainbow.com/doc/hub/lts-support-sdk-version"
+lastSynced: "2026-02-19T22:35:13.114Z"
+---
+# Documentation
+
+LTS SDK support policy & versions
+
+## LTS SDK Support policy and versions
+
+---
+
+This guide lists the current supported versions of each SDKs and explains the different kind of versions.
+
+The new LTS SDK support policy applies to Web, NodeJS, C#, Android and iOS SDKs. It does not apply to ReactNative SDK for now as this SDK is still being developed. The new LTS rules do not apply to REST APIs.
+
+### Supported versions
+
+---
+
+#### Rules
+
+There are two version release tracks:
+
+-   LTS (Long Term Support): these are the SDK versions you should use if you want a stable version for a production use that is guaranteed to be supported for a minimum pre-defined time period,
+    
+-   STS (Short Term Support): these are up-to-date SDK versions containing latest features, potentially unstable.  
+      
+    
+
+> As a developer using Rainbow SDKs for your applications, LTS versions are the way to go except if you need latest Rainbow features not already integrated in the LTS version.
+
+#### Versioning
+
+The version number of an SDK will show immediately if this is an STS, LTS beta or LTS version: STS versions will have no suffix, Beta LTS versions will have a -ltsbeta suffix. LTS versions will have a -lts suffix.
+
+#### LTS in details
+
+We release LTS versions that we consider stable. As software developers, you know that code modification can accidentally introduce bugs or unwanted behavior. That is why the basic rule is that an LTS version **never** receives new features and receives only fixes considered as critical.
+
+Before releasing a new LTS version we will release an LTS beta version. This version will contain all features of the LTS release version.
+
+-   **Support duration:** LTS version is supported for *at least* the time period that was announced when this version has been released. The LTS version support ends one month after the next LTS version is released. The previous LTS version is then deprecated. No support will be delivered for deprecated LTS versions. Update to the currently supported LTS version is required. If an issue is found in a deprecated LTS version, the SDK must be first updated to the currently supported LTS version.
+    
+-   **Bug fixes:** If a major or critical issue is discovered in the LTS version a fixed LTS version is released. Even if the non-fixed LTS version continues to be supported it is *highly* recommended to update to the fixed LTS. At any time, there is only *one* fixed LTS version: this fixed LTS version cumulates all fixes since initial LTS version was released. This means there is no more than *two* LTS supported versions at a time: non-fixed LTS, fixed LTS (the latest containing all fixes found).
+    
+
+![LTS bug fixes](/docs/hub/../assets/LTS_bug_fixes.png)
+
+-   **Breaking changes:** When a new LTS version is released, it *can* bring breaking changes (even if we try to avoid them). This means that when updating from a previous LTS, code change can be required in your application. Migration of the code will be described in the LTS release note.
+
+#### STS in details
+
+STS version are released on a frequent basis. These versions contains latest features and bug fixes.
+
+-   **Support duration:** STS versions are supported in a best effort mode until the next STS version is released. This means issues can be posted on our Community Forum. We will do our best to handle them. If a fix is needed, it will be available in the next STS version.
+    
+-   **Breaking changes:** We try to limit breaking compatibility between versions but this can happen in the STS release track. We will document these changes in STS release notes.
+    
+-   **Beta phase**: STS releases are to be considered as next LTS development versions (these can be seen as next LTS alpha versions). They contain features that will be available in the future LTS version. During the STS release track, we will qualify an STS release as "LTS beta". This means we will freeze features and focus on bug fixes until quality level is sufficient to release next LTS version.
+    
+
+### SDK Documentation
+
+---
+
+The SDK documentation is available on the Rainbow for Developers. The documentation for the latest Long Term Support and Short Term Support versions are available. Documentation for previous versions are not available.
+
+For accessing to STS documentation, authentication and being registered as developer is required.
+
+In menu Profile you can select documentation to display. The selection is global to all SDKs (for example if you select LTS, you will read LTS documentation for all SDKs).
+
+There can be cases where only one version of the documentation is available: For example, when a new LTS version is active and no new STS version has been released since. If the user selects 'STS', a page will be displayed explaining there is currently no STS documentation available for this SDK. 'LTS' documentation will be available for the active LTS SDK version.
+
+The global documentation selector has two choices:
+
+-   **LTS** for the currently active Long Term Support SDK documentation
+-   **STS / LTS Beta** for the currently active Short Term Support SDK documentation or the currently active LTS Beta SDK documentation. As explained before, an STS version can be qualified as LTS Beta when it is considered as a release candidate for the next LTS version. In this case, the SDK documentation will be stamped as "LTS Beta".
+
+### Sum-up
+
+---
+
+![img80](/docs/hub/../assets/LTS_STS_tracks.png)
+
+---
+
+*Last updated August, 26th 2022*
+
+### Sur cette page
+
+-   [LTS SDK Support policy and versions](/docs/hub/lts-support-sdk-version#name-lts-sdk-support-policy-and-versions-0)
+-   [Supported versions](/docs/hub/lts-support-sdk-version#name-supported-versions-10)
+-   [Rules](/docs/hub/lts-support-sdk-version#name-rules-15)
+-   [Versioning](/docs/hub/lts-support-sdk-version#name-versioning-38)
+-   [LTS in details](/docs/hub/lts-support-sdk-version#name-lts-in-details-44)
+-   [STS in details](/docs/hub/lts-support-sdk-version#name-sts-in-details-75)
+-   [SDK Documentation](/docs/hub/lts-support-sdk-version#name-sdk-documentation-98)
+-   [Sum-up](/docs/hub/lts-support-sdk-version#name-sum-up-129)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

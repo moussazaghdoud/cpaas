@@ -1,0 +1,749 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/bubbles"
+lastSynced: "2026-02-19T22:35:14.842Z"
+---
+# Documentation
+
+Bubbles service
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Bubbles
+
+This service manages multi-party communications in Rainbow (aka bubbles). Bubbles allow to chat and to share files with several participants. Each user can create bubbles and invite other Rainbow users to be part of it. Without being invited, users can join a bubble. The main methods and events proposed in that service allow to:  
+\- Create new bubbles,  
+\- Invite and manage participants in your bubbles  
+\- Accept or decline invites received from bubbles  
+\- Leave, close or remove your bubbles
+
+**Emits**: `event:RAINBOW_ONBUBBLEINVITATIONTOJOINRECEIVED`, `event:RAINBOW_ONBUBBLEUPDATED`, `event:RAINBOW_ONBUBBLEAVATARUPDATED`, `event:RAINBOW_ONBUBBLEDEACTIVATED`  
+**Access**: public
+
+-   [Bubbles](#module_Bubbles)
+    -   [createBubble(strName, strDescription, boolWithHistory, disableNotifications, urlAvatar, autoAcceptInvitation)](#module_Bubbles+createBubble) ⇒ `Promise`
+    -   [deleteBubble(bubble)](#module_Bubbles+deleteBubble) ⇒ `Promise`
+    -   [deleteAllBubbles()](#module_Bubbles+deleteAllBubbles) ⇒ `Promise`
+    -   [inviteContactToBubble(contactId, bubble, boolAsModerator, boolWithInvitation)](#module_Bubbles+inviteContactToBubble) ⇒ `Promise`
+    -   [removeContactFromBubble(contactId, bubble)](#module_Bubbles+removeContactFromBubble) ⇒ `Promise`
+    -   [promoteContactToModerator(contactId, bubble)](#module_Bubbles+promoteContactToModerator) ⇒ `Promise`
+    -   [demoteContactFromModerator(contactId, bubble)](#module_Bubbles+demoteContactFromModerator) ⇒ `Promise`
+    -   [changeOwner(contactId, bubble)](#module_Bubbles+changeOwner) ⇒ `Promise`
+    -   [acceptInvitationToJoinBubble(bubble)](#module_Bubbles+acceptInvitationToJoinBubble) ⇒ `Promise`
+    -   [declineInvitationToJoinBubble(bubble)](#module_Bubbles+declineInvitationToJoinBubble) ⇒ `Promise`
+    -   [leaveBubble(bubble)](#module_Bubbles+leaveBubble) ⇒ `Promise`
+    -   [closeBubble(bubble)](#module_Bubbles+closeBubble) ⇒ `Promise`
+    -   [isBubbleArchived(bubble)](#module_Bubbles+isBubbleArchived) ⇒ `boolean`
+    -   [getAllBubbles()](#module_Bubbles+getAllBubbles) ⇒ `Array`
+    -   [getAllOwnedBubbles()](#module_Bubbles+getAllOwnedBubbles) ⇒ `Array`
+    -   [getAllPendingBubbles()](#module_Bubbles+getAllPendingBubbles) ⇒ `Array`
+    -   [getAllInactiveBubbles()](#module_Bubbles+getAllInactiveBubbles) ⇒ `Array`
+    -   [getBubbleById(strBubbleId)](#module_Bubbles+getBubbleById) ⇒ `Array`
+    -   [updateNameForBubble(strName, bubble)](#module_Bubbles+updateNameForBubble) ⇒ `Promise`
+    -   [updateDescriptionForBubble(strDescription, bubble)](#module_Bubbles+updateDescriptionForBubble) ⇒ `Promise`
+    -   [updateBubbleConfiguration(bubble, muteUponEntry, roomName, roomDescription)](#module_Bubbles+updateBubbleConfiguration) ⇒ `Promise`
+    -   [updateAvatarForBubble(urlAvatar, bubble)](#module_Bubbles+updateAvatarForBubble) ⇒ `Promise`
+    -   [deleteAvatarFromBubble(bubble)](#module_Bubbles+deleteAvatarFromBubble) ⇒ `Promise`
+    -   [updateCustomDataForBubble(customData, bubble)](#module_Bubbles+updateCustomDataForBubble) ⇒ `Promise`
+    -   [deleteCustomDataForBubble(bubble)](#module_Bubbles+deleteCustomDataForBubble) ⇒ `Promise`
+    -   [getBubbleFromServer(bubble)](#module_Bubbles+getBubbleFromServer) ⇒ `Promise`
+    -   [createPublicUrl(bubbleId)](#module_Bubbles+createPublicUrl) ⇒ `Promise`
+    -   [retrievePublicUrl(bubbleId)](#module_Bubbles+retrievePublicUrl) ⇒ `Promise`
+    -   [joinBubbleUsingPublicUrl(publicUrl)](#module_Bubbles+joinBubbleUsingPublicUrl) ⇒ `Promise`
+    -   [reactivateInactiveBubble(bubbleId)](#module_Bubbles+reactivateInactiveBubble) ⇒ `Promise`
+
+### bubbles.createBubble(strName, strDescription, boolWithHistory, disableNotifications, urlAvatar, autoAcceptInvitation) ⇒ `Promise`
+
+Create a new bubble
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - The bubble object or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strName
+
+`string`
+
+The name of the bubble
+
+strDescription
+
+`string`
+
+The description of the bubble. Defaults to an empty string.
+
+boolWithHistory
+
+`boolean`
+
+True to have full messages history for newcomers. Defaults to false.
+
+disableNotifications
+
+`boolean`
+
+When set to true, there is no more notifications to be sent by a room in all cases with text body (user join/leave, conference start/end). Defaults to false.
+
+urlAvatar
+
+`string`
+
+The avatar Url or null (in case of invalid url or image it may fail). Defaults to null.
+
+autoAcceptInvitation
+
+`boolean`
+
+Set to 'true' to automatically invite other users to the bubble (without asking them to accept the invitation). Defaults to false.
+
+### bubbles.deleteBubble(bubble) ⇒ `Promise`
+
+Delete an existing owned bubble
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - Nothing or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`object`
+
+The bubble to remove
+
+### bubbles.deleteAllBubbles() ⇒ `Promise`
+
+Delete all existing owned bubbles
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - Nothing or an error object depending on the result  
+**Access**: public  
+
+### bubbles.inviteContactToBubble(contactId, bubble, boolAsModerator, boolWithInvitation) ⇒ `Promise`
+
+Invite a contact to a bubble
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - The bubble object or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contactId
+
+`string`
+
+ID of the contact to invite
+
+bubble
+
+`object`
+
+The destination bubble
+
+boolAsModerator
+
+`boolean`
+
+True to invite a contact as a moderator (false by default)
+
+boolWithInvitation
+
+`boolean`
+
+True to send an invitation or false to add someone directly in a bubble (true by default)
+
+### bubbles.removeContactFromBubble(contactId, bubble) ⇒ `Promise`
+
+Remove a contact from a bubble
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - The bubble object or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contactId
+
+`string`
+
+ID of the contact to remove
+
+bubble
+
+`object`
+
+The destination bubble
+
+### bubbles.promoteContactToModerator(contactId, bubble) ⇒ `Promise`
+
+Promote a contact to moderator in a bubble
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - The bubble object or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contactId
+
+`string`
+
+ID of the contact to promote
+
+bubble
+
+`object`
+
+The destination bubble
+
+### bubbles.demoteContactFromModerator(contactId, bubble) ⇒ `Promise`
+
+Demote a contact to user role in a bubble
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - The bubble object or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contactId
+
+`string`
+
+The contact to demote
+
+bubble
+
+`object`
+
+The destination bubble
+
+### bubbles.changeOwner(contactId, bubble) ⇒ `Promise`
+
+Change the bubble owner Warning: the caller MUST be the current owner and will lose his previous owner state.
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - The bubble object or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contactId
+
+`string`
+
+ID of the contact to promote as owner
+
+bubble
+
+`object`
+
+The destination bubble
+
+### bubbles.acceptInvitationToJoinBubble(bubble) ⇒ `Promise`
+
+Accept an invitation to join a bubble
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - The bubble object or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`object`
+
+The destination bubble
+
+### bubbles.declineInvitationToJoinBubble(bubble) ⇒ `Promise`
+
+Decline an invitation to join a bubble
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - The bubble object or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`object`
+
+The destination bubble
+
+### bubbles.leaveBubble(bubble) ⇒ `Promise`
+
+Leave a joined or invited bubble
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - The bubble object or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`object`
+
+The bubble to leave
+
+### bubbles.closeBubble(bubble) ⇒ `Promise`
+
+Close a bubble
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - The bubble object or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`object`
+
+The bubble to leave
+
+### bubbles.isBubbleArchived(bubble) ⇒ `boolean`
+
+Check if the Bubble is un Archive state (everybody unsubscribed)
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `boolean` - True if the Bubble is in archive state  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`object`
+
+Bubble to be archived
+
+### bubbles.getAllBubbles() ⇒ `Array`
+
+Get the list of bubbles where the user is
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Array` - An array containing the list of bubbles  
+**Access**: public  
+
+### bubbles.getAllOwnedBubbles() ⇒ `Array`
+
+Get the list of bubbles created by the user
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Array` - An array of bubbles restricted to the ones owned by the user  
+**Access**: public  
+
+### bubbles.getAllPendingBubbles() ⇒ `Array`
+
+Get the list of pending bubbles This is the list of bubbles where the connected user has been invited and has not yet answered (accepted or declined)
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Array` - An array of pending bubbles to accept or decline  
+**Access**: public  
+
+### bubbles.getAllInactiveBubbles() ⇒ `Array`
+
+Get the list of the inactive bubbles It is the list of bubbles with no activity since at least 60 days
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Array` - An array of inactive bubbles  
+**Access**: public  
+
+### bubbles.getBubbleById(strBubbleId) ⇒ `Array`
+
+Get a bubble by its id
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Array` - A bubble object of null if not found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strBubbleId
+
+`string`
+
+The ID of the bubble to retrieve
+
+### bubbles.updateNameForBubble(strName, bubble) ⇒ `Promise`
+
+Update the name of the bubble
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - A bubble object of null if not found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strName
+
+`string`
+
+The description of the bubble
+
+bubble
+
+`object`
+
+The bubble to update
+
+### bubbles.updateDescriptionForBubble(strDescription, bubble) ⇒ `Promise`
+
+Update the description of the bubble
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - A bubble object of null if not found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strDescription
+
+`string`
+
+The description of the bubble
+
+bubble
+
+`object`
+
+The bubble to update
+
+### bubbles.updateBubbleConfiguration(bubble, muteUponEntry, roomName, roomDescription) ⇒ `Promise`
+
+Update the bubble configuration
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - A bubble object of null if not found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`object`
+
+The bubble to update
+
+muteUponEntry
+
+`boolean`
+
+Whether the conference participants in this bubble should be muted upon entry (default value is FALSE)
+
+roomName
+
+`string`
+
+\[optional\] The name of the bubble to be updated
+
+roomDescription
+
+`string`
+
+\[optional\] The description of the bubble
+
+### bubbles.updateAvatarForBubble(urlAvatar, bubble) ⇒ `Promise`
+
+Update the bubble avatar (from given URL) The image will be automaticalle resized /!\\ if URL isn't valid or given image is not loadable, the method will fail
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - A bubble object of null if not found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+urlAvatar
+
+`string`
+
+The avatarUrl
+
+bubble
+
+`object`
+
+The bubble to update
+
+### bubbles.deleteAvatarFromBubble(bubble) ⇒ `Promise`
+
+Delete the bubble avatar
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - A an empty Promise of null if not found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`object`
+
+The bubble to update
+
+### bubbles.updateCustomDataForBubble(customData, bubble) ⇒ `Promise`
+
+Update the customData of the bubble
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - The updated Bubble  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+customData
+
+`object`
+
+The customData to put to the bubble. Example: { "key1" : 123, "key2" : "a string" }. Limited to 4096 characters
+
+bubble
+
+`object`
+
+The bubble to update
+
+### bubbles.deleteCustomDataForBubble(bubble) ⇒ `Promise`
+
+Delete the customData of the bubble
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - The updated Bubble  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`object`
+
+The bubble to update
+
+### bubbles.getBubbleFromServer(bubble) ⇒ `Promise`
+
+Update the bubble enterily by fetching the data from the server
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - A bubble object or null if not found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`object`
+
+The bubble to be updated from the server
+
+### bubbles.createPublicUrl(bubbleId) ⇒ `Promise`
+
+Create / Get the public URL used to access the specified bubble so a Guest or a Rainbow user can access to it just using a URL
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - Promise with the public URL  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubbleId
+
+`string`
+
+ID of the bubble (dbId)
+
+### bubbles.retrievePublicUrl(bubbleId) ⇒ `Promise`
+
+Retrieve public URL of the bubble
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - Promise with the public URL  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubbleId
+
+`string`
+
+ID of the bubble (dbId)
+
+### bubbles.joinBubbleUsingPublicUrl(publicUrl) ⇒ `Promise`
+
+Join bubble using public URL
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - Promise with the public URL  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+publicUrl
+
+`string`
+
+full public url (in the following format: "https://meet.openrainbow.com/")
+
+### bubbles.reactivateInactiveBubble(bubbleId) ⇒ `Promise`
+
+Reactivate an inactive bubble. A bubble becomes automatically inactive if there's no activity inside for some time When the bubble is inactive, no participant user in the bubble receives any updates about it, so before use it again, the user should first reactivate it, which will notify all participants about the change. This might take up to several seconds, so best practice is to wait a few seconds before making any actions inside the bubble after it's been reactivated This action will also fire RAINBOW\_ONBUBBLEUPDATED event NB: If the bubble is already active, the promise will resolve right away
+
+**Kind**: instance method of [`Bubbles`](#module_Bubbles)  
+**Returns**: `Promise` - Promise once the bubble is reactivated.  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubbleId
+
+`string`
+
+ID of the bubble (dbId)
+
+### Sur cette page
+
+-   [Bubbles](/docs/sdk/web#name-bubbles-3)
+-   [bubbles.createBubble(strName, strDescription, boolWithHistory, disableNotifications, urlAvatar, autoAcceptInvitation) ⇒ Promise](/docs/sdk/web#name-bubbles.createbubblestrname-strdescription-boolwithhistory-disablenotifications-urlavatar-autoacceptinvitation--promise-174)
+-   [bubbles.deleteBubble(bubble) ⇒ Promise](/docs/sdk/web#name-bubbles.deletebubblebubble--promise-269)
+-   [bubbles.deleteAllBubbles() ⇒ Promise](/docs/sdk/web#name-bubbles.deleteallbubbles--promise-309)
+-   [bubbles.inviteContactToBubble(contactId, bubble, boolAsModerator, boolWithInvitation) ⇒ Promise](/docs/sdk/web#name-bubbles.invitecontacttobubblecontactid-bubble-boolasmoderator-boolwithinvitation--promise-318)
+-   [bubbles.removeContactFromBubble(contactId, bubble) ⇒ Promise](/docs/sdk/web#name-bubbles.removecontactfrombubblecontactid-bubble--promise-391)
+-   [bubbles.promoteContactToModerator(contactId, bubble) ⇒ Promise](/docs/sdk/web#name-bubbles.promotecontacttomoderatorcontactid-bubble--promise-442)
+-   [bubbles.demoteContactFromModerator(contactId, bubble) ⇒ Promise](/docs/sdk/web#name-bubbles.demotecontactfrommoderatorcontactid-bubble--promise-493)
+-   [bubbles.changeOwner(contactId, bubble) ⇒ Promise](/docs/sdk/web#name-bubbles.changeownercontactid-bubble--promise-544)
+-   [bubbles.acceptInvitationToJoinBubble(bubble) ⇒ Promise](/docs/sdk/web#name-bubbles.acceptinvitationtojoinbubblebubble--promise-595)
+-   [bubbles.declineInvitationToJoinBubble(bubble) ⇒ Promise](/docs/sdk/web#name-bubbles.declineinvitationtojoinbubblebubble--promise-635)
+-   [bubbles.leaveBubble(bubble) ⇒ Promise](/docs/sdk/web#name-bubbles.leavebubblebubble--promise-675)
+-   [bubbles.closeBubble(bubble) ⇒ Promise](/docs/sdk/web#name-bubbles.closebubblebubble--promise-715)
+-   [bubbles.isBubbleArchived(bubble) ⇒ boolean](/docs/sdk/web#name-bubbles.isbubblearchivedbubble--boolean-755)
+-   [bubbles.getAllBubbles() ⇒ Array](/docs/sdk/web#name-bubbles.getallbubbles--array-795)
+-   [bubbles.getAllOwnedBubbles() ⇒ Array](/docs/sdk/web#name-bubbles.getallownedbubbles--array-804)
+-   [bubbles.getAllPendingBubbles() ⇒ Array](/docs/sdk/web#name-bubbles.getallpendingbubbles--array-813)
+-   [bubbles.getAllInactiveBubbles() ⇒ Array](/docs/sdk/web#name-bubbles.getallinactivebubbles--array-822)
+-   [bubbles.getBubbleById(strBubbleId) ⇒ Array](/docs/sdk/web#name-bubbles.getbubblebyidstrbubbleid--array-831)
+-   [bubbles.updateNameForBubble(strName, bubble) ⇒ Promise](/docs/sdk/web#name-bubbles.updatenameforbubblestrname-bubble--promise-871)
+-   [bubbles.updateDescriptionForBubble(strDescription, bubble) ⇒ Promise](/docs/sdk/web#name-bubbles.updatedescriptionforbubblestrdescription-bubble--promise-922)
+-   [bubbles.updateBubbleConfiguration(bubble, muteUponEntry, roomName, roomDescription) ⇒ Promise](/docs/sdk/web#name-bubbles.updatebubbleconfigurationbubble-muteuponentry-roomname-roomdescription--promise-973)
+-   [bubbles.updateAvatarForBubble(urlAvatar, bubble) ⇒ Promise](/docs/sdk/web#name-bubbles.updateavatarforbubbleurlavatar-bubble--promise-1046)
+-   [bubbles.deleteAvatarFromBubble(bubble) ⇒ Promise](/docs/sdk/web#name-bubbles.deleteavatarfrombubblebubble--promise-1097)
+-   [bubbles.updateCustomDataForBubble(customData, bubble) ⇒ Promise](/docs/sdk/web#name-bubbles.updatecustomdataforbubblecustomdata-bubble--promise-1137)
+-   [bubbles.deleteCustomDataForBubble(bubble) ⇒ Promise](/docs/sdk/web#name-bubbles.deletecustomdataforbubblebubble--promise-1188)
+-   [bubbles.getBubbleFromServer(bubble) ⇒ Promise](/docs/sdk/web#name-bubbles.getbubblefromserverbubble--promise-1228)
+-   [bubbles.createPublicUrl(bubbleId) ⇒ Promise](/docs/sdk/web#name-bubbles.createpublicurlbubbleid--promise-1268)
+-   [bubbles.retrievePublicUrl(bubbleId) ⇒ Promise](/docs/sdk/web#name-bubbles.retrievepublicurlbubbleid--promise-1308)
+-   [bubbles.joinBubbleUsingPublicUrl(publicUrl) ⇒ Promise](/docs/sdk/web#name-bubbles.joinbubbleusingpublicurlpublicurl--promise-1348)
+-   [bubbles.reactivateInactiveBubble(bubbleId) ⇒ Promise](/docs/sdk/web#name-bubbles.reactivateinactivebubblebubbleid--promise-1388)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

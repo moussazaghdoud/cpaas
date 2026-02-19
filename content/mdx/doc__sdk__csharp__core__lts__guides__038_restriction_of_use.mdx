@@ -1,0 +1,141 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/core/lts/guides/038_restriction_of_use"
+lastSynced: "2026-02-19T22:35:13.750Z"
+---
+# Documentation
+
+Usage restrictions
+
+LTS release 3.XPubliée le 2025-03-17
+
+## Usage restrictions
+
+This SDK can be used to create:
+
+-   Bots (for Windows Server, Linux Server)
+-   Desktop applications (for Windows, MacOs, Linux)
+-   Mobile Applications (for Android, IOs)
+-   AR/VR application (using Unity)
+-   And more ...
+
+So according your needs, the way to use the SDK is different.
+
+Perhaps in Bot context:
+
+-   you don't want / have to store messages sent by it
+-   you don't need to use an event pipe because you have to perform only administration tasks
+
+Also if you are in a degugging phase, you want to log more details.
+
+The [`Restrictions`](/docs/sdk/csharp) object from [`Application`](/docs/sdk/csharp) service is designed to tune the SDK according your needs.
+
+The more restrictions you set, the more effective the SDK will be.
+
+Below you will find details about most common properties. Read documentation of [`Restrictions`](/docs/sdk/csharp) object to have the full list.
+
+### How to set Restrictions
+
+To set restrictions, you have to set properties in the [`Restrictions`](/docs/sdk/csharp) object.
+
+This must be done before to start the login process.
+
+Code example:
+
+```csharp
+// Create Rainbow Application object
+Rainbow.Application myApp = new Rainbow.Application();
+
+// Get Restrictions object
+var myRestrictions = myApp.Restrictions;
+
+// Now we can set restrictions according your needs
+
+// To use WebRTC features - False by default
+myApp.Restrictions.UseWebRTC = true;
+
+// To send automatically a read receipt when a message is recevied - False by default
+myApp.Restrictions.SendReadReceipt = true;
+
+// etc ...
+```
+
+### Limit the use of some services
+
+If you don't need to use some features/services (even if you have the licence), it's better to indicate if to the SDK.
+
+-   [`UseBubbles`](/docs/sdk/csharp#Rainbow.Restrictions.UseBubbles) property (**True** by default) to use Bubbles or not.
+-   [`UseConferences`](/docs/sdk/csharp#Rainbow.Restrictions.UseBubbles) property (**True** by default) to use Conferences or not.
+-   [`UseHubTelephony`](/docs/sdk/csharp#Rainbow.Restrictions.UseHybridTelephony) property (**True** by default) to use Hybrid Telephony or not.
+-   [`UseHybridTelephony`](/docs/sdk/csharp#Rainbow.Restrictions.UseHybridTelephony) property (**True** by default) to use Hybrid Telephony or not.
+-   [`UseWebRTC`](/docs/sdk/csharp#Rainbow.Restrictions.UseTelephony) property (**False** by default) to use WebRTC or not.
+-   [`UseAlerts`](/docs/sdk/csharp#Rainbow.Restrictions.UseTelephony) property (**False** by default) to use Alerts message service or not.
+
+**NOTE:**
+
+-   Alert messages service needs a specific licence
+-   Alert messages service is not related to IM messages and [`MessageUrgencyType`](/docs/sdk/csharp#Rainbow.Enums.MessageUrgencyType) set as [`MessageUrgencyType.High`](/docs/sdk/csharp#Rainbow.Enums.MessageUrgencyType.High) (i.e. Urgent message)
+-   For more details read documentation of [`Rainbow.Alerts`](/docs/sdk/csharp) service.
+
+### Event mode restriction
+
+Like described in details in another guide (Cf. [XMPP or Server to Server events mode](/docs/sdk/csharp)) you can select the event mode restriction between XMPP or S2S.
+
+You have to set [`EventMode`](/docs/sdk/csharp#Rainbow.Restrictions.EventMode) property according your needs.
+
+[`SdkEventMode.XMPP`](/docs/sdk/csharp#Rainbow.Enums.SdkEventMode.XMPP) is used by default.
+
+### Logging options
+
+You have the possibility to have more or less logs according some options.
+
+Logs about events:
+
+-   [`LogEvent`](/docs/sdk/csharp#Rainbow.Restrictions.LogEvent) if set to True (default value) to log all events which are raised/triggered by the SDK.
+-   [`LogEventRaised`](/docs/sdk/csharp#Rainbow.Restrictions.LogEvent) if set to True (default value) to log all events which should be raised/triggered or not by the SDK.
+-   [`LogEventParameters`](/docs/sdk/csharp#Rainbow.Restrictions.LogEventParameters) if set to True (default value) to log parameters of events which are raised/triggered by the SDK - **LogEvent** or **LogEventRaised** must be also true.
+-   [`LogEventStackTrace`](/docs/sdk/csharp#Rainbow.Restrictions.LogEventStackTrace) if set to True (default value) to log stack trace of events which are raised/triggered by the SDK - **LogEvent** or **LogEventRaised** must be also true.
+
+Logs about REST requests:
+
+-   [`LogRestRequest`](/docs/sdk/csharp#Rainbow.Restrictions.LogRestRequest) if set to True (False by default) to log all REST requests (with or without servers error).
+-   [`LogRestRequestOnError`](/docs/sdk/csharp#Rainbow.Restrictions.LogRestRequestOnError) if set to True (default value) to log all REST requests with servers error.
+
+Logs about Bubbles:
+
+-   [`LogBubbleMembers`](/docs/sdk/csharp#Rainbow.Restrictions.LogBubbleMembers) if set to True (False by default) to log also Members when a Bubble is loggued.
+
+**NOTE:** It's possible to have anonymous log (default) or not using [`Util.SetLogAnonymously()`](/docs/sdk/csharp#Rainbow.Util.SetLogAnonymously\(Boolean\))
+
+### Allow to send message to the current connected user of the SDK
+
+In a BOT context, perhaps you want to send messages to the current connected user of the SDK. For this use [`LogRestRequestOnError`](/docs/sdk/csharp#Rainbow.Restrictions.SendMessageToConnectedUser) property.
+
+### Automatically send a read receipt
+
+In a BOT context, perhaps you want to automatically send a read receipt for each message received. For this use [`SendReadReceipt`](/docs/sdk/csharp#Rainbow.Restrictions.SendReadReceipt) property.
+
+### Mobile application
+
+If the SDK is used to create Mobile Application, it's **mandatory** to set [`MobileApplication`](/docs/sdk/csharp#Rainbow.Restrictions.MobileApplication) property to True.
+
+It ensures to share a correct presence level to other user devices as a Mobile Application.
+
+### Sur cette page
+
+-   [Usage restrictions](/docs/sdk/csharp#name-usage-restrictions-0)
+-   [How to set Restrictions](/docs/sdk/csharp#name-how-to-set-restrictions-63)
+-   [Limit the use of some services](/docs/sdk/csharp#name-limit-the-use-of-some-services-76)
+-   [Event mode restriction](/docs/sdk/csharp#name-event-mode-restriction-134)
+-   [Logging options](/docs/sdk/csharp#name-logging-options-146)
+-   [Allow to send message to the current connected user of the SDK](/docs/sdk/csharp#name-allow-to-send-message-to-the-current-connected-user-of-the-sdk-205)
+-   [Automatically send a read receipt](/docs/sdk/csharp#name-automatically-send-a-read-receipt-211)
+-   [Mobile application](/docs/sdk/csharp#name-mobile-application-217)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

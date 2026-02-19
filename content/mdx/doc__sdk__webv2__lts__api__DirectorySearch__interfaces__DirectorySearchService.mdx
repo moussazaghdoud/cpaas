@@ -1,0 +1,94 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/DirectorySearch/interfaces/DirectorySearchService"
+lastSynced: "2026-02-19T22:35:17.231Z"
+---
+# Documentation
+
+DirectorySearchService
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [DirectorySearch](doc/sdk/webv2/lts/api/DirectorySearch/index) / DirectorySearchService
+
+# Interface: DirectorySearchService
+
+## Methods
+
+### getAvailableDirectories()
+
+> **getAvailableDirectories**(): [`DirectoryType`](doc/sdk/webv2/lts/api/DirectorySearch/enumerations/DirectoryType)\[\]
+
+This API returns the list of directories that can be used for a search by the logged-in user.
+
+#### Returns
+
+[`DirectoryType`](doc/sdk/webv2/lts/api/DirectorySearch/enumerations/DirectoryType)\[\]
+
+List of directories usable by the logged-in user.
+
+---
+
+### searchByName()
+
+> **searchByName**(`searchPattern`, `directory`, `options`?): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`DirectorySearchResults`](doc/sdk/webv2/lts/api/DirectorySearch/interfaces/DirectorySearchResults)\>
+
+This API allows to search Rainbow users or contacts in a specified directory. It will finds a users/contacts that match a search criteria applied on names properties; depending on the type of directory. Search options can be specified for
+
+-   Managing the number of expected results.
+-   Activating the extended search mode. This mode allows to apply the search on more extensive names fields (than first and last names); depending on the type of directory.
+-   Refining the search the search by including an additional company criterion to include or exclude users/contacts of a company. This option is only available for certain directories.
+
+As a result, the search will return
+
+-   An array of results (as User model) depending on the number parameter.
+-   A flag indicating whether more results are available.
+
+Notes:
+
+-   A search always returns the first N results found. Results are not paginated, and it is not possible to specify an offset.
+-   The total number of results is not available.
+
+#### Parameters
+
+• **searchPattern**: `string`
+
+The search criteria
+
+• **directory**: [`DirectoryType`](doc/sdk/webv2/lts/api/DirectorySearch/enumerations/DirectoryType)
+
+The type of directory to be searched
+
+• **options?**: [`DirectorySearchOptions`](doc/sdk/webv2/lts/api/DirectorySearch/interfaces/DirectorySearchOptions)
+
+Options for refining the search and specifying the results to be provided.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`DirectorySearchResults`](doc/sdk/webv2/lts/api/DirectorySearch/interfaces/DirectorySearchResults)\>
+
+#### Throws
+
+Error - In the event of a problem with the options supplied (e.g. their value) or encountered during query processing.
+
+### Sur cette page
+
+-   [Methods](/docs/sdk/web#name-methods-10)
+-   [getAvailableDirectories()](/docs/sdk/web#name-getavailabledirectories-13)
+-   [Returns](/docs/sdk/web#name-returns-24)
+-   [searchByName()](/docs/sdk/web#name-searchbyname-34)
+-   [Parameters](/docs/sdk/web#name-parameters-92)
+-   [Returns](/docs/sdk/web#name-returns-113)
+-   [Throws](/docs/sdk/web#name-throws-119)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

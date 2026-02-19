@@ -1,0 +1,977 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/core/lts/guides/data_in_cache_and_reconnection"
+lastSynced: "2026-02-19T22:35:14.143Z"
+---
+# Documentation
+
+Data in cache
+
+LTS release 3.XPubliée le 2025-03-17
+
+# Data storage and connection / reconnection
+
+## Prerequisite
+
+You must first know how to connect and manage auto-reconnection service using the SDK:
+
+-   [Connect to Rainbow](/docs/sdk/csharp).
+-   [Auto Reconnection](/docs/sdk/csharp).
+
+## Introduction
+
+The SDK cannot retrieve all data "at once" once connected to the server. In addition, this connection can be interrupted and the data must be synchronized again.
+
+This guide aims:
+
+-   To list what data is stored
+-   To understand when they are available
+    -   they depend on the user's license
+    -   they depend on the options used in the SDK
+-   To understand the connection and reconnection problem to synchronize this data
+
+The last chapter, via code example, shows how to handle all of this.
+
+## Connection / Reconnection (REST and Event Pipe)
+
+The SDK is connected to the Rainbow server using two different channels:
+
+-   REST API (HTTP requests): asynchonous connection based on secutiry token with a "time to live"
+-   XMPP (or eventually S2S) event pipe: web socket connection which needs permanent connection.
+
+From a global point of view, REST API is used for static data and event pipe for dynamic data (presence, instant messaging, ...)
+
+To be fully operational, the SDK must create a valid link on both channels (authenticated, connected) and have enough data/information (license, settings, ...) after connection or a reconnection.
+
+As developper, you only know if the SDK is connected or not using event [`ConnectionStateChanged`](/docs/sdk/csharp#Rainbow.Application.ConnectionStateChanged) event in [`Application`](/docs/sdk/csharp) service but you cannot know which one specificalyy is connected/disconnected.
+
+To give more details, event pipe disconnection occurs more often. For example, if there is a network trouble for a short period, the event pipe will be disconnected but not the REST API channel.
+
+And usually, if the REST API channel is disconnected, the event pipe is also disconnected.
+
+## Bubbles and how they are managed
+
+To receive or send messages or to get dynamic information about a Bubble (for example that there is a conference in progress), the SDK must first join it. It also called a bubble affiliation.
+
+The SDK can do it:
+
+-   only when the event pipe connection is operational
+-   and join Bubbles one by one.
+
+So, the more bubbles you have, the longer it takes to join them all.
+
+## Contacts presence
+
+To know the **Aggregated Presence** (also called **Unified Ptesence**) of one contact, the SDK must first receive information of each of his devices:
+
+-   One for each client used: Rainbow Web client, Rainbow Mobile Phone (Adnroid and/or iOS, ...)
+-   Optionnaly, one to manage his telephony device (Rainbow Hub or OXO/OXE)
+-   Optionnaly, one to manage his calendar presence (Google Calendar, Office 365, ...)
+-   Optionnaly, one to manage his Team presence (Google Calendar, Office 365, ...)
+
+Now multiply all these by the number of contats in the roster, and you can see that there is a lot of Presence messages to handle. And this messages are received only when the event pipe is connected.
+
+Further more, presence
+
+## Telephony data
+
+To ensure to have accurate information, Telephony settings are obtained using the the event pipe. So we must be first connected to it.
+
+Once connected, the SDK waits to receive for the telephony system its status before to ask more information.
+
+## SDK Events
+
+The SDK provides a way to know:
+
+1.  when the user is well or badly authenticated: [`AuthenticationFailed`](/docs/sdk/csharp#Rainbow.Application.AuthenticationFailed) or [`AuthenticationSucceeded`](/docs/sdk/csharp#Rainbow.Application.AuthenticationSucceeded) events in [`Application`](/docs/sdk/csharp) service are raised
+2.  when the user is connected/authenticated on both channels AND when enough data are retrieved/refreshed, [`ConnectionStateChanged`](/docs/sdk/csharp#Rainbow.Application.ConnectionStateChanged) event in [`Application`](/docs/sdk/csharp) service is raised with a state equals to [`ConnectionState.Connected`](/docs/sdk/csharp#Rainbow.Model.ConnectionState.Connected)
+3.  Each time a Bubble has been joined, [`BubbleAffiliationChanged`](/docs/sdk/csharp#Rainbow.Bubbles.BubbleAffiliationChanged) event in [`Bubbles`](/docs/sdk/csharp) service is raised.
+4.  when all Bubbles have been joined (and even if current user has no bubble), [`BubbleAffiliationsPerformed`](/docs/sdk/csharp#Rainbow.Bubbles.BubbleAffiliationsPerformed) event in [`Bubbles`](/docs/sdk/csharp) service is raised.
+
+**Note:**
+
+-   You can start to use the SDK after the step 2 (before it's now allowed). It you need to use a Bubble, ensure to have received event [`BubbleAffiliationChanged`](/docs/sdk/csharp#Rainbow.Bubbles.BubbleAffiliationChanged) for this Bubble or wait for event [`BubbleAffiliationsPerformed`](/docs/sdk/csharp#Rainbow.Bubbles.BubbleAffiliationsPerformed)
+-   The delay between step 2 and step 4 is direclty dependent of the number of active bubbles.
+-   After step 2, other data are retrieved, see the list in a next chapter for full details.
+-   If at least one channel is disconnected, [`ConnectionStateChanged`](/docs/sdk/csharp#Rainbow.Application.ConnectionStateChanged) event in [`Application`](/docs/sdk/csharp) service is raised with a state equals to [`ConnectionState.Disconnected`](/docs/sdk/csharp#Rainbow.Model.ConnectionState.Disconnected).
+
+**To resume**:
+
+-   If you don't have to manage a lot of Bubbles, using event [`ConnectionStateChanged`](/docs/sdk/csharp#Rainbow.Application.ConnectionStateChanged) is enough.
+-   If you have to manage a lot of of Bubbles, uses event [`BubbleAffiliationsPerformed`](/docs/sdk/csharp#Rainbow.Bubbles.BubbleAffiliationsPerformed) to ensure that the SDK has already joined all of them.
+-   If you have to manage a lot of of Bubbles but the connection/reconnection delay is very critical for you, uses event [`BubbleAffiliationChanged`](/docs/sdk/csharp#Rainbow.Bubbles.BubbleAffiliationChanged) to check which Bubbles have been already joined before to use them. You can also use the method [`IsBubbleAffiliated`](/docs/sdk/csharp#Rainbow.Bubbles.IsBubbleAffiliated\(String\))
+
+About Presence, you have in [`Contacts`](/docs/sdk/csharp) service 2 events to use if you want to manage them:
+
+-   [`ContactPresenceChanged`](/docs/sdk/csharp#Rainbow.Contacts.ContactPresenceChanged): Event triggered when the presence of one of a user's devices is modified.
+-   [`ContactAggregatedPresenceChanged`](/docs/sdk/csharp#Rainbow.Contacts.ContactAggregatedPresenceChanged): Event triggered when the aggregated presence of one user is modified.
+
+About Telephony (Hub or Hybrid), you have several events in [`HubTelephony`](/docs/sdk/csharp) or in [`HybridTelephony`](/docs/sdk/csharp) services to manage.
+
+## Data stored and when they are retrieved / refreshed
+
+The array below provides these information:
+
+-   By service, data which are stored in the cache (in memory)
+-   Some data are retrieved only if the current user has a correct license and (if any) a property in [`Restrictions`](/docs/sdk/csharp#Rainbow.Application.Restrictions) has been set in the SDK. Examples:
+    -   **Turn servers** are retrieved, if the current user has the license to use WebRTC and if [`Restrictions.UseWebRTC`](/docs/sdk/csharp#Rainbow.Restrictions.UseWebRTC) has been set to true.
+    -   **Capabilities** of the [`FileStorage`](/docs/sdk/csharp) service are automatically retrieved if the current user has the license to use it.
+-   After a disconnection, some data are **`Removed`** from the cache - it depends on which channel there is the disconnection: REST API or Event pipe.
+-   After a connection or reconnection, some data are **Refreshed BEFORE** [`ConnectionStateChanged`](/docs/sdk/csharp#Rainbow.Application.ConnectionStateChanged) event in **Application** service is raised.
+-   After a connection or reconnection, some data are **Refreshed AFTER** [`ConnectionStateChanged`](/docs/sdk/csharp#Rainbow.Application.ConnectionStateChanged) event in **Application** service is raised.
+
+  
+
+Service
+
+Data in cache
+
+Need specific  
+Licence
+
+Restrictions
+
+REST  
+Disconnected
+
+Even pipe  
+Disconnected
+
+[`Application`](/docs/sdk/csharp) (root)
+
+Capabilities
+
+\-
+
+\-
+
+**Refreshed BEFORE**
+
+\-
+
+Features
+
+\-
+
+\-
+
+**Refreshed BEFORE**
+
+\-
+
+Roles
+
+\-
+
+\-
+
+**Refreshed BEFORE**
+
+\-
+
+Settings: Api
+
+\-
+
+\-
+
+**Refreshed BEFORE**
+
+\-
+
+Settings: WebRTC
+
+**Yes**
+
+UseWebRTC  
+
+**Refreshed BEFORE**
+
+\-
+
+Turn servers
+
+**Yes**
+
+UseWebRTC
+
+**Refreshed BEFORE**
+
+\-
+
+[`Alerts`](/docs/sdk/csharp)
+
+Alerts received
+
+**Yes**
+
+UseAlerts
+
+**`Removed`**
+
+\-
+
+[`Bubbles`](/docs/sdk/csharp)
+
+Bubbles list
+
+\-
+
+UseBubbles
+
+**Refreshed BEFORE**
+
+**Refreshed BEFORE**
+
+Members list
+
+\-
+
+UseBubbles
+
+**Refreshed BEFORE**
+
+**Refreshed BEFORE**
+
+Bubbles joined
+
+\-
+
+UseBubbles
+
+\-
+
+**Refreshed AFTER**
+
+Bubbles links
+
+\-
+
+UseBubbles
+
+\-
+
+\-
+
+[`CallsLog`](/docs/sdk/csharp)
+
+Calls log
+
+\-
+
+\-
+
+**`Removed`**
+
+\-
+
+[`Channels`](/docs/sdk/csharp)
+
+Channels list
+
+\-
+
+\-
+
+**`Removed`**
+
+\-
+
+Items in Channels
+
+\-
+
+\-
+
+**`Removed`**
+
+\-
+
+Channels subscribed
+
+\-
+
+\-
+
+**`Removed`**
+
+\-
+
+Channels invited
+
+\-
+
+\-
+
+**`Removed`**
+
+\-
+
+[`Conferences`](/docs/sdk/csharp)
+
+Conferences in progress
+
+**Yes**
+
+UseConferences
+
+**Refreshed BEFORE**
+
+**Refreshed BEFORE**
+
+Media publications
+
+**Yes**
+
+UseConferences
+
+**Refreshed BEFORE**
+
+**Refreshed BEFORE**
+
+Media services
+
+**Yes**
+
+UseConferences
+
+**Refreshed BEFORE**
+
+**Refreshed BEFORE**
+
+Participants
+
+**Yes**
+
+UseConferences
+
+**Refreshed BEFORE**
+
+**Refreshed BEFORE**
+
+Raised hands
+
+**Yes**
+
+UseConferences
+
+**Refreshed BEFORE**
+
+**Refreshed BEFORE**
+
+Talkers
+
+**Yes**
+
+UseConferences
+
+**Refreshed BEFORE**
+
+**Refreshed BEFORE**
+
+[`Contacts`](/docs/sdk/csharp)
+
+User settings
+
+\-
+
+\-
+
+**Refreshed BEFORE**
+
+\-
+
+Company
+
+\-
+
+\-
+
+**Refreshed BEFORE**
+
+\-
+
+Contacts in roster
+
+\-
+
+\-
+
+**Refreshed BEFORE**
+
+\-
+
+Presences list
+
+\-
+
+\-
+
+\-
+
+**Refreshed AFTER**
+
+Aggregated Presences list
+
+\-
+
+\-
+
+\-
+
+**Refreshed AFTER**
+
+Bots
+
+\-
+
+\-
+
+**`Removed`**
+
+\-
+
+Contacts not in roster
+
+\-
+
+\-
+
+**`Removed`**
+
+\-
+
+Synchro provider status
+
+\-
+
+\-
+
+**`Removed`**
+
+\-
+
+Tvs
+
+\-
+
+\-
+
+**`Removed`**
+
+\-
+
+[`Conversations`](/docs/sdk/csharp)
+
+Conversations list
+
+\-
+
+\-
+
+**Refreshed BEFORE**
+
+**Refreshed BEFORE**
+
+[`Favorites`](/docs/sdk/csharp)
+
+Favorites list
+
+\-
+
+\-
+
+**`Removed`**
+
+\-
+
+[`FileStorage`](/docs/sdk/csharp)
+
+Capabilities
+
+**Yes**
+
+\-
+
+**Refreshed BEFORE**
+
+\-
+
+Files descriptor received
+
+**Yes**
+
+\-
+
+**`Removed`**
+
+\-
+
+Files descriptor sent
+
+**Yes**
+
+\-
+
+**`Removed`**
+
+\-
+
+Files upload in progress
+
+**Yes**
+
+\-
+
+**`Removed`**
+
+\-
+
+[`Groups`](/docs/sdk/csharp)
+
+Groups
+
+\-
+
+\-
+
+**`Removed`**
+
+\-
+
+[`InstantMessaging`](/docs/sdk/csharp)
+
+Messages pool
+
+\-
+
+\-
+
+\-
+
+**`Removed`**
+
+Any query in progress
+
+\-
+
+\-
+
+\-
+
+**`Removed`**
+
+[`Invitations`](/docs/sdk/csharp)
+
+**No data in cache**
+
+\-
+
+\-
+
+\-
+
+\-
+
+[`Jingle`](/docs/sdk/csharp)
+
+Jingles sessions
+
+\-
+
+\-
+
+**`Removed`**
+
+\-
+
+[`HybridTelephony`](/docs/sdk/csharp)
+
+Calls
+
+**Yes**
+
+UseHybridTelephony
+
+\-
+
+**Refreshed AFTER**
+
+Call forward overflow status
+
+**Yes**
+
+UseHybridTelephony
+
+\-
+
+**Refreshed AFTER**
+
+Call forward status
+
+**Yes**
+
+UseHybridTelephony
+
+\-
+
+**Refreshed AFTER**
+
+Media Pillar info
+
+**Yes**
+
+UseHybridTelephony
+
+\-
+
+**Refreshed AFTER**
+
+Nomadic status
+
+**Yes**
+
+UseHybridTelephony
+
+\-
+
+**Refreshed AFTER**
+
+Pbx Agent info
+
+**Yes**
+
+UseHybridTelephony
+
+\-
+
+**Refreshed AFTER**
+
+Telephony dynamic status
+
+**Yes**
+
+UseHybridTelephony
+
+\-
+
+**Refreshed AFTER**
+
+Telephony status
+
+**Yes**
+
+UseHybridTelephony
+
+\-
+
+**Refreshed AFTER**
+
+Voice messages
+
+**Yes**
+
+UseHybridTelephony
+
+\-
+
+**Refreshed AFTER**
+
+## Code Example
+
+This example is based on code explained in these guides:
+
+-   [Connect to Rainbow](/docs/sdk/csharp).
+-   [Auto Reconnection](/docs/sdk/csharp).
+
+Previous example permit to understand:
+
+-   To get all contacts and all bubbles once connected
+-   How to login to Rainbow Server and in case of problem the reason why it didn't work
+-   To know when you are connected / disconnected
+-   To know when the Autorecoonection service is started and when is cancelled
+
+They have been enhanced to demonstrate also:
+
+-   How to get bubble affiliations information (using [`BubbleAffiliationChanged`](/docs/sdk/csharp#Rainbow.Bubbles.BubbleAffiliationChanged) and [`BubbleAffiliationsPerformed`](/docs/sdk/csharp#Rainbow.Bubbles.BubbleAffiliationsPerformed))
+-   How to get Contacts presence: Aggregated or by device
+
+**NOTE:** Telephony features (very specific are not demonstrates here)
+
+All the code below as a Console Application:
+
+```csharp
+using Rainbow;
+using Rainbow.Consts;
+
+String appId = ""; // To set according your settings
+String appSecretKey = ""; // To set according your settings
+String hostName = ""; // To set according your settings
+
+String login = ""; // To set according your settings
+String password = ""; // To set according your settings
+
+Boolean endProgram = false;// To know when to quit the app
+int nbBubblesAffiliation = 0; // To count the number of bubbles affiliation
+Boolean displayLoginResult = true; // To display login result information only once
+Object consoleLockObject = new Object(); // To lock until the the current consoly dislay is performed
+
+// Create Rainbow SDK objects
+var RbApplication = new Application();
+var RbAutoReconnection = RbApplication.GetAutoReconnection();
+var RbBubbles = RbApplication.GetBubbles();
+var RbContacts = RbApplication.GetContacts();
+
+// Set events that we want to follow
+RbApplication.AuthenticationFailed += RbApplication_AuthenticationFailed; // Triggered when the authentication process will fail
+RbApplication.AuthenticationSucceeded += RbApplication_AuthenticationSucceeded; // Triggered when the authentication process will succeed
+RbApplication.ConnectionStateChanged += RbApplication_ConnectionStateChanged; // Triggered when the Connection State will change
+
+RbAutoReconnection.Cancelled += RbAutoReconnection_Cancelled; // Triggered when AutoReonnection service is cancelled
+RbAutoReconnection.Started += RbAutoReconnection_Started; // Triggered when AutoReonnection service is started
+RbAutoReconnection.MaxNbAttemptsReached += RbAutoReconnection_MaxNbAttemptsReached; // Triggered when AutoReonnection service reachde the mawimun number of attempts tryig to connect to the server
+RbAutoReconnection.TokenExpired += RbAutoReconnection_TokenExpired; // Triggered when the Security Token is expired
+RbAutoReconnection.OneNetworkInterfaceOperational += RbAutoReconnection_OneNetworkInterfaceOperational; // Triggered when only one network is up ar down.
+
+RbBubbles.BubbleAffiliationChanged += RbBubbles_BubbleAffiliationChanged; // Triggered when a Bubble is joined (i.e. affiliated) or the opposite
+RbBubbles.BubbleAffiliationsPerformed += RbBubbles_BubbleAffiliationsPerformed; // Triggered when all Bubbles has been joined (i.e. affiliated)
+
+RbContacts.ContactPresenceUpdated += RbContacts_ContactPresenceUpdated;  // Triggered when Presence (i.e. Unified Presence) has been updated for a Contact on of of its device
+RbContacts.ContactAggregatedPresenceUpdated += RbContacts_ContactAggregatedPresenceUpdated; // Triggered when Aggregated Presence (i.e. Unified Presence) has been updated for a Contact
+
+// Set global configuration info
+RbApplication.SetApplicationInfo(appId, appSecretKey);
+RbApplication.SetHostInfo(hostName);
+
+WriteBlue("Use [ESC] at anytime to quit\r\n");
+
+// Start login
+WriteWhite("Starting login ...");
+var loginTask = RbApplication.LoginAsync(login, password); // We don't wait here since we want to quit at ayn time using ESC key
+
+do
+{
+    Thread.Sleep(200);
+    
+    CheckEscKey();
+
+    // Check if the login's task is finished AND if we nee to display the result (if not already done)
+    if(loginTask.IsCompleted && displayLoginResult)
+    {
+        displayLoginResult = false;
+
+        // Get SdkResult Object from the task
+        var loginSdkResult = loginTask.Result;
+        if (loginSdkResult.Success)
+        {
+            // We can now use the SDK
+
+            // For example, we ask Contacts in the Roster
+            var contacts = RbContacts.GetAllContactsInRoster();
+            WriteYellow($"Nb Contacts in Roster:[{contacts?.Count}]");
+
+            // We ask all Bubbles known:  unsubscribed or not, as invited or as accepted
+            var bubbles = RbBubbles.GetAllBubbles();
+            WriteYellow($"Nb bubbles known :[{bubbles?.Count}]");
+        }
+        else
+        { 
+            endProgram = true; // We want to quit since we cannot login
+
+            // Display the reason
+            if (loginSdkResult.Result.Type == Rainbow.Enums.SdkErrorType.Exception)
+                WriteRed($"LoginAsync - Exception occurs: [{loginSdkResult.Result}]");
+            else
+            {
+                if (loginSdkResult.Result.IncorrectUseError.ErrorCode == 1000)
+                    WriteRed($"LoginAsync - SDK triggered an error:{loginSdkResult.Result}");
+                else
+                    WriteRed($"LoginAsync - Server triggered an error:{loginSdkResult.Result}");
+            }
+        }
+    }
+
+} while (!endProgram); // Loop until we want to quit
+
+
+#region DEFINE METHODS TO RECEIVE EVENTS FROM RAINBOW SDK
+// Now we define methods which will be called by events defined previously
+void RbApplication_ConnectionStateChanged(Rainbow.Model.ConnectionState connectionState)
+{
+    // We log connection state in the console - use differnte color according the status
+    ConsoleColor color;
+    switch(connectionState.Status)
+    {
+        case ConnectionStatus.Connected:
+            color = ConsoleColor.Blue;
+            break;
+
+        case ConnectionStatus.Disconnected:
+            color = ConsoleColor.Red;
+            break;
+
+        case ConnectionStatus.Connecting:
+        default:
+            color = ConsoleColor.Green;
+            break;
+
+    }
+    WriteToConsole($"Event Application.ConnectionStateChanged triggered - Connection Status: [{connectionState.Status}]", color);
+
+    // If we are no more connected it means we have no more Bubbles Affiliation
+    if (connectionState.Status == ConnectionStatus.Disconnected)
+        nbBubblesAffiliation = 0; // Reset value
+}
+
+void RbApplication_AuthenticationSucceeded()
+{
+    // Authentication Succeeded- we display in the console the info
+    WriteBlue($"Event Application.AuthenticationSucceeded triggered");
+}
+
+void RbApplication_AuthenticationFailed(SdkError sdkError)
+{
+    // Authentication failed - we display in the console the reason
+    WriteRed($"Event Application.AuthenticationFailed triggered - SdkError:\r\n[{sdkError}");
+}
+
+void RbAutoReconnection_OneNetworkInterfaceOperational(bool value)
+{
+    WriteBlue($"Event AutoReconnection.OneNetworkInterfaceOperational triggered: [{value}]");
+}
+
+void RbAutoReconnection_TokenExpired()
+{
+    WriteRed($"Event AutoReconnection.TokenExpired triggered");
+}
+
+void RbAutoReconnection_MaxNbAttemptsReached()
+{
+    WriteRed($"Event AutoReconnection.MaxNbAttemptsReached triggered");
+}
+
+void RbAutoReconnection_Started()
+{
+    WriteBlue($"Event AutoReconnection.Started triggered");
+}
+
+void RbAutoReconnection_Cancelled(SdkError sdkError)
+{
+    WriteRed($"Event AutoReconnection.Cancelled triggered - SdkError:[{sdkError}]");
+}
+
+void RbBubbles_BubbleAffiliationsPerformed()
+{
+    WriteBlue($"Event Bubbles.BubbleAffiliationsPerformed triggered (i.e. all bubbles have been joined) - Nb Joined: [{nbBubblesAffiliation}]");
+}
+
+void RbBubbles_BubbleAffiliationChanged(Rainbow.Model.BubbleAffiliation bubbleAffiliation)
+{
+    // Add line each time a Bubble Affiliation Changed ...
+    // Here it's commented to avoid to have too many of them
+    // WriteGreen($"Event Bubbles.BubbleAffiliationChanged triggered: [{bubbleAffiliation.Bubble.Peer.DisplayName}] - HasJoined:[{bubbleAffiliation.HasJoined}]");
+
+    // Increase counter
+    if (bubbleAffiliation.HasJoined)
+        nbBubblesAffiliation++;
+}
+
+void RbContacts_ContactPresenceUpdated(Rainbow.Model.Presence presence)
+{
+    var displayName = presence.Contact.Peer.DisplayName;
+    var presenceStr = Rainbow.Util.SerializePresence(presence, DetailsLevel.Medium);
+
+    WriteGreen($"Event ContactPresenceUpdated triggered: {displayName} - {presenceStr}");
+}
+
+void RbContacts_ContactAggregatedPresenceUpdated(Rainbow.Model.Presence presence)
+{
+    var displayName = presence.Contact.Peer.DisplayName;
+    var presenceStr = Rainbow.Util.SerializePresence(presence, DetailsLevel.Medium);
+
+    WriteGreen($"Event ContactAggregatedPresenceUpdated triggered: {displayName} - {presenceStr}");
+}
+
+#endregion DEFINE METHODS TO RECEIVE EVENTS FROM RAINBOW SDK
+
+#region UTILITY METHODS
+
+void CheckEscKey()
+{
+    while (Console.KeyAvailable)
+    {
+        var userInput = Console.ReadKey(true);
+        if (userInput.Key == ConsoleKey.Escape)
+        {
+            WriteBlue($"Asked to end process using [ESC] key");
+            Environment.Exit(0);
+        }
+    }
+}
+
+void WriteYellow(String message)
+{
+    WriteToConsole(message, ConsoleColor.Yellow);
+}
+
+void WriteWhite(String message)
+{
+    WriteToConsole(message, ConsoleColor.White);
+}
+
+void WriteRed(String message)
+{
+    WriteToConsole(message, ConsoleColor.Red);
+}
+
+void WriteGreen(String message)
+{
+    WriteToConsole(message, ConsoleColor.Green);
+}
+
+void WriteBlue(String message)
+{
+    WriteToConsole(message, ConsoleColor.Blue);
+}
+
+void WriteToConsole(String message, ConsoleColor? foregroundColor = null, ConsoleColor? backgroundColor = null)
+{
+    if (String.IsNullOrEmpty(message))
+        return;
+
+    ConsoleColor color = new ConsoleColor();
+
+    lock (consoleLockObject)
+    {
+        if (foregroundColor != null)
+            Console.ForegroundColor = foregroundColor.Value;
+
+        if (backgroundColor != null)
+            Console.BackgroundColor = backgroundColor.Value;
+
+        Console.WriteLine(message);
+        Console.ResetColor();
+    }
+}
+#endregion UTILITY METHODS
+```
+
+### Sur cette page
+
+-   [Prerequisite](/docs/sdk/csharp#name-prerequisite-3)
+-   [Introduction](/docs/sdk/csharp#name-introduction-21)
+-   [Connection / Reconnection (REST and Event Pipe)](/docs/sdk/csharp#name-connection--reconnection-rest-and-event-pipe-62)
+-   [Bubbles and how they are managed](/docs/sdk/csharp#name-bubbles-and-how-they-are-managed-95)
+-   [Contacts presence](/docs/sdk/csharp#name-contacts-presence-119)
+-   [Telephony data](/docs/sdk/csharp#name-telephony-data-153)
+-   [SDK Events](/docs/sdk/csharp#name-sdk-events-162)
+-   [Data stored and when they are retrieved / refreshed](/docs/sdk/csharp#name-data-stored-and-when-they-are-retrieved--refreshed-253)
+-   [Code Example](/docs/sdk/csharp#name-code-example-1585)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

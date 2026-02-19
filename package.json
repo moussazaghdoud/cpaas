@@ -1,0 +1,29 @@
+{
+  "name": "rainbow-cpaas-portal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Rainbow CPaaS Developer Portal - migrated from developers.openrainbow.com",
+  "scripts": {
+    "crawl": "node scripts/crawl/index.mjs",
+    "transform": "node scripts/transform/index.mjs",
+    "content:sync": "node scripts/crawl/index.mjs && node scripts/transform/index.mjs",
+    "dev": "cd apps/web && npm run dev",
+    "build": "cd apps/web && npm run build",
+    "validate": "node scripts/validate.mjs"
+  },
+  "type": "module",
+  "keywords": [
+    "cpaas",
+    "rainbow",
+    "developer-portal"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "glob": "^13.0.6",
+    "playwright": "^1.58.2",
+    "slugify": "^1.6.6",
+    "turndown": "^7.2.2"
+  }
+}

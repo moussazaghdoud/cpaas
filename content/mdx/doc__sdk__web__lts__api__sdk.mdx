@@ -1,0 +1,154 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/sdk"
+lastSynced: "2026-02-19T22:35:15.383Z"
+---
+# Documentation
+
+SDK model
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## SDK
+
+This is the glue that binds all the SDK for Web services together. From that entry class, you can access to all the services and events integrated into this SDK for Web. In addition to that, this module logs in the browser console some interesting information about the application environment.
+
+**Access**: public
+
+-   [SDK](#module_SDK)
+    -   [version()](#module_SDK+version) ⇒ `string`
+    -   [mode()](#module_SDK+mode) ⇒ `string`
+    -   [setVerboseLog(boolHasVerboseLog)](#module_SDK+setVerboseLog) ⇒ `boolean`
+    -   [setKeyFromConfig(strApplicationID, strApplicationSecret)](#module_SDK+setKeyFromConfig) ⇒ `boolean`
+    -   [hasBeenLaunchedFromConfig(boolFromConfig)](#module_SDK+hasBeenLaunchedFromConfig) ⇒ `boolean`
+    -   [initialize(strApplicationID, strApplicationSecret)](#module_SDK+initialize) ⇒ `Promise`
+
+### sdK.version() ⇒ `string`
+
+Return the version of the SDK
+
+**Kind**: instance method of [`SDK`](#module_SDK)  
+**Returns**: `string` - The SDK version  
+**Access**: public  
+
+### sdK.mode() ⇒ `string`
+
+Return the mode used 'sdk' or 'rainbow'
+
+**Kind**: instance method of [`SDK`](#module_SDK)  
+**Returns**: `string` - The mode in which this SDK is used  
+**Access**: public  
+
+### sdK.setVerboseLog(boolHasVerboseLog) ⇒ `boolean`
+
+***Deprecated***
+
+Allows to have verbose logs when using the SDK. Method deprecated, please use configService.setVerboseLog
+
+**Kind**: instance method of [`SDK`](#module_SDK)  
+**Returns**: `boolean` - verbose log state  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+boolHasVerboseLog
+
+`boolean`
+
+True to activate verbose log. False to deactivate it
+
+### sdK.setKeyFromConfig(strApplicationID, strApplicationSecret) ⇒ `boolean`
+
+***Deprecated***
+
+Initialize the SDK with the application ID and application secret key obtained from the developer web site and filled into the configuration file
+
+**Kind**: instance method of [`SDK`](#module_SDK)  
+**Returns**: `boolean` - True  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strApplicationID
+
+`string`
+
+The application ID obtained from the developer web site
+
+strApplicationSecret
+
+`string`
+
+The application secret key obtained from the developer web site
+
+### sdK.hasBeenLaunchedFromConfig(boolFromConfig) ⇒ `boolean`
+
+Inform the SDK that it has been launched from a configuration file (i.e. the launched)
+
+**Kind**: instance method of [`SDK`](#module_SDK)  
+**Returns**: `boolean` - hasBeenLaunchedFromConfig boolean  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+boolFromConfig
+
+`boolean`
+
+True if the SDK has been launched from the configuration file
+
+### sdK.initialize(strApplicationID, strApplicationSecret) ⇒ `Promise`
+
+Initialize the SDK with the application ID and application secret key obtained from the developer web site and filled into the configuration file.
+
+**Kind**: instance method of [`SDK`](#module_SDK)  
+**Returns**: `Promise` - Promise resolution or an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strApplicationID
+
+`string`
+
+The application ID obtained from the developer web site
+
+strApplicationSecret
+
+`string`
+
+The application secret key obtained from the developer web site
+
+### Sur cette page
+
+-   [SDK](/docs/sdk/web#name-sdk-3)
+-   [sdK.version() ⇒ string](/docs/sdk/web#name-sdk.version--string-54)
+-   [sdK.mode() ⇒ string](/docs/sdk/web#name-sdk.mode--string-63)
+-   [sdK.setVerboseLog(boolHasVerboseLog) ⇒ boolean](/docs/sdk/web#name-sdk.setverboselogboolhasverboselog--boolean-72)
+-   [sdK.setKeyFromConfig(strApplicationID, strApplicationSecret) ⇒ boolean](/docs/sdk/web#name-sdk.setkeyfromconfigstrapplicationid-strapplicationsecret--boolean-115)
+-   [sdK.hasBeenLaunchedFromConfig(boolFromConfig) ⇒ boolean](/docs/sdk/web#name-sdk.hasbeenlaunchedfromconfigboolfromconfig--boolean-169)
+-   [sdK.initialize(strApplicationID, strApplicationSecret) ⇒ Promise](/docs/sdk/web#name-sdk.initializestrapplicationid-strapplicationsecret--promise-209)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,1137 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/call"
+lastSynced: "2026-02-19T22:35:14.879Z"
+---
+# Documentation
+
+Call model
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Classes
+
+[Call](#Call)
+
+## Members
+
+[conversationId](#conversationId)
+
+[contact](#contact)
+
+[localMedia](#localMedia)
+
+The media used by the user (e.g. audio, video, sharing, phone)
+
+[isEscalated](#isEscalated)
+
+[startDate](#startDate)
+
+[isInitiator](#isInitiator)
+
+[participants](#participants)
+
+[isConference](#isConference)
+
+[avatars](#avatars)
+
+[subject](#subject)
+
+[currentCalled](#currentCalled)
+
+[fullJid](#fullJid)
+
+[mediaPillarCall](#mediaPillarCall)
+
+[isSecondary](#isSecondary)
+
+[isSecondSharingCall](#isSecondSharingCall)
+
+[isOwner](#isOwner)
+
+[isMPAudioOwner](#isMPAudioOwner)
+
+[isMuted](#isMuted)
+
+[duration](#duration)
+
+[activeControl](#activeControl)
+
+[hasRemoteControlling](#hasRemoteControlling)
+
+[networkQuality](#networkQuality)
+
+[subject](#subject)
+
+[noIncomingPopup](#noIncomingPopup)
+
+[onHold](#onHold)
+
+[putOnHold](#putOnHold)
+
+[localStreams](#localStreams)
+
+[direction](#direction)
+
+[remoteNumber](#remoteNumber)
+
+[callerNumber](#callerNumber)
+
+[calledNumber](#calledNumber)
+
+[calledDisplayName](#calledDisplayName)
+
+[calledLastName](#calledLastName)
+
+[calledFirstName](#calledFirstName)
+
+[calledJID](#calledJID)
+
+[calledRole](#calledRole)
+
+## Functions
+
+[isMediaPillarCall()](#isMediaPillarCall)
+
+Check if the call is linked to a media pillar context note: if it is a new call not already managed through webrtcGatewayService then not conclusive (because could be linked after)
+
+## Call
+
+**Kind**: global class  
+**Access**: public
+
+-   [Call](#Call)
+    -   [Call()](#new_Call_new)
+    -   *API*
+        -   [globalCallId](#Call+globalCallId)
+        -   [correlatorData](#Call+correlatorData)
+        -   [correlatorDataHex](#Call+correlatorDataHex)
+        -   [setDeviceIdSipWise(deviceId)](#Call+setDeviceIdSipWise)
+    -   *API*
+        -   [getIdFromConnectionId(connectionId)](#Call.getIdFromConnectionId)
+
+### Call()
+
+This class represents a call.  
+A call is a "short" interaction between the user and one or several contacts (Rainbow users or not) that uses either a WebRTC media (audio, video or screen sharing) or a Telephony media (PBX phone).  
+No Rainbow users such as external users can only be engaged into a Telephony call.  
+A call is always attached to a conversation.
+
+### call.globalCallId
+
+**Kind**: instance property of [`Call`](#Call)  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+globalCallId
+
+`string`
+
+a global id when the call go thrue PBX Node.
+
+### call.correlatorData
+
+**Kind**: instance property of [`Call`](#Call)  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+correlatorData
+
+`string`
+
+Data about a call
+
+### call.correlatorDataHex
+
+**Kind**: instance property of [`Call`](#Call)  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+correlatorData
+
+`string`
+
+Data about a call - in hex format
+
+### call.setDeviceIdSipWise(deviceId)
+
+**Kind**: instance method of [`Call`](#Call)
+
+Param
+
+deviceId
+
+### Call.getIdFromConnectionId(connectionId)
+
+**Kind**: static method of [`Call`](#Call)
+
+Param
+
+connectionId
+
+## conversationId
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+The reference of the conversation
+
+## contact
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+contact
+
+`Contact`
+
+The reference of the contact engaged in this call
+
+## localMedia
+
+The media used by the user (e.g. audio, video, sharing, phone)
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+AUDIO
+
+`number`
+
+WebRTC audio call
+
+VIDEO
+
+`number`
+
+WebRTC audio and video call
+
+PHONE
+
+`number`
+
+Telephony call (PBX)
+
+SHARING
+
+`number`
+
+WebRTC screen sharing call
+
+## isEscalated
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isEscalated
+
+`boolean`
+
+True if the call has been escalated to sharing or video (only relevant for WebRTC calls)
+
+## startDate
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+startDate
+
+`Date`
+
+The date when the call has been started
+
+## isInitiator
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isInitiator
+
+`boolean`
+
+True if the user is the caller (false if he's the called)
+
+## participants
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+participants
+
+`Array.<Contact>`
+
+The list of participants in the call (conference)
+
+## isConference
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Since**: 1.20  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isConference
+
+`boolean`
+
+True if the call is a conferenceCall
+
+## avatars
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+avatars
+
+`string`
+
+array of call avatar sources
+
+## subject
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+subject
+
+`string`
+
+when receiving incoming call with subject (inside propose)
+
+## currentCalled
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+currentCalled
+
+`object`
+
+Contains current called number and contact
+
+## fullJid
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+fullJid
+
+`string`
+
+The full jid of the user in the call
+
+## mediaPillarCall
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+mediaPillarCall
+
+`object`
+
+Specific VoIP (MediaPillar) call context
+
+## isSecondary
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isSecondary
+
+`object`
+
+is nomadic secondary phone selected
+
+## isSecondSharingCall
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isSecondSharingCall
+
+`boolean`
+
+if the call is a sharing-only call on top of PBX (Media Pillar) call with the same contact
+
+## isOwner
+
+**Kind**: global variable  
+**Access**: public  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isOwner
+
+`object`
+
+is this call owned (initiated) by my device (used in calls made by makecall; may also be used later for incoming calls taken by webclient)
+
+## isMPAudioOwner
+
+**Kind**: global variable  
+**Access**: public  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isMPAudioOwner
+
+`object`
+
+is this call audio owned by my device: it may be true even if isOwner is false (external cti makecall usecase)
+
+## isMuted
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Since**: 2.0.0  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isMuted
+
+`boolean`
+
+True if the call is locally muted
+
+## duration
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Since**: 2.0.0  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+duration
+
+`number`
+
+Duration of the call in seconds
+
+## activeControl
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Since**: 2.0.0  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+activeControl
+
+`boolean`
+
+True if active remote control is activated
+
+## hasRemoteControlling
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Since**: 2.0.0  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+hasRemoteControlling
+
+`boolean`
+
+True if remote user is controlling this PC
+
+## networkQuality
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Since**: 2.0.0  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+networkQuality
+
+`number`
+
+Value (0 - bad, 1 - medium, 2 - good) representing the current network quality for the call
+
+## subject
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+subject
+
+`string`
+
+PBX message display for PILOT informations
+
+## noIncomingPopup
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+noIncomingPopup
+
+`boolean`
+
+True if no incomingpopup must be displayed
+
+## onHold
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+onHold
+
+`boolean`
+
+True if the call is on hold from the local party (only for P2P calls !)
+
+## putOnHold
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+putOnHold
+
+`boolean`
+
+True if call is put on hold from the distant party (only for P2P calls !)
+
+## localStreams
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+localStreams
+
+`Array`
+
+Array containing all local streams related to this call (it's either 1 or 2 max)
+
+## direction
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+direction
+
+`string`
+
+Pbx call's direction: "outgoing" / "incoming"
+
+## remoteNumber
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+remoteNumber
+
+`string`
+
+Pbx call's remote party number
+
+## callerNumber
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+callerNumber
+
+`string`
+
+Pbx call's caller number
+
+## calledNumber
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+calledNumber
+
+`string`
+
+Pbx call's initial called number (only set if call has been redirected)
+
+## calledDisplayName
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+calledDisplayName
+
+`string`
+
+## calledLastName
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+calledLastName
+
+`string`
+
+## calledFirstName
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+calledFirstName
+
+`string`
+
+## calledJID
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+calledJID
+
+`string`
+
+## calledRole
+
+**Kind**: global variable  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+calledRole
+
+`string`
+
+## status : `enum`
+
+The status of the call (e.g. dialing, active, releasing...)
+
+**Kind**: global enum  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+UNKNOWN
+
+`object`
+
+Call Cleared
+
+DIALING
+
+`object`
+
+In dialing
+
+QUEUED\_INCOMMING
+
+`object`
+
+In queue (user side)
+
+QUEUED\_OUTGOING
+
+`object`
+
+In queue (recipient side)
+
+RINGING\_INCOMMING
+
+`object`
+
+Call in ringing (user side)
+
+RINGING\_OUTGOING
+
+`object`
+
+Call in ringing (recipient side)
+
+ACTIVE
+
+`object`
+
+Active call
+
+HOLD
+
+`object`
+
+Call on hold
+
+PUT\_ON\_HOLD
+
+`object`
+
+Call put on hold
+
+RELEASING
+
+`object`
+
+Call is clearing
+
+ANSWERING
+
+`object`
+
+Call is being answered
+
+CONNECTING
+
+`object`
+
+Trying to reconnect the call
+
+ERROR
+
+`object`
+
+Call error
+
+## remoteMedia : `enum`
+
+Remote media used by the user
+
+**Kind**: global enum  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+AUDIO
+
+`number`
+
+WebRTC audio call
+
+VIDEO
+
+`number`
+
+WebRTC audio and video call
+
+PHONE
+
+`number`
+
+Telephony call (PBX)
+
+SHARING
+
+`number`
+
+WebRTC screen sharing call
+
+## isMediaPillarCall()
+
+Check if the call is linked to a media pillar context note: if it is a new call not already managed through webrtcGatewayService then not conclusive (because could be linked after)
+
+**Kind**: global function  
+**Access**: public  
+
+## .isHuntingGroupCallSipWise() ⇒ `boolean`
+
+For a sipwise (cloud tel) incoming call to an user who is belong to a hunting group We have to known if the call is for the group or privatly for the user This methode gives this info.
+
+**Kind**: instance function  
+**Returns**: `boolean` - Return true if the call is for the hunting group false otherwise  
+**Access**: public  
+
+## .getHuntingGroupCalledInfo() ⇒ `object`
+
+For a sipwise (cloud tel) incoming call, if the call is for the group who the user is belong (meaning isHuntingGroupCallSipWise() return true) then this methode return the data to be used for called info.
+
+**Kind**: instance function  
+**Returns**: `object` - Return called with called: { phoneNumber: string, displayName: string} or null if isHuntingGroupCallSipWise() = false  
+**Access**: public  
+
+## .id
+
+The ID of the call
+
+**Kind**: static member  
+**Access**: public  
+**Read only**: true
+
+Type
+
+`string`
+
+## .type : `enum`
+
+The type of the call (WebRTC or Telephony)
+
+**Kind**: static enum  
+**Access**: public  
+**Read only**: true  
+**Properties**
+
+Name
+
+Type
+
+Description
+
+WEBRTC
+
+`object`
+
+WebRTC call
+
+PHONE
+
+`object`
+
+Telephony call (PBX)
+
+### Sur cette page
+
+-   [Classes](/docs/sdk/web#name-classes-0)
+-   [Members](/docs/sdk/web#name-members-4)
+-   [Functions](/docs/sdk/web#name-functions-8)
+-   [Call](/docs/sdk/web#name-call-15)
+-   [Call()](/docs/sdk/web#name-call-77)
+-   [call.globalCallId](/docs/sdk/web#name-call.globalcallid-86)
+-   [call.correlatorData](/docs/sdk/web#name-call.correlatordata-123)
+-   [call.correlatorDataHex](/docs/sdk/web#name-call.correlatordatahex-160)
+-   [call.setDeviceIdSipWise(deviceId)](/docs/sdk/web#name-call.setdeviceidsipwisedeviceid-197)
+-   [Call.getIdFromConnectionId(connectionId)](/docs/sdk/web#name-call.getidfromconnectionidconnectionid-222)
+-   [conversationId](/docs/sdk/web#name-conversationid-247)
+-   [contact](/docs/sdk/web#name-contact-284)
+-   [localMedia](/docs/sdk/web#name-localmedia-321)
+-   [isEscalated](/docs/sdk/web#name-isescalated-394)
+-   [startDate](/docs/sdk/web#name-startdate-431)
+-   [isInitiator](/docs/sdk/web#name-isinitiator-468)
+-   [participants](/docs/sdk/web#name-participants-505)
+-   [isConference](/docs/sdk/web#name-isconference-542)
+-   [avatars](/docs/sdk/web#name-avatars-579)
+-   [subject](/docs/sdk/web#name-subject-616)
+-   [currentCalled](/docs/sdk/web#name-currentcalled-653)
+-   [fullJid](/docs/sdk/web#name-fulljid-690)
+-   [mediaPillarCall](/docs/sdk/web#name-mediapillarcall-727)
+-   [isSecondary](/docs/sdk/web#name-issecondary-764)
+-   [isSecondSharingCall](/docs/sdk/web#name-issecondsharingcall-801)
+-   [isOwner](/docs/sdk/web#name-isowner-838)
+-   [isMPAudioOwner](/docs/sdk/web#name-ismpaudioowner-875)
+-   [isMuted](/docs/sdk/web#name-ismuted-912)
+-   [duration](/docs/sdk/web#name-duration-949)
+-   [activeControl](/docs/sdk/web#name-activecontrol-986)
+-   [hasRemoteControlling](/docs/sdk/web#name-hasremotecontrolling-1023)
+-   [networkQuality](/docs/sdk/web#name-networkquality-1060)
+-   [subject](/docs/sdk/web#name-subject-1097)
+-   [noIncomingPopup](/docs/sdk/web#name-noincomingpopup-1134)
+-   [onHold](/docs/sdk/web#name-onhold-1171)
+-   [putOnHold](/docs/sdk/web#name-putonhold-1208)
+-   [localStreams](/docs/sdk/web#name-localstreams-1245)
+-   [direction](/docs/sdk/web#name-direction-1282)
+-   [remoteNumber](/docs/sdk/web#name-remotenumber-1319)
+-   [callerNumber](/docs/sdk/web#name-callernumber-1356)
+-   [calledNumber](/docs/sdk/web#name-callednumber-1393)
+-   [calledDisplayName](/docs/sdk/web#name-calleddisplayname-1430)
+-   [calledLastName](/docs/sdk/web#name-calledlastname-1461)
+-   [calledFirstName](/docs/sdk/web#name-calledfirstname-1492)
+-   [calledJID](/docs/sdk/web#name-calledjid-1523)
+-   [calledRole](/docs/sdk/web#name-calledrole-1554)
+-   [status : enum](/docs/sdk/web#name-status-:-enum-1585)
+-   [remoteMedia : enum](/docs/sdk/web#name-remotemedia-:-enum-1757)
+-   [isMediaPillarCall()](/docs/sdk/web#name-ismediapillarcall-1830)
+-   [.isHuntingGroupCallSipWise() ⇒ boolean](/docs/sdk/web#name-.ishuntinggroupcallsipwise--boolean-1839)
+-   [.getHuntingGroupCalledInfo() ⇒ object](/docs/sdk/web#name-.gethuntinggroupcalledinfo--object-1848)
+-   [.id](/docs/sdk/web#name-.id-1857)
+-   [.type : enum](/docs/sdk/web#name-.type-:-enum-1885)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

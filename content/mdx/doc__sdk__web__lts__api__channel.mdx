@@ -1,0 +1,218 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/channel"
+lastSynced: "2026-02-19T22:35:14.923Z"
+---
+# Documentation
+
+Channel model
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Channel
+
+Channel model.
+
+-   [Channel](#module_Channel)
+    -   [~id](#module_Channel..id) : `string`
+    -   [~name](#module_Channel..name) : `string`
+    -   [~visibility](#module_Channel..visibility) : `string`
+    -   [~topic](#module_Channel..topic) : `string`
+    -   [~creatorId](#module_Channel..creatorId) : `string`
+    -   [~companyId](#module_Channel..companyId) : `string`
+    -   [~creationDate](#module_Channel..creationDate) : `Date`
+    -   [~usersCount](#module_Channel..usersCount) : `number`
+    -   [~avatar](#module_Channel..avatar) : `string`
+    -   [~lastAvatarUpdateDate](#module_Channel..lastAvatarUpdateDate) : `Date`
+    -   [~userRole](#module_Channel..userRole) : `string`
+    -   [~messages](#module_Channel..messages) : `Array`
+    -   [~subscribed](#module_Channel..subscribed) : `boolean`
+    -   [~delted](#module_Channel..delted) : `boolean`
+    -   [~invited](#module_Channel..invited) : `boolean`
+    -   [~category](#module_Channel..category) : `string`
+    -   [~users](#module_Channel..users) : `Array`
+    -   [~subscribersCount](#module_Channel..subscribersCount) : `number`
+    -   [~messagesCount](#module_Channel..messagesCount) : `number`
+
+### Channel~id : `string`
+
+ID of the channel
+
+**Kind**: inner property of [`Channel`](#module_Channel)  
+**Access**: public  
+**Read only**: true  
+
+### Channel~name : `string`
+
+Channel name
+
+**Kind**: inner property of [`Channel`](#module_Channel)  
+**Access**: public  
+**Read only**: true  
+
+### Channel~visibility : `string`
+
+Channel visibility. There are three possible options: "private" (only the owner may publish messages, add or remove users), "company" (company users may join or leave, may be found by searching by the users in the same company) or "public" (may be found by all the users, only allowed users can create a public channel).
+
+**Kind**: inner property of [`Channel`](#module_Channel)  
+**Access**: public  
+**Read only**: true  
+
+### Channel~topic : `string`
+
+Channel topic
+
+**Kind**: inner property of [`Channel`](#module_Channel)  
+**Access**: public  
+**Read only**: true  
+
+### Channel~creatorId : `string`
+
+Creator ID
+
+**Kind**: inner property of [`Channel`](#module_Channel)  
+**Access**: public  
+**Read only**: true  
+
+### Channel~companyId : `string`
+
+ID of the company that the channel is attached to
+
+**Kind**: inner property of [`Channel`](#module_Channel)  
+**Access**: public  
+**Read only**: true  
+
+### Channel~creationDate : `Date`
+
+Channel's creation date
+
+**Kind**: inner property of [`Channel`](#module_Channel)  
+**Access**: public  
+**Read only**: true  
+
+### Channel~usersCount : `number`
+
+Channel users count
+
+**Kind**: inner property of [`Channel`](#module_Channel)  
+**Access**: public  
+**Read only**: true  
+
+### Channel~avatar : `string`
+
+Channel avatar
+
+**Kind**: inner property of [`Channel`](#module_Channel)  
+**Access**: public  
+**Read only**: true  
+
+### Channel~lastAvatarUpdateDate : `Date`
+
+Last avatar update date
+
+**Kind**: inner property of [`Channel`](#module_Channel)  
+**Access**: public  
+**Read only**: true  
+
+### Channel~userRole : `string`
+
+User role - can be one of the following values: 'none', 'owner', 'publisher' or 'member'
+
+**Kind**: inner property of [`Channel`](#module_Channel)  
+**Access**: public  
+**Read only**: true  
+
+### Channel~messages : `Array`
+
+Messages published to the channel
+
+**Kind**: inner property of [`Channel`](#module_Channel)  
+**Access**: public  
+**Read only**: true  
+
+### Channel~subscribed : `boolean`
+
+Boolean representing the current subscription state.
+
+**Kind**: inner property of [`Channel`](#module_Channel)  
+**Access**: public  
+**Read only**: true  
+
+### Channel~delted : `boolean`
+
+Boolean indicating whether the channel has been deleted
+
+**Kind**: inner property of [`Channel`](#module_Channel)  
+**Access**: public  
+**Read only**: true  
+
+### Channel~invited : `boolean`
+
+Boolean indicating whether the user has been invited to subscribe to the channel
+
+**Kind**: inner property of [`Channel`](#module_Channel)  
+**Access**: public  
+**Read only**: true  
+
+### Channel~category : `string`
+
+Channel category
+
+**Kind**: inner property of [`Channel`](#module_Channel)  
+**Access**: public  
+**Read only**: true  
+
+### Channel~users : `Array`
+
+Channel users
+
+**Kind**: inner property of [`Channel`](#module_Channel)  
+**Access**: public  
+**Read only**: true  
+
+### Channel~subscribersCount : `number`
+
+Channel subscribers count
+
+**Kind**: inner property of [`Channel`](#module_Channel)  
+**Access**: public  
+**Read only**: true  
+
+### Channel~messagesCount : `number`
+
+Channel messages count
+
+**Kind**: inner property of [`Channel`](#module_Channel)  
+**Access**: public  
+**Read only**: true
+
+### Sur cette page
+
+-   [Channel](/docs/sdk/web#name-channel-3)
+-   [Channel~id : string](/docs/sdk/web#name-channelid-:-string-116)
+-   [Channel~name : string](/docs/sdk/web#name-channelname-:-string-125)
+-   [Channel~visibility : string](/docs/sdk/web#name-channelvisibility-:-string-134)
+-   [Channel~topic : string](/docs/sdk/web#name-channeltopic-:-string-143)
+-   [Channel~creatorId : string](/docs/sdk/web#name-channelcreatorid-:-string-152)
+-   [Channel~companyId : string](/docs/sdk/web#name-channelcompanyid-:-string-161)
+-   [Channel~creationDate : Date](/docs/sdk/web#name-channelcreationdate-:-date-170)
+-   [Channel~usersCount : number](/docs/sdk/web#name-channeluserscount-:-number-179)
+-   [Channel~avatar : string](/docs/sdk/web#name-channelavatar-:-string-188)
+-   [Channel~lastAvatarUpdateDate : Date](/docs/sdk/web#name-channellastavatarupdatedate-:-date-197)
+-   [Channel~userRole : string](/docs/sdk/web#name-channeluserrole-:-string-206)
+-   [Channel~messages : Array](/docs/sdk/web#name-channelmessages-:-array-215)
+-   [Channel~subscribed : boolean](/docs/sdk/web#name-channelsubscribed-:-boolean-224)
+-   [Channel~delted : boolean](/docs/sdk/web#name-channeldelted-:-boolean-233)
+-   [Channel~invited : boolean](/docs/sdk/web#name-channelinvited-:-boolean-242)
+-   [Channel~category : string](/docs/sdk/web#name-channelcategory-:-string-251)
+-   [Channel~users : Array](/docs/sdk/web#name-channelusers-:-array-260)
+-   [Channel~subscribersCount : number](/docs/sdk/web#name-channelsubscriberscount-:-number-269)
+-   [Channel~messagesCount : number](/docs/sdk/web#name-channelmessagescount-:-number-278)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

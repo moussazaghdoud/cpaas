@@ -1,0 +1,141 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharpprevious/core/lts/guides/030_connect_to_rainbow"
+lastSynced: "2026-02-19T22:35:14.358Z"
+---
+# Documentation
+
+Connect to Rainbow
+
+LTS release 2.6.XPubliée le 2021-12-13
+
+## Connect to Rainbow server
+
+### Prerequisites
+
+---
+
+To connect to Rainbow Server, you need first to have an `applicationID` and a `secretKey` from the [developers website](/).
+
+See first [Getting Started](/docs/sdk/csharp) if it's not the case.
+
+Then you need to have a valid account (i.e. a login and a password).
+
+You also need to know how events and callback are managed in C# and also know how to use the SDKResult object. If it's not the case read first this [guide](/docs/sdk/csharp)
+
+### Events to handle
+
+---
+
+In order to follow correctly the login process, you have to handle several events from the Rainbow.Application object:
+
+-   `AuthenticationFailed`: raised when the authentication has failed - bad login/pwd and/or bad `applicationID` and a `secretKey`
+-   `AuthenticationSucceeded`: raised when the authentication has succeeded
+-   `ConnectionStateChanged`: raised when the connection stated has changed (`ConnectionState.Disconnected, ConnectionState.Connecting, ConnectionState.Connected`)
+-   `InitializationPerformed`: one connected this event is raised when the SDK is fully initialized.
+
+It will be necessary to wait the event `InitializationPerformed` before to use the SDK and not just the event `ConnectionStateChanged` with the status `ConnectionState.Connected` because internally the SDK needs to get minimal information from the server to be ready.
+
+For example, the SDK needs to get features and settings available for the current user before to be fully operationnal. It's done once the SDK is connected.
+
+### Login process
+
+---
+
+Find here the full code to manage correctly the login process in a Console application.
+
+```csharp
+using Rainbow;
+
+// Define objects
+String appId = ""; // To set according your settings
+String appSecretKey = ""; // To set according your settings
+String hostName = "openrainbow.com"; // To set according your settings
+
+String login = ""; // To set according your settings
+String password = ""; // To set according your settings
+
+// We will use aynschronous login method, so we  use the Boolean to quit program only if :
+// - the authentication failed
+// - the initialization has been performed
+// - or we are disconnected
+Boolean endProgram = false;  
+
+// Create Rainbow.Application object
+RbApplication = new Application();
+
+// Set events that we want to follow
+RbApplication.AuthenticationFailed += RbApplication_AuthenticationFailed; // This method will be called when the authentication process will fail
+RbApplication.AuthenticationSucceeded += RbApplication_AuthenticationSucceeded; // This method will be called when the authentication process will succeed
+RbApplication.ConnectionStateChanged += RbApplication_ConnectionStateChanged; // This method will be called when the Connection State will change
+RbApplication.InitializationPerformed += RbApplication_InitializationPerformed; // This method will be called when the Initialization process will succeed
+
+// Set global configuration info
+RbApplication.SetApplicationInfo(appId, appSecretKey);
+RbApplication.SetHostInfo(hostName);
+
+// Start login
+RbApplication.Login(login, password); 
+
+// => Here, the code continues immediately since the Login method is asynchronous.
+
+// We need loop until we want to end the program.
+// If this loop is not done, the program will exit before the login process has ended - due to error (bad pwd for example) or on success
+do
+{
+    Thread.Sleep(100);
+} while (!endProgram);
+
+
+// Now we define methods which will be called by events defined previously
+
+void RbApplication_InitializationPerformed(object? sender, EventArgs e)
+{
+    // Here we just log that the initialization has been performed
+    Console.WriteLine($"InitializationPerformed");
+
+    // We can now quit for this sample
+    endProgram = true;
+}
+
+void RbApplication_ConnectionStateChanged(object? sender, Rainbow.Events.ConnectionStateEventArgs e)
+{
+    // Here we just log connection state in the console
+    Console.WriteLine($"ConnectionStateChanged: [{e.ConnectionState.State}]");
+
+    if (e.ConnectionState.State == Rainbow.Model.ConnectionState.Disconnected)
+    {
+        // We can now quit for this sample
+        endProgram = true;
+    }
+}
+
+void RbApplication_AuthenticationSucceeded(object? sender, EventArgs e)
+{
+    Console.WriteLine($"AuthenticationSucceeded");
+}
+
+void RbApplication_AuthenticationFailed(object? sender, Rainbow.Events.SdkErrorEventArgs e)
+{
+    // Authentication failed - we display in the console the reason
+    Console.WriteLine($"AuthenticationFailed\r\n[{e.SdkError}");
+
+    // We can now quit for this sample
+    endProgram = true;
+}
+```
+
+### Sur cette page
+
+-   [Connect to Rainbow server](/docs/sdk/csharp#name-connect-to-rainbow-server-0)
+-   [Prerequisites](/docs/sdk/csharp#name-prerequisites-3)
+-   [Events to handle](/docs/sdk/csharp#name-events-to-handle-19)
+-   [Login process](/docs/sdk/csharp#name-login-process-54)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,335 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Search_in_Rainbow"
+lastSynced: "2026-02-19T22:35:13.404Z"
+---
+# Documentation
+
+Search in Rainbow
+
+LTS release 2.61.0Publiée le 202-04-06
+
+## Search in Rainbow
+
+---
+
+Welcome to the **Rainbow SDK for Android !** Search guide. By the end of this guide, you'll be capable of integrating search functionalities into your application. We'll cover how to search for contacts, conversations and bubbles.
+
+**Rainbow concept**
+
+**Description**
+
+**IRainbowContact**
+
+Represents the public interface for accessing information about Rainbow contacts, including the logged-in user.
+
+**IRainbowRoom**
+
+Represents the public interface for accessing information about Room (Bubble).
+
+**IRainbowConversation**
+
+Represents the public interface for accessing information about Rainbow conversations. These conversations may involve `IRainbowContact` or `IRainbowRoom`.
+
+### Preamble
+
+---
+
+This tutorial assumes that you have completed the **Getting Started** and **Connect to Rainbow** tutorials, and that you have an active Rainbow application. Before proceeding with search management, ensure the following:
+
+-   Your development environment is configured according to the guidelines in the [Getting Started](/docs/sdk/android) tutorial.
+-   You have successfully connected your application to the Rainbow platform as outlined in the [Connect to Rainbow](/docs/sdk/android) tutorial.
+-   You have obtained the necessary authentication credentials and API keys.
+
+With these prerequisites in place, let's explore search functionality with **Rainbow SDK for Android**.
+
+### How the Search Works
+
+To perform a search in Rainbow, you will use the method `RainbowSdk().search().search(String, SearchCriteria, ISearchListener)`. This method accepts three parameters:
+
+-   `query: String`: The query string you want to execute.
+-   `searchCriteria: SearchCriteria`: A builder object that allows you to configure the search to obtain the desired results.
+-   `searchListener: ISearchListener<List<Any>>?`: A listener that notifies you of success and error cases. Due to the heterogeneous nature of the search, the results are returned as a list of `Any`.
+
+In general, you can search for contacts, conversations, bubbles, contact groups, channels, call groups, and text contained in conversations. These searches can be either local, using data stored in the cache or the device, or server-based via an API request.
+
+Depending on what you enable or disable in the builder, the search will perform different queries and return an aggregate of search results.
+
+When you call the `search()` method, a **500ms** timer is triggered. Only after this time will the search be executed. If you call the `search()` method again during this time, the previous query is cancelled.
+
+Depending on the number of searches you execute, the API may take some time before returning the list of results. If you wish, you can be notified in real time of each search result as it is added to the list. This allows you to begin displaying results before the API has fully completed.
+
+The object `RainbowSdk().search().results` is an `ArrayItemList` that allows you to subscribe to updates. This list is cleared with each new search.
+
+Key Features of the Search Functionality:
+
+-   **Case Insensitivity:** Search isn't case-sensitive, so you'll find contacts regardless of capitalization.
+-   **Accents Insensitivity:** Accented characters are treated as equivalent to their non-accented counterparts during the search process.
+-   **Partial Match:** The search accommodates partial matches, enabling efficient retrieval of contacts even with incomplete name inputs (e.g., "Jo do" finds "John Doe").
+-   **Visibility Restrictions:** Some users may not be discoverable through search functionalities, particularly if they belong to non-public companies.
+-   **Default Public Rainbow Company:** By default, users are created within the public Rainbow company, making them discoverable through search functionalities.
+
+### Search for a contact
+
+In Rainbow, you can easily find contacts by their names. This search feature isn't limited to just your contact list; it covers all users on the Rainbow platform.
+
+The search operation is performed on both the first and last name fields, encompassing all public Rainbow users and users belonging to companies visible to the logged-in user's company.
+
+-   [kotlin](#codegroupTab-search_by_name_kotlin)
+-   [java](#codegroupTab-search_by_name_java)
+
+```kotlin
+val searchCriteria = SearchCriteria.Builder()
+    .setSearchRainbowContacts(true) // Search in roster, user's company, default company
+    .setSearchRainbowContactsByTags(true) // Search not only on the name but also on tags
+    .setSearchLocalContacts(true) // Search on phone contacts list
+    .setSearchPhoneBook(true) // Search in the phone book
+    .build()
+            
+RainbowSdk().search().search(query = "Jo Do", searchCriteria = searchCriteria, object : Search.ISearchListener<List<Any>> {
+    override fun onSearchStarted() {
+        // Indicate that the search has started
+    }
+
+    override fun onSuccess(data: List<Any>) {
+        // The search completed without errors. The list contains the same data as RainbowSdk().search().results.copyOfDataList
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // The search ended with one or more errors but the list RainbowSdk().search().results.copyOfDataList may still contain results
+    }
+})
+```
+
+```java
+SearchCriteria searchCriteria = new SearchCriteria.Builder()
+        .setSearchRainbowContacts(true) // Search in roster, user's company, default company
+        .setSearchRainbowContactsByTags(true) // Search not only on the name but also on tags
+        .setSearchLocalContacts(true) // Search on phone contacts list
+        .setSearchPhoneBook(true) // Search in the phone book
+        .build();
+
+RainbowSdk.instance().search().search("Jo Do", searchCriteria, new Search.ISearchListener<List<Object>>() {
+    @Override
+    public void onSearchStarted() {
+        // Indicate that the search has started
+    }
+
+    @Override
+    public void onSuccess(List<Object> data) {
+        // The search completed without errors. The list contains the same data as RainbowSdk().search().results.copyOfDataList
+    }
+
+    @Override
+    public void onError(@NonNull RainbowError<Unit> error) {
+        // The search ended with one or more errors but the list RainbowSdk().search().results.copyOfDataList may still contain results
+    }
+});
+```
+
+### Searching for a Conversation
+
+You can also search for conversations by their name. A conversation can be either P2P (peer-to-peer) between you and a contact or a Room (bubble) conversation. The builder allows you to search for either one, the other, or both. To obtain results, you must have opened conversations beforehand by either:
+
+-   Creating them manually using `RainbowSdk().im().createNewConversationFromJid()` or `RainbowSdk().im().createNewConversationFromRoom()`.
+-   Receiving messages, which automatically creates the conversation.
+
+-   [kotlin](#codegroupTab-search_conversation_kotlin)
+-   [java](#codegroupTab-search_conversation_java)
+
+```kotlin
+val searchCriteria = SearchCriteria.Builder()
+    .setSearchP2PConversations(true)
+    .setSearchRoomConversations(true)
+    .build()
+            
+RainbowSdk().search().search(query = "Jo Do", searchCriteria = searchCriteria, object : Search.ISearchListener<List<Any>> {
+    override fun onSearchStarted() {
+        // Indicate that the search has started
+    }
+
+    override fun onSuccess(data: List<Any>) {
+        // The search completed without errors. The list contains the same data as RainbowSdk().search().results.copyOfDataList
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // The search ended with one or more errors but the list RainbowSdk().search().results.copyOfDataList may still contain results
+    }
+})
+```
+
+```java
+SearchCriteria searchCriteria = new SearchCriteria.Builder()
+        .setSearchP2PConversations(true) // Search in roster, user's company, default company
+        .setSearchRoomConversations(true) // Search not only on the name but also on tags
+        .build();
+
+RainbowSdk.instance().search().search("Jo Do", searchCriteria, new Search.ISearchListener<List<Object>>() {
+    @Override
+    public void onSearchStarted() {
+        // Indicate that the search has started
+    }
+
+    @Override
+    public void onSuccess(List<Object> data) {
+        // The search completed without errors. The list contains the same data as RainbowSdk().search().results.copyOfDataList
+    }
+
+    @Override
+    public void onError(@NonNull RainbowError<Unit> error) {
+        // The search ended with one or more errors but the list RainbowSdk().search().results.copyOfDataList may still contain results
+    }
+});
+```
+
+### Shortcuts
+
+The **Search** module provides methods that offer shortcuts for certain searches. For example, if you are only looking for Rainbow users within the user's company, you can call:  
+`RainbowSdk().search().searchContactByName(name = "Jo Do", restrictToUserCompany = true)`.  
+This is equivalent to calling the `search()` method with `SearchCriteria.Builder().setSearchRainbowContacts(true).setSearchDirectoryCompanyId(userCompanyId).build()`.  
+The advantage of using this method is that you receive a `List<IRainbowContact>` directly, rather than a `List<Any>`.
+
+You will also find shortcuts for:
+
+-   Searching for Rooms with `searchRoomByName()`
+-   Searching for Channels with `searchChannelByName()`
+
+These methods rely on the `search()` method with `SearchCriteria` builder.
+
+### Text Search in All Conversations
+
+Using the `search()` method, you can search for conversations that contain a specific text. Note that text search begins only after entering at least **3 characters** to avoid matching too many results.
+
+The objects returned from the text search are `TextSearchInConversation`.
+
+-   [kotlin](#codegroupTab-search_text_all_conversations_kotlin)
+-   [java](#codegroupTab-search_text_all_conversations_java)
+
+```kotlin
+val searchCriteria = SearchCriteria.Builder()
+    .setSearchTextInConversations(true)
+    .build()
+            
+RainbowSdk().search().search(query = "Text you want to search", searchCriteria = searchCriteria, object : Search.ISearchListener<List<Any>> {
+    override fun onSearchStarted() {
+        // Indicate that the search has started
+    }
+
+    override fun onSuccess(data: List<Any>) {
+        // The search completed without errors. The list contains the same data as RainbowSdk().search().results.copyOfDataList
+        // From TextSearchInConversation, you can access the conversation property to display information or the list of messages that match the result.
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // The search ended with one or more errors but the list RainbowSdk().search().results.copyOfDataList may still contain results
+    }
+})
+```
+
+```java
+SearchCriteria searchCriteria = new SearchCriteria.Builder()
+    .setSearchTextInConversations(true)
+    .build();
+
+RainbowSdk.instance().search().search("Text you want to search", searchCriteria, new Search.ISearchListener<List<Object>>() {
+    @Override
+    public void onSearchStarted() {
+        // Indicate that the search has started
+    }
+
+    @Override
+    public void onSuccess(List<Object> data) {
+        // The search completed without errors. The list contains the same data as RainbowSdk().search().results.copyOfDataList
+        // From TextSearchInConversation, you can access the conversation property to display information or the list of messages that match the result.
+    }
+
+    @Override
+    public void onError(@NonNull RainbowError<Unit> error) {
+        // The search ended with one or more errors but the list RainbowSdk().search().results.copyOfDataList may still contain results
+    }
+});
+```
+
+### Text Search in a Specific Conversation
+
+You can use the method `searchTextInConversation(IRainbowConversation, String, ISearchListener<TextSearchInConversation?>?)` to search for messages in a specific conversation. The API returns `TextSearchInConversation` objects, which allow you to access the conversation and the messages found.
+
+-   [kotlin](#codegroupTab-search_text_conversation_kotlin      )
+-   [java](#codegroupTab-search_text_conversation_java)
+
+```kotlin
+RainbowSdk().search().searchTextInConversation(conversation = your_conversation, query = "Text you want to search", object : Search.ISearchListener<TextSearchInConversation?> {
+    override fun onSearchStarted() {
+        // Indicate that the search has started
+    }
+
+    override fun onSuccess(data: TextSearchInConversation?) {
+        // From TextSearchInConversation, you can access the conversation property to display information or the list of messages that match the result.
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+
+    }
+})
+```
+
+```java
+RainbowSdk.instance().search().search(conversation, "Text you want to search", new Search.ISearchListener<TextSearchInConversation>() {
+    @Override
+    public void onSearchStarted() {
+        // Indicate that the search has started
+    }
+
+    @Override
+    public void onSuccess(TextSearchInConversation data) {
+        // From TextSearchInConversation, you can access the conversation property to display information or the list of messages that match the result.
+    }
+
+    @Override
+    public void onError(@NonNull RainbowError<Unit> error) {
+        // The search ended with one or more errors but the list RainbowSdk().search().results.copyOfDataList may still contain results
+    }
+});
+```
+
+### Canceling Requests
+
+While the search methods already handle cancellation if called within a 500ms hysteresis period, you can manually cancel requests by calling the method:  
+`RainbowSdk().search().cancelPendingRequests()` This method also calls `RainbowSdk().search().clearResults()`, which clears the results lists.
+
+### Conclusion
+
+**Great Job! You've Finished the Search Guide.**
+
+Congratulations on completing the search guide for the Rainbow SDK. You now have the skills to add search features to your application.
+
+Throughout this guide, you’ve learned how to search for contacts, conversations, and text, as well as how to manage and cancel search requests.
+
+Whether you're developing a messaging app, a collaboration platform, or any other application that needs search capabilities, the Rainbow SDK provides all the tools necessary to deliver a great user experiences.
+
+Keep exploring what the Rainbow SDK can offer, and remember, if you need any help or have questions, our support team is here to help.
+
+Happy coding!
+
+*Last updated July, 2024*
+
+### Sur cette page
+
+-   [Search in Rainbow](/docs/sdk/android#name-search-in-rainbow-0)
+-   [Preamble](/docs/sdk/android#name-preamble-45)
+-   [How the Search Works](/docs/sdk/android#name-how-the-search-works-72)
+-   [Search for a contact](/docs/sdk/android#name-search-for-a-contact-140)
+-   [Searching for a Conversation](/docs/sdk/android#name-searching-for-a-conversation-150)
+-   [Shortcuts](/docs/sdk/android#name-shortcuts-169)
+-   [Text Search in All Conversations](/docs/sdk/android#name-text-search-in-all-conversations-193)
+-   [Text Search in a Specific Conversation](/docs/sdk/android#name-text-search-in-a-specific-conversation-203)
+-   [Canceling Requests](/docs/sdk/android#name-canceling-requests-210)
+-   [Conclusion](/docs/sdk/android#name-conclusion-216)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

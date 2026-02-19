@@ -1,0 +1,66 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/DirectorySearch/interfaces/DirectorySearchOptions"
+lastSynced: "2026-02-19T22:35:17.208Z"
+---
+# Documentation
+
+DirectorySearchOptions
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [DirectorySearch](doc/sdk/webv2/lts/api/DirectorySearch/index) / DirectorySearchOptions
+
+# Interface: DirectorySearchOptions
+
+List of options for refining the search and specifying the results to be provided.
+
+## Properties
+
+### company?
+
+> `optional` **company**: [`CompanyOptions`](doc/sdk/webv2/lts/api/DirectorySearch/interfaces/CompanyOptions)
+
+Company filter to refine the search to include or exclude users/contacts of this company. Default value is null meaning that no company filter is specified. This option is only valid for searches in RAINBOW\_USERS and RAINBOW\_BUSINESS\_CONTACTS\_DIRECTORY directories. If the option is specified but not managed for the given directory type, it will be ignored.
+
+---
+
+### extendedMode?
+
+> `optional` **extendedMode**: `boolean`
+
+Allows to search the user/contact on extended fields. \[default value=false\] Default value is false. In addition to the name-fields used by a "basic" search, an extended search will be carried out on addition fields such as the job title or the company name for example. The complete list of fields used in a extended search is described below. This extended search is only available to user having the feature SEARCH\_BY\_TAGS in their profile. If this option is set but the user does not have the feature SEARCH\_BY\_TAGS, the option is ignored and the search is performed in simple mode. Furthermore, a warning is logged. This option is managed differently depending on the directory type, as described below:
+
+-   RAINBOW\_USERS\_NETWORK: The extended search is not available.
+-   RAINBOW\_USERS: This extended search applies on the following fields: firstName, lastName, company name, job title, department and tags.
+-   RAINBOW\_BUSINESS\_CONTACTS\_DIRECTORY: This extended search applies on the following fields: firstName, lastName, company name, job title, department and tags.
+-   RAINBOW\_PERSONAL\_CONTACTS\_DIRECTORY: This extended search applies on the following fields: firstName, lastName, company name, job title, department and tags.
+-   RAINBOW\_PBX\_USERS: The extended search is not available.
+-   MICROSOFT\_O365\_USERS: This extended search applies on the following fields: firstName, lastName, company name, job title and department.
+
+---
+
+### limit?
+
+> `optional` **limit**: `number`
+
+The number of results to return. Limit value must be in range \[1..100\]. Default value is 20. If the value is not in the authorized range, the request will be rejected and an error logged.
+
+### Sur cette page
+
+-   [Properties](/docs/sdk/web#name-properties-13)
+-   [company?](/docs/sdk/web#name-company-16)
+-   [extendedMode?](/docs/sdk/web#name-extendedmode-28)
+-   [limit?](/docs/sdk/web#name-limit-72)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

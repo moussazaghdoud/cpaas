@@ -1,0 +1,549 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/Calls/interfaces/Call"
+lastSynced: "2026-02-19T22:35:16.617Z"
+---
+# Documentation
+
+Call
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [Calls](doc/sdk/webv2/lts/api/Calls/index) / Call
+
+# Interface: Call
+
+## Properties
+
+### callStatus
+
+> `readonly` **callStatus**: [`CallStatus`](doc/sdk/webv2/lts/api/Calls/enumerations/CallStatus)
+
+Call telephone status
+
+---
+
+### capabilities
+
+> `readonly` **capabilities**: [`CallCapabilities`](doc/sdk/webv2/lts/api/Calls/interfaces/CallCapabilities)
+
+Capabilities of the call
+
+---
+
+### contact
+
+> `readonly` **contact**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)
+
+The user reference representing the other party (as caller or callee) engaged in this call
+
+---
+
+### direction
+
+> **direction**: [`CallDirection`](doc/sdk/webv2/lts/api/Calls/enumerations/CallDirection)
+
+Call direction This information is relevant only for telephone (PBX) call. For WebRTC call it is undefined.
+
+---
+
+### duration
+
+> `readonly` **duration**: `number`
+
+Call duration in seconds
+
+---
+
+### localMedias
+
+> `readonly` **localMedias**: [`CallMediaStreams`](doc/sdk/webv2/lts/api/Calls/interfaces/CallMediaStreams)
+
+The local medias currently in the call
+
+---
+
+### networkQuality
+
+> `readonly` **networkQuality**: `number`
+
+The current network quality (0 - bad, 1 - medium, 2 - good) for the call
+
+---
+
+### remoteMedias
+
+> `readonly` **remoteMedias**: [`CallMediaStreams`](doc/sdk/webv2/lts/api/Calls/interfaces/CallMediaStreams)
+
+The remote medias currently in the call
+
+---
+
+### subject
+
+> `readonly` **subject**: `string`
+
+On an incoming call, contains the subject of the call if this has been specified by the caller
+
+---
+
+### type
+
+> `readonly` **type**: [`CallType`](doc/sdk/webv2/lts/api/Calls/enumerations/CallType)
+
+The type of the call (WebRTC or Telephony)
+
+## Methods
+
+### addAudio()
+
+> **addAudio**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Add the AUDIO media to the current call.  
+This feature can be used only if the "addAudio" call capability is 'True' and available only for WebRTC Calls.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### addParticipantsToCall()
+
+> **addParticipantsToCall**(`participants`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Conversation`](doc/sdk/webv2/lts/api/Conversations/interfaces/Conversation)\>
+
+Add participants to the the current call.  
+This feature can be used only if the "addParticipantsToCall" call capability is 'True'.  
+The participants could be other Rainbow users or phone numbers (if the PBX system supports it).  
+This will result in a new conversation being created with web conference inside. The active call will be "transferred" to the bubble conference;
+
+#### Parameters
+
+• **participants**: [`CallDestination`](doc/sdk/webv2/lts/api/Calls/interfaces/CallDestination)\[\]
+
+The list of participants to be added to the call
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Conversation`](doc/sdk/webv2/lts/api/Conversations/interfaces/Conversation)\>
+
+The new bubble conversation where the web conference is active
+
+---
+
+### addSharing()
+
+> **addSharing**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Add the SHARING media to the current call.  
+This feature can be used only if the "addSharing" call capability is 'True' and available only for WebRTC Calls.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### addVideo()
+
+> **addVideo**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Add the VIDEO media to the current call.  
+This feature can be used only if the "addVideo" call capability is 'True' and available only for WebRTC Calls.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### answer()
+
+> **answer**(`withVideo`?): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Answer the current incoming call.  
+This feature can be used only if the "answer" call capability is 'True'.  
+By default, the answer is done with AUDIO only.  
+If the 'withVideo' option is set to 'True' and the incoming call contains video, the answer will directly be done with audio and video.
+
+#### Parameters
+
+• **withVideo?**: `boolean`
+
+Option to answer the call directly with audio and video. Default value is 'False'
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### attachLocalSharingStream()
+
+> **attachLocalSharingStream**(`HtmlElementId`): `void`
+
+Attach the local sharing stream to a given HTML VIDEO tag element;
+
+#### Parameters
+
+• **HtmlElementId**: `string`
+
+The ID of the HTML VIDEO tag element visible on the page
+
+#### Returns
+
+`void`
+
+---
+
+### attachLocalVideoStream()
+
+> **attachLocalVideoStream**(`HtmlElementId`): `void`
+
+Attach the local video stream to a given HTML VIDEO tag element;
+
+#### Parameters
+
+• **HtmlElementId**: `string`
+
+The ID of the HTML VIDEO tag element visible on the page
+
+#### Returns
+
+`void`
+
+---
+
+### attachRemoteSharingStream()
+
+> **attachRemoteSharingStream**(`HtmlElementId`): `void`
+
+Attach the remote sharing stream to a given HTML VIDEO tag element;
+
+#### Parameters
+
+• **HtmlElementId**: `string`
+
+The ID of the HTML VIDEO tag element visible on the page
+
+#### Returns
+
+`void`
+
+---
+
+### attachRemoteVideoStream()
+
+> **attachRemoteVideoStream**(`HtmlElementId`): `void`
+
+Attach the remote video stream to a given HTML VIDEO tag element;
+
+#### Parameters
+
+• **HtmlElementId**: `string`
+
+The ID of the HTML VIDEO tag element visible on the page
+
+#### Returns
+
+`void`
+
+---
+
+### blindTransfer()
+
+> **blindTransfer**(`destination`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Blind transfer the current call another destination which could be any rainbow user or phone number.  
+A blind transfer is when you transfer a call directly to another party without consulting with the person receiving the call.  
+In other words, there is no need to call the other party to make the transfer.  
+This feature is available only if the connected user is behind a Rainbow Hub.
+
+#### Parameters
+
+• **destination**: [`CallDestination`](doc/sdk/webv2/lts/api/Calls/interfaces/CallDestination)
+
+The destination of the blind transfer
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### deflectToPhoneNumber()
+
+> **deflectToPhoneNumber**(`number`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Deflect (redirect) the current incoming call to the specified phone number.  
+This feature can be used only if the "deflectToPhoneNumber" call capability is 'True'.  
+The list of phone numbers where we can deflect the incoming call is available in the 'deflectPhoneNumberDestinations' call capability.
+
+#### Parameters
+
+• **number**: `string`
+
+The phone number the call will be deflected to.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### deflectToVoicemail()
+
+> **deflectToVoicemail**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Deflect the current incoming call to the voice mail.  
+This feature can be used only if the "deflectToVoicemail" call capability is 'True'.  
+The 'deflect to voice mail' is only available on HYBRID telephony systems.  
+For Cloud telephony systems, the release call will follow the user configuration (which could be deflect or other).
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### hold()
+
+> **hold**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Put on hold the current call.  
+This feature can be used only if the "hold" call capability is 'True'.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### mute()
+
+> **mute**(): `void`
+
+Mute the current call.  
+This feature can be used only if the "mute" call capability is 'True'.
+
+#### Returns
+
+`void`
+
+---
+
+### release()
+
+> **release**(`reason`?): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Release the current call.  
+This method allows to decline an incoming call or stop an outgoing call.  
+This feature can be used only if the "release" call capability is 'True'.
+
+#### Parameters
+
+• **reason?**: `string`
+
+Reason for releasing the call (only for Web calls)
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### removeSharing()
+
+> **removeSharing**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Remove the SHARING media from the current call.  
+This feature can be used only if the "removeSharing" call capability is 'True' and available only for WebRTC Calls.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### removeVideo()
+
+> **removeVideo**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Remove the VIDEO media from the current call.  
+This feature can be used only if the "removeVideo" call capability is 'True' and available only for WebRTC Calls.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### retrieve()
+
+> **retrieve**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Retrieve from hold the current call.  
+This feature can be used only if the "retrieve" call capability is 'True'.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### sendDTMF()
+
+> **sendDTMF**(`dialKey`): `void`
+
+Send DTMF signal to the current call.  
+This feature can be used only if the "dtmf" call capability is 'True'.
+
+#### Parameters
+
+• **dialKey**: `string`
+
+The DTMF character sequences to be send Only the following characters are authorised: the ten single digits (0..9), the letters (a,b,c,d), the asterisk (\*) and the pound sign (#).
+
+#### Returns
+
+`void`
+
+---
+
+### subscribe()
+
+> **subscribe**(`callback`, `eventNames`?): `Subscription`
+
+Subscribe to updates on the current call (all events are of RBEvent
+
+#### Parameters
+
+• **callback**
+
+The callback function that will be called when events are received
+
+• **eventNames?**: [`CallEvents`](doc/sdk/webv2/lts/api/Calls/enumerations/CallEvents) | [`CallEvents`](doc/sdk/webv2/lts/api/Calls/enumerations/CallEvents)\[\]
+
+(optional) array of event to listen
+
+#### Returns
+
+`Subscription`
+
+Returns RxJS Subscription
+
+---
+
+### transferToOtherCall()
+
+> **transferToOtherCall**(`destinationCall`?): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Transfer the current call to another call.  
+If the destination call is not specified, then the transfer will be done towards the current active call.  
+The list of destination calls to which we can deflect the call current is available in the 'transferCallDestinations' call capability.
+
+#### Parameters
+
+• **destinationCall?**: [`Call`](doc/sdk/webv2/lts/api/Calls/interfaces/Call)
+
+The destination call to which we want to transfer the current call.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### unmute()
+
+> **unmute**(): `void`
+
+Unmute the current call.  
+This feature can be used only if the "unmute" call capability is 'True'.
+
+#### Returns
+
+`void`
+
+### Sur cette page
+
+-   [Properties](/docs/sdk/web#name-properties-10)
+-   [callStatus](/docs/sdk/web#name-callstatus-13)
+-   [capabilities](/docs/sdk/web#name-capabilities-25)
+-   [contact](/docs/sdk/web#name-contact-37)
+-   [direction](/docs/sdk/web#name-direction-49)
+-   [duration](/docs/sdk/web#name-duration-61)
+-   [localMedias](/docs/sdk/web#name-localmedias-73)
+-   [networkQuality](/docs/sdk/web#name-networkquality-85)
+-   [remoteMedias](/docs/sdk/web#name-remotemedias-97)
+-   [subject](/docs/sdk/web#name-subject-109)
+-   [type](/docs/sdk/web#name-type-121)
+-   [Methods](/docs/sdk/web#name-methods-132)
+-   [addAudio()](/docs/sdk/web#name-addaudio-135)
+-   [Returns](/docs/sdk/web#name-returns-146)
+-   [addParticipantsToCall()](/docs/sdk/web#name-addparticipantstocall-153)
+-   [Parameters](/docs/sdk/web#name-parameters-164)
+-   [Returns](/docs/sdk/web#name-returns-173)
+-   [addSharing()](/docs/sdk/web#name-addsharing-183)
+-   [Returns](/docs/sdk/web#name-returns-194)
+-   [addVideo()](/docs/sdk/web#name-addvideo-201)
+-   [Returns](/docs/sdk/web#name-returns-212)
+-   [answer()](/docs/sdk/web#name-answer-219)
+-   [Parameters](/docs/sdk/web#name-parameters-230)
+-   [Returns](/docs/sdk/web#name-returns-239)
+-   [attachLocalSharingStream()](/docs/sdk/web#name-attachlocalsharingstream-246)
+-   [Parameters](/docs/sdk/web#name-parameters-257)
+-   [Returns](/docs/sdk/web#name-returns-266)
+-   [attachLocalVideoStream()](/docs/sdk/web#name-attachlocalvideostream-273)
+-   [Parameters](/docs/sdk/web#name-parameters-284)
+-   [Returns](/docs/sdk/web#name-returns-293)
+-   [attachRemoteSharingStream()](/docs/sdk/web#name-attachremotesharingstream-300)
+-   [Parameters](/docs/sdk/web#name-parameters-311)
+-   [Returns](/docs/sdk/web#name-returns-320)
+-   [attachRemoteVideoStream()](/docs/sdk/web#name-attachremotevideostream-327)
+-   [Parameters](/docs/sdk/web#name-parameters-338)
+-   [Returns](/docs/sdk/web#name-returns-347)
+-   [blindTransfer()](/docs/sdk/web#name-blindtransfer-354)
+-   [Parameters](/docs/sdk/web#name-parameters-365)
+-   [Returns](/docs/sdk/web#name-returns-374)
+-   [deflectToPhoneNumber()](/docs/sdk/web#name-deflecttophonenumber-381)
+-   [Parameters](/docs/sdk/web#name-parameters-392)
+-   [Returns](/docs/sdk/web#name-returns-401)
+-   [deflectToVoicemail()](/docs/sdk/web#name-deflecttovoicemail-408)
+-   [Returns](/docs/sdk/web#name-returns-419)
+-   [hold()](/docs/sdk/web#name-hold-426)
+-   [Returns](/docs/sdk/web#name-returns-437)
+-   [mute()](/docs/sdk/web#name-mute-444)
+-   [Returns](/docs/sdk/web#name-returns-455)
+-   [release()](/docs/sdk/web#name-release-462)
+-   [Parameters](/docs/sdk/web#name-parameters-473)
+-   [Returns](/docs/sdk/web#name-returns-482)
+-   [removeSharing()](/docs/sdk/web#name-removesharing-489)
+-   [Returns](/docs/sdk/web#name-returns-500)
+-   [removeVideo()](/docs/sdk/web#name-removevideo-507)
+-   [Returns](/docs/sdk/web#name-returns-518)
+-   [retrieve()](/docs/sdk/web#name-retrieve-525)
+-   [Returns](/docs/sdk/web#name-returns-536)
+-   [sendDTMF()](/docs/sdk/web#name-senddtmf-543)
+-   [Parameters](/docs/sdk/web#name-parameters-554)
+-   [Returns](/docs/sdk/web#name-returns-563)
+-   [subscribe()](/docs/sdk/web#name-subscribe-570)
+-   [Parameters](/docs/sdk/web#name-parameters-581)
+-   [Returns](/docs/sdk/web#name-returns-596)
+-   [transferToOtherCall()](/docs/sdk/web#name-transfertoothercall-606)
+-   [Parameters](/docs/sdk/web#name-parameters-617)
+-   [Returns](/docs/sdk/web#name-returns-626)
+-   [unmute()](/docs/sdk/web#name-unmute-633)
+-   [Returns](/docs/sdk/web#name-returns-644)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

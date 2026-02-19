@@ -1,0 +1,92 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/favorites"
+lastSynced: "2026-02-19T22:35:15.194Z"
+---
+# Documentation
+
+Favorites service
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Favorites
+
+This module is the basic module for handling Favorites in Rainbow. In Rainbow, Favorites are the way to list a most frequent, most used or the most important conversations, bubbles and bots. The main methods and events proposed in that service allow to:  
+\- Create or delete a Rainbow Favorite (one-to-one, bubble or bot)  
+\- Retrieve all information linked to that Favorite
+
+**Emits**: `event:RAINBOW_ONFAVORITECREATED`, `event:RAINBOW_ONFAVORITEDELETED`
+
+-   [Favorites](#module_Favorites)
+    -   [fetchAllFavorites()](#module_Favorites+fetchAllFavorites) ⇒ `Promise`
+    -   [createFavorite(id, favoriteType)](#module_Favorites+createFavorite) ⇒ `Promise`
+    -   [deleteFavorite(id)](#module_Favorites+deleteFavorite) ⇒ `Promise`
+
+### favorites.fetchAllFavorites() ⇒ `Promise`
+
+Fetch all the Favorites from the server in a form of an Array
+
+**Kind**: instance method of [`Favorites`](#module_Favorites)  
+**Returns**: `Promise` - Promise with an array of Favorite objects  
+**Access**: public  
+
+### favorites.createFavorite(id, favoriteType) ⇒ `Promise`
+
+Add user/bubble/bot to Favorites Array
+
+**Kind**: instance method of [`Favorites`](#module_Favorites)  
+**Returns**: `Promise` - Promise resolution  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+ID of the user/bubble
+
+favoriteType
+
+`string`
+
+Type of Favorite (can be 'user' or 'bubble')
+
+### favorites.deleteFavorite(id) ⇒ `Promise`
+
+Delete conversation/bubble/bot from Favorites Array
+
+**Kind**: instance method of [`Favorites`](#module_Favorites)  
+**Returns**: `Promise` - Promise resolution  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+ID of the Favorite item
+
+### Sur cette page
+
+-   [Favorites](/docs/sdk/web#name-favorites-3)
+-   [favorites.fetchAllFavorites() ⇒ Promise](/docs/sdk/web#name-favorites.fetchallfavorites--promise-39)
+-   [favorites.createFavorite(id, favoriteType) ⇒ Promise](/docs/sdk/web#name-favorites.createfavoriteid-favoritetype--promise-48)
+-   [favorites.deleteFavorite(id) ⇒ Promise](/docs/sdk/web#name-favorites.deletefavoriteid--promise-99)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

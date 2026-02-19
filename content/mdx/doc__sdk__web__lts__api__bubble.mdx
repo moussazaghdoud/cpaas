@@ -1,0 +1,268 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/bubble"
+lastSynced: "2026-02-19T22:35:14.818Z"
+---
+# Documentation
+
+Bubble model
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Bubble
+
+This class represents a Bubble. It is a group conversation that allows users to send messages to all the members, start a web conference, spread information faster.
+
+-   [Bubble](#module_Bubble)
+    -   [~autoAcceptInvitation](#module_Bubble..autoAcceptInvitation) : `boolean`
+    -   [~avatarSrc](#module_Bubble..avatarSrc) : `string`
+    -   [~confEndpoints](#module_Bubble..confEndpoints) : `Array`
+    -   [~conference](#module_Bubble..conference) : `object`
+    -   [~containerId](#module_Bubble..containerId) : `string`
+    -   [~creationDate](#module_Bubble..creationDate) : `string`
+    -   [~customData](#module_Bubble..customData) : `object`
+    -   [~id](#module_Bubble..id) : `string`
+    -   [~description](#module_Bubble..description) : `object`
+    -   [~history](#module_Bubble..history) : `string`
+    -   [~history](#module_Bubble..history) : `string`
+    -   [~isActive](#module_Bubble..isActive) : `boolean`
+    -   [~isModerator](#module_Bubble..isModerator) : `boolean`
+    -   [~jid](#module_Bubble..jid) : `string`
+    -   [~lastActivityDate](#module_Bubble..lastActivityDate) : `string`
+    -   [~members](#module_Bubble..members) : `Array.<ContactSDK>`
+    -   [~name](#module_Bubble..name) : `string`
+    -   [~organizers](#module_Bubble..organizers) : `Array.<ContactSDK>`
+    -   [~owner](#module_Bubble..owner) : `string`
+    -   [~ownerContact](#module_Bubble..ownerContact) : `ContactSDK`
+    -   [~status](#module_Bubble..status) : `string`
+    -   [~tags](#module_Bubble..tags) : `Array`
+    -   [~type](#module_Bubble..type) : `string`
+    -   [~users](#module_Bubble..users) : `Array.<ContactSDK>`
+
+### Bubble~autoAcceptInvitation : `boolean`
+
+Boolean indicating whether the invitations sent will be auto-accepted
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~avatarSrc : `string`
+
+Source of bubble's avatar image
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~confEndpoints : `Array`
+
+Conference's endpoints
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~conference : `object`
+
+Conference indicator
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~containerId : `string`
+
+Id of the container
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~creationDate : `string`
+
+Creation date
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~customData : `object`
+
+Custom data attached to the bubble
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~id : `string`
+
+Contact ID. This is a global reference of the contact, can be used as a parameter passed to multiple Rainbow Web SDK APIs
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~description : `object`
+
+Description of the bubble
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~history : `string`
+
+"all" indicates that it allows newcomers to read bubble's history of messages sent. "none" says that the newcomers can not access the history.
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~history : `string`
+
+"all" indicates that it allows newcomers to read bubble's history of messages sent. "none" says that the newcomers can not access the history.
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~isActive : `boolean`
+
+Boolean indicating if the bubble is active
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~isModerator : `boolean`
+
+Boolean indicating if the connected user is a moderator of the bubble
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~jid : `string`
+
+Bubble's JID number
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~lastActivityDate : `string`
+
+Bubble's last activity date
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~members : `Array.<ContactSDK>`
+
+Bubble's members
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~name : `string`
+
+Bubble's name
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~organizers : `Array.<ContactSDK>`
+
+Bubble's organizers
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~owner : `string`
+
+Boolean indicating whether the connected user is an ower of the bubble
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~ownerContact : `ContactSDK`
+
+Owner contact
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~status : `string`
+
+Bubble status
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~tags : `Array`
+
+Bubble tags
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~type : `string`
+
+Bubble type
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true  
+
+### Bubble~users : `Array.<ContactSDK>`
+
+Bubble's users
+
+**Kind**: inner property of [`Bubble`](#module_Bubble)  
+**Access**: public  
+**Read only**: true
+
+### Sur cette page
+
+-   [Bubble](/docs/sdk/web#name-bubble-3)
+-   [Bubble~autoAcceptInvitation : boolean](/docs/sdk/web#name-bubbleautoacceptinvitation-:-boolean-141)
+-   [Bubble~avatarSrc : string](/docs/sdk/web#name-bubbleavatarsrc-:-string-150)
+-   [Bubble~confEndpoints : Array](/docs/sdk/web#name-bubbleconfendpoints-:-array-159)
+-   [Bubble~conference : object](/docs/sdk/web#name-bubbleconference-:-object-168)
+-   [Bubble~containerId : string](/docs/sdk/web#name-bubblecontainerid-:-string-177)
+-   [Bubble~creationDate : string](/docs/sdk/web#name-bubblecreationdate-:-string-186)
+-   [Bubble~customData : object](/docs/sdk/web#name-bubblecustomdata-:-object-195)
+-   [Bubble~id : string](/docs/sdk/web#name-bubbleid-:-string-204)
+-   [Bubble~description : object](/docs/sdk/web#name-bubbledescription-:-object-213)
+-   [Bubble~history : string](/docs/sdk/web#name-bubblehistory-:-string-222)
+-   [Bubble~history : string](/docs/sdk/web#name-bubblehistory-:-string-231)
+-   [Bubble~isActive : boolean](/docs/sdk/web#name-bubbleisactive-:-boolean-240)
+-   [Bubble~isModerator : boolean](/docs/sdk/web#name-bubbleismoderator-:-boolean-249)
+-   [Bubble~jid : string](/docs/sdk/web#name-bubblejid-:-string-258)
+-   [Bubble~lastActivityDate : string](/docs/sdk/web#name-bubblelastactivitydate-:-string-267)
+-   [Bubble~members : Array.<ContactSDK>](/docs/sdk/web#name-bubblemembers-:-array.contactsdk-276)
+-   [Bubble~name : string](/docs/sdk/web#name-bubblename-:-string-285)
+-   [Bubble~organizers : Array.<ContactSDK>](/docs/sdk/web#name-bubbleorganizers-:-array.contactsdk-294)
+-   [Bubble~owner : string](/docs/sdk/web#name-bubbleowner-:-string-303)
+-   [Bubble~ownerContact : ContactSDK](/docs/sdk/web#name-bubbleownercontact-:-contactsdk-312)
+-   [Bubble~status : string](/docs/sdk/web#name-bubblestatus-:-string-321)
+-   [Bubble~tags : Array](/docs/sdk/web#name-bubbletags-:-array-330)
+-   [Bubble~type : string](/docs/sdk/web#name-bubbletype-:-string-339)
+-   [Bubble~users : Array.<ContactSDK>](/docs/sdk/web#name-bubbleusers-:-array.contactsdk-348)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

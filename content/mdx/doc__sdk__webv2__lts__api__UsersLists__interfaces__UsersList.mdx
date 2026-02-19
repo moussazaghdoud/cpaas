@@ -1,0 +1,139 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/UsersLists/interfaces/UsersList"
+lastSynced: "2026-02-19T22:35:17.672Z"
+---
+# Documentation
+
+UsersList
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [UsersLists](doc/sdk/webv2/lts/api/UsersLists/index) / UsersList
+
+# Interface: UsersList
+
+## Properties
+
+### description
+
+> **description**: `string`
+
+Description of the users list
+
+---
+
+### id
+
+> `readonly` **id**: `string`
+
+Unique identifier of the users list
+
+---
+
+### isFavorite
+
+> **isFavorite**: `boolean`
+
+Data indicating whether the list has been marked as favorite or not.
+
+---
+
+### name
+
+> **name**: `string`
+
+Name of the users list
+
+---
+
+### users
+
+> `readonly` **users**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)\[\]
+
+User(s) members of the list
+
+## Methods
+
+### addUser()
+
+> **addUser**(`user`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`any`\>
+
+Add a user in the list. A ON\_USER\_ADDED\_TO\_LIST event is sent afterwards at the completion of the operation to notify about adding the user to the list.
+
+#### Parameters
+
+• **user**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)
+
+The user to add to users list
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`any`\>
+
+---
+
+### removeUser()
+
+> **removeUser**(`user`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`any`\>
+
+Remove a user from the list. A ON\_USER\_REMOVED\_FROM\_LIST event is sent afterwards at the completion of the operation to notify about removing a user from the list.
+
+#### Parameters
+
+• **user**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)
+
+Reference of the user to remove from the list
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`any`\>
+
+---
+
+### updateProfile()
+
+> **updateProfile**(`profile`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`any`\>
+
+Update the profile of the users list. Only the general information, i.e. the name, the description and the favorite status can be updated using this method. Users can only be added or removed from the list using methods 'addUser' and 'removeUser' respectively. A ON\_USERS\_LIST\_PROFILE\_UPDATED event is sent afterwards at the completion of the operation to notify about the list's profile update.
+
+#### Parameters
+
+• **profile**: [`UsersListProfile`](doc/sdk/webv2/lts/api/UsersLists/interfaces/UsersListProfile)
+
+The profile information to be updated
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`any`\>
+
+### Sur cette page
+
+-   [Properties](/docs/sdk/web#name-properties-10)
+-   [description](/docs/sdk/web#name-description-13)
+-   [id](/docs/sdk/web#name-id-25)
+-   [isFavorite](/docs/sdk/web#name-isfavorite-37)
+-   [name](/docs/sdk/web#name-name-49)
+-   [users](/docs/sdk/web#name-users-61)
+-   [Methods](/docs/sdk/web#name-methods-72)
+-   [addUser()](/docs/sdk/web#name-adduser-75)
+-   [Parameters](/docs/sdk/web#name-parameters-86)
+-   [Returns](/docs/sdk/web#name-returns-95)
+-   [removeUser()](/docs/sdk/web#name-removeuser-102)
+-   [Parameters](/docs/sdk/web#name-parameters-113)
+-   [Returns](/docs/sdk/web#name-returns-122)
+-   [updateProfile()](/docs/sdk/web#name-updateprofile-129)
+-   [Parameters](/docs/sdk/web#name-parameters-140)
+-   [Returns](/docs/sdk/web#name-returns-149)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

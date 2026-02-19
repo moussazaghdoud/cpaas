@@ -1,0 +1,161 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharpprevious/core/lts/guides/038_restriction_of_use"
+lastSynced: "2026-02-19T22:35:14.396Z"
+---
+# Documentation
+
+Restriction of use
+
+LTS release 2.6.XPubliée le 2021-12-13
+
+## Restriction of use
+
+This SDK can be used to create:
+
+-   Desktop applications (for Windows, MacOs, Linux)
+-   Mobile Applications (for Android, IOs)
+-   Bots (for Windows Server, Linux Server)
+
+So, according the target, the way to use the SDK is different and must be set by using `Restrictions` object from `Application`.
+
+By default restrictions are set to target in priority Desktop application.
+
+### Mobile application restriction
+
+---
+
+If the SDK is used to create Mobile Application, it's necessary to specify it using `MobileApplication` property in `Restrictions` object. It ensures to share a correct presence level to other user devices.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+
+// Set Mobile Application use (by default it's set to false)
+myApp.Restrictions.MobileApplication = true;
+```
+
+### Avoid to send messages too big
+
+---
+
+To avoid to send message too big the restriction `MessageMaxLength` can be used. By default, it's set to 16384.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+
+// Avoid to send message too big
+myApp.Restrictions.MessageMaxLength = 512;
+```
+
+### Allow to receive and manage Alert messages
+
+---
+
+To allow to receive and manage Alert message it's necessary to set the restriction `AlertMessage` to `true` (false by default)
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+
+// Avoid to send message too big
+myApp.Restrictions.AlertMessage = true;
+```
+
+### Event mode restriction (BOT context)
+
+---
+
+Like described in details in another guide (Cf. [XMPP or Server to Server events mode](/docs/sdk/csharp)) you can select the event mode restriction between XMPP or S2S.
+
+It's recommended to use S2S event mode for BOT context.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+
+// Set S2S as event mode
+myApp.Restrictions.EventMode = Restrictions.SDKEventMode.S2S;
+
+// or Set XMPP event mode (default mode)
+myApp.Restrictions.EventMode = Restrictions.SDKEventMode.XMPP;
+```
+
+### Set the storage mode of messages sent (BOT context)
+
+---
+
+Using `MessageStorageMode` property in `Restrictions` object you can choose how messages sent will stored
+
+-   `Restrictions.SDKMessageStorageMode.Store`: Default mode - When a message is sent, it will be stored by the server. So both, sender and receider will retrieve it as archive even after reconnection.
+-   `Restrictions.SDKMessageStorageMode.NoPermanentStore`: The server will store the message, for the receiver ONLY, UNTIL he receives it. This message will not be available as archive. **Recommended in BOT context**
+-   `Restrictions.SDKMessageStorageMode.NoStore`: The server will not store the message. If the receiver is not connected when the message is sent, he will never receive the message. **Recommended in BOT context**
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+
+// Avoid to store messages sent
+myApp.Restrictions.MessageStorageMode = Restrictions.SDKMessageStorageMode.NoPermanentStore;
+// or
+myApp.Restrictions.MessageStorageMode = Restrictions.SDKMessageStorageMode.NoStore;
+```
+
+### Allow to send message to the current connected user of the SDK (BOT context)
+
+---
+
+In a BOT context, perhaps you want to send messages to the current connected user of the SDK. For this use `SendMessageToConnectedUser` property in `Restrictions` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+
+// Allow to send message to current connected user of the SDK (by default it's set to false)
+myApp.Restrictions.SendMessageToConnectedUser = true;
+```
+
+### Automatically send a read receipt (BOT context)
+
+---
+
+In a BOT context, perhaps you want to automatically send a read receipt for each message received. For this use `SendReadReceipt` property in `Restrictions` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+
+// Automatically send a read receipt (by default it's set to false)
+myApp.Restrictions.SendReadReceipt = true;
+```
+
+### Avoid to receive too many information about conversations (BOT context)
+
+---
+
+In a BOT context, it's recommended to avoid to get full information about Conversations for performance reasons.
+
+**LastMessageText**, **LastMessageDate**, **UnreceivedMessageNumber**, **UnreadMessageNumber**, **LastAvatarUpdateDate** information can be avoided when asking conversations list from server.
+
+For this use `ConversationsRetrievedFormat` property in `Restrictions` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+
+// Avoid to receive too many information about conversations (by default it's set to "full")
+myApp.Restrictions.ConversationsRetrievedFormat = "small";
+```
+
+### Sur cette page
+
+-   [Restriction of use](/docs/sdk/csharp#name-restriction-of-use-0)
+-   [Mobile application restriction](/docs/sdk/csharp#name-mobile-application-restriction-29)
+-   [Avoid to send messages too big](/docs/sdk/csharp#name-avoid-to-send-messages-too-big-37)
+-   [Allow to receive and manage Alert messages](/docs/sdk/csharp#name-allow-to-receive-and-manage-alert-messages-45)
+-   [Event mode restriction (BOT context)](/docs/sdk/csharp#name-event-mode-restriction-bot-context-53)
+-   [Set the storage mode of messages sent (BOT context)](/docs/sdk/csharp#name-set-the-storage-mode-of-messages-sent-bot-context-64)
+-   [Allow to send message to the current connected user of the SDK (BOT context)](/docs/sdk/csharp#name-allow-to-send-message-to-the-current-connected-user-of-the-sdk-bot-context-89)
+-   [Automatically send a read receipt (BOT context)](/docs/sdk/csharp#name-automatically-send-a-read-receipt-bot-context-97)
+-   [Avoid to receive too many information about conversations (BOT context)](/docs/sdk/csharp#name-avoid-to-receive-too-many-information-about-conversations-bot-context-105)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

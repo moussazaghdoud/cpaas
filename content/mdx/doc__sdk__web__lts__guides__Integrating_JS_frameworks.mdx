@@ -1,0 +1,102 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/guides/Integrating_JS_frameworks"
+lastSynced: "2026-02-19T22:35:15.977Z"
+---
+# Documentation
+
+Integrating with Frameworks
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Integrating in JavaScript frameworks
+
+---
+
+Even if the SDK for Web is an AngularJS 1.x based library, it can be used in any kind of JavaScript applications that are either not based on this AngularJS 1.x version or based on libraries like **Backbone**, **React**, **Ember**, **Vue**, **Bootstrap** or **jQuery**.
+
+This tutorial helps you integrate the Rainbow SDK for Web in your own JavaScript environment.
+
+### Preamble
+
+---
+
+Integrating a JavaScript library into an existing Web application is not often an easy step and sometimes takes time. This tutorial is here to help you integrate our Rainbow SDK for Web library in your web site or web application to benefit from our Rainbow services.
+
+If you have never used our Rainbow SDK, the best way to start is to follow our [Getting Started](doc/sdk/web/lts/guides/Getting_Started) guide.
+
+### Rainbow Knowledge
+
+---
+
+Here are some Rainbow wordings that will help you understand this guide.
+
+Rainbow concept
+
+Details
+
+**Events**
+
+Events are asynchronous messages or notifications that come from Rainbow when something related to your data happens.  
+By listening to theses events, your application will be able to react and inform the user of these changes.
+
+**Methods**
+
+Methods are all the SDK functions your application can call to enable Rainbow services such as initiating a WebRTC call, sending a file, etc. In most of the cases, Methods are asynchronous and follow the JavaScript Promise pattern.
+
+### Installation, loading and initializing
+
+---
+
+Follow [Hello World - ESM](doc/sdk/web/lts/guides/Hello_world_ESM) guide to find out how install, load and initialize Rainbow Web SDK.
+
+### Calling SDK Methods
+
+---
+
+Once your application has been loaded and initialized successfully, you can call Rainbow SDK methods by using the keyword `rainbowSDK` followed by a **service name** such as `contacts` or `bubbles` and a **method name** like `getContactById()`. `rainbowSDK` is a global variable accessible from everywhere in your application once you have bootstrapped the SDK.
+
+For example, you can initiate a WebRTC call by using the method `rainbowSDK.webRTC.callInVideo(aContact)`.
+
+Most of the time methods are asynchronous and return a JavaScript Promise.
+
+### Access to SDK Constants
+
+---
+
+You can access `Call` and `SDK` constant directly from `rainbowSDK` object:
+
+```javascript
+let Call = rainbowSDK.Call;
+let SDK = rainbowSDK.SDK;
+```
+
+### Integrating the SDK for Web in React, Vue and Angular
+
+---
+
+We have published several starter kits that can be downloaded from GitHub. You can use them to quickly start a new project using your framework of choice and the Rainbow SDK for Web.
+
+The source code of the starter kits can be downloaded from our [GitHub](https://github.com/Rainbow-CPaaS).
+
+Do not hesitate to enhance them or to propose other integrations.
+
+*Last updated July, 6th 2020*
+
+### Sur cette page
+
+-   [Integrating in JavaScript frameworks](/docs/sdk/web#name-integrating-in-javascript-frameworks-0)
+-   [Preamble](/docs/sdk/web#name-preamble-10)
+-   [Rainbow Knowledge](/docs/sdk/web#name-rainbow-knowledge-20)
+-   [Installation, loading and initializing](/docs/sdk/web#name-installation-loading-and-initializing-60)
+-   [Calling SDK Methods](/docs/sdk/web#name-calling-sdk-methods-67)
+-   [Access to SDK Constants](/docs/sdk/web#name-access-to-sdk-constants-80)
+-   [Integrating the SDK for Web in React, Vue and Angular](/docs/sdk/web#name-integrating-the-sdk-for-web-in-react-vue-and-angular-88)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,189 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/webrtc/lts/guides/001_getting_started"
+lastSynced: "2026-02-19T22:35:14.255Z"
+---
+# Documentation
+
+Getting started
+
+LTS release 2.XPubliée le 2025-03-17
+
+# Getting Started
+
+Welcome to the Alcatel-Lucent Enterprise **Rainbow CSharp SDK WebRTC** !
+
+This SDK provides additional services / features to the [**Rainbow CSharp SDK (core)** library](doc/sdk/csharp/core/lts/guides/001_getting_started). So you need first to understand how to use it.
+
+## Nuget package
+
+The SDK is provided as a Nuget package available [here](https://www.nuget.org/packages/Rainbow.CSharp.SDK.WebRTC)
+
+This package targets **.Net Standard 2.0**, **.Net Standard 2.1** and **.Net 8.0**
+
+## WebRTC features
+
+Permits to manage WebRTC communications: **Peer To Peer** or in a **Conference** using Rainbow environment (https://developers.openrainbow.com/home)
+
+**Peer To Peer communication features**:
+
+-   Answer, Decline, Make, Retract, Hang up call
+    
+-   Add / Remove Video or Sharing
+    
+-   Mute / Unmute Audio, Video or Sharing
+    
+-   Call status: Ringing incoming, ringing outgoing, in progress, ...
+    
+-   Audio Stream: Output and Input are supported
+    
+-   Video Stream: Output is supported. **Input is not supported** (work still in progress)
+    
+
+**Conference features**:
+
+-   Start, Join Conference
+    
+-   Participants list
+    
+-   Publishers list
+    
+-   Mute / Unmute: current user but also other Peers if current user is a moderator of the conference
+    
+-   Call status: Ringing incoming, ringing outgoing, in progress, ...
+    
+-   Display Active Talker. **Current user of this SDK is never seen as Active Talker** (work still in progress)
+    
+-   Add / Remove Video or Sharing
+    
+-   Subscribe (automatically or manualy) to publication of Peers (Video or Sharing)
+    
+-   Request / Refuse / Accept Sharing transfert
+    
+-   Conference delegation
+    
+-   Audio Stream: Output and Input are supported
+    
+-   Video Stream: Ouput is supported. **Input is not supported** (work still in progress)
+    
+
+## Abstractions and Implementations
+
+This package use abstractions to offer those WebRTC features based on specific implementations.
+
+For the moment, two implementations are available:
+
+-   [**Rainbow CSharp SDK WebRTC.Desktop**](doc/sdk/csharp/webrtc.desktop/guides/001_getting_started)
+    -   Third library used: **SIPSorcery**, **FFmpeg libraries** and **SDL2**
+    -   Comptatible **Windows, MacOs and Linux** platforms
+-   **Rainbow CSharp SDK WebRTC.Unity**
+    -   **Available only in private access for the moment**
+    -   Third library used: [**Unity**](https://https://www.unity3d.com/) and [**WebRTC for Unity**](https://github.com/Unity-Technologies/com.unity.webrtc)
+    -   Comptatible with **Windows, MacOs and Linux, Android, iOS** platforms
+
+## Developping with the **Rainbow.WebRTC SDK**
+
+Quick overview on how to use the Rainbow.WebRTC sdk to develop a webrtc enabled application.
+
+It is intended to be about general principles and is not specific to the implementation.
+
+For specific, check documentation of he implementation you want to use.
+
+### Instantiation
+
+-   Create a `Rainbow.Application object`
+
+```
+Rainbow Application myApp = new Rainbow.Application();
+```
+
+-   Configure application credentials and platform
+    
+-   Enable restrictions on Conferences
+    
+-   Monitor ConnectionStateChanged and InitializationPerformed
+    
+-   Call Login() The SDK will try to connect to the platform using the supplied (application and user) credentials. If it failed you are informed in the optional callback.
+    
+
+When it's done initializing and retrieving informations it will raise the InitializationPerformed signal.
+
+At this stage the SDK can be used. If your application makes use of bubbles or conferences, when InitializationPerformed is received it should call Bubbles.GetAllBubbles(). It is the right time to instantiate a WebRTCCommunications object, which will make it possible make calls or join conference.
+
+You can find more informations about the Rainbow SDK [Here](/docs/sdk/csharp).
+
+This quick diagram summarizes how to initialize an application who would use WebRTCCommunications. ![Initialize SDK](/docs/sdk/csharp)
+
+### Events in WebRTCCommunications
+
+The most importants events to handle to issue webrtc calls in your applications are **CallUpdated** , **MediaPublicationUpdated** and **OnTrack**.
+
+When a user receives a call, or is issuing the call, the WebRTCCommunications class informs him of the progression of the call using the **CallUpdated** events.
+
+The event provides you with an instance of the [**Call** class](/docs/sdk/csharp), containing many useful information like
+
+-   The status
+-   The local and remote medias established on the call
+-   The participants
+-   The call Id which is needed to perform actions on this calls, like decline the call, hangup, publish some medias..
+
+The other important event to handle is MediaPublicationUpdated. This happens each time a local or remote media is added to the call. A MediaPublicationUpdated event provides a [**MediaPublication**](/docs/sdk/csharp) object which can be used to subscribe to a MediaPublication using the method [WebRTCCommunications.SubscribeToMediaPublication](/docs/sdk/csharp#Rainbow.WebRTC.WebRTCCommunications.SubscribeToMediaPublication\(Rainbow.Model.MediaPublication-_Action-Rainbow.SdkResult-Boolean--\)).
+
+Calling this method means that your application is interested in this media.
+
+If you subscribe to a media publication WebRTCommunications will send you the associated MediaStreamTrack using **OnTrack** event.
+
+### Making Calls and Receiving Calls
+
+Here is a simplified (and incomplete) diagram showing how to use WebRTCCommunications events and methods to establish an audio Peer to peer call, using the [MakeCall](/docs/sdk/csharp#Rainbow.WebRTC.WebRTCCommunications.MakeCall\(String-_Dictionary-Int32-_Rainbow.Medias.IMedia--_String-_Action-Rainbow.SdkResult-String--\)) method.
+
+![P2P Make Call](/docs/sdk/csharp)
+
+When another user calls your application, WebRTCCommunications emits a CallUpdated with a CallStatus of RINGING\_INCOMING . To accept the call use [**WebRTCCommunications.AnswerCall**](/docs/sdk/csharp#Rainbow.WebRTC.WebRTCCommunications.AnswerCall\(String-_Dictionary-Int32-_Rainbow.Medias.IMedia-\)), and to decline use [**WebRTCCommunications.RejectCall**](/docs/sdk/csharp#Rainbow.WebRTC.WebRTCCommunications.RejectCall\(String\)).
+
+What happens after AnswerCall is similar to what happens after MakeCall.
+
+### Joining Conferences
+
+Here is a simplified (and incomplete) diagram showing how to use WebRTCCommunications events and methods to join and establish the audio in a conference, using the [**JoinConference**](/docs/sdk/csharp#Rainbow.WebRTC.WebRTCCommunications.JoinConference\(String-_Dictionary-Int32-_Rainbow.Medias.IMedia--_Action-Rainbow.SdkResult-String--\)) method.
+
+![P2P Make Call](/docs/sdk/csharp)
+
+### Adding Medias
+
+Once the P2P (or Conference) call is established, the [**AddVideo**](/docs/sdk/csharp#Rainbow.WebRTC.WebRTCCommunications.AddVideo\(String-_Rainbow.Medias.IMedia\)) and [**AddSharing**](/docs/sdk/csharp#Rainbow.WebRTC.WebRTCCommunications.AddSharing\(String-_Rainbow.Medias.IMedia\)) methods to publish video tracks on the **Video** or **Sharing** channel.
+
+This diagram shows how to do this.
+
+![Adding medias](/docs/sdk/csharp)
+
+### Receiving Video Medias
+
+Every participant of a call are likely to publish video or sharing. So far we've uncovered how to send a video stream, now it's time to consider receiving video streams.
+
+Each time a video media is published by one of the other participants of the call, WebRTCCommunication will send a [**MediaPublicationUpdated**](/docs/sdk/csharp#Rainbow.WebRTC.WebRTCCommunications.OnMediaPublicationUpdated) event. If your application needs to handle this stream it will have to call [**SubscribeToMediaPublication**](/docs/sdk/csharp#Rainbow.WebRTC.WebRTCCommunications.SubscribeToMediaPublication\(Rainbow.Model.MediaPublication-_Action-Rainbow.SdkResult-Boolean--\)).
+
+As a result WebRTCCommunication will send an **OnTrack** event providing you with the video track.
+
+This simplified diagram summarises it: ![Receiving video streams](/docs/sdk/csharp)
+
+### Sur cette page
+
+-   [Nuget package](/docs/sdk/csharp#name-nuget-package-9)
+-   [WebRTC features](/docs/sdk/csharp#name-webrtc-features-18)
+-   [Abstractions and Implementations](/docs/sdk/csharp#name-abstractions-and-implementations-124)
+-   [Developping with the Rainbow.WebRTC SDK](/docs/sdk/csharp#name-developping-with-the-rainbow.webrtc-sdk-174)
+-   [Instantiation](/docs/sdk/csharp#name-instantiation-186)
+-   [Events in WebRTCCommunications](/docs/sdk/csharp#name-events-in-webrtccommunications-231)
+-   [Making Calls and Receiving Calls](/docs/sdk/csharp#name-making-calls-and-receiving-calls-274)
+-   [Joining Conferences](/docs/sdk/csharp#name-joining-conferences-289)
+-   [Adding Medias](/docs/sdk/csharp#name-adding-medias-298)
+-   [Receiving Video Medias](/docs/sdk/csharp#name-receiving-video-medias-310)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,145 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/DataChannels/interfaces/DataChannelService"
+lastSynced: "2026-02-19T22:35:17.148Z"
+---
+# Documentation
+
+DataChannelService
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [DataChannels](doc/sdk/webv2/lts/api/DataChannels/index) / DataChannelService
+
+# Interface: DataChannelService
+
+## Methods
+
+### acceptDataChannel()
+
+> **acceptDataChannel**(`dataChannel`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`DataChannel`](doc/sdk/webv2/lts/api/DataChannels/interfaces/DataChannel)\>
+
+#### Parameters
+
+• **dataChannel**: [`DataChannel`](doc/sdk/webv2/lts/api/DataChannels/interfaces/DataChannel)
+
+the dataChannel to accept
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`DataChannel`](doc/sdk/webv2/lts/api/DataChannels/interfaces/DataChannel)\>
+
+a promise which is resolved when the dataChannel is accepted
+
+---
+
+### createDataChannel()
+
+> **createDataChannel**(`peer`, `description`?): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`DataChannel`](doc/sdk/webv2/lts/api/DataChannels/interfaces/DataChannel)\>
+
+#### Parameters
+
+• **peer**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User) | [`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)
+
+a contact or a bubble
+
+• **description?**: `string`
+
+dataChannel description
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`DataChannel`](doc/sdk/webv2/lts/api/DataChannels/interfaces/DataChannel)\>
+
+a promise which is resolved when the dataChannel is created
+
+---
+
+### deleteDataChannel()
+
+> **deleteDataChannel**(`dataChannel`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+#### Parameters
+
+• **dataChannel**: [`DataChannel`](doc/sdk/webv2/lts/api/DataChannels/interfaces/DataChannel)
+
+the dataChannel to close
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+a promise which is resolved when the dataChannel is closed
+
+---
+
+### refuseDataChannel()
+
+> **refuseDataChannel**(`dataChannel`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`DataChannel`](doc/sdk/webv2/lts/api/DataChannels/interfaces/DataChannel)\>
+
+#### Parameters
+
+• **dataChannel**: [`DataChannel`](doc/sdk/webv2/lts/api/DataChannels/interfaces/DataChannel)
+
+the dataChannel to refuse
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`DataChannel`](doc/sdk/webv2/lts/api/DataChannels/interfaces/DataChannel)\>
+
+a promise which is resolved when the dataChannel is refused
+
+---
+
+### subscribe()
+
+> **subscribe**(`handler`, `eventNames`?): `Subscription`
+
+Subscribe to updates from the service
+
+#### Parameters
+
+• **handler**: `any`
+
+The callback function that will be subscribed to the RxJS subject
+
+• **eventNames?**: `string` | `string`\[\]
+
+array of event to listen
+
+#### Returns
+
+`Subscription`
+
+Returns RxJS Subscription
+
+### Sur cette page
+
+-   [Methods](/docs/sdk/web#name-methods-10)
+-   [acceptDataChannel()](/docs/sdk/web#name-acceptdatachannel-13)
+-   [Parameters](/docs/sdk/web#name-parameters-21)
+-   [Returns](/docs/sdk/web#name-returns-30)
+-   [createDataChannel()](/docs/sdk/web#name-createdatachannel-40)
+-   [Parameters](/docs/sdk/web#name-parameters-48)
+-   [Returns](/docs/sdk/web#name-returns-63)
+-   [deleteDataChannel()](/docs/sdk/web#name-deletedatachannel-73)
+-   [Parameters](/docs/sdk/web#name-parameters-81)
+-   [Returns](/docs/sdk/web#name-returns-90)
+-   [refuseDataChannel()](/docs/sdk/web#name-refusedatachannel-100)
+-   [Parameters](/docs/sdk/web#name-parameters-108)
+-   [Returns](/docs/sdk/web#name-returns-117)
+-   [subscribe()](/docs/sdk/web#name-subscribe-127)
+-   [Parameters](/docs/sdk/web#name-parameters-138)
+-   [Returns](/docs/sdk/web#name-returns-153)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

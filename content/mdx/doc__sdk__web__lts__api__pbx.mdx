@@ -1,0 +1,1088 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/pbx"
+lastSynced: "2026-02-19T22:35:15.362Z"
+---
+# Documentation
+
+Telephony service
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Telephony
+
+This services manages PBX phone calls in a conversation. so it manages PBX calls between your PABX associated phone and a recipient's phone. If you don't have this service activated for your Rainbow user, all these methods will return an error when called. The main methods and events proposed in that service allow to:  
+\- Know if this service is activated or not for the connected user,  
+\- Know the version of the agent (deployed on the PBX) that monitors your line,  
+\- Handle the basic telephony services: Make a call, take a call, hold a call, retrieve a call and release a call,  
+\- Listen to the call state change Depending the agent version deployed, some services can return an error (unavailable service) when called
+
+**Emits**: `event:RAINBOW_ONTELEPHONYSTARTED`, `event:RAINBOW_ONTELEPHONYSTOPPED`, `event:RAINBOW_ONTELEPHONYCALLSTATECHANGED`, `event:RAINBOW_ONVOIPCALLSTATECHANGED`, `event:RAINBOW_ONTELEPHONYFORWARDSTATECHANGED`, `event:RAINBOW_ONCALLNOMADICEVENT`, `event:RAINBOW_ONVOIPSTARTED`, `event:RAINBOW_ONVOIPSTOPPED`, `event:RAINBOW_ONVOICEMESSAGEUPDATED`, `event:RAINBOW_TELEPHONYMUTE`, `event:RAINBOW_ONTELEPHONYMODEUPDATED`, `event:RAINBOW_ONFORWARDMODEUPDATED`
+
+-   [Telephony](#module_Telephony)
+    -   [isTelephonyAvailable()](#module_Telephony+isTelephonyAvailable) ⇒ `boolean`
+    -   [isVoiceMailConfigured()](#module_Telephony+isVoiceMailConfigured) ⇒ `boolean`
+    -   [getAgentVersion()](#module_Telephony+getAgentVersion) ⇒ `string`
+    -   [getXMPPAgentStatus()](#module_Telephony+getXMPPAgentStatus) ⇒ `string`
+    -   [getPhoneAPIStatus()](#module_Telephony+getPhoneAPIStatus) ⇒ `string`
+    -   [makeCall1PCC(strPhoneNumber, contactId)](#module_Telephony+makeCall1PCC) ⇒ `Promise`
+    -   [makeCall(contactId, strPhoneNumber, callSubject, correlatorData, correlatorDataHex)](#module_Telephony+makeCall) ⇒ `Promise`
+    -   [callByNumber(strPhoneNumber)](#module_Telephony+callByNumber) ⇒ `Promise`
+    -   [callWithMessage(contactId, strPhoneNumber, callSubject, correlatorData)](#module_Telephony+callWithMessage) ⇒ `Promise`
+    -   [callWithSubject(contactId, phoneNumber, callSubject)](#module_Telephony+callWithSubject) ⇒ `Promise`
+    -   [calls()](#module_Telephony+calls) ⇒ `Array`
+    -   [getActiveCall()](#module_Telephony+getActiveCall) ⇒ `object`
+    -   [release(call)](#module_Telephony+release) ⇒ `Promise`
+    -   [deflectToVM(call)](#module_Telephony+deflectToVM) ⇒ `object`
+    -   [forwardToDevice(strPhoneNumber, strForwardType)](#module_Telephony+forwardToDevice) ⇒ `Promise`
+    -   [forwardToVoicemail(strForwardType)](#module_Telephony+forwardToVoicemail) ⇒ `Promise`
+    -   [cancelForward()](#module_Telephony+cancelForward) ⇒ `Promise`
+    -   [getForwardStatusFromServer()](#module_Telephony+getForwardStatusFromServer) ⇒ `Promise`
+    -   [getForwardStatus()](#module_Telephony+getForwardStatus) ⇒ `object`
+    -   [answer(call)](#module_Telephony+answer) ⇒ `Promise`
+    -   [hold(call)](#module_Telephony+hold) ⇒ `Promise`
+    -   [retrieve(call)](#module_Telephony+retrieve) ⇒ `Promise`
+    -   [transferCall(activeCall, heldCall)](#module_Telephony+transferCall) ⇒ `Promise`
+    -   [conferenceCall(activeCall, heldCall)](#module_Telephony+conferenceCall) ⇒ `Promise`
+    -   [fetchVoiceMailMessagesNumber()](#module_Telephony+fetchVoiceMailMessagesNumber) ⇒ `Promise`
+    -   [muteCall(call, conversation)](#module_Telephony+muteCall) ⇒ `void`
+    -   [unmuteCall(call, conversation)](#module_Telephony+unmuteCall) ⇒ `void`
+    -   [getTelephonyMode()](#module_Telephony+getTelephonyMode) ⇒ `TelephonyMode`
+    -   [setTelephonyMode(telephonyMode)](#module_Telephony+setTelephonyMode) ⇒ `Promise`
+    -   [nomadicLogin(phoneNumber, isUnchangeableNumber, notTakeIntoAccount)](#module_Telephony+nomadicLogin) ⇒ `Promise`
+    -   [nomadicLogout()](#module_Telephony+nomadicLogout) ⇒ `Promise`
+    -   [getNomadicState()](#module_Telephony+getNomadicState) ⇒ `Promise`
+    -   [setExternalNomadicNumber(phoneNumber)](#module_Telephony+setExternalNomadicNumber) ⇒ `Promise`
+    -   [setNomadicOfficePhone(ringOnlyOfficePhone)](#module_Telephony+setNomadicOfficePhone) ⇒ `Promise`
+    -   [setNomadicVoIP()](#module_Telephony+setNomadicVoIP) ⇒ `Promise`
+    -   [isDeskPhoneAvailable()](#module_Telephony+isDeskPhoneAvailable) ⇒ `boolean`
+    -   [isVoIPAvailable()](#module_Telephony+isVoIPAvailable) ⇒ `boolean`
+    -   [logonCCD(endpointTel, agentId, password, groupId, routingDestination, routing)](#module_Telephony+logonCCD) ⇒ `Promise`
+    -   [logoffCCD(endpointTel, agentId, password, groupId)](#module_Telephony+logoffCCD) ⇒ `Promise`
+    -   [withdrawalCCD(agentId, groupId, status)](#module_Telephony+withdrawalCCD) ⇒ `Promise`
+    -   [wrapupCCD(agentId, groupId, password, status)](#module_Telephony+wrapupCCD) ⇒ `Promise`
+    -   [subscribeToCCDEvents(handler)](#module_Telephony+subscribeToCCDEvents) ⇒ `Subscription`
+    -   [getCurrentCCDAgentStatus()](#module_Telephony+getCurrentCCDAgentStatus) ⇒ `object`
+    -   [getCCDGroupStatus(groupId)](#module_Telephony+getCCDGroupStatus) ⇒ `object`
+    -   [sendDTMF(dialString, call)](#module_Telephony+sendDTMF) ⇒ `Promise`
+    -   [getPbxType()](#module_Telephony+getPbxType) ⇒ `boolean`
+    -   [isOxoUser()](#module_Telephony+isOxoUser) ⇒ `boolean`
+    -   [isOxeUser()](#module_Telephony+isOxeUser) ⇒ `boolean`
+    -   [isCloudPbxUser()](#module_Telephony+isCloudPbxUser) ⇒ `boolean`
+    -   [isThirdPartyPbxUser()](#module_Telephony+isThirdPartyPbxUser) ⇒ `boolean`
+    -   [getForwardMode()](#module_Telephony+getForwardMode) ⇒ `boolean`
+    -   [setForwardMode(selectedMode, destination, callForwardType)](#module_Telephony+setForwardMode) ⇒ `boolean`
+
+### telephony.isTelephonyAvailable() ⇒ `boolean`
+
+Check if the telephony service can be used or not (if the connected user has a phone monitored by a PBX)
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `boolean` - Return true if the telephony service is configured  
+**Access**: public  
+
+### telephony.isVoiceMailConfigured() ⇒ `boolean`
+
+Check if the Voice Mail feature has been enabled and configured and is ready to use
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `boolean` - Return true if the telephony service is configured  
+**Access**: public  
+
+### telephony.getAgentVersion() ⇒ `string`
+
+Get the associated PBX agent version
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `string` - Return the version of the agent or "unknown"  
+**Access**: public  
+
+### telephony.getXMPPAgentStatus() ⇒ `string`
+
+Get the status of the XMPP connection to the PBX Agent
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `string` - Return the status of the connections to the agent or "unknown"  
+**Access**: public  
+
+### telephony.getPhoneAPIStatus() ⇒ `string`
+
+Get the status of the Phone API status for the PBX Agent
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `string` - Return the Phone API status for to this Agent or "unknown"  
+**Access**: public  
+
+### telephony.makeCall1PCC(strPhoneNumber, contactId) ⇒ `Promise`
+
+Call a number (1PCC) Contacts and numbers are allowed Returns a promise
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return a promise with the call created  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strPhoneNumber
+
+`string`
+
+The number to call
+
+contactId
+
+`string`
+
+Contact id
+
+### telephony.makeCall(contactId, strPhoneNumber, callSubject, correlatorData, correlatorDataHex) ⇒ `Promise`
+
+Call a number Contacts and numbers are allowed
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return the SDK OK object in case of success or an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contactId
+
+`string`
+
+ID of the contact that you want to call
+
+strPhoneNumber
+
+`string`
+
+The number to call
+
+callSubject
+
+`string`
+
+The subject of the call
+
+correlatorData
+
+`string`
+
+contains User-to-User information to be sent out as a SIP header via underlying PBX trunk for a given call
+
+correlatorDataHex
+
+`string`
+
+contains User-to-User hex-format information to be sent out as a SIP header via underlying PBX trunk for a given call
+
+### telephony.callByNumber(strPhoneNumber) ⇒ `Promise`
+
+Call a number Only canonical number or internal numbers are allowed
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return the SDK OK object in case of success or an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strPhoneNumber
+
+`string`
+
+The number to call
+
+### telephony.callWithMessage(contactId, strPhoneNumber, callSubject, correlatorData) ⇒ `Promise`
+
+Call a number and include a message that will appear to the receiver of the call Only canonical internal numbers are allowed
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contactId
+
+`string`
+
+ID of the contact to call
+
+strPhoneNumber
+
+`string`
+
+The number to call
+
+callSubject
+
+`string`
+
+The subject of the call
+
+correlatorData
+
+`string`
+
+contains User-to-User information to be sent out as a SIP header via underlying PBX trunk for a given call
+
+### telephony.callWithSubject(contactId, phoneNumber, callSubject) ⇒ `Promise`
+
+Call with subject Allows to add a message to the call (i.e. to explain the reason of the call)
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contactId
+
+`string`
+
+ID of the contact to call (object)
+
+phoneNumber
+
+`string`
+
+The number to call
+
+callSubject
+
+`string`
+
+Message to add to the call (subject)
+
+### telephony.calls() ⇒ `Array`
+
+Retrieve the list of active calls
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Array` - Return an array of Call object  
+**Access**: public  
+
+### telephony.getActiveCall() ⇒ `object`
+
+Get the active call object
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `object` - Active call object or null when there's none  
+**Access**: public  
+
+### telephony.release(call) ⇒ `Promise`
+
+Release a call
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+call
+
+`object`
+
+The call to release. Needs to be of type "Phone" and key "connectionId" can't be empty
+
+### telephony.deflectToVM(call) ⇒ `object`
+
+Deflect a call to the voice mail
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `object` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+call
+
+`object`
+
+The call to deflect. Needs to be of type "Phone" and key "connectionId" can't be empty
+
+### telephony.forwardToDevice(strPhoneNumber, strForwardType) ⇒ `Promise`
+
+Activate the forward to a number
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strPhoneNumber
+
+`string`
+
+The number to call
+
+strForwardType
+
+`string`
+
+Type of forward (immediate, busy, noreply, busy\_or\_noreply ) ONLY FOR OXE
+
+### telephony.forwardToVoicemail(strForwardType) ⇒ `Promise`
+
+Activate the forward to Voice Mail
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strForwardType
+
+`string`
+
+Type of forward (immediate, busy, noreply, busy\_or\_noreply ) ONLY FOR OXE
+
+### telephony.cancelForward() ⇒ `Promise`
+
+Cancel the forward
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public  
+
+### telephony.getForwardStatusFromServer() ⇒ `Promise`
+
+Ask for Forward status Forward status will arrive by event (see RAINBOW\_ONTELEPHONYFORWARDSTATECHANGED)
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public  
+
+### telephony.getForwardStatus() ⇒ `object`
+
+Get the Forward status
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `object` - Return the known forwardState. See RAINBOW\_ONTELEPHONYFORWARDSTATECHANGED event for format.  
+**Access**: public  
+
+### telephony.answer(call) ⇒ `Promise`
+
+Answer a call
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+call
+
+`object`
+
+The call to answer
+
+### telephony.hold(call) ⇒ `Promise`
+
+Hold a call
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+call
+
+`object`
+
+The call to hold
+
+### telephony.retrieve(call) ⇒ `Promise`
+
+Retrieve a call
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+call
+
+`object`
+
+The call to retrieve
+
+### telephony.transferCall(activeCall, heldCall) ⇒ `Promise`
+
+Transfer a held call to the active call Both active and held calls should be of type "Phone". This feature works only with the telephony calls. Do not use with VoIP calls. User should have transfer rights NB (for only OXO/OXE): This API can be also be used to transfer the held call while the other "active" call is still in outgoing ringing state; This is called transfer on ringing;
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+activeCall
+
+`object`
+
+The active call
+
+heldCall
+
+`object`
+
+The held call to transfer to the activeCall
+
+### telephony.conferenceCall(activeCall, heldCall) ⇒ `Promise`
+
+Create a conference with a held call and the active call User should have conference rights
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+activeCall
+
+`object`
+
+The active call (must be of type 'Phone')
+
+heldCall
+
+`object`
+
+The held call to transfer to the activeCall (must be of type 'Phone')
+
+### telephony.fetchVoiceMailMessagesNumber() ⇒ `Promise`
+
+Call this method to release the event RAINBOW\_ONVOICEMESSAGEUPDATED which contains the information about Voice Messages
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return a promise containing the following object: { total: X, unread: Y, voiceMessagePresent: boolean }  
+**Access**: public  
+
+### telephony.muteCall(call, conversation) ⇒ `void`
+
+Mute a PBX call. Needs to be a VoIP call.
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `void` - void  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+call
+
+`object`
+
+call to mute
+
+conversation
+
+`object`
+
+conversation to mute (optional)
+
+### telephony.unmuteCall(call, conversation) ⇒ `void`
+
+Unmute a PBX call. Needs to be a VoIP call.
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `void` - void  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+call
+
+`object`
+
+call to unmute
+
+conversation
+
+`object`
+
+(optional)
+
+### telephony.getTelephonyMode() ⇒ `TelephonyMode`
+
+Get Telephony Mode. Please refer to Telephony Mode model for further documentation.
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `TelephonyMode` - Return Telephony Mode object  
+**Access**: public  
+
+### telephony.setTelephonyMode(telephonyMode) ⇒ `Promise`
+
+Set Telephony Mode. If Telephony Mode changes, the event RAINBOW\_ONTELEPHONYMODEUPDATED will be fired. Please refer to Telephony Mode model for further documentation.
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Promise  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+telephonyMode
+
+`string`
+
+String describing telephony mode to set. Should be one of the following values: \["computer", "officePhone"\]
+
+### telephony.nomadicLogin(phoneNumber, isUnchangeableNumber, notTakeIntoAccount) ⇒ `Promise`
+
+Nomadic state login
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return promise  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+phoneNumber
+
+`string`
+
+phoneNumber to login with
+
+isUnchangeableNumber
+
+`boolean`
+
+boolean
+
+notTakeIntoAccount
+
+`boolean`
+
+not take into account (boolean)
+
+### telephony.nomadicLogout() ⇒ `Promise`
+
+Nomadic state logout
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return promise  
+**Access**: public  
+
+### telephony.getNomadicState() ⇒ `Promise`
+
+Returns the current Nomadic state. Listen to RAINBOW\_ONCALLNOMADICEVENT while calling this event to retrieve the current nomadic state
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return promise (void)  
+**Access**: public  
+
+### telephony.setExternalNomadicNumber(phoneNumber) ⇒ `Promise`
+
+Set external Nomadic State to external phone number
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return the promise  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+phoneNumber
+
+`string`
+
+Phone number to be set
+
+### telephony.setNomadicOfficePhone(ringOnlyOfficePhone) ⇒ `Promise`
+
+Set Nomadic State to Office Phone
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return the promise  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+ringOnlyOfficePhone
+
+`boolean`
+
+Set to true if you want to disable incoming calls on all your devices except for office phone, false to enable this feature. Defaults to true. In case of CloudPBX (Rainbow HUB), it will set the state to cloud telephony device.
+
+### telephony.setNomadicVoIP() ⇒ `Promise`
+
+Set Nomadic State to VoIP. In case of CloudPBX (Rainbow HUB), it will set the state to WebRTC device.
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - Return the promise  
+**Access**: public  
+
+### telephony.isDeskPhoneAvailable() ⇒ `boolean`
+
+Check if connected user's desk phone is available
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `boolean` - Return boolean  
+**Access**: public  
+
+### telephony.isVoIPAvailable() ⇒ `boolean`
+
+Check if connected user's VoIP feature is available
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `boolean` - Return boolean  
+**Access**: public  
+
+### telephony.logonCCD(endpointTel, agentId, password, groupId, routingDestination, routing) ⇒ `Promise`
+
+logonCCD method
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - - Promise with the response of the server  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+endpointTel
+
+`string`
+
+Telephony endpoint
+
+agentId
+
+`string`
+
+Agent ID
+
+password
+
+`string`
+
+Password
+
+groupId
+
+`string`
+
+Group ID
+
+routingDestination
+
+`string`
+
+Call routing destination
+
+routing
+
+`boolean`
+
+true if the call routing is activated Logon method for CCD
+
+### telephony.logoffCCD(endpointTel, agentId, password, groupId) ⇒ `Promise`
+
+logoffCCD method
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - - Promise with the response of the server  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+endpointTel
+
+`string`
+
+Telephony endpoint
+
+agentId
+
+`string`
+
+Agent ID
+
+password
+
+`string`
+
+Password
+
+groupId
+
+`string`
+
+Group ID logoff method for CCD
+
+### telephony.withdrawalCCD(agentId, groupId, status) ⇒ `Promise`
+
+withdrawalCCD method
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - - Promise with the response of the server  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+agentId
+
+`string`
+
+Agent ID
+
+groupId
+
+`string`
+
+Group ID
+
+status
+
+`string`
+
+Status Withdrawal method for CCD
+
+### telephony.wrapupCCD(agentId, groupId, password, status) ⇒ `Promise`
+
+wrapupCCD method
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - - Promise with the response of the server  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+agentId
+
+`string`
+
+Agent ID
+
+groupId
+
+`string`
+
+Group ID
+
+password
+
+`string`
+
+Password
+
+status
+
+`string`
+
+Status Wrapup method for CCD
+
+### telephony.subscribeToCCDEvents(handler) ⇒ `Subscription`
+
+Subscribe to updates on the CCD Agent (all events are of RBEvent type {name: string, data:any}); The name of the event is `ON_CCD_UPDATE_EVENT` which will provide an update of the current CCD informations: { passwordNeeded: boolean agentId: string passwordPresence: boolean currentGroupId: string logActivated: boolean wrapUpActivated: boolean withdrawalActivated: boolean pauseActivated: boolean state: string reason: string }
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Subscription` - Returns RxJS Subscription  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+handler
+
+`any`
+
+The call-back function that will be subscribed to the RxJS subject
+
+### telephony.getCurrentCCDAgentStatus() ⇒ `object`
+
+Get the current CCD Agent status in the form of object with the following informations { passwordNeeded: boolean agentId: string passwordPresence: boolean currentGroupId: string logActivated: boolean wrapUpActivated: boolean withdrawalActivated: boolean pauseActivated: boolean state: string reason: string }
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `object` - Returns the current agent status  
+**Access**: public  
+
+### telephony.getCCDGroupStatus(groupId) ⇒ `object`
+
+Get the current CCD Group status, which contains also the list of reasons for widthdraw
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `object` - Returns the current group status with all relevant information  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+groupId
+
+`string`
+
+The ID of the Group
+
+### telephony.sendDTMF(dialString, call) ⇒ `Promise`
+
+Send DTMF signal
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `Promise` - - return a promise  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+dialString
+
+`string`
+
+string representing a keypad - can be one character (e.g. '1') or a sequence ('123')
+
+call
+
+`object`
+
+a call object (must be of type 'Phone' or 'Video')
+
+### telephony.getPbxType() ⇒ `boolean`
+
+Get the type of PBX the user. Can return one of the following values: "Cloud", "OXO", "OXE", "ThirdParty", "None"
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `boolean` - Return boolean  
+**Access**: public  
+
+### telephony.isOxoUser() ⇒ `boolean`
+
+Check if connected user uses OXO
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `boolean` - Return boolean  
+**Access**: public  
+
+### telephony.isOxeUser() ⇒ `boolean`
+
+Check if connected user uses OXE
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `boolean` - Return boolean  
+**Access**: public  
+
+### telephony.isCloudPbxUser() ⇒ `boolean`
+
+Check if connected user uses Cloud PBX
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `boolean` - Return boolean  
+**Access**: public  
+
+### telephony.isThirdPartyPbxUser() ⇒ `boolean`
+
+Check if connected user uses third party PBX
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `boolean` - Return boolean  
+**Access**: public  
+
+### telephony.getForwardMode() ⇒ `boolean`
+
+Returns ForwardMode for Cloud PBX users
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `boolean` - Return boolean  
+**Access**: public  
+
+### telephony.setForwardMode(selectedMode, destination, callForwardType) ⇒ `boolean`
+
+Set ForwardMode for Cloud PBX users
+
+**Kind**: instance method of [`Telephony`](#module_Telephony)  
+**Returns**: `boolean` - Return boolean  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+selectedMode
+
+`string`
+
+Can be one of the following values: "noForward", "mobilePro", "mobilePerso", "phonePerso", "phonePerso", "otherPhone", "voicemail"
+
+destination
+
+`string`
+
+\[optional\] - Phone number of the destination (if selectedMode is set to "otherPhone")
+
+callForwardType
+
+`string`
+
+Can be one of the following types: "immediate", "busy", "noreply"
+
+### Sur cette page
+
+-   [Telephony](/docs/sdk/web#name-telephony-3)
+-   [telephony.isTelephonyAvailable() ⇒ boolean](/docs/sdk/web#name-telephony.istelephonyavailable--boolean-284)
+-   [telephony.isVoiceMailConfigured() ⇒ boolean](/docs/sdk/web#name-telephony.isvoicemailconfigured--boolean-293)
+-   [telephony.getAgentVersion() ⇒ string](/docs/sdk/web#name-telephony.getagentversion--string-302)
+-   [telephony.getXMPPAgentStatus() ⇒ string](/docs/sdk/web#name-telephony.getxmppagentstatus--string-311)
+-   [telephony.getPhoneAPIStatus() ⇒ string](/docs/sdk/web#name-telephony.getphoneapistatus--string-320)
+-   [telephony.makeCall1PCC(strPhoneNumber, contactId) ⇒ Promise](/docs/sdk/web#name-telephony.makecall1pccstrphonenumber-contactid--promise-329)
+-   [telephony.makeCall(contactId, strPhoneNumber, callSubject, correlatorData, correlatorDataHex) ⇒ Promise](/docs/sdk/web#name-telephony.makecallcontactid-strphonenumber-callsubject-correlatordata-correlatordatahex--promise-380)
+-   [telephony.callByNumber(strPhoneNumber) ⇒ Promise](/docs/sdk/web#name-telephony.callbynumberstrphonenumber--promise-464)
+-   [telephony.callWithMessage(contactId, strPhoneNumber, callSubject, correlatorData) ⇒ Promise](/docs/sdk/web#name-telephony.callwithmessagecontactid-strphonenumber-callsubject-correlatordata--promise-504)
+-   [telephony.callWithSubject(contactId, phoneNumber, callSubject) ⇒ Promise](/docs/sdk/web#name-telephony.callwithsubjectcontactid-phonenumber-callsubject--promise-577)
+-   [telephony.calls() ⇒ Array](/docs/sdk/web#name-telephony.calls--array-639)
+-   [telephony.getActiveCall() ⇒ object](/docs/sdk/web#name-telephony.getactivecall--object-648)
+-   [telephony.release(call) ⇒ Promise](/docs/sdk/web#name-telephony.releasecall--promise-657)
+-   [telephony.deflectToVM(call) ⇒ object](/docs/sdk/web#name-telephony.deflecttovmcall--object-697)
+-   [telephony.forwardToDevice(strPhoneNumber, strForwardType) ⇒ Promise](/docs/sdk/web#name-telephony.forwardtodevicestrphonenumber-strforwardtype--promise-737)
+-   [telephony.forwardToVoicemail(strForwardType) ⇒ Promise](/docs/sdk/web#name-telephony.forwardtovoicemailstrforwardtype--promise-788)
+-   [telephony.cancelForward() ⇒ Promise](/docs/sdk/web#name-telephony.cancelforward--promise-828)
+-   [telephony.getForwardStatusFromServer() ⇒ Promise](/docs/sdk/web#name-telephony.getforwardstatusfromserver--promise-837)
+-   [telephony.getForwardStatus() ⇒ object](/docs/sdk/web#name-telephony.getforwardstatus--object-846)
+-   [telephony.answer(call) ⇒ Promise](/docs/sdk/web#name-telephony.answercall--promise-855)
+-   [telephony.hold(call) ⇒ Promise](/docs/sdk/web#name-telephony.holdcall--promise-895)
+-   [telephony.retrieve(call) ⇒ Promise](/docs/sdk/web#name-telephony.retrievecall--promise-935)
+-   [telephony.transferCall(activeCall, heldCall) ⇒ Promise](/docs/sdk/web#name-telephony.transfercallactivecall-heldcall--promise-975)
+-   [telephony.conferenceCall(activeCall, heldCall) ⇒ Promise](/docs/sdk/web#name-telephony.conferencecallactivecall-heldcall--promise-1026)
+-   [telephony.fetchVoiceMailMessagesNumber() ⇒ Promise](/docs/sdk/web#name-telephony.fetchvoicemailmessagesnumber--promise-1077)
+-   [telephony.muteCall(call, conversation) ⇒ void](/docs/sdk/web#name-telephony.mutecallcall-conversation--void-1086)
+-   [telephony.unmuteCall(call, conversation) ⇒ void](/docs/sdk/web#name-telephony.unmutecallcall-conversation--void-1137)
+-   [telephony.getTelephonyMode() ⇒ TelephonyMode](/docs/sdk/web#name-telephony.gettelephonymode--telephonymode-1188)
+-   [telephony.setTelephonyMode(telephonyMode) ⇒ Promise](/docs/sdk/web#name-telephony.settelephonymodetelephonymode--promise-1197)
+-   [telephony.nomadicLogin(phoneNumber, isUnchangeableNumber, notTakeIntoAccount) ⇒ Promise](/docs/sdk/web#name-telephony.nomadicloginphonenumber-isunchangeablenumber-nottakeintoaccount--promise-1237)
+-   [telephony.nomadicLogout() ⇒ Promise](/docs/sdk/web#name-telephony.nomadiclogout--promise-1299)
+-   [telephony.getNomadicState() ⇒ Promise](/docs/sdk/web#name-telephony.getnomadicstate--promise-1308)
+-   [telephony.setExternalNomadicNumber(phoneNumber) ⇒ Promise](/docs/sdk/web#name-telephony.setexternalnomadicnumberphonenumber--promise-1317)
+-   [telephony.setNomadicOfficePhone(ringOnlyOfficePhone) ⇒ Promise](/docs/sdk/web#name-telephony.setnomadicofficephoneringonlyofficephone--promise-1357)
+-   [telephony.setNomadicVoIP() ⇒ Promise](/docs/sdk/web#name-telephony.setnomadicvoip--promise-1397)
+-   [telephony.isDeskPhoneAvailable() ⇒ boolean](/docs/sdk/web#name-telephony.isdeskphoneavailable--boolean-1406)
+-   [telephony.isVoIPAvailable() ⇒ boolean](/docs/sdk/web#name-telephony.isvoipavailable--boolean-1415)
+-   [telephony.logonCCD(endpointTel, agentId, password, groupId, routingDestination, routing) ⇒ Promise](/docs/sdk/web#name-telephony.logonccdendpointtel-agentid-password-groupid-routingdestination-routing--promise-1424)
+-   [telephony.logoffCCD(endpointTel, agentId, password, groupId) ⇒ Promise](/docs/sdk/web#name-telephony.logoffccdendpointtel-agentid-password-groupid--promise-1519)
+-   [telephony.withdrawalCCD(agentId, groupId, status) ⇒ Promise](/docs/sdk/web#name-telephony.withdrawalccdagentid-groupid-status--promise-1592)
+-   [telephony.wrapupCCD(agentId, groupId, password, status) ⇒ Promise](/docs/sdk/web#name-telephony.wrapupccdagentid-groupid-password-status--promise-1654)
+-   [telephony.subscribeToCCDEvents(handler) ⇒ Subscription](/docs/sdk/web#name-telephony.subscribetoccdeventshandler--subscription-1727)
+-   [telephony.getCurrentCCDAgentStatus() ⇒ object](/docs/sdk/web#name-telephony.getcurrentccdagentstatus--object-1767)
+-   [telephony.getCCDGroupStatus(groupId) ⇒ object](/docs/sdk/web#name-telephony.getccdgroupstatusgroupid--object-1776)
+-   [telephony.sendDTMF(dialString, call) ⇒ Promise](/docs/sdk/web#name-telephony.senddtmfdialstring-call--promise-1816)
+-   [telephony.getPbxType() ⇒ boolean](/docs/sdk/web#name-telephony.getpbxtype--boolean-1867)
+-   [telephony.isOxoUser() ⇒ boolean](/docs/sdk/web#name-telephony.isoxouser--boolean-1876)
+-   [telephony.isOxeUser() ⇒ boolean](/docs/sdk/web#name-telephony.isoxeuser--boolean-1885)
+-   [telephony.isCloudPbxUser() ⇒ boolean](/docs/sdk/web#name-telephony.iscloudpbxuser--boolean-1894)
+-   [telephony.isThirdPartyPbxUser() ⇒ boolean](/docs/sdk/web#name-telephony.isthirdpartypbxuser--boolean-1903)
+-   [telephony.getForwardMode() ⇒ boolean](/docs/sdk/web#name-telephony.getforwardmode--boolean-1912)
+-   [telephony.setForwardMode(selectedMode, destination, callForwardType) ⇒ boolean](/docs/sdk/web#name-telephony.setforwardmodeselectedmode-destination-callforwardtype--boolean-1921)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

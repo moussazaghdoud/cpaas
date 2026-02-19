@@ -1,0 +1,135 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/core/lts/guides/001_getting_started"
+lastSynced: "2026-02-19T22:35:13.457Z"
+---
+# Documentation
+
+Getting started
+
+LTS release 3.XPubliée le 2025-03-17
+
+## Getting Started
+
+Welcome to the Alcatel-Lucent Enterprise **Rainbow CSharp SDK (core)** !
+
+It's an **Assembly** library based on **CSharp** for connecting your application to Rainbow.
+
+This assembly is multi-platform: you can use it on Windows, MacOs, Linux but also on Android, iOS and more.
+
+Its powerful APIs enable you to create the best application that connect to Alcatel-Lucent Enterprise [Rainbow](https://www.openrainbow.com).
+
+This tutorial will help you start with the ALE Rainbow SDK for CSharp (Core) by setting your environment wether you are using **Windows**, **Linux** or **MacOS**.
+
+UI Controls according to build quickly / easily an applicatin are provided in others packages specific by platform. But their interface are the same what ever the platform.
+
+### Prerequisites
+
+---
+
+#### Assembly in .Net Standard 2.0, .Net Standard 2.1 and .Net 8.0
+
+---
+
+The SDK is an Assembly targeting .Net Standard 2.0, .Net Standard 2.1 and .Net 8.0 so it can be used in those environments:
+
+-   .NET and .Net Core 2.0+
+-   .NET Framework 4.6.1+
+-   Mono 5.4+
+-   Xamarin.iOS 10.14+
+-   Xamarin.Android 8.0+
+-   Unity 2018.1+
+-   Universal Windows Platform 10.0.16299+
+
+More details [here](https://immo.landwerth.net/netstandard-versions)
+
+#### Nuget package
+
+---
+
+The SDK is provided as a Nuget package available [here](https://www.nuget.org/packages/Rainbow.CSharp.SDK/)
+
+Dependencies are all managed by Nuget package system.
+
+#### Development environment
+
+---
+
+You can use:
+
+-   ["Visual Studio for Windows"](https://visualstudio.microsoft.com/) - the community edition is free
+-   ["Visual Studio for Mac"](https://visualstudio.microsoft.com/fr/vs/mac/)
+-   ["Visual Studio Code"](https://code.visualstudio.com/) - Free for Linux, Mac and Windows
+
+If you are using a computer running on MacOS, you can follow [this guide](/docs/sdk/csharp) to setup your development environment.
+
+### Setup your Visual Studio project
+
+---
+
+#### Install "Rainbow.CSharp.SDK" as Nuget package
+
+---
+
+##### In Studio Visual Studio 2019 (or more recent)
+
+---
+
+Use the [NuGet Package Manager UI](https://docs.microsoft.com/en-us/nuget/tools/package-manager-ui) and install the package "Rainbow.CSharp.SDK"
+
+### Initialize the SDK
+
+---
+
+#### Step 1 : Create a Rainbow application on the developers web site
+
+---
+
+To use the SDK you need an `applicationID` and a `secretKey` from the [developers website](/). These information allow you to identify your application and allow you to use the rainbow platform. For more information, see [Applications lifecycle](/docs/hub/application-lifecycle) which explains what is the purpose, how to create an application and how to get the application ID and the secret key.
+
+The `hostname` is also necessary to know which server is used: [the sandbox](/docs/hub/developer-sandboxed-platform) or [the production server](/docs/hub/get-ready-for-production)
+
+#### Step 2 : Initialize the SDK
+
+---
+
+In your development environment, create an `Rainbow.Application` object like this:
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+myApp.SetApplicationInfo(applicationID, secretKey);
+myApp.SetHostInfo(hostname);
+```
+
+Where `myApp` is your application object:
+
+-   with `applicationID` / `secretKey` from your Rainbow application created in step 1.
+-   with `hostname` according the server used (\`sandbox.openrainbow.com' or 'openrainbow.com')
+
+After that you can [Connect to Rainbow](/docs/sdk/csharp).
+
+### Examples
+
+You can take a look to several examples available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/SDK%20V3.X/README.md)
+
+### Sur cette page
+
+-   [Getting Started](/docs/sdk/csharp#name-getting-started-0)
+-   [Prerequisites](/docs/sdk/csharp#name-prerequisites-21)
+-   [Assembly in .Net Standard 2.0, .Net Standard 2.1 and .Net 8.0](/docs/sdk/csharp#name-assembly-in-.net-standard-2.0-.net-standard-2.1-and-.net-8.0-25)
+-   [Nuget package](/docs/sdk/csharp#name-nuget-package-72)
+-   [Development environment](/docs/sdk/csharp#name-development-environment-82)
+-   [Setup your Visual Studio project](/docs/sdk/csharp#name-setup-your-visual-studio-project-109)
+-   [Install "Rainbow.CSharp.SDK" as Nuget package](/docs/sdk/csharp#name-install-rainbow.csharp.sdk-as-nuget-package-113)
+-   [Initialize the SDK](/docs/sdk/csharp#name-initialize-the-sdk-124)
+-   [Step 1 : Create a Rainbow application on the developers web site](/docs/sdk/csharp#name-step-1-:-create-a-rainbow-application-on-the-developers-web-site-128)
+-   [Step 2 : Initialize the SDK](/docs/sdk/csharp#name-step-2-:-initialize-the-sdk-138)
+-   [Examples](/docs/sdk/csharp#name-examples-164)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

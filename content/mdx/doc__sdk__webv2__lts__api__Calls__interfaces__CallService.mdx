@@ -1,0 +1,136 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/Calls/interfaces/CallService"
+lastSynced: "2026-02-19T22:35:16.700Z"
+---
+# Documentation
+
+CallService
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [Calls](doc/sdk/webv2/lts/api/Calls/index) / CallService
+
+# Interface: CallService
+
+## Description
+
+Call Service interface
+
+## Methods
+
+### makePhoneCall()
+
+> **makePhoneCall**(`number`, `user`?, `additionalData`?): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Make a PBX Phone call towards a number A new conversation will be created if not existing already (even if it's with an external number)
+
+#### Parameters
+
+• **number**: `string`
+
+The number we want to call; The format could be anything the user can type, it will be transformed in E164 format.
+
+• **user?**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)
+
+A user to whom this number belongs to (in case of Rainbow User)
+
+• **additionalData?**: [`PhoneCallAdditionalData`](doc/sdk/webv2/lts/api/Calls/interfaces/PhoneCallAdditionalData)
+
+An additional data that can be send during the make call
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### makeWebCall()
+
+> **makeWebCall**(`user`, `medias`?, `message`?): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Make a standard WebRTC call toward a Rainbow user. A new conversation with the user will be created if not existing already.
+
+#### Parameters
+
+• **user**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)
+
+The user we want to call
+
+• **medias?**: [`MediaType`](doc/sdk/webv2/lts/api/Calls/enumerations/MediaType)\[\]
+
+Array containing the media to be used when setting up the new call By default, only the AUDIO media type will be added to the new call.
+
+• **message?**: `string`
+
+A complementary message send to the remote party informing about the reason of the call
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### mergeCalls()
+
+> **mergeCalls**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Conversation`](doc/sdk/webv2/lts/api/Conversations/interfaces/Conversation)\>
+
+Merge the current 2 calls into one single. This feature can be used only if the "mergeCalls" call capability is 'True'. In case of standard HYBRID conference, the return value is null. A new telephony conference (conversation with "conference" call) will be created. Otherwise, the result will be a web conference (in the form of a Rainbow bubble) that will be created in a new bubble conversation.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Conversation`](doc/sdk/webv2/lts/api/Conversations/interfaces/Conversation)\>
+
+Bubble Conversation with active web conference or null in case of hybrid 3-party conference call.
+
+---
+
+### subscribe()
+
+> **subscribe**(`callback`, `eventNames`?): `Subscription`
+
+Subscribe to updates from the call service, all events are of RBEvent
+
+#### Parameters
+
+• **callback**
+
+The callback function that will be called when events are received
+
+• **eventNames?**: [`CallServiceEvents`](doc/sdk/webv2/lts/api/Calls/enumerations/CallServiceEvents) | [`CallServiceEvents`](doc/sdk/webv2/lts/api/Calls/enumerations/CallServiceEvents)\[\]
+
+(optional) array of event to listen
+
+#### Returns
+
+`Subscription`
+
+Returns RxJS Subscription
+
+### Sur cette page
+
+-   [Description](/docs/sdk/web#name-description-10)
+-   [Methods](/docs/sdk/web#name-methods-16)
+-   [makePhoneCall()](/docs/sdk/web#name-makephonecall-19)
+-   [Parameters](/docs/sdk/web#name-parameters-30)
+-   [Returns](/docs/sdk/web#name-returns-51)
+-   [makeWebCall()](/docs/sdk/web#name-makewebcall-58)
+-   [Parameters](/docs/sdk/web#name-parameters-69)
+-   [Returns](/docs/sdk/web#name-returns-90)
+-   [mergeCalls()](/docs/sdk/web#name-mergecalls-97)
+-   [Returns](/docs/sdk/web#name-returns-108)
+-   [subscribe()](/docs/sdk/web#name-subscribe-118)
+-   [Parameters](/docs/sdk/web#name-parameters-129)
+-   [Returns](/docs/sdk/web#name-returns-144)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,123 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "docs-hub"
+source: "https://developers.openrainbow.com/doc/hub/best-practices"
+lastSynced: "2026-02-19T22:35:12.995Z"
+---
+# Documentation
+
+Rainbow's best practices
+
+## Rainbow's best practices
+
+---
+
+Here are some advices for helping you starting your integration with Rainbow.
+
+### Follow API and SDK changes
+
+---
+
+In 2021, we changed our SDK release and support policy to minimize the SDK update frequency for applications running in production. We now have two version tracks for C#, Web, NodeJS, Android and iOS SDKs:
+
+-   **LTS (Long Term Support)** : This is the recommended version you should use for an application running in production. LTS versions are supported for at least six months after they have been released.
+-   **STS (Short Term Support)** : You can use STS versions if you need the latest evolutions that are not already available in the current LTS version. We **do not recommend** the usage of STS versions if you don't really need it and for applications running in production. STS versions are not supported (we do not release corrections on this track).
+
+It's a best practice to update to the current LTS supported version in order to benefit support and stay closer to the latest evolutions in term of features, security and improvments. Previous LTS versions are not supported.
+
+In the same way, it's a best practice to move away from deprecated APIs as soon as announced for using stable APIs.
+
+### Integrate our SDKs before moving to production
+
+---
+
+Having an autonomous process that updates your application with the latest version of one of our SDKs is not good. The reason is that sometimes, a new version of a SDK comes with some breaking changes that you should handle manually. It's not a complex task because the migration path is described in our `What's new` guides but if not done, your application will not work correctly.
+
+A best practice is to integrate a new version of our SDK in your integration environment and once tested, move it to your production environment.
+
+### Separate Rainbow concerns
+
+---
+
+When integrating one of our SDKs or our REST APIs, you will manage a lot of methods to exchange data with Rainbow, a lot of events that will trigger callbacks and consequently a lot of Rainbow data.
+
+A good practice is to group the Rainbow stuff in one or several modules that are the only ones that connect to Rainbow and not to diffuse Rainbow data models everywhere in your app (except if Rainbow is the sole source of data used). Using that pattern, you will easily be able to debug, test and mock the Rainbow part in one hand and make changes according to Rainbow SDK or API evolutions in an other hand.
+
+### Learn from the console logs
+
+---
+
+When opening your development tool while using the SDK for Web or Android/iOS or if you have a look to the shell terminal that launches your Node.JS SDK process, you will see a lot of messages. These messages are initiated by our SDKs and give you a lot of information on what is currently happening.
+
+It's a best practice to use these information to understand and check that what is happening is correct. Don't forget to add these information when discussing with us on the forum or with our support team.
+
+### Don't loop on API or SDK methods
+
+---
+
+It's a good practice when developing your application to check that you are not writing loops that call Rainbow APIs or SDK methods. If for any reasons, you made a mistake in your code, you will send a lot of requests to Rainbow that will generate extra fees.
+
+### Test on few
+
+---
+
+Before releasing your applications to many users, it's a good practice to test your development on few users in order to check that all interactions with Rainbow are ok. The developers sandbox platform give you this possibility to test using fake accounts and so without disturbing real users.
+
+### Experiment but don't hack
+
+---
+
+If you don't find a proper way to do what you want, a good practice is to use the community forum to ask for help or for supporting a new feature. Trying absolutely to find a solution may cause side effects in your application if you're not using the Rainbow methods or data as they should be used.
+
+### Prevent the worst
+
+---
+
+Even if we garantee an uptime of the Rainbow platform higher than 99,5%, it's a good practice to handle all the bad things that can happen. Each SDK provides a lot of events that your application can subscribe in order to be alerted in case of the connection to Rainbow is lost. Same thing when something goes wrong such as if a chat message has not been successfully sent to your recipient.
+
+### Design and implement security best practices
+
+---
+
+Security and data privacy are paramount for Rainbow business, as well as yours. Bring confidence and security to your customers by integrating the industry best practices on the matter. Consider these topics early in your application and infrastructure design. You can find valuable resource explaining the main category of risks and vulnerabilities for web and mobile applications on the OWASP (Open Web Application Security Project) for example:
+
+-   [OWASP Web Top 10](https://owasp.org/www-project-top-ten/)
+    
+-   [OWASP Mobile Top 10 - 2016](https://www.owasp.org/index.php/Mobile_Top_10_2016-Top_10)
+    
+
+Take care of the data, take care of your users, take care of your business.
+
+### Interested in
+
+---
+
+-   [Developing on the Rainbow Sandbox](/docs/hub/developer-sandboxed-platform)
+    
+-   [Deploying your application on Rainbow production](/docs/hub/get-ready-for-production)
+    
+
+---
+
+*Last updated August, 25th 2022*
+
+### Sur cette page
+
+-   [Rainbow's best practices](/docs/hub/best-practices#name-rainbows-best-practices-0)
+-   [Follow API and SDK changes](/docs/hub/best-practices#name-follow-api-and-sdk-changes-7)
+-   [Integrate our SDKs before moving to production](/docs/hub/best-practices#name-integrate-our-sdks-before-moving-to-production-32)
+-   [Separate Rainbow concerns](/docs/hub/best-practices#name-separate-rainbow-concerns-42)
+-   [Learn from the console logs](/docs/hub/best-practices#name-learn-from-the-console-logs-52)
+-   [Don't loop on API or SDK methods](/docs/hub/best-practices#name-dont-loop-on-api-or-sdk-methods-62)
+-   [Test on few](/docs/hub/best-practices#name-test-on-few-69)
+-   [Experiment but don't hack](/docs/hub/best-practices#name-experiment-but-dont-hack-76)
+-   [Prevent the worst](/docs/hub/best-practices#name-prevent-the-worst-83)
+-   [Design and implement security best practices](/docs/hub/best-practices#name-design-and-implement-security-best-practices-90)
+-   [Interested in](/docs/hub/best-practices#name-interested-in-112)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,74 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/CallLog/enumerations/CallLogServiceEvents"
+lastSynced: "2026-02-19T22:35:16.441Z"
+---
+# Documentation
+
+CallLogServiceEvents
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [CallLog](doc/sdk/webv2/lts/api/CallLog/index) / CallLogServiceEvents
+
+# Enumeration: CallLogServiceEvents
+
+CallLog service events send to other services Can listen to it via `CallLogService.subscribe()` API
+
+## Events
+
+### ON\_CALLLOG\_MISSEDCALLS\_COUNTER\_UPDATED
+
+> **ON\_CALLLOG\_MISSEDCALLS\_COUNTER\_UPDATED**: `"ON_CALLLOG_MISSEDCALLS_COUNTER_UPDATED"`
+
+This `RBEvent` is sent when the counter of missed calls has been updated.
+
+#### Event Data
+
+counter - The number of missed calls
+
+---
+
+### ON\_CALLLOG\_TOTAL\_NUMBER\_UPDATED
+
+> **ON\_CALLLOG\_TOTAL\_NUMBER\_UPDATED**: `"ON_CALLLOG_TOTAL_NUMBER_UPDATED"`
+
+This `RBEvent` is sent when the total number of call logs for the connected user has been updated.
+
+#### Event Data
+
+counter - The total number of call logs
+
+---
+
+### ON\_CALLLOG\_UPDATED
+
+> **ON\_CALLLOG\_UPDATED**: `"ON_CALLLOG_UPDATED"`
+
+This `RBEvent` is sent when the call log history has been updated in one of the following ways:
+
+-   Reception of a new call log from the server (in the form of a notification, and not in response to an explicit fetch request).
+-   User request to delete call logs.  
+    This covers cases of deletion of a specific call log, all call logs associated with a user, or the user's entire call log history.  
+    This event contains no data, the current call logs history have to be retrieved by using the getCallLogs() API.
+
+### Sur cette page
+
+-   [Events](/docs/sdk/web#name-events-13)
+-   [ON\_CALLLOG\_MISSEDCALLS\_COUNTER\_UPDATED](/docs/sdk/web#name-on_calllog_missedcalls_counter_updated-16)
+-   [Event Data](/docs/sdk/web#name-event-data-27)
+-   [ON\_CALLLOG\_TOTAL\_NUMBER\_UPDATED](/docs/sdk/web#name-on_calllog_total_number_updated-34)
+-   [Event Data](/docs/sdk/web#name-event-data-45)
+-   [ON\_CALLLOG\_UPDATED](/docs/sdk/web#name-on_calllog_updated-52)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

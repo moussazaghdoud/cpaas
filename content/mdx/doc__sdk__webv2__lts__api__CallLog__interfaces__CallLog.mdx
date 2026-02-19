@@ -1,0 +1,133 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/CallLog/interfaces/CallLog"
+lastSynced: "2026-02-19T22:35:16.478Z"
+---
+# Documentation
+
+CallLog
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [CallLog](doc/sdk/webv2/lts/api/CallLog/index) / CallLog
+
+# Interface: CallLog
+
+## Properties
+
+### callSubject?
+
+> `optional` `readonly` **callSubject**: `string`
+
+The subject of the call
+
+---
+
+### calledNumber
+
+> `readonly` **calledNumber**: `string`
+
+The number of the called party
+
+---
+
+### date
+
+> `readonly` **date**: [`Date`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
+
+The date of the call
+
+---
+
+### direction
+
+> `readonly` **direction**: [`CallDirection`](doc/sdk/webv2/lts/api/Calls/enumerations/CallDirection)
+
+The call direction
+
+---
+
+### duration
+
+> `readonly` **duration**: `number`
+
+The call duration in milliseconds
+
+---
+
+### id
+
+> `readonly` **id**: `string`
+
+The unique identifier of the call log
+
+---
+
+### read
+
+> `readonly` **read**: `boolean`
+
+The reading status, indicates if the call log has been marked as read or not.
+
+---
+
+### state
+
+> `readonly` **state**: `string`
+
+The call state:
+
+-   "answered": Refers to an answered call with a conversation established and this, regardless of direction (Incoming or outgoing).
+-   "missed": Refers to an unanswered call, regardless of direction (Incoming or outgoing).
+-   "forwarded": Refers to an incoming call which has been forwarded to the connected user (who was not the initial destination).
+
+---
+
+### type
+
+> `readonly` **type**: [`CallLogType`](doc/sdk/webv2/lts/api/CallLog/enumerations/CallLogType)
+
+The call type
+
+---
+
+### user
+
+> `readonly` **user**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)
+
+The associated user representing the other party (as caller or callee) of the call
+
+---
+
+### userCallbackNumber?
+
+> `optional` `readonly` **userCallbackNumber**: `string`
+
+The number used to call back a Rainbow user if this one has not shared the private profile fields, including their telephone numbers. As a result, there is no telephone number visible (so usable) in the user's associated contact object. This number has been received as call information and is linked to the current call log only.
+
+### Sur cette page
+
+-   [Properties](/docs/sdk/web#name-properties-10)
+-   [callSubject?](/docs/sdk/web#name-callsubject-13)
+-   [calledNumber](/docs/sdk/web#name-callednumber-25)
+-   [date](/docs/sdk/web#name-date-37)
+-   [direction](/docs/sdk/web#name-direction-49)
+-   [duration](/docs/sdk/web#name-duration-61)
+-   [id](/docs/sdk/web#name-id-73)
+-   [read](/docs/sdk/web#name-read-85)
+-   [state](/docs/sdk/web#name-state-97)
+-   [type](/docs/sdk/web#name-type-126)
+-   [user](/docs/sdk/web#name-user-138)
+-   [userCallbackNumber?](/docs/sdk/web#name-usercallbacknumber-150)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

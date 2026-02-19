@@ -1,0 +1,262 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/CallLog/interfaces/CallLogService"
+lastSynced: "2026-02-19T22:35:16.503Z"
+---
+# Documentation
+
+CallLogService
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [CallLog](doc/sdk/webv2/lts/api/CallLog/index) / CallLogService
+
+# Interface: CallLogService
+
+## Methods
+
+### deleteAllCallLogs()
+
+> **deleteAllCallLogs**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`any`\>
+
+Delete all the call logs history of the connected user A ON\_CALLLOG\_UPDATED event is sent afterwards at the completion of the operation to notify about the call logs history update.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`any`\>
+
+---
+
+### deleteCallLog()
+
+> **deleteCallLog**(`callLog`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`any`\>
+
+Delete the call log specified by its object instance A ON\_CALLLOG\_UPDATED event is sent afterwards at the completion of the operation to notify about the call logs history update.
+
+#### Parameters
+
+• **callLog**: [`CallLog`](doc/sdk/webv2/lts/api/CallLog/interfaces/CallLog)
+
+The call log instance to delete
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`any`\>
+
+---
+
+### deleteCallLogsForUser()
+
+> **deleteCallLogsForUser**(`user`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`any`\>
+
+Delete all call logs associated with a user A ON\_CALLLOG\_UPDATED event is sent afterwards at the completion of the operation to notify about the call logs history update.
+
+#### Parameters
+
+• **user**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`any`\>
+
+---
+
+### getCallLogs()
+
+> **getCallLogs**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`CallLog`](doc/sdk/webv2/lts/api/CallLog/interfaces/CallLog)\[\]>
+
+Get the current content of the call logs history. The request can be made at any time to retrieve the call logs already known by the Call Log service. It is also advisable to make this request when an 'ON\_CALLLOG\_UPDATED' event has been received notifying you that the call logs history has been updated following an operation such as the reception of a brand new call log, the modification (e.g., marking as read) or the deletion of existing call log(s).
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`CallLog`](doc/sdk/webv2/lts/api/CallLog/interfaces/CallLog)\[\]>
+
+Returns a Promise with an array of the call logs already known by the Call Log service
+
+---
+
+### getCallLogsCounter()
+
+> **getCallLogsCounter**(): `number`
+
+Return the number total of call logs available for the connected user
+
+#### Returns
+
+`number`
+
+---
+
+### getMissedCallsCounter()
+
+> **getMissedCallsCounter**(): `number`
+
+Returns the number total of missed calls. Missed call is a call with the following properties: state is 'missed', direction is 'incoming' and read flag is 'false'. This API can be called before the first call logs are retrieved, i.e. before the initialization step.
+
+#### Returns
+
+`number`
+
+---
+
+### getNextCallLogs()
+
+> **getNextCallLogs**(`number`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`CallLog`](doc/sdk/webv2/lts/api/CallLog/interfaces/CallLog)\[\]>
+
+Get additional call logs. The number of additional call logs to be returned can be specified in the request
+
+#### Parameters
+
+• **number**: `number`
+
+(optional) Number of additional call logs to get. This parameter is optional and set by default to 100. The allowed range of values is \[1..250\]. If the value provided is greater, the maximum value will be used. If the value is 0 or less, the request will be rejected and an error thrown.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`CallLog`](doc/sdk/webv2/lts/api/CallLog/interfaces/CallLog)\[\]>
+
+Returns a Promise with an array of the call logs already known by the Call Log service and the newly retrieved.
+
+#### Throws
+
+Error - In the event of the specified parameter is invalid.
+
+---
+
+### initCallLogs()
+
+> **initCallLogs**(`number`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`CallLog`](doc/sdk/webv2/lts/api/CallLog/interfaces/CallLog)\[\]>
+
+Initializes the CallLog service for the user by returning the most recent call logs. The number of call logs to be returned can optionnaly be specified in the request Additional call logs have to be retrieved furthermore via the API 'getNextCallLogs'.
+
+#### Parameters
+
+• **number**: `number`
+
+(optional) Number of call logs to retrieve at initialization step. This parameter is optional and set by default to 100. The allowed range of values is \[1..250\]. If the value provided is greater, the maximum value will be used. If the value is 0 or less, the request will be rejected and an error thrown.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`CallLog`](doc/sdk/webv2/lts/api/CallLog/interfaces/CallLog)\[\]>
+
+Returns a Promise with an array of the first retrieved call logs
+
+#### Throws
+
+Error - In the event of the specified parameter is invalid.
+
+---
+
+### isInitialized()
+
+> **isInitialized**(): `boolean`
+
+Indicates whether the CallLog Service has been initialized or not. If this is not the case, no call log has yet been retrieved.
+
+#### Returns
+
+`boolean`
+
+True if the CallLog Service has been intitialized; False otherwise.
+
+---
+
+### markAllCallsLogsAsRead()
+
+> **markAllCallsLogsAsRead**(): `void`
+
+Mark all call logs already known by the Call Log service as read This concerns the call logs fetched from server during the initialization step and through additional fetch requests.
+
+#### Returns
+
+`void`
+
+---
+
+### markCallLogAsRead()
+
+> **markCallLogAsRead**(`callLog`): `void`
+
+Mark a call log item specified by its object instance as read
+
+#### Parameters
+
+• **callLog**: [`CallLog`](doc/sdk/webv2/lts/api/CallLog/interfaces/CallLog)
+
+The call log instance to mark as read
+
+#### Returns
+
+`void`
+
+---
+
+### subscribe()
+
+> **subscribe**(`callback`, `eventNames`?): `Subscription`
+
+Subscribe to the CallLog updates, all events are of RBEvent
+
+#### Parameters
+
+• **callback**
+
+The callback function that will be called when events are received
+
+• **eventNames?**: [`CallLogServiceEvents`](doc/sdk/webv2/lts/api/CallLog/enumerations/CallLogServiceEvents) | [`CallLogServiceEvents`](doc/sdk/webv2/lts/api/CallLog/enumerations/CallLogServiceEvents)\[\]
+
+(optional) array of event to listen
+
+#### Returns
+
+`Subscription`
+
+Returns RxJS Subscription
+
+### Sur cette page
+
+-   [Methods](/docs/sdk/web#name-methods-10)
+-   [deleteAllCallLogs()](/docs/sdk/web#name-deleteallcalllogs-13)
+-   [Returns](/docs/sdk/web#name-returns-24)
+-   [deleteCallLog()](/docs/sdk/web#name-deletecalllog-31)
+-   [Parameters](/docs/sdk/web#name-parameters-42)
+-   [Returns](/docs/sdk/web#name-returns-51)
+-   [deleteCallLogsForUser()](/docs/sdk/web#name-deletecalllogsforuser-58)
+-   [Parameters](/docs/sdk/web#name-parameters-69)
+-   [Returns](/docs/sdk/web#name-returns-75)
+-   [getCallLogs()](/docs/sdk/web#name-getcalllogs-82)
+-   [Returns](/docs/sdk/web#name-returns-93)
+-   [getCallLogsCounter()](/docs/sdk/web#name-getcalllogscounter-103)
+-   [Returns](/docs/sdk/web#name-returns-114)
+-   [getMissedCallsCounter()](/docs/sdk/web#name-getmissedcallscounter-121)
+-   [Returns](/docs/sdk/web#name-returns-132)
+-   [getNextCallLogs()](/docs/sdk/web#name-getnextcalllogs-139)
+-   [Parameters](/docs/sdk/web#name-parameters-150)
+-   [Returns](/docs/sdk/web#name-returns-159)
+-   [Throws](/docs/sdk/web#name-throws-168)
+-   [initCallLogs()](/docs/sdk/web#name-initcalllogs-175)
+-   [Parameters](/docs/sdk/web#name-parameters-186)
+-   [Returns](/docs/sdk/web#name-returns-195)
+-   [Throws](/docs/sdk/web#name-throws-204)
+-   [isInitialized()](/docs/sdk/web#name-isinitialized-211)
+-   [Returns](/docs/sdk/web#name-returns-222)
+-   [markAllCallsLogsAsRead()](/docs/sdk/web#name-markallcallslogsasread-232)
+-   [Returns](/docs/sdk/web#name-returns-243)
+-   [markCallLogAsRead()](/docs/sdk/web#name-markcalllogasread-250)
+-   [Parameters](/docs/sdk/web#name-parameters-261)
+-   [Returns](/docs/sdk/web#name-returns-270)
+-   [subscribe()](/docs/sdk/web#name-subscribe-277)
+-   [Parameters](/docs/sdk/web#name-parameters-288)
+-   [Returns](/docs/sdk/web#name-returns-303)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

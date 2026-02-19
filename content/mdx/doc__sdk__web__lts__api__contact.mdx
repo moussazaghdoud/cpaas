@@ -1,0 +1,440 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/contact"
+lastSynced: "2026-02-19T22:35:15.105Z"
+---
+# Documentation
+
+Contact model
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Contact
+
+This class is used to represent a contact or the connected user. A contact is defined by a set of public information (name, firstname, avatar) and a set of private information that are only shared with contacts that are in the user's network or in the same company (email, phone numbers)
+
+-   [Contact](#module_Contact)
+    -   [~id](#module_Contact..id) : `string`
+    -   [~status](#module_Contact..status) : `string`
+    -   [~loginEmail](#module_Contact..loginEmail) : `string`
+    -   [~email](#module_Contact..email) : `string`
+    -   [~lastname](#module_Contact..lastname) : `string`
+    -   [~firstname](#module_Contact..firstname) : `string`
+    -   [~fullname](#module_Contact..fullname) : `string`
+    -   [~nickname](#module_Contact..nickname) : `string`
+    -   [~initials](#module_Contact..initials) : `string`
+    -   [~title](#module_Contact..title) : `string`
+    -   [~jobTitle](#module_Contact..jobTitle) : `string`
+    -   [~language](#module_Contact..language) : `string`
+    -   [~country](#module_Contact..country) : `string`
+    -   [~tags](#module_Contact..tags) : `Array`
+    -   [~internalPhoneNumber](#module_Contact..internalPhoneNumber) : `string`
+    -   [~professionalPhoneNumber](#module_Contact..professionalPhoneNumber) : `string`
+    -   [~personalPhoneNumber](#module_Contact..personalPhoneNumber) : `string`
+    -   [~personalMobilePhoneNumber](#module_Contact..personalMobilePhoneNumber) : `string`
+    -   [~professionalMobileNumber](#module_Contact..professionalMobileNumber) : `string`
+    -   [~professionalMobileNumberCan](#module_Contact..professionalMobileNumberCan) : `string`
+    -   [~voicemailNumber](#module_Contact..voicemailNumber) : `string`
+    -   [~roles](#module_Contact..roles) : `Array`
+    -   [~customData](#module_Contact..customData) : `object`
+    -   [~pbxId](#module_Contact..pbxId) : `string`
+    -   [~displayOrder](#module_Contact..displayOrder) : `string`
+    -   [~avatar](#module_Contact..avatar) : `string`
+    -   [~userInfo1](#module_Contact..userInfo1) : `object`
+    -   [~userInfo2](#module_Contact..userInfo2) : `object`
+    -   [~company](#module_Contact..company) : `object`
+    -   [~businessPhones](#module_Contact..businessPhones) : `object`
+    -   [~mobilePhones](#module_Contact..mobilePhones) : `object`
+    -   [~isAlertNotificationEnabled](#module_Contact..isAlertNotificationEnabled) : `object`
+    -   [~calendarInformation](#module_Contact..calendarInformation) : `object`
+    -   [~fileSharingEnabled](#module_Contact..fileSharingEnabled) : `boolean`
+    -   [~fileStorageEnabled](#module_Contact..fileStorageEnabled) : `boolean`
+    -   [~instantMessagesEnabled](#module_Contact..instantMessagesEnabled) : `boolean`
+    -   [~bubblesEnabled](#module_Contact..bubblesEnabled) : `boolean`
+    -   [~webrtcAudioEnabled](#module_Contact..webrtcAudioEnabled) : `boolean`
+    -   [~webrtcVideoEnabled](#module_Contact..webrtcVideoEnabled) : `boolean`
+    -   [~webrtcSharingEnabled](#module_Contact..webrtcSharingEnabled) : `boolean`
+    -   [~modifyProfileEnabled](#module_Contact..modifyProfileEnabled) : `boolean`
+
+### Contact~id : `string`
+
+Contact ID. This is a global reference of the contact, can be used as a parameter passed to multiple Rainbow Web SDK APIs
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~status : `string`
+
+Contact status. Can be one of the following values: "online", "dnd", "offline" or "unknown"
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~loginEmail : `string`
+
+Login email of the contact
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~email : `string`
+
+Email address associated with the account
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~lastname : `string`
+
+Contact's last name
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~firstname : `string`
+
+Contact's first name
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~fullname : `string`
+
+Contact's full name
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~nickname : `string`
+
+Contact's nickname
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~initials : `string`
+
+Contact's initials
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~title : `string`
+
+Contact's title
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~jobTitle : `string`
+
+Contact's job title
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~language : `string`
+
+Contact's language
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~country : `string`
+
+Contact's country
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~tags : `Array`
+
+Array of tags associated to the contact
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~internalPhoneNumber : `string`
+
+Contact's internal phone number
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~professionalPhoneNumber : `string`
+
+Contact's professional phone number
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~personalPhoneNumber : `string`
+
+Contact's personal phone number
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~personalMobilePhoneNumber : `string`
+
+Contact's personal mobile phone number
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~professionalMobileNumber : `string`
+
+Contact's professional mobile phone number
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~professionalMobileNumberCan : `string`
+
+Contact's professional mobile phone number (in canonical format)
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~voicemailNumber : `string`
+
+Contact's voice mail number
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~roles : `Array`
+
+Contact's voice mail number
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~customData : `object`
+
+Custom data of the user. An object of custom properties that can be changed by company admin.
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~pbxId : `string`
+
+ID of the PBX associated with the user
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~displayOrder : `string`
+
+Indicator for the display order. Can be set to either "FL" (first name, last name) or "LF" (last name, first name)
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~avatar : `string`
+
+Source of the avatar (if any). Null if none.
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~userInfo1 : `object`
+
+Custom data attached to the user, can be modified by admin
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~userInfo2 : `object`
+
+Custom data attached to the user, can be modified by admin
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~company : `object`
+
+User's company. Contains details on the company user belongs to.
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~businessPhones : `object`
+
+Array containing user's business phones
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~mobilePhones : `object`
+
+Array containing user's mobile phones
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~isAlertNotificationEnabled : `object`
+
+Boolean indicating if user can receive alert/emergency notifications
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~calendarInformation : `object`
+
+EXPERIMENTAL (this property will likely change in the future version) Object containing all the calendar informations related to user The object contains the current meeting / incoming calendar meetings, but also it contains the Out Of Office informations: The structure of the object (by default it's empty if no calendar presence) : calendarInformation = { status: string //calendar status (one of "online", "dnd") mdate: date //the date of the end / next meeting autoReplyOn: boolean //if true, the user has activated Out Of Office) autoReplyInfos: { //if autoReplyOn is true, then this object contains the informations related to the Out Of Office) message: string //out of office message mdate: date //until when the OoO is activated (if known) } }
+
+NB: The Out of Office is not automatic, so it's updated every 15min for each conversation that the user has;
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~fileSharingEnabled : `boolean`
+
+Boolean indicating if user have the right to send Files
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~fileStorageEnabled : `boolean`
+
+Boolean indicating if user have the right to use the file storage
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~instantMessagesEnabled : `boolean`
+
+Boolean indicating if user have the right to use IMs
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~bubblesEnabled : `boolean`
+
+Boolean indicating if user have the right to use Bubbles
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~webrtcAudioEnabled : `boolean`
+
+Boolean indicating if user have the right to make audio WebRTC calls
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~webrtcVideoEnabled : `boolean`
+
+Boolean indicating if user have the right to make video WebRTC calls
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~webrtcSharingEnabled : `boolean`
+
+Boolean indicating if user have the right to make sharing WebRTC calls
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true  
+
+### Contact~modifyProfileEnabled : `boolean`
+
+Boolean indicating if user have the right to make changes to his profile informations
+
+**Kind**: inner property of [`Contact`](#module_Contact)  
+**Access**: public  
+**Read only**: true
+
+### Sur cette page
+
+-   [Contact](/docs/sdk/web#name-contact-3)
+-   [Contact~id : string](/docs/sdk/web#name-contactid-:-string-226)
+-   [Contact~status : string](/docs/sdk/web#name-contactstatus-:-string-235)
+-   [Contact~loginEmail : string](/docs/sdk/web#name-contactloginemail-:-string-244)
+-   [Contact~email : string](/docs/sdk/web#name-contactemail-:-string-253)
+-   [Contact~lastname : string](/docs/sdk/web#name-contactlastname-:-string-262)
+-   [Contact~firstname : string](/docs/sdk/web#name-contactfirstname-:-string-271)
+-   [Contact~fullname : string](/docs/sdk/web#name-contactfullname-:-string-280)
+-   [Contact~nickname : string](/docs/sdk/web#name-contactnickname-:-string-289)
+-   [Contact~initials : string](/docs/sdk/web#name-contactinitials-:-string-298)
+-   [Contact~title : string](/docs/sdk/web#name-contacttitle-:-string-307)
+-   [Contact~jobTitle : string](/docs/sdk/web#name-contactjobtitle-:-string-316)
+-   [Contact~language : string](/docs/sdk/web#name-contactlanguage-:-string-325)
+-   [Contact~country : string](/docs/sdk/web#name-contactcountry-:-string-334)
+-   [Contact~tags : Array](/docs/sdk/web#name-contacttags-:-array-343)
+-   [Contact~internalPhoneNumber : string](/docs/sdk/web#name-contactinternalphonenumber-:-string-352)
+-   [Contact~professionalPhoneNumber : string](/docs/sdk/web#name-contactprofessionalphonenumber-:-string-361)
+-   [Contact~personalPhoneNumber : string](/docs/sdk/web#name-contactpersonalphonenumber-:-string-370)
+-   [Contact~personalMobilePhoneNumber : string](/docs/sdk/web#name-contactpersonalmobilephonenumber-:-string-379)
+-   [Contact~professionalMobileNumber : string](/docs/sdk/web#name-contactprofessionalmobilenumber-:-string-388)
+-   [Contact~professionalMobileNumberCan : string](/docs/sdk/web#name-contactprofessionalmobilenumbercan-:-string-397)
+-   [Contact~voicemailNumber : string](/docs/sdk/web#name-contactvoicemailnumber-:-string-406)
+-   [Contact~roles : Array](/docs/sdk/web#name-contactroles-:-array-415)
+-   [Contact~customData : object](/docs/sdk/web#name-contactcustomdata-:-object-424)
+-   [Contact~pbxId : string](/docs/sdk/web#name-contactpbxid-:-string-433)
+-   [Contact~displayOrder : string](/docs/sdk/web#name-contactdisplayorder-:-string-442)
+-   [Contact~avatar : string](/docs/sdk/web#name-contactavatar-:-string-451)
+-   [Contact~userInfo1 : object](/docs/sdk/web#name-contactuserinfo1-:-object-460)
+-   [Contact~userInfo2 : object](/docs/sdk/web#name-contactuserinfo2-:-object-469)
+-   [Contact~company : object](/docs/sdk/web#name-contactcompany-:-object-478)
+-   [Contact~businessPhones : object](/docs/sdk/web#name-contactbusinessphones-:-object-487)
+-   [Contact~mobilePhones : object](/docs/sdk/web#name-contactmobilephones-:-object-496)
+-   [Contact~isAlertNotificationEnabled : object](/docs/sdk/web#name-contactisalertnotificationenabled-:-object-505)
+-   [Contact~calendarInformation : object](/docs/sdk/web#name-contactcalendarinformation-:-object-514)
+-   [Contact~fileSharingEnabled : boolean](/docs/sdk/web#name-contactfilesharingenabled-:-boolean-526)
+-   [Contact~fileStorageEnabled : boolean](/docs/sdk/web#name-contactfilestorageenabled-:-boolean-535)
+-   [Contact~instantMessagesEnabled : boolean](/docs/sdk/web#name-contactinstantmessagesenabled-:-boolean-544)
+-   [Contact~bubblesEnabled : boolean](/docs/sdk/web#name-contactbubblesenabled-:-boolean-553)
+-   [Contact~webrtcAudioEnabled : boolean](/docs/sdk/web#name-contactwebrtcaudioenabled-:-boolean-562)
+-   [Contact~webrtcVideoEnabled : boolean](/docs/sdk/web#name-contactwebrtcvideoenabled-:-boolean-571)
+-   [Contact~webrtcSharingEnabled : boolean](/docs/sdk/web#name-contactwebrtcsharingenabled-:-boolean-580)
+-   [Contact~modifyProfileEnabled : boolean](/docs/sdk/web#name-contactmodifyprofileenabled-:-boolean-589)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

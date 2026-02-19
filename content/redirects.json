@@ -1,0 +1,1452 @@
+[
+  {
+    "source": "/doc/faq",
+    "destination": "/docs/faq",
+    "permanent": true
+  },
+  {
+    "source": "/doc/guides",
+    "destination": "/docs/guides",
+    "permanent": true
+  },
+  {
+    "source": "/doc/hub",
+    "destination": "/docs",
+    "permanent": true
+  },
+  {
+    "source": "/doc/hub/application-lifecycle",
+    "destination": "/docs/hub/application-lifecycle",
+    "permanent": true
+  },
+  {
+    "source": "/doc/hub/best-practices",
+    "destination": "/docs/hub/best-practices",
+    "permanent": true
+  },
+  {
+    "source": "/doc/hub/developer-journey",
+    "destination": "/docs/hub/developer-journey",
+    "permanent": true
+  },
+  {
+    "source": "/doc/hub/developer-sandboxed-platform",
+    "destination": "/docs/hub/developer-sandboxed-platform",
+    "permanent": true
+  },
+  {
+    "source": "/doc/hub/features-limits",
+    "destination": "/docs/hub/features-limits",
+    "permanent": true
+  },
+  {
+    "source": "/doc/hub/get-ready-for-production",
+    "destination": "/docs/hub/get-ready-for-production",
+    "permanent": true
+  },
+  {
+    "source": "/doc/hub/getting-started",
+    "destination": "/docs/hub/getting-started",
+    "permanent": true
+  },
+  {
+    "source": "/doc/hub/glossary",
+    "destination": "/docs/hub/glossary",
+    "permanent": true
+  },
+  {
+    "source": "/doc/hub/lts-support-sdk-version",
+    "destination": "/docs/hub/lts-support-sdk-version",
+    "permanent": true
+  },
+  {
+    "source": "/doc/hub/prerequisites",
+    "destination": "/docs/hub/prerequisites",
+    "permanent": true
+  },
+  {
+    "source": "/doc/hub/rainbow-core-concepts",
+    "destination": "/docs/hub/rainbow-core-concepts",
+    "permanent": true
+  },
+  {
+    "source": "/doc/hub/sdk-api-opensource-support",
+    "destination": "/docs/hub/sdk-api-opensource-support",
+    "permanent": true
+  },
+  {
+    "source": "/doc/hub/support-contributing",
+    "destination": "/docs/hub/support-contributing",
+    "permanent": true
+  },
+  {
+    "source": "/doc/hub/users-authentication",
+    "destination": "/docs/hub/users-authentication",
+    "permanent": true
+  },
+  {
+    "source": "/doc/hub/users-in-rainbow",
+    "destination": "/docs/hub/users-in-rainbow",
+    "permanent": true
+  },
+  {
+    "source": "/doc/hub/users-visibility-and-privacy",
+    "destination": "/docs/hub/users-visibility-and-privacy",
+    "permanent": true
+  },
+  {
+    "source": "/doc/release-notes",
+    "destination": "/changelog",
+    "permanent": true
+  },
+  {
+    "source": "/doc/rest/api",
+    "destination": "/api-reference",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/home",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Connect_to_rainbow",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Getting_started",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Manage_contacts",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Manage_groups",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Manage_your_profile",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Search_in_Rainbow",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/common/lts/guides/001_getting_started",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/common/lts/guides/150_legals",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/common/lts/guides/CHANGELOG",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/001_getting_started",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/020_migration_guide",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/025_methods_and_events_available",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/028_events_and_callback",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/030_connect_to_rainbow",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/032_autoreconnection",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/035_events_mode",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/038_restriction_of_use",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/040_managing_personal_profile",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/050_retrieve_conversations_and_contacts",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/055_managing_users_guests",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/060_make_an_IM_conversation",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/070_managing_presence",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/080_managing_bubbles",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/090_managing_files",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/100_managing_conferences",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/110_managing_telephony_calls",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/112_managing_hub_telephony",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/120_installation_for_mac",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/130_application_logging",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/135_json_parser",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/140_development_kit",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/145_server_errors_list",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/150_legals",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/CHANGELOG",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/data_in_cache_and_reconnection",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/home",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/medias/lts/guides/001_getting_started",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/medias/lts/guides/150_legals",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/medias/lts/guides/CHANGELOG",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/webrtc.abstractions/lts/guides/001_getting_started",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/webrtc.abstractions/lts/guides/150_legals",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/webrtc.abstractions/lts/guides/CHANGELOG",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/webrtc.desktop/lts/guides/001_getting_started",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/webrtc.desktop/lts/guides/150_legals",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/webrtc.desktop/lts/guides/CHANGELOG",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/webrtc/lts/guides/001_getting_started",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/webrtc/lts/guides/150_legals",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/webrtc/lts/guides/CHANGELOG",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/common/lts/guides/001_getting_started",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/common/lts/guides/150_legals",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/001_getting_started",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/025_methods_and_events_available",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/028_events_and_callback",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/030_connect_to_rainbow",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/032_autoreconnection",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/035_events_mode",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/038_restriction_of_use",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/040_managing_personal_profile",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/050_retrieve_conversations_and_contacts",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/060_make_an_IM_conversation",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/070_managing_presence",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/080_managing_bubbles",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/090_managing_files",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/100_managing_conferences",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/110_managing_telephony_calls",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/120_installation_for_mac",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/130_application_logging",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/135_json_parser",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/140_development_kit",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/145_server_errors_list",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/150_legals",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/CHANGELOG",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/core/lts/guides/data_in_cache_and_reconnection",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/home",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/medias/lts/guides/001_getting_started",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/medias/lts/guides/150_legals",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/medias/lts/guides/CHANGELOG",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/webrtc.abstractions/lts/guides/001_getting_started",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/webrtc.abstractions/lts/guides/150_legals",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/webrtc.abstractions/lts/guides/CHANGELOG",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/webrtc.desktop/lts/guides/001_getting_started",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/webrtc.desktop/lts/guides/150_legals",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/webrtc.desktop/lts/guides/CHANGELOG",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/webrtc/lts/guides/001_getting_started",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/webrtc/lts/guides/150_legals",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharpprevious/webrtc/lts/guides/CHANGELOG",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/home",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/admin",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/bubble",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/bubbles",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/call",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/callLog",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/callslog",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/capabilities",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/channel",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/channels",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/company",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/conferenceRecording",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/conferences",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/config",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/connection",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/contact",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/contacts",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/conversation",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/conversations",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/deviceManagement",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/favorites",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/fileStorage",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/forwardMode",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/group",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/groups",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/im",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/invitation",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/message",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/pbx",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/presence",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/sdk",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/suggestionService",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/telephonyKeys",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/telephonyMode",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/userprofile",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/virtualBackground",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/webConferenceParticipant",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/webConferenceSession",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/webConferenceV2",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/api/webRTC",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Adding_id_and_secret_key",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Changelog",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Chatting_in_Rainbow_bubbles",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Chatting_with_Rainbow_users",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Connecting_to_Rainbow",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Creating_audio_and_video_conferences",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Development_Kit",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Getting_Started",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Handling_events",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Hello_world_ESM",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Hello_world_legacy",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Initiating_audio_and_video_calls",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Integrating_Angular_1x_applications",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Integrating_JS_frameworks",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Interacting_with_users_bots_and_things",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Legals",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Loading_Angular_1x_applications",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Managing_Channels",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Managing_Favorites",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Oauth2_authentication",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Retrieving_calls_history",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Sharing_files",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Supported_Browsers",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Supporting_IE11",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Using_Config",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/home",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Bubbles/enumerations/BubbleEvents",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Bubbles/enumerations/BubbleServiceEvents",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Bubbles/enumerations/BubbleUserPrivilege",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Bubbles/enumerations/BubbleUserStatus",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Bubbles/enumerations/SearchBubblesFoundBy",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Bubbles/enumerations/SearchBubblesScope",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Bubbles/enumerations/SearchBubblesSortBy",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Bubbles/index",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Bubbles/interfaces/BubbleSearchResult",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Bubbles/interfaces/BubbleService",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Bubbles/interfaces/BubbleSettings",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Bubbles/interfaces/BubbleUser",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Bubbles/interfaces/CreateBubbleData",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Bubbles/interfaces/SearchBubblesOptions",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/CallLog/enumerations/CallLogServiceEvents",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/CallLog/enumerations/CallLogType",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/CallLog/index",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/CallLog/interfaces/CallLog",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/CallLog/interfaces/CallLogService",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Calls/enumerations/CallDirection",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Calls/enumerations/CallEvents",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Calls/enumerations/CallServiceEvents",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Calls/enumerations/CallStatus",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Calls/enumerations/CallType",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Calls/enumerations/MediaType",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Calls/index",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Calls/interfaces/Call",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Calls/interfaces/CallCapabilities",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Calls/interfaces/CallDestination",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Calls/interfaces/CalledParty",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Calls/interfaces/CallMediaStreams",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Calls/interfaces/CallService",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Calls/interfaces/PhoneCallAdditionalData",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Connection/classes/ConnectionProgress",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Connection/classes/ConnectionState",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Connection/enumerations/ConnectionServiceEvents",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Connection/enumerations/ConnectionStateEnum",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Connection/enumerations/ConnectionTokenState",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Connection/enumerations/DisconnectionReasonEnum",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Connection/index",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Connection/interfaces/ConnectionService",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Connection/type-aliases/ConnectionServiceEventHandler",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Conversations/classes/ConversationBookmark",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Conversations/classes/ConversationCapabilities",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Conversations/classes/ConversationLastMessage",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Conversations/classes/ConversationMissedInfoCounters",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Conversations/enumerations/ConversationEvents",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Conversations/enumerations/ConversationServiceEvents",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Conversations/enumerations/ConversationStatus",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Conversations/enumerations/ConversationType",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Conversations/index",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Conversations/interfaces/Conversation",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Conversations/interfaces/ConversationService",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Conversations/interfaces/SendFileMessageData",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Conversations/interfaces/SendMessageData",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Conversations/type-aliases/MessageLevel",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/DataChannels/enumerations/DataChannelServiceEvents",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/DataChannels/index",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/DataChannels/interfaces/DataChannel",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/DataChannels/interfaces/DataChannelService",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/DataChannels/type-aliases/DataChannelStatus",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/DirectorySearch/enumerations/CompanyScopeType",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/DirectorySearch/enumerations/DirectoryType",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/DirectorySearch/index",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/DirectorySearch/interfaces/CompanyOptions",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/DirectorySearch/interfaces/DirectorySearchOptions",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/DirectorySearch/interfaces/DirectorySearchResults",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/DirectorySearch/interfaces/DirectorySearchService",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/DirectorySearch/variables/DIRECTORY_SEARCH_SVC",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Favorites/enumerations/FavoritesServiceEvents",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Favorites/enumerations/FavoriteType",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Favorites/index",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Favorites/interfaces/Favorite",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/Favorites/interfaces/FavoritesService",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/index",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/RainbowSDK/classes/RainbowSDK",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/RainbowSDK/classes/RBEvent",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/RainbowSDK/classes/UtilitiesService",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/RainbowSDK/index",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/RainbowSDK/interfaces/RainbowSDKConfig",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/User/enumerations/UserPresenceStatus",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/User/index",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/User/interfaces/ConnectedUser",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/User/interfaces/User",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/User/interfaces/UserAvatar",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/User/interfaces/UserProfile",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/UserNetwork/classes/NetworkInvitation",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/UserNetwork/enumerations/UserNetworkServiceEvents",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/UserNetwork/index",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/UserNetwork/interfaces/UserNetworkService",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/UsersLists/enumerations/UsersListsServiceEvents",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/UsersLists/index",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/UsersLists/interfaces/UsersList",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/UsersLists/interfaces/UsersListProfile",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/api/UsersLists/interfaces/UsersListsService",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/CHANGELOG",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/gettingStarted/config",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/gettingStarted/connect",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/gettingStarted/install",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/gettingStarted/welcome",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/plugins/admin",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/plugins/bubbles",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/plugins/callLog",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/plugins/calls",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/plugins/conversations",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/plugins/datachannels/datachannels",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/plugins/favorites",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/plugins/plugins",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/plugins/polls",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/users/connectedUser",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/users/users",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/users/usersDiscovery",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/users/usersList",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/users/usersNetwork",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  }
+]

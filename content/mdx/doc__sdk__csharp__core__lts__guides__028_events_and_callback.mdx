@@ -1,0 +1,325 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/core/lts/guides/028_events_and_callback"
+lastSynced: "2026-02-19T22:35:13.696Z"
+---
+# Documentation
+
+Events, Aysnc/Await and SDKResult
+
+LTS release 3.XPubliée le 2025-03-17
+
+## Events, Aysnc/Await and SDKResult object
+
+### Introduction
+
+The SDK is event-based and most methods are asynchronous.
+
+An event is a message sent by a service of the SDK to signal the occurrence of an action. For example at any time, the state of the connection with the server can change: no more network connection for example (wifi lost ...). It is therefore necessary to process this type of information at all times.
+
+The methods are mainly asynchronous (their names finished by **Async**) because the SDK must request the server using [REST requests](https://en.wikipedia.org/wiki/REST), which can take some time. Asynchronous programming with async and await is used - [more details here](https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/).
+
+So you need to know how events and callback worked in C# if you want to understand how to use the SDK. IF you are already familiar with them you don't need to read all this guide but perhaps just the chapter about the [SDKResult object](#SDKResult_object).
+
+This object ([SDKResult object](#SDKResult_object)) is used to get results and eventually manage errors.
+
+### Events
+
+#### Register to events
+
+To register to events you have to specify the method which will be used to receive the message raised by the event. This method must have the correct signature according the event used.
+
+For example if we focus on [`AuthenticationFailed`](/docs/sdk/csharp#Rainbow.Application.AuthenticationFailed), [`AuthenticationSucceeded`](/docs/sdk/csharp#Rainbow.Application.AuthenticationSucceeded) and [`ConnectionStateChanged`](/docs/sdk/csharp#Rainbow.Application.ConnectionStateChanged) of the [`Rainbow.Application`](/docs/sdk/csharp) object, they are defined like this:
+
+```csharp
+public event SdkErrorDelegate AuthenticationFailed;
+public event VoidDelegate AuthenticationSucceeded;
+public event ConnectionStateDelegate ConnectionStateChanged;
+```
+
+It means that:
+
+-   To register to [`AuthenticationFailed`](/docs/sdk/csharp#Rainbow.Application.AuthenticationFailed) you need a method which as the same signature than [`SdkErrorDelegate`](/docs/sdk/csharp#Rainbow.Delegates.SdkErrorDelegate)
+    
+-   To register to [`AuthenticationSucceeded`](/docs/sdk/csharp#Rainbow.Application.AuthenticationSucceeded) you need a method which as the same signature than [`VoidDelegate`](/docs/sdk/csharp#Rainbow.Delegates.VoidDelegate)
+    
+-   To register to [`ConnectionStateChanged`](/docs/sdk/csharp#Rainbow.Application.ConnectionStateChanged) you need a method which as the same signature than [`ConnectionStateDelegate`](/docs/sdk/csharp#Rainbow.Delegates.ConnectionStateDelegate)
+    
+
+They are defined like this:
+
+```csharp
+public delegate void SdkErrorDelegate(SdkError sdkError);
+public delegate void VoidDelegate();
+public delegate void ConnectionStateDelegate(ConnectionState connectionState);
+```
+
+So to receive these events, we must create a method for each, for example `Application_AuthenticationFailed`, `Application_AuthenticationSucceeded` and `Application_ConnectionStateChanged`
+
+```csharp
+private void Application_AuthenticationFailed(SdkError sdkError) // => Same signature than SdkErrorDelegate
+{
+    // TO DO ...    
+}
+
+private void Application_AuthenticationSucceeded() // => Same signature than VoidDelegate
+{
+    // TO DO ...    
+}
+
+private void Application_ConnectionStateChanged(ConnectionState connectionState) // => Same signature than ConnectionStateDelegate
+{
+    // TO DO ...    
+}
+```
+
+Once we have defined these methods, we must indicate that they must be used when these events are triggered like this:
+
+```csharp
+// Create Rainbow.Application object
+Rainbow.Application myApp = new Rainbow.Application();
+
+// Register to event AuthenticationFailed
+myApp.AuthenticationFailed += Application_AuthenticationFailed;
+// => It means we want to receive the event AuthenticationFailed in the method Application_AuthenticationFailed
+// So the method Application_AuthenticationFailed is called when myApp object needs to trigger this event 
+    
+
+// Register to event AuthenticationSucceeded
+myApp.AuthenticationSucceeded += Application_AuthenticationSucceeded;
+// => It means we want to receive the event AuthenticationSucceeded in the method Application_AuthenticationSucceeded
+// So the method Application_AuthenticationSucceeded is called when myApp object needs to trigger this event
+
+
+// Register to event ConnectionStateDelegate
+myApp.ConnectionStateDelegate += Application_ConnectionStateDelegate;
+// => It means we want to receive the event ConnectionStateDelegate in the method Application_ConnectionStateDelegate
+// So the method Application_ConnectionStateDelegate is called when myApp object needs to trigger this event
+```
+
+Notice in the previous code the use of `+=` to link the event to the method. It means you **register** to the event.
+
+So the full code will be:
+
+```csharp
+// Create Rainbow.Application object
+Rainbow.Application myApp = new Rainbow.Application();
+
+// Register to event AuthenticationFailed
+myApp.AuthenticationFailed += Application_AuthenticationFailed;
+
+// Register to event AuthenticationSucceeded
+myApp.AuthenticationSucceeded += Application_AuthenticationSucceeded;
+
+// Register to event ConnectionStateDelegate
+myApp.ConnectionStateDelegate += Application_ConnectionStateDelegate;
+
+// Define methods called by events
+private void Application_AuthenticationFailed(SdkError sdkError)
+{
+    // TO DO ...    
+}
+
+private void Application_AuthenticationSucceeded()
+{
+    // TO DO ...    
+}
+
+private void Application_ConnectionStateChanged(ConnectionState connectionState)
+{
+    // TO DO ...    
+}
+```
+
+It's possible to register several times to the same event using the same method (in this case the method will be called several times) or a different one still using `+=`
+
+#### Unregister to events
+
+It's higly recommended to unregister to events if they are no more necessary - for example in desctructor of objects.
+
+For this you just have to use `-=` with method(s) used to receive the event. So to continue our example, we will use this:
+
+```csharp
+// Unregister to event AuthenticationFailed
+myApp.AuthenticationFailed -= Application_AuthenticationFailed;
+
+// Unregister to event AuthenticationSucceeded
+myApp.AuthenticationSucceeded -= Application_AuthenticationSucceeded;
+
+// Unregister to event ConnectionStateDelegate
+myApp.ConnectionStateDelegate -= Application_ConnectionStateDelegate;
+```
+
+### Asynchronous methods
+
+A lot of methods in the SDK use asynchronous methods mainly when the server is implied to provide the correct response.
+
+To know if a method is asynchronous, its name ends with **Async**.
+
+If its name ends with **Sync**, it means that the SDK uses data in its cache first and if it's not available, the SDK will ask the server (the thread is blocked until serv answer). It's not often used.
+
+For all other cases, it means that the SDK uses only data in its cache.
+
+For example in the [`Rainbow.Contacts`](/docs/sdk/csharp) service, we have this public methods available:
+
+```csharp
+public Company GetCompany()
+
+public async Task<SdkResult<Company>> GetCompanyAsync()
+```
+
+`GetCompany()` is not asynchronous and will provide a `Company` object using data in the cache of the SDK.
+
+`GetCompanyAsync()` is an asynchronous method (the name ends with **Async**) and the keyword **aync** is used so it means the method use the async/await pattern - [more details here](https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/). Since it's using async pattern, a **Task** is always expected in the result and here it includes a **<SdkResult<Company>>** object.
+
+Below a first example how to manage these both methods:
+
+```csharp
+// Create Rainbow.Application object
+Rainbow.Application myApp = new Rainbow.Application();
+
+// Get Rainbow.Contacts service
+Rainbow.Contacts myContactsService = myApp.GetContacts();;
+
+// Define a Company object
+Company myCompany;
+
+// We need to login to the rainbow server before to really use the contacts service
+// For simplification the code to do that is not here 
+
+// Get Company object of the user connected with the SDK using the cache
+myCompany = myContactsService.GetCompany();
+
+// Get 'Company' object of the user connected with the SDK asking the server
+
+// First possibility: the best way to do it
+SdkResult<Company> sdkResultWithCompany = await myContactsService.GetCompanyAsync(); // => Notice here the use of await: we want to wait the result of the asynchronous method before to continue
+
+if(sdkResultWithCompany.Success) // => More explanation about SdkResult object in next chapter 
+    myCompany = sdkResultWithCompany.Data; // We have know the Company
+else
+{
+    // Error when trying to get the info
+}
+
+// Another possibility: Using Task object
+Task<SdkResult<Company>> taskSdkResultWithCompany = myContactsService.GetCompanyAsync(); // => Notice here we don't use await
+
+taskSdkResultWithCompany.Wait(); //Blocks thread and waits until task is completed
+
+sdkResultWithCompany = taskSdkResultWithCompany.Result;
+if(sdkResultWithCompany.Success) // => More explanation about SdkResult object in next chapter 
+    myCompany = sdkResultWithCompany.Data; // We have know the Company
+else
+{
+    // Error when trying to get the info
+}
+```
+
+If necessary it's possible to call several asynchronous methods and wait until they are all finished. Example:
+
+```csharp
+var taskSearchContactsByTag = myContactsService.SearchContactsByTagAsync("tag 1", 10);
+var taskSearchContactsByDisplayName = myContactsService.SearchContactsByDisplayNameAsync("John", 10);
+var taskSearchContactByPhoneNumber = myContactsService.SearchContactByPhoneNumberAsync("+330612354678");
+
+var tasks = new Task[] {taskSearchContactsByTag, taskSearchContactsByDisplayName, taskSearchContactByPhoneNumber };
+
+try
+{
+    await Task.WhenAll(tasks); //Blocks thread and waits until alls tasks are completed
+    
+    // Get result for each
+    var searchContactsByTag = taskSearchContactsByTag.Result;
+    if(searchContactsByTag.Success)
+    {
+        // ...
+    }
+    else
+    {
+        // ...
+    } 
+}
+catch (Exception ex)
+{
+    // ...
+}
+```
+
+### SDKResult object[](/docs/sdk/csharp#SDKResult_object)
+
+Most of SDK methods use [`SdkResult<T>`](/docs/sdk/csharp) object to provide the operation result: the valid data if no error or the error with information to understand the reason.
+
+If no error occurs `SdkResult<T>.Result.Succcess` is equal to True. In this case `SdkResult<T>.Data` contains an object of `T` type.
+
+If an error occurs `SdkResult<T>.Result.Succcess` is equal to False. To get information about the error the `SdkResult<T>.Result` (which is a object) must be used.
+
+There is three type of `SdkError` - see [`SdkErrorType`](/docs/sdk/csharp#Rainbow.Enums.SdkErrorType):
+
+-   `Rainbow.Enums.SdkErrorType.NoError`: There is no error. You have to use `SdkResult<T>.Data` to get the result.
+-   `Rainbow.Enums.SdkErrorType.Exception`: An unexpected exception has occurred. To have more information use `SdkError.ExceptionError` object
+-   `Rainbow.Enums.SdkErrorType.IncorrectUse`: The way to use the method is not done correctly (network error, server errors, or sdk errors - like invalid parameter). In this case you can use properties `ErrorCode`, `ErrorDetailsCode`, `ErrorDetails`, `ErrorDetailsData` and `ErrorMsg` of the object `SdkError.IncorrectUseError` for more information.
+
+if `SdkResult<T>.Result.IncorrectUseError.ErrorCode` is equals to 1000, it means that the SDK itself has triggered the error.
+
+For other values, it means that the Rainbow server has triggered an error.
+
+To have a full list of errors [check this page](/docs/sdk/csharp).
+
+Example with asynchronous method `GetCompanyAsync` of `Contacts` service:
+
+```csharp
+SdkResult<Company> sdkResultWithCompany = await myContactsService.GetCompanyAsync();
+
+if(sdkResultWithCompany.Success)
+{
+    // The operation is a success - use Data member to get the expected data.
+    myCompany = sdkResultWithCompany.Result.Data; // We have now the Company
+}
+else
+{
+    // The operation is NOT a success
+
+    // Check error type
+    if (sdkResultWithCompany.Result.Type == Rainbow.Enums.SdkErrorType.Exception)
+    {
+        // An exception has occurred - get the Exception object
+        Exception exception = sdkResultWithCompany.Result.ExceptionError;
+
+        // Here we can use stack information, etc ... 
+        // See https://learn.microsoft.com/en-us/dotnet/api/system.exception?view=net-8.0 
+    }
+    else
+    {
+        // We use badly the SDK or we don't have permission
+        SdkInternalError sdkInternalError = sdkResultWithCompany.Result.IncorrectUseError;
+
+        if (sdkInternalError.ErrorCode == 1000)
+        {
+            // The SDK itself informs us of an error - check details to have more information
+        }
+        else
+        {
+            // The server has returned an error - check details to have more information
+        }
+    }
+}
+```
+
+### Sur cette page
+
+-   [Events, Aysnc/Await and SDKResult object](/docs/sdk/csharp#name-events-aysncawait-and-sdkresult-object-0)
+-   [Introduction](/docs/sdk/csharp#name-introduction-3)
+-   [Events](/docs/sdk/csharp#name-events-21)
+-   [Register to events](/docs/sdk/csharp#name-register-to-events-24)
+-   [Unregister to events](/docs/sdk/csharp#name-unregister-to-events-76)
+-   [Asynchronous methods](/docs/sdk/csharp#name-asynchronous-methods-86)
+-   [SDKResult object](/docs/sdk/csharp#name-sdkresult-object--119)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

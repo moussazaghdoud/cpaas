@@ -1,0 +1,264 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/capabilities"
+lastSynced: "2026-02-19T22:35:14.913Z"
+---
+# Documentation
+
+Capabilities service
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Capabilities
+
+This service manages the capabilities of the connected user. The capabilities allow to use the Rainbow features depending on the user subscription profile. The main methods proposed in that service allow to:  
+\- Get all capabilities  
+\- Check each capability individually
+
+**Access**: public
+
+-   [Capabilities](#module_Capabilities)
+    -   [getAll()](#module_Capabilities+getAll) ⇒ `Array`
+    -   [getUserSubscription()](#module_Capabilities+getUserSubscription) ⇒ `string`
+    -   [isFeatureEnabled(featureString)](#module_Capabilities+isFeatureEnabled) ⇒ `boolean`
+    -   [hasS4BExtensionEnabled()](#module_Capabilities+hasS4BExtensionEnabled) ⇒ `boolean`
+    -   [hasOutlookExtensionEnabled()](#module_Capabilities+hasOutlookExtensionEnabled) ⇒ `boolean`
+    -   [hasCalendarPresenceEnabled()](#module_Capabilities+hasCalendarPresenceEnabled) ⇒ `boolean`
+    -   [hasTelephonyBasicCallEnabled()](#module_Capabilities+hasTelephonyBasicCallEnabled) ⇒ `boolean`
+    -   [hasTelephonySecondCallEnabled()](#module_Capabilities+hasTelephonySecondCallEnabled) ⇒ `boolean`
+    -   [hasTelephonyTransferCallEnabled()](#module_Capabilities+hasTelephonyTransferCallEnabled) ⇒ `boolean`
+    -   [hasTelephonyConferenceCallEnabled()](#module_Capabilities+hasTelephonyConferenceCallEnabled) ⇒ `boolean`
+    -   [hasTelephonyDeflectCallEnabled()](#module_Capabilities+hasTelephonyDeflectCallEnabled) ⇒ `boolean`
+    -   [hasTelephonyForwardCallEnabled()](#module_Capabilities+hasTelephonyForwardCallEnabled) ⇒ `boolean`
+    -   [hasTelephonyPhoneBookEnabled()](#module_Capabilities+hasTelephonyPhoneBookEnabled) ⇒ `boolean`
+    -   [hasTelephonyVoiceMailEnabled()](#module_Capabilities+hasTelephonyVoiceMailEnabled) ⇒ `boolean`
+    -   [hasWebRTCAudioMobileEnabled()](#module_Capabilities+hasWebRTCAudioMobileEnabled) ⇒ `boolean`
+    -   [hasWebRTCVideoMobileEnabled()](#module_Capabilities+hasWebRTCVideoMobileEnabled) ⇒ `boolean`
+    -   [hasBridgeConferenceEnabled()](#module_Capabilities+hasBridgeConferenceEnabled) ⇒ `boolean`
+    -   [hasBridgeConferenceRecordEnabled()](#module_Capabilities+hasBridgeConferenceRecordEnabled) ⇒ `boolean`
+    -   [hasBridgeConferenceDialOutEnabled()](#module_Capabilities+hasBridgeConferenceDialOutEnabled) ⇒ `boolean`
+    -   [maxParticipantsPerBubbleAllowed()](#module_Capabilities+maxParticipantsPerBubbleAllowed) ⇒ `number`
+    -   [maxParticipantsPerBridgeConferenceAllowed()](#module_Capabilities+maxParticipantsPerBridgeConferenceAllowed) ⇒ `number`
+    -   [maxFileStorageQuotaAllowed()](#module_Capabilities+maxFileStorageQuotaAllowed) ⇒ `number`
+
+### capabilities.getAll() ⇒ `Array`
+
+Get all capabilities for the connected user
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `Array` - An array of Objects representing the capabilities supported  
+**Access**: public  
+
+### capabilities.getUserSubscription() ⇒ `string`
+
+Get subscription name of the connected user
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `string` - String representing the name of user's profile  
+**Access**: public  
+
+### capabilities.isFeatureEnabled(featureString) ⇒ `boolean`
+
+Check if a feature is enabled
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `boolean` - Boolean  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+featureString
+
+`string`
+
+Feature string
+
+### capabilities.hasS4BExtensionEnabled() ⇒ `boolean`
+
+Check the right to use the Skype for Business extension
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `boolean` - Return true if the user can use the S4B extension  
+**Access**: public  
+
+### capabilities.hasOutlookExtensionEnabled() ⇒ `boolean`
+
+Check the right to use the Outlook extension
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `boolean` - Return true if the user can use the Microsoft Outlook extension  
+**Access**: public  
+
+### capabilities.hasCalendarPresenceEnabled() ⇒ `boolean`
+
+Check the right to take into account the Microsoft Office 365 Presence information
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `boolean` - Return true if the user can take into account is O365 Presence information  
+**Access**: public  
+
+### capabilities.hasTelephonyBasicCallEnabled() ⇒ `boolean`
+
+Check the right to use the Basic Telephony feature (make call, take call and clear call)
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `boolean` - Return true if the user can use the Telephony basic call feature  
+**Access**: public  
+
+### capabilities.hasTelephonySecondCallEnabled() ⇒ `boolean`
+
+Check the right to make a second call when an other one is active
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `boolean` - Return true if the user can make a second call  
+**Access**: public  
+
+### capabilities.hasTelephonyTransferCallEnabled() ⇒ `boolean`
+
+Check the right to transfer a call
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `boolean` - Return true if the user can transfer the call  
+**Access**: public  
+
+### capabilities.hasTelephonyConferenceCallEnabled() ⇒ `boolean`
+
+Check the right to initiate a conference call
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `boolean` - Return true if the user can initiate a conference call  
+**Access**: public  
+
+### capabilities.hasTelephonyDeflectCallEnabled() ⇒ `boolean`
+
+Check the right to deflect a call
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `boolean` - Return true if the user can deflect a call  
+**Access**: public  
+
+### capabilities.hasTelephonyForwardCallEnabled() ⇒ `boolean`
+
+Check the right to forward a call
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `boolean` - Return true if the user can forward a call  
+**Access**: public  
+
+### capabilities.hasTelephonyPhoneBookEnabled() ⇒ `boolean`
+
+Check the right to access the phone book
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `boolean` - Return true if the user can access to the phone book  
+**Access**: public  
+
+### capabilities.hasTelephonyVoiceMailEnabled() ⇒ `boolean`
+
+Check the right to access the voice mail
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `boolean` - Return true if the user can access to the voice mail  
+**Access**: public  
+
+### capabilities.hasWebRTCAudioMobileEnabled() ⇒ `boolean`
+
+Check the right to make a WebRTC audio call using a mobile device
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `boolean` - Return true if the user can make a WebRTC audio call using his mobile device  
+**Access**: public  
+
+### capabilities.hasWebRTCVideoMobileEnabled() ⇒ `boolean`
+
+Check the right to make a WebRTC video call using a mobile device
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `boolean` - Return true if the user can make a WebRTC video call using his mobile device  
+**Access**: public  
+
+### capabilities.hasBridgeConferenceEnabled() ⇒ `boolean`
+
+Check the right to have a conference audio bridge
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `boolean` - Return true if the user has an associated conference audio bridge  
+**Access**: public  
+
+### capabilities.hasBridgeConferenceRecordEnabled() ⇒ `boolean`
+
+Check the right to record a conference
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `boolean` - Return true if the user can record the conference  
+**Access**: public  
+
+### capabilities.hasBridgeConferenceDialOutEnabled() ⇒ `boolean`
+
+Check the right to be called back by the conference bridge
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `boolean` - Return true if the user can be called back by the conference bridge  
+**Access**: public  
+
+### capabilities.maxParticipantsPerBubbleAllowed() ⇒ `number`
+
+Get the maximum number of participants that can join a bubble
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `number` - The maximum number of participants per bubble  
+**Access**: public  
+
+### capabilities.maxParticipantsPerBridgeConferenceAllowed() ⇒ `number`
+
+Get the maximum number of participants that can join a conference bridge
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `number` - The maximum number of participants per conference bridge  
+**Access**: public  
+
+### capabilities.maxFileStorageQuotaAllowed() ⇒ `number`
+
+Get the quota allowed for the file storage
+
+**Kind**: instance method of [`Capabilities`](#module_Capabilities)  
+**Returns**: `number` - The quota (in GB) allowed for the File Storage  
+**Access**: public
+
+### Sur cette page
+
+-   [Capabilities](/docs/sdk/web#name-capabilities-3)
+-   [capabilities.getAll() ⇒ Array](/docs/sdk/web#name-capabilities.getall--array-134)
+-   [capabilities.getUserSubscription() ⇒ string](/docs/sdk/web#name-capabilities.getusersubscription--string-143)
+-   [capabilities.isFeatureEnabled(featureString) ⇒ boolean](/docs/sdk/web#name-capabilities.isfeatureenabledfeaturestring--boolean-152)
+-   [capabilities.hasS4BExtensionEnabled() ⇒ boolean](/docs/sdk/web#name-capabilities.hass4bextensionenabled--boolean-192)
+-   [capabilities.hasOutlookExtensionEnabled() ⇒ boolean](/docs/sdk/web#name-capabilities.hasoutlookextensionenabled--boolean-201)
+-   [capabilities.hasCalendarPresenceEnabled() ⇒ boolean](/docs/sdk/web#name-capabilities.hascalendarpresenceenabled--boolean-210)
+-   [capabilities.hasTelephonyBasicCallEnabled() ⇒ boolean](/docs/sdk/web#name-capabilities.hastelephonybasiccallenabled--boolean-219)
+-   [capabilities.hasTelephonySecondCallEnabled() ⇒ boolean](/docs/sdk/web#name-capabilities.hastelephonysecondcallenabled--boolean-228)
+-   [capabilities.hasTelephonyTransferCallEnabled() ⇒ boolean](/docs/sdk/web#name-capabilities.hastelephonytransfercallenabled--boolean-237)
+-   [capabilities.hasTelephonyConferenceCallEnabled() ⇒ boolean](/docs/sdk/web#name-capabilities.hastelephonyconferencecallenabled--boolean-246)
+-   [capabilities.hasTelephonyDeflectCallEnabled() ⇒ boolean](/docs/sdk/web#name-capabilities.hastelephonydeflectcallenabled--boolean-255)
+-   [capabilities.hasTelephonyForwardCallEnabled() ⇒ boolean](/docs/sdk/web#name-capabilities.hastelephonyforwardcallenabled--boolean-264)
+-   [capabilities.hasTelephonyPhoneBookEnabled() ⇒ boolean](/docs/sdk/web#name-capabilities.hastelephonyphonebookenabled--boolean-273)
+-   [capabilities.hasTelephonyVoiceMailEnabled() ⇒ boolean](/docs/sdk/web#name-capabilities.hastelephonyvoicemailenabled--boolean-282)
+-   [capabilities.hasWebRTCAudioMobileEnabled() ⇒ boolean](/docs/sdk/web#name-capabilities.haswebrtcaudiomobileenabled--boolean-291)
+-   [capabilities.hasWebRTCVideoMobileEnabled() ⇒ boolean](/docs/sdk/web#name-capabilities.haswebrtcvideomobileenabled--boolean-300)
+-   [capabilities.hasBridgeConferenceEnabled() ⇒ boolean](/docs/sdk/web#name-capabilities.hasbridgeconferenceenabled--boolean-309)
+-   [capabilities.hasBridgeConferenceRecordEnabled() ⇒ boolean](/docs/sdk/web#name-capabilities.hasbridgeconferencerecordenabled--boolean-318)
+-   [capabilities.hasBridgeConferenceDialOutEnabled() ⇒ boolean](/docs/sdk/web#name-capabilities.hasbridgeconferencedialoutenabled--boolean-327)
+-   [capabilities.maxParticipantsPerBubbleAllowed() ⇒ number](/docs/sdk/web#name-capabilities.maxparticipantsperbubbleallowed--number-336)
+-   [capabilities.maxParticipantsPerBridgeConferenceAllowed() ⇒ number](/docs/sdk/web#name-capabilities.maxparticipantsperbridgeconferenceallowed--number-345)
+-   [capabilities.maxFileStorageQuotaAllowed() ⇒ number](/docs/sdk/web#name-capabilities.maxfilestoragequotaallowed--number-354)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

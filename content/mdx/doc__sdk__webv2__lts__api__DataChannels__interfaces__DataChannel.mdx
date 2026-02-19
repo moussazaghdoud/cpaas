@@ -1,0 +1,142 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/DataChannels/interfaces/DataChannel"
+lastSynced: "2026-02-19T22:35:17.120Z"
+---
+# Documentation
+
+DataChannel
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [DataChannels](doc/sdk/webv2/lts/api/DataChannels/index) / DataChannel
+
+# Interface: DataChannel
+
+## Properties
+
+### description?
+
+> `optional` `readonly` **description**: `string`
+
+DataChannel description string
+
+---
+
+### publisher?
+
+> `optional` `readonly` **publisher**: `Contact`
+
+DataChannel publisher
+
+---
+
+### status?
+
+> `optional` `readonly` **status**: [`DataChannelStatus`](doc/sdk/webv2/lts/api/DataChannels/type-aliases/DataChannelStatus)
+
+DataChannel status
+
+## Methods
+
+### onMessageReceived()
+
+> **onMessageReceived**(`handler`): `Subscription`
+
+Attach listener to dataChannelm messages
+
+#### Parameters
+
+• **handler**
+
+he dataChannel message event handler
+
+#### Returns
+
+`Subscription`
+
+---
+
+### onStatusChanged()
+
+> **onStatusChanged**(`handler`): `Subscription`
+
+Attach listener to dataChannelm status change
+
+#### Parameters
+
+• **handler**
+
+the dataChannel status change event handler
+
+#### Returns
+
+`Subscription`
+
+---
+
+### sendFile()
+
+> **sendFile**(`file`): `void`
+
+Send file on connected dataChannel
+
+#### Parameters
+
+• **file**: [`File`](https://developer.mozilla.org/docs/Web/API/File)
+
+the file to send
+
+#### Returns
+
+`void`
+
+---
+
+### sendMessage()
+
+> **sendMessage**(`data`): `void`
+
+Send data on connected dataChannel
+
+#### Parameters
+
+• **data**: `any`
+
+the data to send
+
+#### Returns
+
+`void`
+
+### Sur cette page
+
+-   [Properties](/docs/sdk/web#name-properties-10)
+-   [description?](/docs/sdk/web#name-description-13)
+-   [publisher?](/docs/sdk/web#name-publisher-25)
+-   [status?](/docs/sdk/web#name-status-37)
+-   [Methods](/docs/sdk/web#name-methods-48)
+-   [onMessageReceived()](/docs/sdk/web#name-onmessagereceived-51)
+-   [Parameters](/docs/sdk/web#name-parameters-62)
+-   [Returns](/docs/sdk/web#name-returns-71)
+-   [onStatusChanged()](/docs/sdk/web#name-onstatuschanged-78)
+-   [Parameters](/docs/sdk/web#name-parameters-89)
+-   [Returns](/docs/sdk/web#name-returns-98)
+-   [sendFile()](/docs/sdk/web#name-sendfile-105)
+-   [Parameters](/docs/sdk/web#name-parameters-116)
+-   [Returns](/docs/sdk/web#name-returns-125)
+-   [sendMessage()](/docs/sdk/web#name-sendmessage-132)
+-   [Parameters](/docs/sdk/web#name-parameters-143)
+-   [Returns](/docs/sdk/web#name-returns-152)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

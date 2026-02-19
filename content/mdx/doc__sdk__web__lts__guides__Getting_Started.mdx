@@ -1,0 +1,155 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/guides/Getting_Started"
+lastSynced: "2026-02-19T22:35:15.834Z"
+---
+# Documentation
+
+Web > lts > guides > Getting\_Started
+
+## Getting Started
+
+---
+
+Welcome to the Rainbow Web Software Development Kit!
+
+The Rainbow Web SDK (Software Development Kit) is a pure AngularJS JavaScript library that works on all modern browsers from IE 11 to the latest version of Chrome, Firefox, Safari and Edge. Its powerful APIs enable you to create the best JavaScript applications that connect to the Rainbow Cloud Services.
+
+Getting started with Rainbow Web SDK could not be easier. By adding a single line to your existing JavaScript project, you will have access to the public API of the Rainbow Cloud Services.
+
+### Rainbow Knowledge
+
+---
+
+Here are some Rainbow wordings that will help you understanding this guide.
+
+Rainbow concept
+
+Details
+
+**Rainbow**
+
+Alcatel-Lucent Rainbow™ is a cloud-based, enterprise-grade, Unified Communication as a Service (UCaaS) and Communication Platform as a Service (CPaaS) that connects people and systems
+
+**Events**
+
+Events are asynchronous messages or notifications that come from Rainbow when something related to your data happens.  
+By listening to theses events, your application will be able to react and inform the user of these changes.
+
+**Methods**
+
+Methods are all the SDK functions your application can call to enable Rainbow services such as initiating a WebRTC call, sending a file, etc. In most of the cases, Methods are asynchronous and follow the JavaScript Promise pattern.
+
+### Preamble
+
+---
+
+Well, well, well... Yet another JavaScript library or SDK... As if it was missing...
+
+Yes, but with this one, you will "change the world and make it better"! because it's amazing!
+
+With Rainbow Web SDK you have the potential to build your own social network, your own banking, hospitality or whatever app you want with audio and video as well as multi-party chat interactions between your users just by adding this library to your app!
+
+Take time to read this first tutorial to understand the basics and then deploy your imagination and your coding spirit to build your app!
+
+### OS and browsers support
+
+---
+
+The Rainbow Web SDK is based on jQuery and the AngularJS framework.
+
+The Rainbow Web SDK works on:
+
+-   Chrome stable channel and Chromium based browser (e.g. Opera)
+    
+-   Firefox ESR and stable channel
+    
+-   Microsoft Edge
+    
+-   Microsoft Internet Explorer 11
+    
+-   Safari
+    
+
+The Rainbow Web SDK is supported on Windows (starting from Windows 7) and MacOSX (Starting from 10.10).
+
+The Rainbow Web SDK can be integrated into any Web application (i.e.: React, Vue), browser extension or desktop application that embeds a Webview (e.g. QT application, Electron, nw.js). Some integration examples can be found on our [Github](https://github.com/Rainbow-CPaaS).
+
+### What is the Rainbow Web SDK?
+
+---
+
+Rainbow Web SDK is a **JavaScript library** you have to use in order to connect and access Alcatel-Lucent Enterprise Rainbow.
+
+Once loaded and initialized, you have access to the library by using the variable `rainbowSDK`.
+
+This library is divided in **services** that let you access tons of **methods** and connect your app to the Rainbow functionalities.
+
+For example, the `rainbowSDK.webRTC` is the service dedicated to WebRTC (audio/video calls). It will give you access to all the WebRTC available features that you can use. In that service you can use the method `rainbowSDK.webRTC.callInVideo()` to make a video call with another Rainbow user. To help you discover all the available services, you can have a look at the documentation accessible on the left side of this page.
+
+Additionally, each service offers a set of **events** that you can listen to be notified of asynchronous things (e.g. incoming WebRTC call, etc.) that could occur.
+
+#### Methods
+
+---
+
+There are two kinds of methods:
+
+-   Those that deal with the Rainbow platform: For these APIs, a promise based object is returned in order to allow you to continue the execution of your code once the result of this API is known (good or not).
+    
+-   Those that only do things on the client side: For these APIs, the result is returned synchronously.
+    
+
+When you do not call the API with the right parameters, you always get a JSON result containing an error code and an error label that is much more explicit (...)
+
+```javascript
+/* Example of error code object */
+{
+  code: SDK.ERRORBADREQUEST,   // -16
+  label: "Parameter 'contact' can't be null or empty"
+}
+```
+
+#### Events
+
+---
+
+Events are initiated from the library when something that comes from the server happens.
+
+They are asynchronous. It is not mandatory to listen to all the events that come from the server. Choose the right ones you need!
+
+### See also
+
+---
+
+-   [Injecting Application ID and Secret Key](doc/sdk/web/lts/guides/Adding_id_and_secret_key)
+    
+-   [Integrating JavaScript frameworks](doc/sdk/web/lts/guides/Integrating_JS_frameworks)
+    
+-   [Integrating AngularJS applications](doc/sdk/web/lts/guides/Loading_Angular_1x_applications)
+    
+-   [Connecting to Rainbow](doc/sdk/web/lts/guides/Connecting_to_Rainbow)
+    
+
+---
+
+*Last updated May, 24th 2019*
+
+### Sur cette page
+
+-   [Getting Started](/docs/sdk/web#name-getting-started-0)
+-   [Rainbow Knowledge](/docs/sdk/web#name-rainbow-knowledge-13)
+-   [Preamble](/docs/sdk/web#name-preamble-58)
+-   [OS and browsers support](/docs/sdk/web#name-os-and-browsers-support-74)
+-   [What is the Rainbow Web SDK?](/docs/sdk/web#name-what-is-the-rainbow-web-sdk-117)
+-   [Methods](/docs/sdk/web#name-methods-136)
+-   [Events](/docs/sdk/web#name-events-159)
+-   [See also](/docs/sdk/web#name-see-also-169)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

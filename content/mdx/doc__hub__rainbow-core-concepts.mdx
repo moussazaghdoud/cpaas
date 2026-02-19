@@ -1,0 +1,192 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "docs-hub"
+source: "https://developers.openrainbow.com/doc/hub/rainbow-core-concepts"
+lastSynced: "2026-02-19T22:35:13.138Z"
+---
+# Documentation
+
+Core concepts
+
+## Rainbow core concepts
+
+---
+
+### Preambule
+
+---
+
+To be able to develop your application that connects to Rainbow, you need to have in mind some key concepts.
+
+These concepts are in the **core** of Rainbow and called **pillars**. Knowing them, will help you understanding how Rainbow works and what are the rules behind.
+
+In Rainbow, there are **4 pillars** or concepts:
+
+-   The concept of **Entity**
+    
+-   The concept of **Membership**
+    
+-   The concept of **Relation**
+    
+-   The concept of **Right**
+    
+
+This guide describes these pillars in details and illustrates how and why Rainbow is called **the relationship machine**.
+
+### Rainbow entity
+
+---
+
+An entity is something or someone that can be identified in Rainbow. Entities can be various and not only address users. Things like an iot device or a PBX are entities too.
+
+Each entity has an unique **identity**. The identity is the way an entity is identified and distinguished from others. An identity contains various information like a name, an avatar, an id... Information are different depending on the entity (ie: users, sites...).
+
+Each identity share a important information called the `id`. This identifier is the main information to interact with an entity.
+
+Using this identifier, you're are able to call Rainbow API for getting the associated **vcard** of this entity (depending the privacy rules - see next paragraphes) and to communicate with him.
+
+In fact, as Rainbow uses an XMPP engine for communicating in live between entities, there is always a second identifier called the `jid` that is used in association with the `id`. Internally, this is the `jid` that is used when for example a user wants to contact an other user in live. But both always exist.
+
+The `id` is the key information to use to identify a Rainbow entity.
+
+### Rainbow membership
+
+---
+
+The membership is a concept associated to **companies**, **sites** and **organizations**:
+
+-   A company is used to define affiliations for users. Like other entity, a company has an `id` and a lot of others information like a logo, a slogan that can be used to promote and reinforce its identity. And by consequences all entities belonging to this company will benefit from these information.
+    
+-   A site can be used to associate systems inside a company.
+    
+-   An organization groups companies inside a unique set to define specific affiliations.
+    
+
+In Rainbow, each 'living' entity has a membership. For example, if you're a single user, by default you belong to a virtual company called **'Rainbow'**.
+
+This membership defines the limits of the interactions entities can have together. Concretely, membership is based on the principle of **visibility**.
+
+The visibility is the way a company, an organization, a user and so any entity is visible from an other entity. Visibility can be **public** or **private**.
+
+In some words, if an entity is public, the entity can be found in the search field using a Rainbow client. If entity is private, it is private and so can't be found.
+
+The last thing to understand regarding on the membership is that information of entities is protected by **privacy rules**.
+
+Imagine that someone who has a private visibility calls someone who is public. The user in the public company will only have access to a minimal set of information of the private user. Information, like the `loginEmail` will not be available. You will access only to information that let you distinguishing the user (ie. name, photo, company).
+
+You can find additionnal information on the visibility by reading the guide [Visibility and privacy rules](/docs/hub/users-visibility-and-privacy).
+
+### Rainbow relation
+
+---
+
+A **relation** in Rainbow is how two entities "keep in touch" and so can quickly initiate a new interaction or continue an existing one together.
+
+Rainbow relations can be **spontaneous** when searching for someone and initiating an audio call, **long-term** when reopening and interacting again in chat or webRTC with a user, or **privileged** when the entity you contact is in your network.
+
+The type of relation you have with other Rainbow entities is very important because depending on it, you can or not have access to the entity **availability** information.
+
+The availability is all information you can share regarding your activity. At this time of writing, the availability is composed of
+
+-   Your **presence** activity: Are you online, dnd, away, in a video call ?
+    
+-   Your **business phone** activity: Are you engaging in an audio call or not ?
+    
+-   Your **calendar** activity: Are you in a meeting, out of office ? Until when ?
+    
+
+You availability is only shared when you have a privileged relation with your recipient.
+
+Privileged relation needs an acknowledgment from your recipient, so you need to ask him by sending him an invitation to be in his network. If your recipient accepts, you will be in his network and he will be in your network. You have now a new privileged relation with a user.
+
+Be careful, it's not because your recipient is in your network that he has access to your network's contact. Being in the network of someone only allows to access to his availability.
+
+A privileged relation can be done with someone that is in the same company as well as with someone that is in a different company. Be careful, it's not because two entities are in the same company that they have a privileged relation by default. You always need to ask.
+
+This privileged relation can be removed at any time by one of the peer.
+
+The following table sums-up the differences in term of behavior when having or not a privileged relation with someone.
+
+When I have a privileged relation with a user
+
+Without a privileged relation with a user
+
+I know the availability of the user: if he's connected or not, if he's currently engaged in a call or not...
+
+I have no information about the availability of the user. I don't know if the user is currently connected or not to Rainbow
+
+I know the current calendar activity of the user (Enterprise)
+
+I have no information about the calendar activity of the user
+
+I can initiate an audio-video call or share my screen if the user is available
+
+I can initiate an audio-video call or share my screen only if the user is in the same company as me
+
+*Note*: A Rainbow user with an Enterprise profile can share his calendar activity only if he has given his specific authorization to Rainbow to access and share it. It's not linked to the common availability (presence )
+
+### Rainbow right
+
+---
+
+A **right** in Rainbow is the possibility or not to have access to Rainbow features like having video call in group or not and the limit of particular feature like the file quota you have.
+
+In Rainbow the right is associated to two things:
+
+-   A **role** like user, guest or admin
+    
+-   A **profile** like Essential, Business, Enterprise or Cpaas
+    
+
+In 99% of the case, you have a `user` role and so have access to collaboration services like chatting, having multimedia calls... In some cases, you can have an `admin` role if you need to do administrative or provisionning tasks within a company or an organization. For temporarily interaction with Rainbow, you can have a `guest` role with limited access to features. Guest role is limited to third party applications that need this kind of role and can't be used with a Rainbow application provided by ALE.
+
+Regarding your profile, it can be **Essential**, **Business** or **Enterprise**. Your profile is linked to the **subscription** you have. By default, you have an Essential profile if you just sign-in to Rainbow on your own. But when using Rainbow at work, you company may subscribe to different Rainbow offers and so you can have a profile Business or Enterprise and so have access to more features.
+
+A new profile called **CPaaS** is available which allows to access features using a specific Business Model reserved to third party applications. This profile is limited to third party applications and can't be used with a Rainbow Application provided by ALE.
+
+So when connecting a Rainbow user in a third party application, the user's profile inherits automatically from the CPaaS profile. Consequently, an essential user when connecting to your application can have access to more features than if he uses the Rainbow application.
+
+To have a sum-up of features accessible by profile, have a look to [Rainbow offers](https://www.al-enterprise.com/en/rainbow/subscription-plans).
+
+### The relationship machine
+
+---
+
+Now that you have in mind these 4 pillars, it's easier to understand why Rainbow is called the **relationship machine** because Rainbow connects people, things and systems together by defining privacy rules to protect entities information from being used by everyone as well as to protect entities occupancy from being disturbed.
+
+So entities like users and their relations are in the center of Rainbow and allow to leverage the way they work by keeping their network and interactions under control.
+
+In other words, Rainbow helps organizations to deliver services and technologies to transform how people work.
+
+### Interested in
+
+---
+
+-   [Authenticating Rainbow users](/docs/hub/users-authentication)
+    
+-   [Understanding Rainbow visibility and privacy rules](/docs/hub/users-visibility-and-privacy)
+    
+-   [Discovering Rainbow users](/docs/hub/users-in-rainbow)
+    
+
+---
+
+*Last updated August, 26th 2022*
+
+### Sur cette page
+
+-   [Rainbow core concepts](/docs/hub/rainbow-core-concepts#name-rainbow-core-concepts-0)
+-   [Preambule](/docs/hub/rainbow-core-concepts#name-preambule-4)
+-   [Rainbow entity](/docs/hub/rainbow-core-concepts#name-rainbow-entity-42)
+-   [Rainbow membership](/docs/hub/rainbow-core-concepts#name-rainbow-membership-64)
+-   [Rainbow relation](/docs/hub/rainbow-core-concepts#name-rainbow-relation-109)
+-   [Rainbow right](/docs/hub/rainbow-core-concepts#name-rainbow-right-201)
+-   [The relationship machine](/docs/hub/rainbow-core-concepts#name-the-relationship-machine-238)
+-   [Interested in](/docs/hub/rainbow-core-concepts#name-interested-in-251)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

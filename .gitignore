@@ -1,0 +1,12 @@
+node_modules/
+.next/
+*.tsbuildinfo
+.env
+.env.local
+
+# Crawled raw HTML (large, regenerable)
+content/raw/*.html
+
+# Build outputs
+apps/web/out/
+apps/web/.next/

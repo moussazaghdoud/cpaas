@@ -1,0 +1,930 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/guides/Changelog"
+lastSynced: "2026-02-19T22:35:15.670Z"
+---
+# Documentation
+
+Changelog
+
+LTS release 4.0.0Publiée le 2022-12-21Comparer
+
+# SDK for Web
+
+Here is the list of the changes and features provided by the **Rainbow-Web-SDK**
+
+## \[4.0.0-LTS\] - 2022-11-21
+
+-   `contact model` - add new properties related to custom user profile management : `fileSharingEnabled`, `fileStorageEnabled`, `instantMessagesEnabled`, `bubblesEnabled`, `webrtcAudioEnabled`, `webrtcVideoEnabled`, `webrtcSharingEnabled`, `modifyProfileEnabled`;
+-   `contact model` - Add also `professionalMobileNumber` and `professionalMobileNumberCan`
+-   `pbxService` - Add new APIs: `subscribeToCCDEvents` and `getCurrentCCDAgentStatus` for the CCD Agent management
+
+## \[3.4.0-STS\] - 2022-10-06
+
+-   `conferenceRecording` - add conferenceRecording that allows to record web conferences on server side
+-   `suggestionsService` - add suggestionsService that allows to find contact suggestions in the same company, i.e. "people you may know"
+-   `BREAKING CHANGE` - Message model no longer contains `alternativeContent`, use `additionalContent` instead
+
+## \[3.3.0-STS\] - 2022-08-25
+
+-   `callsLogService` - the maximum number of call logs per request is 250 (both for `fetchCallLogs` and `fetchPaginatedCallLogs`)
+-   `virtualBackground` - add virtualBackground Service to manage the virtual background for calls
+
+## \[3.2.0-STS\] - 2022-06-14
+
+-   General bug fixes and stability improvements
+
+## \[3.1.3-STS\] - 2022-06-16
+
+-   Fix HDMI Screens chosen as output device when plugged-in.
+
+## \[3.1.2-STS\] - 2022-06-03
+
+-   Fix dual channel headset issues; Fix STEREO microphone use cases
+
+## \[3.1.1-STS\] - 2022-05-18
+
+-   Fix problems with the audio devices management
+
+## \[3.1.0-STS\] - 2022-05-16
+
+-   `WebRTCService` - ### BREAKING CHANGE ### remove useSpeaker and useCamera and useMicrophone APIs (user should use the new deviceManagement service) ### BREAKING CHANGE ### remove setChromeExtensionIdForSharing API (and globally deactivate chrome extension for sharing, as no longer needed)
+-   `deviceManagement` - ### BREAKING CHANGE ### Service to be used for the device management (audio input/output and video input devices)
+
+## \[3.0.2-LTS\] - 2022-04-27
+
+-   `CallsLogService` -- remove deprecated getAll() API
+
+## \[3.0.1-LTS\] - 2022-04-22
+
+-   Fix problems with `signout` method that sometimes does not resolve the promise
+
+## \[3.0.0-LTS\] - 2022-04-21
+
+-   Support of WebRTC unified plan for all calls and conference
+-   Includes all the changes introduced in the STS versions 2+ (see previous changelog entries)
+
+## \[2.13.0-STS\] - 2022-04-01
+
+-   `WebRTCService` - after removing sharing from a call containing remote video stream, the #large\_video element is updated now automatically to the remote video stream
+-   `webConference` - add new Web Conference Service V2
+-   Fix issues with conferencesService
+
+## \[2.12.2-STS\] - 2022-03-18
+
+-   Fix problems with signout() method
+
+## \[2.12.1-STS\]
+
+-   `contactsService` - add new API `isCalendarSharingActivated`
+-   `presenceService` - add new event `RAINBOW_ONMYCONTACTPRESENCECHANGED` fired when there's change in the contact presence / status
+-   FIX: remote video is added automatically when `RAINBOW_ONWEBRTCCALLSTATECHANGED` is fired and there are remote streams available
+
+## \[2.12.0-STS\]
+
+-   IMPORTANT: deactivated new models by default. Use config or `useNewModels` API to activate them. Starting this version the old models are recommended for usage
+-   `ConfigService` - add new APIs: `setAutoAway` and `setAutoAwayDelay`
+-   `pbxService` - add new event: RAINBOW\_ONFORWARDMODEUPDATED
+-   `pbxService` - add new APIs: `getForwardMode` and `setForwardMode`
+-   `callsLogService` - fix problems with RAINBOW\_ONCALLLOGACKUPDATED event after calling `markAllCallsLogsAsRead` API
+-   `conversationsService` - fix issues with `openConversationForBubble` API. It becomes asynchronous now and works with closed conversations.
+-   `conversationsService` - remove @deprecated tag from `openConversationForBubble` and `openConversationForContact`
+
+## \[2.11.0-STS\]
+
+-   `ContactsService` - add two new APIs : `getUserAutoDndCalendarSetting` and `updateUserAutoDndCalendarSetting`
+-   `BubblesService` - add new API : `reactivateInactiveBubble`
+-   `ConnectionService` - fix bugs with connection methods. From now on user can not call signin mehtod during another connection process or when the user is already connected.
+-   Update TelephonyMode docs
+-   `PbxService` - update docs around the RAINBOW\_ONVOICEMESSAGEUPDATED with information about the AVST VoiceMail type
+-   `ContactsService` - fix bug in searchCompanyDirectory API
+
+## \[2.10.1-STS\]
+
+-   Fix issues with video calls in Firefox
+-   Fix issues with loading the SDK
+
+## \[2.10.0-STS\]
+
+-   `Bubble` / `Room` model - add new property - `isAlertNotificationEnabled`. It is true when at least one member of the bubble has the feature enabled.
+-   `Contact` model - add new property - `isAlertNotificationEnabled`. It is true when the contact has the feature enabled.
+-   `ChannelsService` - signature of `createItem` changes. `url` parameter is deleted (no longer used)
+-   Add new service - `telephonyKeysService` allowing user handle speed dial keys
+-   `TelephonyService` - add new methods: `getTelephonyMode` and `setTelephonyMode`. They allow the Cloud PBX (Rainbow HUB) user to change telephony mode
+-   `TelephonyService` - remove `setNomadicWebRTC` after months of deprecation
+-   `CallsLogService` - prevent `RAINBOW_ONCALLLOGUPDATED` event when fetching call logs with `fetchCallLogs` and `fetchPaginatedCallLogs`. It will be updated only when a call log is deleted or a new one is received
+
+## \[2.9.0-STS\]
+
+-   `Bubble` / `Room` model - update `users` array. Add new field - `invitingUserId` giving the ID of the user who invited the user to the bubble
+
+## \[2.8.1-STS\]
+
+-   Fix problems with `telephonyService` - `getPbxType` should work now
+
+## \[2.8.0-STS\]
+
+-   Update internal scripts linked to release cycle
+-   `callsLogService` - add new API: `fetchCallLogs`
+-   `callsLogService` - add new API: `fetchPaginatedCallLogs`
+-   `callsLogService` - `getAll` API becomes deprecated
+
+## \[2.7.1-STS\]
+
+-   `rainbowLogger` - fix bug blocking verbose logs
+
+## \[2.7.0-STS\]
+
+-   `imService` - `sendMessageToConversation` will now accept three forms of alternative content: 'text/markdown', 'form/json' and 'rainbow/json'
+-   `imService` - add handling of alternativeContent and urgency level to `sendMessageToBubble`
+-   `telephonyService` - add handling of `correlatorDataHex`
+-   `telephonyService` - add new API: `getPbxType`
+-   `connectionService` - add new method `signinWithToken`
+-   `connectionService` - `signinOnRainbowHostedWithToken` second parameter becomes optional. Rainbow Web SDK can now extract a Rainbow environment from JWT token
+
+## \[2.6.0-STS\]
+
+-   `contactSDK` model - add new field in the new model: company. Contains information about user's company.
+-   `contactSDK` model - add new fields in the new model: businessPhones and mobilePhones.
+-   Fix bug linked to unknownUser avatar picture request
+-   Fix bug with `deletePhoneNumber` API in `userProfileService`
+-   `imService` - new API `markAllMessagesFromConversationAsRead`
+-   `callsLogService` - fix bug with inconsistent call logs duration format in `getAll()` method
+-   `pbxService` - add new APIs: `isOxeUser`, `isOxoUser`, `isCloudPbxUser`, `isThirdPartyPbxUser`
+-   Add fix for BroadcastChannel issue appearing on Safari (MacOS)
+
+## \[2.5.0-STS\]
+
+-   `webRTCService` - add new API: `getCallById`
+-   `conversationsService` - `getCallById` becomes deprecated, please use `webRTCService`'s `getCallById` API
+-   Update `Hello World - ESM` guide. Add info about the requirement of serving the application with HTTPS protocol
+-   `WebRTCService` - `useCamera`, `useSpeaker` and `useMicrophone` now allow the user to change the device during the call (Chrome only)
+
+## \[2.4.0-STS\]
+
+-   Update Hello World tutorial - add info about RAINBOW\_ONSTARTED
+-   Add new Call model to WebRTC service
+-   `WebRTCService` - Signature changes for the following APIs: `answerInAudio`, `answerInVideo`, `release`, `getPeerConnectionForCall`, `showRemoteVideo`, `hideRemoteVideo`, `addVideoToCall`, `addSharingToCall`, `removeVideoFromCall`, `removeSharingFromCall`, `muteAudioCall`, `unmuteAudioCall`, `getLocalStreamsFromCall`, `getRemoteStreamsFromCall`, `startRecording`, `stopRecording`. From now on, instead of a call object, they take the callId string as parameter
+-   Update WebRTC sample on GitHub to conform to the changes listed above
+
+## \[2.3.0-STS\]
+
+-   Improve automatic build process: add email notification and changelog generator
+-   Fix issue with the default avatar source in the empty contacts
+
+## \[2.2.0-STS\]
+
+-   Fix issues with OAuth token expiration
+-   Fix issues with `callInSharing` API
+-   Add new tools
+
+## \[2.1.0-STS\]
+
+-   `bubblesService` - add new API `joinRoomUsingOpenInviteId`
+-   `CRRAINB-19402` - fix issues with pop up displays after launching calls from iOS
+
+## \[2.0.3-lts\]
+
+-   `imService` - Fix bug when using `sendMessageToConversation` and `sendMessageToBubble` a message with alternative content of type 'text/markdown'. Allow sending "text" type of alternative content
+-   Add `side` property to `MessageSDK` model
+-   `userProfileService` - add new API: `getOptions`
+
+## \[2.0.2-lts\]
+
+-   Fix issues with WebRTC connections
+-   Lift file size limits when uploading one to the conversation
+
+## \[2.0.1-lts\]
+
+-   Fix issues with alternativeContent in `getMessagesFromConversation`
+-   `imService` - `sendMessageToConversation` will now accept three forms of alternative content: 'text/markdown', 'form/json' and 'rainbow/json'
+-   `imService` - add handling of alternativeContent to `sendMessageToBubble`
+
+## \[2.0.0-lts\]
+
+-   `configService` - add new API: `getCurrentConfig`
+-   `configService` - add new API: `setCustomLogger`
+-   `CRRAINB-19201` - fix issues with double sharing pop up in Chrome (`addSharingToCall`)
+-   `channelsService` - `createItem`, `updateChannelAvatar` change signature, please use `channelId` string
+-   `channelsService` - APIs `subscribeToChannel`, `unsubscribeFromChannel` become deprecated methods
+-   `bubblesService` - fix issues with `removeContactFromBubble`
+-   `connectionService` - add new API `setRenewedToken`
+-   `connectionService` - add new event `RAINBOW_ONUSERTOKENWILLEXPIRE`
+-   `imService` - add new APIs: `getLastModifiedText` and `isMessageDeleted`
+-   `imService` - fix issue with `getMessagesFromConversation`
+-   `bubblesService` - add new API: `createPublicUrl` and `retrievePublicUrl`
+-   `telephonyService` - `sendDTMF` fix allowing the method to accept all the types of call (both of type "video" and "phone")
+-   RQRAINB-5620 - add userInfo1 and userInfo2 to ContactSDK model
+-   Fix issues with `getConnectedUser` API in `contactsService`
+-   `webRTCService` - `muteAudioCall` and `unmuteAudioCall` methods now return updated `Call` object
+-   New sample demonstrating how to use Rainbow Web SDK to make WebRTC calls has been published on Rainbow CPaaS GitHub account: https://github.com/Rainbow-CPaaS/Rainbow-Web-SDK-WebRTC-Sample
+
+## \[2.0.0-ltsbeta\]
+
+-   \[RQRAINB-3752\] - `configService` - add new API `setDisplayOrder`
+-   `contactsService` - APIs `acceptInvitation`, `declineInvitation`, `cancelInvitation` change their signature: please use invitationId string instead of an invitation obejct.
+-   \[RQRAINB-3752\] - add support for multienvironment features (OAuth)
+-   `imService` - APIs `markMessageFromConversationAsRead`, `sendCorrectedChatMessage`, `replyToMessage` change their signature: please use messageId string instead of message object
+-   `imService` - API `sendIsTypingStateInConversation` change their signature: please use conversationId string instead of message object
+
+---
+
+## \[1.86.0\]
+
+-   `configService` - add new API `useNewModels` that allows the user to chose between new conversation or contact models or keep the old ones in place. Defaults to true.
+-   `adminService` - fix bugs with `fetchUsersByTag`
+-   `adminService` - add new API `fetchUsersByPattern`
+-   `conversationsService` - add new API `getConversationByContactId`
+-   `conversationsService` - API `openConversationForContact` and `openConversationForBubble` become deprecated, please use `getConversationByContactId` and `getConversationByBubbleId` respectively
+-   `conversationsService` - API `closeConversation` changes its signature: in order to close conversation, pass conversation's id as argument, not the entire object. The old logic is available under `closeConversationDeprecated` method name
+-   `conversationsService` - API `getConversationById` changes its signature: in order to close conversation, pass conversation's id as argument, not the entire object. The old logic is available under `getConversationByIdDeprecated` method name
+-   `adminService` - API `removeCompany` changes its signature: in order to remove a company, pass company's id as argument, not the entire object. The old logic is available under `removeCompanyDeprecated` method name
+-   `adminService` - API `createUserForCompany` changes its signature: in order to create user a company, pass company's id as argument, not the entire object. The old logic is available under `createUserForCompanyDeprecated` method name
+-   `contactsService` - `getContactByJID`, `searchByJID` become deprecated methods
+-   `contactService` - `removeContact`, `addToNetwork` signature changes. It now accepts `contactId` string as parameter, in contrary to a Contact object used previously.
+-   `bubblesService` - signature changes for `inviteContactToBubble`, `removeContactFromBubble`, `promoteContactToModerator`, `demoteContactFromModerator`, `changeOwner` - from now on, they accept `contactId` instead of `contact` object as a parameter
+-   `pbxService` - signature changes for `makeCall1PCC`, `callWithMessage`, `makeCall`, `callWithSubject`. They now accept `contactId` string as parameter, in contrary to a Contact object used previously.
+-   `webRTCService` - signature changes for `callInVideo`, `callInAudioWithSharing`, `callInAudio`, `callInSharing`. They now accept `contactId` string as parameter, in contrary to a Contact object used previously.
+-   `groupsService` - signature changes for `removeContactFromGroup`, `addContactInGroup`. They now accept `contactId` string as parameter, in contrary to a Contact object used previously.
+-   `imService` - `getMessagesFromConversation`, `getMessageFromConversationById`, `sendCorrectedChatMessage`, `markMessageFromConversationAsRead`, `sendMessageToConversation`, `deleteMessage`, `removeAllMessagesFromConversation`: signature changes - they now accept conversationId instead of conversation object
+-   `filesStorageService` - `uploadExistingFileToConversation`, `uploadFileToConversation`, `getFilesReceivedInConversation`, `getFilesSentInConversation` : signature changes - they now accept conversationId instead of conversation object
+
+## \[1.85.0\]
+
+-   `conferencesService` - add new API: `toggleAutoStreamQuality`
+-   `conferencesService` - add new API: `getElementStreamQuality`
+-   Create new service: `configService` containing different SDK configuration APIs
+-   `configService` - new APIs: `setSimulcast`, `setVideoQuality`, `setVerboseLog`
+-   `sdkConfig` - Rainbow Web SDK logs are disabled by default to provide more clean debugging experience. To enable them, please use `setVerboseLog` API
+-   `sdkService` - `setVerboseLog` and `setKeyFromConfig` become deprecated methods
+-   Add new tutorial - `Using Config`
+-   `pbxService` - fix issue with `setNomadicOfficePhone` - add new parameter to manage the behavior of the call: `ringOnlyOfficePhone`
+-   Fix issues with VueJS sample on GitHub
+
+## \[1.84.0\]
+
+-   `contactsService` - add new parameters to `searchByName` API: addRosters, companyId and excludeCompanyId
+-   `bubblesService` - add new API: `getBubbleFromServer`
+
+## \[1.83.1\]
+
+-   Fix issues with `delegateConferenceToParticipant` API that occured for the users with a member role in a bubble
+
+## \[1.83.0\]
+
+-   `pbxService` - add new event `RAINBOW_TELEPHONYMUTE`
+-   \[CRRAINBAMI-57\] - `conferencesService` - APIs `muteAllConferenceParticipants`, `unmuteAllConferenceParticipants`, `muteConferenceParticipant`, `unmuteConferenceParticipant` can be used without the need to be a conference moderator
+-   `imService` - `sendMessageToConversation` now accepts another parameter: urgency. It can determine the urgency of sent message.
+
+## \[1.82.0\]
+
+-   Fix issues with the documentation
+-   Integrate SDK with the web client codebase
+-   `userProfileService` - add new API: `getProfileOffer`
+
+## \[1.81.0\]
+
+-   \[CRRAINBAMI-21\] - `filesStorageService` - add new API: `uploadExistingFileToConversation`
+-   \[CRRAINBAMI-21\] - `filesStorageService` - add new API: `uploadFile`
+-   \[CRRAINBAMI-49\] - `conferencesService` - add new API: `delegateConferenceToParticipant`
+-   Fix issues with correlatorData property in Call object sent in `RAINBOW_ONTELEPHONYCALLSTATECHANGED`
+-   Fix issues with fetchVoiceMailMessagesNumber API in `telephonyService`
+-   \[CRRAINB-16608\] - fix issues with joining web conference after delegating it to another participant
+-   \[CRRAINBAMI-53\] - add new event to `conferencesService` - `RAINBOW_ONWEBCONFERENCEDELEGATED`
+
+## \[1.80.0\]
+
+-   \[CRRAINBAMI-46\] - `contactsService` - add new API: `updateUserCustomData`
+-   \[RQRAINB-4741\] - `conferencesService` - add new API: `setVideoGalleryElementsNumber` allowing users to show more than 5 video gallery video streams during a web conference
+-   Fix bug appearing when a user with Rainbow Voice feature connects to Rainbow
+-   \[RQRAINB-4745\] `filesStorageService` - add new method `getFileDescriptorUrl` to show received images thumbnails
+-   `conferencesService` - `updateMainVideoSession` is now synchronous (does not return a promise)
+-   `bubblesService` - methods related to web conferences are now only available in `conferencesService`. Please refer to documentation for further details.
+
+## \[1.79.2\]
+
+-   Fix bug that prevented the users with Rainbow Voice functionality to connect to Rainbow via Web SDK
+
+## \[1.79.1\]
+
+-   `connectionService` - fix issues with `signinOnRainbowHosted`
+
+## \[1.79.0\]
+
+-   `conferencesService` - add new API: `getListOfRemoteVideoPublishers`
+-   `conferenceService` - change signature of `updateGalleryPublisher`. API now takes three parameters: `conferenceSession`, `galleryElementId`, `newPublisher`. Please refer to the documentation for further information.
+-   `webRTCService` - add new event `RAINBOW_ONCHROMESTOPSCREENSHARINGTRIGGERED`
+-   `conferencesService` - fix undefined error handler that occurred when a member of a bubble tried to start a conference
+-   `RQRAINB-4593` - add new alternativeContent type: `rainbow/json` to `sendMessageToConversation`
+
+## \[1.78.1\]
+
+-   Fix issue with `conferencesService` documentation
+
+## \[1.78.0\]
+
+-   `telephonyService` - `setNomadicWebRTC` is going to be replaced by `setNomadicVoIP` to keep the naming convention consistent
+-   `bubblesService` - add new API: `setActiveSpeakerValue`
+-   Create new service: `confrencesService` responsible for handling web conferences. Some of the APIs existing so far in `bubblesService` are moved to the new service, some of the API names have changed in order to provide more clarity and consistency
+-   Create new sample on GitHub: `Rainbow Web SDK - Conference Sample`
+-   Update `Creating audio and video conferences` tutorial to provide an up-to-date documentation for `conferencesService`
+-   \[RQRAINB-4523\] - `conferencesService` - add new API: `removePipVideo`
+-   `callsLogService` - `getAll` API now returns a Promise
+
+## \[1.77.0\]
+
+-   Fix issues with rainbowLogger
+-   Fix issues with answer - `pbxService`
+-   \[RQRAINB-4411\] - `bubblesService` - add new API - `disconnectParticipant`
+-   `callsLogService` - add new API - `getMissedCallLogNumber`
+-   `channelsService` - fix issues with `uploadChannelAvatar` API
+
+## \[1.76.0\]
+
+-   `contactsService` - add new API - `searchPhonebook`
+-   `contactsService` - add new API - `searchOffice365`
+-   `contactsService` - add new API - `searchCompanyDirectory`
+-   `callsLogService` - fix issues with missing dependencies
+-   Fix issues with `pgiConferenceService`
+
+## \[1.75.0\]
+
+-   Fix bug with `centralizedService`
+-   Fix issues with WebRTC call
+
+## \[1.74.0\]
+
+-   Upgrade to the new version of code. It should improve stability and performance in the long run.
+-   `RAINBOW_ONBUBBLEAVATARUPDATED` - this event is now deprecated and not functional
+-   `rainbowLogger` - updates improving the feature coverage, integration with missing services
+-   Update testing libraries to iterate through changes faster
+-   `sendDTMF` - it is now possible to send DTMF signal during a pure telephony call.
+
+## \[1.73.0\]
+
+-   `webRTCService` - fix bug causing no audio sound (unified plan issues)
+-   `userProfileService` - add new API - `updateWorkEmail`
+-   `userProfileService` - add new API - `updatePersonalEmail`
+-   `userProfileService` - add new API - `deleteWorkEmail`
+-   `userProfileService` - add new API - `deletePersonalEmail`
+-   `userProfileService` - add new API - `updateCountry`
+-   `userProfileService` - add new API - `updateLanguage`
+-   `userProfileService` - add new API - `updateTitle`
+-   `userProfileService` - add new API - `updateNickName`
+-   `userProfileService` - add new API - `updateJobTitle`
+
+## \[1.72.0\]
+
+-   `capabilitiesService` - add new API `getUserSubscription`
+-   `bubblesService` - add new API `updateNameForBubble`
+-   `telephonyService` - add new API `getActiveCall`
+-   `telephonyService` - add new API `nomadicLogout`
+-   Added new way to access Call model - rainbowSDK.Call
+-   New Starter Kit available on GitHub page: [StarterKit-React-Web-SDK](https://github.com/Rainbow-CPaaS/StarterKit-React-Web-SDK)
+-   Updated Sharing Files guide. New fix for the image thumbnails presentation in the DOM.
+
+## \[1.71.2\]
+
+-   `bubblesService` - fix issues with `removeGalleryPublisher`
+
+## \[1.71.1\]
+
+-   `webRTCService` - fix issues with `getRemoteStreamsFromCall`
+
+## \[1.71.0\]
+
+-   \[RQRAINB-3718\] - `bubblesService` - add new method `muteConferenceParticipant`
+-   \[RQRAINB-3718\] - `bubblesService` - add new method `unmuteConferenceParticipant`
+-   \[RQRAINB-3718\] - `bubblesService` - add new method `muteAllConferenceParticipants`
+-   \[RQRAINB-3718\] - `bubblesService` - add new method `unmuteAllConferenceParticipants`
+-   `bubblesService` - add new method `updateGalleryPublisher`
+-   `bubblesService` - add new method `removeGalleryPublisher`
+-   `telephonyService` - add new method `sendDTMF`
+-   `telephonyService` - add new method `nomadicLogin`
+-   `telephonyService` - add new method `muteCall`
+-   `telephonyService` - add new method `unmuteCall`
+
+## \[1.70.0\]
+
+-   \[CRRAINB-10804\] - `telephonyService` - add new method `isVoiceMailConfigured` that returns a boolean indicating if the voice mail has been configured for the user
+-   Speed up booting the `contactService` by removing redundant functions called on start
+-   \[RQRAINB-3497\] - `bubblesService` - add two new methods allowing the user to mute and unmute audio in SFU conference: `muteConferenceAudio` and `unmuteConferenceAudio`
+-   \[RQRAINB-3485\] - `telephonyService` - add four new methods: `logonCCD`, `logoffCCD`, `withdrawalCCD`, `wrapupCCD`
+
+## \[1.69.0\]
+
+-   `userProfileService` - fix method `updatePhoneNumber` to accept empty strings
+-   `userProfileService` - fix method `getProfile`. It returns full user profile now
+-   `webRTCService` - remove two methods: `muteVideoCall` and `unmuteVideoCall`. They were obsolete and no longer valid. Please use `muteAudioCall` and `unmuteAudioCall` instead
+-   \[CRRAINB-11176\] - `webRTCService` - fix event `RAINBOW_ONWEBRTCTRACKCHANGED`, now it is emitted when the remote party removes video stream from the call
+-   \[CRRAINB-11240\] - `filesStorageService` - fix `uploadFileToConversation` method
+-   Refactor `sdkService` and `connectionService` to accept the config file on SDK loading
+-   Fix issues with `canMakeDesktopSharingCall` in `WebRTCService`
+
+## \[1.68.0\]
+
+-   Starting **v1.68.0** Rainbow Web SDK will be available as an ES module allowing the developers to use `import` statement in their projects. The legacy version of the SDK will be available for the three following releases.
+-   Published new Starter Kit on Rainbow-CPaaS GitHub account: [Rainbow Web SDK - ES6 Starter Kit](https://github.com/Rainbow-CPaaS/Rainbow-Web-SDK-ES6-Starter-Kit)
+-   Updated existing [Angular Starter Kit](https://github.com/Rainbow-CPaaS/StarterKit-SDKWeb-Angular2) repo on GitHub
+-   Updated [Vue.js Starter Kit](https://github.com/Rainbow-CPaaS/StarterKit-SDKWeb-VueJS) repo on GitHub
+-   \[RQRAINB-3093\] - `TelephonyService`: added new features of a `Call` model: `correlatorData` and `globalCallId`
+
+## \[1.67.0\]
+
+-   \[RQRAINB-2745\] - `BubblesService` - add new parameter to `createBubble` method: `autoAcceptInvitation`
+
+## \[1.66.0\]
+
+-   `profileService` - add new internal API: `isFeatureEnabled()`
+-   `ConnectionService` - add new method: `signinOnRainbowSandboxChina`
+-   `ConnectionService` - add new method: `signinOnRainbowChina`
+-   `ConnectionService` - add new method: `signinOnRainbowHosted`
+-   `PresenceService` - fixed issues with `RAINBOW_ONCONTACTRICHPRESENCECHANGED`
+-   `TelephonyService` - added new event: `RAINBOW_ONVOIPCALLSTATECHANGED`
+-   `Sharing Files` - updated the tutorial
+
+## \[1.65.0\]
+
+-   `TelephonyService` - added two new methods: `isDeskPhoneAvailable()` and `isVoIPAvailable()`
+-   `TelephonyService` - added two new events: `RAINBOW_ONVOIPSTARTED` and `RAINBOW_ONVOIPSTOPPED`
+-   `WebRTCService` - added new event: `RAINBOW_ONVOIPCALLSTATECHANGED`
+-   Added Readme file to NPM package
+-   `TelephonyService` - added new event: `RAINBOW_ONVOICEMESSAGEUPDATED`
+-   `TelephonyService` - added new method: `fetchVoiceMailMessagesNumber()`
+
+## \[1.64.3\]
+
+-   \[CRRAINB-9430\] - fix for Offer.js `contains` method which is not compatible with the browsers
+
+## \[1.64.2\]
+
+-   \[Hotfix\] error appearing while answering a PBX call (`rainbowSDK.telephony.answer()`) - part two
+
+## \[1.64.1\]
+
+-   \[Hotfix\] error appearing while answering a PBX call (`rainbowSDK.telephony.answer()`)
+
+## \[1.64.0\]
+
+-   The AngularJS and jQuery events have been completely replaced by native JavaScript events. That is a first step towards complete decoupling of Rainbow Web SDK from its dependencies
+-   New guide `Handling Events` added. It explains the correct way of dealing with events mentioned above
+-   `ConnectionService` - added new method `refreshToken()` enabling the possibility to manually refresh Authentication Token
+
+## \[1.63.0\]
+
+-   `BubblesService`: new event: `onConferenceTalkerEvent`. Allows to specify the conference participants that are the active talkers.
+-   New Git branch with working IE11 version created - to be used in dire situations
+
+## \[1.62.1\]
+
+-   Rebuilt in order to fix the issues with the documentation
+
+## \[1.62.0\]
+
+-   RQRAINB-2181 - `ConnectionService` - add new method `signinOnRainbowWithOICD`
+-   Fix documentation issues
+
+## \[1.61.0\]
+
+-   RQRAINB-1890 - `ImService`: add alternativeContent feature to `sendMessageToConversation()` method
+-   `BubblesService`: drop support for AngularJS events. It's an experimental change that is going to be spread through all the services
+-   CRRAINB-7641 - Fix the issue with repeating renew token requests
+-   Refactor ChannelsService - fully based on ES6 standards now
+
+## \[1.60.0\]
+
+-   RQRAINB-1887 - `AdminService`: add managing tags option to `createUserForCompany()`, add new methods `fetchUsersByTag()` and `updateUserTags()`
+
+## \[1.59.1\]
+
+-   Fix issues with AngularJS events in imService
+
+## \[1.59.0\]
+
+-   RQRAINB-1878 - Added the following Nomadic functions to telephonyService: `getNomadicState()`, `setNomadicExternalNumber()`, `setNomadicOfficePhone()`, `setNomadicWebRtc()` and one event: `ON_CALL_NOMADIC_EVENT`
+-   RQRAINB-1821 - Cleaned the logs from health-sensitive information
+
+## \[1.58.0\]
+
+-   RQRAINB-1705 - Limited the number of errors appearing while the user connects to Rainbow
+-   RQRAINB-1706 - Refactored the CapabilitiesService (ES6)
+-   RQRAINB-1704 - Added styleSignInWithRainbowButton method in ConnectionService + added tutorial
+
+## \[1.57.2\]
+
+-   Deleted **Sending Notifications** tutorial that has been replaced by **Managing Channels** tutorial
+
+## \[1.57.0\]
+
+-   RQRAINB-1561 - Refactored imService
+-   RQRAINB-1557 - New guide: Managing Channels
+-   \[ChannelsService\] - added new method: `deleteItem()`
+
+## \[1.56.1\]
+
+-   Added Acorn as dependency in package.json (caused the build to crash)
+
+## \[1.56.0\]
+
+-   RQRAINB-1467 - Added Hello World guide - create basic Rainbow Web SDK app in 5 minutes
+-   Added Favorites tutorial
+-   RQRAINB-1324: New API: Favorites (with `fetchAllFavorites`, `createFavorite`, `deleteFavorite`, `RAINBOW_ONFAVORITECREATED`, `RAINBOW_ONFAVORITEDELETED`)
+-   \[ChannelsService\] - changed the name of the method `getMyChannels()` to `fetchMyChannels`
+-   \[ChannelsService\] - changed the name of the method `publishToChannel()` to `createItem`
+-   \[ChannelsService\] - changed the name of the method `findChannels()` to `fetchChannelsByName`, `fetchChannelsByTopic`, `fetchChannelsByCategory`
+-   \[ChannelsService\] - changed the name of the method `getChannel()` to `fetchChannel`
+-   \[ChannelsService\] - changed the name of the method `uploadChannelAvatar()` to `updateChannelAvatar`
+-   \[ChannelsService\] - changed the name of the method `getChannelUsers()` to `fetchUsers`
+-   \[ChannelsService\] - changed the name of the method `removeAllUsersFromChannel()` to `deleteAllUsersFromChannel`
+-   \[ChannelsService\] - changed the name of the method `removeUsersFromChannel()` to `deleteUsersFromChannel`
+-   \[ChannelsService\] - changed the name of the method `setChannelVisibilityToPrivate()` to `updateChannelVisibilityToClosed`
+-   \[ChannelsService\] - changed the name of the method `setChannelVisibilityToPublic()` to `updateChannelVisibilityToPublic`
+-   \[ChannelsService\] - changed the name of the method `getChannelItems()` to `fetchItems`
+-   \[ChannelsService\] - changed the name of the method `createPrivateChannel()` to `CreateClosedChannel`
+
+## \[1.55.1\]
+
+-   CRRAINB-6185: added `addSharingToConferenceSession` and `removeSharingFromConferenceSession` to bubblesService
+
+## \[1.55.0\]
+
+-   Updated OAuth2 tutorial (added information about button and colors)
+-   RQRAINB-1326: Updated `Chatting in Rainbow bubbles` tutorial - added information about `isTyping` feature
+-   RQRAINB-1326: Updated `Chatting with Rainbow Users` tutorial - added information about `isTyping` feature
+-   telephonyService - added `callWithSubject()` function allowing to add message to the PBX Call
+
+## \[1.54.2\] - 2019-04-05
+
+-   Fixed link to Oauth2 tutorial
+
+## \[1.54.1\] - 2019-04-04
+
+-   Updated Chatting in Rainbow Bubbles tutorial (added link to limitations)
+-   Added link to Oauth2 Authentication tutorial
+
+## \[1.54.0\] - 2019-04-01
+
+-   IMPORTANT: Starting from version 1.54, Rainbow Web SDK will work only with AngularJS 1.7.5 (not 1.5.7 as before)
+-   Fixed webpack build process - removed Bower from the loop, cleaned Grunt File
+-   Added OAuth2 tutorial- possible to follow implicit flow
+-   Updated samples on GitHub
+-   Preprod process - beta version on NPM added
+
+## \[1.53.2\] - 2019-03-14
+
+-   Fixed Jenkins job - `package.json` and Gruntfile.js updated
+
+## \[1.53.1\] - 2019-03-13
+
+-   Fixed `npm run build` script in package.json
+
+## \[1.53.0\] - 2019-03-13
+
+-   Added deleteMessage() function to imService
+-   Added sendCorrectedChatMessage() function to imService
+-   Added isDeleted() method to message object prototype
+-   Added getAllInactiveBubbles() method to bubblesService
+-   Added signinOnRainbowSandboxChina() method to connectionService
+-   Updated Chatting with Rainbow Users tutorial updated
+-   Chatting in Rainbow Bubbles tutorial updated
+
+## \[1.52.0\] - 2019-02-12
+
+-   Added updateMainVideoSession() to bubblesService.js
+-   Updated the SFU tutorial
+-   Updated File Transfer tutorial
+-   Added a new eventListener: RAINBOW\_ONCHUNKDOWNLOADFILEMESSAGE in fileStorageService
+-   fileStorageService: added cancelCurrentFileTransfer() + tutorial
+-   webRTCService: added getPeerConnectionForCall() + tutorial
+-   Updated WebRTC tutorial- added some fixes and updates
+
+## \[1.51.0\] - 2019-12-19
+
+-   Sustaining support, no major changes
+-   Internal improvements- using webpack to build, rearranging the structure
+
+## \[1.50.2\] - 2018-12-19
+
+-   RQRAINB-1176: Add SFU API
+
+## \[1.49.0\] - 2018-11-07
+
+-   RQRAINB-1147: Homogeneize naming of methods in contacts service
+-   RQRAINB-1146: Manage favorite groups
+-   RQRAINB-1145: Add guide describing how to interact with Rainbow users
+-   RQRAINB-1126: Add a category when creating a channel (done but only public in 1.50)
+
+## \[1.48.1\] - 2018-10-28
+
+-   RQRAINB-1119: Rename guides and remove numbers in URL
+
+## \[1.48.0\] - 2018-10-28
+
+-   RQRAINB-1112: Add methods and events for recording a call.
+
+## \[1.47.0\] - 2018-10-10
+
+-   channelsService: lots of changes and new methods (see public changelog for complete list)
+-   Add new guide on Channels for explaining all concepts.
+
+## \[1.46.0\] - 2018-09-18
+
+-   telephonyService, added new APIS, deflectToVM, forwardToDevice, forwardToVoicemail, cancelForward, getForwardStatus. Added Forward event RAINBOW\_ONTELEPHONYFORWARDSTATECHANGED
+-   telephonyService, added new APIS, transfertCall and conferenceCall
+-   telephonyService, API calls now return SDK Error structure in case of errors as expected
+-   imService: correct sendIsTypingStateInConversation and sendIsTypingStateInBubble not working with status = false. Little correction in markMessageFromConversationAsRead
+-   bubbleService: WebRTC conference call works now with a valid AppID
+
+## \[1.45.1\] - 2018-08-30
+
+-   connectionService, getState() is back
+
+## \[1.45.0\] - 2018-08-29
+
+-   connectionService, new API updateUserPassword: warning, changing the password will signout yourself and also revoke all existing token with this user
+-   webRTCService: removing depracated APIs declared in in 1.41: escaladeToVideoCall, escaladeToSharingCall and reverseToAudioCall and reject (deprecated since 1.32)
+-   webRTCService: add optionnal "subject" to call (if a call subject is got, it'll be in the Call.subject and CallLog)
+-   Update IE11 "howto" documentation
+
+## \[1.44.0\] - 2018-07
+
+-   Due to data privacy improvements, Rainbow platform will introduce breaking changes in the way data associated to users are located around the world in one hand and the way users connect to the platform in other hand. Consequently, any SDK Web prior to version 1.45 are entered deprecation period and will no more work once Rainbow platform 1.47 will be deployed on production (starting Sept, 30th)”. Before Sept’30, your application has to migrate to SDK Web version 1.45 at least in order for your application to continue to work after this date.
+    
+-   IMService: sendIsTypingStateInConversation(conversation, status) and sendIsTypingStateInBubble(bubble, status) added. With status: true for setting "is Typing", false to remove it
+    
+-   GPRD: for the moment some contact datas like loginEmail or roles are no more available
+    
+-   IMService: experimental on production, not working on sandbox, callUsingMediaPillar (1PCC call from browser -> Rainbow -> PBX)
+    
+-   SDKAudioVideoAngularSample : FOR PROD ONLY, for companies with specific rights and after specific configuration - add a button to test "Media Pillar 1PCC call". NOT WORKING ON SANDBOX
+    
+
+## \[1.43.0\] - 2018-07
+
+-   Bubbles service: add events RAINBOW\_ONBUBBLECONFERENCESTARTEDINVITATIONRECEIVED and RAINBOW\_ONBUBBLESHARINGCONFERENCESTARTEDINVITATIONRECEIVED to allow to join a WebRTC Conference un a bubble. After getting one of these events, a user can use startOrJoinWebRtcConference(bubble) or startOrJoinSharingWebRtcConference(bubble) to join the conf
+-   Bubbles service: some corrections in stopWebRtcConference()
+-   Bubbles service: Avatar - added in createBubble (optional),new API updateAvatarForBubble(urlAvatar, bubble) and event RAINBOW\_ONBUBBLEAVATARUPDATED
+-   Channels service: Avatar - uploadChannelAvatar(id, urlAvatar) and deleteChannelAvatar(id) added
+-   Contacts service: improve documentation to explain difference between getters and seach
+-   Contacts service: add an optional limit (was 20 by default) to searchByName(strName, limit), with limit = 20 by default
+-   Connection service: documentation corrections for events
+
+## \[1.42.0\] - 2018-06
+
+-   Fix customData updates in Room from a server event
+-   Contact model: new member, avaratSrc which is null or it's URL
+-   presenceService: correct RAINBOW\_PRESENCE\_AWAY presence and add the RAINBOW\_PRESENCE\_OFFLINE
+-   presenceService: correct event sent in RAINBOW\_ONRICHPRESENCECHANGED (contact was missing)
+-   Bubbles service, WebRTC Conference APIs: now possible on sandbox
+-   channelService: correct events sent (variables was missing was missing in events)
+
+## \[1.41.0\] - 2018-05
+
+-   WebRTC Service: add new function removeSharingFromCall
+-   WebRTC Service, escaladeToVideoCall marked deprecated, please use addVideoToCall
+-   WebRTC Service, escaladeToSharingCall marked deprecated, please use addSharingToCall
+-   WebRTC Service, reverseToAudioCall marked deprecated, please use removeVideoFromCall
+-   SDK Web Guides: if objects like `Call` aren't defined **in some non-angular applications**, adding code example to get them like this code:
+
+```javascript
+var Call = angular
+    .element(document.querySelector("body"))
+    .injector()
+    .get("Call");
+```
+
+-   Move Demos and their code samples to github
+-   Bubbles service, add WebRTC Conference APIs: isWebRtcConferenceAllowed(), hasActiveConferenceSession(), getWebRtcConferenceBubble(), startOrJoinWebRtcConference(bubble), startOrJoinWebConference(bubble) and stopWebRtcConference()
+
+## \[1.40.0\] - 2018-05
+
+-   ChannelService: in updateChannel you may also change channel's name
+-   contactService.searchByLogin no more @deprecated as response limited by privacy
+-   update some docs (connectionService)
+-   Add rich presence in presenceService
+
+## \[1.39.1\] - 2018-04-20
+
+-   #RQRAINB-916: Add sitemap indexation
+
+## \[1.39.0\] - 2018-04-06
+
+-   #CRRAINB-2312 correction and new tests for guest
+-   Internal:
+    -   new afterbuild event waiting "forevent" resulting object (our non regression tests framework)
+-   Doc:
+    -   Add avatar in Contact
+    -   Improve doc with contact, correct event RAINBOW\_ONCONVERSATIONCHANGED which returns the id and not the Conversation itself
+    -   Add capabilities informations in Contact and Conversation models
+
+## \[1.38.1\] - 2018-03-23
+
+-   Manage well appID with new connexion with single token
+-   Add Crypto-JS in requirements
+-   Internal: Modify SDK ressource name
+-   Internal: improve afterbuild, our non regression tests framework
+-   Bubble: new APIs to promote/demote to moderator
+-   Bubble: new API to change owner (warning, definitive ! Can't be cancelled ;) )
+-   Bubble: add new optional option at Bubble creation to disable notifications (someone entered, leaved the Bubble, ...)
+-   Bubble: correct regression found on support about Bubbles without history
+-   SDKTelephonyAngularSample: correct problem in index.html (from support)
+-   New API: Channels, see online documentation
+-   IM API: new event, RAINBOW\_ONNEWPARTICIPANTSTATUS, to allow for example to know a user is typing
+-   Correct SDK.setVerboseLog
+
+## \[1.37.0\] - 2018-02-26
+
+-   Add botservice in connectionService to identify "well" Emily bot (and other)
+-   #CRRAINB-1809 Set Presence not restored in case of call
+-   corrections for token login
+-   improve internal afterbuild tests
+-   add some new internal services to manage bots, Telephony events
+
+## \[1.36.0\] - 2018-02-04
+
+-   #CRRAINB-1543: Remove Angular from guide `Connect to Rainbow`
+-   #CRRAINB-1544: Add link to github in guide `Integrating others JS frameworks`
+-   #CRRAINB-1545: Rename guides to fix links issue
+-   #CRRAINB-1548: Add information of using HTTPS in guide `Make audio and video calls`
+-   Internal non regression tests: add global variables to AfterBuild, improve JSON passed as arg
+-   First work/refactor for channels
+-   Return ms in call log duration
+
+## \[1.35.0\] - 2017-12-19
+
+-   #CRRAINB-1480: Remove guide `Using SDK for Web ESR version`
+-   #30047 : Detect SDK issue
+-   Internal tests improvement
+
+## \[1.34.0\] - 2017-12-19
+
+-   #29702: Add API Call log API
+-   #30163: Enhance API loginWithToken
+-   #29699\] Application Token Renewal updates
+
+## \[1.33.0\]
+
+-   #29425: Add group API
+-   #29481: Add update profile API
+-   #29699: Application Token Renewal launched at login
+
+## \[1.32.2\]
+
+-   Update missing information in HUB "What's new ?"
+
+## \[1.32.0\]
+
+-   #29400: set WebRTC API reject() to deprecated
+-   #29281: Tutorial WebRTC correction
+-   Non-regression test updates
+-   #29668: Don't use RemoveAllMessageFromConversation in bubble conversation
+-   #29272: CPAAS / SDK Web / Save presence (settings) when updating the presence
+-   #29674: CPAAS / SDK Web / fileSharing download/upload event mixed
+
+## \[1.31.2\] - 2017-10-20
+
+-   Update Web Client dependency
+
+## \[1.31.1\] - 2017-10-17
+
+-   #29059: Add Login with token API
+
+## \[1.31.0\] - 2017-10-13
+
+## \[1.30.1\] - 2017-09-17
+
+-   #28948: Fix custom data issue with API deleteCustomDataForBubble()
+-   #28643: Update tutorial "Chat within a bubble" for explaining how to modify custom data
+
+## \[1.30.0\] - 2017-09-13
+
+-   #28641: Outsource SDK from otlientclient repository
+-   #28824: Add bearer in header x-rainbow-app-token
+-   #28837: Add Telephony forward support (private)
+
+### Sur cette page
+
+-   [\[4.0.0-LTS\] - 2022-11-21](/doc/sdk/web/lts/guides/Changelog#name-4.0.0-lts---2022-11-21-6)
+-   [\[3.4.0-STS\] - 2022-10-06](/doc/sdk/web/lts/guides/Changelog#name-3.4.0-sts---2022-10-06-26)
+-   [\[3.3.0-STS\] - 2022-08-25](/doc/sdk/web/lts/guides/Changelog#name-3.3.0-sts---2022-08-25-46)
+-   [\[3.2.0-STS\] - 2022-06-14](/doc/sdk/web/lts/guides/Changelog#name-3.2.0-sts---2022-06-14-61)
+-   [\[3.1.3-STS\] - 2022-06-16](/doc/sdk/web/lts/guides/Changelog#name-3.1.3-sts---2022-06-16-71)
+-   [\[3.1.2-STS\] - 2022-06-03](/doc/sdk/web/lts/guides/Changelog#name-3.1.2-sts---2022-06-03-81)
+-   [\[3.1.1-STS\] - 2022-05-18](/doc/sdk/web/lts/guides/Changelog#name-3.1.1-sts---2022-05-18-91)
+-   [\[3.1.0-STS\] - 2022-05-16](/doc/sdk/web/lts/guides/Changelog#name-3.1.0-sts---2022-05-16-101)
+-   [\[3.0.2-LTS\] - 2022-04-27](/doc/sdk/web/lts/guides/Changelog#name-3.0.2-lts---2022-04-27-116)
+-   [\[3.0.1-LTS\] - 2022-04-22](/doc/sdk/web/lts/guides/Changelog#name-3.0.1-lts---2022-04-22-126)
+-   [\[3.0.0-LTS\] - 2022-04-21](/doc/sdk/web/lts/guides/Changelog#name-3.0.0-lts---2022-04-21-136)
+-   [\[2.13.0-STS\] - 2022-04-01](/doc/sdk/web/lts/guides/Changelog#name-2.13.0-sts---2022-04-01-151)
+-   [\[2.12.2-STS\] - 2022-03-18](/doc/sdk/web/lts/guides/Changelog#name-2.12.2-sts---2022-03-18-171)
+-   [\[2.12.1-STS\]](/doc/sdk/web/lts/guides/Changelog#name-2.12.1-sts-181)
+-   [\[2.12.0-STS\]](/doc/sdk/web/lts/guides/Changelog#name-2.12.0-sts-201)
+-   [\[2.11.0-STS\]](/doc/sdk/web/lts/guides/Changelog#name-2.11.0-sts-241)
+-   [\[2.10.1-STS\]](/doc/sdk/web/lts/guides/Changelog#name-2.10.1-sts-276)
+-   [\[2.10.0-STS\]](/doc/sdk/web/lts/guides/Changelog#name-2.10.0-sts-291)
+-   [\[2.9.0-STS\]](/doc/sdk/web/lts/guides/Changelog#name-2.9.0-sts-331)
+-   [\[2.8.1-STS\]](/doc/sdk/web/lts/guides/Changelog#name-2.8.1-sts-341)
+-   [\[2.8.0-STS\]](/doc/sdk/web/lts/guides/Changelog#name-2.8.0-sts-351)
+-   [\[2.7.1-STS\]](/doc/sdk/web/lts/guides/Changelog#name-2.7.1-sts-376)
+-   [\[2.7.0-STS\]](/doc/sdk/web/lts/guides/Changelog#name-2.7.0-sts-386)
+-   [\[2.6.0-STS\]](/doc/sdk/web/lts/guides/Changelog#name-2.6.0-sts-421)
+-   [\[2.5.0-STS\]](/doc/sdk/web/lts/guides/Changelog#name-2.5.0-sts-466)
+-   [\[2.4.0-STS\]](/doc/sdk/web/lts/guides/Changelog#name-2.4.0-sts-491)
+-   [\[2.3.0-STS\]](/doc/sdk/web/lts/guides/Changelog#name-2.3.0-sts-516)
+-   [\[2.2.0-STS\]](/doc/sdk/web/lts/guides/Changelog#name-2.2.0-sts-531)
+-   [\[2.1.0-STS\]](/doc/sdk/web/lts/guides/Changelog#name-2.1.0-sts-551)
+-   [\[2.0.3-lts\]](/doc/sdk/web/lts/guides/Changelog#name-2.0.3-lts-566)
+-   [\[2.0.2-lts\]](/doc/sdk/web/lts/guides/Changelog#name-2.0.2-lts-586)
+-   [\[2.0.1-lts\]](/doc/sdk/web/lts/guides/Changelog#name-2.0.1-lts-601)
+-   [\[2.0.0-lts\]](/doc/sdk/web/lts/guides/Changelog#name-2.0.0-lts-621)
+-   [\[2.0.0-ltsbeta\]](/doc/sdk/web/lts/guides/Changelog#name-2.0.0-ltsbeta-706)
+-   [\[1.86.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.86.0-737)
+-   [\[1.85.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.85.0-827)
+-   [\[1.84.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.84.0-877)
+-   [\[1.83.1\]](/doc/sdk/web/lts/guides/Changelog#name-1.83.1-892)
+-   [\[1.83.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.83.0-902)
+-   [\[1.82.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.82.0-922)
+-   [\[1.81.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.81.0-942)
+-   [\[1.80.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.80.0-982)
+-   [\[1.79.2\]](/doc/sdk/web/lts/guides/Changelog#name-1.79.2-1017)
+-   [\[1.79.1\]](/doc/sdk/web/lts/guides/Changelog#name-1.79.1-1027)
+-   [\[1.79.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.79.0-1037)
+-   [\[1.78.1\]](/doc/sdk/web/lts/guides/Changelog#name-1.78.1-1067)
+-   [\[1.78.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.78.0-1077)
+-   [\[1.77.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.77.0-1117)
+-   [\[1.76.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.76.0-1147)
+-   [\[1.75.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.75.0-1177)
+-   [\[1.74.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.74.0-1192)
+-   [\[1.73.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.73.0-1222)
+-   [\[1.72.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.72.0-1277)
+-   [\[1.71.2\]](/doc/sdk/web/lts/guides/Changelog#name-1.71.2-1317)
+-   [\[1.71.1\]](/doc/sdk/web/lts/guides/Changelog#name-1.71.1-1327)
+-   [\[1.71.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.71.0-1337)
+-   [\[1.70.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.70.0-1392)
+-   [\[1.69.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.69.0-1417)
+-   [\[1.68.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.68.0-1457)
+-   [\[1.67.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.67.0-1487)
+-   [\[1.66.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.66.0-1497)
+-   [\[1.65.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.65.0-1537)
+-   [\[1.64.3\]](/doc/sdk/web/lts/guides/Changelog#name-1.64.3-1572)
+-   [\[1.64.2\]](/doc/sdk/web/lts/guides/Changelog#name-1.64.2-1582)
+-   [\[1.64.1\]](/doc/sdk/web/lts/guides/Changelog#name-1.64.1-1592)
+-   [\[1.64.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.64.0-1602)
+-   [\[1.63.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.63.0-1622)
+-   [\[1.62.1\]](/doc/sdk/web/lts/guides/Changelog#name-1.62.1-1637)
+-   [\[1.62.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.62.0-1647)
+-   [\[1.61.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.61.0-1662)
+-   [\[1.60.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.60.0-1687)
+-   [\[1.59.1\]](/doc/sdk/web/lts/guides/Changelog#name-1.59.1-1697)
+-   [\[1.59.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.59.0-1707)
+-   [\[1.58.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.58.0-1722)
+-   [\[1.57.2\]](/doc/sdk/web/lts/guides/Changelog#name-1.57.2-1742)
+-   [\[1.57.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.57.0-1752)
+-   [\[1.56.1\]](/doc/sdk/web/lts/guides/Changelog#name-1.56.1-1772)
+-   [\[1.56.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.56.0-1782)
+-   [\[1.55.1\]](/doc/sdk/web/lts/guides/Changelog#name-1.55.1-1862)
+-   [\[1.55.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.55.0-1872)
+-   [\[1.54.2\] - 2019-04-05](/doc/sdk/web/lts/guides/Changelog#name-1.54.2---2019-04-05-1897)
+-   [\[1.54.1\] - 2019-04-04](/doc/sdk/web/lts/guides/Changelog#name-1.54.1---2019-04-04-1907)
+-   [\[1.54.0\] - 2019-04-01](/doc/sdk/web/lts/guides/Changelog#name-1.54.0---2019-04-01-1922)
+-   [\[1.53.2\] - 2019-03-14](/doc/sdk/web/lts/guides/Changelog#name-1.53.2---2019-03-14-1952)
+-   [\[1.53.1\] - 2019-03-13](/doc/sdk/web/lts/guides/Changelog#name-1.53.1---2019-03-13-1962)
+-   [\[1.53.0\] - 2019-03-13](/doc/sdk/web/lts/guides/Changelog#name-1.53.0---2019-03-13-1972)
+-   [\[1.52.0\] - 2019-02-12](/doc/sdk/web/lts/guides/Changelog#name-1.52.0---2019-02-12-2012)
+-   [\[1.51.0\] - 2019-12-19](/doc/sdk/web/lts/guides/Changelog#name-1.51.0---2019-12-19-2052)
+-   [\[1.50.2\] - 2018-12-19](/doc/sdk/web/lts/guides/Changelog#name-1.50.2---2018-12-19-2067)
+-   [\[1.49.0\] - 2018-11-07](/doc/sdk/web/lts/guides/Changelog#name-1.49.0---2018-11-07-2077)
+-   [\[1.48.1\] - 2018-10-28](/doc/sdk/web/lts/guides/Changelog#name-1.48.1---2018-10-28-2102)
+-   [\[1.48.0\] - 2018-10-28](/doc/sdk/web/lts/guides/Changelog#name-1.48.0---2018-10-28-2112)
+-   [\[1.47.0\] - 2018-10-10](/doc/sdk/web/lts/guides/Changelog#name-1.47.0---2018-10-10-2122)
+-   [\[1.46.0\] - 2018-09-18](/doc/sdk/web/lts/guides/Changelog#name-1.46.0---2018-09-18-2137)
+-   [\[1.45.1\] - 2018-08-30](/doc/sdk/web/lts/guides/Changelog#name-1.45.1---2018-08-30-2167)
+-   [\[1.45.0\] - 2018-08-29](/doc/sdk/web/lts/guides/Changelog#name-1.45.0---2018-08-29-2177)
+-   [\[1.44.0\] - 2018-07](/doc/sdk/web/lts/guides/Changelog#name-1.44.0---2018-07-2202)
+-   [\[1.43.0\] - 2018-07](/doc/sdk/web/lts/guides/Changelog#name-1.43.0---2018-07-2232)
+-   [\[1.42.0\] - 2018-06](/doc/sdk/web/lts/guides/Changelog#name-1.42.0---2018-06-2272)
+-   [\[1.41.0\] - 2018-05](/doc/sdk/web/lts/guides/Changelog#name-1.41.0---2018-05-2307)
+-   [\[1.40.0\] - 2018-05](/doc/sdk/web/lts/guides/Changelog#name-1.40.0---2018-05-2350)
+-   [\[1.39.1\] - 2018-04-20](/doc/sdk/web/lts/guides/Changelog#name-1.39.1---2018-04-20-2375)
+-   [\[1.39.0\] - 2018-04-06](/doc/sdk/web/lts/guides/Changelog#name-1.39.0---2018-04-06-2385)
+-   [\[1.38.1\] - 2018-03-23](/doc/sdk/web/lts/guides/Changelog#name-1.38.1---2018-03-23-2429)
+-   [\[1.37.0\] - 2018-02-26](/doc/sdk/web/lts/guides/Changelog#name-1.37.0---2018-02-26-2494)
+-   [\[1.36.0\] - 2018-02-04](/doc/sdk/web/lts/guides/Changelog#name-1.36.0---2018-02-04-2524)
+-   [\[1.35.0\] - 2017-12-19](/doc/sdk/web/lts/guides/Changelog#name-1.35.0---2017-12-19-2564)
+-   [\[1.34.0\] - 2017-12-19](/doc/sdk/web/lts/guides/Changelog#name-1.34.0---2017-12-19-2584)
+-   [\[1.33.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.33.0-2604)
+-   [\[1.32.2\]](/doc/sdk/web/lts/guides/Changelog#name-1.32.2-2624)
+-   [\[1.32.0\]](/doc/sdk/web/lts/guides/Changelog#name-1.32.0-2634)
+-   [\[1.31.2\] - 2017-10-20](/doc/sdk/web/lts/guides/Changelog#name-1.31.2---2017-10-20-2669)
+-   [\[1.31.1\] - 2017-10-17](/doc/sdk/web/lts/guides/Changelog#name-1.31.1---2017-10-17-2679)
+-   [\[1.31.0\] - 2017-10-13](/doc/sdk/web/lts/guides/Changelog#name-1.31.0---2017-10-13-2689)
+-   [\[1.30.1\] - 2017-09-17](/doc/sdk/web/lts/guides/Changelog#name-1.30.1---2017-09-17-2692)
+-   [\[1.30.0\] - 2017-09-13](/doc/sdk/web/lts/guides/Changelog#name-1.30.0---2017-09-13-2707)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

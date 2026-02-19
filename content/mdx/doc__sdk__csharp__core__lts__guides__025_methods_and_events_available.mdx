@@ -1,0 +1,7386 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/core/lts/guides/025_methods_and_events_available"
+lastSynced: "2026-02-19T22:35:13.669Z"
+---
+# Documentation
+
+Methods / Events available
+
+LTS release 3.XPubliée le 2025-03-17
+
+## Methods and Events available
+
+In this guide, you find a list, by service, of all methods and all events available.
+
+These tables permit to know also features available in XMPP event mode (default) or in S2S event mode. (Cf. [XMPP, S2S and Webhook](/docs/sdk/csharp))
+
+Legend:
+
+-   ✔️: Available
+-   ❗: Partially available - some info are missing
+-   ❌: Unavailable / Not useable
+
+### Administration
+
+[Administration documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+1\. ApiKey
+
+Method
+
+ async DeleteApiKeyAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetApiKeysAsync
+
+✔️
+
+✔️
+
+2\. Application
+
+Method
+
+ async GetApplicationAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetApplicationsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateApplicationAsync
+
+✔️
+
+✔️
+
+3\. Company
+
+Method
+
+ async CreateCompanyAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteCompanyAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetCompaniesAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetCompanyAsync
+
+✔️
+
+✔️
+
+Method
+
+ async InviteUserInCompanyAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateCompanyAsync
+
+✔️
+
+✔️
+
+4\. Company / Personal Directory
+
+Method
+
+ async CreateDirectoryContactAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteDirectoryAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteDirectoryContactAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetDirectoryContactAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetDirectoryContactsListAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateDirectoryContactAsync
+
+✔️
+
+✔️
+
+5\. Company Custom Data
+
+Method
+
+ async DeleteCompanyCustomDataAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateCompanyCustomDataAsync
+
+✔️
+
+✔️
+
+6\. Company Event WebHook / Subscription
+
+Method
+
+ async CreateCompanyEventSubscriptionAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CreateCompanyEventWebHookAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteCompanyEventSubscriptionAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteCompanyEventWebHookAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetCompanyEventSubscriptionsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetCompanyEventSubscriptionStatusAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetCompanyEventWebHooksAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateCompanyEventSubscriptionAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateCompanyEventWebHookAsync
+
+✔️
+
+✔️
+
+7\. Company Link / Bubble Link
+
+Method
+
+ async CreateJoinCompanyLinkAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CreateUserWithBubbleLinkAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CreateUserWithCompanyLinkAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteJoinCompanyLinkAsync
+
+✔️
+
+✔️
+
+Method
+
+ static GetDomainNameFromBubbleLink
+
+✔️
+
+✔️
+
+Method
+
+ async GetJoinCompanyLinksAsync
+
+✔️
+
+✔️
+
+8\. External Presence
+
+Method
+
+ async GetExternalPresenceAsync
+
+✔️
+
+✔️
+
+Method
+
+ async RemoveExternalPresenceAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SetExternalPresenceAsync
+
+✔️
+
+✔️
+
+9\. Hub Telephony / Cloud Pbx
+
+Method
+
+ async GetHubCloudPBXAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetHubDeviceAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetHubDeviceRegistrationAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetHubDevicesAsync
+
+✔️
+
+✔️
+
+10\. Organisation
+
+Method
+
+ async AddCompanyToOrganisationAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CreateOrganisationAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteOrganisationAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetOrganisationAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetOrganisationsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async RemoveCompanyFromOrganisationAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateOrganisationAsync
+
+✔️
+
+✔️
+
+11\. Subscription / Offer
+
+Method
+
+ async DeleteCompanySubscriptionAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteUserSubscriptionAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetCompanyOffersAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetCompanySubscriptionsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetUserSubscriptionsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SetCompanySubscriptionAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SetUserSubscriptionAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateCompanySubscriptionAsync
+
+✔️
+
+✔️
+
+12\. Theme
+
+Method
+
+ async CreateThemeAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteAvatarThemeAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteThemeAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetAvailableThemesAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetAvatarThemeAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateAvatarThemeAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateThemeAsync
+
+✔️
+
+✔️
+
+13\. TV
+
+Method
+
+ async ActivateTvAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CreateTvAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteTvAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetTvAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetTvEnvironmentAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetTvsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async RenewTvActivationCodeAsync
+
+✔️
+
+✔️
+
+14\. User
+
+Method
+
+ async AddUserToOtherUserNetworkAsync
+
+✔️
+
+✔️
+
+Method
+
+ async AskAuthenticationTokenOnBehalfAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CreateUserAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteUserAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetPresencesFromUserAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetResourcesFromUserAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetUserAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetUsersAsync
+
+✔️
+
+✔️
+
+Method
+
+ async RestoreUserAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SendMessageAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdatePasswordAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateUserAsync
+
+✔️
+
+✔️
+
+  
+
+### Alerts
+
+[Alerts documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+1\. Alert
+
+Method
+
+ async CreateAlertAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteAlertAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetAlertAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetAlertsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SendAlertFeedbackAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateAlertAsync
+
+✔️
+
+✔️
+
+2\. Device
+
+Method
+
+ async CreateDeviceAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteDeviceAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetDeviceAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetDevicesAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateDeviceAsync
+
+✔️
+
+✔️
+
+3\. Devices Tags
+
+Method
+
+ async GetDevicesTagsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetDevicesTagsStatisticsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async RemoveDevicesTagsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async RenameDevicesTagsAsync
+
+✔️
+
+✔️
+
+4\. Filter
+
+Method
+
+ async CreateFilterAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteFilterAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetFilterAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetFiltersAsync
+
+✔️
+
+✔️
+
+Method
+
+ async TestFilterAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateFilterAsync
+
+✔️
+
+✔️
+
+5\. Message
+
+Event
+
+ AlertMessageReceived
+
+✔️
+
+❌
+
+Method
+
+ async MarkAlertMessageAsReadAsync
+
+✔️
+
+✔️
+
+6\. Report
+
+Method
+
+ async GetReportCompleteAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetReportDetailsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetReportSummaryAsync
+
+✔️
+
+✔️
+
+7\. Template
+
+Method
+
+ async CreateTemplateAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteTemplateAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetTemplateAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetTemplatesAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateTemplateAsync
+
+✔️
+
+✔️
+
+  
+
+### Application
+
+[Application documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+1\. ApiKey
+
+Method
+
+ async CreateApiKeyAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteApiKeyAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetApiKeyAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetApiKeysAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateApiKeyAsync
+
+✔️
+
+✔️
+
+2\. Authentication / Connection
+
+Event
+
+ ApplicationTokenUpdated
+
+✔️
+
+✔️
+
+Event
+
+ AuthenticationFailed
+
+✔️
+
+✔️
+
+Event
+
+ AuthenticationSucceeded
+
+✔️
+
+✔️
+
+Event
+
+ ConnectionStateChanged
+
+✔️
+
+✔️
+
+Event
+
+ ReadyTologOnEventPipe
+
+✔️
+
+✔️
+
+Method
+
+ ConnectedToEventPipe
+
+✔️
+
+✔️
+
+Method
+
+ ConnectionState
+
+✔️
+
+✔️
+
+Method
+
+ async GetAuthenticationSSOUrlsAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetOAuthAccessTokenEndPoint
+
+✔️
+
+✔️
+
+Method
+
+ GetOAuthAuthorizationEndPoint
+
+✔️
+
+✔️
+
+Method
+
+ IsConnected
+
+✔️
+
+✔️
+
+Method
+
+ async IsSSOAvailableAsync
+
+✔️
+
+✔️
+
+Method
+
+ async LoginAsync
+
+✔️
+
+✔️
+
+Method
+
+ async LoginToEventPipeAsync
+
+✔️
+
+✔️
+
+Method
+
+ async LoginUsingPreviousCredentialsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async LoginUsingPreviousCredentialsWithoutEventPipeAsync
+
+✔️
+
+✔️
+
+Method
+
+ async LoginWithApiKeyAsync
+
+✔️
+
+✔️
+
+Method
+
+ async LoginWithApiKeyWithoutEventPipeAsync
+
+✔️
+
+✔️
+
+Method
+
+ async LoginWithOauthAuthorizationCodeAsync
+
+✔️
+
+✔️
+
+Method
+
+ async LoginWithOauthAuthorizationCodeWithoutEventPipeAsync
+
+✔️
+
+✔️
+
+Method
+
+ async LoginWithoutEventPipeAsync
+
+✔️
+
+✔️
+
+Method
+
+ async LoginWithTokenAsync
+
+✔️
+
+✔️
+
+Method
+
+ async LoginWithTokenWithoutEventPipeAsync
+
+✔️
+
+✔️
+
+Method
+
+ async LogoutAsync
+
+✔️
+
+✔️
+
+Method
+
+ async RenewTokenAsync
+
+✔️
+
+✔️
+
+3\. Capabilities / Subscriptions
+
+Method
+
+ GetCapability
+
+✔️
+
+✔️
+
+Method
+
+ async GetUserSubscriptionsAsync
+
+✔️
+
+✔️
+
+Method
+
+ IsCapabilityAvailable
+
+✔️
+
+✔️
+
+4\. Default presence level
+
+Method
+
+ GetDefaultPresenceLevel
+
+✔️
+
+✔️
+
+Method
+
+ SetDefaultPresenceLevel
+
+✔️
+
+✔️
+
+5\. Other
+
+Method
+
+ Dispose
+
+✔️
+
+✔️
+
+Method
+
+ GetPeerDisplayName
+
+✔️
+
+✔️
+
+Method
+
+ async PingAsync
+
+✔️
+
+✔️
+
+6\. Password
+
+Event
+
+ PasswordUpdated
+
+✔️
+
+❌
+
+Method
+
+ async AskResetCodeToChangePasswordAsync
+
+✔️
+
+✔️
+
+Method
+
+ async ResetPasswordUsingCodeAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdatePasswordAsync
+
+✔️
+
+✔️
+
+7\. Service accessors
+
+Method
+
+ GetAdministration
+
+✔️
+
+✔️
+
+Method
+
+ GetAlerts
+
+✔️
+
+✔️
+
+Method
+
+ GetAutoReconnection
+
+✔️
+
+✔️
+
+Method
+
+ GetBubbles
+
+✔️
+
+✔️
+
+Method
+
+ GetCallsLog
+
+✔️
+
+✔️
+
+Method
+
+ GetChannels
+
+✔️
+
+✔️
+
+Method
+
+ GetComparers
+
+✔️
+
+✔️
+
+Method
+
+ GetConferences
+
+✔️
+
+✔️
+
+Method
+
+ GetContacts
+
+✔️
+
+✔️
+
+Method
+
+ GetConversations
+
+✔️
+
+✔️
+
+Method
+
+ GetCustomerCare
+
+✔️
+
+✔️
+
+Method
+
+ GetFavorites
+
+✔️
+
+✔️
+
+Method
+
+ GetFileStorage
+
+✔️
+
+✔️
+
+Method
+
+ GetGroups
+
+✔️
+
+✔️
+
+Method
+
+ GetHttpClient
+
+✔️
+
+✔️
+
+Method
+
+ GetHubTelephony
+
+✔️
+
+✔️
+
+Method
+
+ GetHybridTelephony
+
+✔️
+
+✔️
+
+Method
+
+ GetIniFileParser
+
+✔️
+
+✔️
+
+Method
+
+ GetInstantMessaging
+
+✔️
+
+✔️
+
+Method
+
+ GetInvitations
+
+✔️
+
+✔️
+
+Method
+
+ GetJingle
+
+✔️
+
+✔️
+
+Method
+
+ GetRPC
+
+✔️
+
+✔️
+
+Method
+
+ GetS2SEventPipe
+
+✔️
+
+✔️
+
+Method
+
+ GetSecondaryHttpClient
+
+✔️
+
+✔️
+
+Method
+
+ GetSms
+
+✔️
+
+✔️
+
+Method
+
+ GetWebHookEventPipe
+
+✔️
+
+✔️
+
+8\. Settings - Other
+
+Event
+
+ DataCleared
+
+✔️
+
+✔️
+
+Property
+
+ ApplicationId
+
+✔️
+
+✔️
+
+Property
+
+ ApplicationSecret
+
+✔️
+
+✔️
+
+Property
+
+ HostName
+
+✔️
+
+✔️
+
+Property
+
+ LoggerPrefix
+
+✔️
+
+✔️
+
+Property
+
+ Restrictions
+
+✔️
+
+✔️
+
+Property
+
+ WebRTCSettings
+
+✔️
+
+✔️
+
+Method
+
+ GetDomain
+
+✔️
+
+✔️
+
+Method
+
+ GetFeature
+
+✔️
+
+✔️
+
+Method
+
+ GetIniFileName
+
+✔️
+
+✔️
+
+Method
+
+ GetIniFullPath
+
+✔️
+
+✔️
+
+Method
+
+ GetIniPathFolder
+
+✔️
+
+✔️
+
+Method
+
+ GetKeepAliveTimeout
+
+✔️
+
+✔️
+
+Method
+
+ GetResource
+
+✔️
+
+✔️
+
+Method
+
+ GetTimeout
+
+✔️
+
+✔️
+
+Method
+
+ GetWebProxy
+
+✔️
+
+✔️
+
+Method
+
+ IsFeatureEnabled
+
+✔️
+
+✔️
+
+Method
+
+ SetApplicationInfo
+
+✔️
+
+✔️
+
+Method
+
+ SetHostInfo
+
+✔️
+
+✔️
+
+Method
+
+ SetKeepAliveTimeout
+
+✔️
+
+✔️
+
+Method
+
+ SetResource
+
+✔️
+
+✔️
+
+Method
+
+ SetTimeout
+
+✔️
+
+✔️
+
+Method
+
+ SetWebProxy
+
+✔️
+
+✔️
+
+9\. Settings - S2S
+
+Method
+
+ SetS2SCallbackUrl
+
+❌
+
+✔️
+
+10\. Settings - User
+
+Property
+
+ Roles
+
+✔️
+
+✔️
+
+Property
+
+ UserCredentials
+
+✔️
+
+✔️
+
+Method
+
+ GetApplicationToken
+
+✔️
+
+✔️
+
+Method
+
+ GetApplicationTokenAsJson
+
+✔️
+
+✔️
+
+11\. Settings - XMPP
+
+Method
+
+ static GetXMPPAuthenticationMechanisms
+
+✔️
+
+❌
+
+Method
+
+ static SetXMPPAuthenticationMechanisms
+
+✔️
+
+❌
+
+12\. Theme
+
+Method
+
+ async GetAvailableThemesAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetAvatarThemeAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetUserThemeAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SelectThemeAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UnselectThemeAsync
+
+✔️
+
+✔️
+
+  
+
+### AutoReconnection
+
+[AutoReconnection documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+Event
+
+ Cancelled
+
+✔️
+
+✔️
+
+Event
+
+ MaxNbAttemptsReached
+
+✔️
+
+✔️
+
+Event
+
+ OneNetworkInterfaceOperational
+
+✔️
+
+✔️
+
+Event
+
+ Started
+
+✔️
+
+✔️
+
+Event
+
+ TokenExpired
+
+✔️
+
+✔️
+
+Property
+
+ AvoidNetworkInterfaceKeywordsInDescription
+
+✔️
+
+✔️
+
+Property
+
+ CheckNetworkInterfaces
+
+✔️
+
+✔️
+
+Property
+
+ CurrentNbAttempts
+
+✔️
+
+✔️
+
+Property
+
+ DelayBetweenAttempts
+
+✔️
+
+✔️
+
+Property
+
+ IsStarted
+
+✔️
+
+✔️
+
+Property
+
+ MaxNbAttempts
+
+✔️
+
+✔️
+
+Property
+
+ MaxRandomDelayBetwenAttemps
+
+✔️
+
+✔️
+
+Property
+
+ RandomDelayBetweenAttempts
+
+✔️
+
+✔️
+
+Property
+
+ UsePreviousLoginPwd
+
+✔️
+
+✔️
+
+Method
+
+ Cancel
+
+✔️
+
+✔️
+
+Method
+
+ GenerateRandomDelayBetweenAttempts
+
+✔️
+
+✔️
+
+Method
+
+ IsOneNetworkUp
+
+✔️
+
+✔️
+
+  
+
+### Bubbles
+
+[Bubbles documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+1\. Avatar
+
+Event
+
+ BubbleAvatarUpdated
+
+✔️
+
+❌
+
+Method
+
+ async DeleteAvatarAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetAvatarAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateAvatarAsync
+
+✔️
+
+✔️
+
+2\. Bubble link
+
+Event
+
+ BubbleLinkUpdated
+
+✔️
+
+✔️
+
+Method
+
+ async AutoRegisterUsingBubbleLinkAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CheckBubbleLinkValidityAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CreateBubbleLinkAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GenerateNewBubbleLinkAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetBubbleLinkAsync
+
+✔️
+
+✔️
+
+Method
+
+ async JoinByBubbleLinkAsync
+
+✔️
+
+✔️
+
+Method
+
+ async RemoveBubbleLinkAsync
+
+✔️
+
+✔️
+
+3\. Bubble Management
+
+Event
+
+ BubbleInfoUpdated
+
+✔️
+
+✔️
+
+Method
+
+ async ArchiveBubbleAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CreateBubbleAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteBubbleAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetAllBubbles
+
+✔️
+
+✔️
+
+Method
+
+ async GetAllBubblesAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetBubble
+
+✔️
+
+✔️
+
+Method
+
+ GetBubbleById
+
+✔️
+
+✔️
+
+Method
+
+ async GetBubbleByIdAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetBubbleByIdInCacheFirstAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetBubbleByIdSync
+
+✔️
+
+✔️
+
+Method
+
+ GetBubbleByJid
+
+✔️
+
+✔️
+
+Method
+
+ async GetBubbleByJidAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetBubbleByJidInCacheFirstAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetBubbleByJidSync
+
+✔️
+
+✔️
+
+Method
+
+ GetPeerDisplayName
+
+✔️
+
+✔️
+
+Method
+
+ IsArchived
+
+✔️
+
+✔️
+
+Method
+
+ async LeaveBubbleAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateBubbleAsync
+
+✔️
+
+✔️
+
+4\. Conference Management
+
+Method
+
+ async AutoClearBubbleContentAsync
+
+✔️
+
+✔️
+
+Method
+
+ async ClearBubbleContentAsync
+
+✔️
+
+✔️
+
+5\. Custom data
+
+Event
+
+ BubbleCustomDataUpdated
+
+✔️
+
+❌
+
+Method
+
+ async DeleteCustomDataAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateCustomDataAsync
+
+✔️
+
+✔️
+
+6\. Invitation
+
+Event
+
+ BubbleInvitationAccepted
+
+✔️
+
+✔️
+
+Event
+
+ BubbleInvitationReceived
+
+✔️
+
+✔️
+
+Event
+
+ BubbleInvitationRejected
+
+✔️
+
+✔️
+
+Method
+
+ async AcceptInvitationAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CancelInvitationAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CancelInvitationsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeclineInvitationAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetPendingBubbleInvitations
+
+✔️
+
+✔️
+
+Method
+
+ IsAccepted
+
+✔️
+
+✔️
+
+Method
+
+ IsInvited
+
+✔️
+
+✔️
+
+Method
+
+ async SendInvitationAsync
+
+✔️
+
+✔️
+
+7\. Lobby / Waiting Room
+
+Event
+
+ BubbleLobbyUpdated
+
+✔️
+
+✔️
+
+Method
+
+ async AcceptUsersInLobbyAsync
+
+✔️
+
+✔️
+
+Method
+
+ async ActivateLobbyAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CancelBubbleAccessRequestAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DenyUsersInLobbyAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetBubblesLobbyListAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetContactsInLobbyAsync
+
+✔️
+
+✔️
+
+8\. Members
+
+Event
+
+ BubbleAffiliationChanged
+
+✔️
+
+✔️
+
+Event
+
+ BubbleAffiliationsPerformed
+
+✔️
+
+✔️
+
+Event
+
+ BubbleMemberUpdated
+
+✔️
+
+✔️
+
+Event
+
+ UnknownContactsFound
+
+✔️
+
+✔️
+
+Method
+
+ async AddMemberAsync
+
+✔️
+
+✔️
+
+Method
+
+ async AddMembersAsync
+
+✔️
+
+✔️
+
+Method
+
+ async ChangeOwnerAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CheckChangeOwnerAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetGuests
+
+✔️
+
+✔️
+
+Method
+
+ GetGuestsAsContacts
+
+✔️
+
+✔️
+
+Method
+
+ GetMemberOfBubble
+
+✔️
+
+✔️
+
+Method
+
+ GetMembers
+
+✔️
+
+✔️
+
+Method
+
+ async GetMembersAsContactsAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetModerators
+
+✔️
+
+✔️
+
+Method
+
+ async GetModeratorsAsContactsAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetOwner
+
+✔️
+
+✔️
+
+Method
+
+ GetTvs
+
+✔️
+
+✔️
+
+Method
+
+ GetTvsAsContact
+
+✔️
+
+✔️
+
+Method
+
+ async GetUnknownContactsAsync
+
+✔️
+
+✔️
+
+Method
+
+ IsGuestMode
+
+✔️
+
+✔️
+
+Method
+
+ IsMember
+
+✔️
+
+✔️
+
+Method
+
+ IsModerator
+
+✔️
+
+✔️
+
+Method
+
+ IsOwner
+
+✔️
+
+✔️
+
+Method
+
+ IsUnsubscribed
+
+✔️
+
+✔️
+
+Method
+
+ async RemoveMemberAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateMemberPrivilegeAsync
+
+✔️
+
+✔️
+
+  
+
+### CallsLog
+
+[CallsLog documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+Event
+
+ CallLogAdded
+
+✔️
+
+❌
+
+Event
+
+ CallLogRead
+
+✔️
+
+❌
+
+Event
+
+ CallLogsUpdated
+
+✔️
+
+❌
+
+Method
+
+ async DeleteAllCallsLogAsync
+
+✔️
+
+❌
+
+Method
+
+ async DeleteCallLogAsync
+
+✔️
+
+❌
+
+Method
+
+ async DeleteCallsLogForContactAsync
+
+✔️
+
+❌
+
+Method
+
+ GetCallsLog
+
+✔️
+
+❌
+
+Method
+
+ async GetOlderCallsLogAsync
+
+✔️
+
+❌
+
+Method
+
+ async MarkCallLogAsReadAsync
+
+✔️
+
+❌
+
+  
+
+### Channels
+
+[Channels documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+1\. Avatar
+
+Event
+
+ ChannelAvatarUpdated
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteAvatarAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetAvatarAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateAvatarAsync
+
+✔️
+
+✔️
+
+2\. Channel Management
+
+Event
+
+ ChannelCreated
+
+✔️
+
+✔️
+
+Event
+
+ ChannelDeleted
+
+✔️
+
+✔️
+
+Event
+
+ ChannelInfoUpdated
+
+✔️
+
+✔️
+
+Method
+
+ async CreateChannelAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteChannelAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetAllChannelsAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetChannelById
+
+✔️
+
+✔️
+
+Method
+
+ async GetChannelByIdAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetChannelByPeer
+
+✔️
+
+✔️
+
+Method
+
+ static GetChannelDisplayName
+
+✔️
+
+✔️
+
+Method
+
+ GetChannels
+
+✔️
+
+✔️
+
+Method
+
+ static GetPeerDisplayName
+
+✔️
+
+✔️
+
+Method
+
+ async MuteOrUnmuteAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SearchChannelsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateChannelAsync
+
+✔️
+
+✔️
+
+3\. Invitation
+
+Method
+
+ async AcceptInvitationAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeclineInvitationAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetInvitedChannels
+
+✔️
+
+✔️
+
+Method
+
+ async GetInvitedChannelsAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetSubscribedChannels
+
+✔️
+
+✔️
+
+Method
+
+ async GetSubscribedChannelsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SubscribeAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UnsubscribeAsync
+
+✔️
+
+✔️
+
+4\. Items
+
+Event
+
+ ChannelItemAppreciationsUpdated
+
+✔️
+
+✔️
+
+Event
+
+ ChannelItemUpdated
+
+✔️
+
+✔️
+
+Method
+
+ async AddChannelItemAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteChannelItemAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetChannelItem
+
+✔️
+
+✔️
+
+Method
+
+ async GetChannelItemAppreciationsAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetChannelItems
+
+✔️
+
+✔️
+
+Method
+
+ async GetChannelItemsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GiveChannelItemAppreciationAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateChannelItemAsync
+
+✔️
+
+✔️
+
+5\. Members
+
+Event
+
+ MemberUpdated
+
+✔️
+
+✔️
+
+Method
+
+ GetAllMembers
+
+✔️
+
+✔️
+
+Method
+
+ async GetAllMembersAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SetMembersRoleAsync
+
+✔️
+
+✔️
+
+  
+
+### Conferences
+
+[Conferences documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+1\. Conference Management
+
+Event
+
+ ConferenceRejected
+
+✔️
+
+❌
+
+Event
+
+ ConferenceRemoved
+
+✔️
+
+❌
+
+Event
+
+ ConferenceUpdated
+
+✔️
+
+❌
+
+Method
+
+ async CheckConferencesInProgressAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetAllConferences
+
+✔️
+
+✔️
+
+Method
+
+ GetConference
+
+✔️
+
+✔️
+
+Method
+
+ GetConferenceById
+
+✔️
+
+✔️
+
+Method
+
+ async GetFullSnapshotAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetSnapshotAsync
+
+✔️
+
+✔️
+
+Method
+
+ IsConferenceAllowed
+
+✔️
+
+✔️
+
+Method
+
+ async JoinConferenceAsync
+
+✔️
+
+✔️
+
+Method
+
+ async LockOrUnlockeConferenceAsync
+
+✔️
+
+✔️
+
+Method
+
+ async RejectConferenceAsync
+
+✔️
+
+✔️
+
+Method
+
+ async StartConferenceAsync
+
+✔️
+
+✔️
+
+Method
+
+ async StopConferenceAsync
+
+✔️
+
+✔️
+
+Method
+
+ async TalkingTimeAsync
+
+✔️
+
+✔️
+
+2\. Media
+
+Event
+
+ ConferenceMediaPublicationSubscribersUpdated
+
+✔️
+
+❌
+
+Event
+
+ ConferenceMediaPublicationsUpdated
+
+✔️
+
+❌
+
+Event
+
+ ConferenceMediaServicesUpdated
+
+✔️
+
+❌
+
+Event
+
+ ConferenceSharingTransferStatusUpdated
+
+✔️
+
+❌
+
+Method
+
+ async AddAudioAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetDataChannelPublisherDetails
+
+✔️
+
+✔️
+
+Method
+
+ GetMediaPublications
+
+✔️
+
+✔️
+
+Method
+
+ GetMediaServices
+
+✔️
+
+✔️
+
+Method
+
+ GetSharingPublisherDetails
+
+✔️
+
+✔️
+
+Method
+
+ GetVideoPublisherDetails
+
+✔️
+
+✔️
+
+Method
+
+ async MuteOrUnmuteConferenceAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SendSharingTransferStatusAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SubscribeToMediaPublicationAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SubscribeToMediaServiceAsync
+
+✔️
+
+✔️
+
+3\. Participants
+
+Event
+
+ ConferenceOwnerUpdated
+
+✔️
+
+❌
+
+Event
+
+ ConferenceParticipantsUpdated
+
+✔️
+
+❌
+
+Event
+
+ ConferenceRaisedHandsUpdated
+
+✔️
+
+❌
+
+Event
+
+ ConferenceTalkersUpdated
+
+✔️
+
+❌
+
+Method
+
+ async AddPstnParticipantAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DelegateConferenceAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DropParticipantAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DropPstnParticipantAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetParticipantParameters
+
+✔️
+
+✔️
+
+Method
+
+ GetParticipants
+
+✔️
+
+✔️
+
+Method
+
+ GetRaisedHands
+
+✔️
+
+✔️
+
+Method
+
+ GetTalkers
+
+✔️
+
+✔️
+
+Method
+
+ static IsParticipantUsingJid
+
+✔️
+
+✔️
+
+Method
+
+ async LowerAllHandsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async LowerHandAsync
+
+✔️
+
+✔️
+
+Method
+
+ async MuteOrUnmuteParticipantAsync
+
+✔️
+
+✔️
+
+Method
+
+ async MuteOrUnmutePstnParticipantAsync
+
+✔️
+
+✔️
+
+Method
+
+ async RaiseHandAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SetParticipantParametersAsync
+
+✔️
+
+✔️
+
+4\. Recording
+
+Method
+
+ async PauseRecordingAsync
+
+✔️
+
+✔️
+
+Method
+
+ async ResumeRecordingAsync
+
+✔️
+
+✔️
+
+Method
+
+ async StartRecordingAsync
+
+✔️
+
+✔️
+
+Method
+
+ async StopRecordingAsync
+
+✔️
+
+✔️
+
+  
+
+### Contacts
+
+[Contacts documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+1\. Avatar
+
+Event
+
+ ContactAvatarUpdated
+
+✔️
+
+❌
+
+Method
+
+ async DeleteAvatarAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetAvatarAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateAvatarAsync
+
+✔️
+
+✔️
+
+2\. Bot
+
+Method
+
+ GetAllBots
+
+✔️
+
+✔️
+
+Method
+
+ async GetAllBotsAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetBot
+
+✔️
+
+✔️
+
+Method
+
+ GetBotByBotId
+
+✔️
+
+✔️
+
+Method
+
+ GetBotByBotJid
+
+✔️
+
+✔️
+
+Method
+
+ async GetBotFromBotIdAsync
+
+✔️
+
+✔️
+
+Method
+
+ IsBotId
+
+✔️
+
+✔️
+
+3\. Company
+
+Method
+
+ GetCompany
+
+✔️
+
+✔️
+
+Method
+
+ async GetCompanyAsync
+
+✔️
+
+✔️
+
+Method
+
+ async IsCompanyAdminAsync
+
+✔️
+
+✔️
+
+Method
+
+ IsCompanyAdminSync
+
+✔️
+
+✔️
+
+4\. Company / Personal directory
+
+Method
+
+ async CreateDirectoryContactAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteDirectoryContactAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetDirectoryContactAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetDirectoryContactsListAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateDirectoryContactAsync
+
+✔️
+
+✔️
+
+5\. Contact Management
+
+Event
+
+ ContactsAdded
+
+✔️
+
+✔️
+
+Event
+
+ ContactUpdated
+
+✔️
+
+✔️
+
+Method
+
+ GetAllContacts
+
+✔️
+
+✔️
+
+Method
+
+ GetAllContactsInRoster
+
+✔️
+
+✔️
+
+Method
+
+ async GetAllContactsInRosterAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetContact
+
+✔️
+
+✔️
+
+Method
+
+ GetContactById
+
+✔️
+
+✔️
+
+Method
+
+ async GetContactByIdAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetContactByIdInCacheFirstAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetContactByIdSync
+
+✔️
+
+✔️
+
+Method
+
+ GetContactByJid
+
+✔️
+
+✔️
+
+Method
+
+ async GetContactByJidAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetContactByJidInCacheFirstAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetContactByJidSync
+
+✔️
+
+✔️
+
+Method
+
+ GetContactDisplayName
+
+✔️
+
+✔️
+
+Method
+
+ GetContactInitials
+
+✔️
+
+✔️
+
+Method
+
+ GetContactsByIdList
+
+✔️
+
+✔️
+
+Method
+
+ async GetContactsByIdListAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetContactsByJidListAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetContactSync
+
+✔️
+
+✔️
+
+Method
+
+ GetCurrentContact
+
+✔️
+
+✔️
+
+Method
+
+ GetPeerDisplayName
+
+✔️
+
+✔️
+
+Method
+
+ GetPeerInitials
+
+✔️
+
+✔️
+
+Method
+
+ GetUnknownContactIdList
+
+✔️
+
+✔️
+
+Method
+
+ GetUnknownContactJidList
+
+✔️
+
+✔️
+
+Method
+
+ async RemoveContactFromRosterAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateCurrentContactAsync
+
+✔️
+
+✔️
+
+Method
+
+ UpdateDisplayName
+
+✔️
+
+✔️
+
+6\. Custom data
+
+Method
+
+ async DeleteCustomDataAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateCustomDataAsync
+
+✔️
+
+✔️
+
+7\. Custom status
+
+Event
+
+ CustomStatusUpdated
+
+✔️
+
+❌
+
+Method
+
+ CreateCustomStatus
+
+✔️
+
+❌
+
+Method
+
+ GetCustomStatus
+
+✔️
+
+❌
+
+Method
+
+ async GetCustomStatusAsync
+
+✔️
+
+❌
+
+Method
+
+ async RemoveCustomStatusAsync
+
+✔️
+
+❌
+
+Method
+
+ async SetCustomStatusAsync
+
+✔️
+
+❌
+
+8\. Presence
+
+Event
+
+ ContactAggregatedPresenceUpdated
+
+✔️
+
+✔️
+
+Event
+
+ ContactPresenceUpdated
+
+✔️
+
+✔️
+
+Event
+
+ RosterContactsAdded
+
+✔️
+
+✔️
+
+Event
+
+ RosterContactsRemoved
+
+✔️
+
+✔️
+
+Event
+
+ SynchroProviderStatusUpdated
+
+✔️
+
+❗
+
+Method
+
+ CreatePresence
+
+✔️
+
+✔️
+
+Method
+
+ async EnableCalendarAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetAggregatedPresence
+
+✔️
+
+✔️
+
+Method
+
+ GetAllAggregatedPresences
+
+✔️
+
+✔️
+
+Method
+
+ GetAllPresences
+
+✔️
+
+✔️
+
+Method
+
+ async GetCalendarOutOfOfficeStateAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetCalendarStateAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetCalendarStatesAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetPresence
+
+✔️
+
+✔️
+
+Method
+
+ GetPresenceSavedForRollback
+
+✔️
+
+✔️
+
+Method
+
+ GetPresencesList
+
+✔️
+
+✔️
+
+Method
+
+ async GetPresencesListAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetResources
+
+✔️
+
+✔️
+
+Method
+
+ GetSynchroProviderStatusList
+
+✔️
+
+✔️
+
+Method
+
+ async GetTeamsPresenceStateAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetTeamsPresenceStatesAsync
+
+✔️
+
+✔️
+
+Method
+
+ static PresencesAreEquals
+
+✔️
+
+✔️
+
+Method
+
+ async RegisterCalendarAsync
+
+✔️
+
+✔️
+
+Method
+
+ async RollbackPresenceSavedAsync
+
+✔️
+
+✔️
+
+Method
+
+ SavePresenceForRollback
+
+✔️
+
+✔️
+
+Method
+
+ async SetBusyPresenceAccordingMediasAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SetPresenceLevelAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UnregisterCalendarAsync
+
+✔️
+
+✔️
+
+9\. Search
+
+Method
+
+ async SearchByDisplayNameAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SearchByEmailsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SearchByPhoneNumberAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SearchByTagAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SearchContactsByDisplayNameAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SearchContactsByEmailsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SearchContactsByPhoneNumberAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SearchContactsByTagAsync
+
+✔️
+
+✔️
+
+10\. TV
+
+Method
+
+ GetTvFromTvId
+
+✔️
+
+✔️
+
+Method
+
+ GetTvFromUserId
+
+✔️
+
+✔️
+
+Method
+
+ GetTvs
+
+✔️
+
+✔️
+
+Method
+
+ async GetTvsAsync
+
+✔️
+
+✔️
+
+Method
+
+ IsTvId
+
+✔️
+
+✔️
+
+11\. User settings
+
+Event
+
+ UserSettingsUpdated
+
+✔️
+
+❗
+
+Method
+
+ GetUserSetting
+
+✔️
+
+✔️
+
+Method
+
+ GetUserSettingBooleanValue
+
+✔️
+
+✔️
+
+Method
+
+ GetUserSettings
+
+✔️
+
+✔️
+
+Method
+
+ GetUserSettingStringValue
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateUserSettingAsync
+
+✔️
+
+✔️
+
+  
+
+### Conversations
+
+[Conversations documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+Event
+
+ ConversationCreated
+
+✔️
+
+❗
+
+Event
+
+ ConversationRemoved
+
+✔️
+
+❗
+
+Event
+
+ ConversationUpdated
+
+✔️
+
+❗
+
+Method
+
+ GetAllConversations
+
+✔️
+
+✔️
+
+Method
+
+ async GetAllConversationsAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetConversation
+
+✔️
+
+✔️
+
+Method
+
+ async GetMutedConversationsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetOrCreateConversationFromPeerAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetOrCreateConversationFromPeerSync
+
+✔️
+
+✔️
+
+Method
+
+ async GetUnmutedConversationsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async MuteConversationAsync
+
+✔️
+
+✔️
+
+Method
+
+ async RemoveFromConversationsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UnmuteConversationAsync
+
+✔️
+
+✔️
+
+  
+
+### CustomerCare
+
+[CustomerCare documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+1\. Log request asked
+
+Event
+
+ LogRequestAccepted
+
+✔️
+
+❌
+
+Event
+
+ LogRequestAsked
+
+✔️
+
+❌
+
+Event
+
+ LogRequestRejected
+
+✔️
+
+❌
+
+Method
+
+ async AcknowledgeLogRequestAskedAsync
+
+✔️
+
+✔️
+
+Method
+
+ async AskLogRequestForUserAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CompleteLogRequestAskedAsync
+
+✔️
+
+✔️
+
+Method
+
+ async RejectLogRequestAskedAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UploadFileForLogRequestAskedAsync
+
+✔️
+
+✔️
+
+2\. Log request feedback
+
+Method
+
+ async StoreLogRequestFeedbackAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UploadFileForLogRequestFeedbackAsync
+
+✔️
+
+✔️
+
+3\. Management
+
+Method
+
+ async CloseLogRequestAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetLogRequestAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetLogRequestsListAsync
+
+✔️
+
+✔️
+
+  
+
+### Favorites
+
+[Favorites documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+Event
+
+ FavoriteCreated
+
+✔️
+
+❌
+
+Event
+
+ FavoriteRemoved
+
+✔️
+
+❌
+
+Event
+
+ FavoriteUpdated
+
+✔️
+
+❌
+
+Method
+
+ async CreateFavoriteAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteFavoriteAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetFavorite
+
+✔️
+
+✔️
+
+Method
+
+ GetFavorites
+
+✔️
+
+✔️
+
+Method
+
+ async GetFavoritesAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateFavoritePositionAsync
+
+✔️
+
+✔️
+
+  
+
+### FileStorage
+
+[FileStorage documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+Method
+
+ async AddViewerAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetFileDescriptorSync
+
+✔️
+
+✔️
+
+Method
+
+ async RemoveViewerAsync
+
+✔️
+
+✔️
+
+1\. Download
+
+Method
+
+ async DownloadFileAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DownloadFileWithUrlAsync
+
+✔️
+
+✔️
+
+2\. FileStorage Management
+
+Event
+
+ FileStorageUpdated
+
+✔️
+
+❌
+
+Event
+
+ RecordingFileUpdated
+
+✔️
+
+❌
+
+Event
+
+ VoiceMessageUpdated
+
+✔️
+
+❌
+
+Method
+
+ async CopyFileToPersonalStorageAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CreateArchiveAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CreateFileDescriptorAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetAllFileDescriptors
+
+✔️
+
+✔️
+
+Method
+
+ async GetAllFileDescriptorsAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetAllFileDescriptorsReceived
+
+✔️
+
+✔️
+
+Method
+
+ async GetAllFileDescriptorsReceivedAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetAllFileDescriptorsSent
+
+✔️
+
+✔️
+
+Method
+
+ async GetAllFileDescriptorsSentAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetFileDescriptor
+
+✔️
+
+✔️
+
+Method
+
+ async GetFileDescriptorAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetFileDescriptors
+
+✔️
+
+✔️
+
+Method
+
+ async GetFileDescriptorsAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetFileDescriptorsReceived
+
+✔️
+
+✔️
+
+Method
+
+ async GetFileDescriptorsReceivedAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetFileDescriptorsSent
+
+✔️
+
+✔️
+
+Method
+
+ async GetFileDescriptorsSentAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetFileUrlAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetQuotaComsumptionAsync
+
+✔️
+
+✔️
+
+Method
+
+ static IsRecordingFile
+
+✔️
+
+✔️
+
+Method
+
+ async RemoveAllFileDescriptorsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async RemoveFileDescriptorAsync
+
+✔️
+
+✔️
+
+3\. Upload
+
+Method
+
+ async UploadFileAsync
+
+✔️
+
+✔️
+
+  
+
+### Groups
+
+[Groups documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+1\. Group Management
+
+Event
+
+ GroupCreated
+
+✔️
+
+❌
+
+Event
+
+ GroupDeleted
+
+✔️
+
+❌
+
+Event
+
+ GroupInfoUpdated
+
+✔️
+
+❌
+
+Method
+
+ async CreateGroupAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteGroupAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetGroup
+
+✔️
+
+✔️
+
+Method
+
+ async GetGroupDetailsAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetGroups
+
+✔️
+
+✔️
+
+Method
+
+ async GetGroupsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateGroupAsync
+
+✔️
+
+✔️
+
+2\. Members
+
+Event
+
+ GroupMemberUpdated
+
+✔️
+
+❌
+
+Method
+
+ async AddMemberAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetAllMembers
+
+✔️
+
+✔️
+
+Method
+
+ async GetAllMembersAsync
+
+✔️
+
+✔️
+
+Method
+
+ async RemoveMemberAsync
+
+✔️
+
+✔️
+
+  
+
+### HubTelephony
+
+[HubTelephony documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+1\. 3PCC
+
+Method
+
+ async AnswerCallAsync
+
+✔️
+
+✔️
+
+Method
+
+ async BlindTransferCallAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeflectCallAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeflectCallToMevoAsync
+
+✔️
+
+✔️
+
+Method
+
+ async HoldCallAsync
+
+✔️
+
+✔️
+
+Method
+
+ async MakeCallAsync
+
+✔️
+
+✔️
+
+Method
+
+ async MakeCallToMevoAsync
+
+✔️
+
+✔️
+
+Method
+
+ async ReleaseCallAsync
+
+✔️
+
+✔️
+
+Method
+
+ async RetrieveCallAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SendDtmfAsync
+
+✔️
+
+✔️
+
+Method
+
+ async TransferCallAsync
+
+✔️
+
+✔️
+
+2\. Call
+
+Event
+
+ CallUpdated
+
+✔️
+
+❌
+
+3\. Call Line Identification Restriction
+
+Event
+
+ CallLineIdentificationRestrictionUpdated
+
+✔️
+
+❌
+
+Method
+
+ async GetCallLineIdentificationRestrictionAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SetCallLineIdentificationRestrictionAsync
+
+✔️
+
+✔️
+
+4\. CLI
+
+Method
+
+ async GetCallLineIdentificationsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SetCurrentCallLineIdentificationsAsync
+
+✔️
+
+✔️
+
+5\. Devices
+
+Event
+
+ CurrentDeviceUpdated
+
+✔️
+
+❌
+
+Event
+
+ DevicesAvailableUpdated
+
+✔️
+
+❌
+
+Event
+
+ DeviceStateUpdated
+
+✔️
+
+❌
+
+Method
+
+ GetCurrentDevice
+
+✔️
+
+✔️
+
+Method
+
+ GetDevices
+
+✔️
+
+✔️
+
+Method
+
+ GetWebRtcDevice
+
+✔️
+
+✔️
+
+Method
+
+ async SetCurrentDeviceAsync
+
+✔️
+
+✔️
+
+6\. Forward
+
+Event
+
+ CallForwardStatusListUpdated
+
+✔️
+
+❌
+
+Method
+
+ GetCallForwardStatusList
+
+✔️
+
+✔️
+
+Method
+
+ async SetImmediateCallForwardAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SetOnBusyCallForwardAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SetOnNoReplyCallForwardAsync
+
+✔️
+
+✔️
+
+7\. Group: Voice Messages
+
+Event
+
+ GroupVoiceMessageNumberUpdated
+
+✔️
+
+❌
+
+8\. Management
+
+Event
+
+ PBXAgentInfoUpdated
+
+✔️
+
+❌
+
+Event
+
+ TelephonyStatusUpdated
+
+✔️
+
+❌
+
+Method
+
+ async GetEmergencyNumbersAndOptionsAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetPBXAgentInformation
+
+✔️
+
+✔️
+
+Method
+
+ GetTelephonyStatus
+
+✔️
+
+✔️
+
+9\. Register as Device
+
+Method
+
+ IsRegisteredAsDevice
+
+✔️
+
+✔️
+
+Method
+
+ async MakeCallAsDeviceAsync
+
+✔️
+
+✔️
+
+Method
+
+ async RegisterAsDeviceAsync
+
+✔️
+
+✔️
+
+10\. Registered as Device
+
+Event
+
+ RegisteredAsDevice
+
+✔️
+
+❌
+
+11\. Supervision
+
+Event
+
+ SupervisionCallUpdated
+
+✔️
+
+❌
+
+12\. Voice messages
+
+Event
+
+ VoiceMessageNumberUpdated
+
+✔️
+
+❌
+
+Method
+
+ async DeleteAllVoiceMessagesAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteVoiceMessageAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetNumberOfVoiceMessages
+
+✔️
+
+✔️
+
+Method
+
+ GetVoiceMailPhoneNumber
+
+✔️
+
+✔️
+
+Method
+
+ async GetVoiceMessagesListAsync
+
+✔️
+
+✔️
+
+Method
+
+ async MarkVoiceMessageAsReadAsync
+
+✔️
+
+✔️
+
+Method
+
+ VoiceMailAvailable
+
+✔️
+
+✔️
+
+  
+
+### HybridTelephony
+
+[HybridTelephony documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+1\. 3PCC
+
+Event
+
+ HybridCallFailed
+
+✔️
+
+❌
+
+Event
+
+ HybridCallUpdated
+
+✔️
+
+❌
+
+Method
+
+ async AlternateCallAsync
+
+✔️
+
+✔️
+
+Method
+
+ async AnswerCallAsync
+
+✔️
+
+✔️
+
+Method
+
+ async ConferenceCallAsync
+
+✔️
+
+✔️
+
+Method
+
+ ConferenceCallAvailable
+
+✔️
+
+✔️
+
+Method
+
+ async ConsultationCallAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeflectCallAsync
+
+✔️
+
+✔️
+
+Method
+
+ DeflectCallAvailable
+
+✔️
+
+✔️
+
+Method
+
+ async DeflectCallToMevoAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetActiveCall
+
+✔️
+
+✔️
+
+Method
+
+ GetCalls
+
+✔️
+
+✔️
+
+Method
+
+ async HoldCallAsync
+
+✔️
+
+✔️
+
+Method
+
+ async MakeCallAsync
+
+✔️
+
+✔️
+
+Method
+
+ async MakeCallToMevoAsync
+
+✔️
+
+✔️
+
+Method
+
+ async ReleaseCallAsync
+
+✔️
+
+✔️
+
+Method
+
+ async RetrieveCallAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SendDtmfAsync
+
+✔️
+
+✔️
+
+Method
+
+ async TransferCallAsync
+
+✔️
+
+✔️
+
+Method
+
+ TransferCallAvailable
+
+✔️
+
+✔️
+
+2\. ACD
+
+Method
+
+ async ACDLogoffAsync
+
+✔️
+
+✔️
+
+Method
+
+ async ACDLogonAsync
+
+✔️
+
+✔️
+
+Method
+
+ async ACDStatusAsync
+
+✔️
+
+✔️
+
+Method
+
+ async ACDWithdrawalAsync
+
+✔️
+
+✔️
+
+Method
+
+ async ACDWrapUpAsync
+
+✔️
+
+✔️
+
+3\. Call forward
+
+Event
+
+ HybridCallForwardStatusUpdated
+
+✔️
+
+❌
+
+Method
+
+ async ActivateHybridCallForwardOnPhoneNumberAsync
+
+✔️
+
+✔️
+
+Method
+
+ async ActivateHybridCallForwardOnVoiceMailAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeactivateHybridCallForwardAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetHybridCallForwardStatus
+
+✔️
+
+✔️
+
+4\. Call forward overflow
+
+Event
+
+ HybridCallForwardOverflowStatusUpdated
+
+✔️
+
+❌
+
+Method
+
+ GetCallForwardHybridOverflowStatus
+
+✔️
+
+✔️
+
+5\. CCD
+
+Method
+
+ async CCDLogoffAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CCDLogonAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CCDWithdrawalAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CCDWrapUpAsync
+
+✔️
+
+✔️
+
+Method
+
+ IsCCDAgent
+
+✔️
+
+✔️
+
+6\. Hunting Group
+
+Method
+
+ GetHuntingGroupInfo
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateHuntingGroupAsync
+
+✔️
+
+✔️
+
+7\. Management
+
+Event
+
+ HybridPBXAgentInfoUpdated
+
+✔️
+
+❌
+
+Event
+
+ HybridTelephonyDynamycStateUpdated
+
+✔️
+
+❌
+
+Event
+
+ HybridTelephonyStatusUpdated
+
+✔️
+
+❌
+
+Method
+
+ GetHybridMediaPillarInfo
+
+✔️
+
+✔️
+
+Method
+
+ GetHybridPBXAgentInformation
+
+✔️
+
+✔️
+
+Method
+
+ GetHybridTelephonyDynamicStateInfo
+
+✔️
+
+✔️
+
+Method
+
+ GetHybridTelephonyStatus
+
+✔️
+
+✔️
+
+Method
+
+ IsVirtualTerminal
+
+✔️
+
+✔️
+
+Method
+
+ async UpdateHybridSecretIdentityAsync
+
+✔️
+
+✔️
+
+8\. Nomadic
+
+Event
+
+ HybridNomadicStatusUpdated
+
+✔️
+
+❌
+
+Method
+
+ async ActivateHybridNomadicStatusToComputerAsync
+
+✔️
+
+✔️
+
+Method
+
+ async ActivateHybridNomadicStatusToPhoneNumberAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeactivateHybridNomadicStatusAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetHybridNomadicStatus
+
+✔️
+
+✔️
+
+Method
+
+ HybridNomadicOnComputerAvailable
+
+✔️
+
+✔️
+
+Method
+
+ HybridNomadicOnOfficePhoneAvailable
+
+✔️
+
+✔️
+
+Method
+
+ HybridNomadicOnOtherPhoneAvailable
+
+✔️
+
+✔️
+
+Method
+
+ HybridSecondaryDeviceUsed
+
+✔️
+
+✔️
+
+9\. Supervision Group
+
+Event
+
+ HybridSupervisionGroupUpdated
+
+✔️
+
+❌
+
+Method
+
+ async GetSupervisionGroupAsync
+
+✔️
+
+✔️
+
+Method
+
+ async GetSupervisionGroupsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async JoinSupervisionGroupAsync
+
+✔️
+
+✔️
+
+Method
+
+ async LeaveSupervisionGroupAsync
+
+✔️
+
+✔️
+
+10\. Voice messages
+
+Event
+
+ HybridVoiceMessagesNumberUpdated
+
+✔️
+
+❌
+
+Method
+
+ async AskVoiceMessageFileInformationAsync
+
+✔️
+
+✔️
+
+Method
+
+ async AskVoiceMessagesNumberAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteVoiceMessageAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetNumberOfVoiceMessages
+
+✔️
+
+✔️
+
+Method
+
+ GetVoiceMailPhoneNumber
+
+✔️
+
+✔️
+
+Method
+
+ async GetVoiceMessagesListAsync
+
+✔️
+
+✔️
+
+Method
+
+ VoiceMailAvailable
+
+✔️
+
+✔️
+
+  
+
+### InstantMessaging
+
+[InstantMessaging documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+1\. AckMessage
+
+Event
+
+ AckMessageReceived
+
+✔️
+
+❌
+
+Method
+
+ async AnswerToAckMessageAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SendAckMessageAsync
+
+✔️
+
+✔️
+
+2\. ApplicationMessage
+
+Event
+
+ ApplicationMessageReceived
+
+✔️
+
+❌
+
+Method
+
+ async AnswerToApplicationMessageAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SendApplicationMessageAsync
+
+✔️
+
+✔️
+
+3\. Bookmark
+
+Method
+
+ async BookmarkMessageAsync
+
+✔️
+
+✔️
+
+Method
+
+ async RemoveBookmarkAsync
+
+✔️
+
+✔️
+
+4\. Get message(s) / MaM
+
+Method
+
+ GetLastMessage
+
+✔️
+
+✔️
+
+Method
+
+ GetLastMessageSent
+
+✔️
+
+✔️
+
+Method
+
+ async GetMessagesAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetOlderMessages
+
+✔️
+
+✔️
+
+Method
+
+ async GetOlderMessagesAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetOneMessage
+
+✔️
+
+✔️
+
+Method
+
+ async GetOneMessageAsync
+
+✔️
+
+✔️
+
+5\. InstantMessaging Management
+
+Event
+
+ MessageReceived
+
+✔️
+
+✔️
+
+Event
+
+ MessagesAllDeleted
+
+✔️
+
+✔️
+
+Event
+
+ MessagesAllRead
+
+✔️
+
+✔️
+
+Method
+
+ async AnswerToMessageAsync
+
+✔️
+
+✔️
+
+Method
+
+ async AnswerToMessageWithAlternativeContentsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async AnswerToMessageWithFileAsync
+
+✔️
+
+✔️
+
+Method
+
+ async AnswerToMessageWithStreamAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteAllMessagesAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteAllMessagesInBubbleAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeleteMessageAsync
+
+✔️
+
+✔️
+
+Method
+
+ async EditMessageAsync
+
+✔️
+
+✔️
+
+Method
+
+ async ForwardMessageAsync
+
+✔️
+
+✔️
+
+Method
+
+ async ReplyToMessageAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SendMessageAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SendMessageWithAlternativeContentsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SendMessageWithFileAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SendMessageWithStreamAsync
+
+✔️
+
+✔️
+
+6\. PrivateMessage
+
+Event
+
+ PrivateMessageReceived
+
+✔️
+
+✔️
+
+Method
+
+ async AnswerToPrivateMessageAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SendPrivateMessageAsync
+
+✔️
+
+✔️
+
+7\. Receipts
+
+Event
+
+ ReceiptReceived
+
+✔️
+
+✔️
+
+Method
+
+ async MarkAllMessagesAsReadAsync
+
+✔️
+
+✔️
+
+Method
+
+ async MarkMessageAsReadAsync
+
+✔️
+
+✔️
+
+8\. Typing / Active
+
+Event
+
+ UserTypingChanged
+
+✔️
+
+✔️
+
+Method
+
+ async SendIsActiveAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SendIsTypingAsync
+
+✔️
+
+✔️
+
+9\. Urgent message
+
+Method
+
+ async AnswerToUrgentMessageAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CanSendMessageWithHighUrgencyToPeerAsync
+
+✔️
+
+✔️
+
+  
+
+### Invitations
+
+[Invitations documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+Event
+
+ InvitationAccepted
+
+✔️
+
+✔️
+
+Event
+
+ InvitationCancelled
+
+✔️
+
+✔️
+
+Event
+
+ InvitationDeclined
+
+✔️
+
+✔️
+
+Event
+
+ InvitationDeleted
+
+✔️
+
+✔️
+
+Event
+
+ InvitationReceived
+
+✔️
+
+✔️
+
+Event
+
+ InvitationReSent
+
+✔️
+
+✔️
+
+Event
+
+ InvitationSent
+
+✔️
+
+✔️
+
+Method
+
+ async AcceptReceivedPendingInvitationAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CancelInvitationAsync
+
+✔️
+
+✔️
+
+Method
+
+ async CancelSentPendingInvitationAsync
+
+✔️
+
+✔️
+
+Method
+
+ async DeclineReceivedPendingInvitationAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetInvitation
+
+✔️
+
+✔️
+
+Method
+
+ async GetInvitationAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetReceivedInvitation
+
+✔️
+
+✔️
+
+Method
+
+ GetReceivedInvitations
+
+✔️
+
+✔️
+
+Method
+
+ async GetReceivedInvitationsAsync
+
+✔️
+
+✔️
+
+Method
+
+ GetSentInvitation
+
+✔️
+
+✔️
+
+Method
+
+ GetSentInvitations
+
+✔️
+
+✔️
+
+Method
+
+ async GetSentInvitationsAsync
+
+✔️
+
+✔️
+
+Method
+
+ async ReSendInvitationAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SendInvitationAsync
+
+✔️
+
+✔️
+
+  
+
+### Jingle
+
+[Jingle documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+Event
+
+ AcceptedCall
+
+✔️
+
+❌
+
+Event
+
+ AcceptedCallOnAnotherResource
+
+✔️
+
+❌
+
+Event
+
+ ErrorRaised
+
+✔️
+
+❌
+
+Event
+
+ IncomingCall
+
+✔️
+
+❌
+
+Event
+
+ Jingle\_ConferenceSessionInitiate
+
+✔️
+
+❌
+
+Event
+
+ Jingle\_CreateAnswer
+
+✔️
+
+❌
+
+Event
+
+ Jingle\_IceCandidatesReceived
+
+✔️
+
+❌
+
+Event
+
+ Jingle\_MediaChanged
+
+✔️
+
+❌
+
+Event
+
+ Jingle\_RemoteSDPReceived
+
+✔️
+
+❌
+
+Event
+
+ RejectedCall
+
+✔️
+
+❌
+
+Event
+
+ ReleasedCall
+
+✔️
+
+❌
+
+Event
+
+ RetractedCall
+
+✔️
+
+❌
+
+Method
+
+ async AcceptIncomingCallAsync
+
+✔️
+
+✔️
+
+Method
+
+ CanAddLocalAudioTocall
+
+✔️
+
+✔️
+
+Method
+
+ CanAddLocalDataChannelToCall
+
+✔️
+
+✔️
+
+Method
+
+ CanAddLocalSharingTocall
+
+✔️
+
+✔️
+
+Method
+
+ CanAddLocalVideoTocall
+
+✔️
+
+✔️
+
+Method
+
+ CanRemoveLocalDataChannelFromcall
+
+✔️
+
+✔️
+
+Method
+
+ CanRemoveLocalSharingFromcall
+
+✔️
+
+✔️
+
+Method
+
+ CanRemoveLocalVideoFromCall
+
+✔️
+
+✔️
+
+Method
+
+ CheckMediasForAnswerCall
+
+✔️
+
+✔️
+
+Method
+
+ CheckMediasForMakeCall
+
+✔️
+
+✔️
+
+Method
+
+ CreateJingleSessionForConference
+
+✔️
+
+✔️
+
+Method
+
+ GetJingleSessionFromCache
+
+✔️
+
+✔️
+
+Method
+
+ GetTurnServersConfiguration
+
+✔️
+
+✔️
+
+Method
+
+ async HangUpAsync
+
+✔️
+
+✔️
+
+Method
+
+ async HoldAsync
+
+✔️
+
+✔️
+
+Method
+
+ async MakeCallAsync
+
+✔️
+
+✔️
+
+Method
+
+ ManageSessionInitiate
+
+✔️
+
+✔️
+
+Method
+
+ MuteLocalAudio
+
+✔️
+
+✔️
+
+Method
+
+ MuteLocalSharing
+
+✔️
+
+✔️
+
+Method
+
+ MuteLocalVideo
+
+✔️
+
+✔️
+
+Method
+
+ async RejectIncomingCallAsync
+
+✔️
+
+✔️
+
+Method
+
+ async RetractAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SendIceCandidateAsync
+
+✔️
+
+✔️
+
+Method
+
+ async SendJingleSessionMessageAsync
+
+✔️
+
+✔️
+
+  
+
+### Restrictions
+
+[Restrictions documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+1\. File upload / download
+
+Property
+
+ ChunkSizeDownload
+
+✔️
+
+✔️
+
+Property
+
+ ChunkSizeUpload
+
+✔️
+
+✔️
+
+Property
+
+ MaxChunkSizeDownload
+
+✔️
+
+✔️
+
+Property
+
+ MaxChunkSizeUpload
+
+✔️
+
+✔️
+
+2\. HTTP Connection
+
+Property
+
+ MaxConnectionsPerServer
+
+✔️
+
+✔️
+
+3\. Invitation
+
+Property
+
+ AcceptBubbleInvitation
+
+✔️
+
+✔️
+
+Property
+
+ AcceptUserInvitation
+
+✔️
+
+✔️
+
+4\. Log
+
+Property
+
+ LogBubbleMembers
+
+✔️
+
+✔️
+
+Property
+
+ LogEvent
+
+✔️
+
+✔️
+
+Property
+
+ LogEventParameters
+
+✔️
+
+✔️
+
+Property
+
+ LogEventRaised
+
+✔️
+
+✔️
+
+Property
+
+ LogEventStackTrace
+
+✔️
+
+✔️
+
+Property
+
+ LogRestRequest
+
+✔️
+
+✔️
+
+Property
+
+ LogRestRequestOnError
+
+✔️
+
+✔️
+
+5\. Messages
+
+Property
+
+ MessageMaxLength
+
+✔️
+
+✔️
+
+Property
+
+ SendMessageToConnectedUser
+
+✔️
+
+✔️
+
+Property
+
+ SendReadReceipt
+
+✔️
+
+✔️
+
+6\. Other
+
+Property
+
+ ConversationsRetrievedFormat
+
+✔️
+
+✔️
+
+Property
+
+ EventMode
+
+✔️
+
+✔️
+
+Property
+
+ MobileApplication
+
+✔️
+
+❌
+
+Property
+
+ StreamManagement
+
+✔️
+
+❌
+
+Property
+
+ UseSameResourceId
+
+✔️
+
+✔️
+
+7\. Service restriction
+
+Property
+
+ JoinMultipleConferences
+
+✔️
+
+✔️
+
+Property
+
+ UseAlerts
+
+✔️
+
+✔️
+
+Property
+
+ UseBubbles
+
+✔️
+
+✔️
+
+Property
+
+ UseConferences
+
+✔️
+
+✔️
+
+Property
+
+ UseHubTelephony
+
+✔️
+
+✔️
+
+Property
+
+ UseHybridTelephony
+
+✔️
+
+✔️
+
+Property
+
+ UseRPC
+
+✔️
+
+✔️
+
+Property
+
+ UseWebRTC
+
+✔️
+
+✔️
+
+  
+
+### S2SEventPipe
+
+[S2SEventPipe documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+Property
+
+ Instance
+
+✔️
+
+✔️
+
+Method
+
+ async ParseCallbackContentAsync
+
+❌
+
+✔️
+
+  
+
+### WebHookEventPipe
+
+[WebHookEventPipe documentation](/docs/sdk/csharp)
+
+Type
+
+Name
+
+XMPP
+
+S2S
+
+Method
+
+ async ParseCallbackContentAsync
+
+✔️
+
+✔️
+
+  
+
+### Sur cette page
+
+-   [Methods and Events available](/docs/sdk/csharp#name-methods-and-events-available-0)
+-   [Administration](/docs/sdk/csharp#name-administration-32)
+-   [Alerts](/docs/sdk/csharp#name-alerts-39)
+-   [Application](/docs/sdk/csharp#name-application-46)
+-   [AutoReconnection](/docs/sdk/csharp#name-autoreconnection-53)
+-   [Bubbles](/docs/sdk/csharp#name-bubbles-60)
+-   [CallsLog](/docs/sdk/csharp#name-callslog-67)
+-   [Channels](/docs/sdk/csharp#name-channels-74)
+-   [Conferences](/docs/sdk/csharp#name-conferences-81)
+-   [Contacts](/docs/sdk/csharp#name-contacts-88)
+-   [Conversations](/docs/sdk/csharp#name-conversations-95)
+-   [CustomerCare](/docs/sdk/csharp#name-customercare-102)
+-   [Favorites](/docs/sdk/csharp#name-favorites-109)
+-   [FileStorage](/docs/sdk/csharp#name-filestorage-116)
+-   [Groups](/docs/sdk/csharp#name-groups-123)
+-   [HubTelephony](/docs/sdk/csharp#name-hubtelephony-130)
+-   [HybridTelephony](/docs/sdk/csharp#name-hybridtelephony-137)
+-   [InstantMessaging](/docs/sdk/csharp#name-instantmessaging-144)
+-   [Invitations](/docs/sdk/csharp#name-invitations-151)
+-   [Jingle](/docs/sdk/csharp#name-jingle-158)
+-   [Restrictions](/docs/sdk/csharp#name-restrictions-165)
+-   [S2SEventPipe](/docs/sdk/csharp#name-s2seventpipe-172)
+-   [WebHookEventPipe](/docs/sdk/csharp#name-webhookeventpipe-179)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

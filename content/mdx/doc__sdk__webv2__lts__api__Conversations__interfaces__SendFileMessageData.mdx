@@ -1,0 +1,80 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/Conversations/interfaces/SendFileMessageData"
+lastSynced: "2026-02-19T22:35:17.063Z"
+---
+# Documentation
+
+SendFileMessageData
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [Conversations](doc/sdk/webv2/lts/api/Conversations/index) / SendFileMessageData
+
+# Interface: SendFileMessageData
+
+## Properties
+
+### existingFile?
+
+> `optional` **existingFile**: `FileDescriptor`
+
+The FileDescriptor (in case of already existing file)
+
+---
+
+### file?
+
+> `optional` **file**: [`File`](https://developer.mozilla.org/docs/Web/API/File)
+
+The File we want to send (in case of upload from local device)
+
+---
+
+### fileName?
+
+> `optional` **fileName**: `string`
+
+The file name to be shown in the conversation
+
+---
+
+### urgency?
+
+> `optional` **urgency**: `Urgency`
+
+The urgency of the message; Allowed values are (standard) 'std', (notify) 'low', (warning) 'middle', (emergency) 'high'; Default value is "std"
+
+---
+
+### voiceMessageData?
+
+> `optional` **voiceMessageData**: `object`
+
+In case of vocal message
+
+#### duration
+
+> **duration**: `number`
+
+### Sur cette page
+
+-   [Properties](/docs/sdk/web#name-properties-10)
+-   [existingFile?](/docs/sdk/web#name-existingfile-13)
+-   [file?](/docs/sdk/web#name-file-25)
+-   [fileName?](/docs/sdk/web#name-filename-37)
+-   [urgency?](/docs/sdk/web#name-urgency-49)
+-   [voiceMessageData?](/docs/sdk/web#name-voicemessagedata-61)
+-   [duration](/docs/sdk/web#name-duration-72)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,133 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/core/lts/guides/100_managing_conferences"
+lastSynced: "2026-02-19T22:35:13.868Z"
+---
+# Documentation
+
+Csharp > core > lts > guides > 100\_managing\_conferences
+
+## Managing conferences
+
+This guide explains how to manage conferences:
+
+-   Check conference status: in progress or not
+-   Get the list of participants and talkers
+-   Mute/unmute a participant,
+-   Raise hand, lower hand, or all hands
+-   Remove a participant
+-   List the media used and the people who used them.
+-   Manage conference recording
+-   Manage your own media
+
+Most of the information can only be obtained if the user using the SDK actually participates in the conference - either by using another device (via any UCaaS application), or by using an SDK that allows connection via WebRTC to the conference (for example, using the C# SDK and the [Rainbow.CSharp.SDK.WebRTC.Desktop package](/docs/sdk/csharp)).
+
+### Check permissions
+
+---
+
+First thing to do, it's to check if the user can make conferences. For this `IsConferenceAllowed()` method must be used from `Conferences` service.
+
+### Check conference status
+
+---
+
+To follow the status of conference in progress use:
+
+-   `ConferenceUpdated` event when a conference information is updated (so the conference is in progress / has started)
+-   `ConferenceRemoved` event when a conference is removed/finished
+-   `ConferenceRejected` event when a conference has been rejected by the current user\` object (same event for PSTN or WebRTC conference).
+
+You have also this methods:
+
+-   `CheckConferencesInProgressAsync()`: The result permits to know if there as least one conference in progress.
+-   `GetAllConferences()`: To get conferences list in progress from the cache
+-   `GetFullSnapshotAsync()` or `GetSnapshotAsync()` using a bubble peer to know (if any) conference information
+
+### Get the list of participants and talkers
+
+---
+
+You have event to get those information:
+
+-   `ConferenceParticipantsUpdated` event when at least one participant has been added, removed, updated
+-   `ConferenceTalkersUpdated` event when at least one telker has been added, removed, updated
+
+But also methods:
+
+-   `GetParticipants()`
+-   `GetTalkers()`
+
+### Mute/unmute a participant, raise hand, lower hand, or all hands
+
+---
+
+Use `MuteOrUnmuteParticipantAsync()` to mute / unmute a participant. You must be a conference moderator if you wish to manage this for a participant other than yourself.
+
+Use `RaiseHandAsync()`, `LowerHandAsync()` to raise / lower hand. You must be a conference moderator if you wish to manage this for a participant other than yourself.
+
+Use `LowerAllHandsAsync()` to lower all hands as moderator.
+
+### Remove a participant
+
+---
+
+As moderator, use `DropParticipantAsync` to remove a participant from the conference.
+
+### List the media used and the people who used them.
+
+---
+
+You have event to get those information:
+
+-   `ConferenceMediaPublicationsUpdated` event when at least one Media Publication has been added, removed, updated
+-   `ConferenceMediaServicesUpdated` event when at least one Media Service has been added, removed, updated
+-   `ConferenceMediaPublicationSubscribersUpdated` event when at least one Subscriber to a Media Publication has been added, removed, updated
+
+But also methods:
+
+-   `GetMediaPublications()`
+-   `GetMediaServices()`
+-   `GetMediaPublications()`
+-   `GetMediaPublications()`
+
+### Manage conference recording
+
+---
+
+To know the conference recording status use the `ConferenceUpdated` event. The propety **RecordStatus** of **Conference** object permits to know if the conference is recorded - status possible are off/on/pause.
+
+As moderator, you can use this methods:
+
+-   `StartRecordingAsync()`
+-   `StopRecordingAsync()`
+-   `PauseRecordingAsync()`
+-   `ResumeRecordingAsync()`
+
+### Manage your own media
+
+---
+
+This chapter describes events / methods **only useful** if you are connecting to the conference using WebRTC (for example, using [Rainbow.CSharp.SDK.WebRTC.Desktop package](/docs/sdk/csharp))
+
+To be more precise, this methods are used by these package to handle medias:
+
+-   `AddAudioAsync()`: To add audio in a conference if this media was not already used by the current user
+-   `SubscribeToMediaPublicationAsync()`: gives the possibility to a user participating in a webrtc conference to subscribe to a **MediaPublication**
+-   `SubscribeToMediaServiceAsync()`: gives the possibility to a user participating in a webrtc conference to subscribe to a **MediaService**
+
+### Examples
+
+---
+
+You can take a look to several examples available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/SDK%20V3.X/README.md)
+
+### Sur cette page
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,319 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/core/lts/guides/090_managing_files"
+lastSynced: "2026-02-19T22:35:13.859Z"
+---
+# Documentation
+
+Managing files
+
+LTS release 3.XPubliée le 2025-03-17
+
+## Managing files
+
+This guide explains how to manage files: how to share a file, delete, get the list and the quota usage.
+
+A `FileDescriptor` object is used to describe a file shared with Rainbow server:
+
+-   Id
+-   Name
+-   Type (image, voiceMessage, conversationRecording or other)
+-   Size
+-   etc ...
+
+### List of all (received, sent or both) files
+
+---
+
+You need first the `FileStorage` service from `Application` using `GetFileStorage()` method.
+
+To get the list of all received files (i.e. the list of all files that the SDK user as received in all conversations: Bubbles, Peer To Peer, ...) you use `GetAllFileDescriptorsReceivedAsync` from `FileStorage` service.
+
+To get the list of all sent files (i.e. the list of all files that the SDK user as sent in all conversations: Bubbles, Peer To Peer, ...) you use `GetAllFileDescriptorsSentAsync` from `FileStorage` service.
+
+To get the list of all files (received and sent) then you use `GetAllFileDescriptorsAsync` from `FileStorage` service.
+
+To know where this file has been shared use the property `Viewers` of the `FileDescriptor` object.
+
+Below it's an example using `GetAllFileDescriptorsReceivedAsync` (it will be nearly exactly the same using `GetAllFileDescriptorsSentAsync` or `GetAllFileDescriptorsAsync` )
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles RbBubbles = RbApplication.GetBubbles();
+Rainbow.Contacts RbContacts = RbApplication.GetContacts();
+Rainbow.FileStorage RbFileStorage = myApp.GetFileStorage();
+...
+
+// Here we consider to be connected / initialized with the server
+
+    var RbChannels = RbApplication.GetChannels();
+
+    var sdkResult = await RbFileStorage.GetAllFileDescriptorsAsync();
+
+    if (sdkResult.Success)
+    {
+        List<FileDescriptor> list = sdkResult.Data;
+        foreach (FileDescriptor fileDescriptor in list)
+        {
+            String id = fileDescriptor.Id;          // Id of the file
+            String name = fileDescriptor.FileName;  // Name of the file
+            long size = fileDescriptor.Size;        // Size of the file
+
+            // Check where this file has been shared
+            List<FileViewer> viewers = fileDescriptor.Viewers;
+            foreach (FileViewer viewer in viewers)
+            {
+                switch (viewer.Type)
+                {
+                    case EntityType.User:
+                        // Get related contact
+                        var contact = RbContacts.GetContactById(viewer.ViewerId);
+                        break;
+
+                    case EntityType.Bubble:
+                        // Get related bubble
+                        var bubble = RbBubbles.GetBubbleById(viewer.ViewerId);
+                        break;
+
+                    case EntityType.Channel:
+                        // Get related channel
+                        var channel = RbChannels.GetChannelById(viewer.ViewerId);
+                        break;
+                }
+            }
+        }
+    }
+```
+
+### List of files (received, sent or both) by conversation
+
+---
+
+Generally, it's better to to get the list of files (received, sent or both) with a specific Peer.
+
+To do this you can use `GetFileDescriptorsAsync(Peer peer)`, `GetFileDescriptorsReceivedAsync(Peer peer)` or `GetFileDescriptorsSentAsync(Peer peer)` methods from `FileStorage` service.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.FileStorage fileStorage = myApp.GetFileStorage();
+...
+// Once connected
+Rainbow.Peer peer; // A Peer previously set / retrieved (from Contact, Bubbles or Channels)
+
+var sdkResult = await RbFileStorage.GetFileDescriptorsSentAsync(peer);
+if(sdkResult.Success)
+{
+    // Get the list of sent files with this Peer
+    List<FileDescriptor> fileDescriptorList = sdkResult.Data;
+    // ...
+}
+
+var sdkResult = await RbFileStorage.GetFileDescriptorsReceivedAsync(peer);
+if(sdkResult.Success)
+{
+    // Get the list of received files from this Peer
+    List<FileDescriptor> fileDescriptorList = sdkResult.Data;
+    // ...
+}
+
+var sdkResult = await RbFileStorage.GetFileDescriptorsAsync(peer);
+if(sdkResult.Success)
+{
+    // Get the list of received / sent files with this Peer
+    List<FileDescriptor> fileDescriptorList = sdkResult.Data;
+    // ...
+}
+```
+
+### FileStorageUpdated Event
+
+---
+
+The `FileStorageUpdated` event from `FileStorage` service permits to know when a file has been added, deleted or updated for the current user (so when a remote Peer has added/removed a file in a Bubble or in Channel or sent/remove a file with the current user)
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.FileStorage RbFileStorage = RbApplication.GetFileStorage();
+// ...
+
+RbFileStorage.FileStorageUpdated += RbFileStorage_FileStorageUpdated;
+
+void RbFileStorage_FileStorageUpdated(List<FileDescriptor> filesDescriptor, string status)
+{
+    // status: Status of the file (create, delete, update) described in filesDescriptor
+    // filesDescriptor: list of FileDescriptor which have been updated (cf. status) in the FileStorage
+}
+```
+
+### How to share/upload a file using IM
+
+---
+
+To share a file with a Peer (as Contact or Bubble), the best is to send to it a instant message with a file. So it can see it in the conversation stream and receive an IM notification.
+
+To do this, the `SendMessageWithFileAsync` method can be used from `InstantMessaging` service.
+
+This method has **fileDescriptorProgressDelegate** optional parameter which permits to follow the upload file progress - cf. next chapter for more details.
+
+The larger the shared file, the longer the delay to send the message.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.InstantMessaging instantMessaging = myApp.GetInstantMessaging();
+...
+// Here we consider to be connected/initialized with the server
+
+String message;             // A message associated to the file - can be empty/null
+String filePath;            // A valid path to the file to share/upload
+Rainbow.Model.Peer peer;    // A Peer previously set / retrieved 
+
+var sdkResult = await RbInstantMessaging.SendMessageWithFileAsync(peer, message, filePath);
+if(sdkResult.Success)
+{
+    // Message with file has been sent
+}
+```
+
+### Follow the progress of the file upload
+
+---
+
+When a file is uploaded/shared in a conversation (cf. previous chapter), it could be necessary to know the status of the file upload.
+
+For this, we will use a **FileDescriptorProgressDelegate** whe using `SendMessageWithFileAsync` method from `InstantMessaging` service.
+
+-   it's a method with a **FileDescriptorProgress** object which inherits of **TransferProgress**
+-   **FileDescriptorProgress** object contains:
+    -   **FileDescriptor**: describe the file shared with the Rainbow server
+    -   **Progress**: a float between 0 (0%) to 1 (100%) to know the progress of the upload
+    -   **SizeTransferred**: Size already transferred (in bytes)
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.InstantMessaging RbInstantMessaging = myApp.GetInstantMessaging();
+
+String message;          // A message associated to the file - can be empty/null
+String filePath;         // A valid path to the file to share/upload
+Rainbow.Model.Peer peer; // A conversation previously set / retrieved 
+
+Rainbow.Model.FileDescriptor? fileDescriptor = null; // To store the file descriptor
+
+// Create a FileDescriptorProgressDelegate to follow the upload progress
+Rainbow.Delegates.FileDescriptorProgressDelegate fileDescriptorProgressDelegate = (fileDescriptorProgress) =>
+{
+    if (fileDescriptor == null)
+    {
+        fileDescriptor = fileDescriptorProgress.FileDescriptor;
+        Util.WriteWhiteToConsole($"FileDescriptor created: [{fileDescriptor}]");
+    }
+
+    Util.WriteWhiteToConsole($"Upload Progress:[{(fileDescriptorProgress.Progress * 100):0.00}]");
+};
+
+var sdkResult = await RbInstantMessaging.SendMessageWithFileAsync(peer, message, filePath, fileDescriptorProgressDelegate);
+if(sdkResult.Success)
+{
+    // Message with file has been sent
+
+    // Here we have a valid FileDescriptor
+    var id = fileDescriptor.Id; // Id of the FileDescriptor
+}
+```
+
+### How to share/upload a file without to send an IM message
+
+---
+
+It's also possible to share/upload a file with a Peer (as Contact, Bubble or Channel) without to send an IM message.
+
+In this case, this file will be only visible in UI using the **documents** tab in the conversation panel. No message will be added in the conversation stream.
+
+To do this, the method `UploadFileAsync` can be used from `FileStorage` service. This method accepts also a **FileDescriptorProgressDelegate** (as optional parameter) to follow the upload progress.
+
+The larger the shared file, the longer the delay to upload the file.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.FileStorage RbFileStorage = RbApplication.GetFileStorage();
+// ...
+
+String filePath;         // A valid path to the file to share/upload
+Rainbow.Model.Peer peer; // A Peer previously set / retrieved 
+
+Rainbow.Model.FileDescriptor? fileDescriptor = null; // To store the file descriptor
+
+// Create a FileDescriptorProgressDelegate to follow the upload progress
+Rainbow.Delegates.FileDescriptorProgressDelegate fileDescriptorProgressDelegate = (fileDescriptorProgress) =>
+{
+    if (fileDescriptor == null)
+    {
+        fileDescriptor = fileDescriptorProgress.FileDescriptor;
+        Util.WriteWhiteToConsole($"FileDescriptor created: [{fileDescriptor}]");
+    }
+
+    Util.WriteWhiteToConsole($"Upload Progress:[{(fileDescriptorProgress.Progress * 100):0.00}]");
+};
+
+var sdkResult = await RbFileStorage.UploadFileAsync(filePath, peer, fileDescriptorProgressDelegate);
+if(sdkResult.Success)
+{
+    // File has been uploaded
+
+    // Here we have a valid FileDescriptor
+    var id = fileDescriptor.Id; // Id of the FileDescriptor
+}
+```
+
+### Download a file shared
+
+---
+
+To start the file download you need its `FileDescriptor` and use `DownloadFileAsync` method from `FileStorage` object.
+
+You can follow the download progress using **progressDelegate** (as option parameter) - it's nearly the same way to handle it than before when uploading a file.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.FileStorage RbFileStorage = RbApplication.GetFileStorage();
+//...
+
+Rainbow.Model.FileDescriptor fileDescriptor;// A valid fileDescriptor
+String folderPath;                          // A valid folder path to store the uploaded file
+
+Rainbow.Delegates.ProgressDelegate progressDelegate = (progress) =>
+{
+    Util.WriteWhiteToConsole($"Download Progress:[{(progress * 100):0.00}]");
+};
+
+var sdkResult = await RbFileStorage.DownloadFileAsync(fileDescriptor, folderPath, progressDelegate: progressDelegate);
+if(sdkResult.Success)
+{
+    // File has been fully downloaded
+}
+```
+
+### Examples
+
+---
+
+You can take a look to several examples available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/SDK%20V3.X/README.md)
+
+### Sur cette page
+
+-   [Managing files](/docs/sdk/csharp#name-managing-files-0)
+-   [List of all (received, sent or both) files](/docs/sdk/csharp#name-list-of-all-received-sent-or-both-files-36)
+-   [List of files (received, sent or both) by conversation](/docs/sdk/csharp#name-list-of-files-received-sent-or-both-by-conversation-59)
+-   [FileStorageUpdated Event](/docs/sdk/csharp#name-filestorageupdated-event-70)
+-   [How to share/upload a file using IM](/docs/sdk/csharp#name-how-to-shareupload-a-file-using-im-78)
+-   [Follow the progress of the file upload](/docs/sdk/csharp#name-follow-the-progress-of-the-file-upload-95)
+-   [How to share/upload a file without to send an IM message](/docs/sdk/csharp#name-how-to-shareupload-a-file-without-to-send-an-im-message-135)
+-   [Download a file shared](/docs/sdk/csharp#name-download-a-file-shared-152)
+-   [Examples](/docs/sdk/csharp#name-examples-163)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

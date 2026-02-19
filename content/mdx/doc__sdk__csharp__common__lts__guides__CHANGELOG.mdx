@@ -1,0 +1,125 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/common/lts/guides/CHANGELOG"
+lastSynced: "2026-02-19T22:35:13.444Z"
+---
+# Documentation
+
+Changelog
+
+LTS release 3.XPubliée le 2025-03-17Comparer
+
+## SDK.Common for C#
+
+### \[3.4.0\] - 2026-01-16
+
+#### Fixed
+
+-   `Avatars` service:
+    -   Start to download / create Avatars on `BubbleAffiliationChanged` event
+
+#### Changed
+
+-   Update code to remove compilation warnings
+
+---
+
+### \[3.3.0\] - 2025-11-20
+
+#### Added
+
+-   Added .Net 10.0 as target framework
+
+---
+
+### \[3.2.0\] - 2025-07-07
+
+#### Info
+
+-   Technical delivery to ensure to use Rainbow.CSharp.SDK 3.4.0
+
+---
+
+### \[3.1.0\] - 2025-04-23
+
+#### Info
+
+-   Technical delivery to ensure to use Rainbow.CSharp.SDK 3.2.0
+
+---
+
+### \[3.0.0\] - 2025-03-12
+
+#### Fix
+
+-   Bad management when an avatar is not found (i.e. 404)
+
+---
+
+### \[3.0.0-sts.4\] - 2024-11-22
+
+#### Info
+
+-   Technical delivery to ensure to use Rainbow.CSharp.SDK 3.0.0-sts.4
+
+---
+
+### \[3.0.0-sts.3\] - 2024-10-01
+
+#### Fix
+
+-   `Avatars` service: Avoid to download / create some Avatars already available on restart
+-   `Avatars` service: Event `PeerAvatarUpdated` is triggered as soon as possible - use `AllowAvatarDownload()` if you want to delay the process
+
+#### Added
+
+-   `Avatars` service: Manage also Avatars of Channels
+-   `Avatars` service: `SetAvatarCategories()` to select avatar categories to manage (contact and bubble are used by default - not channel)
+
+#### Changed
+
+-   **Breaking** `Avatars` service: `CreateInstance()` has been renamed to `GetOrCreateInstance()`.
+-   **Breaking** `Avatars` service: Remove `AddInDownloadPoolAllAvatarsFromContactsStoredInCache()` and `AddInDownloadPoolAllAvatarsFromBubblesStoredInCache()`. Use instead `SetAvatarCategory()`.
+-   **Breaking** `Avatars` service: Remove `AddUnknownContactToPoolById()`, `AddUnknownContactToPoolByJid()` and `AllowToAskInfoForUnknownContact()` - when an avatar file path is asked for an unknown contact, he is automatically added to the download avatar pool.
+-   **Breaking** `Avatars` service: Remove `AllowToAskInfoAboutUnknowBubble()`\- when an avatar file path is asked for an unknown bubble, he is automatically added to the download avatar pool.
+-   `Avatars` service: Up to 3 avatars of members are used to create rounded bubble avatar (before it was up to 4)
+-   `Avatars` service: The avatar of the bubble owner is taking now 50% of the space if 3 members are used to create the avatar
+
+---
+
+### \[3.0.0-sts.2\] - 2024-07-17
+
+#### Info
+
+-   Technical delivery to ensure to use Rainbow.CSharp.SDK 3.0.0-sts.2
+
+---
+
+### \[3.0.0-sts.1\] - 2024-07-01
+
+#### Info
+
+-   Contains all features of v2.X
+-   New features will only been added in V3.X
+-   Use Async/Await pattern
+
+### Sur cette page
+
+-   [SDK.Common for C#](/docs/sdk/csharp#name-sdk.common-for-c-0)
+-   [\[3.4.0\] - 2026-01-16](/doc/sdk/csharp/common/lts/guides/CHANGELOG#name-3.4.0---2026-01-16-3)
+-   [\[3.3.0\] - 2025-11-20](/doc/sdk/csharp/common/lts/guides/CHANGELOG#name-3.3.0---2025-11-20-34)
+-   [\[3.2.0\] - 2025-07-07](/doc/sdk/csharp/common/lts/guides/CHANGELOG#name-3.2.0---2025-07-07-48)
+-   [\[3.1.0\] - 2025-04-23](/doc/sdk/csharp/common/lts/guides/CHANGELOG#name-3.1.0---2025-04-23-62)
+-   [\[3.0.0\] - 2025-03-12](/doc/sdk/csharp/common/lts/guides/CHANGELOG#name-3.0.0---2025-03-12-76)
+-   [\[3.0.0-sts.4\] - 2024-11-22](/doc/sdk/csharp/common/lts/guides/CHANGELOG#name-3.0.0-sts.4---2024-11-22-90)
+-   [\[3.0.0-sts.3\] - 2024-10-01](/doc/sdk/csharp/common/lts/guides/CHANGELOG#name-3.0.0-sts.3---2024-10-01-104)
+-   [\[3.0.0-sts.2\] - 2024-07-17](/doc/sdk/csharp/common/lts/guides/CHANGELOG#name-3.0.0-sts.2---2024-07-17-173)
+-   [\[3.0.0-sts.1\] - 2024-07-01](/doc/sdk/csharp/common/lts/guides/CHANGELOG#name-3.0.0-sts.1---2024-07-01-187)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

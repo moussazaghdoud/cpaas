@@ -1,0 +1,214 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/config"
+lastSynced: "2026-02-19T22:35:15.052Z"
+---
+# Documentation
+
+Config service
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Config
+
+This service allows more fine-grained control over the behavior of particular components of the Rainbow Web SDK. You can set the log levels, video stream qualty and more.
+
+-   [Config](#module_Config)
+    -   [setSimulcast(value)](#module_Config+setSimulcast) ⇒ `boolean`
+    -   [setVideoQuality(value)](#module_Config+setVideoQuality) ⇒ `string`
+    -   [setVerboseLog(value)](#module_Config+setVerboseLog) ⇒ `boolean`
+    -   [useNewModels(value)](#module_Config+useNewModels) ⇒ `boolean`
+    -   [setDisplayOrder(value)](#module_Config+setDisplayOrder) ⇒ `string`
+    -   [setCustomLogger(logger)](#module_Config+setCustomLogger) ⇒ `void`
+    -   [setAutoAway(value)](#module_Config+setAutoAway) ⇒ `void`
+    -   [setAutoAwayDelay(value)](#module_Config+setAutoAwayDelay) ⇒ `void`
+    -   [getCurrentConfig()](#module_Config+getCurrentConfig) ⇒ `object`
+
+### config.setSimulcast(value) ⇒ `boolean`
+
+Set Simulcast feature. When turned on, the broadcasting user sends few streams of varying quality during the conference and a WebRTC one-to-one call. It can increase the consumption of bandwidth for the connected user. Turn off to send one stream with fixed quality. When simulcast is turned off you can use setVideoQuality() API to chose the video quality.
+
+**Kind**: instance method of [`Config`](#module_Config)  
+**Returns**: `boolean` - Return the input value  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+value
+
+`boolean`
+
+True to turn on, false to turn off
+
+### config.setVideoQuality(value) ⇒ `string`
+
+Set the video quality of the broadcasted video stream. The Simulcast feature needs to be turned off for the quality settings to be taken into account. User can chose between three levels: "low" - corresponding to 180p, "middle" - 360p and "high" - 720p. The exact resolution of the video stream depends on user's camera model and firmware.
+
+**Kind**: instance method of [`Config`](#module_Config)  
+**Returns**: `string` - Return the input value  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+value
+
+`string`
+
+Value representing the video quality. Can be one of the following values: "low", "middle" or "high"
+
+### config.setVerboseLog(value) ⇒ `boolean`
+
+Allows to have verbose logs when using the SDK
+
+**Kind**: instance method of [`Config`](#module_Config)  
+**Returns**: `boolean` - Return the input value  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+value
+
+`boolean`
+
+True to activate verbose log. False to deactivate it
+
+### config.useNewModels(value) ⇒ `boolean`
+
+Starting v1.86.0, the new models of different data have been introduced (contact, conversation...). Set to false to use the previous version of the models.
+
+**Kind**: instance method of [`Config`](#module_Config)  
+**Returns**: `boolean` - Return the input value  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+value
+
+`boolean`
+
+True to activate new models. False to deactivate it
+
+### config.setDisplayOrder(value) ⇒ `string`
+
+Set display order information attached to the contacts. It be one of the two values: "FL" or "LF". Can also be set via config object used in load() method.
+
+**Kind**: instance method of [`Config`](#module_Config)  
+**Returns**: `string` - Return the input value  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+value
+
+`string`
+
+Display order: "FL" (first name, last name) or "LF" (last name, first name)
+
+### config.setCustomLogger(logger) ⇒ `void`
+
+Set custom logger. Allows the user to pass custom logging method. Custom logger should accept strings as parameter. Defaults to false. setVerboseLog config parameter should be set to true in order for the customLogger to be activated.
+
+**Kind**: instance method of [`Config`](#module_Config)  
+**Returns**: `void` - Returns void  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+logger
+
+`any`
+
+Any logger solution accepting the following format: customLogger(sdkMessageString)
+
+### config.setAutoAway(value) ⇒ `void`
+
+Change auto away settings. By default, Rainbow will set connected user's presence to 'away' after 180 seconds. This setting lets the user to disable that feature.
+
+**Kind**: instance method of [`Config`](#module_Config)  
+**Returns**: `void` - Returns void  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+value
+
+`boolean`
+
+True to activate autoAway (default), false to allow presence changing only manually
+
+### config.setAutoAwayDelay(value) ⇒ `void`
+
+Change auto away delay settings. By default, Rainbow will set connected user's presence to 'away' after 180 seconds. This setting lets the user to change the delay after which the presence will be changed to 'away'. If the autoAway feature is deactivated, setting any delay above 0 will reactivate it again.
+
+**Kind**: instance method of [`Config`](#module_Config)  
+**Returns**: `void` - Returns void  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+value
+
+`number`
+
+Time of delay in seconds (defaults to 180s). Set to 0 to deactivate the autoAway feature and set the delay value to 0.
+
+### config.getCurrentConfig() ⇒ `object`
+
+Get current configuration file
+
+**Kind**: instance method of [`Config`](#module_Config)  
+**Returns**: `object` - Current config settings  
+**Access**: public
+
+### Sur cette page
+
+-   [Config](/docs/sdk/web#name-config-3)
+-   [config.setSimulcast(value) ⇒ boolean](/docs/sdk/web#name-config.setsimulcastvalue--boolean-66)
+-   [config.setVideoQuality(value) ⇒ string](/docs/sdk/web#name-config.setvideoqualityvalue--string-106)
+-   [config.setVerboseLog(value) ⇒ boolean](/docs/sdk/web#name-config.setverboselogvalue--boolean-146)
+-   [config.useNewModels(value) ⇒ boolean](/docs/sdk/web#name-config.usenewmodelsvalue--boolean-186)
+-   [config.setDisplayOrder(value) ⇒ string](/docs/sdk/web#name-config.setdisplayordervalue--string-226)
+-   [config.setCustomLogger(logger) ⇒ void](/docs/sdk/web#name-config.setcustomloggerlogger--void-266)
+-   [config.setAutoAway(value) ⇒ void](/docs/sdk/web#name-config.setautoawayvalue--void-306)
+-   [config.setAutoAwayDelay(value) ⇒ void](/docs/sdk/web#name-config.setautoawaydelayvalue--void-346)
+-   [config.getCurrentConfig() ⇒ object](/docs/sdk/web#name-config.getcurrentconfig--object-386)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,514 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharpprevious/core/lts/guides/050_retrieve_conversations_and_contacts"
+lastSynced: "2026-02-19T22:35:14.426Z"
+---
+# Documentation
+
+Retrieve conversations and contacts
+
+LTS release 2.6.XPubliée le 2021-12-13
+
+## Retrieve conversations and contacts
+
+This guide will describe how to retrieve the list of conversations and contacts in your network.
+
+### Retrieving conversations
+
+---
+
+To retrieve all active conversations, you can use the `GetAllConversations` method of `Conversations` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Conversations conversations = myApp.GetConversations();
+
+conversations.GetAllConversations(callback =>
+{
+  if(callback.Result.Success)
+  {
+    List<Conversation> list = callback.Data;  // List of conversations
+    
+    foreach(Conversation conversation in list)
+    {
+      if(conversation.Type == Conversation.ConversationType.User)
+      {
+        // it's a peer to peer conversation (P2P)
+      }
+      else if(conversation.Type == Conversation.ConversationType.Room)
+      {
+        // it's a conversation in a Bubble / Room
+      }
+    }
+    
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Retrieving contacts
+
+---
+
+To retrieve the list of your contacts (from your roster), you can use the `GetAllContactsInRoster` method of `Contacts` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = myApp.GetContacts();
+
+contacts.GetAllContactsInRoster(callback =>
+{
+  if(callback.Result.Success)
+  {
+    List<Contacts> list = callback.Data;  // List of contacts   
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Retrieve a contact information
+
+---
+
+To retrieve directly an existing contact, you can use the `GetContactFromContactId` method of `Contacts` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = myApp.GetContacts();
+String contactID; // Your contact id
+
+Rainbow.Contact contact = contacts.GetContactFromContactId(contactID);
+```
+
+If the contact searched is not found in your roster, you can use the `GetContactFromContactIdFromServer` method of `Contacts` object which will make a request to the server to retrieve the contact (limited information - depending on privacy rules).
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = myApp.GetContacts();
+String contactID; // Your contact id
+
+contacts.GetContactFromContactIdFromServer(contactID, callback =>
+{
+  if(callback.Result.Success)
+  {
+    Contact contact = callback.Data; // Contact found
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Managing contact information updates
+
+---
+
+If you want to manage contact information updates, you need to handle the `PeerInfoChanged` event of `Contacts` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = myApp.GetContacts();
+
+contacts.PeerInfoChanged += MyApp_PeerInfoChanged;
+                                        
+private void MyApp_PeerInfoChanged(object sender, EventHandler<PeerEventArgs> evt)
+{
+    string jid = e.Peer.Jid; // JID of the contact updated
+}
+```
+
+### Get contact's avatar
+
+---
+
+To get contact's avatar, you can use the `GetAvatarFromContactId` method of `Contacts` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = myApp.GetContacts();
+String contactID; // Your contact id
+int size = 80; // Size of the avatar (max 512 - it's always a square)
+
+contacts.GetAvatarFromContactId(contactID, size, callback =>
+{
+  if(callback.Result.Success)
+  {
+    byte[] data = callback.Data; 
+    System.Drawing.Image myAvatar = GetImageFromBytes(ref data);
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+
+public System.Drawing.Image GetImageFromBytes(ref byte[] data)
+{
+    System.Drawing.Image result = null;
+    try
+    {
+        using (var ms = new MemoryStream(data))
+            result = System.Drawing.Image.FromStream(ms);
+    }
+    catch (Exception e)
+    {
+        log.WarnFormat("[GetImageFromBytes] Exception\r\n", Rainbow.Util.SerializeException(e));
+    }
+    return result;
+}
+```
+
+### Managing avatar update / delete
+
+---
+
+If you want to manage avatar update / delete, you need to handle `PeerAvatarChanged` or `PeerAvatarDeleted` events of `Contacts` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = myApp.GetContacts();
+
+contacts.PeerAvatarChanged += MyApp_PeerAvatarChanged;
+contacts.PeerAvatarDeleted += MyApp_PeerAvatarDeleted;
+                                        
+private void MyApp_PeerAvatarChanged(object sender, EventHandler<PeerEventArgs> evt)
+{
+    string jid = e.Peer..Jid; // JID of the contact which has updated his avatar
+} 
+
+private void MyApp_PeerAvatarDeleted(object sender, EventHandler<PeerEventArgs> evt)
+{
+    string jid = e.Peer..Jid; // JID of the contact which has deleted his avatar
+}
+```
+
+### Search a contact - By Name
+
+---
+
+To search a contact by his name, you can use the `SearchContactsByDisplayName` method of `Contacts` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = myApp.GetContacts();
+String nameToSearch = "john";
+int maxNbResult = 20;
+
+contacts.SearchContactsByDisplayName(nameToSearch, maxNbResult, callback =>
+{
+  if(callback.Result.Success)
+  {
+    SearchContactsResult searchResult = callback.Data;
+    
+    foreach (Contact contact in searchResult.ContactsList)
+    {
+      // Loop on all Rainbow contacts found 
+    }
+    
+    foreach (Phonebook phonebook in searchResult.PhonebooksList)
+    {
+      // Loop on all contacts found in the Phonebook - Your account must be associated with a PBX to have result from the PhoneBook 
+    }
+    
+    foreach (O365AdContact contact in searchResult.O365AdContactsList)
+    {
+      // Loop on all contacts found in the Active Directory of your Office 365 account - Your account must be associated with Office 365 to have result from here 
+    }
+    
+    foreach (DirectoryContact contact in searchResult.DirectoryContactsList)
+    {
+      // Loop on all contacts found in your Enterprise Directory - Your account must be associated to an Enterprise and have a Directory defined 
+    }
+    
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Search a contact - By Tag
+
+---
+
+To search a contact by tag, you can use the `SearchContactsByTag` method of `Contacts` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = myApp.GetContacts();
+String tagToSearch = "expert";
+int maxNbResult = 20;
+
+contacts.SearchContactsByTag(tagToSearch, maxNbResult, callback =>
+{
+  if(callback.Result.Success)
+  {
+    SearchContactsResult searchResult = callback.Data;
+    
+    foreach (Contact contact in searchResult.ContactsList)
+    {
+      // Loop on all Rainbow contacts found
+      // Only Rainbow Contacts can be found using search by tag 
+    }
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Search a contact - By Phone number
+
+---
+
+To search a contact by tag, you can use the `SearchContactByPhoneNumber` method of `Contacts` object.
+
+Only results with an exact match are returned: If the user has this phone number +33612345678 stored (international french number). A search performed with 0612345678 (national french number) will provide no result.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = myApp.GetContacts();
+String phoneNumberToSearch = "+33612345678";
+
+contacts.SearchContactByPhoneNumber(phoneNumberToSearch, callback =>
+{
+  if(callback.Result.Success)
+  {
+    SearchContactsResult searchResult = callback.Data;
+    
+    foreach (Contact contact in searchResult.ContactsList)
+    {
+      // Loop on all Rainbow contacts found 
+    }
+    
+    foreach (Phonebook phonebook in searchResult.PhonebooksList)
+    {
+      // Loop on all contacts found in the Phonebook - Your account must be associated with a PBX to have result from the PhoneBook 
+    }
+    
+    foreach (O365AdContact contact in searchResult.O365AdContactsList)
+    {
+      // Loop on all contacts found in the Active Directory of your Office 365 account - Your account must be associated with Office 365 to have result from here 
+    }
+    
+    foreach (DirectoryContact contact in searchResult.DirectoryContactsList)
+    {
+      // Loop on all contacts found in your Enterprise Directory - Your account must be associated to an Enterprise and have a Directory defined 
+    }
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Add a contact to your roster
+
+---
+
+To invite a contact in your Rainbow network, you can use the `SendInvitationByContactId` method of `Invitations` object.
+
+If this contact is in your company, he's automatically added in your roster. If it's not the case, it receives a message and it must accept the invitation first.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Invitations invitations = myApp.GetInvitations();
+String contactId; // Your contact ID
+
+invitations.SendInvitationByContactId(contactId, callback =>
+{
+  if(callback.Result.Success)                           
+  {
+    Invitation invitation = callback.Data;  // Invitation state
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Remove a contact from your roster
+
+---
+
+To remove a contact from your network, you can use the `RemoveFromContactId` method of `Contacts` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = myApp.GetContacts();
+String contactId; // Your contact ID
+
+contacts.RemoveFromContactId(contactId, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // Contact has been removed  from the roster
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Managing contact added / removed from the roster from another device
+
+---
+
+If you want to know if a contact has been added / removed in the roster from another device, you need to handle `RosterPeerAdded`and `RosterPeerRemoved` events of `Contacts` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = myApp.GetContacts();
+
+contacts.RosterPeerAdded += MyApp_RosterPeerAdded;
+contacts.RosterPeerRemoved += MyApp_RosterPeerRemoved;
+                                        
+private void MyApp_RosterPeerAdded(object sender, EventHandler<JidEventArgs> evt)
+{
+    string jid = evt.Peer.Jid; // JID of the contact added
+} 
+
+private void MyApp_RosterPeerRemoved(object sender, EventHandler<JidEventArgs> evt)
+{
+    string jid = evt.Peer.Jid; // JID of the contact removed
+}
+```
+
+### Sur cette page
+
+-   [Retrieve conversations and contacts](/docs/sdk/csharp#name-retrieve-conversations-and-contacts-0)
+-   [Retrieving conversations](/docs/sdk/csharp#name-retrieving-conversations-6)
+-   [Retrieving contacts](/docs/sdk/csharp#name-retrieving-contacts-14)
+-   [Retrieve a contact information](/docs/sdk/csharp#name-retrieve-a-contact-information-22)
+-   [Managing contact information updates](/docs/sdk/csharp#name-managing-contact-information-updates-34)
+-   [Get contact's avatar](/docs/sdk/csharp#name-get-contacts-avatar-42)
+-   [Managing avatar update / delete](/docs/sdk/csharp#name-managing-avatar-update--delete-50)
+-   [Search a contact - By Name](/docs/sdk/csharp#name-search-a-contact---by-name-58)
+-   [Search a contact - By Tag](/docs/sdk/csharp#name-search-a-contact---by-tag-66)
+-   [Search a contact - By Phone number](/docs/sdk/csharp#name-search-a-contact---by-phone-number-74)
+-   [Add a contact to your roster](/docs/sdk/csharp#name-add-a-contact-to-your-roster-85)
+-   [Remove a contact from your roster](/docs/sdk/csharp#name-remove-a-contact-from-your-roster-96)
+-   [Managing contact added / removed from the roster from another device](/docs/sdk/csharp#name-managing-contact-added--removed-from-the-roster-from-another-device-104)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

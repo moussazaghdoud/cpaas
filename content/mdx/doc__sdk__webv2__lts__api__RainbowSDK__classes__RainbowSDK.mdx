@@ -1,0 +1,348 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/RainbowSDK/classes/RainbowSDK"
+lastSynced: "2026-02-19T22:35:17.358Z"
+---
+# Documentation
+
+RainbowSDK
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [RainbowSDK](doc/sdk/webv2/lts/api/RainbowSDK/index) / RainbowSDK
+
+# Class: RainbowSDK
+
+This class is the **Web Rainbow SDK** main entry point It offers :
+
+-   Lifecycle methods (create, start and stop methods)
+-   A get method to fetch plugin services
+-   Direct accesses to "core" plugins
+
+## Accessors
+
+### bubbleService
+
+> `get` **bubbleService**(): [`BubbleService`](doc/sdk/webv2/lts/api/Bubbles/interfaces/BubbleService)
+
+Direct access to BubbleService
+
+#### Returns
+
+[`BubbleService`](doc/sdk/webv2/lts/api/Bubbles/interfaces/BubbleService)
+
+the BubbleService singleton instance if available
+
+---
+
+### connectedUser
+
+> `get` **connectedUser**(): [`ConnectedUser`](doc/sdk/webv2/lts/api/User/interfaces/ConnectedUser)
+
+Direct access to core ConnectedUser
+
+#### Returns
+
+[`ConnectedUser`](doc/sdk/webv2/lts/api/User/interfaces/ConnectedUser)
+
+the ConnectedUser instance
+
+---
+
+### connectionService
+
+> `get` **connectionService**(): [`ConnectionService`](doc/sdk/webv2/lts/api/Connection/interfaces/ConnectionService)
+
+Direct access to core ConnectionService
+
+#### Returns
+
+[`ConnectionService`](doc/sdk/webv2/lts/api/Connection/interfaces/ConnectionService)
+
+the ConnectionService singleton instance
+
+---
+
+### conversationService
+
+> `get` **conversationService**(): [`ConversationService`](doc/sdk/webv2/lts/api/Conversations/interfaces/ConversationService)
+
+Direct access to core ConversationService
+
+#### Returns
+
+[`ConversationService`](doc/sdk/webv2/lts/api/Conversations/interfaces/ConversationService)
+
+the ConversationService singleton instance if available
+
+---
+
+### directorySearchService
+
+> `get` **directorySearchService**(): [`DirectorySearchService`](doc/sdk/webv2/lts/api/DirectorySearch/interfaces/DirectorySearchService)
+
+Direct access to core DirectoryService
+
+#### Returns
+
+[`DirectorySearchService`](doc/sdk/webv2/lts/api/DirectorySearch/interfaces/DirectorySearchService)
+
+the UserNetworkService singleton instance
+
+---
+
+### filesService
+
+> `get` **filesService**(): `FilesService`
+
+Direct access to FilesService
+
+#### Returns
+
+`FilesService`
+
+the FileService singleton instance if available
+
+---
+
+### userNetwork
+
+> `get` **userNetwork**(): [`UserNetworkService`](doc/sdk/webv2/lts/api/UserNetwork/interfaces/UserNetworkService)
+
+Direct access to core UserNetworkService
+
+#### Returns
+
+[`UserNetworkService`](doc/sdk/webv2/lts/api/UserNetwork/interfaces/UserNetworkService)
+
+the UserNetworkService singleton instance
+
+---
+
+### utils
+
+> `get` **utils**(): [`UtilitiesService`](doc/sdk/webv2/lts/api/RainbowSDK/classes/UtilitiesService)
+
+Direct access to core UtilitiesService
+
+#### Returns
+
+[`UtilitiesService`](doc/sdk/webv2/lts/api/RainbowSDK/classes/UtilitiesService)
+
+the UtilitiesService singleton instance
+
+---
+
+### webinarService
+
+> `get` **webinarService**(): `WebinarService`
+
+Direct access to WebinarService
+
+#### Returns
+
+`WebinarService`
+
+the WebinarService singleton instance if available
+
+## Methods
+
+### enableLogs()
+
+> **enableLogs**(`enable`): `void`
+
+Permits to enable console logs
+
+#### Parameters
+
+• **enable**: `boolean`
+
+when set to true logs are displayed on console
+
+#### Returns
+
+`void`
+
+---
+
+### get()
+
+> **get**<`T`\>(`serviceName`): `T`
+
+Permit to fetch the singleton instance of a named service
+
+#### Type parameters
+
+• **T** = `any`
+
+#### Parameters
+
+• **serviceName**: `string`
+
+#### Returns
+
+`T`
+
+the singleton instance of a named service
+
+---
+
+### getLogLevel()
+
+> **getLogLevel**(): `LogLevelEnum`
+
+Permits to get current logLevel
+
+#### Returns
+
+`LogLevelEnum`
+
+---
+
+### getVersion()
+
+> **getVersion**(): `string`
+
+Get the current Rainbow SDK version
+
+#### Returns
+
+`string`
+
+the current Rainbow SDK version
+
+---
+
+### setLogLevel()
+
+> **setLogLevel**(`logLevel`): `void`
+
+Permits to specify logLevel
+
+#### Parameters
+
+• **logLevel**: `LogLevelEnum`
+
+when set to true logs are displayed on console
+
+#### Returns
+
+`void`
+
+---
+
+### start()
+
+> **start**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`ConnectedUser`](doc/sdk/webv2/lts/api/User/interfaces/ConnectedUser)\>
+
+Permits to start the Rainbow SDK
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`ConnectedUser`](doc/sdk/webv2/lts/api/User/interfaces/ConnectedUser)\>
+
+resolve when Rainbow SDK is started
+
+---
+
+### stop()
+
+> **stop**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Permits to stop the Rainbow SDK
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+resolve when Rainbow SDK is stopped
+
+---
+
+### create()
+
+> `static` **create**(`options`?): [`RainbowSDK`](doc/sdk/webv2/lts/api/RainbowSDK/classes/RainbowSDK)
+
+Static method to create the RainbowSDK singleton instance
+
+#### Parameters
+
+• **options?**: [`RainbowSDKConfig`](doc/sdk/webv2/lts/api/RainbowSDK/interfaces/RainbowSDKConfig)
+
+#### Returns
+
+[`RainbowSDK`](doc/sdk/webv2/lts/api/RainbowSDK/classes/RainbowSDK)
+
+The Rainbow singleton instance
+
+---
+
+### getInstance()
+
+> `static` **getInstance**(): [`RainbowSDK`](doc/sdk/webv2/lts/api/RainbowSDK/classes/RainbowSDK)
+
+Static method to reach the RainbowSDK singleton instance
+
+#### Returns
+
+[`RainbowSDK`](doc/sdk/webv2/lts/api/RainbowSDK/classes/RainbowSDK)
+
+The Rainbow singleton instance
+
+### Sur cette page
+
+-   [Accessors](/docs/sdk/web#name-accessors-30)
+-   [bubbleService](/docs/sdk/web#name-bubbleservice-33)
+-   [Returns](/docs/sdk/web#name-returns-44)
+-   [connectedUser](/docs/sdk/web#name-connecteduser-54)
+-   [Returns](/docs/sdk/web#name-returns-65)
+-   [connectionService](/docs/sdk/web#name-connectionservice-75)
+-   [Returns](/docs/sdk/web#name-returns-86)
+-   [conversationService](/docs/sdk/web#name-conversationservice-96)
+-   [Returns](/docs/sdk/web#name-returns-107)
+-   [directorySearchService](/docs/sdk/web#name-directorysearchservice-117)
+-   [Returns](/docs/sdk/web#name-returns-128)
+-   [filesService](/docs/sdk/web#name-filesservice-138)
+-   [Returns](/docs/sdk/web#name-returns-149)
+-   [userNetwork](/docs/sdk/web#name-usernetwork-159)
+-   [Returns](/docs/sdk/web#name-returns-170)
+-   [utils](/docs/sdk/web#name-utils-180)
+-   [Returns](/docs/sdk/web#name-returns-191)
+-   [webinarService](/docs/sdk/web#name-webinarservice-201)
+-   [Returns](/docs/sdk/web#name-returns-212)
+-   [Methods](/docs/sdk/web#name-methods-221)
+-   [enableLogs()](/docs/sdk/web#name-enablelogs-224)
+-   [Parameters](/docs/sdk/web#name-parameters-235)
+-   [Returns](/docs/sdk/web#name-returns-244)
+-   [get()](/docs/sdk/web#name-get-251)
+-   [Type parameters](/docs/sdk/web#name-type-parameters-262)
+-   [Parameters](/docs/sdk/web#name-parameters-268)
+-   [Returns](/docs/sdk/web#name-returns-274)
+-   [getLogLevel()](/docs/sdk/web#name-getloglevel-284)
+-   [Returns](/docs/sdk/web#name-returns-295)
+-   [getVersion()](/docs/sdk/web#name-getversion-302)
+-   [Returns](/docs/sdk/web#name-returns-313)
+-   [setLogLevel()](/docs/sdk/web#name-setloglevel-323)
+-   [Parameters](/docs/sdk/web#name-parameters-334)
+-   [Returns](/docs/sdk/web#name-returns-343)
+-   [start()](/docs/sdk/web#name-start-350)
+-   [Returns](/docs/sdk/web#name-returns-361)
+-   [stop()](/docs/sdk/web#name-stop-371)
+-   [Returns](/docs/sdk/web#name-returns-382)
+-   [create()](/docs/sdk/web#name-create-392)
+-   [Parameters](/docs/sdk/web#name-parameters-403)
+-   [Returns](/docs/sdk/web#name-returns-409)
+-   [getInstance()](/docs/sdk/web#name-getinstance-419)
+-   [Returns](/docs/sdk/web#name-returns-430)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,278 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharpprevious/core/lts/guides/035_events_mode"
+lastSynced: "2026-02-19T22:35:14.381Z"
+---
+# Documentation
+
+XMPP or Server to Server events mode
+
+LTS release 2.6.XPubliée le 2021-12-13
+
+## Server to server (S2S) and XMPP events mode
+
+By default, the CSharp SDK uses XMPP to handle events from server using a Web socket. It's also XMPP which is used to send IM messages. It's the standard and official way if you are creating an `Desktop or Mobile application` or `small bots` with this SDK.
+
+If you want to create `advanced bots` or `high availability and scalable server applications`, it's better to use S2S (server to server) event mode.
+
+The CSharp SDK allows you, almost transparently, to use one of these event modes without the need for specific code. Only some events and methods are not available/allowed in S2S event mode (Cf. [Events and Methods available](/docs/sdk/csharp)).
+
+In the end of this guide, we explain a development strategy to help you set up your environment.
+
+### Select an event mode
+
+---
+
+To select a specific event mode, you only need to set if before the login to the Rainbow Server using `EventMode` property from `Restrictions` object accessible in `Rainbow.Application`.
+
+By default, the event mode selected is XMPP. If you choose S2S event mode, you also need to specify a callback URL (also called Webhook). See next chapter to understand the architecture involved in S2S and why/how the callback URL is used.
+
+```csharp
+String callbackUrl = "https://myWebServer.com/callbackPath";
+
+Rainbow.Application myApp = new Rainbow.Application();
+
+// Set S2S as event mode
+myApp.Restrictions.EventMode = Restrictions.SDKEventMode.S2S;
+
+// Need to specify in this event mode the Callback URL used to receive events
+myApp.SetS2SCallbackUrl(callbackUrl);
+
+// Now we can specify the Application ID, the Secret Key and the hostnam to use like always  
+myApp.SetApplicationInfo(applicationID, secretKey);
+myApp.SetHostInfo(hostname);
+
+// We want to know when the initialization process has been performed correctly
+myApp.InitializationPerformed += MyApp_InitializationPerformed;
+
+// Finally we can log to the server
+myApp.Login("@email" , "password", callback =>
+{
+  if(callback.Result.Success)
+  {
+    // The login / pwd is correct
+    // The SDK continue internally initialization process. We need to wait its end.
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameter(s) used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+
+
+private void MyApp_InitializationPerformed(object sender, EventArgs e)
+{
+    if (myApp.IsInitialized())
+    {
+      // Login process has been performed and the initialization process has been performed correctly
+      // We can now use any features    
+    }
+}
+```
+
+### XMPP event mode and architecture
+
+---
+
+When XMPP Event mode is used, a WebSocket is created between the SDK and the Rainbow cloud server to receive events from server but also to send data for IM and Presence features.
+
+REST API is also used to get data from Server
+
+![](doc/sdk/csharpprevious/core/lts/guides/images/EventModeXMPP.png)
+
+### S2S event mode and architecture
+
+---
+
+When S2S Event mode is used, there is no web socket but a callback URL is used (also called Webhook) to received events from Server.
+
+REST API is used to get data from Server and also to manage IM and Presence features.
+
+So if you want to handle a lot of messages you can scale your architecture using a load balancer.
+
+![](doc/sdk/csharpprevious/core/lts/guides/images/EventModeS2S.png)
+
+### S2S event mode - handle events from Rainbow server
+
+---
+
+In XMPP event mode, you have nothing to do to deal with incoming data from the web socket. They are automatically parsed internally and according the result an event is raised by the SDK.
+
+In S2S event mode, it's a little different. It's up to you to configure your web server, set the correct callbackURL and give to SDK the content of data received by this webhook.
+
+Your web server will receive data
+
+-   with a specific HTTP verb (GET, POST, PUT, etc...)
+-   with a specific absolute path (for example `mypath` based on the previous screenshoot since the callback URL used is `https://my.derver.domain/mypath`)
+-   with a specific content (JSON content)
+-   with a content type
+
+You must check that the `content type` is equal to `application/json`.
+
+For the 3 other data, you don't have to analyse / parse, you just need to provide them to the SDK - then it will parse the information, and, like in XMPP mode, according the result, an event is raised by the SDK.
+
+To do this you have to use the method `ParseCallbackContent` of the `S2SEventPipe` object. This method returns a boolean to indicate if the parsing has been done correctly or not.
+
+If the parsing is done incorrectly, your web server must return an HTTP 406 Not Acceptable answer.
+
+If the parsing is done correctly, your web server must return an HTTP 200 Ok answer.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.S2SEventPipe s2sEventPipe = myApp.GetS2SEventPipe();
+...
+
+// You log to the Rainbow server using S2S event mode and specifing a callbackURL
+
+...
+
+// Your Web server is receiving data from the Rainbow Server
+// 4 distinct data are necessaries
+
+String httpVerb;
+String urlAbsolutePath;
+String content;
+String contentType;
+
+// You also need to know if the parsing is done correctly
+Boolean parsingDone = false;
+
+// Get and check ContentType
+contentType = myWebServer.Request.Headers["Content-Type"];
+if(contentType == "application/json")
+{
+  httpVerb = myWebServer.Request.HttpVerb.ToString();     // Get the HTTP Verb used in this web request
+  urlAbsolutePath = myWebServer.Request.Url.AbsolutePath; // Get the absolute path used in this web request
+  content = myWebServer.GetRequestBodyAsStringAsync();    //  Get the contant of this web request
+  
+  // Provide this data in the SDK 
+  parsingDone = s2sEventPipe.ParseCallbackContent(httpVerb, urlAbsolutePath, content);
+  
+  // Then the SDK parse data and raised accordingly an event like it does in XMPP mode.
+}
+
+if(parsingDone)
+{
+  // Your web server needs to return an HTTP 200 OK
+}   
+else
+{
+  // Your web server needs to return an HTTP 406 Not Acceptable
+}
+```
+
+### S2S event mode - development strategy
+
+---
+
+If you intend to use S2S event mode but you still don't know very well how to use the SDK, the best approach is to first start to use XMPP event mode to get experience. You don't need to setup any web server, just a simple connection to the Rainbow server is necessary. Using information available here ([Events and Methods available](/docs/sdk/csharp)) you can ensure you to use only elements available later in S2S event mode.
+
+Once you understand well how CSharp SDK works, you have two choices:
+
+-   **small step forward**: you still don't need to setup a real web server but just use a local one and a reverse proxy tool. It permits easily from you environment to have webhook available and accesible by the Rainbow Server. With this approach you can learn how to use the method `ParseCallbackContent` of the `S2SEventPipe` object explained in previous chapter. A diagram in the next chapter permits to understand how it works.
+-   **big step forward**: you setup your web server and use correctly your environment in order to give, to the CSharp SDK, all information detailled in previous chapter in order to manage incoming events for Rainbow server.
+
+**IMPORTANT NOTE**: The use of a reverse proxy must not at all be used in production environment - just in development process to test/setup quickly your code.
+
+### S2S event mode - use of reverse proxy for development/test purpose
+
+---
+
+To explain this kind of configuration, we will use here the ngrok tool. But you can use any tool with same kind of feature.
+
+[ngrok](https://ngrok.com/) allows you to expose local server behind NATs and firewalls to the public internet over secure tunnels. So you don't need here to have a real web server running but just a local one. This tool is free and available for Windows, MacOS and Linux.
+
+We will use [EmbedIO Nuget package](https://www.nuget.org/packages/EmbedIO/) to have your own local server. It's a free package and cross platform too. With this package, with less than 10 lines of code you can create and start a local web server.
+
+This diagram explains how all this works together.
+
+![](doc/sdk/csharpprevious/core/lts/guides/images/NgrokConfig.png)
+
+  
+  
+
+It seems a bit complex but in fact it's very easy to setup and to understand.
+
+1.  **ngrok instance**
+
+Download ngrok for your environment and launch it using this command line:
+
+**ngrok http -host-header="localhost:9870" 9870**
+
+Once started, the tool indicates you the forwarding rule created from the public ngrok internet web site to your local web server running on 9870 (you can use/specify any port number)
+
+For example, you can have a forward rule like this created by ngrok:
+
+http://0bc3a3bc.ngrok.io -> http://localhost:9870
+
+https://0bc3a3bc.ngrok.io -> http://localhost:9870
+
+It means that all HTTP or HTTPS requests to the public web server `0bc3a3bc.ngrok.io` will be redirected to your local web server on port 9870.
+
+**NOTE:** Each time your start ngrok another forward rule is created. It's important to notice also that the forward rule is only alive for a few hours (if your are using the free version of this tool). So in your development step, don't forget to check that the forward rule is still alive.
+
+2.  **Third Party App**
+
+Your third party app must create and start a local web server on port 9870.
+
+Your third party app must use the CSharp SDK in S2S event mode and specify this callback Url: http://0bc3a3bc.ngrok.io/myPath
+
+3.  **Rainbow events raised**
+
+Since you specified this callback Url (http://0bc3a3bc.ngrok.io/myPath), Rainbow server sends them to the ngrok web server infrastructure which will forward them to your local web server using this URL: http://localhost:9870/myPath
+
+4.  **HTTP(S) request are forwarded**
+
+All HTTP and HTTPS requests are then forwarded, thanks to your ngrok instance, to your local web server on port 9870.
+
+You need to get data from this web requests and provide them to the SDK using the method `ParseCallbackContent` of the `S2SEventPipe` object.
+
+Once all these steps are done, your are using fully the CSharp SDK S2S event mode but not using tools (ngrok, local web server) adapted in real / business configuration.
+
+The next step will be to manage/setup your real web server and your environment still using the CSharp SDK nearly in the same way:
+
+-   the code to start the local web server must be removed
+-   the code to get data from incoming web request must be adapted to your environment
+
+That's it !
+
+### S2S event mode - example
+
+---
+
+An example is available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/Windows_NetFwk/S2S) using ngrok and EmbedIO.
+
+It's based on another example (Cf. [InstantMessaging example](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/Windows_NetFwk/InstantMessaging)) - just some piece of code have been updated/added:
+
+-   Code updated to specify S2S event mode and to set the callback URL to use
+-   Code added to start local web server
+-   Code added to get data from this local web server and call the method `ParseCallbackContent` of the `S2SEventPipe` object.
+
+### Sur cette page
+
+-   [Server to server (S2S) and XMPP events mode](/docs/sdk/csharp#name-server-to-server-s2s-and-xmpp-events-mode-0)
+-   [Select an event mode](/docs/sdk/csharp#name-select-an-event-mode-15)
+-   [XMPP event mode and architecture](/docs/sdk/csharp#name-xmpp-event-mode-and-architecture-26)
+-   [S2S event mode and architecture](/docs/sdk/csharp#name-s2s-event-mode-and-architecture-39)
+-   [S2S event mode - handle events from Rainbow server](/docs/sdk/csharp#name-s2s-event-mode---handle-events-from-rainbow-server-55)
+-   [S2S event mode - development strategy](/docs/sdk/csharp#name-s2s-event-mode---development-strategy-106)
+-   [S2S event mode - use of reverse proxy for development/test purpose](/docs/sdk/csharp#name-s2s-event-mode---use-of-reverse-proxy-for-developmenttest-purpose-131)
+-   [S2S event mode - example](/docs/sdk/csharp#name-s2s-event-mode---example-241)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

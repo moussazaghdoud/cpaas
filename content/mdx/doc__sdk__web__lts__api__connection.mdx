@@ -1,0 +1,560 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/connection"
+lastSynced: "2026-02-19T22:35:15.082Z"
+---
+# Documentation
+
+Connection service
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Connection
+
+This service connects the user to Rainbow and listen to the connection state change. The main methods or events proposed in that service allow to:  
+\- Sign-in to Rainbow,  
+\- Sign-out from Rainbow,  
+\- Listen to the connection state change with Rainbow to discover if the platform is accessible or not,  
+\- Listen to the SDK for Web loading state change for handling when the SDK can be used Please find the table of error return codes for Sign-in {result.code} below - 1, Ok - -1, Error - -2, Unauthorized - -4, Error on event socket - -8, Id error on event socket - -16, Bad request - -32, Unsupported - -64, Not found
+
+**Emits**: `event:RAINBOW_ONCONNECTIONSTATECHANGED`, `event:RAINBOW_ONSTARTED`, `event:RAINBOW_ONSTOPPED`, `event:RAINBOW_ONUSERTOKENRENEW`, `event:RAINBOW_ONUSERTOKENRENEWFAILED`, `event:RAINBOW_ONUSERTOKENWILLEXPIRE`, `event:RAINBOW_ONAPPTOKENRENEW`, `event:RAINBOW_ONAPPTOKENRENEWFAILED`
+
+-   [Connection](#module_Connection)
+    -   [signin(strLogin, strPassword)](#module_Connection+signin) ⇒ `Promise`
+    -   [signinOnRainbowOfficial(strLogin, strPassword)](#module_Connection+signinOnRainbowOfficial) ⇒ `object`
+    -   [signinOnRainbowBeta(strLogin, strPassword)](#module_Connection+signinOnRainbowBeta) ⇒ `object`
+    -   [signinOnRainbowCPaasPreProd(strLogin, strPassword)](#module_Connection+signinOnRainbowCPaasPreProd) ⇒ `object`
+    -   [signinOnRainbowDev(strLogin, strPassword)](#module_Connection+signinOnRainbowDev) ⇒ `object`
+    -   [signinOnRainbowSandboxChina(strLogin, strPassword)](#module_Connection+signinOnRainbowSandboxChina) ⇒ `object`
+    -   [signinOnRainbowChina(strLogin, strPassword)](#module_Connection+signinOnRainbowChina) ⇒ `object`
+    -   [signinOnRainbowHosted(strLogin, strPassword, strHost)](#module_Connection+signinOnRainbowHosted) ⇒ `object`
+    -   [signinSandBoxWithToken(strToken)](#module_Connection+signinSandBoxWithToken) ⇒ `Promise`
+    -   [signinOnRainbowOfficialWithToken(strToken)](#module_Connection+signinOnRainbowOfficialWithToken) ⇒ `Promise`
+    -   [signinOnRainbowBetaWithToken(strToken)](#module_Connection+signinOnRainbowBetaWithToken) ⇒ `object`
+    -   [signinOnRainbowDevWithToken(strToken)](#module_Connection+signinOnRainbowDevWithToken) ⇒ `object`
+    -   [signinOnRainbowHostedWithToken(strToken, strHost)](#module_Connection+signinOnRainbowHostedWithToken) ⇒ `object`
+    -   [signinWithToken(strToken)](#module_Connection+signinWithToken) ⇒ `object`
+    -   [setRenewedToken(strToken)](#module_Connection+setRenewedToken) ⇒ `void`
+    -   [signinOnRainbowWithOICD(strToken)](#module_Connection+signinOnRainbowWithOICD) ⇒ `object`
+    -   [styleSignInWithRainbowButton(color, size)](#module_Connection+styleSignInWithRainbowButton) ⇒ `boolean`
+    -   [signout()](#module_Connection+signout) ⇒ `Promise`
+    -   [updateUserPassword(oldPassword, newPassword)](#module_Connection+updateUserPassword) ⇒ `Promise`
+    -   [getState()](#module_Connection+getState) ⇒ `string`
+    -   [getToken()](#module_Connection+getToken) ⇒ `string`
+    -   [refreshToken()](#module_Connection+refreshToken) ⇒ `Promise`
+
+### connection.signin(strLogin, strPassword) ⇒ `Promise`
+
+Allow to sign-in to Rainbow Sandbox environment from a Rainbow Sandbox user account that already exists The Rainbow Sandbox environment will be used to access the Rainbow Cloud Services
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `Promise` - If the promise is resolved, the object containing the user account information or an object containing an error if the promise is rejected  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strLogin
+
+`string`
+
+Rainbow Sandbox user login
+
+strPassword
+
+`string`
+
+Rainbow Sandbox user password
+
+### connection.signinOnRainbowOfficial(strLogin, strPassword) ⇒ `object`
+
+Allow to sign-in to Rainbow official environment from a Rainbow official user account that already exists The Rainbow official environment will be used to access the Rainbow Cloud Services This method returns a promise
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `object` - result If the promise is resolved, the object containing the user account information or an object containing an error if the promise is rejected. See signin for {result} details  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strLogin
+
+`string`
+
+Rainbow official user login
+
+strPassword
+
+`string`
+
+Rainbow official user password
+
+### connection.signinOnRainbowBeta(strLogin, strPassword) ⇒ `object`
+
+Allow to sign-in to Rainbow beta environment from a Rainbow beta user account that already exists The Rainbow beta environment will be used to access the Rainbow Cloud Services This method returns a promise
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `object` - If the promise is resolved, the object containing the user account information or an object containing an error if the promise is rejected
+
+```
+See signin for {result} details
+```
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strLogin
+
+`string`
+
+Rainbow beta user login
+
+strPassword
+
+`string`
+
+Rainbow beta user password
+
+### connection.signinOnRainbowCPaasPreProd(strLogin, strPassword) ⇒ `object`
+
+Allow to sign-in to Rainbow CPaaS pre production environment from a Rainbow beta user account that already exists The Rainbow beta environment will be used to access the Rainbow Cloud Services This method returns a promise
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `object` - If the promise is resolved, the object containing the user account information or an object containing an error if the promise is rejected  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strLogin
+
+`string`
+
+Rainbow beta user login
+
+strPassword
+
+`string`
+
+Rainbow beta user password
+
+### connection.signinOnRainbowDev(strLogin, strPassword) ⇒ `object`
+
+Allow to sign-in to Rainbow dev environment from a Rainbow dev user account that already exists The Rainbow dev environment will be used to access the Rainbow Cloud Services This method returns a promise
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `object` - If the promise is resolved, the object containing the user account information or an object containing an error if the promise is rejected  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strLogin
+
+`string`
+
+Rainbow dev user login
+
+strPassword
+
+`string`
+
+Rainbow dev user password
+
+### connection.signinOnRainbowSandboxChina(strLogin, strPassword) ⇒ `object`
+
+Allow to sign-in to Rainbow Sandbox China from a Rainbow dev user account that already exists The Rainbow Sandbox environment on cn.com will be used to access the Rainbow Cloud Services This method returns a promise
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `object` - If the promise is resolved, the object containing the user account information or an object containing an error if the promise is rejected  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strLogin
+
+`string`
+
+Rainbow dev user login
+
+strPassword
+
+`string`
+
+Rainbow dev user password
+
+### connection.signinOnRainbowChina(strLogin, strPassword) ⇒ `object`
+
+Allow to sign-in to Rainbow China from a Rainbow dev user account that already exists The Rainbow production environment on cn.com will be used to access the Rainbow Cloud Services This method returns a promise
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `object` - If the promise is resolved, the object containing the user account information or an object containing an error if the promise is rejected  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strLogin
+
+`string`
+
+Rainbow dev user login
+
+strPassword
+
+`string`
+
+Rainbow dev user password
+
+### connection.signinOnRainbowHosted(strLogin, strPassword, strHost) ⇒ `object`
+
+Allow to sign-in to Rainbow hosted environment from a Rainbow hosted user account that already exists The Rainbow hosted environment will be used to access the Rainbow Cloud Services This method returns a promise
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `object` - If the promise is resolved, the object containing the user account information or an object containing an error if the promise is rejected  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strLogin
+
+`string`
+
+Rainbow hosted user login
+
+strPassword
+
+`string`
+
+Rainbow hosted user password
+
+strHost
+
+`string`
+
+Rainbow host to connect
+
+### connection.signinSandBoxWithToken(strToken) ⇒ `Promise`
+
+Allow to sign-in to Rainbow Sandbox environment from a Rainbow Sandbox user account that already exists The Rainbow Sandbox environment will be used to access the Rainbow Cloud Services This method returns a promise
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `Promise` - If the promise is resolved, the object containing the user account information or an object containing an error if the promise is rejected
+
+```
+See signin for {result} details
+```
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strToken
+
+`string`
+
+Rainbow user existing token
+
+### connection.signinOnRainbowOfficialWithToken(strToken) ⇒ `Promise`
+
+Allow to sign-in to Rainbow official environment from a Rainbow official user account that already exists The Rainbow official environment will be used to access the Rainbow Cloud Services This method returns a promise
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `Promise` - If the promise is resolved, the object containing the user account information or an object containing an error if the promise is rejected  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strToken
+
+`string`
+
+Rainbow user existing token
+
+### connection.signinOnRainbowBetaWithToken(strToken) ⇒ `object`
+
+Allow to sign-in to Rainbow beta environment from a Rainbow beta user account that already exists The Rainbow beta environment will be used to access the Rainbow Cloud Services This method returns a promise
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `object` - If the promise is resolved, the object containing the user account information or an object containing an error if the promise is rejected  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strToken
+
+`string`
+
+Rainbow user existing token
+
+### connection.signinOnRainbowDevWithToken(strToken) ⇒ `object`
+
+Allow to sign-in to Rainbow dev environment from a Rainbow dev user account that already exists The Rainbow dev environment will be used to access the Rainbow Cloud Services This method returns a promise
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `object` - If the promise is resolved, the object containing the user account information or an object containing an error if the promise is rejected
+
+```
+See signin for {result} details
+```
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strToken
+
+`string`
+
+Rainbow user existing token
+
+### connection.signinOnRainbowHostedWithToken(strToken, strHost) ⇒ `object`
+
+Allows to sign-in to Rainbow hosted environment from a Rainbow hosted user account that already exists The Rainbow hosted environment will be used to access the Rainbow Cloud Services This method returns a promise
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `object` - If the promise is resolved, the object containing the user account information or an object containing an error if the promise is rejected  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strToken
+
+`string`
+
+Rainbow user existing token
+
+strHost
+
+`string`
+
+Rainbow host to connect. Optional - if not provided, the host will be extracted from the token
+
+### connection.signinWithToken(strToken) ⇒ `object`
+
+Allows to sign-in to Rainbow by simply using a JWT-type token. The environment used to login will be extracted from the token
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `object` - If the promise is resolved, the object containing the user account information or an object containing an error if the promise is rejected  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strToken
+
+`string`
+
+Existing token
+
+### connection.setRenewedToken(strToken) ⇒ `void`
+
+Use this method to update the OAuth token which is being used. It is obligatory to update the token after each renewing. If the token is not renewed, an event RAINBOW\_ONUSERTOKENRENEWFAILED will be emitted and the user will be disconnected
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `void` - Returns void  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strToken
+
+`string`
+
+String representing the new AuthToken received after the renewing
+
+### connection.signinOnRainbowWithOICD(strToken) ⇒ `object`
+
+Allow to sign-in to Rainbow production environment by using OICD token that is to be exchanged against Rainbow Token This method returns a promise
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `object` - If the promise is resolved, the object containing the user account information or an object containing an error if the promise is rejected  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strToken
+
+`string`
+
+OICD token generated by a third-party server
+
+### connection.styleSignInWithRainbowButton(color, size) ⇒ `boolean`
+
+Allows user to style the "Sign in with Rainbow" button automatically by calling this method
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `boolean` - If the method finds the corresponding element, it returns true after styling it. Otherwise, it returns false  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+color
+
+`string`
+
+can be set to "blue" or "white"
+
+size
+
+`string`
+
+can be set to "small", "medium" or "large"
+
+### connection.signout() ⇒ `Promise`
+
+Allow to sign-out from Rainbow This method returns a promise
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `Promise` - If the promise is resolved, the object containing a success code or an object containing an error if the promise is rejected  
+**Access**: public  
+
+### connection.updateUserPassword(oldPassword, newPassword) ⇒ `Promise`
+
+Change the password for the current connected user If successful you will be disconnected from Rainbow and will have to sign in again. All existing tokens with this user will also be revoked
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `Promise` - A promise containing the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+oldPassword
+
+`string`
+
+\[required\] the user old password
+
+newPassword
+
+`string`
+
+\[required\] the user new password
+
+### connection.getState() ⇒ `string`
+
+Get the current connection state with the Rainbow Cloud Services
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `string` - The connection state which can be:  
+\- RAINBOW\_CONNECTIONINPROGRESS,  
+\- RAINBOW\_CONNECTIONCONNECTED,  
+\- RAINBOW\_CONNECTIONDISCONNECTED  
+**Access**: public  
+
+### connection.getToken() ⇒ `string`
+
+Get the current token associated with the connection
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `string` - The token  
+**Access**: public  
+
+### connection.refreshToken() ⇒ `Promise`
+
+Refresh the current token associated with the connection (maximum 7 times)
+
+**Kind**: instance method of [`Connection`](#module_Connection)  
+**Returns**: `Promise` - Promise resolution or an error in case of a failure  
+**Access**: public
+
+### Sur cette page
+
+-   [Connection](/docs/sdk/web#name-connection-3)
+-   [connection.signin(strLogin, strPassword) ⇒ Promise](/docs/sdk/web#name-connection.signinstrlogin-strpassword--promise-134)
+-   [connection.signinOnRainbowOfficial(strLogin, strPassword) ⇒ object](/docs/sdk/web#name-connection.signinonrainbowofficialstrlogin-strpassword--object-185)
+-   [connection.signinOnRainbowBeta(strLogin, strPassword) ⇒ object](/docs/sdk/web#name-connection.signinonrainbowbetastrlogin-strpassword--object-236)
+-   [connection.signinOnRainbowCPaasPreProd(strLogin, strPassword) ⇒ object](/docs/sdk/web#name-connection.signinonrainbowcpaaspreprodstrlogin-strpassword--object-291)
+-   [connection.signinOnRainbowDev(strLogin, strPassword) ⇒ object](/docs/sdk/web#name-connection.signinonrainbowdevstrlogin-strpassword--object-342)
+-   [connection.signinOnRainbowSandboxChina(strLogin, strPassword) ⇒ object](/docs/sdk/web#name-connection.signinonrainbowsandboxchinastrlogin-strpassword--object-393)
+-   [connection.signinOnRainbowChina(strLogin, strPassword) ⇒ object](/docs/sdk/web#name-connection.signinonrainbowchinastrlogin-strpassword--object-444)
+-   [connection.signinOnRainbowHosted(strLogin, strPassword, strHost) ⇒ object](/docs/sdk/web#name-connection.signinonrainbowhostedstrlogin-strpassword-strhost--object-495)
+-   [connection.signinSandBoxWithToken(strToken) ⇒ Promise](/docs/sdk/web#name-connection.signinsandboxwithtokenstrtoken--promise-557)
+-   [connection.signinOnRainbowOfficialWithToken(strToken) ⇒ Promise](/docs/sdk/web#name-connection.signinonrainbowofficialwithtokenstrtoken--promise-601)
+-   [connection.signinOnRainbowBetaWithToken(strToken) ⇒ object](/docs/sdk/web#name-connection.signinonrainbowbetawithtokenstrtoken--object-641)
+-   [connection.signinOnRainbowDevWithToken(strToken) ⇒ object](/docs/sdk/web#name-connection.signinonrainbowdevwithtokenstrtoken--object-681)
+-   [connection.signinOnRainbowHostedWithToken(strToken, strHost) ⇒ object](/docs/sdk/web#name-connection.signinonrainbowhostedwithtokenstrtoken-strhost--object-725)
+-   [connection.signinWithToken(strToken) ⇒ object](/docs/sdk/web#name-connection.signinwithtokenstrtoken--object-776)
+-   [connection.setRenewedToken(strToken) ⇒ void](/docs/sdk/web#name-connection.setrenewedtokenstrtoken--void-816)
+-   [connection.signinOnRainbowWithOICD(strToken) ⇒ object](/docs/sdk/web#name-connection.signinonrainbowwithoicdstrtoken--object-856)
+-   [connection.styleSignInWithRainbowButton(color, size) ⇒ boolean](/docs/sdk/web#name-connection.stylesigninwithrainbowbuttoncolor-size--boolean-896)
+-   [connection.signout() ⇒ Promise](/docs/sdk/web#name-connection.signout--promise-947)
+-   [connection.updateUserPassword(oldPassword, newPassword) ⇒ Promise](/docs/sdk/web#name-connection.updateuserpasswordoldpassword-newpassword--promise-956)
+-   [connection.getState() ⇒ string](/docs/sdk/web#name-connection.getstate--string-1007)
+-   [connection.getToken() ⇒ string](/docs/sdk/web#name-connection.gettoken--string-1016)
+-   [connection.refreshToken() ⇒ Promise](/docs/sdk/web#name-connection.refreshtoken--promise-1025)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

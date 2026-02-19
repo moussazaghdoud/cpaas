@@ -1,0 +1,166 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/guides/Retrieving_calls_history"
+lastSynced: "2026-02-19T22:35:16.133Z"
+---
+# Documentation
+
+Web > lts > guides > Retrieving\_calls\_history
+
+## Retrieving calls history
+
+---
+
+In this tutorial, you will discover how to retrieve your call history.
+
+Each time you call a Rainbow user using audio or video from your mobile application, your browser or when you call someone using your phone connected to a PBX, a call log entry is generated and added to your call history. This tutorial will help you understand how to deal with these information and manage your call history.
+
+### Preamble
+
+---
+
+The call history is not limited to audio and video calls done from Rainbow. Each time someone calls you on your phone associated to your Rainbow user or when you call someone with your phone device registered on Rainbow, a call log entry is generated and saved on Rainbow.
+
+The call history of the connected user will contain all these call log items.
+
+Each entry will contain the following structure:
+
+```JSON
+{
+    contact: "318d07bcb19f449ba427b4672722b367@openrainbow.com",    // User JID or phone number
+    contactDisplayName: "Jon Smith",
+    contactInitials: "JS",
+    date: Thu Dec 07 2017 14:15:56 GMT+0100 (CET),
+    direction: "incoming",  // Or `outgoing`
+    duration: "30m 45s",    // 0 for missed call
+    id: "web_83b73bc4-c22d-44ac-9c49-b83558231549",
+    read: true,             // false if new (not marked as read)
+    state: "answered",      // Or `missed`
+    type: "webrtc"          // or `telephone`
+}
+```
+
+Here are some information regarding the parameters in that structure:
+
+-   Regarding the property `contact`, if the recipient is a Rainbow user, this property will contain the `JID` information. So using this information you are able to find the associated Rainbow contact information. If the recipient is not a Rainbow user, you can have only a phone number.
+    
+-   Regarding the property `read`. Its value equals to `false` if it is a new entry that has not been marked as read.
+    
+-   Regarding the property `state`. Its value equals to `answered` if the call has been established or would be set to `missed` otherwise.
+    
+-   Regarding the property `type`. Its value equals to `webrtc` if the call has been done with the computer or the mobile using the WebRTC technology or `telephone` otherwise (for a PSTN call).
+    
+-   Regarding the property `direction`. Its value equals to `incoming` when this is a call from a recipient to the connected user or `outgoing` when the call has been established by the connected user.
+    
+
+### Retrieving the call history
+
+---
+
+Once the SDK for Web has started, you can retrieve the log history of the connected user by using the API `getAll`.
+
+This operation is not synchronous so to be sure that all the history has been received, you need to listen to the event `RAINBOW_ONCALLLOGUPDATED`.
+
+Here is an example for retrieving the call history when started:
+
+```js
+var onCallLogUpdated = function onCallLogUpdated() {
+    var logHistory = rainbowSDK.callsLog.getAll();
+    // Do something with the log history
+};
+
+document.addEventListener(rainbowSDK.callsLog.RAINBOW_ONCALLLOGUPDATED, onCallLogUpdated)
+```
+
+The API `isInitialized()` can be used to check if the initial log history has been retrieved from Rainbow. A `true` value returned means that the whole call log has been retrieved from Rainbow.
+
+### Listening to new call history entry
+
+---
+
+The same listener on `RAINBOW_ONCALLLOGUPDATED` can be used to listen to new call log entry.
+
+This new entry will be automatically added to the history. Calling the API
+
+### Managing call history counter
+
+---
+
+Generally speaking, when a call is missed a new call log entry is added to the history with the property `read` equals to `false`.
+
+So, when you need to know how many calls you missed, you can use the API `getMissedCallLogCounter()` such as in the following:
+
+```js
+var missedCallCounter = rainbowSDK.callsLog.getMissedCallLogCounter();
+```
+
+The variable `missedCallCounter` will be a number that represents the number of missed calls.
+
+And then, using the API `getAll()`, you will be able to retrieve these calls. In order to decrease this counter, you will have to mark these logs 'as read' (described in the next paragraph).
+
+### Mark a call history entry as read
+
+---
+
+To mark as read an existing missed call entry, you need to call the API `markCallLogAsRead()`.
+
+```js
+var onCallLogAckUpdated = function onCallLogAckUpdated() {
+    //Do something when an acknowledgement has been done on the call history
+    ...
+}
+
+var entry = rainbowSDK.callsLog.getAll()[0];
+rainbowSDK.callsLog.markCallLogAsRead(entry.id);
+
+
+document.addEventListener(rainbowSDK.callsLog.RAINBOW_ONCALLLOGACKUPDATED, onCallLogAckUpdated)
+```
+
+Once this has been done, a new event `RAINBOW_ONCALLLOGACKUPDATED` is fired to inform that at least an acknowledgement has been done on the call history.
+
+Calling the API `getAll()` will give you an update of the call history and the property `read` of the associated entry has changed to `true`.
+
+By calling the API `getMissedCallLogCounter()`, you should have a smaller result.
+
+Note: The API `markAllCallsLogsAsRead()` mark all missed call to read in one step.
+
+### Deleting call history items
+
+---
+
+You can delete a call history item at any time by calling the API `deleteOneCallLog()`
+
+```js
+var entry = rainbowSDK.callsLog.getAll()[0];
+rainbowSDK.callsLog.deleteOneCallLog(entry.id);
+
+var onCallLogUpdated = function onCallLogUpdated() {
+    // Do something when the call history has been updated
+    ...
+};
+
+document.addEventListener(rainbowSDK.callsLog.RAINBOW_ONCALLLOGUPDATED, onCallLogUpdated)
+```
+
+Once the call log entry is removed, the event `RAINBOW_ONCALLLOGUPDATED` is fired and so you are notified when the action is done.
+
+You can use the `deleteCallLogsForContact()` API to delete all call log entries associated to a contact or the `deleteAllCallLogs()` API to delete the entire call history.
+
+### Limits
+
+To consult the exact limits concerning Rainbow Web SDK, visit [this link](/docs/hub/features-limits)
+
+---
+
+*Last updated October, 30th 2019*
+
+### Sur cette page
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

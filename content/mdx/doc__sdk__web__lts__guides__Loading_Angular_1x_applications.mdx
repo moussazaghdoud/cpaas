@@ -1,0 +1,313 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/guides/Loading_Angular_1x_applications"
+lastSynced: "2026-02-19T22:35:16.042Z"
+---
+# Documentation
+
+Web > lts > guides > Loading\_Angular\_1x\_applications
+
+## Loading AngularJS 1.x applications
+
+---
+
+In this tutorial, you will discover how to setup the `config.json` file right for loading the SDK for Web, its dependencies and your application files.
+
+This way of loading is designed to be used in **AngularJS 1.x based applications** only. If your application is based on an other JavaScript front-end framework like **Backbone**, **React**, **Ember**, **jQuery** or recent version of **Angular**, please have a look at the guide [Getting Started](doc/sdk/web/lts/guides/Getting_Started); this tutorial will help you loading and using the SDK for Web in your specific environment.
+
+### Preamble
+
+---
+
+In order to propose an easy way for loading and configuring your application, we decided to remove the complexity from the `index.html` file by keeping only the minimum viable tags.
+
+All the others things (i.e. the list of files to load, the settings) will be loaded from a configuration file.
+
+Like explained in the previous tutorial, the first thing you have to do is to add the following lines to your HTML file:
+
+```html
+<!-- Add the following lines to your 'index.html' file -->
+<html lang="en" ng-controller="sampleController">
+  <body>
+    ...
+    <script src="/path_to_loader/loader-sdk.min.js" data-main="./config.json"></script>
+    ...
+  </body>
+</html>
+```
+
+By default the file `config.json` will be used as your configuration file. You can rename it or load it from an other place. Do not forget to update the path!
+
+Note: As you can see, the 'ng-app' attribute that lets you bootstrap your application is no more needed (it will be defined inside the configuration file).
+
+### Understanding the loading steps
+
+---
+
+This configuration file is divided into several parts that are loaded one after the other in order to keep some logical order and avoid for example to load the applications file that depend on the SDK before it.
+
+There are 5 steps for loading your application:
+
+-   **Step 1: Load the pre-requisites libraries**: The first step is to load the libraries needed by the SDK. In most of the cases, you do not have to modify these parts except if you want to remove ones that you have already been loaded by your own
+    
+-   **Step 2: Load the SDK for Web**: Once the prerequisites are loaded, the SDK for Web follows
+    
+-   **Step 3: Load the others libraries**: There part can be empty or contains additional libraries that need to be loaded after the SDK for Web
+    
+-   **Step 4: Load the applications files**: Once all of the "framework" part has been loaded, the applications files are loaded too
+    
+-   **Step 5: Bootstrap the application**: Once all is loaded, the application is bootstrapped and then ready to start which means that your main controller is called (in case of an AngularJS application).
+    
+
+The following paragraphs will focus on each of the steps above to help you understand and setup the configuration file.
+
+### Discovering the configuration file
+
+---
+
+Here is the content of the configuration file you need to have in order to load all your files correctly.
+
+You can copy and paste this `config.json` sample and adapt it to fit your needs.
+
+```json
+{
+    "libraries": {
+        "prerequisites": [
+            "//code.jquery.com/jquery-2.1.3.min.js",
+            "//cdn.jsdelivr.net/momentjs/2.15.1/moment-with-locales.min.js",
+            "//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular.min.js"
+            // for Rainbow Web SDK versions > 1.53 use : "//cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.5/angular.min.js"
+        ],
+        "sdk": {
+            "official": [
+                "path_to_vendors_file/vendors-sdk.min.js",
+                "path_to_rainbow_file/rainbow-sdk.min.js"
+            ],
+            "default": "official"
+        },
+        "after": []
+    },
+    "app": {
+        "bootstrap": "sample",
+        "key": {
+            "appID": "",
+            "appSecret": ""
+        },
+        "js": ["./src/js/sdkSampleApp.js", "./src/js/components/connection/connectionCmp.js", "..."],
+        "css": ["src/styles/sdkSampleApp.css", "src/js/components/connection/connectionCmp.css", "..."]
+    },
+    "settings": {
+        "verboseLog": true,
+        "disableCache": true,
+        "enableLoader": true
+    }
+}
+```
+
+Be careful when modifying the configuration file, it should be a valid JSON file (i.e. no comments). When you are modifying this file, you can open your browser developer console in order to see if all is correct (a lot of logs have been added to help you understand what is going on when something goes wrong).
+
+### Loading the prerequisites
+
+---
+
+The SDK for Web prerequisites are loaded first. As mentioned before, in most of the cases, you do not have to modify this part because if these files are not loaded first, the SDK for Web will not load and work correctly.
+
+```json
+{
+    "libraries": {
+        "prerequisites": [
+            "//code.jquery.com/jquery-2.1.3.min.js",
+            "//cdn.jsdelivr.net/momentjs/2.15.1/moment-with-locales.min.js",
+            "//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular.min.js"
+            // for Rainbow Web SDK versions > 1.53 use : "//cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.5/angular.min.js"
+        ],
+        ...
+    }
+    ...
+}
+```
+
+By default these files are loaded from a CDN. You can change the path if you want to load them from a local directory.
+
+If your application depends on an other third-party libraries, you can add them in this part. They will be loaded for you.
+
+Note: The use of "//" lets the browser load the file according to the protocol used when loading the HTML page (HTTP or HTTPS).
+
+### Loading the SDK for Web
+
+---
+
+When the prerequisites have been loaded successfully, it is time for loading the SDK itself. The SDK for Web is composed of two files that have to be loaded from the Rainbow cloud.
+
+```json
+{
+    "libraries": {
+        ...
+        "sdk": {
+            "official": [
+                "path_to_vendors_file/vendors-sdk.min.js",
+                "path_to_rainbow_file/rainbow-sdk.min.js"
+            ],
+            "default": "official"
+        }
+        ...
+    }
+    ...
+}
+```
+
+As for the prerequisites, most of the time, you do not have to modify this part.
+
+### Loading the others libraries
+
+---
+
+If you need to load additional libraries like AngularJS plugins, this section of the configuration file is for you.
+
+```json
+{
+    "libraries": {
+        ...
+        "after": [
+        ]
+        ...
+    }
+    ...
+}
+```
+
+You can add as many libraries as you want, they will be loaded after the SDK for Web libraries and before your application files.
+
+If you do not have to load extra libraries, let it empty like in that sample
+
+Here is an example that loads the **angular-ui-notification** library from a CDN:
+
+```json
+{
+    "libraries": {
+        ...
+        "after": [
+            "//cdnjs.cloudflare.com/ajax/libs/angular-ui-notification/0.2.0/angular-ui-notification.min.js"
+        ]
+    }
+    ...
+}
+```
+
+### Loading the application files
+
+---
+
+It is time to load all the application stuff which means the CSS files and the JavaScript files needed by your application.
+
+This part is defined in the `"app"` section of the configuration file
+
+```json
+{
+    ...
+    "app": {
+        "bootstrap": "sample",
+        "key": {
+            "appID":"",
+            "appSecret":""
+        },
+        "js": [
+            "./src/js/sdkSampleApp.js",
+            "./src/js/components/connection/connectionCmp.js",
+            "..."
+        ],
+        "css": [
+            "src/styles/sdkSampleApp.css",
+            "src/js/components/connection/connectionCmp.css",
+            "..."
+        ]
+    },
+    ...
+}
+```
+
+There are different elements in that part:
+
+-   The bootstrap: The first thing is to configure the name of the AngularJS bootstrapped object. This is needed to call you AngularJS main controller and to load it inside this scope. This is equivalent to add the 'ng-app' tag to your HTML file. But as your HTML has been already rendered before all these files have been loaded, you need to use this way to be sure your application has been bootstrapped correctly.
+    
+-   The list of JavaScript files to load: Depending your application it can be AngularJS services, AngularJS modules, AngularJS component controller or simple JavaScript file. All these files will be loaded.
+    
+-   The list of CSS files: If you need to load CSS, you can add them in this part. They will be loaded before the JavaScript files.
+    
+-   The appID and appSecret: You have to enter your application ID and application secret here.
+    
+
+### Application ID and secret
+
+---
+
+In order to be authorized to access to the Rainbow Cloud Services, your application need an ID and an secret. These information will identify your application.
+
+As the SDK for Web is currently in 'Beta' mode, these fields are not required today. You can leave them empty.
+
+Note: For early developers that have an old configuration file, you have to replace it
+
+```json
+{
+    ...
+    "api": {
+        "key":" <put_here_your_developer_key>"
+    },
+    ...
+}
+```
+
+By the following structure:
+
+```json
+{
+    ...
+    "key": {
+        "appID":"",
+        "appSecret":""
+    },
+    ...
+}
+```
+
+### Debugging & customizing
+
+---
+
+In order to help you put the right parameters in the configuration file, you can use the following settings to activate more logs or to be sure you load the right file:
+
+```json
+{
+    ...
+    "settings": {
+        "verboseLog": true,
+        "disableCache": true,
+        "enableLoader": true
+    }
+}
+```
+
+The following parameters can be configured:
+
+-   `verboseLog`: Set this parameter to true to activate more logs in the browser console,
+    
+-   `disableCache`: Set this parameter to true if you need to reload the libraries from the server each time without using the browser cache.
+    
+-   `enableLoader`: Set this parameter to true if you want to see a minimalist progress bar during the loading time of all the files needed by your application (including the SDK for Web).
+    
+
+If you complete this tutorial, you can expect that your application will start correctly. If not, the best practice is to look at the console logs in order to understand what is wrong !
+
+---
+
+*Last updated October, 30th 2019*
+
+### Sur cette page
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

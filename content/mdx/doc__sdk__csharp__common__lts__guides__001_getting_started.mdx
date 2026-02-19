@@ -1,0 +1,88 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/common/lts/guides/001_getting_started"
+lastSynced: "2026-02-19T22:35:13.422Z"
+---
+# Documentation
+
+Getting started
+
+LTS release 3.XPubliée le 2025-03-17
+
+## Getting Started
+
+Welcome to the Alcatel-Lucent Enterprise **Rainbow CSharp SDK Common** !
+
+This SDK provides additional services / tools for all platforms (Windows, MacOs, iOs, Android, Linux, ...)
+
+It uses as core the *Rainbow CSharp SDK (core)*\* library. So you need first to understand how to use it.
+
+#### Nuget package
+
+---
+
+The SDK is provided as a Nuget package available [here](https://www.nuget.org/packages/Rainbow.CSharp.SDK.Common/)
+
+Dependencies are all managed by Nuget package system.
+
+This package targets **.Net Standard 2.0**, **.Net Standard 2.1** and **.Net 8.0**
+
+### Avatars service
+
+---
+
+This service permits to download Contacts or Bubbles avatar (multiplatform): [Avatars](/docs/sdk/csharp)
+
+If a Bubble has none avatar set, this service create one using Contact avatars based on the bubble members (using 1 to 4 members)
+
+If a Contact has none avatar set, this service create one using Contact Initials with background color based on the contact display name.
+
+If an avatar is updated on server side, this service download it automatically and raise event to inform in consequence if a Contact or Bubble avatar has been updated.
+
+Local folders are used to store avatars. Several types of Avatars are stored (See [AvatarType](/docs/sdk/csharp)) and it's possible for each to set their sizes.
+
+It's possible to allow / disallow avatar download according the situation.
+
+### ImageTools library
+
+---
+
+Library to manipulate Image (multiplatform): [ImageTools](/docs/sdk/csharp)
+
+-   Get bitmap from file / Save bitmap to file
+-   Get Stream from bitmap
+-   Create bitmap
+-   Draw bitmap on another
+-   Resize bitmap
+-   Get SVG from resources in the package
+-   Create Bitmap from SVG (colors from original SVG can be changed to others one)
+
+### Languages service
+
+---
+
+This service permits to get labels in the specified language (multiplatform): [Languages](/docs/sdk/csharp)
+
+By default 'en' is used as language Id.
+
+To get the list of languages Id available use **GetLanguagesList()** method
+
+To change the language use **SetLanguage()** method
+
+The event **LanguageChanged()** permits to know if the language has been changed
+
+### Sur cette page
+
+-   [Getting Started](/docs/sdk/csharp#name-getting-started-0)
+-   [Nuget package](/docs/sdk/csharp#name-nuget-package-12)
+-   [Avatars service](/docs/sdk/csharp#name-avatars-service-25)
+-   [ImageTools library](/docs/sdk/csharp#name-imagetools-library-47)
+-   [Languages service](/docs/sdk/csharp#name-languages-service-91)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

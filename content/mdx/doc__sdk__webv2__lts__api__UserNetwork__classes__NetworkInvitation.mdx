@@ -1,0 +1,244 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/UserNetwork/classes/NetworkInvitation"
+lastSynced: "2026-02-19T22:35:17.574Z"
+---
+# Documentation
+
+Webv2 > lts > api > UserNetwork > classes > NetworkInvitation
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [UserNetwork](doc/sdk/webv2/lts/api/UserNetwork/index) / NetworkInvitation
+
+# Class: NetworkInvitation
+
+This class is used to represent an invitation received or sent by/to user  
+
+## Properties
+
+### defaultAvatar
+
+> `readonly` **defaultAvatar**: `any`
+
+The invitation default avatar
+
+---
+
+### id
+
+> `readonly` **id**: `string`
+
+The invitation ID
+
+---
+
+### inviteToJoinMeeting
+
+> `readonly` **inviteToJoinMeeting**: `string`
+
+True if joinRoom invitation.
+
+---
+
+### invitedPhoneNumber
+
+> `readonly` **invitedPhoneNumber**: `string`
+
+The invited phone number
+
+---
+
+### invitedUser?
+
+> `optional` `readonly` **invitedUser**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)
+
+The invited user
+
+---
+
+### invitedUserEmail
+
+> `readonly` **invitedUserEmail**: `string`
+
+The invited user email
+
+---
+
+### invitedUserId
+
+> `readonly` **invitedUserId**: `string`
+
+The invited user Rainbow id
+
+---
+
+### invitingDate
+
+> `readonly` **invitingDate**: `string`
+
+The date the invitation was created
+
+---
+
+### invitingUser?
+
+> `optional` `readonly` **invitingUser**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)
+
+The inviting user
+
+---
+
+### invitingUserEmail
+
+> `readonly` **invitingUserEmail**: `string`
+
+The inviting user email adress
+
+---
+
+### invitingUserId
+
+> `readonly` **invitingUserId**: `string`
+
+The inviting user identifier
+
+---
+
+### lastNotificationDate
+
+> `readonly` **lastNotificationDate**: `string`
+
+The date when the last email notification was sent.
+
+---
+
+### requestNotificationLanguage
+
+> `readonly` **requestNotificationLanguage**: `string`
+
+The request notification language
+
+---
+
+### status
+
+> `readonly` **status**: `string`
+
+The invitation status
+
+---
+
+### type
+
+> `readonly` **type**: `string`
+
+The invitation type
+
+## Methods
+
+### createDefaultAvatar()
+
+> **createDefaultAvatar**(): `void`
+
+#### Returns
+
+`void`
+
+---
+
+### toJSON()
+
+> **toJSON**(): `any`
+
+#### Returns
+
+`any`
+
+---
+
+### create()
+
+> `static` **create**(`id`, `invitedUserId`, `invitedUserEmail`, `invitingUserId`, `invitingUserEmail`, `requestNotificationLanguage`, `invitingDate`, `lastNotificationDate`, `status`, `type`, `inviteToJoinMeeting`): [`NetworkInvitation`](doc/sdk/webv2/lts/api/UserNetwork/classes/NetworkInvitation)
+
+#### Parameters
+
+• **id**: `string`
+
+• **invitedUserId**: `string`
+
+• **invitedUserEmail**: `string`
+
+• **invitingUserId**: `string`
+
+• **invitingUserEmail**: `string`
+
+• **requestNotificationLanguage**: `string`
+
+• **invitingDate**: `string`
+
+• **lastNotificationDate**: `string`
+
+• **status**: `string`
+
+• **type**: `string`
+
+• **inviteToJoinMeeting**: `string`
+
+#### Returns
+
+[`NetworkInvitation`](doc/sdk/webv2/lts/api/UserNetwork/classes/NetworkInvitation)
+
+---
+
+### createFromData()
+
+> `static` **createFromData**(`invitationData`): [`NetworkInvitation`](doc/sdk/webv2/lts/api/UserNetwork/classes/NetworkInvitation)
+
+#### Parameters
+
+• **invitationData**: `any`
+
+#### Returns
+
+[`NetworkInvitation`](doc/sdk/webv2/lts/api/UserNetwork/classes/NetworkInvitation)
+
+### Sur cette page
+
+-   [Properties](/docs/sdk/web#name-properties-13)
+-   [defaultAvatar](/docs/sdk/web#name-defaultavatar-16)
+-   [id](/docs/sdk/web#name-id-28)
+-   [inviteToJoinMeeting](/docs/sdk/web#name-invitetojoinmeeting-40)
+-   [invitedPhoneNumber](/docs/sdk/web#name-invitedphonenumber-52)
+-   [invitedUser?](/docs/sdk/web#name-inviteduser-64)
+-   [invitedUserEmail](/docs/sdk/web#name-inviteduseremail-76)
+-   [invitedUserId](/docs/sdk/web#name-inviteduserid-88)
+-   [invitingDate](/docs/sdk/web#name-invitingdate-100)
+-   [invitingUser?](/docs/sdk/web#name-invitinguser-112)
+-   [invitingUserEmail](/docs/sdk/web#name-invitinguseremail-124)
+-   [invitingUserId](/docs/sdk/web#name-invitinguserid-136)
+-   [lastNotificationDate](/docs/sdk/web#name-lastnotificationdate-148)
+-   [requestNotificationLanguage](/docs/sdk/web#name-requestnotificationlanguage-160)
+-   [status](/docs/sdk/web#name-status-172)
+-   [type](/docs/sdk/web#name-type-184)
+-   [Methods](/docs/sdk/web#name-methods-195)
+-   [createDefaultAvatar()](/docs/sdk/web#name-createdefaultavatar-198)
+-   [Returns](/docs/sdk/web#name-returns-206)
+-   [toJSON()](/docs/sdk/web#name-tojson-213)
+-   [Returns](/docs/sdk/web#name-returns-221)
+-   [create()](/docs/sdk/web#name-create-228)
+-   [Parameters](/docs/sdk/web#name-parameters-236)
+-   [Returns](/docs/sdk/web#name-returns-272)
+-   [createFromData()](/docs/sdk/web#name-createfromdata-279)
+-   [Parameters](/docs/sdk/web#name-parameters-287)
+-   [Returns](/docs/sdk/web#name-returns-293)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

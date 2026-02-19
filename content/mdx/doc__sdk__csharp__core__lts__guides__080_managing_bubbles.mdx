@@ -1,0 +1,506 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/core/lts/guides/080_managing_bubbles"
+lastSynced: "2026-02-19T22:35:13.845Z"
+---
+# Documentation
+
+Managing bubbles
+
+LTS release 3.XPubliée le 2025-03-17
+
+## Managing bubbles
+
+This guide explains how to manage bubbles (also called rooms): add, remove participants, create / rename / delete bubble.
+
+To manage them you need to have the global `Bubbles` service from the `Application` object using `GetBubbles` method.
+
+### Get list of existing bubbles
+
+---
+
+Once you have the global `Bubbles` service, you have the list of existings bubbles using `GetAllBubbles`.
+
+You can use the `PeerOwner` property to know if the current user if the creator of this `Bubble` or just a member.
+
+Only bubbles where you are a member (as moderator or as simple member) are returned - even if you are still in `Bubble.MemberStatus` set as `Bubble.MemberStatus.Invited`
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+Rainbow.Contacts contacts = myApp.GetContacts();
+...
+// Once connected
+Contact myContact = contacts.GetCurrentContact();
+...
+
+var myContact = RbContacts.GetCurrentContact();
+List<Bubble> listBubbles = RbBubbles.GetAllBubbles();
+
+foreach (Bubble bubble in listBubbles)
+{
+    if(bubble.PeerOwner.Id == myContact.Peer.Id)
+    {
+        // You are the owner of this bubble
+    }
+}
+```
+
+### Get list of bubble's member
+
+---
+
+To know the list of members, you can use the `Users` property of `Bubble` object.
+
+Each member has a `Bubble.MemberStatus` property (Invited, Accepted or Unsubscribed) and a `Bubble.MemberPrivilege` property ( Guest, User, Moderator or Owner).
+
+```csharp
+// Once connected
+Rainbow.Bubble bubble; // A bubble previously found / set
+...
+// Loop on each member
+foreach (var member in bubble.Users.Values.ToList())
+{
+    if (member.Status == BubbleMemberStatus.Accepted)
+    {
+        // This member has accepted to be a member of this bubble
+    }
+
+    if (member.Privilege == BubbleMemberPrivilege.Owner)
+    {
+        // This member is the owner of this bubble
+    }
+
+}
+```
+
+### Add a member to a bubble
+
+---
+
+To add a member to a bubble you can use `AddMemberAsync(Peer bubbleAsPeer, Peer contactToAddAsPeer, BubbleMemberPrivilege privilege)` method from `Bubbles` service.
+
+An invitation is sent to him. It has its `BubbleMemberStatus` set to `Invited` until it accept or reject the invitation.
+
+You can add a member only if you are Owner or Moderator of this Bubble.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+...
+// Once connected
+Rainbow.Model.Bubble bubble;    // A bubble previously found / set
+Rainbow.Model.Contact contact;  // A contact previously found / set
+BubbleMemberPrivilege privilege = BubbleMemberPrivilege.Member // We provide member privilege to this contact
+
+// privilege = BubbleMemberPrivilege.Moderator  // => If we want to add this member as Moderator
+...
+
+var sdkResult = RbBubbles.AddMemberAsync(bubble, contact, privilege);
+if (!sdkResult.Success)
+{
+    if (sdkResult.Result.IncorrectUseError != null)
+    {
+        // Incorrect use
+        Util.WriteRed($"AddMemberAsync - SdkError:[{sdkResult.Result}]");
+    }
+    else
+    {
+        // Pb with the server
+        Util.WriteRed($"AddMemberAsync - SdkError:[{sdkResult.Result}]");
+    }
+}
+```
+
+It's also possible to add a member to a bubble without sending an invitation and waitin it's apprabation using the parameter **isDirectlyAccepted** and set it to **True**
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+...
+// Once connected
+Rainbow.Model.Bubble bubble;    // A bubble previously found / set
+Rainbow.Model.Contact contact;  // A contact previously found / set
+BubbleMemberPrivilege privilege = BubbleMemberPrivilege.Member // We provide member privilege to this contact
+
+// privilege = BubbleMemberPrivilege.Moderator  // => If we want to add this member as Moderator
+
+...
+
+var sdkResult = RbBubbles.AddMemberAsync(bubble, contact, privilege, isDirectlyAccepted: true);
+if (!sdkResult.Success)
+{
+    if (sdkResult.Result.IncorrectUseError != null)
+    {
+        // Incorrect use
+        Util.WriteRed($"AddMemberAsync - SdkError:[{sdkResult.Result}]");
+    }
+    else
+    {
+        // Pb with the server
+        Util.WriteRed($"AddMemberAsync - SdkError:[{sdkResult.Result}]");
+    }
+}
+```
+
+### Remove a member from a bubble
+
+---
+
+To remove a member from a bubble you can use `RemoveMemberAsync(Peer bubbleAsPeer, Peer contactToRemoveAsPeer)` method from `Bubbles` service. The effect is immediat.
+
+You can remove a member only if you are Owner or Moderator of this Bubble.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+...
+// Once connected
+Rainbow.Model.Bubble bubble;    // A bubble previously found / set
+Rainbow.Model.Contact contact;  // A contact previously found / set
+...
+
+var sdkResult = RbBubbles.RemoveMemberAsync(bubble, contact);
+if (!sdkResult.Success)
+{
+    if (sdkResult.Result.IncorrectUseError != null)
+    {
+        // Incorrect use
+        Util.WriteRed($"RemoveMemberAsync - SdkError:[{sdkResult.Result}]");
+    }
+    else
+    {
+        // Pb with the server
+        Util.WriteRed($"RemoveMemberAsync - SdkError:[{sdkResult.Result}]");
+    }
+}
+```
+
+### Leave a bubble
+
+---
+
+To leave a bubble you can use `LeaveBubbleAsync` method from `Bubbles` service.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+...
+// Once connected
+Rainbow.Bubble bubble;    // A bubble previously found / set
+...
+
+var sdkResult = RbBubbles.LeaveBubbleAsync(bubble);
+if (!sdkResult.Success)
+{
+    if (sdkResult.Result.IncorrectUseError != null)
+    {
+        // Incorrect use
+        Util.WriteRed($"LeaveBubbleAsync - SdkError:[{sdkResult.Result}]");
+    }
+    else
+    {
+        // Pb with the server
+        Util.WriteRed($"LeaveBubbleAsync - SdkError:[{sdkResult.Result}]");
+    }
+}
+```
+
+### Accept or decline an invitation to be a bubble's member
+
+---
+
+When a contact is added as a member in a bubble an invitation is sent to him (in the most case or it has been direclty added to the bubble without sending invitation). He must accept it before to really access to the bubble.
+
+When the invitation is sent, an event is received using `BubbleInvitationReceived` from `Bubbles` service.
+
+Accoding you needs you can use `AcceptInvitationAsync` or `DeclineInvitationAsync` methods from `Bubbles` service to accept or decline it.
+
+The same event will be triggered:
+
+-   on SDK startup or after a disconnection, once you are connected if one or several invitations are still pending
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+
+bubbles.BubbleInvitationReceived += Bubbles_BubbleInvitationReceived; // We want to manage this event
+...
+
+async void Bubbles_BubbleInvitationReceived(BubbleInvitation bubbleInvitation)
+{
+    // An invitation to a bubble has been received
+    var contact = bubbleInvitation.Contact;   // Contact who send the invitation
+    var bubble = bubbleInvitation.Bubble;     // Bubble's involved
+
+    // You can accept it
+    var sdkResult = await RbBubbles.AcceptInvitationAsync(bubble);
+    if (sdkResult.Success)
+    {
+        // You are now a member of this bubble 
+    }
+    else
+    {
+        // A pb occurs
+        if (sdkResult.Result.IncorrectUseError != null)
+        {
+            // Incorrect use
+            Util.WriteRed($"LeaveBubbleAsync - SdkError:[{sdkResult.Result}]");
+        }
+        else
+        {
+            // Pb with the server
+            Util.WriteRed($"LeaveBubbleAsync - SdkError:[{sdkResult.Result}]");
+        }
+    }
+
+
+    // Or you can decline it
+    sdkResult = await RbBubbles.DeclineInvitationAsync(bubble);
+    if (sdkResult.Success)
+    {
+        // You don't want to be a member of this bubble 
+    }
+    else
+    {
+        // A pb occurs
+        if (sdkResult.Result.IncorrectUseError != null)
+        {
+            // Incorrect use
+            Util.WriteRed($"LeaveBubbleAsync - SdkError:[{sdkResult.Result}]");
+        }
+        else
+        {
+            // Pb with the server
+            Util.WriteRed($"LeaveBubbleAsync - SdkError:[{sdkResult.Result}]");
+        }
+    }
+}
+```
+
+### Manage pending invitations list as a bubble member
+
+---
+
+To knwo the list of pending invitations you can use `GetPendingBubbleInvitations()` from `Bubbles` service.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+...
+
+// Once connected
+Contact myContact = contacts.GetCurrentContact(); // The current contact
+...
+
+// Get Pending bubble invitations
+List<BubbleInvitation> bubblesInvitations = rbBubbles.GetPendingBubbleInvitations();
+```
+
+### Create a bubble
+
+---
+
+You can create bubble using `Bubbles` service and the method `CreateBubbleAsync`.
+
+You must specify a name, a topic and a `Consts.BubbleVisibility` (AsPrivate or AsPublic).
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+...
+//Once connected
+Bubble bubbleMarketing = null;         // We want to create a "Marketing team" bubble and store it in this object
+
+String bubbleName = "Marketing team";
+String bubbleTopic = "Marketing corner";
+var bubbleVisibility = BubbleVisibility.AsPrivate; // Only for private use
+
+var sdkResult = RbBubbles.CreateBubbleAsync(bubbleName, bubbleTopic, bubbleVisibility);
+if (sdkResult.Success)
+{
+    // bubble has been created 
+    bubbleMarketing = sdkResult.Data;
+}
+else
+{
+    // A pb occurs
+    if (sdkResult.Result.IncorrectUseError != null)
+    {
+        // Incorrect use
+        Util.WriteRed($"CreateBubbleAsync - SdkError:[{sdkResult.Result}]");
+    }
+    else
+    {
+        // Pb with the server
+        Util.WriteRed($"CreateBubbleAsync - SdkError:[{sdkResult.Result}]");
+    }
+}
+```
+
+### Update a bubble
+
+---
+
+You can update bubble using `Bubbles` service and the method `UpdateBubble`.
+
+You must specify new information: name, topic and `Consts.BubbleVisibility` (AsPrivate or AsPublic).
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+...
+//Once connected
+Bubble bubbleMarketing; // A valid Bubble
+
+String bubbleName = "Best Marketing team";
+String bubbleTopic = "Marketing best corner";
+var bubbleVisibility = BubbleVisibility.AsPublic; // Now for public use 
+
+var sdkResult = bubbles.UpdateBubbleAsync(bubbleMarketing, bubbleName, bubbleTopic, bubbleVisibility);
+if (sdkResult.Success)
+{
+    // bubble has been updated
+     bubbleMarketing = sdkResult.Data;
+}
+else
+{
+    // A pb occurs
+    if (sdkResult.Result.IncorrectUseError != null)
+    {
+        // Incorrect use
+        Util.WriteRed($"UpdateBubbleAsync - SdkError:[{sdkResult.Result}]");
+    }
+    else
+    {
+        // Pb with the server
+        Util.WriteRed($"UpdateBubbleAsync - SdkError:[{sdkResult.Result}]");
+    }
+}
+```
+
+### Archive a bubble
+
+---
+
+You can archive a bubble using `Bubbles` service and the method `ArchiveBubbleAsync`.
+
+An archived bubble is locked but previous messages exchanged are still accessible.
+
+Only a owner can archive a bubble.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+...
+//Once connected
+Bubble bubble; // A bubble previously found / set
+
+var sdkResult = bubbles.ArchiveBubbleAsync(bubble);
+if (sdkResult.Success)
+{
+    // bubble has been archived
+     bubble = sdkResult.Data;
+}
+else
+{
+    // A pb occurs
+    if (sdkResult.Result.IncorrectUseError != null)
+    {
+        // Incorrect use
+        Util.WriteRed($"ArchiveBubbleAsync - SdkError:[{sdkResult.Result}]");
+    }
+    else
+    {
+        // Pb with the server
+        Util.WriteRed($"ArchiveBubbleAsync - SdkError:[{sdkResult.Result}]");
+    }
+}
+```
+
+### Delete a bubble
+
+---
+
+You can delete a bubble using `Bubbles` service and the method `DeleteBubbleAsync`.
+
+Once deleted, all its content is definitively lost.
+
+Only a owner can delete a bubble.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+...
+//Once connected
+Bubble bubble; // A bubble previously found / set
+
+var sdkResult = bubbles.DeleteBubbleAsync(bubbleMarketing, bubbleName, bubbleTopic, bubbleVisibility);
+if (sdkResult.Success)
+{
+    // bubble has been archived
+     bubble = sdkResult.Data;
+}
+else
+{
+    // A pb occurs
+    if (sdkResult.Result.IncorrectUseError != null)
+    {
+        // Incorrect use
+        Util.WriteRed($"DeleteBubbleAsync - SdkError:[{sdkResult.Result}]");
+    }
+    else
+    {
+        // Pb with the server
+        Util.WriteRed($"DeleteBubbleAsync - SdkError:[{sdkResult.Result}]");
+    }
+}
+```
+
+### Bubble public URL and private URL
+
+---
+
+As bubble's **owner** or **moderator** you can create / delete / update an **URL**: (using `CreateBubbleLinkAsync()`, `RemoveBubbleLinkAsync()` and `GenerateNewBubbleLinkAsync()`):
+
+-   When this URL is created by **the bubble's owner**, this URL is **visible** by the owner and all moderators (using `GetBubbleLinkAsync()`). It's called a **public URL**.
+-   When this URL is created by **a bubble's moderator**, this URL is **visible ONLY** by the moderator (using `GetBubbleLinkAsync()` with **asPublic** parameter set to false). It's called a **private URL**.
+-   When shared, public or private URLs can be used :
+    -   to join the bubble as member (using `JoinByBubbleLinkAsync()`)
+    -   create a **GuestMode** (using `CreateUserWithBubbleLinkAsync()` in [Administration service](/docs/sdk/csharp) - more details in this [guide](/docs/sdk/csharp))
+-   When a public URL is created / deleted / updated, as owner oras moderator you can know it using event `BubbleLinkUpdated`
+
+You can check validity of a public or private URL using `CheckBubbleLinkValidityAsync()`
+
+**Note:** Using UCaaS application only public URL are manageable
+
+### Examples
+
+---
+
+You can take a look to several examples available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/SDK%20V3.X/README.md)
+
+### Sur cette page
+
+-   [Managing bubbles](/docs/sdk/csharp#name-managing-bubbles-0)
+-   [Get list of existing bubbles](/docs/sdk/csharp#name-get-list-of-existing-bubbles-9)
+-   [Get list of bubble's member](/docs/sdk/csharp#name-get-list-of-bubbles-member-23)
+-   [Add a member to a bubble](/docs/sdk/csharp#name-add-a-member-to-a-bubble-34)
+-   [Remove a member from a bubble](/docs/sdk/csharp#name-remove-a-member-from-a-bubble-52)
+-   [Leave a bubble](/docs/sdk/csharp#name-leave-a-bubble-63)
+-   [Accept or decline an invitation to be a bubble's member](/docs/sdk/csharp#name-accept-or-decline-an-invitation-to-be-a-bubbles-member-71)
+-   [Manage pending invitations list as a bubble member](/docs/sdk/csharp#name-manage-pending-invitations-list-as-a-bubble-member-95)
+-   [Create a bubble](/docs/sdk/csharp#name-create-a-bubble-103)
+-   [Update a bubble](/docs/sdk/csharp#name-update-a-bubble-114)
+-   [Archive a bubble](/docs/sdk/csharp#name-archive-a-bubble-125)
+-   [Delete a bubble](/docs/sdk/csharp#name-delete-a-bubble-139)
+-   [Bubble public URL and private URL](/docs/sdk/csharp#name-bubble-public-url-and-private-url-153)
+-   [Examples](/docs/sdk/csharp#name-examples-200)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

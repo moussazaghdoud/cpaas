@@ -1,0 +1,496 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharpprevious/core/lts/guides/100_managing_conferences"
+lastSynced: "2026-02-19T22:35:14.497Z"
+---
+# Documentation
+
+Managing conferences
+
+LTS release 2.6.XPubliée le 2021-12-13
+
+## Managing conferences - PSTN or WebRTC
+
+This guide explains how to manage conferences from a bubble: get list of participants, mute/unmute participant, drop participant, get list of publishers
+
+Publishers are people using media others than audio like **sharing** or **video**
+
+The term **PersonalConference** is used as a reference to **PSTN conference**: people can use their own phone device to join this kind of conference. Then another media can be added (sharing, video) but only in WebRTC.
+
+The short term **Conference** is used as a reference to **WebRTC conference**: the audio part is done in WebRTC. Then another media can be added (sharing, video) also in WebRTC.
+
+### Check permissions
+
+---
+
+First thing to do, it's to check if the user can make conferences. For this `ConferenceAllowed` and `PersonalConferenceAllowed` methods must be used from `Conferences` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Conferences conferences = myApp.GetConferences();
+...
+//Once connected
+
+Boolean webRTCConference = conferences.ConferenceAllowed();       // Is the WebRTC conference allowed ?
+Boolean pstnConference = conferences.PersonalConferenceAllowed(); // Is the PSTN conference allowed ?
+```
+
+### Phone Numbers, access code and public URL to acces the Personal Conference
+
+---
+
+A Personal Conference must be joined in audio by a standard phone device. So it's necessary to have a phone number to access it - for this use `PersonalConferenceGetPhoneNumbers` method.
+
+Once joined you need to enter an access code in DTMF to grant the permission. There is a code different for moderators and for participants. To have them use `PersonalConferenceGetPassCodes` method.
+
+You can also share a public URL to any person you want. So they can access to a web site which then permits to access to the conference. To have this URL use `PersonalConferenceGetPublicUrl` method.
+
+It's also possible to ask the server to call you back direclty to a phone number to join the conference. In same time you can specify you role: moderator or participant. To do this use `PersonalConferenceJoin` method.
+
+**NOTE**: before to use `PersonalConferenceJoin` method, the conference must first be started using `PersonalConferenceStart` method
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Conferences conferences = myApp.GetConferences();
+...
+//Once connected
+
+conferences.PersonalConferenceGetPhoneNumbers(callback =>
+{
+  if(callback.Result.Success)
+  {
+    // Get available phone numbers to access to the conference
+    PersonalConferencePhoneNumbers phoneNumbers = callback.Data;
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+
+...
+
+conferences.PersonalConferenceGetPassCodes(callback =>
+{
+  if(callback.Result.Success)
+  {
+    // Get pass code to access to the conference
+    ConferencePassCodes conferencePassCodes = callback.Data;
+    
+    String moderatorPassCode = conferencePassCodes.ModeratorPassCode;     // Pass code for moderators
+    String participantPassCode = conferencePassCodes.ParticipantPassCode; // Pass code for participatns
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+
+...
+
+conferences.PersonalConferenceGetPublicUrl(callback =>
+{
+  if(callback.Result.Success)
+  {
+    // Public URL to the conference web site 
+    String url = callback.Data;  
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+
+...
+
+Boolean asModerator = true;           // User wants to join as moderator;
+Boolean muted = true;                 // User want to join directly as muted;
+String phoneNumber = "+33612345678";  // The phone number used to be called back by the server - use an international format
+String country = "FRA";               // The country of the user - can be empty
+
+conferences.PersonalConferenceStart(callbackStart =>
+{
+  if(callback.Result.Success)
+  {
+    // The server as well started the conference - so we can now join it
+     
+    conferences.PersonalConferenceJoin(asModerator, muted, phoneNumber, country, callback =>
+    {
+      if(callback.Result.Success)
+      {
+        // The server has well taken into account the action - So it's calling back the user to the specified phone number
+      }
+      else
+      {
+        // A pb occurs
+        if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+        {
+          // Bad parameters used
+          string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+        }
+        else
+        {
+          // Exception occurs
+          Exception e = callback.Result.ExceptionError;
+        }
+      }
+    });
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Reset access code and public URL of the Personal Conference
+
+---
+
+For security reason, if you want you can reset access code and public URL of your personal conference.
+
+To do this, you must use `PersonalConferenceResetPassCodes` and `PersonalConferenceGenerateNewPublicUrl` methods.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Conferences conferences = myApp.GetConferences();
+...
+//Once connected
+
+conferences.PersonalConferenceResetPassCodes(callback =>
+{
+  if(callback.Result.Success)
+  {
+    // Get new pass code to access to the conference
+    ConferencePassCodes conferencePassCodes = callback.Data;
+    
+    String moderatorPassCode = conferencePassCodes.ModeratorPassCode;     // Pass code for moderators
+    String participantPassCode = conferencePassCodes.ParticipantPassCode; // Pass code for participatns
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+
+...
+
+conferences.PersonalConferenceGenerateNewPublicUrl(callback =>
+{
+  if(callback.Result.Success)
+  {
+    // New Public URL to the conference web site 
+    String url = callback.Data;  
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Follow conference update - PSTN or WebRTC
+
+---
+
+To follow the status of conference in progress use `ConferenceUpdated` event from `Conferences` object (same event for PSTN or WebRTC conference). To follow the list of Participants use `ConferenceParticipantsUpdated` event from `Conferences` object (same event for PSTN or WebRTC conference). To follow the list of Publishers use `ConferencePublishersUpdated` event from `Conferences` object (same event for PSTN or WebRTC conference). To follow the list of Talkers use `ConferenceTalkersUpdated` event from `Conferences` object (same event for PSTN or WebRTC conference).
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Conferences conferences = myApp.GetConferences();
+
+conferences.ConferenceUpdated += Conferences_ConferenceUpdated; // We want to manage this event
+conferences.ConferenceParticipantsUpdated += Conferences_ConferenceParticipantsUpdated; // We want to manage this event
+conferences.ConferencePublishersUpdated += Conferences_ConferencePublishersUpdated; // We want to manage this event
+conferences.ConferenceTalkersUpdated += Conferences_ConferenceTalkersUpdated; // We want to manage this event
+
+...
+//Once connected
+
+String conferenceId;  // An ID of a confernce previously set
+
+private void Conferences_ConferenceUpdated(object sender, ConferenceEventArgs evt)
+{
+  // A conference is in progress - we check first if it's the one we want to follow
+  if(evt.Conference.Id == conferenceId)
+  {
+    Conference conference = evt.Conference;
+    
+    // Is still an active conference ?
+    if(conference.Active)
+    {
+      ...
+    }
+  }
+}
+
+private void Conferences_ConferenceParticipantsUpdated(object sender, ConferenceParticipantsEventArgs evt)
+{
+  // A conference is in progress - we check first if it's the one we want to follow
+  if(evt.ConferenceId == conferenceId)
+  {
+      ...
+  }
+}
+
+private void ConferencePublishersUpdated(object sender, ConferencePublishersUpdated evt)
+{
+  // A conference is in progress - we check first if it's the one we want to follow
+  if(evt.ConferenceId == conferenceId)
+  {
+      ...
+  }
+}
+
+private void ConferenceTalkersUpdated(object sender, ConferenceTalkersUpdated evt)
+{
+  // A conference is in progress - we check first if it's the one we want to follow
+  if(evt.ConferenceId == conferenceId)
+  {
+      ...
+  }
+}
+```
+
+### Lock/UnLock, Mute/Unmute and Stop Conference
+
+---
+
+You can lock / unlock a Personal Conference (but not WebRTC Conference) using `PersonalConferenceLockOrUnlock` method from `Conferences` object. Once locked it's no more possible to reach the conference using audio.
+
+You can mute all participants except moderators using `PersonalConferenceMuteOrUnmute` or `ConferenceMuteOrUnmute` methods. In Personal Conference, participants muted need to wait to be unmuted to speak. In WebRTC Conference they can unmute theirself.
+
+You can stop a conference using `PersonalConferenceStop` or `ConferenceStop` methods.
+
+Example below explain how to use them for a Personal Conference. It's nearly the same for WebRTC Conference, you just need to specify also an conference Id.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Conferences conferences = myApp.GetConferences();
+
+...
+//Once connected
+
+Boolean lockConference = true;  // We want to lock the conference
+
+conferences.PersonalConferenceLockOrUnlock(lockConference, callback =>
+{
+  if(callback.Result.Success)
+  {
+    //Now the conference is locked 
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+
+...
+
+Boolean muteConference = true;  // We want to mute the conference
+
+conferences.PersonalConferenceMuteOrUnmute(muteConference, callback =>
+{
+  if(callback.Result.Success)
+  {
+    //Now the conference is muted for all participants except moderators 
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+
+...
+
+// We want to stop (end) the conference - All participants are dropped (even moderators)
+
+conferences.PersonalConferenceStop(callback =>
+{
+  if(callback.Result.Success)
+  {
+    //Now the conference is stopped - All participants are dropped (even moderators)  
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Mute/Unmute, Drop participant
+
+---
+
+You can mute/unmute a specific participant using `PersonalConferenceMuteOrUnmutParticipant` or `ConferenceMuteOrUnmutParticipant` method from `Conferences` object. In Pesonal Conference, a muted particpant must wait to be unmuted. In a WebRTC conference, he can unmute himself.
+
+You can drop a specific participant using `PersonalConferenceDropParticipant` or `ConferenceDropParticipant` method from `conferences` object. This participant looses all media currently used.
+
+Example below explain how to use them for a Personal Conference. It's nearly the same for WebRTC Conference, you just need to specify also an conference Id.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Conferences conferences = myApp.GetConferences();
+
+...
+//Once connected
+
+String participantID; // Id of a participant previously set
+Boolean mute = true;  // We want to mute this participant
+
+conferences.PersonalConferenceMuteOrUnmutParticipant(participantID, mute, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // The participant is now muted 
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+
+...
+
+String participantID; // Id of a participant previously set
+
+conferences.PersonalConferenceDropParticipant(participantID, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // The participant has been dropped 
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Sur cette page
+
+-   [Managing conferences - PSTN or WebRTC](/docs/sdk/csharp#name-managing-conferences---pstn-or-webrtc-0)
+-   [Check permissions](/docs/sdk/csharp#name-check-permissions-15)
+-   [Phone Numbers, access code and public URL to acces the Personal Conference](/docs/sdk/csharp#name-phone-numbers-access-code-and-public-url-to-acces-the-personal-conference-23)
+-   [Reset access code and public URL of the Personal Conference](/docs/sdk/csharp#name-reset-access-code-and-public-url-of-the-personal-conference-43)
+-   [Follow conference update - PSTN or WebRTC](/docs/sdk/csharp#name-follow-conference-update---pstn-or-webrtc-54)
+-   [Lock/UnLock, Mute/Unmute and Stop Conference](/docs/sdk/csharp#name-lockunlock-muteunmute-and-stop-conference-62)
+-   [Mute/Unmute, Drop participant](/docs/sdk/csharp#name-muteunmute-drop-participant-79)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

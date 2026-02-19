@@ -1,0 +1,602 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharpprevious/core/lts/guides/110_managing_telephony_calls"
+lastSynced: "2026-02-19T22:35:14.512Z"
+---
+# Documentation
+
+Managing telephony calls
+
+LTS release 2.6.XPubliée le 2021-12-13
+
+## Managing PSTN telephony calls
+
+This guide explains how to manage your PSTN telephony calls. You need an account associated to a PBX System.
+
+Then you can make call, hang up and hold/unhold call. You can also transfer the call and create a conference using 2 calls already in progress.
+
+You call also manage you nomadic status and your call forward status.
+
+### Get telephony status, PBX Agent info and the device type used (Virtual terminal or not)
+
+---
+
+First you must know if the telephony service is available (so if you have the permission to use this feature)
+
+You must use the `GetTelephonyStatus` method from `Telephony` object.
+
+If you have the permission you can know the PBX Agent version used using `GetPBXAgentInformation` method and if your are using a Virtual terminal or not using `IsVirtualTerminal` method.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Telephony telephony = myApp.GetTelephony();
+...
+//Once connected
+
+// Do we have the right to use the telephony feature ?
+if( telephony.GetTelephonyStatus() )
+{
+  // Get  PBX Agent information
+  PbxAgentInfo pbxAgentInfo =  telephony.GetPBXAgentInformation();
+  
+  // Do we use a virtaul terminal or not ?
+  Boolean isVirtualTerminal =  telephony.IsVirtualTerminal();
+}
+```
+
+### Check call features : Deflect, Transfer , Conference
+
+---
+
+To know if you can deflect and/or transfer calls, you must use `DeflectCallAvailable` and `TransferCallAvailable` methods from `Telephony` object.
+
+To know if you can cerate a conference from 2 active calls, you must use `ConferenceCallAvailable` method from `Telephony` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Telephony telephony = myApp.GetTelephony();
+...
+//Once connected
+
+Boolean deflectCallAvailable = telephony.DeflectCallAvailable();
+Boolean transferCallAvailable = telephony.TransferCallAvailable();
+Boolean conferenceCallAvailable = telephony.ConferenceCallAvailable();
+```
+
+### Check voice mail feature and get its number
+
+---
+
+To know if you have a voice mail, you must use `VoiceMailAvailable` method from `Telephony` object.
+
+To know the voice mail number, you must use `GetVoiceMailPhoneNumber` method from `Telephony` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Telephony telephony = myApp.GetTelephony();
+...
+//Once connected
+
+Boolean voiceMailAvailable = telephony.VoiceMailAvailable();
+String  voiceMailNumber = telephony.GetVoiceMailPhoneNumber(); // Return NULL is voice mail is not available
+```
+
+### Make a call
+
+---
+
+You can make a call using `MakeCall`, `MakeCallWithSubject` or `MakeCallToMevo` methods from `Telephony` object.
+
+`MakeCallWithSubject` should be used only to call a person in your enterprise. The subject will appear on its office device.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Telephony telephony = myApp.GetTelephony();
+...
+//Once connected
+
+String phoneNumber = "156";               // An internal number to reach an person in your enterprise
+// OR 
+// String phoneNumber = "+33612345678";   // A canonical phone number
+
+telephony.MakeCall(phoneNumber, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // The call has started from the server
+    String callId = callback.Id; // Id ot the call 
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Answer, Release, Transfer, Hold, Retrieve call
+
+---
+
+With a call Id of an call in progress, you can easily manage it using `AnswerCall`, `ReleaseCall`, `HoldCall`, `RetrieveCall`, `DeflectCall` methods.
+
+Once a call is hold use `RetrieveCall` to unhold it.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Telephony telephony = myApp.GetTelephony();
+...
+//Once connected
+
+String callId; // A call Id previously set
+
+telephony.AnswerCall(callId, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // The call has been well answered  
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+
+...
+
+telephony.ReleaseCall(callId, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // The call has been well released  
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+
+...
+
+telephony.HoldCall(callId, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // The call has been hold  
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+
+...
+
+telephony.RetrieveCall(callId, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // The call is no more hold  
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+
+...
+
+String phoneNumber = "456"; // An internal or a canonical phone number 
+
+telephony.DeflectCall(callId, phoneNumber, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // The call has been well deflect  
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+
+...
+
+String phoneNumber = "456"; // An internal or a canonical phone number 
+
+telephony.DeflectCall(callId, phoneNumber, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // The call has been well deflect  
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Tranfer call and conference
+
+---
+
+To perform a transfer or create conference, 2 calls in progress are necessary. One is necessary hold and the other one is active.
+
+Then using the two call id, you can use `TransferCall` or `ConferenceCall` methods
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Telephony telephony = myApp.GetTelephony();
+...
+//Once connected
+
+String activeCallId;  // A call Id previously set of an active call
+String heldCallId;    // A call Id previously set of an hold call
+
+telephony.TransferCall(activeCallId, heldCallId, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // The active call has trasnfered to the held call - your are no more in a call
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+
+...
+
+String activeCallId;  // A call Id previously set of an active call
+String heldCallId;    // A call Id previously set of an hold call
+
+telephony.ConferenceCall(activeCallId, heldCallId, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // You are now in a conference call with 3 users.  
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Manage call forward
+
+---
+
+You can manage call forward to the voice mail using `ActivateCallForwardOnVoiceMail` method or to a phone number using `ActivateCallForwardOnPhoneNumner` method.
+
+You can deactive call forward using `DeactivateCallForward` method.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Telephony telephony = myApp.GetTelephony();
+...
+//Once connected
+
+telephony.ActivateCallForwardOnVoiceMail(callback =>
+{
+  if(callback.Result.Success)
+  {
+    // Now incoming call are directly forwarded to the voice mail
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+
+...
+
+String phoneNumber = "123";  // An internan or a canonical phone number
+
+telephony.ActivateCallForwardOnPhoneNumner(phoneNumber, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // Now incoming call are directly forwarded to the specified phone number  
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+
+...
+
+telephony.DeactivateCallForward(callback =>
+{
+  if(callback.Result.Success)
+  {
+    // There is no more call forward   
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Manage nomadic status
+
+---
+
+Set a device as nomadic means that your main device is no more use your office phone but the device specified in your nomadic status.
+
+To set you nomadic status, you must use `ActivateNomadicStatusToPhoneNumber` method.
+
+You can also set your Rainbow webRTCC device as nomadic status (using `ActivateNomadicStatusToComputer` method) if you have the permission (using `NomadicOnComputerAvailable` method)
+
+To cancel the nomadic status use `DeactivateNomadicStatus` method.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Telephony telephony = myApp.GetTelephony();
+...
+//Once connected
+
+String phoneNumber = "+33612345678";  // An internal or a canonical phone number (it's more often a mobile device used)
+
+telephony.ActivateNomadicStatusToPhoneNumber(phoneNumber, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // Now your 'main device' if the device with the specified phone number 
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+
+...
+
+telephony.DeactivateNomadicStatus(callback =>
+{
+  if(callback.Result.Success)
+  {
+    // Now your main device is you office phone  
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Manage voice message
+
+---
+
+You can know the list of voice messages in your voice mail using `GetVoiceMessagesList` method. Then you can have some information like the date of the call, its duration, the caller.
+
+You can delete a voice message using `DeleteVoiceMessage` method.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Telephony telephony = myApp.GetTelephony();
+...
+//Once connected
+
+telephony.GetVoiceMessagesList(phoneNumber, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // Get list of voice message
+    List<VoiceMessage> voiceMessagesList = callback.Data;
+    foreach(VoiceMessage voiceMessage in voiceMessagesList)
+    {
+      String id = voiceMessage.id;                    // Id of the voice message
+      String phoneNumber = voiceMessage.PhoneNumber;  // Phone number of the caller
+      String jid = voiceMessage.Jid;                  // Jif of the Rainbow contact who called - if it's the case and if it's a known Rainbow Contact
+      Boolean unread = voiceMessage.Unread;           // To know if the messsage has been already "read"
+      DateTime date = voiceMessage.Date;              // Date of the call
+      Int32 duration = voiceMessage.Duration;         // Duration of the call (in seconds)
+    } 
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+
+...
+
+String voiceMessageId; // An ID of a voice message already set
+
+telephony.DeleteVoiceMessage(voiceMessageId, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // The voice message has been deleted  
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Sur cette page
+
+-   [Managing PSTN telephony calls](/docs/sdk/csharp#name-managing-pstn-telephony-calls-0)
+-   [Get telephony status, PBX Agent info and the device type used (Virtual terminal or not)](/docs/sdk/csharp#name-get-telephony-status-pbx-agent-info-and-the-device-type-used-virtual-terminal-or-not-12)
+-   [Check call features : Deflect, Transfer , Conference](/docs/sdk/csharp#name-check-call-features-:-deflect-transfer--conference-26)
+-   [Check voice mail feature and get its number](/docs/sdk/csharp#name-check-voice-mail-feature-and-get-its-number-37)
+-   [Make a call](/docs/sdk/csharp#name-make-a-call-48)
+-   [Answer, Release, Transfer, Hold, Retrieve call](/docs/sdk/csharp#name-answer-release-transfer-hold-retrieve-call-59)
+-   [Tranfer call and conference](/docs/sdk/csharp#name-tranfer-call-and-conference-70)
+-   [Manage call forward](/docs/sdk/csharp#name-manage-call-forward-81)
+-   [Manage nomadic status](/docs/sdk/csharp#name-manage-nomadic-status-92)
+-   [Manage voice message](/docs/sdk/csharp#name-manage-voice-message-109)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

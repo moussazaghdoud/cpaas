@@ -1,0 +1,508 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/guides/Initiating_audio_and_video_calls"
+lastSynced: "2026-02-19T22:35:15.955Z"
+---
+# Documentation
+
+Initiating audio and video calls
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Initiating Audio and Video calls
+
+---
+
+Using Rainbow Web SDK, you can make audio and video calls towards your contacts thanks to WebRTC. This tutorial will help you understanding how it works and will give you the hints for adding the possibility in your application to communicate in audio and video successfully.
+
+You can also start a WebRTC Conference (or desktop sharing) in a given Bubble (only one at a given time).
+
+If you want to see how to use Rainbow Web SDK to create a simple conferencing application, please have a look at our public GitHub Repository: [Rainbow Web SDK - WebRTC Sample](https://github.com/Rainbow-CPaaS/Rainbow-Web-SDK-WebRTC-Sample).
+
+### Rainbow Knowledge
+
+---
+
+Here are some Rainbow wordings that will help you understanding this guide.
+
+Rainbow concept
+
+Details
+
+**A peer**
+
+A peer is a participant of a call in a peer-to-peer call or in a conference call.
+
+**A leg**
+
+A leg is a kind of media shared in a call. It can be: **audio**, **video** or **sharing**
+
+**WebRTC Peer to Peer Call**
+
+This is a call between 2 users.  
+One is the caller, the second is the callee or the recipient.
+
+**WebRTC Conference call**
+
+This is a call between 2 or more users.
+
+**An audio only Call**
+
+An audio only call uses only the microphone for dispatching the audio leg to the recipient.
+
+**An audio and Video call**
+
+An audio and video call uses the microphone and a camera for dispatching both audio and video legs to the recipient.
+
+**A sharing call**
+
+A sharing call uses the screen or an application for dispatching a data leg to the recipient. The call can be initiated with or without an audio leg. The audio leg can be added during the call.
+
+**Escalate to video call**
+
+When in an audio call, you can decide at any time to add a video leg with your recipients. This mechanism is called an escalation (i.e. adding a new leg to an existing call). Be careful, this is not a mutual escalation. Each participant can decide to escalate or not on his own.
+
+### Preamble
+
+---
+
+Rainbow Web SDK allows to make audio video calls. To do so, the Web SDK relies on the WebRTC stack included in your compliant browser. The Web SDK supports one-to-one audio and video call and conference call.
+
+In order to be able to make an audio and video call between you and other recipients, you need:
+
+-   **A compliant browser**: At this time of writing only Firefox and Chrome browsers are supported by Rainbow Web SDK. Consequently, you have to use one of these browsers to make an audio and video call.
+    
+-   **HTTPS**: In order to use Rainbow audio and video API, you need to serve your application using HTTPS.
+    
+-   **A negotiation server**: A server for exchanging the audio and video negotiation part between all participants of the call. Rainbow will do it, you don't need to care about this part.
+    
+-   **A signaling protocol**: To establish a call between two participants or several ones in a conference, a signaling protocol is used to allow each peer to negotiate all required parameters for exchanging correctly his audio and video legs with the others participants. Rainbow Web SDK integrates this protocol so that you have nothing to do on that part.
+    
+-   **Relay servers**: Depending your network condition, a STUN server could be needed to allow your application to know how to be joined from Rainbow or from a recipient. An additional media relay server (TURN) could be needed for relaying the communication when there are blocking network elements (i.e. a firewall) between the users and between the users and Rainbow when in a conference. Rainbow has several TURN and STUN servers dispatched all around the world that will be used if needed. You don't need to care about this part.
+    
+
+As you can see, the Web SDK provides you with all the complicated things you need: no signaling part to manage, no STUN or TURN server to deploy...
+
+### Detecting your browser compatibility
+
+---
+
+Rainbow Web SDK can help you checking if the browser can do WebRTC calls. Use the method `canMakeAudioVideoCall()` such as in the following code sample:
+
+```javascript
+/* Somewhere in your application... */
+    /* Call this method to know if your application can make audio and video call */
+    if(rainbowSDK.webRTC.canMakeAudioVideoCall()) {
+        /* Your browser is compliant: You can make audio and video call using WebRTC in your application */
+
+    }
+    else {
+        /* Your browser is not compliant: Do not propose audio and video call in your application */
+
+    }
+```
+
+This is the easier way to detect that your browser is compliant with WebRTC. But you can use your own code to do that by calling directly the WebRTC APIs.
+
+Once you know that your browser is compliant, you need to know if a webcam or at least a microphone is available in order to make audio or video call. Call the method `hasACamera()` and `hasaMicrophone()` to check the device detected by your browser.
+
+```javascript
+/* Somewhere in your application... */
+
+    /* Call this method to know if a webcam is detected */
+    if(rainbowSDK.webRTC.hasACamera()) {
+        /* A webcam is available, you can make video call */
+        ...
+    }
+    else {
+        /* No webcam detected */
+        ...
+    }
+
+    /* Call this method to know if a microphone is detected */
+    if(rainbowSDK.webRTC.hasAMicrophone()) {
+        /* A microphone is available, you can make at least audio call */
+        ...
+    }
+    else {
+        /* No microphone detected */
+        ...
+    }
+```
+
+Knowing the media capabilities in your application lets you adapt it to the user environment by providing the best UX.
+
+### Detecting the media device connected to the computer (Chrome only)
+
+---
+
+As described above, a WebRTC call could be composed of multiple legs directly linked to connected devices:
+
+-   A microphone as an audio input device for the audio leg
+    
+-   A speaker as an audio output device for the audio legs associated to the others participants
+    
+-   A camera as a video input device for the video leg.
+    
+-   A screen as a video output device for the video and sharing legs associated to the others participants
+    
+-   A screen as a video input device for the sharing leg.
+    
+
+Depending on your configuration, you can have several media devices connected internally or externally to your computer. And depending on the browser you use, the device selection has to be done by your application or not:
+
+-   Using **Firefox**, when you call someone in WebRTC or when you receive a WebRTC call, a native Firefox pop-up is always displayed in order to select the devices to use (i.e. microphone and camera). So Firefox will do the job for you. You have nothing to do!
+    
+-   Using **Chrome**, there is no device selection pop-up displayed, so if you don't manage this selection programmatically in your application Chrome will use the "predominant" device in your system.
+    
+
+For listing the available devices connected to your computer, you can use the HTML5 methods `mediaDevices.getUserMedia()` and `mediaDevices.enumerateDevices()`.
+
+Here is a sample that illustrates how to list the available devices connected to your computer.
+
+**Note: Your application need to be served in `HTTPS`.**
+
+```javascript
+/* Somewhere in your application... Ask the user to authorize the application to access to the media devices */
+navigator.mediaDevices.getUserMedia({audio: true, video: true}).then(function(stream) {
+
+    /* Stream received which means that the user has authorized the application to access to the audio and video devices. Local stream can be stopped at this time */
+    stream.getTracks().forEach(function(track) {
+        track.stop();
+    });
+
+    /*  Get the list of available devices */
+    navigator.mediaDevices.enumerateDevices().then(function(devices){
+
+        /* Do something for each device (e.g. add it to a selector list) */
+        devices.forEach(function(device) {
+            switch (device.kind) {
+                case "audioinput":
+                    // This is a device of type 'microphone'
+                    break;
+                case "audiooutput":
+                    // This is a device of type 'speaker'
+                    break;
+                case "videoinput":
+                    // This is a device of type 'camera'
+                    break;
+                default:
+                    break;
+            }
+        });
+
+    }).catch(function(error) {
+        /* In case of error when enumerating the devices */
+    });
+}).catch(function(error) {
+    /* In case of error when authorizing the application to access the media devices */
+});
+```
+
+### Selecting a device to use
+
+---
+
+The Rainbow Web SDK has an integrated service related to the management of the audio and video devices; NB The audio output devices are only available for Chromium based browsers (Chrome, Edge, Opera ...); And the level of support is different for each one of them.
+
+```javascript
+/* Get all available audio input/output and video input devices */
+rainbowSDK.deviceManagement.getAllAudioInputDevices();
+rainbowSDK.deviceManagement.getAllAudioOutputDevices();
+rainbowSDK.deviceManagement.getAllVideoInputDevices();
+
+/* Select the microphone to use */
+rainbowSDK.deviceManagement.setCurrentAudioInputDevice(microphoneDevice);
+
+/* Select the speaker to use */
+rainbowSDK.deviceManagement.setCurrentAudioOutputDevice(speaker);
+
+/* Select the camera to use */
+rainbowSDK.deviceManagement.setCurrentVideoInputDevice(camera);
+```
+
+Be careful, if your device id is not right, the webRTC call will fail. In order to detect this issue, you can subscribe to the event `RAINBOW_ONWEBRTCERRORHANDLED`:
+
+```javascript
+/* Somewhere in your application */
+
+    onWebRTCErrorHandled(event) {
+        let errorSDK = event.detail;
+        // event.detail contains an Error object
+        console.log("WebRTC ERROR", errorSDK)
+    }
+
+    document.addEventListener(rainbowSDK.webRTC.RAINBOW_ONWEBRTCERRORHANDLED, onWebRTCErrorHandled)
+```
+
+### Adding the minimum viable HTML
+
+---
+
+Local and remote audio and video legs need HTML elements to be able to be played.
+
+The following code sample will add the audio and video elements necessary for playing the local audio and video legs that come from your microphone and camera and the remote audio and video legs that come from your recipient or from the conference.
+
+Add the following lines to one of your view:
+
+```html
+<!-- Add theses tags in your HTML file -->
+<video id="minivideo" autoplay muted></video>
+<video id="largevideo" autoplay></video>
+<video id="globalVideoTag" autoplay style="display:none;"></video>
+<audio id="globalAudioTag" autoplay style="display:none;"></audio>
+```
+
+Note: Rainbow Web SDK will only manage the rendering of the local and remote legs. There is no default CSS added to these elements. You have to add your own CSS in order to adapt the display to your application. Also, do not change the id attribute of the elements, the specific values are required by Rainbow Web SDK to work.
+
+### Calling a contact using WebRTC
+
+---
+
+Once you have your device, calling a contact in audio and video is easy. Rainbow proposes two ways of calling a contact over WebRTC: audio only or audio and video, using `callInAudio()` and `callInVideo()` functions respectively.
+
+```javascript
+/* Somewhere in your application... */
+
+    let callInAudio = function callInAudio(contactId) {
+        /* Call this API to call a contact using only audio stream*/
+        rainbowSDK.webRTC.callInAudio(contactId).then(res => {
+            if(res.label === "OK") {
+                /* Your call has been correctly initiated. Waiting for the other peer to answer */
+            }
+        }).catch(err => {
+            return err
+        });
+    };
+
+    let callInVideo = function callInVideo(contactId) {
+        /* Call this API to call a contact using both audio and video streams*/
+        rainbowSDK.webRTC.callInVideo(contactId).then(res => {
+            if(res.label === "OK") {
+                /* Your call has been correctly initiated. Waiting for the other peer to answer */
+            }
+        }).catch(err => {
+            return err
+        });
+    };
+
+    let onWebRTCCallChanged = function onWebRTCCallChanged(event) {
+        /* Listen to WebRTC call state change */
+        // event.detail contains a Call Object
+        console.log("onWebRTCCallChanged event", event.detail)
+    }
+
+    /* Subscribe to WebRTC call change */
+    document.addEventListener(rainbowSDK.webRTC.RAINBOW_ONWEBRTCCALLSTATECHANGED, onWebRTCCallChanged)
+```
+
+### Answering a WebRTC call
+
+---
+
+Answering an incoming WebRTC call can be done via either answer `answerInVideo()` or `answerInAudio()` depending on the type of the incoming call.
+
+In order to determine whether the incoming call is of type audio or audio and video, use the same event listener (`RAINBOW_ONWEBRTCCALLSTATECHANGED`) as per below.
+
+Use the `remoteMedia` property to find out whether the call is of type audio (value should be an integer equal to `1`) or video (`3`). Once you get that info you can address the incoming call in an appropriate way. A code example below will help you understand the different information passed by `call` object.
+
+```javascript
+/* Somewhere in your application... */
+
+let onWebRTCCallChanged = function onWebRTCCallChanged(event) {
+    /* Listen to WebRTC call state change */
+    let call = event.detail;
+
+    if (call.status.value === "incommingCall") {
+        // You have an incoming call, do something about it:
+
+        // Detect the type of incoming call
+
+        if (call.remoteMedia === 3) {
+
+            // The incoming call is of type audio + video
+            rainbowSDK.webRTC.answerInVideo(call.id);
+
+            // Populate the #minivideo and #largevideo elements with the video streams
+
+            rainbowSDK.webRTC.showLocalVideo();
+            rainbowSDK.webRTC.showRemoteVideo(call.id);
+
+        } else if (call.remoteMedia === 1) {
+
+            // The incoming call is of type audio
+            rainbowSDK.webRTC.answerInAudio(call.id);
+        }
+    }
+};
+
+/* Subscribe to WebRTC call change */
+document.addEventListener(rainbowSDK.webRTC.RAINBOW_ONWEBRTCCALLSTATECHANGED, onWebRTCCallChanged)
+```
+
+This is a very basic use case. In the reality, you perhaps have to inform the user that there is an incoming call in order to let him answer or reject it and to let him choose between answering in audio or in audio and video.
+
+### Retrieving the PeerConnection object
+
+PeerConnection object contains information and statistics concerning the ongoing call. To retrieve it, simply call `getPeerConnectionForCall()` function and pass the `call` object as an argument.
+
+```javascript
+// Somewhere in your code
+
+    let peerconnection = rainbowSDK.webRTC.getPeerConnectionForCall(call.id);
+
+    // Do something with the object
+```
+
+### Releasing the WebRTC call
+
+Analogically to answering the call, you can release it by calling the following API:
+
+```javascript
+/* Somewhere in your application... */
+
+    let releaseCall = function releaseCall(call.id) {
+        /* Call this API to release the call */
+        let res = rainbowSDK.webRTC.release(call.id);
+    };
+
+    let onWebRTCCallChanged = function onWebRTCCallChanged(event) {
+        /* Listen to WebRTC call state change */
+        let call = event.detail;
+
+        switch(call.status.value) {
+            case call.Status.UNKNOWN.value:
+                /* The call has been released, hide the local and remote videos */
+                rainbowSDK.webRTC.hideLocalVideo();
+                rainbowSDK.webRTC.hideRemoteVideo(call.id);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /* Subscribe to WebRTC call change */
+    document.addEventListener(rainbowSDK.webRTC.RAINBOW_ONWEBRTCCALLSTATECHANGED, onWebRTCCallChanged)
+```
+
+### Adding or removing video leg to a WebRTC call
+
+---
+
+**IMPORTANT**: If the model `Call` is not accessible **in your non-AngularJS application** (to access enums), you can get it with this workaround method:
+
+```javascript
+let Call = angular.injector(["sdk"]).get("Call");
+```
+
+It is also accessible (starting Rainbow Web SDK v1.72.0) directly from the `rainbowSDK` object - `rainbowSDK.Call`
+
+You can add or remove a video leg by calling the following method:
+
+```javascript
+/* Somewhere in your application... */
+
+// WebRTC tracks changed = video has been added or removed
+let onWebRTCTrackChanged = function onWebRTCTrackChanged(event) {
+
+    let call = event.detail;
+
+    // Manage remote video
+    if (call.remoteMedia & call.Media.VIDEO) {
+        rainbowSDK.webRTC.showRemoteVideo(call.id);
+    } else {
+        rainbowSDK.webRTC.hideRemoteVideo(call.id);
+    }
+    // Manage local video
+    if (call.localMedia & call.Media.VIDEO) {
+        rainbowSDK.webRTC.showLocalVideo(call.id);
+    } else {
+        rainbowSDK.webRTC.hideLocalVideo(call.id);
+    }
+};
+
+document.addEventListener(rainbowSDK.webRTC.RAINBOW_ONWEBRTCTRACKCHANGED, onWebRTCTrackChanged)
+
+let addVideoToCall = function addVideoToCall(call) {
+    /* Call this API to try do add video to the call */
+    let res = rainbowSDK.webRTC.addVideoToCall(call.id);
+};
+
+let reverseToAudioCall = function reverseToAudioCall(call.id) {
+    /* Call this API to release video in the call */
+    let res = rainbowSDK.webRTC.reverseToAudioCall(call.id);
+};
+```
+
+### Detecting Media errors
+
+---
+
+Sometimes, your browser can not access the microphone or camera due to an error (e.g. camera is not supported). To detect when these errors occur, add the following listener:
+
+```javascript
+/* Somewhere in your application... */
+
+    // WebRTC tracks changed = video has been added or removed
+    let onWebRTCGetUserMediaErrorOccured = function onWebRTCGetUserMediaErrorOccured(event) {
+        let error = event.detail;
+
+        // Do something when this error occurs
+
+    };
+
+    document.addEventListener(rainbowSDK.webRTC.RAINBOW_ONWEBRTCTMEDIAERROROCCURED, onWebRTCGetUserMediaErrorOccured)
+```
+
+### Sharing your screen or an application's window
+
+---
+
+This feature is available for Firefox and Chrome.
+
+Using Chrome you will have to create a specific extension (not needed for Firefox) to allow your domain(s), where your application based on Rainbow will be served (from yourdomain.com), to share with other Rainbow users.
+
+An extension template can be downloaded from our Github project [ALE Rainbow Chrome Extension template](https://github.com/Rainbow-CPaaS/Rainbow-Chrome-Extension-Template).
+
+After creating and installing this extension, you will have to set its ID using the method `setChromeExtensionIfForSharing()` as described [here](/docs/sdk/web).
+
+### Related links
+
+---
+
+-   [Chatting with Rainbow users](doc/sdk/web/lts/guides/Chatting_with_Rainbow_users)
+    
+-   [Chatting in Rainbow bubbles](doc/sdk/web/lts/guides/Chatting_in_Rainbow_bubbles)
+    
+-   [Supporting IE11](doc/sdk/web/lts/guides/Supporting_IE11)
+    
+
+---
+
+*Last updated June 25th 2021*
+
+### Sur cette page
+
+-   [Initiating Audio and Video calls](/docs/sdk/web#name-initiating-audio-and-video-calls-0)
+-   [Rainbow Knowledge](/docs/sdk/web#name-rainbow-knowledge-13)
+-   [Preamble](/docs/sdk/web#name-preamble-98)
+-   [Detecting your browser compatibility](/docs/sdk/web#name-detecting-your-browser-compatibility-138)
+-   [Detecting the media device connected to the computer (Chrome only)](/docs/sdk/web#name-detecting-the-media-device-connected-to-the-computer-chrome-only-156)
+-   [Selecting a device to use](/docs/sdk/web#name-selecting-a-device-to-use-215)
+-   [Adding the minimum viable HTML](/docs/sdk/web#name-adding-the-minimum-viable-html-227)
+-   [Calling a contact using WebRTC](/docs/sdk/web#name-calling-a-contact-using-webrtc-244)
+-   [Answering a WebRTC call](/docs/sdk/web#name-answering-a-webrtc-call-252)
+-   [Retrieving the PeerConnection object](/docs/sdk/web#name-retrieving-the-peerconnection-object-269)
+-   [Releasing the WebRTC call](/docs/sdk/web#name-releasing-the-webrtc-call-276)
+-   [Adding or removing video leg to a WebRTC call](/docs/sdk/web#name-adding-or-removing-video-leg-to-a-webrtc-call-283)
+-   [Detecting Media errors](/docs/sdk/web#name-detecting-media-errors-298)
+-   [Sharing your screen or an application's window](/docs/sdk/web#name-sharing-your-screen-or-an-applications-window-306)
+-   [Related links](/docs/sdk/web#name-related-links-322)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

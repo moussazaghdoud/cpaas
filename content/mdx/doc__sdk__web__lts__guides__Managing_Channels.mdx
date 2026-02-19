@@ -1,0 +1,310 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/guides/Managing_Channels"
+lastSynced: "2026-02-19T22:35:16.073Z"
+---
+# Documentation
+
+Managing Channels
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Managing Channels
+
+Rainbow chat messages and audio and video calls are really effective when it comes to communication in relatively small group. Once you want to reach an audience of, say, thousands, the information sent in a form of a chat can be not visible enough.
+
+Rainbow Web SDK comes with a solution to this problem: you can send notifications to a large numbers (e.i. several thousands) of users using a Channel.
+
+Channel can be used when you want to notify a large group of users without having to send a chat message individually to each of them. Think of it as a global notification system.
+
+You can create and administrate two different types of Channels: either by adding and managing the recipients yourself (closed Channels) or by letting all the users subscribe to the Channel (called public Channels) if they find receiving this information interesting.
+
+Channel type
+
+Description
+
+**Closed**
+
+Only Owner can add or remove users in a private channels. Private channels can't be found when searching for channels. Consequently, users can't subscribe on their own to private channel.
+
+**Public**
+
+Users are free to subscribe to a public channel. Public channels can be found when searching for channels. The visibility of a channel is limited to my company.
+
+In a channel, the membership of a user (role) can be **owner**, **member**, **publisher** or **none**.
+
+User role
+
+Description
+
+**Owner**
+
+The owner is the user who creates the channel. An owner can modify information of the channel, can invite other users (including new owners) can publish messages and can receive incoming messages
+
+**Publisher**
+
+A publisher is a member of a channel who can publish messages in that channel and can receive incoming messages
+
+**Member**
+
+A member of a channel can only receive incoming messages
+
+**None**
+
+A user with this particular role is a user who left the channel (by his own or got removed by a owner)
+
+### Getting started
+
+The basic interaction with Rainbow Channels is based on CRUD principles (create, read, update, delete). You can create, modify, retrieve and delete the Channels from Rainbow servers.
+
+Let's begin with creating one Channel.
+
+#### Creating Channel
+
+As mentioned above, you can create two types of Channel. Let us start with the **Public Channel**.
+
+To create a public Channel, you need to use `createPublicChannel()` method that accepts the following arguments: `channelName` (string), `channelTopic` (string), `max_items` (integer) and `category` (string) and returns a `Promise`. The example below shows one way of using the method:
+
+```javascript
+// somewhere in your code
+
+rainbowSDK.channels.createPublicChannel("My First Public Channel", "Topic of the channel", 20, "Technology")
+    .then(channel => console.log("Created a new Channel!", channel))
+    .catch(err => console.log(err));
+```
+
+If everything went fine, a new public Channel should be created.
+
+Analogically, we can create a closed Channel by using `createClosedChannel()` method:
+
+```javascript
+// somewhere in your code
+
+rainbowSDK.channels.createClosedChannel("My First Closed Channel", "Topic of the channel", 20, "Technology")
+    .then(channel => console.log("Created a new Channel!", channel) /*do something with the Channel object*/)
+    .catch(err => console.log(err) /*something went wrong*/);
+```
+
+#### Fetching the Channels
+
+Once the Channels have been created, we can try to verify whether they are saved in the database by using `fetchMyChannels()` method that retrieves Channels from the server. This method returns a `Promise`.
+
+```javascript
+//somewhere in your code
+
+rainbowSDK.channels.fetchMyChannels()
+    .then(channels => /*do something with the Channels array */)
+    .catch(err => console.log(err) /*something went wrong*/);
+```
+
+Other method of fetching a Channel is offered by `fetchChannel()` method that accepts `id` string as a parameter:
+
+```javascript
+rainbowSDK.channels.fetchChannel("channel ID")
+    .then(channel => /*do something with the channel retrieved from the server */)
+    .catch(err => console.log(err) /*something went wrong*/);
+```
+
+There are few more methods that allow you to fetch a Channel by name, topic or description, however they will look through the **public** Channels only.
+
+```javascript
+rainbowSDK.channels.fetchChannelsByName("channel name")
+    .then(channel => /*do something with the channel retrieved from the server */)
+    .catch(err => console.log(err) /*something went wrong*/);
+
+rainbowSDK.channels.fetchChannelsByTopic("channel topic")
+    .then(channel => /*do something with the channel retrieved from the server */)
+    .catch(err => console.log(err) /*something went wrong*/);
+
+rainbowSDK.channels.fetchChannelsByCategory("channel category")
+    .then(channel => /*do something with the channel retrieved from the server */)
+    .catch(err => console.log(err) /*something went wrong*/);
+```
+
+#### Updating the Channels
+
+Rainbow Web SDK comes with a set of that allow you to update most of the Channel's properties: `updateChannelName()`, `updateChannelTopic()`, `updateChannelCategory()`, `updateChannelAvatar()`, `updateChannelVisibilityToPublic()`, `updateChannelVisibilityToClosed()`.
+
+The snippets below will demonstrate the way you can use the particular methods.
+
+##### Update Channel Name
+
+```javascript
+rainbowSDK.channels.updateChannelName("CHANNEL ID", "CHANGED NAME")
+    .then(channel => /*do something with the updated Channel*/)
+    .catch(err => console.log(err) /*something went wrong*/);
+```
+
+##### Update Channel Topic
+
+```javascript
+rainbowSDK.channels.updateChannelTopic("CHANNEL ID", "CHANGED TOPIC")
+    .then(channel => /*do something with the updated Channel*/)
+    .catch(err => console.log(err) /*something went wrong*/);
+```
+
+##### Update Channel Category
+
+```javascript
+rainbowSDK.channels.updateChannelCategory("CHANNEL ID", "CHANGED CATEGORY")
+    .then(channel => /*do something with the updated Channel*/)
+    .catch(err => console.log(err) /*something went wrong*/);
+```
+
+#### Deleting the Channels
+
+The last part of dealing with Channel objects is deleting them. Rainbow Web SDK offers a method which takes Channel ID string as an argument, `deleteChannel()`. Snippet below will show you how to use it in practise:
+
+```javascript
+rainbowSDK.channels.deleteChannel("CHANNEL ID")
+    .then(channel => /*do something with the updated Channel*/)
+    .catch(err => console.log(err) /*something went wrong*/);
+```
+
+### Managing the Members
+
+After the warm-up with creating, updating, fetching and deleting the Channels, we can move on to the next part: managing users' relations with Channels. Rainbow Web SDK offers you to add publishers and members, change the owners and manipulate this data by deleting, updating and retrieving the information from the server.
+
+#### Adding new Members to a Private Channel
+
+New members can be added to a Channel by using the API `addMembersToChannel()` that accepts two arguments: `id` of a Channel and array of user objects.
+
+```javascript
+rainbowSDK.channels.addMembersToChannel("CHANNEL ID", [user1, user2])
+    .then(usersData => /*do something with the users data*/)
+    .catch(err => /*something went wrong*/);
+```
+
+#### Adding new Publishers to a Private Channel
+
+New publishers can be added to a Channel by using the API `addPublishersToChannel()` that accepts two arguments: `id` of a Channel and array of user objects.
+
+```javascript
+rainbowSDK.channels.addPublishersToChannel("CHANNEL ID", [user1, user2])
+    .then(usersData => /*do something with the users data*/)
+    .catch(err => /*something went wrong*/);
+```
+
+#### Adding new Owners to a Private Channel
+
+Finally, new Owners can be added to a Channel by using the API `addOwnersToChannel()` that accepts two arguments: `id` of a Channel and array of user objects.
+
+```javascript
+rainbowSDK.channels.addOwnersToChannel("CHANNEL ID", [user1, user2])
+    .then(usersData => /*do something with the users data*/)
+    .catch(err => /*something went wrong*/);
+```
+
+#### Fetching the users
+
+You can retrieve a list of users of a given Channel by calling `fetchUsers()` method as in the example below. The method takes two arguments: `id` of a Channel and `options` object.
+
+By default, you will only receive the 100 first users in that channel. Due to the fact that a channel can contain several thousands of users, you could not retrieve it in one shot to avoid an heavy HTTP request. Instead, you can use an additional options parameter to paginate or add specific filters that will give you less results to display (and so a better UX).
+
+To find out more about the possible options, have a look at the [Channels API Documentation](doc/sdk/web/lts/api/channels#module_Channels.fetchUsers).
+
+```javascript
+rainbowSDK.channels.fetchUsers("CHANNEL ID", options)
+    .then(usersData => /*do something with the users data*/)
+    .catch(err => /*something went wrong*/);
+```
+
+#### Deleting Users
+
+You can also delete users from Channel if you do not want them to continue subscription in any of the roles listed above. There are two options to do that: either you as a Channel owner delete the specific users (`deleteUsersFromChannel()` API) or you delete all of the users (`deleteAllUsersFromChannel()`). The code example below will show you how to use those functions.
+
+```javascript
+//Deleting specific user or group of users:
+
+rainbowSDK.channels.deleteUsersFromChannel("CHANNEL ID", [user1, user2])
+    .then(usersData => /*do something with the users data*/)
+    .catch(err => /*something went wrong*/);
+
+//Deleting all the users from Channel:
+rainbowSDK.channels.deleteAllUsersFromChannel("CHANNEL ID")
+    .then(usersData => /*do something with the users data*/)
+    .catch(err => /*something went wrong*/);
+```
+
+### Managing the Content
+
+You can publish items to the Channels in order to share information with the subscribed users. Think of them as posts or centralized messages.
+
+#### Creating Items
+
+An item can be created by using the API `createItem()`, which takes the following arguments: `channel`, `message`, `title`, `url` and `type`.
+
+First one is a Channel object. `message` represents message text. `title` is an optional argument that allows you to set a title to your post. `url` is also optional: it can contain a link to a file or website. The last parameter is `type`. You can choose between four formats of an Item: `basic`, `markdown`, `html` or `data`. If you leave this one empty, it will default to `basic`.
+
+Have a look at the following piece of code which presents one of the potential uses of `createItem()` method:
+
+```javascript
+var channel = MyChannelObject;
+var message = "Test message";
+var title = "Title of a post";
+var url = "https://mywebsite.com";
+var type = "basic";
+
+rainbowSDK.channels.createItem(channel, message, title, url, type)
+    .then( () => /*message created, do something once it has been sent*/)
+    .catch(err => console.log(err) /*something went wrong*/);
+```
+
+#### Fetching Items
+
+In order to fetch all the items from a given Channel, you can use `fetchItems()` API. This method takes few arguments: `id` of a Channel, `maxMessages` that represents a number of messages to be retrieved (defaults to 10) and finally `beforeDate` and `afterDate` that represent the time period by which you can narrow your search results. The snippet below will show you an example of such request:
+
+```javascript
+var id = "123channelidxyz";
+var maxMessages = 20;
+var beforeDate = "2019-05-01T13:00:00Z";
+var afterDate = "2019-06-01T14:01:00Z";
+
+rainbowSDK.channels.fetchItems(id, maxMessages, beforeDate, afterDate)
+    .then(result => console.log(result) /*returns an array*/)
+    .catch(err => console.log(err) /*something went wrong*/);
+```
+
+Result is presented in a form of an array of objects containing useful information: `channelId`, `entry` (this one represents type, title and message of an item), `from` representing an author, `id` of the item, `modified` flag indicating the potential modifications done, `timestamp` and `type`.
+
+#### Deleting Items
+
+Finally, you can delete the items from a Channel. To do so, use `deleteItems()` API which takes two parameters: `channelID` and `itemID`:
+
+```javascript
+var channelId = "123channelidxyz";
+var itemId = "123itemidxyz";
+
+rainbowSDK.channels.deleteItem(channelId, itemId)
+    .then( /*everything went well, continue your program*/)
+    .catch(err => console.log(err) /*something went wrong*/);
+```
+
+*Last updated June, 12th 2019*
+
+### Sur cette page
+
+-   [Managing Channels](/docs/sdk/web#name-managing-channels-0)
+-   [Getting started](/docs/sdk/web#name-getting-started-94)
+-   [Creating Channel](/docs/sdk/web#name-creating-channel-103)
+-   [Fetching the Channels](/docs/sdk/web#name-fetching-the-channels-120)
+-   [Updating the Channels](/docs/sdk/web#name-updating-the-channels-135)
+-   [Deleting the Channels](/docs/sdk/web#name-deleting-the-channels-156)
+-   [Managing the Members](/docs/sdk/web#name-managing-the-members-163)
+-   [Adding new Members to a Private Channel](/docs/sdk/web#name-adding-new-members-to-a-private-channel-169)
+-   [Adding new Publishers to a Private Channel](/docs/sdk/web#name-adding-new-publishers-to-a-private-channel-176)
+-   [Adding new Owners to a Private Channel](/docs/sdk/web#name-adding-new-owners-to-a-private-channel-183)
+-   [Fetching the users](/docs/sdk/web#name-fetching-the-users-190)
+-   [Deleting Users](/docs/sdk/web#name-deleting-users-203)
+-   [Managing the Content](/docs/sdk/web#name-managing-the-content-210)
+-   [Creating Items](/docs/sdk/web#name-creating-items-216)
+-   [Fetching Items](/docs/sdk/web#name-fetching-items-229)
+-   [Deleting Items](/docs/sdk/web#name-deleting-items-239)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

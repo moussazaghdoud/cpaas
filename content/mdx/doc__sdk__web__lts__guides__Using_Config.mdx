@@ -1,0 +1,76 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/guides/Using_Config"
+lastSynced: "2026-02-19T22:35:16.173Z"
+---
+# Documentation
+
+Using Config
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Using Config
+
+---
+
+Rainbow Web SDK configuration allows the developers to provide a more fine-grained experience to their users. It is also enabling the customization of the project that uses the SDK.
+
+This article covers two basic ways of Rainbow Web SDK configuration
+
+---
+
+### Method 1: Config File
+
+While loading the SDK, you can pass a JavaScript object as an argument. Here's a quick snippet demonstrating the usage of the config object:
+
+```javascript
+const rainbowConfig = {
+    verboseLog: false, // Turn on/off all the logs linked to the SDK
+    measurePerformance: false, // Add performance measurement points while loading the SDK
+    videoQuality: "1080p", // Chose default broadcasted video quality 
+    credentials: {
+        appID: "",
+        appSecret: "",
+        host: "openrainbow.com"
+    }, // use the credentials 
+    logs: { // use fine-grained logs control (verboseLog needs to be true)
+        contactService: true, // set to false to block all contactService logs
+        xmppMessages: true, // set to false to block all XMPP messages 
+        xmppService: true, // set to false to block xmppService logs
+        conversationService: true, // set to false to block conversationService logs
+        presence: true, // set to false to block presence logs
+
+    }
+}
+
+rainbowSDK.load(rainbowConfig);
+```
+
+The presented structure of `rainbowConfig` object above is loaded by the SDK by default. If you want to keep all the properties as they are, but change one - for instance verboseLog - you can just mention only verboseLog in the config object:
+
+```javascript
+const rainbowConfig = {
+    verboseLog: true
+}
+rainbowSDK.load(rainbowConfig);
+```
+
+### Method 2: Config Service
+
+You can also use `ConfigService` provided by Rainbow Web SDK, please have a look at the documentation of the service to find out what APIs are available with more details on the implementation.
+
+*Last updated March, 8th 2021*
+
+### Sur cette page
+
+-   [Using Config](/docs/sdk/web#name-using-config-0)
+-   [Method 1: Config File](/docs/sdk/web#name-method-1:-config-file-11)
+-   [Method 2: Config Service](/docs/sdk/web#name-method-2:-config-service-22)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

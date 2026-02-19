@@ -1,0 +1,436 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "docs-hub"
+source: "https://developers.openrainbow.com/doc/hub/developer-sandboxed-platform"
+lastSynced: "2026-02-19T22:35:13.044Z"
+---
+# Documentation
+
+Development on Sandbox
+
+## Development on Sandbox
+
+---
+
+Our **Rainbow Sandbox platform for developers** is a testing environment that mimics the live Rainbow Production environment. It provides a secured space where you can test and develop your application without impacting any live Rainbow accounts.
+
+The Sandbox platform offers the same level of Rainbow API features as the production platform except for some Business and Enterprise grade services.
+
+By using Sandbox test accounts and their associated authentication credentials in your Rainbow application, you can test and debug without referencing any real Rainbow users and so avoid interactions with others real Rainbow users too.
+
+The next sections describe in details how to create your Developer Sandbox account and how to use it.
+
+### Sandbox platform for developers vs Production platform
+
+---
+
+Our Rainbow Sandbox platform for developers is a Rainbow environment similar to the Rainbow Production platform that can be used when developing your application. Only developers are allowed to access to this Sandbox platform.
+
+The aim of that platform is to let you discover and try our Rainbow SDKs and APIs without disturbing real users on the production platform.
+
+That's why this platform is independent of the Rainbow Production platform. So you can't interact with real users and consequently make mistake on your existing data, contacts, etc...
+
+On that platform, you can create as many tests accounts as you want. This is useful if you want to develop and test your chat or collaboration use cases.
+
+### Free of charge
+
+---
+
+The Rainbow Sandbox for developers is **"free of charge"** in order to let you familiarize with Rainbow.
+
+When you're using this platform to develop your application, there is no accrued charge when calling Rainbow API or services.
+
+The Rainbow Sandbox platform for developers may limit the usage of each API per day for security and performance reason.
+
+### Developing on Rainbow Sandbox platform for developers
+
+---
+
+The following sections describe how to register and use your Sandbox developer account and how to create and connect your application to the Rainbow Sandbow platform for developers.
+
+#### Activating your Sandbox developer account
+
+For developing and testing your application with Rainbow using our Developers Sandbox platform, you need first to activate your sandbox account. Here is the procedure:
+
+Step
+
+Description
+
+**Sign-in to Rainbow for Developers**
+
+The first step is to sign-in to the [Rainbow for Developers login page](/login) with your Rainbow credentials.
+
+**Activate your Sandbox account**
+
+From the **Sandbox** section located in the left side menu, click on **Create your sandbox** button.  
+This action will create your account on the Sandbox platform.
+
+**Get your credentials**
+
+Once activated, you will receive an email containing your Rainbow credentials for connecting to the Sandbox platform.
+
+You have now activated your sandbox account.
+
+#### Creating your test accounts
+
+When you create your Rainbow sandbox account, a company is created with the name "Company of *<username>*". The Rainbow sandbox account is member and administrator of this personal company.
+
+Test accounts can be created in this company. These will be visible only inside the company itself.
+
+There are two options to create and manage test accounts on the Sandbox platform:
+
+The easiest way is to **connect to the Rainbow sanbox web client** (the link can be found in the **Sandbox** page of Rainbow for Developers). You have to connect to the Rainbow sandbox web client using your sandbox credentials. Then, click on the "Administration" tab, then "MyCompany" / "Members".
+
+The other option to manage test accounts on the Sandbox platform is **using the Rainbow CLI command line tool**:
+
+Step
+
+Description
+
+**Install the Rainbow CLI**
+
+The first step is to install our **Rainbow CLI** application for connecting to the Sandbox platform for developers.  
+You need to install [Node.JS](https://nodejs.org/) and then the [Rainbow CLI](/docs/sdk/cli/tutorials/Getting_started) package.
+
+**Connect the Rainbow CLI**
+
+Launch the command `rbw configure` to configure your Rainbow CLI application with the sandbox credentials received by email.  
+Launch the command `rbw login` to connect to the Rainbow Sandbox platform for developers.
+
+**Create your test accounts**
+
+Once connected, to create test accounts, launch the command `rbw create user` like described in the guide [Managing test accounts](/docs/sdk/cli/tutorials/Managing_tests_accounts) to create a test account
+
+**Use your tests accounts**
+
+You can use or modify the accounts created either by using the Rainbow CLI application (use the command `rbw commands` to have the full list of available commands) or by using the Rainbow sandbox web client.
+
+Your test accounts are now ready. Now, you need to register an application to connect to Rainbow.
+
+#### Creating your application
+
+You must have an application identifier and secret key to identify your application on the Rainbow Sandbox platform for developers like on the Rainbow Production platform.
+
+There are two ways to create and manage your applications on the Rainbow Sandbox platform.
+
+The easiest way is to use the Rainbow for Developers **Sandbox** section. You need to click the "Connect to sandbox" button and to enter your sandbox account credentials in the login popup. Then the list of existing applications will be displayed (if any). You will be able to create, modify or delete sandbox applications.
+
+The alternative way is to use the Rainbow CLI command line tool:
+
+Step
+
+Description
+
+**Connect the Rainbow CLI**
+
+Launch the command `rbw configure` to configure your Rainbow CLI application with the sandbox credentials received by email.  
+Launch the command `rbw login` to connect to the Rainbow Sandbox platform for developers.
+
+**Create your application**
+
+Launch the command `rbw application create` to create an application.  
+This application is automatically deployed and so can connect to the Rainbow Sandbox platform for developers.
+
+**Get your application id**
+
+To get your application id and secret key, use the commands `rbw applications` and `rbw application`.  
+Read the guide [Managing applications](/docs/sdk/cli/tutorials/Managing_applications) to have more information.
+
+Now that the application has been registered, the final step is to connect a test account to the Rainbow Sandbox platform for developers using the application id and secret key generated and through a SDK or the REST APIs.
+
+#### Identifying your application
+
+After registering your application, you need to identify it by using the associated **application key** and **secret key**.
+
+The following table describes the procedure for each SDK or API:
+
+Using
+
+Task to do
+
+[**Rainbow SDK for Web**](/web)
+
+You need to replace the value of the parameters `strApplicationID`, `strApplicationSecret` of the API `initialize()` with your application information.  
+Read the Rainbow SDK for Web [Adding application id and secret key](/docs/sdk/web) guide for more information.
+
+[**Rainbow SDK for Android**](/android)
+
+You need to replace the value of the parameters `applicationId`, `secretKey` of the API `initialize()` with your application information.  
+Read the Rainbow SDK for Android [Getting Started](/docs/sdk/android) guide for more information.
+
+[**Rainbow SDK for iOS**](/ios)
+
+You need to add the `appID` and `appSecret` in application delegates method `application:didFinishLaunchingWithOptions`.  
+Read the Rainbow SDK for iOS [Getting Started](/docs/sdk/ios) guide for more information.
+
+[**Rainbow SDK for CSharp**](/csharp)
+
+You need to call `SetApplicationInfo()` method in `Application` object with `applicationId` and `applicationSecretKey`.  
+Read the Rainbow SDK for CSharp [Getting Started](/docs/sdk/csharp) guide for more information.
+
+[**Rainbow SDK for Node.JS**](/node)
+
+You need to replace the value of the `appID`, `appSecret` in your configuration file with your application information.  
+Read the Rainbow SDK for NodeJS [Getting Started](/docs/sdk/node) guide for more information.
+
+[**REST API**](/apis)
+
+You need to update the header `x-rainbow-app-auth` with your application information.  
+Read the REST APIs [Connecting to Rainbow](/docs/rest/Connecting_to_Rainbow) guide for more information.
+
+And finally, use your credentials to connect to Rainbow...
+
+#### Connecting to the Rainbow Sandbox platform for developers
+
+Finally, you need to connect to the Rainbow Sandbox platform for developers using one or your test accounts.
+
+The following table describes the procedure for each SDK or API:
+
+Using
+
+Task to do
+
+[**Rainbow SDK for Web**](/web)
+
+Use the method `signin()` with your test account credentials
+
+[**Rainbow SDK for Android**](/android)
+
+Use the method API `signin()` with your test account credentials. 3rd parameter has to be set to `sandbox.openrainbow.com`
+
+[**Rainbow SDK for iOS**](/ios)
+
+Use the `kChangeServerURLNotification` with `sandbox.openrainbow.com`  
+Read the Rainbow SDK for iOS [Getting Started](/docs/sdk/ios) guide for more information.
+
+[**Rainbow SDK for CSharp**](/csharp)
+
+Use the method `Login()` in `Application` object with your test account credentials.  
+Read the Rainbow SDK for CSharp [Getting Started](/docs/sdk/csharp) guide to have more information.
+
+[**Rainbow SDK for Node.JS**](/node)
+
+Parameters `login` and `password` have to be filled with your test account credentials.  
+Parameter `host` in configuration file have to be set to `sandbox.openrainbow.com`
+
+[**REST API**](/apis)
+
+Use the REST API [Login user](/api/authentication/index.html).  
+with your test account credentials. Request have to be sent to host `sandbox.openrainbow.com`
+
+If you did all these steps, you should now be ready to develop your application on the Rainbow Sandbox platform for developers with your test accounts.
+
+### Services and API offered
+
+---
+
+The Rainbow Sandbox platform for developers offers a limited set of Rainbow services that let you start and understand how SDK and Rainbow API work.
+
+The following services are accessible on our Rainbow Sandbox platform for developers:
+
+-   **Connection**: sign-in, sign-out,
+    
+-   **Contacts**: contacts management, invitations, search...,
+    
+-   **Presence**: own presence management, listen to contacts availability,
+    
+-   **Conversations**: One-to-one conversations, Bubbles conversations,
+    
+-   **Files sharing**: Sharing files in one-to-one conversation or in bubbles,
+    
+-   **Groups**: Group contacts together,
+    
+-   **WebRTC audio & video communication**: Full communication using Rainbow official infrastructure (TURN).
+    
+-   **Channels**: Send notifications to large number of users
+    
+-   **Provisionning and administrative tasks**: See guide REST APIs [Getting Started](/docs/rest/Getting_Started) to have the list of available APIs.
+    
+
+At this time of writing, the following services are not available or not fully available:
+
+-   **Telephony PBX**: Managing your phone using Rainbow API
+    
+-   **Others Business and Enterprise grade services**: At this time of writing, the Rainbow Sandbox platform for developers is restricted to **Essential** features.
+    
+-   **Push notifications**: When developing you mobile application using the Sandbox, you can test the push notifications from Rainbow by configuring the settings on the Sandbox. For iOS, the **development certificates** have to be used.
+    
+
+**Remark**: Rainbow Hub (Cloud PBX) feature is not available on Rainbow Sandbox platform.
+
+### Administrative tasks
+
+---
+
+We encourage you to discover and use our home-made **Rainbow CLI** tool to administrate your test accounts.
+
+Using our Rainbow CLI application, you can create new accounts and remove some. You can have access to all your user parameters, see for example if an account is locked or has never been used.
+
+And you can change the login and the password for your test accounts if needed.
+
+Many other administrative operations can be done using the Rainbow CLI tool.
+
+### Terms and conditions
+
+---
+
+The [Developer agreement](/legal) and the [Rainbow for Developers services agreement](/legal) are applicable on the Rainbow Sandbox platform for developers.
+
+### Appendice: Connect Rainbow official applications
+
+---
+
+Our Rainbow official applications (i.e. Web, Desktop, iOS and Android) can be connected to the Rainbow Sandbox platform for developers in order to help you developping your application with Rainbow. By connecting one of our Rainbow application, you can check the interoperability with your application if you need or for example have a user that can interact with your bot.
+
+### Connecting the Rainbow Web application
+
+---
+
+To connect the Rainbow web client to the Rainbow Sandbox platform for developers, open your browser to the following [URL](https://web-sandbox.openrainbow.com/).
+
+The Rainbow web client will be launched on that platform. You can sign-in using your developer account or your tests accounts.
+
+### Connecting the Rainbow Desktop application
+
+---
+
+This procedure will help you connecting the Rainbow Desktop application to the Rainbow Sandbox platform for developers.
+
+After having started the client at least one time, find and edit the following file:
+
+On Windows:
+
+```shell
+%appdata%\Alcatel-Lucent Enterprise\Rainbow\Settings
+```
+
+On macOs:
+
+```shell
+~/Library/Application Support/Alcatel-Lucent Enterprise/Rainbow/Settings
+```
+
+The `Settings` file is an XML formatted file, see content example here:
+
+```XML
+{
+  "handFreeInputDeviceName": "Microphone interne (Built-in)",
+  "handFreeOutputDeviceName": "Haut-parleurs internes (Built-in)",
+  "language": "fr",
+  "secondarySpeakerUsed": "Haut-parleurs internes (Built-in)",
+  "shareCalendarInfo": false,
+  "autoStart": false,
+  "minimizeOnClosed": true,
+  "activeAlarm": "relax1",
+  "activeNotif": "notif1",
+  "skipUpdatePrompt": false,
+  "headsetDeviceName": "Konftel Ego (28db:0954)",
+  "audioProfile": "headset"
+}
+```
+
+Add the following line:
+
+```XML
+"domain": "web-sandbox.openrainbow.com"
+```
+
+Be careful if the new line is not the last one, do not forget to add a coma at the end of line as shown in this example:
+
+```XML
+{
+  "domain": "web-sandbox.openrainbow.com",
+  "handFreeInputDeviceName": "Microphone interne (Built-in)",
+  "handFreeOutputDeviceName": "Haut-parleurs internes (Built-in)",
+  "language": "fr",
+  "secondarySpeakerUsed": "Haut-parleurs internes (Built-in)",
+  "shareCalendarInfo": false,
+  "autoStart": false,
+  "minimizeOnClosed": true,
+  "activeAlarm": "relax1",
+  "activeNotif": "notif1",
+  "skipUpdatePrompt": false,
+  "headsetDeviceName": "Konftel Ego (28db:0954)",
+  "audioProfile": "headset"
+}
+```
+
+Restart you client, you should be prompted to sign-in. Use your developer account or your tests account provided and you should then be connected to that platform.
+
+### Connecting the Rainbow iOS application
+
+---
+
+If you want to connect your Rainbow iOS application to the Rainbow Sandbox platform for developers, you need first to stop it.
+
+Then, from your iOS device, open your Safari browser to the following URL
+
+```js
+rainbow://sandbox.openrainbow.com
+```
+
+That should trigger a restart of the Rainbow iOS application connected now to the Rainbow Sandbox platform for developers.
+
+Be careful, when connected to the Rainbow Sandbow platform, the push notification is not available.
+
+To restore your Rainbow iOS application, do the same with that URL:
+
+```js
+rainbow://openrainbow.com
+```
+
+Your Rainbow iOS application should now connect to the Rainbow official platform.
+
+### Connecting the Rainbow Android application
+
+---
+
+You can connect your Rainbow Android application to the Rainbow Sandbox platform for developers by doing the following manipulation:
+
+-   Logout from your Rainbow application.
+    
+-   Then from the sign-in screen, tap 5 times on the Rainbow logo.
+    
+-   A new field is displayed. Enter the value `sandbox.openrainbow.com`. Check that your credentials are corrects. And finally, tap on the sign-in button.
+    
+
+### Interested in
+
+---
+
+-   [Deploying your application on Rainbow production](/docs/hub/get-ready-for-production)
+    
+-   [Managing your application](/docs/hub/application-lifecycle)
+    
+
+---
+
+*Last updated June 1, 2023*
+
+### Sur cette page
+
+-   [Development on Sandbox](/docs/hub/developer-sandboxed-platform#name-development-on-sandbox-0)
+-   [Sandbox platform for developers vs Production platform](/docs/hub/developer-sandboxed-platform#name-sandbox-platform-for-developers-vs-production-platform-16)
+-   [Free of charge](/docs/hub/developer-sandboxed-platform#name-free-of-charge-32)
+-   [Developing on Rainbow Sandbox platform for developers](/docs/hub/developer-sandboxed-platform#name-developing-on-rainbow-sandbox-platform-for-developers-45)
+-   [Activating your Sandbox developer account](/docs/hub/developer-sandboxed-platform#name-activating-your-sandbox-developer-account-52)
+-   [Creating your test accounts](/docs/hub/developer-sandboxed-platform#name-creating-your-test-accounts-99)
+-   [Creating your application](/docs/hub/developer-sandboxed-platform#name-creating-your-application-166)
+-   [Identifying your application](/docs/hub/developer-sandboxed-platform#name-identifying-your-application-222)
+-   [Connecting to the Rainbow Sandbox platform for developers](/docs/hub/developer-sandboxed-platform#name-connecting-to-the-rainbow-sandbox-platform-for-developers-296)
+-   [Services and API offered](/docs/hub/developer-sandboxed-platform#name-services-and-api-offered-370)
+-   [Administrative tasks](/docs/hub/developer-sandboxed-platform#name-administrative-tasks-450)
+-   [Terms and conditions](/docs/hub/developer-sandboxed-platform#name-terms-and-conditions-466)
+-   [Appendice: Connect Rainbow official applications](/docs/hub/developer-sandboxed-platform#name-appendice:-connect-rainbow-official-applications-473)
+-   [Connecting the Rainbow Web application](/docs/hub/developer-sandboxed-platform#name-connecting-the-rainbow-web-application-480)
+-   [Connecting the Rainbow Desktop application](/docs/hub/developer-sandboxed-platform#name-connecting-the-rainbow-desktop-application-490)
+-   [Connecting the Rainbow iOS application](/docs/hub/developer-sandboxed-platform#name-connecting-the-rainbow-ios-application-523)
+-   [Connecting the Rainbow Android application](/docs/hub/developer-sandboxed-platform#name-connecting-the-rainbow-android-application-547)
+-   [Interested in](/docs/hub/developer-sandboxed-platform#name-interested-in-571)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

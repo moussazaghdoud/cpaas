@@ -1,0 +1,244 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharpprevious/core/lts/guides/028_events_and_callback"
+lastSynced: "2026-02-19T22:35:14.351Z"
+---
+# Documentation
+
+Events, Callback and SDKResult
+
+LTS release 2.6.XPubliée le 2021-12-13
+
+## Events, Callbacks and SDKResult object
+
+### Events and asynchronous methods
+
+---
+
+The SDK is event-based and most methods are asynchronous.
+
+An event is a message sent by an object to signal the occurrence of an action. For example at any time, the state of the connection with the server can change: no more network connection for example (lost wifi...). It is therefore necessary to process this type of information at all times
+
+The methods are asynchronous because the SDK must request the server using [REST requests](https://en.wikipedia.org/wiki/REST), which can take some time. A callback is used to inform the user when the operation is finished - normally or with error.
+
+So you need to know how events and callback worked in C# if you want to understand how to use the SDK. IF you are already familiar with them you don't need to read all this guide but perhaps just the chapter about the [SDKResult object](#SDKResult_object).
+
+### Register to events
+
+---
+
+To register to an event you have to specify the method which will be used to receive the message raised by the event. This method must have the correct signature according the event used.
+
+For example if we focus on `InitializationPerformed` and `ConnectionStateChanged` of the `Rainbow.Application` object, they are defined like this:
+
+```csharp
+public event EventHandler<EventArgs> InitializationPerformed;
+public event EventHandler<Rainbow.Events.ConnectionStateEventArgs> ConnectionStateChanged;
+```
+
+So to receive these events we must create a method for each, for example `Application_InitializationPerformed` and `Application_ConnectionStateChanged` like this
+
+```csharp
+private void Application_InitializationPerformed(object sender, EventArgs e)
+{
+    // TO DO ...    
+}
+
+private void Application_ConnectionStateChanged(object? sender, Rainbow.Events.ConnectionStateEventArgs e)
+{
+    // TO DO ...    
+}
+```
+
+Once we have defined these methods, we must indicate that they must be used when these events are used like this:
+
+```csharp
+// Create Rainbow.Application object
+Rainbow.Application myApp = new Rainbow.Application();
+
+// Register to event InitializationPerformed
+myApp.InitializationPerformed += Application_InitializationPerformed;
+
+// Register to event InitializationPerformed
+myApp.ConnectionStateChanged += Application_ConnectionStateChanged;
+```
+
+Notice in the previous code the use of `+=` to link the event to the method.
+
+Notice also that these methods will be used ONLY when the object `myApp` need to raise the event `InitializationPerformed` and `ConnectionStateChanged`.
+
+So the full code will be:
+
+```csharp
+// Create Rainbow.Application object
+Rainbow.Application myApp = new Rainbow.Application();
+
+// Register to event InitializationPerformed
+myApp.InitializationPerformed += Application_InitializationPerformed;
+
+// Register to event InitializationPerformed
+myApp.ConnectionStateChanged += Application_ConnectionStateChanged;
+
+// Define method Application_InitializationPerformed which will be called when event InitializationPerformed will be raised
+private void Application_InitializationPerformed(object sender, EventArgs e)
+{
+    // TO DO ...    
+}
+
+// Define method Application_InitializationPerformed which will be called when event ConnectionStateChanged will be raised
+private void Application_ConnectionStateChanged(object? sender, Rainbow.Events.ConnectionStateEventArgs e)
+{
+    // TO DO ...    
+}
+```
+
+It's possible to register several times to the same event using the same method (in this case the method will be called several times) or a different one still using `+=`
+
+### Unregister to events
+
+---
+
+It's higly recommended to unregister to events if they are no more necessary - for example in desctructor of objects.
+
+For this you just have to use `-=` with method(s) used to receive the event. So to continue our example, we will use this:
+
+```csharp
+// Unregister to event InitializationPerformed
+myApp.InitializationPerformed -= Application_InitializationPerformed;
+
+// Unregister  to event InitializationPerformed
+myApp.ConnectionStateChanged -= Application_ConnectionStateChanged;
+```
+
+### Manage callback
+
+---
+
+A lot of methods in the SDK use callback mainly when the server is implied to provide the correct reponse.
+
+When a callback is used, it means that :
+
+1.  The method is asynchronous and the result of the method will be provided in the callback.
+2.  The code continue immediately after the call to asynchronous method
+3.  The callback will be called in another thread that the one used to call the method
+
+To know if a method is asynchronous just look for `Action` or `Action<...>` int its parameters.
+
+For example in the `Rainbow.Contacts` service, we have this public methods available:
+
+```csharp
+public Company GetCurrentCompanyFromCache();
+
+public void GetCurrentCompany(Action<SdkResult<Company>> callback);
+```
+
+`GetCurrentCompanyFromCache()` is not asynchronous and will provide a `Company` object using data in the cache of the SDK.
+
+`GetCurrentCompany` has `Action<...>` as parameter. So it's an asynchronous method. The result will be provided by a callback.
+
+Below an example how to manage these both methods:
+
+```csharp
+// Create Rainbow.Application object
+Rainbow.Application myApp = new Rainbow.Application();
+
+// Get Rainbow.Contacts service
+Rainbow.Contacts myContactsService = myApp.GetContacts();;
+
+// We need to login to the rainbow server before to really use the contacts service
+// For simplification the code to do that is not here 
+
+// Get Company object of the user connected with the SDK using the cache
+Company myCompany = myContactsService.GetCurrentCompanyFromCache(); 
+
+// Get Company object of the user connected with the SDK but here we want to ensure to have the last information so we ask the server
+myContactsService.GetCurrentCompany(callback => // The name "callback" here can be changed at your convenience
+{
+    // This part of code is called when the SDK has finished to ask the server the correct information (with success or not) and process it 
+    // So this part of code can be called several ms or even seconds after the call of the asynchronous method ...
+    
+    // "callback" is an object which contains an object according the signature of method - here it's a "SdkResult<Company>" object
+});
+
+// => Here the code is called nearly immediatly after the call to the asynchronous method. It doesn't mean that the code defined to manage the callback is already performed.
+```
+
+### SDKResult object
+
+---
+
+Most of SDK methods use `SdkResult<T>` object to provide a result or the reason of the error.
+
+If no error occurs `SdkResult<T>.Result.Succcess` is equal to True. In this case `SdkResult<T>.Data` contains an object of `T` type.
+
+If an error occurs `SdkResult<T>.Result.Succcess` is equal to False. To get information about the error the `SdkResult<T>.Result` (which is a SdkError object) must be used.
+
+There is three type of `SdkError` - see `Rainbow.SdkError.SdkErrorType` obhect:
+
+-   `SdkErrorType.NoError`: There is no error. You have to use `SdkResult<T>.Data` to get the result.
+-   `SdkErrorType.Exception`: An unexpected exception has occurred. To have more information use `SdkError.ExceptionError` object
+-   `SdkErrorType.IncorrectUse`: The way to use the method is not done correctly (network error, server errors, or sdk errors - like invalid parameter). In this case you can use properties `ErrorCode`, `ErrorDetailsCode`, `ErrorDetails`, `ErrorDetailsData` and `ErrorMsg` of the object `SdkError.IncorrectUseError` for more information.
+
+if `SdkResult<T>.Result.IncorrectUseError.ErrorCode` is equals to 1000, it means that the SDK itself has raised an error.
+
+For other values, it means that the Rainbow server has raised an error.
+
+To have a full list of errors [check this page](/docs/sdk/csharp).
+
+Example with asynchronous method `GetCurrentCompany` of `Contacts` service:
+
+```csharp
+myContactsService.GetCurrentCompany(callback =>
+{
+    if (callback.Result.Success)
+    {
+        // The operation is a success - use Data member to get the expected data.
+        Company myCompany = callback.Data;
+    }
+    else
+    {
+        // The operation is NOT a success
+
+        // Check error type
+        if (callback.Result.Type == Rainbow.SdkError.SdkErrorType.Exception)
+        {
+            // An exception has occurred - get the Exception object
+            Exception exception = callback.Result.ExceptionError;
+
+            // Here we can use stack information, etc ... 
+            // See https://learn.microsoft.com/en-us/dotnet/api/system.exception?view=net-6.0 
+        }
+        else
+        {
+            // We use badly the SDK or we don't have permission
+            SdkIncorrectUseError incorrectUseError = callback.Result.IncorrectUseError;
+
+            if (incorrectUseError.ErrorCode == 1000)
+            {
+                // The SDK itself informs us of an error - check details to have more information
+            }
+            else
+            {
+                // The server has returned an error - check details to have more information
+            }
+        }
+    }
+});
+```
+
+### Sur cette page
+
+-   [Events, Callbacks and SDKResult object](/docs/sdk/csharp#name-events-callbacks-and-sdkresult-object-0)
+-   [Events and asynchronous methods](/docs/sdk/csharp#name-events-and-asynchronous-methods-3)
+-   [Register to events](/docs/sdk/csharp#name-register-to-events-19)
+-   [Unregister to events](/docs/sdk/csharp#name-unregister-to-events-51)
+-   [Manage callback](/docs/sdk/csharp#name-manage-callback-62)
+-   [SDKResult object](/docs/sdk/csharp#name-sdkresult-object-109)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

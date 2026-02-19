@@ -1,0 +1,912 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/channels"
+lastSynced: "2026-02-19T22:35:14.957Z"
+---
+# Documentation
+
+Channels service
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Channels
+
+This service gives access to channels in Rainbow. It is a Publish–subscribe pattern implementation Rainbow users can create channels. Currently, there is a configuration limit for max\_items=100 and a source code limit for max\_payload\_size=60000 bytes The main methods and events proposed in that service allow to:  
+\- Get all channels owned by an user  
+\- Find a channel, get a channel, if owned modify it  
+\- Subscribe/Unsubscribe to a channel (you are not automatically subscried to a channel you own)  
+\- Publish a message to a channel  
+\- Manage users in a channel you own
+
+**Emits**: `event:RAINBOW_ONCHANNELMESSAGERECEIVED`, `event:RAINBOW_ONCHANNELUPDATED`, `event:RAINBOW_ONCHANNELDELETED`, `event:RAINBOW_ONCHANNELRETRACTMESSAGERECEIVED`, `event:RAINBOW_ONCHANNELAVATARUPDATED`, `event:RAINBOW_ONCHANNELUSERSUBSCRIBED`, `event:RAINBOW_ONCHANNELUSERUNSUBSCRIBED`
+
+-   [Channels](#module_Channels)
+    -   [fetchMyChannels()](#module_Channels+fetchMyChannels) ⇒ `Promise`
+    -   [createPublicChannel(channelName, channelTopic, category)](#module_Channels+createPublicChannel) ⇒ `Promise`
+    -   [createClosedChannel(channelName, \[channelTopic\], \[category\])](#module_Channels+createClosedChannel) ⇒ `Promise`
+    -   [deleteChannel(id)](#module_Channels+deleteChannel) ⇒ `Promise`
+    -   [fetchChannelsByName(\[name\])](#module_Channels+fetchChannelsByName) ⇒ `Promise`
+    -   [fetchChannelsByTopic(\[topic\])](#module_Channels+fetchChannelsByTopic) ⇒ `Promise`
+    -   [fetchChannelsByCategory(\[category\])](#module_Channels+fetchChannelsByCategory) ⇒ `Promise`
+    -   [fetchChannel(id)](#module_Channels+fetchChannel) ⇒ `Promise`
+    -   [createItem(channelId, message, \[title\], \[itemType\])](#module_Channels+createItem) ⇒ `Promise`
+    -   [subscribeToChannelById(id)](#module_Channels+subscribeToChannelById) ⇒ `Promise`
+    -   [subscribeToChannel(channel)](#module_Channels+subscribeToChannel) ⇒ `Promise`
+    -   [unsubscribeFromChannelById(id)](#module_Channels+unsubscribeFromChannelById) ⇒ `Promise`
+    -   [unsubscribeFromChannel(channel)](#module_Channels+unsubscribeFromChannel) ⇒ `Promise`
+    -   [updateChannel(id, \[channelTopic\], \[visibility\], \[maxItems\], \[maxPayloadSize\], \[channelName\], \[category\])](#module_Channels+updateChannel) ⇒ `Promise`
+    -   [updateChannelVisibility(id, visibility)](#module_Channels+updateChannelVisibility) ⇒ `Promise`
+    -   [updateChannelVisibilityToPublic(id)](#module_Channels+updateChannelVisibilityToPublic) ⇒ `Promise`
+    -   [updateChannelVisibilityToClosed(id)](#module_Channels+updateChannelVisibilityToClosed) ⇒ `Promise`
+    -   [updateChannelName(id, channelName)](#module_Channels+updateChannelName) ⇒ `Promise`
+    -   [updateChannelTopic(id, channelTopic)](#module_Channels+updateChannelTopic) ⇒ `Promise`
+    -   [updateChannelCategory(id, category)](#module_Channels+updateChannelCategory) ⇒ `Promise`
+    -   [updateChannelAvatar(id, urlAvatar)](#module_Channels+updateChannelAvatar) ⇒ `Promise`
+    -   [deleteChannelAvatar(id)](#module_Channels+deleteChannelAvatar) ⇒ `Promise`
+    -   [fetchUsers(id, \[options\])](#module_Channels+fetchUsers) ⇒ `Promise`
+    -   [deleteAllUsersFromChannel(id)](#module_Channels+deleteAllUsersFromChannel) ⇒ `Promise`
+    -   [updateChannelUsers(id, users, \[userType\])](#module_Channels+updateChannelUsers) ⇒ `Promise`
+    -   [addMembersToChannel(id, users)](#module_Channels+addMembersToChannel) ⇒ `Promise`
+    -   [addPublishersToChannel(id, users)](#module_Channels+addPublishersToChannel) ⇒ `Promise`
+    -   [addOwnersToChannel(id, users)](#module_Channels+addOwnersToChannel) ⇒ `Promise`
+    -   [deleteUsersFromChannel(id, users)](#module_Channels+deleteUsersFromChannel) ⇒ `Promise`
+    -   [fetchItems(id, \[maxMessages\], \[beforeDate\], \[afterDate\])](#module_Channels+fetchItems) ⇒ `Promise`
+    -   [deleteItem(id, itemId)](#module_Channels+deleteItem) ⇒ `Promise`
+
+### channels.fetchMyChannels() ⇒ `Promise`
+
+Get the channels you own, are subscribed to or are publisher of
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Return a list of channels or an empty array if no channel has been found  
+**Access**: public  
+
+### channels.createPublicChannel(channelName, channelTopic, category) ⇒ `Promise`
+
+Create a public channel
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Promise containing a new channel object or an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+channelName
+
+`string`
+
+The name of the channel
+
+channelTopic
+
+`string`
+
+The topic of the channel
+
+category
+
+`string`
+
+The category of the channel
+
+### channels.createClosedChannel(channelName, \[channelTopic\], \[category\]) ⇒ `Promise`
+
+Create a closed channel
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Promise containing the channel created or an error  
+**Access**: public
+
+Param
+
+Type
+
+Default
+
+Description
+
+channelName
+
+`string`
+
+The name of the channel
+
+\[channelTopic\]
+
+`string`
+
+The topic of the channel
+
+\[category\]
+
+`string`
+
+The category of the channel
+
+### channels.deleteChannel(id) ⇒ `Promise`
+
+Delete a channel
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Nothing or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+### channels.fetchChannelsByName(\[name\]) ⇒ `Promise`
+
+Find channels by name
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Promise containing array of channels found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+\[name\]
+
+`string`
+
+search by channel names (case insensitive substring).
+
+### channels.fetchChannelsByTopic(\[topic\]) ⇒ `Promise`
+
+Find channels by topic
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Promise containing array of channels found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+\[topic\]
+
+`string`
+
+search by channel topics (case insensitive substring).
+
+### channels.fetchChannelsByCategory(\[category\]) ⇒ `Promise`
+
+Find channels by category
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Promise containing array of channels found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+\[category\]
+
+`string`
+
+search by channel category (case insensitive substring).
+
+### channels.fetchChannel(id) ⇒ `Promise`
+
+Fetch a channel
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Promise containing array of channels found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+### channels.createItem(channelId, message, \[title\], \[itemType\]) ⇒ `Promise`
+
+Publish an item (post) to a channel
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Nothing or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Default
+
+Description
+
+channelId
+
+`string`
+
+The channel to publish
+
+message
+
+`string`
+
+The message to send
+
+\[title\]
+
+`string`
+
+An optional title
+
+\[itemType\]
+
+`string`
+
+`basic`
+
+An optional message content type (could be basic, markdown, html or data)
+
+### channels.subscribeToChannelById(id) ⇒ `Promise`
+
+Subscribe to a channel using its id
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Nothing or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+### channels.subscribeToChannel(channel) ⇒ `Promise`
+
+***Deprecated***
+
+Subscribe to a channel (deprecated: need to use old models)
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Nothing or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+channel
+
+`object`
+
+The channel object
+
+### channels.unsubscribeFromChannelById(id) ⇒ `Promise`
+
+UnsubscribeFromChannel by its id
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Nothing or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+### channels.unsubscribeFromChannel(channel) ⇒ `Promise`
+
+***Deprecated***
+
+Unsubscribe to a channel (deprecated, need to use old models)
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Nothing or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+channel
+
+`object`
+
+The channel object
+
+### channels.updateChannel(id, \[channelTopic\], \[visibility\], \[maxItems\], \[maxPayloadSize\], \[channelName\], \[category\]) ⇒ `Promise`
+
+Update a channel May be updated: name, topic, visibility, max\_items and max\_payload Put null to not update a property.
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Return the channel created or an error  
+**Access**: public
+
+Param
+
+Type
+
+Default
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+\[channelTopic\]
+
+`string`
+
+The topic of the channel
+
+\[visibility\]
+
+`string`
+
+`public`
+
+public/company/closed group visibility for search
+
+\[maxItems\]
+
+`number`
+
+`30`
+
+max number of items to persist in the channel
+
+\[maxPayloadSize\]
+
+`number`
+
+`60000`
+
+max # of items to persist in the channel
+
+\[channelName\]
+
+`string`
+
+The name of the channel
+
+\[category\]
+
+`string`
+
+The category of the channel
+
+### channels.updateChannelVisibility(id, visibility) ⇒ `Promise`
+
+Update a channel visibility
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Channel updated or an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+visibility
+
+`string`
+
+The new channel visibility (closed or company)
+
+### channels.updateChannelVisibilityToPublic(id) ⇒ `Promise`
+
+Set the channel visibility to company (visible for users in that company)
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Channel updated or an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+### channels.updateChannelVisibilityToClosed(id) ⇒ `Promise`
+
+Set the channel visibility to closed (not visible by users)
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Channel updated or an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+### channels.updateChannelName(id, channelName) ⇒ `Promise`
+
+Update a channel name
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Channel updated or an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+channelName
+
+`string`
+
+The name of the channel
+
+### channels.updateChannelTopic(id, channelTopic) ⇒ `Promise`
+
+Update a channel topic
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Channel updated or an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+channelTopic
+
+`string`
+
+The topic of the channel
+
+### channels.updateChannelCategory(id, category) ⇒ `Promise`
+
+Update a channel category
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Channel updated or an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+category
+
+`string`
+
+The category of the channel
+
+### channels.updateChannelAvatar(id, urlAvatar) ⇒ `Promise`
+
+Update a channel avatar
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - SDK OK object or an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+Channel ID
+
+urlAvatar
+
+`string`
+
+The avatar Url. It will be resized to 512 pixels.
+
+### channels.deleteChannelAvatar(id) ⇒ `Promise`
+
+Delete a channel avatar
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Return the channel updated or an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+### channels.fetchUsers(id, \[options\]) ⇒ `Promise`
+
+Get the users in a channel
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Return the users in an array or an error with {string} data.id - user Rainbow Id {type=owner,publisher,member} data.type - user channel affiliation {Date} data.additionDate - user addition date {string} data.loginEmail - user login {string} data.displayName - user display name {string} data.companyId - user rainbow company id {string} data.companyName - user rainbow name  
+**Access**: public
+
+Param
+
+Type
+
+Default
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+\[options\]
+
+`object`
+
+`{}`
+
+options (optionnal), with {string=small, medium, full} \[options.format=small\] Allows to retrieve more or less user details in response.  
+\- `small`: id type additionDate loginEmail displayName companyId companyName  
+\- `medium`: id type additionDate loginEmail firstName lastName displayName country jid\_im jid\_tel companyId companyName  
+\- `full`: all user fields + type {string} \[options.types\] Allows to filter users list on the affiliation types provided in this option. {number} \[options.limit=100\] Allow to specify the number of users to retrieve. {number} \[options.offset\] Allow to specify the position of first user to retrieve (first user if not specified). Warning: if offset > total, no results are returned. {string} \[options.sortField=displayName\] Sort user list based on the given field. {number=-1,1} \[options.sortOrder=1\] Specify order when sorting user list.
+
+### channels.deleteAllUsersFromChannel(id) ⇒ `Promise`
+
+Remove all the users in a channel
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - The channel updated  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+### channels.updateChannelUsers(id, users, \[userType\]) ⇒ `Promise`
+
+Updates an array of users in a channel to userType. You may add users by roles or remove them.
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Arrays or users added, removed and updated or an error object depending on the result {String\[\]} removed - removed users ids {String\[\]} updated - updated users ids {String\[\]} added - added users  
+**Access**: public
+
+Param
+
+Type
+
+Default
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+users
+
+`Array`
+
+Array of users
+
+\[userType\]
+
+`string`
+
+`member`
+
+Affiliation. Can be none (no more subscribed to the channel),owner,publisher or member}
+
+### channels.addMembersToChannel(id, users) ⇒ `Promise`
+
+Add members to a channel
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - arrays or users added  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+users
+
+`Array`
+
+Array of users to add with a member affiliation
+
+### channels.addPublishersToChannel(id, users) ⇒ `Promise`
+
+Add publishers to a channel
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - arrays or users added  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+users
+
+`Array`
+
+Array of users to add with a publisher affiliation
+
+### channels.addOwnersToChannel(id, users) ⇒ `Promise`
+
+Add owners to a channel
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - arrays or users added  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+users
+
+`Array`
+
+Array of users to add with a owner affiliation
+
+### channels.deleteUsersFromChannel(id, users) ⇒ `Promise`
+
+Delete users from a channel
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - arrays or users removed  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+users
+
+`Array`
+
+Array of users to remove
+
+### channels.fetchItems(id, \[maxMessages\], \[beforeDate\], \[afterDate\]) ⇒ `Promise`
+
+Updates an array of users in a channel to userType. You may add users by roles or remove them.
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - arrays of messages with for example for a message "id": "STRINGID", "channelId": "CHANNELID", "from": "EXAMPLECONTACT@opentouch.com", "timestamp": "2019-02-08T01:43:53.353Z", "type": "urn:xmpp:channels:basic", "title": "title 7", \[optional\] "message": "message 7", \[optional\] "url": "http://google.com" \[optional\]  
+**Access**: public
+
+Param
+
+Type
+
+Default
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+\[maxMessages\]
+
+`number`
+
+`10`
+
+\[optional\] number of messages to get, 10 by default
+
+\[beforeDate\]
+
+`Date`
+
+\[optional\] - show items before a specific timestamp (ISO 8601 format)
+
+\[afterDate\]
+
+`Date`
+
+\[optional\] - show items after a specific timestamp (ISO 8601 format)
+
+### channels.deleteItem(id, itemId) ⇒ `Promise`
+
+Delete channel item by its ID.
+
+**Kind**: instance method of [`Channels`](#module_Channels)  
+**Returns**: `Promise` - Promise resolution or an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+itemId
+
+`string`
+
+The id of the item
+
+### Sur cette page
+
+-   [Channels](/docs/sdk/web#name-channels-3)
+-   [channels.fetchMyChannels() ⇒ Promise](/docs/sdk/web#name-channels.fetchmychannels--promise-179)
+-   [channels.createPublicChannel(channelName, channelTopic, category) ⇒ Promise](/docs/sdk/web#name-channels.createpublicchannelchannelname-channeltopic-category--promise-188)
+-   [channels.createClosedChannel(channelName, \[channelTopic\], \[category\]) ⇒ Promise](/doc/sdk/web/lts/api/channels#name-channels.createclosedchannelchannelname-channeltopic-category--promise-250)
+-   [channels.deleteChannel(id) ⇒ Promise](/docs/sdk/web#name-channels.deletechannelid--promise-324)
+-   [channels.fetchChannelsByName(\[name\]) ⇒ Promise](/doc/sdk/web/lts/api/channels#name-channels.fetchchannelsbynamename--promise-364)
+-   [channels.fetchChannelsByTopic(\[topic\]) ⇒ Promise](/doc/sdk/web/lts/api/channels#name-channels.fetchchannelsbytopictopic--promise-404)
+-   [channels.fetchChannelsByCategory(\[category\]) ⇒ Promise](/doc/sdk/web/lts/api/channels#name-channels.fetchchannelsbycategorycategory--promise-444)
+-   [channels.fetchChannel(id) ⇒ Promise](/docs/sdk/web#name-channels.fetchchannelid--promise-484)
+-   [channels.createItem(channelId, message, \[title\], \[itemType\]) ⇒ Promise](/doc/sdk/web/lts/api/channels#name-channels.createitemchannelid-message-title-itemtype--promise-524)
+-   [channels.subscribeToChannelById(id) ⇒ Promise](/docs/sdk/web#name-channels.subscribetochannelbyidid--promise-612)
+-   [channels.subscribeToChannel(channel) ⇒ Promise](/docs/sdk/web#name-channels.subscribetochannelchannel--promise-652)
+-   [channels.unsubscribeFromChannelById(id) ⇒ Promise](/docs/sdk/web#name-channels.unsubscribefromchannelbyidid--promise-695)
+-   [channels.unsubscribeFromChannel(channel) ⇒ Promise](/docs/sdk/web#name-channels.unsubscribefromchannelchannel--promise-735)
+-   [channels.updateChannel(id, \[channelTopic\], \[visibility\], \[maxItems\], \[maxPayloadSize\], \[channelName\], \[category\]) ⇒ Promise](/doc/sdk/web/lts/api/channels#name-channels.updatechannelid-channeltopic-visibility-maxitems-maxpayloadsize-channelname-category--promise-778)
+-   [channels.updateChannelVisibility(id, visibility) ⇒ Promise](/docs/sdk/web#name-channels.updatechannelvisibilityid-visibility--promise-908)
+-   [channels.updateChannelVisibilityToPublic(id) ⇒ Promise](/docs/sdk/web#name-channels.updatechannelvisibilitytopublicid--promise-959)
+-   [channels.updateChannelVisibilityToClosed(id) ⇒ Promise](/docs/sdk/web#name-channels.updatechannelvisibilitytoclosedid--promise-999)
+-   [channels.updateChannelName(id, channelName) ⇒ Promise](/docs/sdk/web#name-channels.updatechannelnameid-channelname--promise-1039)
+-   [channels.updateChannelTopic(id, channelTopic) ⇒ Promise](/docs/sdk/web#name-channels.updatechanneltopicid-channeltopic--promise-1090)
+-   [channels.updateChannelCategory(id, category) ⇒ Promise](/docs/sdk/web#name-channels.updatechannelcategoryid-category--promise-1141)
+-   [channels.updateChannelAvatar(id, urlAvatar) ⇒ Promise](/docs/sdk/web#name-channels.updatechannelavatarid-urlavatar--promise-1192)
+-   [channels.deleteChannelAvatar(id) ⇒ Promise](/docs/sdk/web#name-channels.deletechannelavatarid--promise-1243)
+-   [channels.fetchUsers(id, \[options\]) ⇒ Promise](/doc/sdk/web/lts/api/channels#name-channels.fetchusersid-options--promise-1283)
+-   [channels.deleteAllUsersFromChannel(id) ⇒ Promise](/docs/sdk/web#name-channels.deleteallusersfromchannelid--promise-1343)
+-   [channels.updateChannelUsers(id, users, \[userType\]) ⇒ Promise](/doc/sdk/web/lts/api/channels#name-channels.updatechannelusersid-users-usertype--promise-1383)
+-   [channels.addMembersToChannel(id, users) ⇒ Promise](/docs/sdk/web#name-channels.addmemberstochannelid-users--promise-1457)
+-   [channels.addPublishersToChannel(id, users) ⇒ Promise](/docs/sdk/web#name-channels.addpublisherstochannelid-users--promise-1508)
+-   [channels.addOwnersToChannel(id, users) ⇒ Promise](/docs/sdk/web#name-channels.addownerstochannelid-users--promise-1559)
+-   [channels.deleteUsersFromChannel(id, users) ⇒ Promise](/docs/sdk/web#name-channels.deleteusersfromchannelid-users--promise-1610)
+-   [channels.fetchItems(id, \[maxMessages\], \[beforeDate\], \[afterDate\]) ⇒ Promise](/doc/sdk/web/lts/api/channels#name-channels.fetchitemsid-maxmessages-beforedate-afterdate--promise-1661)
+-   [channels.deleteItem(id, itemId) ⇒ Promise](/docs/sdk/web#name-channels.deleteitemid-itemid--promise-1749)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

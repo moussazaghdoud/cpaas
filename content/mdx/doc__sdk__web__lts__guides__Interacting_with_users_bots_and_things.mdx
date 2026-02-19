@@ -1,0 +1,493 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/guides/Interacting_with_users_bots_and_things"
+lastSynced: "2026-02-19T22:35:16.005Z"
+---
+# Documentation
+
+Interacting with users
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Interacting with users, bots and things
+
+---
+
+Rainbow is called a **relationship machine** because by using our SDKs and APIs you can find users, bots and things, keep a link with each of them, make groups and interact with them in a unique way.
+
+Additionally, you can create **privileged relations** with them that let you access to information such as their **availability**. Doing so let you build a lot of scenarios and could help you knowing the best way to reach them.
+
+The Rainbow SDK for Web offers a lot of methods that will be covered in that guide to let you build and manage your relationships.
+
+### Rainbow Knowledge
+
+---
+
+Here are some Rainbow wordings that will help you understanding this guide.
+
+Rainbow concept
+
+Details
+
+**A contact**
+
+A contact is a Rainbow user who is in the network of the connected user.
+
+**The network**
+
+This is the list of contacts with whom you are sharing mutually your availability such as your phone presence, you activity presence, etc...  
+Network is empty by default and can grow by sending and accepting invitations to Rainbow users.  
+This action is call joining the network.
+
+**An invitation**
+
+An invitation to join the network is a request that can be sent to any Rainbow users who can be found by the search engine.  
+An invitation can be accepted or declined.  
+When accepted, the user is added to the network or other user and inversely.  
+When declined, the request is discarded.
+
+**A group**
+
+Users in Rainbow can be gathered by defining groups.  
+Groups allow to categorize and organize your relations, friends, colleagues, bots, connected things, etc.
+
+### Preamble
+
+---
+
+As indicated in the introduction, using Rainbow, you can interact with users, bots or things.
+
+Having an interaction means:
+
+-   Being able to discover any entities such a users, bots or things
+    
+-   Being able to dialog actively with them for example by making a video call with an user or receiving an instant message from a bot
+    
+-   Being able to keep a link to them (e.g. retrieving the conversation or creating groups)
+    
+-   And being able to get passive information from them such as their connection presence, phone presence, etc.- which means having a **privileged relation**.
+    
+
+The different kinds of interactions are described in the following paragraphs.
+
+### Discovering Rainbow entities
+
+---
+
+The first thing to do to interact with users is to be able to find them. This step can be done with the integrated search engine. The SDK for Web has several methods to let you search or get Rainbow users.
+
+#### Searching by name
+
+---
+
+If you know the `firstname` or the `lastname` or just some part of those data, you can use the method `searchByName()`. Using it, you need to specify at least the beginning of the name or the first name. Try to give as much information as you have in order to avoid having too many results. Here is an example of using this method:
+
+```js
+rainbowSDK.contacts.searchByName("Jon Doe", 10).then(function(usersFound) {
+        if(usersFound.length > 0) {
+            // At least one user has been found
+            usersFound.forEach(function(user) {
+                // Do something with each contact returned
+            });
+        }
+        else {
+            // No contact returned
+        }
+```
+
+If you do not specify any values for the `limit` parameter, a maximum of `20` results will be returned. No more `1000` results can be returned.
+
+This is the common method when searching for a user or a bot.
+
+#### Searching by Id or by Jid
+
+---
+
+If you know either the Rainbow `id` of the user or his `jid`, you can use the method `searchById()` or `searchByJid()` instead.
+
+These methods return the user if found or `null` elsewhere.
+
+```js
+rainbowSDK.contacts.searchById("5be9826de3bc5e54c13e00bd").then(function(entityFound) {
+        if(entityFound.) {
+            // Do something with the entity found
+        }
+        else {
+            // No entity returned
+        }
+```
+
+There are the common methods when searching for a bot or a connected thing.
+
+### Interacting with users and things
+
+---
+
+As mentioned previously, users or things are represented by the same structure that is a `Contact`.
+
+Once you have a `Contact` object representing a Rainbow user, a bot or a connected thing, you can use several methods to interact with. For example:
+
+-   **For exchanging instant messages and files**: Use the method `openConversationForContact()` from **Conversations** service. Once conversation is created or retrieved, you can send messages and files.
+    
+-   **For calling him in video**: To initiate an audio or audio and video call, use the method `callInAudio()` or `callInVideo()` from the **WebRTC** service.
+    
+-   **For collaborating with him in Bubbles**: Use the method `inviteContactToBubble()` from the **Bubbles** service to invite him to your bubble.
+    
+-   **For sending him notifications**: Use the method `addMembersToChannel()` from the **Channels** service to add him to a channel.
+    
+-   **For calling him by phone**: Use the method `callByNumber()` from the **Telephony** service to call him on his phone device.
+    
+-   **For keeping a direct link**: Use the method `addContactInGroup()` from the **Groups** service to add him to one of your groups. See the next paragraph for more details on `Groups`.
+    
+-   **For sharing your presence** Send an invitation to your network by calling the method `addToNetwork()`. More information about the user's network can be found below.
+    
+
+### Grouping contacts
+
+---
+
+Often you need to gather users, bots and things by group to identify for example users who have completed a task and users who have yet to do it. In order to do so, the SDK for Web has a service called **Groups** for creating multiple lists of users, each with a dedicated name.
+
+#### Get the existing groups
+
+---
+
+You can access to the list of created groups at any time by calling the method `getAll()`.
+
+```js
+// List of existing groups
+var groups = rainbowSDK.groups.getAll();
+
+// List of favorite groups
+var favoritesGroups = rainbowSDK.groups.getFavoritesGroups();
+
+// Do something with the list
+groups.forEach(function(group) {
+    // Do something with a group
+});
+```
+
+The method `getFavoritesGroups()` filters the groups and returns only the groups tagged as favorites.
+
+#### Get a group
+
+---
+
+If you known the `id` of a group, you can retrieve directly by using the method `getGroupById()`.
+
+```js
+// Get a group
+var groupId = "5be730aee3bc5e54c13dff2c";
+
+var group = rainbowSDK.groups.getGroupById(groupId);
+```
+
+#### Creating a new group
+
+---
+
+Creating a new group can be done by using the method `createGroup()`.
+
+To create a new group, you need to add a name, a description and choose if the group is a favorite group of not.
+
+*Note:* Favorite groups are not different but can be filtered and retrieved separately using method `getFavoriteGroups()`.
+
+```js
+// Create a new group
+var isFavorite = false;
+rainbowSDK.groups
+    .createGroup("Group name", "a description", isFavorite)
+    .then(function(group) {
+        // Do something with the group created
+    })
+    .catch(function(err) {
+        // Do something when there is an error creating the group
+    });
+```
+
+Once created, you can tag the group as favorite by using the method `setGroupAsFavorite()` and untag it from favorite by using the method `unsetGroupAsFavorite()`.
+
+```js
+// Get a group
+var groupId = "5be730aee3bc5e54c13dff2c";
+
+var group = rainbowSDK.groups.getGroupById(groupId);
+rainbowSDK.groups
+    .setGroupAsFavorite(group)
+    .then(function(group) {
+        // Do something when the group has been tagged as favorite
+    })
+    .catch(function(err) {
+        // Do something when there is an error getting the group as favorite
+    });
+```
+
+You can subscribe to event `RAINBOW_ONGROUPCREATED` to be notified when a group has been created. This could be useful when connected several times and doing this action with one of these connections.
+
+When a group is updated (e.g. due to the name change), the description of the favorite field, the event `RAINBOW_ONGROUPUPDATED` is fired.
+
+#### Adding and removing users in groups
+
+---
+
+To add a user to a group, use the method `addContactInGroup()`. This method takes two arguments: the `Contact` to add and the recipient `Group`.
+
+```js
+// Get a group
+var groupId = "5be730aee3bc5e54c13dff2c";
+var contactId = "5ce53d56e3bc5e56513def6c";
+
+var contact = rainbowSDK.contacts.getContactById(contactId);
+var group = rainbowSDK.groups.getGroupById(groupId);
+
+rainbowSDK.groups.addContactInGroup(contact, group);
+    .then(function(updatedGroup) {
+        // Do something when the group has been updated with the contact
+    })
+    .catch(function(err) {
+        // Do something when there is an error adding a user to the group
+    });
+```
+
+In the same way, you could remove a contact using the method `removeContactFromGroup()`.
+
+When users are added or removed from groups, the events `RAINBOW_ONGROUPUSERADDED` and `RAINBOW_ONGROUPUSERREMOVED` are fired accordingly to the action done.
+
+#### Listing users in groups
+
+---
+
+In order to reduce the bandwidth used when working with groups, the `Group` JavaScript object contains only a single reference to the user `id`. If you want to have more information about the contacts you could use the method `getDetailedGroupById()` which returns information such as the name and first name of the user and the date of joining the group. This method is asynchronous and get the information from Rainbow.
+
+```js
+rainbowSDK.groups.getDetailedGroupById(id);
+    .then(function(detailedGroup) {
+        // Do something when the group has been retrieved from Rainbow
+    })
+    .catch(function(err) {
+        // Do something when there is an error getting the details of the group
+    });
+```
+
+#### Removing groups
+
+---
+
+Any group can be removed at any time by calling the method `deleteGroup()`. All groups can be removed at the same time by using the method `deleteAllGroups()`.
+
+```js
+rainbowSDK.groups.deleteGroup(group);
+    .then(function() {
+        // Do something when the group has been deleted from Rainbow
+    })
+    .catch(function(err) {
+        // Do something when there is an error deleting the group
+    });
+```
+
+When a group is removed, the event `RAINBOW_ONGROUPDELETED` is fired.
+
+### User's network
+
+---
+
+The user's network is the set of users, bots and connected things that have a **privileged relation** with you (i.e. the connected user).
+
+By privileged relation, you have to understand that these contacts have access to your personal information as well as your availability such as your connection presence and activity and your phone presence.
+
+That is why when someone or something wants to have a privileged relation with you, it sends you an invitation that you need to accept let it enter your network. This action is **mutual**. When you join the network of someone, this person or entity enters your network. Keep this in mind.
+
+The only shortcut is that when both entities are in the same company, an auto-acceptation is done. So the invite is automatically accepted and you have nothing to do on your side.
+
+Each entity of your network can be removed at any time.
+
+Note: In case of being removed from one's network by a user who is part of your network, you will still see him as a member of your network but without having access to his availability status. If you look at the properties of your `Contact` object, you will see that the property `subscription` equals `none` instead of `both` and the property `roster` still equals `true`. That means that this contact is still a part of your network but you are not exchanging availability mutually anymore.
+
+#### Get your network
+
+---
+
+The list of entities that are part of your network can be retrieved using the method `getNetworkContacts()`.
+
+When connecting for the first time and if your administrator not add any contacts in, your network is empty.
+
+Note: An alternate method exists, the method `getAll()` is slightly different. This method returns the list of entities of your network plus the list of users from opened conversations. The method `getAll()` is a convenient method for accessing users locally without having to send a request to Rainbow.
+
+```js
+var networkContacts = rainbowSDK.contacts.getNetworkContacts();
+// Do something with these contacts
+networkContacts.forEach(function(contact) {
+    // Do something with a contact
+});
+```
+
+#### Invite someone to your network
+
+---
+
+You can send an invitation to join your network to someone something by using the method `addToNetwork()` as in the following example.
+
+```js
+rainbowSDK.contacts
+    .searchById("5be9826de3bc5e54c13e00bd")
+    .then(function(entityFound) {
+        if (entityFound) {
+            return rainbowSDK.contacts.addToNetwork(entityFound);
+        }
+    })
+    .then(function() {
+        // Do something once the invitation has been sent
+    })
+    .catch(function(err) {
+        // Do something in case of error
+    });
+```
+
+A list of sent invitations can be retrieved by using the method `getInvitationsSent()`;
+
+#### Answering to network's requests
+
+---
+
+Two possibilities are available to be aware of invitations received from others users or entities:
+
+-   You can retrieve the list of invitations received by calling the method `getInvitationsReceived()`
+    
+-   You can listen to event `RAINBOW_ONCONTACTINVITATIONRECEIVED` to know in real time when someone wants to enter your network.
+    
+
+In both cases, you get an `Invitation` JavaScript object that you can accept or decline using `acceptInvitation()` or `declineInvitation()` methods.
+
+```js
+let onInvitationReceived = function(event) {
+    let invitation = event.detail;
+
+    rainbowSDK.contacts
+        .acceptInvitation(invitation)
+        .then(function() {
+            // Do something once added this contact to your network
+        })
+        .catch(function(err) {
+            // Do something in case of error
+        });
+};
+
+// Listen to incoming invitations
+document.addEventListener(rainbowSDK.contacts.RAINBOW_ONCONTACTINVITATIONRECEIVED, onInvitationReceived)
+```
+
+If you target a user or entity that is in the same company as you, the list of sent invitations will be empty because the invitation is instantaneously accepted.
+
+#### Cancelling an invitation
+
+---
+
+At any time, pending invitations can be cancelled by calling the method `cancelInvitation()`.
+
+```js
+var invitationsSent = rainbowSDK.contacts.getInvitationsSent();
+
+if (invitationsSent.length > 0) {
+    var invitation = invitationsSent[0];
+    rainbowSDK.contacts
+        .cancelInvitation(invitation)
+        .then(function() {
+            // Do something once the invitation has been cancelled
+        })
+        .catch(function(err) {
+            // Do something in case of error when cancelling the invitation
+        });
+}
+```
+
+#### Removing someone from your network
+
+---
+
+At any time, you can remove someone from your network by calling the `removeFromNetwork()` method.
+
+```js
+// Remove the fist contact from your network
+var Contact = rainbowSDK.contacts.getNetworkContacts()[0];
+
+rainbowSDK.contacts
+    .removeFromNetwork(contact)
+    .then(function() {
+        // Do something once the contact has been removed
+    })
+    .catch(function(err) {
+        // Do something in case of error when removing the contact
+    });
+```
+
+Removing a contact from your network has the following consequences on your side:
+
+-   The contact does not appear in your network anymore
+    
+-   You have no more access to the user's availability and presence
+    
+
+On the user side, the consequences are the following:
+
+-   The user has no more access to your availability and presence
+    
+-   You still appear in his network but without sharing anything
+    
+
+### Next
+
+---
+
+This guide helps you building your network and organizing your relations.
+
+The next steps are to exchange information with them.
+
+### See also
+
+---
+
+-   [Chatting with Rainbow users](doc/sdk/web/lts/guides/Chatting_with_Rainbow_users)
+    
+-   [Initiating audio and video calls](doc/sdk/web/lts/guides/Initiating_audio_and_video_calls)
+    
+-   [Sharing files](doc/sdk/web/lts/guides/Sharing_files)
+    
+-   [Sending notifications](doc/sdk/web/lts/guides/Sending_notifications)
+    
+
+---
+
+*Last updated October 30th 2019*
+
+### Sur cette page
+
+-   [Interacting with users, bots and things](/docs/sdk/web#name-interacting-with-users-bots-and-things-0)
+-   [Rainbow Knowledge](/docs/sdk/web#name-rainbow-knowledge-13)
+-   [Preamble](/docs/sdk/web#name-preamble-66)
+-   [Discovering Rainbow entities](/docs/sdk/web#name-discovering-rainbow-entities-101)
+-   [Searching by name](/docs/sdk/web#name-searching-by-name-108)
+-   [Searching by Id or by Jid](/docs/sdk/web#name-searching-by-id-or-by-jid-122)
+-   [Interacting with users and things](/docs/sdk/web#name-interacting-with-users-and-things-136)
+-   [Grouping contacts](/docs/sdk/web#name-grouping-contacts-183)
+-   [Get the existing groups](/docs/sdk/web#name-get-the-existing-groups-190)
+-   [Get a group](/docs/sdk/web#name-get-a-group-201)
+-   [Creating a new group](/docs/sdk/web#name-creating-a-new-group-209)
+-   [Adding and removing users in groups](/docs/sdk/web#name-adding-and-removing-users-in-groups-233)
+-   [Listing users in groups](/docs/sdk/web#name-listing-users-in-groups-247)
+-   [Removing groups](/docs/sdk/web#name-removing-groups-255)
+-   [User's network](/docs/sdk/web#name-users-network-266)
+-   [Get your network](/docs/sdk/web#name-get-your-network-288)
+-   [Invite someone to your network](/docs/sdk/web#name-invite-someone-to-your-network-302)
+-   [Answering to network's requests](/docs/sdk/web#name-answering-to-networks-requests-313)
+-   [Cancelling an invitation](/docs/sdk/web#name-cancelling-an-invitation-339)
+-   [Removing someone from your network](/docs/sdk/web#name-removing-someone-from-your-network-347)
+-   [Next](/docs/sdk/web#name-next-385)
+-   [See also](/docs/sdk/web#name-see-also-395)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

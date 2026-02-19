@@ -1,0 +1,263 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/groups"
+lastSynced: "2026-02-19T22:35:15.252Z"
+---
+# Documentation
+
+Groups service
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Groups
+
+This service manages user groups in Rainbow. Each user can create groups and invite other Rainbow users to be part of it. Without being invited, users can join a bubble. The main methods proposed in that module allow to: - Get all groups of the user - Create a new group - Add a contact in a group - Remove a contact from a group - Delete an existing group
+
+**Emits**: `event:RAINBOW_ONGROUPCREATED`, `event:RAINBOW_ONGROUPUPDATED`, `event:RAINBOW_ONGROUPDELETED`, `event:RAINBOW_ONGROUPUSERADDED`, `event:RAINBOW_ONGROUPUSERREMOVED`  
+**Access**: public
+
+-   [Groups](#module_Groups)
+    -   *API*
+        -   [createGroup(strName, strDescription, isFavorite)](#module_Groups+createGroup) ⇒ `Promise`
+        -   [deleteGroup(group)](#module_Groups+deleteGroup) ⇒ `Promise`
+        -   [deleteAllGroups()](#module_Groups+deleteAllGroups) ⇒ `Promise`
+        -   [getAll()](#module_Groups+getAll) ⇒ `Array`
+        -   [getFavoritesGroup()](#module_Groups+getFavoritesGroup) ⇒ `Array`
+        -   [setGroupAsFavorite(group)](#module_Groups+setGroupAsFavorite) ⇒ `Promise`
+        -   [getGroupById(groupId)](#module_Groups+getGroupById) ⇒ `object`
+        -   [getDetailedGroupById(id)](#module_Groups+getDetailedGroupById) ⇒ `Promise`
+        -   [addContactInGroup(contactId, group)](#module_Groups+addContactInGroup) ⇒ `Promise`
+        -   [removeContactFromGroup(contactId, group)](#module_Groups+removeContactFromGroup) ⇒ `Promise`
+    -   *EVENTS*
+        -   [~unsetGroupAsFavorite(group)](#module_Groups..unsetGroupAsFavorite) ⇒ `Promise`
+
+### groups.createGroup(strName, strDescription, isFavorite) ⇒ `Promise`
+
+Create a new group Return a promise.
+
+**Kind**: instance method of [`Groups`](#module_Groups)  
+**Returns**: `Promise` - Promise with the group object or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strName
+
+`string`
+
+The name of the group
+
+strDescription
+
+`string`
+
+The description of the group
+
+isFavorite
+
+`boolean`
+
+True to flag the group as favorite
+
+### groups.deleteGroup(group) ⇒ `Promise`
+
+Delete a group
+
+**Kind**: instance method of [`Groups`](#module_Groups)  
+**Returns**: `Promise` - SDK OK or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+group
+
+`object`
+
+group object
+
+### groups.deleteAllGroups() ⇒ `Promise`
+
+Delete all existing owned groups
+
+**Kind**: instance method of [`Groups`](#module_Groups)  
+**Returns**: `Promise` - Nothing or an error object depending on the result  
+**Access**: public  
+
+### groups.getAll() ⇒ `Array`
+
+Return the list of all existing groups
+
+**Kind**: instance method of [`Groups`](#module_Groups)  
+**Returns**: `Array` - The groups or an error object depending on the result  
+**Access**: public  
+
+### groups.getFavoritesGroup() ⇒ `Array`
+
+Return the list of favorite groups
+
+**Kind**: instance method of [`Groups`](#module_Groups)  
+**Returns**: `Array` - The favorited groups or an error object depending on the result  
+**Access**: public  
+
+### groups.setGroupAsFavorite(group) ⇒ `Promise`
+
+Set a group as favorite Return a Promise
+
+**Kind**: instance method of [`Groups`](#module_Groups)  
+**Returns**: `Promise` - Promise resolution with the group updated  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+group
+
+`object`
+
+The group to set as favorite
+
+### groups.getGroupById(groupId) ⇒ `object`
+
+Get user's group by id
+
+**Kind**: instance method of [`Groups`](#module_Groups)  
+**Returns**: `object` - The group found or null if not found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+groupId
+
+`string`
+
+id of the group
+
+### groups.getDetailedGroupById(id) ⇒ `Promise`
+
+Get the group with detailed information on users
+
+**Kind**: instance method of [`Groups`](#module_Groups)  
+**Returns**: `Promise` - The group updated  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The group id
+
+### groups.addContactInGroup(contactId, group) ⇒ `Promise`
+
+Add a contact to a group
+
+**Kind**: instance method of [`Groups`](#module_Groups)  
+**Returns**: `Promise` - Promise resolution with the group updated  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contactId
+
+`string`
+
+ID of the contact to add
+
+group
+
+`object`
+
+The group
+
+### groups.removeContactFromGroup(contactId, group) ⇒ `Promise`
+
+Remove a contact from a group
+
+**Kind**: instance method of [`Groups`](#module_Groups)  
+**Returns**: `Promise` - Promise resolution with the groupId or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contactId
+
+`string`
+
+ID of the contact to remove
+
+group
+
+`object`
+
+The group
+
+### Groups~unsetGroupAsFavorite(group) ⇒ `Promise`
+
+Unset a group as favorite
+
+**Kind**: inner method of [`Groups`](#module_Groups)  
+**Returns**: `Promise` - Promise resolution with the group updated  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+group
+
+`object`
+
+The group to remove from favorite
+
+### Sur cette page
+
+-   [Groups](/docs/sdk/web#name-groups-3)
+-   [groups.createGroup(strName, strDescription, isFavorite) ⇒ Promise](/docs/sdk/web#name-groups.creategroupstrname-strdescription-isfavorite--promise-93)
+-   [groups.deleteGroup(group) ⇒ Promise](/docs/sdk/web#name-groups.deletegroupgroup--promise-155)
+-   [groups.deleteAllGroups() ⇒ Promise](/docs/sdk/web#name-groups.deleteallgroups--promise-195)
+-   [groups.getAll() ⇒ Array](/docs/sdk/web#name-groups.getall--array-204)
+-   [groups.getFavoritesGroup() ⇒ Array](/docs/sdk/web#name-groups.getfavoritesgroup--array-213)
+-   [groups.setGroupAsFavorite(group) ⇒ Promise](/docs/sdk/web#name-groups.setgroupasfavoritegroup--promise-222)
+-   [groups.getGroupById(groupId) ⇒ object](/docs/sdk/web#name-groups.getgroupbyidgroupid--object-262)
+-   [groups.getDetailedGroupById(id) ⇒ Promise](/docs/sdk/web#name-groups.getdetailedgroupbyidid--promise-302)
+-   [groups.addContactInGroup(contactId, group) ⇒ Promise](/docs/sdk/web#name-groups.addcontactingroupcontactid-group--promise-342)
+-   [groups.removeContactFromGroup(contactId, group) ⇒ Promise](/docs/sdk/web#name-groups.removecontactfromgroupcontactid-group--promise-393)
+-   [Groups~unsetGroupAsFavorite(group) ⇒ Promise](/docs/sdk/web#name-groupsunsetgroupasfavoritegroup--promise-444)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

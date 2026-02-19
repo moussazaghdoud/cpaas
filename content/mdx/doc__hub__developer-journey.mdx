@@ -1,0 +1,174 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "docs-hub"
+source: "https://developers.openrainbow.com/doc/hub/developer-journey"
+lastSynced: "2026-02-19T22:35:13.011Z"
+---
+# Documentation
+
+Developer's journey
+
+## Developer's Journey
+
+---
+
+Here is a check list that lists the main actions to get your Rainbow for Developers journey off to a good start.
+
+### Sign-in a free Rainbow account
+
+---
+
+A Rainbow account is **mandatory** to sign-in to the Rainbow for Developers portal.
+
+So the first thing to do is to [sign-in a Rainbow account](https://web.openrainbow.com/#/subscribe). This is free.
+
+One of the main reasons is because if you're a Rainbow user, we will be able to contact you easily through Rainbow to support you "in live".
+
+Once you have your Rainbow account, you can log-in to the Rainbow for Developers portal.
+
+The first time you will log-in, you will have to accept the [Rainbow developer agreement](/legal).
+
+Once you did it, you will become a **Rainbow developer** and concretely your Rainbow account will be empowered to create and manage Rainbow applications.
+
+Your journey is starting...
+
+### Connect and Develop
+
+---
+
+This chapter describes how to start developping applications on our **Rainbow Sandbox** developer platform.
+
+#### Download SDKs and Starter-kits
+
+Once you have your account, you can start using our SDKs and APIs.
+
+The Rainbow for Developers portal presents each SDK in a dedicated web page containing a direct access to the online documentation, a link for downloading the SDK and some samples and starter-kits that you can use for starting your development.
+
+#### Activate your Developer Sandbox account
+
+If this is your first time developing a Rainbow application, we encourage you to activate your **Developer Sandbox account**.
+
+This is a free Rainbow account to be used on the **Rainbow Sandbox** platform. This platform is dedicated to developers, to let them play with our API and SDK without having to disturb real users. This platform is **free of charge**.
+
+Creating your Developer Sandbox account can be done from the section **Sandbox** in the left side menu. On this dedicated page, click on **CREATE YOUR SANDBOX DEVELOPER ACCOUNT**. You will receive an email with your sandbox account credentials.
+
+The sandbox account status displayed in the sandbox page should show "ACTIVE". You can now connect to the sandbox platform to handle sandbox applications (see "Creating a test application" below).  
+  
+
+**IMPORTANT**: Please note that your sandbox credentials are not the same as your main "production" credentials. This means you have two credentials information: one for the production platform and one for the sandbox platform.
+
+[Read this guide](/docs/hub/developer-sandboxed-platform) to have more information on the Developers Sandbox platform.
+
+#### Creating tests accounts
+
+The sandbox account cumulates different roles so you can easily test your developments. These roles are:
+
+-   Rainbow user and application developer so you can connect to Rainbow sandbox platform and manage applications on this platform,
+-   Company administrator: when the sandbox account is created by the system, it is linked to a personal company named "Company of *<username>*". The company administrator rights allow you to manage test Rainbow user accounts on the sandbox platform for testing. As an example, these Rainbow users can be used when developing a chat application for simulating users.
+
+To create and manage your test accounts on the Rainbow Developer Sandbox platform, click on the link under "To manage your tests accounts connect to". This will open a new Rainbow web client tab. Connect with you sandbox account credentials, and go to the Administration tab. In the MyCompany / Members section, you will be able to list, modify, create and delete user accounts in your sandbox company (this is possible because a sandbox account has the company administration role for the sandbox user's own company).  
+  
+
+**Remark**: You can also install the **Rainbow CLI** command line tool to manage test user accounts. Read the guide [Managing Test Accounts](/docs/sdk/cli/tutorials/Managing_tests_accounts) to have more information on how to manage your tests accounts using the Rainbow CLI.
+
+#### Creating a test application
+
+Once you have created your sandbox tests accounts, you will need a test application too on the sandbox platform. Any user who wants to connect to Rainbow needs to be identified by his credentials and by the application credentials. The application credentials are the **application id** and **application secret**.
+
+To create or manage applications on the sandbox platform you have to connect in the **Sandbox** section of Rainbow for Developers using the "Connect to sandbox" option. This will open a "Connect to sandbox" login popup where you can enter your sandbox credentials. Once connected, you will be able to list, modify, create or delete applications on the sandbox platform.  
+  
+
+**Remark**: the applications listed in the **Sandbox** section of Rainbow for Developers are only sandbox applications. To manage applications for the production platform, you have to go in the **Applications** section of Rainbow for Developers.
+
+**Remark**: Alternatively, you can also use the Rainbow CLI tool to create you **sandbox applications**. Read the guide [Managing applications](/docs/sdk/cli/tutorials/Managing_applications) to have more information on how to create your test application using the Rainbow CLI.
+
+**Remark**: Applications created on the sandbox platform are automatically activated (this is no the case for the production platform).
+
+### Identify and deploy your application
+
+---
+
+Once your're familiar with the Rainbow ecosystem on the Rainbow Sandbox platform for developers, you need to migrate to the **Rainbow Production** platform to benefit to the full Rainbow environment and access real Rainbow users. The next next paragraph describes the tasks to do.
+
+#### Registering official applications
+
+Once you are confident with your development on the Sandbox platform, you can use Rainbow for Developers **Applications** menu to create your applications for the Rainbow official platform.
+
+Read the tutorial [Application lifecycle](/docs/hub/application-lifecycle) to learn more about how application will be managed with the Rainbow for Developers portal once available.
+
+#### Prepare your application for production
+
+Once you want that your application becomes accessible by your users, you have to deploy it on the Rainbow Production platform.
+
+Your application needs to be ready for working on the production platform.
+
+Read the guide [Get ready for production](/docs/hub/get-ready-for-production) to have more information on this deployment.
+
+#### Deploying on the production platform
+
+To deploy your application on the Rainbow production platform, follow these steps:
+
+-   Ensure you have added a valid payment method for **Pay As You Go** offer applications. Visit the [Billing](/billing) section in the Rainbow for Developers portal, click **Add a new card**, provide your credit card information, and save it. You can also set up SEPA payment if preferred.
+    
+-   For **Pay As You Go** offer applications: Your application will be automatically deployed upon completing the above steps, and it will become immediately accessible to your users.
+    
+-   For **Business** and **App Connect** offer applications: Visit the [Applications](/applications) page in the Rainbow for Developers portal and click the deploy button. The application state will change to IN\_DEPLOYMENT.
+    
+
+Please note that in the case of Business and App Connect offers, the deployment must be validated by ALE before transitioning to the RUNNING state.
+
+Each time you deploy an application, you have to you accept the [Rainbow for Developers services agreement](/legal).
+
+### Grow your application
+
+---
+
+Once deployed, you can monitor your application through the Rainbow for Developers analytics module to know your APIs consumption. This is a way to follow your fees and understand how your application is used by your users.
+
+### Interested in
+
+---
+
+-   [Starting with the Rainbow SDK for Android](/docs/sdk/android)
+    
+-   [Starting with the Rainbow SDK for iOS](/docs/sdk/ios)
+    
+-   [Starting with the Rainbow SDK for ReactNative](/docs/sdk/reactnative/tutorials/getting_started)
+    
+-   [Starting with the Rainbow SDK for CSharp](/docs/sdk/csharp)
+    
+-   [Starting wih the Rainbow SDK for NodeJS](/docs/sdk/node)
+    
+-   [Starting with the Rainbow SDK for Web](/docs/sdk/web)
+    
+-   [Starting with the Rainbow REST APIs](/docs/rest/Getting_Started)
+    
+-   [Starting with the Rainbow S2S API](/docs/sdk/s2s-starterkit-nodejs/guides/Getting_Started)
+    
+
+---
+
+*Last updated July, 5th 2023*
+
+### Sur cette page
+
+-   [Developer's Journey](/docs/hub/developer-journey#name-developers-journey-0)
+-   [Sign-in a free Rainbow account](/docs/hub/developer-journey#name-sign-in-a-free-rainbow-account-7)
+-   [Connect and Develop](/docs/hub/developer-journey#name-connect-and-develop-32)
+-   [Download SDKs and Starter-kits](/docs/hub/developer-journey#name-download-sdks-and-starter-kits-39)
+-   [Activate your Developer Sandbox account](/docs/hub/developer-journey#name-activate-your-developer-sandbox-account-48)
+-   [Creating tests accounts](/docs/hub/developer-journey#name-creating-tests-accounts-69)
+-   [Creating a test application](/docs/hub/developer-journey#name-creating-a-test-application-93)
+-   [Identify and deploy your application](/docs/hub/developer-journey#name-identify-and-deploy-your-application-111)
+-   [Registering official applications](/docs/hub/developer-journey#name-registering-official-applications-118)
+-   [Prepare your application for production](/docs/hub/developer-journey#name-prepare-your-application-for-production-127)
+-   [Deploying on the production platform](/docs/hub/developer-journey#name-deploying-on-the-production-platform-139)
+-   [Grow your application](/docs/hub/developer-journey#name-grow-your-application-168)
+-   [Interested in](/docs/hub/developer-journey#name-interested-in-175)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

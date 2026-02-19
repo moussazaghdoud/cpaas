@@ -1,0 +1,232 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharpprevious/core/lts/guides/040_managing_personal_profile"
+lastSynced: "2026-02-19T22:35:14.407Z"
+---
+# Documentation
+
+Managing personal profile
+
+LTS release 2.6.XPubliée le 2021-12-13
+
+## Managing personal profile
+
+You can manage your personal information by getting or updating them, set your presence level, update your avatar.
+
+### Get the connected user
+
+---
+
+You can get the connected contact by calling the method `GetCurrentContact()` of `Contacts` service. This returns a `Contact` object so that you can access all the properties
+
+-   `FirstName`
+-   `LastName`
+-   `NickName`
+-   `DisplayName`
+-   etc ...
+
+Full details of Contact object [here](/docs/sdk/csharp).
+
+To have the `Avatar` of the current Contact, use `GetAvatarFromCurrentContact()` of `Contacts` service.
+
+To have the `Presence` of the current Contact, use `GetPresenceFromCurrentContact()` of `Contacts` service.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Contacts contacts = myApp.GetContacts();
+...
+// Once connected
+Contact myContact = contacts.GetCurrentContact(); 
+String firstName = myContact.FirstName;
+...
+contacts.GetAvatarFromCurrentContact(80, callback =>
+{
+  if(callback.Result.Success)
+  {
+    byte[] data = callback.Data; 
+    System.Drawing.Image myAvatar = GetImageFromBytes(ref data);
+    ...
+  }
+);
+...
+Presence myPresence = contacts.GetPresenceFromCurrentContact();   
+
+public System.Drawing.Image GetImageFromBytes(ref byte[] data)
+{
+    System.Drawing.Image result = null;
+    try
+    {
+        using (var ms = new MemoryStream(data))
+            result = System.Drawing.Image.FromStream(ms);
+    }
+    catch (Exception e)
+    {
+        log.LogWarning("[GetImageFromBytes] Exception\r\n", Rainbow.Util.SerializeException(e));
+    }
+    return result;
+}
+```
+
+### Change your presence
+
+---
+
+You can change your Rainbow presence by calling the method `SetPresenceLevel` of `Contacts` service using a `Presence` object.
+
+[`Presence`](/docs/sdk/csharp) object contains properties `PresenceLevel` and `PresenceDetails`
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+  Rainbow.Contacts contacts = myApp.GetContacts();
+  ...
+  // Once connected / initialized
+  contactsUser1.SetBusyPresenceAccordingMedias(Call.Media.AUDIO);
+  ...
+  contactsUser1.SetBusyPresenceAccordingMedias(Call.Media.VIDEO);
+  ...
+  contactsUser1.SetPresenceLevel(contactsUser1.CreatePresence(true, PresenceLevel.Online));
+  ...
+  contactsUser1.SetPresenceLevel(contactsUser1.CreatePresence(true, PresenceLevel.Dnd));
+```
+
+### Update your personal information
+
+---
+
+Once you have the current `Contact` object, you can update properties you want and use `UpdateCurrentContact` of `Contacts` class.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+  Rainbow.Contacts contacts = myApp.GetContacts();
+  ...
+  
+  // Once connected / initialized
+  Contact myContact = contacts.GetCurrentContact(); 
+
+  // Update properties you want
+  myContact.FirstName = "update my first name";
+  myContact.LastName = "update my last name";
+  ...
+  
+  // Ask to update information
+  contacts.UpdateCurrentContact(myContact, callback =>
+  {
+    if(callback.Result.Success)
+    {
+      // Info well updated
+    }
+    else
+    {
+      // A pb occurs
+      if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+      {
+        // Bad parameter(s) used
+        string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+      }
+      else
+      {
+        // Exception occurs
+        Exception e = callback.Result.ExceptionError;
+      }
+    }
+  );
+```
+
+#### Update your avatar
+
+---
+
+You can update the avatar of the current contact with a valid `JPG` or `PNG` file using `UpdateAvatarFromCurrentContact` of `Contacts` class.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+  Rainbow.Contacts contacts = myApp.GetContacts();
+  ...
+  // Get byte of the avatar we want to set
+  byte[] imgData = GetDataOfImageTest();
+  
+  // Ask to update the avatar - using a JPG file (PNG file can be used to) 
+  contacts.UpdateAvatarFromCurrentContact(imgData, "JPG", callback =>
+  {
+    if(callback.Result.Success)
+    {
+      // Avatar well updated
+    }
+    else
+    {
+      // A pb occurs
+      if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+      {
+        // Bad parameters used
+        string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+      }
+      else
+      {
+        // Exception occurs
+        Exception e = callback.Result.ExceptionError;
+      }
+    }
+  );
+
+  private byte[] GetDataOfImageTest()
+  {
+      if (File.Exists(IMAGE_PATH))
+          return File.ReadAllBytes(IMAGE_PATH);
+      return null;
+  }
+```
+
+### Listen if the user password has been changed
+
+---
+
+To do it, you should listen to event `PasswordUpdated` from `Application` class.
+
+When this event is fired it's mandatory to logout and to login to continue to use the Rainbow service
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+
+myApp.PasswordUpdated += MyApp_PasswordUpdated;
+...
+
+private void MyApp_PasswordUpdated(object sender, EventArgs evt)
+{
+    // The current contact password has been changed ...
+    // Need to logout and to login again with new credentials
+}
+```
+
+### Get the last credentials saved in cache
+
+---
+
+You can retrieve the login and password saved in cache. It corresponds to the last credentials logged in.
+
+It allows you to connect automatically if you want to hide the login screen and if the user has already logged in once.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();                   
+
+String login = myApp.GetUserLoginFromCache();
+String password =  myApp.GetUserPasswordFromCache();
+```
+
+### Sur cette page
+
+-   [Managing personal profile](/docs/sdk/csharp#name-managing-personal-profile-0)
+-   [Get the connected user](/docs/sdk/csharp#name-get-the-connected-user-6)
+-   [Change your presence](/docs/sdk/csharp#name-change-your-presence-50)
+-   [Update your personal information](/docs/sdk/csharp#name-update-your-personal-information-61)
+-   [Update your avatar](/docs/sdk/csharp#name-update-your-avatar-69)
+-   [Listen if the user password has been changed](/docs/sdk/csharp#name-listen-if-the-user-password-has-been-changed-77)
+-   [Get the last credentials saved in cache](/docs/sdk/csharp#name-get-the-last-credentials-saved-in-cache-88)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,489 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/im"
+lastSynced: "2026-02-19T22:35:15.276Z"
+---
+# Documentation
+
+IM service
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## IM
+
+This service sends and receives Instant Messages in one-to-one conversations or bubble conversations. The main methods and events proposed in that service allow to:  
+\- Retrieve the messages already exchanged in a conversation,  
+\- Send a new message in a conversation (one-to-one conversation or bubble)  
+\- Listen when new messages are received in a conversation
+
+**Emits**: `event:RAINBOW_ONNEWIMMESSAGERECEIVED`, `event:RAINBOW_ONNEWIMRECEIPTRECEIVED`, `event:RAINBOW_ONNEWPARTICIPANTSTATUS`
+
+-   [IM](#module_IM)
+    -   [getMessagesFromConversation(conversationId, intNbMessage)](#module_IM+getMessagesFromConversation) ⇒ `Promise`
+    -   [getMessageFromConversationById(conversationId, strMessageId)](#module_IM+getMessageFromConversationById) ⇒ `object`
+    -   [getMessageFromBubbleById(bubble, strMessageId)](#module_IM+getMessageFromBubbleById) ⇒ `object`
+    -   [sendMessageToConversation(conversationId, strMessage, additionalContentType, additionalContentMessage, urgency)](#module_IM+sendMessageToConversation) ⇒ `object`
+    -   [sendCorrectedChatMessage(conversationId, strMessage, messageId)](#module_IM+sendCorrectedChatMessage) ⇒ `object`
+    -   [replyToMessage(conversationId, strMessage, answerMessageId)](#module_IM+replyToMessage) ⇒ `Promise`
+    -   [deleteMessage(conversationId, messageId)](#module_IM+deleteMessage) ⇒ `object`
+    -   [getLastModifiedText(conversationId, messageId)](#module_IM+getLastModifiedText) ⇒ `string`
+    -   [isMessageDeleted(conversationId, messageId)](#module_IM+isMessageDeleted) ⇒ `boolean`
+    -   [sendIsTypingStateInConversation(conversationId, status)](#module_IM+sendIsTypingStateInConversation) ⇒ `Promise`
+    -   [sendMessageToBubble(bubble, strMessage, additionalContentType, additionalContentMessage, urgency)](#module_IM+sendMessageToBubble) ⇒ `Promise`
+    -   [sendIsTypingStateInBubble(bubble, status)](#module_IM+sendIsTypingStateInBubble) ⇒ `object`
+    -   [removeAllMessagesFromConversation(conversationId)](#module_IM+removeAllMessagesFromConversation) ⇒ `Promise`
+    -   [markMessageFromConversationAsRead(conversationId, messageId)](#module_IM+markMessageFromConversationAsRead) ⇒ `object`
+    -   [markAllMessagesFromConversationAsRead(conversationId)](#module_IM+markAllMessagesFromConversationAsRead) ⇒ `object`
+
+### iM.getMessagesFromConversation(conversationId, intNbMessage) ⇒ `Promise`
+
+Retrieve the list of messages from a conversation Calling several times this method will load older messages from the history (pagination).
+
+**Kind**: instance method of [`IM`](#module_IM)  
+**Returns**: `Promise` - Promise with the conversation updated with the list of messages requested or an error (reject) if there is no more messages to retrieve  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+The conversation ID
+
+intNbMessage
+
+`number`
+
+The number of messages to retrieve. Optional. Default value is 30. Maximum value is 100
+
+### iM.getMessageFromConversationById(conversationId, strMessageId) ⇒ `object`
+
+Retrieve a specific message in a conversation using its id
+
+**Kind**: instance method of [`IM`](#module_IM)  
+**Returns**: `object` - The message if found or null  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+Id of the conversation where to search for the message
+
+strMessageId
+
+`string`
+
+The message id
+
+### iM.getMessageFromBubbleById(bubble, strMessageId) ⇒ `object`
+
+Retrieve a specific message in a bubble using its id
+
+**Kind**: instance method of [`IM`](#module_IM)  
+**Returns**: `object` - The message if found or null  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`object`
+
+The bubble where to search for the message
+
+strMessageId
+
+`string`
+
+The message id
+
+### iM.sendMessageToConversation(conversationId, strMessage, additionalContentType, additionalContentMessage, urgency) ⇒ `object`
+
+Send a instant message to a conversation This method works for sending messages to a one-to-one conversation or to a bubble conversation
+
+**Kind**: instance method of [`IM`](#module_IM)  
+**Returns**: `object` - The message object created and sent or null in case of error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+ID of the conversation object
+
+strMessage
+
+`string`
+
+The text message to send (limited to 1024 characters per message)
+
+additionalContentType
+
+`string`
+
+\[optional\] A string matching one of the two values: "text/markdown" (to show markdown) "form/json" (to show adaptive card on Rainbow clients) or 'rainbow/json' (to allow interactions in Rainbow clients)
+
+additionalContentMessage
+
+`string`
+
+\[optional\] A string containing Alternative Content message (maximum 1024 characters)
+
+urgency
+
+`string`
+
+\[optional\] A string defining the urgency of the message. Can be set to "high", "middle", "low" or "std". Defaults to 'std'
+
+### iM.sendCorrectedChatMessage(conversationId, strMessage, messageId) ⇒ `object`
+
+Send a corrected chat message to a conversation This method allows the user to modify the given message and update its content Works only with the last message sent by the connected user
+
+**Kind**: instance method of [`IM`](#module_IM)  
+**Returns**: `object` - - message object with updated replaceMsgs property  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+ID of the conversation
+
+strMessage
+
+`string`
+
+The text message to send (limited to 1024 characters per message)
+
+messageId
+
+`string`
+
+id of the message that is supposed to be corrected
+
+### iM.replyToMessage(conversationId, strMessage, answerMessageId) ⇒ `Promise`
+
+Reply to a specific message in a conversation
+
+**Kind**: instance method of [`IM`](#module_IM)  
+**Returns**: `Promise` - Promise resolution with a message object with updated replaceMsgs property  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+The conversation object
+
+strMessage
+
+`string`
+
+The text of the message to be sent (limited to 1024 characters per message)
+
+answerMessageId
+
+`string`
+
+ID of the message that is to be answered to
+
+### iM.deleteMessage(conversationId, messageId) ⇒ `object`
+
+Delete a message by specifying its ID. Works only with the last message sent by the connected user.
+
+**Kind**: instance method of [`IM`](#module_IM)  
+**Returns**: `object` - message - message object with updated replaceMsgs property  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+ID of the conversation
+
+messageId
+
+`string`
+
+id string of the message that needs to be deleted
+
+### iM.getLastModifiedText(conversationId, messageId) ⇒ `string`
+
+Returns the last text of the last modification of the message. In case of no modifications, returns the original message data.
+
+**Kind**: instance method of [`IM`](#module_IM)  
+**Returns**: `string` - String representing last modified message  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+ID of the conversation
+
+messageId
+
+`string`
+
+ID of the message
+
+### iM.isMessageDeleted(conversationId, messageId) ⇒ `boolean`
+
+Returns true if message is deleted, false if it still exists.
+
+**Kind**: instance method of [`IM`](#module_IM)  
+**Returns**: `boolean` - Boolean indicating if the message is deleted or not  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+ID of the conversation
+
+messageId
+
+`string`
+
+ID of the message
+
+### iM.sendIsTypingStateInConversation(conversationId, status) ⇒ `Promise`
+
+Switch the "is typing" state in a conversation. The changes can be listened to through RAINBOW\_ONNEWPARTICIPANTSTATUS
+
+**Kind**: instance method of [`IM`](#module_IM)  
+**Returns**: `Promise` - Promise resolution in case of success or an error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+ID of the conversation
+
+status
+
+`boolean`
+
+The status, true for setting "is Typing", false to remove it
+
+### iM.sendMessageToBubble(bubble, strMessage, additionalContentType, additionalContentMessage, urgency) ⇒ `Promise`
+
+Send a message to a bubble This is a shortcut method for sending messages to a bubble (to avoid having to retrieve the associated conversation)
+
+**Kind**: instance method of [`IM`](#module_IM)  
+**Returns**: `Promise` - Promise resolution with the message sent  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`object`
+
+The destination bubble
+
+strMessage
+
+`string`
+
+The text message to send (limited to 1024 characters per message)
+
+additionalContentType
+
+`string`
+
+\[optional\] A string matching one of the two values: "text/markdown" (to show markdown) "form/json" (to show adaptive card on Rainbow clients) or 'rainbow/json' (to allow interactions in Rainbow clients)
+
+additionalContentMessage
+
+`string`
+
+\[optional\] A string containing Alternative Content message (maximum 1024 characters)
+
+urgency
+
+`string`
+
+\[optional\] A string defining the urgency of the message. Can be set to "high", "middle", "low" or "std". Defaults to 'std'
+
+### iM.sendIsTypingStateInBubble(bubble, status) ⇒ `object`
+
+Switch the "is typing" state in a bubble/room
+
+**Kind**: instance method of [`IM`](#module_IM)  
+**Returns**: `object` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`object`
+
+The destination bubble
+
+status
+
+`boolean`
+
+The status, true for setting "is Typing", false to remove it
+
+### iM.removeAllMessagesFromConversation(conversationId) ⇒ `Promise`
+
+Remove all messages from a one-to-one conversation. Messages are only removed for the connected user.
+
+**Kind**: instance method of [`IM`](#module_IM)  
+**Returns**: `Promise` - Return the SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+ID of the conversation. Have to be a one-to-one conversation.
+
+### iM.markMessageFromConversationAsRead(conversationId, messageId) ⇒ `object`
+
+Mark a message as read
+
+**Kind**: instance method of [`IM`](#module_IM)  
+**Returns**: `object` - SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+ID of the conversation containing the message
+
+messageId
+
+`string`
+
+ID of the message object to mark as read
+
+### iM.markAllMessagesFromConversationAsRead(conversationId) ⇒ `object`
+
+Mark all messages from conversation as read
+
+**Kind**: instance method of [`IM`](#module_IM)  
+**Returns**: `object` - SDK OK object in case of success or an SDK error object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+ID of the conversation containing the message
+
+### Sur cette page
+
+-   [IM](/docs/sdk/web#name-im-3)
+-   [iM.getMessagesFromConversation(conversationId, intNbMessage) ⇒ Promise](/docs/sdk/web#name-im.getmessagesfromconversationconversationid-intnbmessage--promise-99)
+-   [iM.getMessageFromConversationById(conversationId, strMessageId) ⇒ object](/docs/sdk/web#name-im.getmessagefromconversationbyidconversationid-strmessageid--object-150)
+-   [iM.getMessageFromBubbleById(bubble, strMessageId) ⇒ object](/docs/sdk/web#name-im.getmessagefrombubblebyidbubble-strmessageid--object-201)
+-   [iM.sendMessageToConversation(conversationId, strMessage, additionalContentType, additionalContentMessage, urgency) ⇒ object](/docs/sdk/web#name-im.sendmessagetoconversationconversationid-strmessage-additionalcontenttype-additionalcontentmessage-urgency--object-252)
+-   [iM.sendCorrectedChatMessage(conversationId, strMessage, messageId) ⇒ object](/docs/sdk/web#name-im.sendcorrectedchatmessageconversationid-strmessage-messageid--object-336)
+-   [iM.replyToMessage(conversationId, strMessage, answerMessageId) ⇒ Promise](/docs/sdk/web#name-im.replytomessageconversationid-strmessage-answermessageid--promise-398)
+-   [iM.deleteMessage(conversationId, messageId) ⇒ object](/docs/sdk/web#name-im.deletemessageconversationid-messageid--object-460)
+-   [iM.getLastModifiedText(conversationId, messageId) ⇒ string](/docs/sdk/web#name-im.getlastmodifiedtextconversationid-messageid--string-511)
+-   [iM.isMessageDeleted(conversationId, messageId) ⇒ boolean](/docs/sdk/web#name-im.ismessagedeletedconversationid-messageid--boolean-562)
+-   [iM.sendIsTypingStateInConversation(conversationId, status) ⇒ Promise](/docs/sdk/web#name-im.sendistypingstateinconversationconversationid-status--promise-613)
+-   [iM.sendMessageToBubble(bubble, strMessage, additionalContentType, additionalContentMessage, urgency) ⇒ Promise](/docs/sdk/web#name-im.sendmessagetobubblebubble-strmessage-additionalcontenttype-additionalcontentmessage-urgency--promise-664)
+-   [iM.sendIsTypingStateInBubble(bubble, status) ⇒ object](/docs/sdk/web#name-im.sendistypingstateinbubblebubble-status--object-748)
+-   [iM.removeAllMessagesFromConversation(conversationId) ⇒ Promise](/docs/sdk/web#name-im.removeallmessagesfromconversationconversationid--promise-799)
+-   [iM.markMessageFromConversationAsRead(conversationId, messageId) ⇒ object](/docs/sdk/web#name-im.markmessagefromconversationasreadconversationid-messageid--object-839)
+-   [iM.markAllMessagesFromConversationAsRead(conversationId) ⇒ object](/docs/sdk/web#name-im.markallmessagesfromconversationasreadconversationid--object-890)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

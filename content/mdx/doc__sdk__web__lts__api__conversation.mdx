@@ -1,0 +1,138 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/conversation"
+lastSynced: "2026-02-19T22:35:15.157Z"
+---
+# Documentation
+
+Conversation model
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## ConversationSDK
+
+Conversation model. Conversation is a representation of an interaction between a Rainbow user and another user, bubble or a call. A conversation never ends and all interactions done can be retrieved.
+
+-   [ConversationSDK](#module_ConversationSDK)
+    -   [~id](#module_ConversationSDK..id) : `string`
+    -   [~type](#module_ConversationSDK..type) : `number`
+    -   [~contactId](#module_ConversationSDK..contactId) : `string`
+    -   [~bubbleId](#module_ConversationSDK..bubbleId) : `string`
+    -   [~name](#module_ConversationSDK..name) : `string`
+    -   [~name](#module_ConversationSDK..name) : `string`
+    -   [~creationDate](#module_ConversationSDK..creationDate) : `Date`
+    -   [~lastModificiationDate](#module_ConversationSDK..lastModificiationDate) : `Date`
+    -   [~isFavorite](#module_ConversationSDK..isFavorite) : `boolean`
+    -   [~messages](#module_ConversationSDK..messages) : `string`
+    -   [~lastMessage](#module_ConversationSDK..lastMessage) : `string`
+
+### ConversationSDK~id : `string`
+
+The ID of the conversation.
+
+**Kind**: inner property of [`ConversationSDK`](#module_ConversationSDK)  
+**Access**: public  
+**Read only**: true  
+
+### ConversationSDK~type : `number`
+
+The type of the conversation. Value 0 refers to one-to-one conversation, 1 to a bubble conversation and 2 to a call.
+
+**Kind**: inner property of [`ConversationSDK`](#module_ConversationSDK)  
+**Access**: public  
+**Read only**: true  
+
+### ConversationSDK~contactId : `string`
+
+ID of the associated contact. In case of bubble conversation the value will default to 'null'.
+
+**Kind**: inner property of [`ConversationSDK`](#module_ConversationSDK)  
+**Access**: public  
+**Read only**: true  
+
+### ConversationSDK~bubbleId : `string`
+
+ID of the bubble that the conversation is linked to, if any present. In case of one-to-one conversation the value will default to 'null'.
+
+**Kind**: inner property of [`ConversationSDK`](#module_ConversationSDK)  
+**Access**: public  
+**Read only**: true  
+
+### ConversationSDK~name : `string`
+
+Name of the conversation - if conversation is of one-to-one type.
+
+**Kind**: inner property of [`ConversationSDK`](#module_ConversationSDK)  
+**Access**: public  
+**Read only**: true  
+
+### ConversationSDK~name : `string`
+
+Name of a bubble, if the conversation is attached to a bubble. Otherwise, defaults to null.
+
+**Kind**: inner property of [`ConversationSDK`](#module_ConversationSDK)  
+**Access**: public  
+**Read only**: true  
+
+### ConversationSDK~creationDate : `Date`
+
+Creation date of the conversation
+
+**Kind**: inner property of [`ConversationSDK`](#module_ConversationSDK)  
+**Access**: public  
+**Read only**: true  
+
+### ConversationSDK~lastModificiationDate : `Date`
+
+Last modification date (i.e. the date of the last message)
+
+**Kind**: inner property of [`ConversationSDK`](#module_ConversationSDK)  
+**Access**: public  
+**Read only**: true  
+
+### ConversationSDK~isFavorite : `boolean`
+
+Boolean indicating whether the conversation belongs to the user's favorites
+
+**Kind**: inner property of [`ConversationSDK`](#module_ConversationSDK)  
+**Access**: public  
+**Read only**: true  
+
+### ConversationSDK~messages : `string`
+
+An array representing the messages sent in the conversation
+
+**Kind**: inner property of [`ConversationSDK`](#module_ConversationSDK)  
+**Access**: public  
+**Read only**: true  
+
+### ConversationSDK~lastMessage : `string`
+
+The content of the last message sent in the conversation.
+
+**Kind**: inner property of [`ConversationSDK`](#module_ConversationSDK)  
+**Access**: public  
+**Read only**: true
+
+### Sur cette page
+
+-   [ConversationSDK](/docs/sdk/web#name-conversationsdk-3)
+-   [ConversationSDK~id : string](/docs/sdk/web#name-conversationsdkid-:-string-76)
+-   [ConversationSDK~type : number](/docs/sdk/web#name-conversationsdktype-:-number-85)
+-   [ConversationSDK~contactId : string](/docs/sdk/web#name-conversationsdkcontactid-:-string-94)
+-   [ConversationSDK~bubbleId : string](/docs/sdk/web#name-conversationsdkbubbleid-:-string-103)
+-   [ConversationSDK~name : string](/docs/sdk/web#name-conversationsdkname-:-string-112)
+-   [ConversationSDK~name : string](/docs/sdk/web#name-conversationsdkname-:-string-121)
+-   [ConversationSDK~creationDate : Date](/docs/sdk/web#name-conversationsdkcreationdate-:-date-130)
+-   [ConversationSDK~lastModificiationDate : Date](/docs/sdk/web#name-conversationsdklastmodificiationdate-:-date-139)
+-   [ConversationSDK~isFavorite : boolean](/docs/sdk/web#name-conversationsdkisfavorite-:-boolean-148)
+-   [ConversationSDK~messages : string](/docs/sdk/web#name-conversationsdkmessages-:-string-157)
+-   [ConversationSDK~lastMessage : string](/docs/sdk/web#name-conversationsdklastmessage-:-string-166)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

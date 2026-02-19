@@ -1,0 +1,244 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "docs-hub"
+source: "https://developers.openrainbow.com/doc/hub/get-ready-for-production"
+lastSynced: "2026-02-19T22:35:13.074Z"
+---
+# Documentation
+
+Deployment on Production
+
+## Deployment on Production
+
+---
+
+### Preambule
+
+---
+
+Once you have developped your application on the Sandbox platform, you need to deploy it on the Rainbow production platform to let your real users connect and use it. This guide will help you to understand how to adapt your application for working with real users and for deploying it on Production platform.
+
+### Steps
+
+---
+
+Going to Rainbow production platform implies some modifications and actions to do. Here is the list of actions to do.
+
+![](/docs/hub/../assets/deployment_production.png)
+
+The next sections will describe in details the different tasks needed to migrate your application.
+
+#### Register an application for production
+
+Up to now, you have an application that runs on the Sandbox platform. To run the application on the production platform, you need to use the Rainbow for Developers portal.
+
+Using the Rainbow for Developers portal, you need to obtain an `application Id` and a `secret key` that work on the Rainbow production platform. These information are **mandatory** for authorizing your application to connect to our Rainbow production platform.
+
+Do the following:
+
+-   Log-in to the Rainbow for Developers portal using your Rainbow user account. Be careful to not use your Sandbox account.
+    
+-   On the left menu, select the option **Applications**
+    
+-   Click on the button **Create a new application**.
+    
+-   Fill the application creation wizard form (Application name, Type, Activity)
+    
+-   Click the **Create** button
+    
+-   The newly created application identifier and secret key are displayed. You can copy them using the buttons on the right of each field.
+    
+
+To edit the application properties, locate the application in the applications table and click the edit button.
+
+Your application is not yet deployed.
+
+#### Deployment on the Production Platform
+
+To deploy your application on the Rainbow production platform, follow these steps:
+
+-   Ensure you have added a valid payment method for **Pay As You Go** offer applications. Visit the [Billing](/billing) section in the Rainbow for Developers portal, click **Add a new card**, provide your credit card information, and save it. You can also set up SEPA payment if preferred.
+    
+-   For **Pay As You Go** offer applications: Your application will be automatically deployed upon completing the above steps, and it will become immediately accessible to your users.
+    
+-   For **Business** and **App Connect** offer applications: Visit the [Applications](/applications) page in the Rainbow for Developers portal and click the deploy button. The application state will change to IN\_DEPLOYMENT.
+    
+
+Please note that in the case of Business and App Connect offers, the deployment must be validated by ALE before transitioning to the RUNNING state.
+
+#### Adapt your application
+
+To connect to the Rainbow production platform, adapt the application code as described:
+
+Using
+
+Task to do
+
+[**Rainbow SDK for Android**](/android)
+
+You need to switch the value of the 3rd parameter of the API `signin()` from `sandbox.openrainbow.com` to `openrainbow.com`.
+
+[**Rainbow SDK for iOS**](/ios)
+
+You need to use the `connect()` method.
+
+[**Rainbow SDK for CSharp**](/csharp)
+
+You need to switch the value of the 1st parameter of the API `SetHostInfo()` from `sandbox.openrainbow.com` to `openrainbow.com`.
+
+[**Rainbow SDK for Web**](/web)
+
+You need to replace the API `signin()` by the API `signinOnRainbowOfficial()`.
+
+[**Rainbow SDK for Node.JS**](/node)
+
+You need to switch the value of the parameter `host` in your configuration file from `sandbox.openrainbow.com` to `openrainbow.com`.
+
+[**REST API**](/apis)
+
+You need to switch the `host` used in your request from `sandbox.openrainbow.com` to `openrainbow.com`.
+
+[**Rainbow CLI**](/docs/sdk/cli/tutorials/Getting_started)
+
+If you need to use the Rainbow CLI, you have to add the parameter `--host openrainbow.com` to the command `rbw login` or to launch the command `rbw configure`
+
+And secondly, you need to use the right application ID and secret key from the production platform instead of the ones from the Sandbox platform.Depending on your application, do the following:
+
+Using
+
+Task to do
+
+[**Rainbow SDK for Android**](/android)
+
+You need to replace the value of the parameters `applicationId`, `secretKey` of the API `initialize()` with your application information.
+
+[**Rainbow SDK for iOS**](/ios)
+
+You need to add the `appID` and `appSecret` in application delegates method `application:didFinishLaunchingWithOptions`.
+
+[**Rainbow SDK for CSharp**](/csharp)
+
+You need to replace the value of the parameters `applicationID`, `applicationSecretKey` of the API `SetApplicationInfo()` with your application information.
+
+[**Rainbow SDK for Web**](/web)
+
+You need to replace the value of the parameters `strApplicationID`, `strApplicationSecret` of the API `initialize()` with your application information.
+
+[**Rainbow SDK for Node.JS**](/node)
+
+You need to replace the value of the `appID`, `appSecret` in your configuration file with your application information.
+
+[**REST API**](/apis)
+
+You need to update the header `x-rainbow-app-auth` with your application information.
+
+#### Protect your users and data from unexpected interactions
+
+This step is mandatory if you want to create new Rainbow accounts in your application (backend or frontend). If you already own a Rainbow account with `company_admin` right or if your application reuse existing Rainbow accounts only, you can go to the next paragraph.
+
+In order to create new Rainbow account you need a `company_admin` and a `company` dedicated to your users.
+
+To have a company admin account that manages your company, do the following:
+
+-   Open [Rainbow](https://web.openrainbow.com) and log-in using your Rainbow account. If you want to use an other account, you can create a new one.
+    
+-   Click on the button **Create my company**, choose a name, select a country and click on **Create**
+    
+
+A new company will be created and your account will acquire the role `admin` with the level `company_admin` which means that your account is able to manage the company and provision users.
+
+In 99% of the cases, you will need a **private company** to avoid interactions from other Rainbow users that are not part of your company or application.
+
+This behavior can be obtained by moving the visibility of your company which is by default **public** to **private**.
+
+This action needs to be done by using the Rainbow CLI tool:
+
+-   Launch command `rbw configure` and now select **Rainbow production platform**, enter your **admin\_account** credentials and the application ID and secret key issued from the application you just created on production platform.
+    
+-   Launch command `rbw company set private` to change the visibility of your company from `public` to `private`
+    
+
+**Note**: Using the Rainbow CLI tool on production could imply fees if you are over the free threshold.
+
+### Optional steps
+
+---
+
+#### Setup Rainbow Push Notifications service
+
+If you are building a mobile application, you need to configure the Rainbow Push Notifications service.
+
+Without this configuration, your mobile application will not receive any notifications from Rainbow when in background.
+
+From the Rainbow for Developers portal, do the following:
+
+-   On the left menu, select the option **Applications**
+    
+-   Locate your application in the applications table
+    
+-   Click the edit icon
+    
+-   Fill the Android Push Notifications panel with your Android token and click on **Update**
+    
+-   Upload your production certificate from Apple for authorizing push notifications and click on **Update**
+    
+
+#### Monitor your users
+
+In case you create new Rainbow accounts in your application, it is a best practice to create a second application dedicated to the follow-up of your users.
+
+Using the Rainbow CLI, you will be able to list all the Rainbow account created, update them or just check the validity of their data.
+
+Soon, you will be able to have access to your company metrics to have more analytics on the Rainbow usage.
+
+Concretely, to monitor your Rainbow users, do the following:
+
+-   Create a new application and deploy it
+    
+-   Launch the command `rbw configure`, select the **Rainbow production platform**, enter your **admin\_account** credentials and the application ID and secret key issued from the application you just created on production platform.
+    
+-   Launch command `rbw users` to list the Rainbow accounts created. Use command `rbw commands` to have the complete list of commands you can use.
+    
+
+### Summary
+
+---
+
+Going to production needs some adaptations in your application. Mainly configuration parameters to change.
+
+It's a good practice to keep in your application the two environments in order to quickly have the possibility to test new features on our Sandbox platform without disturbing your real users.
+
+### Interested in
+
+---
+
+-   [Discovering Rainbow limits](/docs/hub/features-limits)
+    
+-   [Managing applications](/docs/hub/application-lifecycle)
+    
+
+---
+
+*Last updated July, 5th 2023*
+
+### Sur cette page
+
+-   [Deployment on Production](/docs/hub/get-ready-for-production#name-deployment-on-production-0)
+-   [Preambule](/docs/hub/get-ready-for-production#name-preambule-4)
+-   [Steps](/docs/hub/get-ready-for-production#name-steps-11)
+-   [Register an application for production](/docs/hub/get-ready-for-production#name-register-an-application-for-production-24)
+-   [Deployment on the Production Platform](/docs/hub/get-ready-for-production#name-deployment-on-the-production-platform-74)
+-   [Adapt your application](/docs/hub/get-ready-for-production#name-adapt-your-application-100)
+-   [Protect your users and data from unexpected interactions](/docs/hub/get-ready-for-production#name-protect-your-users-and-data-from-unexpected-interactions-241)
+-   [Optional steps](/docs/hub/get-ready-for-production#name-optional-steps-292)
+-   [Setup Rainbow Push Notifications service](/docs/hub/get-ready-for-production#name-setup-rainbow-push-notifications-service-296)
+-   [Monitor your users](/docs/hub/get-ready-for-production#name-monitor-your-users-335)
+-   [Summary](/docs/hub/get-ready-for-production#name-summary-367)
+-   [Interested in](/docs/hub/get-ready-for-production#name-interested-in-377)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

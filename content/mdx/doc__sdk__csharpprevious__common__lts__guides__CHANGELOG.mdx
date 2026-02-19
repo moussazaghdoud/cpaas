@@ -1,0 +1,492 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG"
+lastSynced: "2026-02-19T22:35:14.313Z"
+---
+# Documentation
+
+Changelog
+
+## SDK.Common for C#
+
+### \[2.6.18-LTS\] - 2024-07-01
+
+#### Changed
+
+-   Colors list used to create Avatars has been changed.
+-   **.Net 6.0** as target plateform has been removed (obsolete). **.Net Std 2.0, 2.1** and **.Net 8.0** are still in targets platform.
+
+---
+
+### \[2.6.17-LTS\] - 2024-05-27
+
+#### Added
+
+-   `ImageTools`: GetSvgAsStringFromResourceName()
+-   New SVG files added (528 in total)
+
+### \[2.6.16-LTS\] - 2024-03-19
+
+#### Fixed
+
+-   The avatar of a bubble based on the avatars of its members will no longer contain the initials of one or more of these members
+
+#### Changed
+
+-   **Breaking** `GetBitmapFromSvgResourceName()` and `GetBitmapFromSvgFile()`: No longer return a square image but respect the SVG layout. A **width** parameter replaces the old **size** parameter. The **height** is automatically calculated.
+-   `Avatars`: now use logger prefix set in **Rainbow.Application** to create folder where Avatars are stored - so by default it will be **Path.Combine(application.GetIniPathFolder(), "Resources", $"{prefix}Avatars")**
+-   `Files`: now use logger prefix set in **Rainbow.Application** to create folder where Files are stored - so by default it will be **Path.Combine(application.GetIniPathFolder(), "Resources", $"{prefix}Files")**
+-   Update all labels for 22 languages
+-   Upgrade package `SkiaSharp` to 2.88.7 from 2.88.6 (since a rollback of dependencies used in this package has been done in this new version)
+-   Use `Svg.Skia` 1.0.0.13 instead of `SkiaSharp.Svg` 1.60.0 to allow to manage more type of SVG
+
+#### Added
+
+-   Include more than 500 SVG (before ~60 SVG)
+
+---
+
+### \[2.6.15-LTS\] - 2024-01-15
+
+#### Added
+
+-   Add .Net 8.0 as target plateform (.Net Std 2.0, 2.1 and .Net 6.0 are still in targets platform) .Net 6.0 target platform will be removed in April.
+
+#### Changed
+
+-   Upgrade dependency package `SkiaSharp` to 2.88.6 from 2.80.3 (due to high security vulnerability)
+
+---
+
+### \[2.6.14-LTS\] - 2023-09-05
+
+#### Changed
+
+-   Technical delivery to use SDK C# (Core) v2.6.18
+
+---
+
+### \[2.6.13\] - LTS - 2023-07-07
+
+---
+
+-   .Net Core App 3.1 is no more targetted (already deprecated by Microsoft).
+-   .Net Standardd 2.0 / 2.1 and .Net 6.0 are still targetted
+
+### \[2.6.12\] - LTS - 2023-05-26
+
+---
+
+-   Dependency no more used: `Newtonsoft.Json`
+    
+-   Update all labels to the most recent version
+    
+
+### \[2.6.11\] - LTS - 2023-05-03
+
+---
+
+-   Technical delivery due to SDK (core) updates
+
+### \[2.6.10\] - LTS - 2022-07-12
+
+---
+
+-   Technical delivery to modify the validity date of the SDK
+
+### \[2.6.9\] - LTS - 2022-05-10
+
+---
+
+-   Enriched documentation
+    
+-   Technical delivery to modify the validity date of the SDK
+    
+
+### \[2.6.8\] - LTS - 2022-08-23
+
+---
+
+## Enhancements
+
+**It's now possible to log on different files if several instance of the SDK (Core) is used in sametime** (for example if you use several bots in the same process).
+
+You need to set to the new parameter `loggerPrefix` a different value for each instance when `Rainbow.Application` object is created. You also need to use a different configuration file for your logger. See the online documentation for more details.
+
+In consequence the way to create these services have changed: Avatars, Languages and ImageTools:
+
+```csharp
+// Create Rainbow.Application - here with a logger prefix
+String prefix = "BOT01_"; // This can be null or empty if you don't need it
+var application = new Rainbow.Application(loggerPrefix: prefix);
+
+// -------------------------------------------------
+
+// Before Avatars service was created like this:
+var avatars = Rainbow.Common.Avatars.Instance;
+avatars.SetApplication(application);
+
+// Now we use this to create Avatars service:
+var avatars = Rainbow.Common.Avatars.CreateInstance(application);
+
+// -------------------------------------------------
+
+// Before Languages service was created like this:
+var languages = Rainbow.Common.Languages.Instance;
+
+// Now we use this to create Languages service:
+var languages = Rainbow.Common.Languages.CreateInstance(application);
+
+// -------------------------------------------------
+
+// Before ImageTools service was composed of only static methods. Now you need to create it before to use any methods
+var imageTools = Rainbow.Common.ImageTools.CreateInstance(application);
+```
+
+### \[2.6.7\] - LTS - 2022-06-15
+
+---
+
+No update since last LTS version - Increase release versions to be consistent with other packages SDK (core)
+
+### \[2.6.6\] - LTS - 2022-05-23
+
+---
+
+No update since last LTS version - Increase release versions to be consistent with other packages SDK (core)
+
+### \[2.6.5\] - LTS - 2022-05-04
+
+---
+
+No update since last LTS version - Increase release versions to be consistent with other packages SDK (core)
+
+### \[2.6.4\] - LTS - 2022-04-07
+
+---
+
+No update since last LTS version - Increase release versions to be consistent with other packages SDK (core)
+
+### \[2.6.3\] - LTS - 2022-03-16
+
+---
+
+No update since last LTS version - Increase release versions to be consistent with other packages SDK (core)
+
+### \[2.6.2\] - LTS - 2022-01-27
+
+---
+
+No update since last LTS version - Increase release versions to be consistent with other packages SDK (core)
+
+### \[2.6.1\] - LTS - 2021-12-08
+
+---
+
+No update since last LTS version - Increase release versions to be consistent with other packages SDK (core)
+
+### \[2.6.0\] - LTS - 2021-11-18
+
+---
+
+No update since last STS version - Increase release versions to be consistent with other packages SDK (core)
+
+### \[2.5.2\] - STS - 2021-10-20
+
+---
+
+***Avatars service***: **updated**
+
+-   `PeerAvatarUpdated`: **fix** Event could be raised just before the avatar file was saved locally
+
+### \[2.5.1\] - STS - 2021-09-29
+
+---
+
+**Deprecated events removed:**
+
+-   ***Events removed***: ContactAvatarUpdated, BubbleAvatarUpdated
+-   ***Use instead event***: PeerAvatarUpdated
+
+### \[2.5.0\] - LTS - 2021-09-08
+
+---
+
+### API update in details:
+
+***Files service***: **updated**
+
+-   `GetFolderPathForFilesStorage`: **new** Return the folder path where files are stored by this service
+-   `GetFolderPathForThumbnailsStorage`: **new** Return the folder path where file thumbnails are stored by this service
+
+### \[2.4.0\] - LTS - 2021-08-12
+
+---
+
+### Dependency
+
+Bump **SkiaSharp** package to **2.80.3** from **2.80.2**
+
+### Avatar service:
+
+**Fix**: To know if the Avatar stored locally was more recent the property 'CreationTimeUtc' was used. Now 'LastWriteTimeUtc' is use instead.
+
+### Languages service:
+
+The current language of the device is now used as default language (instead of "en") if this service has a correct dictionary associated. (using internally CultureInfo.CurrentUICulture.TwoLetterISOLanguageName)
+
+If several dictionaries are found (for example for Portuguese we have two dictionaries "pt-BR" and "pt-PT") the first one found is used by default.
+
+### Files service:
+
+**Fix**: Don't increase size of thumbnails or image files which are smaller than MaxThumbnailWidth and/or MaxThumbnailHeight
+
+### ImageTools library:
+
+-   Add 13 new Svg as resources in this library
+
+### API update in details:
+
+***Avatars service***: **updated**
+
+-   `PeerAvatarUpdated`: **new** Event raised when a peer avatar is updated
+-   `BubbleAvatarUpdated`: **deprecated** Use instead PeerAvatarUpdated event
+-   `ContactAvatarUpdated`: **deprecated** Use instead PeerAvatarUpdated event
+
+***Languages service***: **updated**
+
+-   `GetLanguageIdListAccordingDeviceLanguage`: **new** List available "languageId" according the device language. (using internally CultureInfo.CurrentUICulture.TwoLetterISOLanguageName). For example, using "pt", two "languageId" are returned "pt-BR" and "pt-PT". For "en" only one is returned: "en".
+-   `GetLabel(labelKey, subtituteKey, subtituteValue)`: **new** Get the specified label for the current language. In the label itself, substite a key by a value.
+
+***Files service***: **updated**
+
+-   `FileDescriptorNotAvailable`: **new** Event raised when a FileDescriptor is no more available: the assocatied file has been deleted or is no more accessible (no more viewer for example)
+-   `IsFileDescriptorNotAvailable`: **new** To kwon if a FileDescriptor is no more available: the assocatied file has been deleted or is no more accessible (no more viewer for example)
+
+### \[2.2.0\] - LTS - 2021-06-09
+
+---
+
+### ImageTools libray:
+
+-   Add 10 new Svg as resources in this library
+
+## \[2.1.0\] - LTS - 2021-05-24
+
+---
+
+### Files service: (new)
+
+This service permits to facilitate the download of files descriptor, files thumbnail and files.
+
+When a file descriptor has been downloaded:
+
+-   if authorized, a thumbnail is automatically downloaded too.
+-   if authorized and orignal file size enough smaller, the original image file is automatically downloaded instead of its thumbnail.
+
+Once downloaded, thumbnails are automatically resized based on the max height or max width specified.
+
+Thumbnails and originals files are stored in the specified folder.
+
+### Avatars service:
+
+-   Bubble avatar created with theirs members now use first creator, then moderators then members. Avoid current user if possible
+-   Enhance download management on network trouble or on incorrect server responses
+
+### ImageTools library:
+
+-   Add 14 new Svg as resources in this library
+
+### API update in details:
+
+***Avatars service***: **updated**
+
+-   `AddUnknownContactToPoolById()` **new** - To add contact avatar (by Id) to the download pool
+-   `AddUnknownContactToPoolByJid()` **new** - To add contact avatar (by Jid) to the download pool
+-   `GetTheoricContactAvatarPath` **new** - Returns the path of the contact Avatar according it's type only whatever the status of this avatar download.
+-   `GetTheoricBubbleAvatarPath` **updated** - Returns the path of the bubble Avatar according it's type only whatever the status of this avatar download.
+-   `BubbleAvatarUpdated` **updated** - This event is now raised only when all avatars members, used to create bubble avatar, are all downloaded.
+
+***Files service***: **new**
+
+*Events*
+
+-   `FileDescriptorAvailable` **new** - Event raised when a FileDescriptor is available
+-   `ThumbnailAvailable` **new** - Event raised when a thumbnail has been downloaded successfully and is available
+
+*Properties*
+
+-   `AllowAutomaticThumbnailDownload` **new** - To allow / disallow automatic thumbnail download - False by default
+-   `AllowFileDescriptorDownload` **new** - To allow / disallow file descriptor download - True by default
+-   `AutomaticDownloadLimitSizeForImages` **new** - To download original image and not thumbnail if its size is smaller than this property (in bytes) - 250 by default.
+-   `MaxThumbnailHeight` **new** - Thumbnail will be resized automatically if its height is greater than this property - 200 by default
+-   `MaxThumbnailWidth` **new** - Thumbnail will be resized automatically if its width is greater than this property - 200 by default
+
+*Methods*
+
+-   `AskFileDescriptorDownload(conversationId, fileDescriptorId)` **new** - To ask the download of a file descriptor in a conversation.
+-   `AskThumbnailDownload(fileDescriptorId)` **new** - To ask the download of a thumbnail. The file descriptor must be available first.
+-   `GetAllConversationIdByFilesDescriptorIdFromCache()` **new** - Get a dictionary of conversation id indexed by file descriptor id stored in the cache
+-   `GetAllFilesDescriptorFromCache()` **new** - Get FileDescriptor object using fileDescriptorId.
+-   `GetConversationIdByFileDescriptorId(fileDescriptorId)` **new** - To get the conversation Id related to the specified file descriptor Id.
+-   `GetFileDescriptor(fileDescriptorId)` **new** - Get FileDescriptor object using fileDescriptorId.
+-   `GetFullFilePath(fileDescriptorId)` **new** - Get in a dictionary (by file descriptor id) all files descriptor stored in cache
+-   `GetThumbnailFullFilePath(fileDescriptorId)` **new** - Get file path to the thumbnail using file descriptor Id.
+-   `IsThumbnailFileAvailable(conversationId, fileDescriptorId, fileName)` **new** - To know if thumbnail file is available
+-   `SetApplication(application)` **new** - To set Rainbow Application object
+-   `SetDensity(density)` **new** - Set the density used by the current device in order to resize correctly thumbnail - 1 by default
+-   `SetFolderPath(folderPath)` **new** - Set folder path where thumbnails and files will be stored
+
+***ImageTools library***: **updated**
+
+-   `GetImageSize()` **new** - To get image size (using file path, SKImage or SKBitmap)
+
+## \[2.0.0\] - LTS Beta - 2021-04-23
+
+---
+
+-   Avoid some crash when creating SVG object with incorrect data or invalid file path
+
+## \[0.0.1.0\] - 2021-04-01
+
+---
+
+***Avatars service***: **updated** Default avatar size is now 100 (no more 60)
+
+***ImageTools library***: **updated**
+
+***Methods***
+
+-   `GetSvgResourceNameList()` **new** - Get list of Svg available as resource (10 for the moment)
+-   `GetSvgFromResourceName(resourceName)` **new** - Get Svg object using the specified resource name
+-   `GetBitmapFromSvgResourceName(resourceName, size, backgroundColor, color)` **new** - Create bitmap from Svg using the specified background color and pen color
+-   `GetBitmapFromSvgResourceName(resourceName, size, backgroundColor, colorTransformations)` **new** - - Create bitmap from Svg using the specified background color and list of color to use form original colors
+
+***Languages service***: **new** This service permits to get labels in the specified language (22 in total). By default 'en' is used as language Id.
+
+***Events***
+
+-   `LanguageChanged` **new** - Raised when the language has been changed
+
+***Properties***
+
+-   `Instance` **new** - To get isntance of thi service
+
+***Methods***
+
+-   `GetLabel(key)` **new** - To get the label using the specified key
+-   `GetLabels()` **new** - To get all lables available
+-   `GetLanguage()` **new** - To get language id currently used
+-   `GetLanguagesList()` **new** - To get list of languages supported
+-   `SetLanguage(languageId)` **new** - To set the language to use (using its id)
+
+## \[0.0.0.1-alpha\] - 2021-03-11
+
+---
+
+***Avatars service***: **new**
+
+***Events***
+
+-   `BubbleAvatarUpdated` **new** - Raised when a Bubble avatar as been updated
+-   `ContactAvatarUpdated` **new** - Raised when a Contact avatar as been updated
+
+***Methods***
+
+-   `AddInDownloadPoolAllAvatarsFromBubblesStoredInCache()` **new** - Download (one by one) and if it's not already done, all avatars of bubbles stored in the cache of Bubbles service.
+-   `AddInDownloadPoolAllAvatarsFromContactsStoredInCache()` **new** - Download (one by one) and if it's not already done, all avatars of contacts stored in the cache of Contacts service.
+-   `AllowAvatarDownload(value)` **new** - To allow avatar download. Can be set / unset at any time to stop / start avatars download.
+-   `AllowToAskInfoAboutUnknowBubble(value)` **new** - To allow this service to ask server info automatically (to get name, members, avatar) if an unknown bubble is found.
+-   `AllowToAskInfoForUnknownContact(value)` **new** - To allow this service to ask server info automatically (to get displaynae, initials and avatar) if an unknown contact is found.
+-   `GetAvatarsFolderPath(type, forContact)` **new** - Return the path used to store avatar accoring the AvatarType specified
+-   `GetBubbleAvatarPath(bubbleId, avatarType)` **new** - Return the Bubble Avatar path. A path to an valid image is always returned.
+-   `GetColorFromDisplayName(displayName)` **new** - Return a Hex String color using the display name
+-   `GetContactAvatarPath(contactId, avatarType)` **new** - Return the Contact Avatar path. A path to an valid image is always returned.
+-   `GetDarkerColorFromDisplayName(displayName)` **new** - Return a Hex String color (darker) using the display name
+-   `GetUnknwonAvatarFilePath` **new** - Get the path to the avatar used for unknwon contact
+-   `Initialize()` **new** - Initialize this service.
+-   `SetApplication(application)` **new** - To specify the Rainbow Application service
+-   `SetAvatarSize(value, avatarType)` **new** - Set avatar size according its type. (without taking into account density)
+-   `SetDensity(density)` **new** - According the device / the context, the pixel density is note equals to 1 (default value)
+-   `SetFolderPathUsedToStoreAvatars(path)` **new** - Set folder path where avatars will be stored
+-   `SetTextColor(hexColor)` **new** - Set color of the text to create Avatar using initials (#FFFFFF by default)
+-   `SetTextHeightSize(size)` **new** - Set text height (in px - without taking into account density) which will be used to create avatar using initials
+
+***ImageTools***: **new**
+
+-   `ArcPartOfSquareBitmap(srcBitmap, partNumber, nbParts, antiAliasing)` **new** - Get an Arc part of the specified bitmap
+-   `CopyBitmap(bitmap)` **new** - Copy the specified bitmap
+-   `CreateBitmap(width, height, hexColor)` **new** - Create a bitmap
+-   `CreateCircleBitmap(size, circleHexColor, antiAliasing)` **new** - Create a circle bitmap
+-   `DegreeToRadian(angle)` **new** - Convert degree to radian
+-   `DrawBitmapOnAnotherOne(srcBitmap, dstBitmap, xDest, yDest)` **new** - Draw a bitmap on another one
+-   `DrawBitmapOnAnotherOne(srcBitmap, dstBitmap, xDest, yDest, width, height, maintainRatio, quality)` **new** - Draw a bitmap on another one
+-   `GetBitmapFromFile(filePath)` **new** - Get a bitmap from file
+-   `GetBitmapFromImage(image)` **new** - Get an bitmap from image
+-   `GetImageFromBitmap(bitmap)` **new** - Get an image from bitmap
+-   `GetImageFromFile(filePath)` **new** - Get an image from file
+-   `GetSizeUsingDensity(size)` **new** - Get size (in px) according density
+-   `GetStreamFromBitmap(bitmap)` **new** - Get stream from bitmap
+-   `GetStreamFromImage(image)` **new** - Get stream from image
+-   `OvalBitmap(srcBitmap, antiAliasing)` **new** - Create oval image from the specified bitmap
+-   `SaveBitmapToFile(bitmap, filePath, format, quality)` **new** - Save bitmap to file
+-   `SaveImageToFile(image, filePath, format, quality)` **new** - Save image to file
+-   `ScaleAndSquareBitmap(srcBitmap, size, maintainRatio, quality)` **new** - Scale and square specified bitmap
+-   `ScaleBitmap(srcBitmap, imgWidth, imgHeight, maintainRatio, quality)` **new** - Scale specified bitmap
+-   `SetArcPartInfo(color, strokeWidth)` **new** - Set color and stroke width use to create arc part of an bitmap
+-   `SetDensity(density)` **new** - Set density
+-   `TranslateBitmap(srcBitmap, x, y)` **new** - Translate a bitmap
+-   `WriteCenteredTextToBitmap(bitmap, text, textColor, textHeight, antiAliasing)` **new** - Write centered text (horizontally and vertically) on the specified bitmap
+
+### Sur cette page
+
+-   [SDK.Common for C#](/docs/sdk/csharp#name-sdk.common-for-c-0)
+-   [\[2.6.18-LTS\] - 2024-07-01](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.6.18-lts---2024-07-01-3)
+-   [\[2.6.17-LTS\] - 2024-05-27](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.6.17-lts---2024-05-27-22)
+-   [\[2.6.16-LTS\] - 2024-03-19](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.6.16-lts---2024-03-19-40)
+-   [\[2.6.15-LTS\] - 2024-01-15](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.6.15-lts---2024-01-15-99)
+-   [\[2.6.14-LTS\] - 2023-09-05](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.6.14-lts---2023-09-05-123)
+-   [\[2.6.13\] - LTS - 2023-07-07](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.6.13---lts---2023-07-07-138)
+-   [\[2.6.12\] - LTS - 2023-05-26](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.6.12---lts---2023-05-26-154)
+-   [\[2.6.11\] - LTS - 2023-05-03](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.6.11---lts---2023-05-03-170)
+-   [\[2.6.10\] - LTS - 2022-07-12](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.6.10---lts---2022-07-12-181)
+-   [\[2.6.9\] - LTS - 2022-05-10](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.6.9---lts---2022-05-10-192)
+-   [\[2.6.8\] - LTS - 2022-08-23](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.6.8---lts---2022-08-23-208)
+-   [Enhancements](/docs/sdk/csharp#name-enhancements-212)
+-   [\[2.6.7\] - LTS - 2022-06-15](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.6.7---lts---2022-06-15-225)
+-   [\[2.6.6\] - LTS - 2022-05-23](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.6.6---lts---2022-05-23-232)
+-   [\[2.6.5\] - LTS - 2022-05-04](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.6.5---lts---2022-05-04-239)
+-   [\[2.6.4\] - LTS - 2022-04-07](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.6.4---lts---2022-04-07-246)
+-   [\[2.6.3\] - LTS - 2022-03-16](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.6.3---lts---2022-03-16-253)
+-   [\[2.6.2\] - LTS - 2022-01-27](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.6.2---lts---2022-01-27-260)
+-   [\[2.6.1\] - LTS - 2021-12-08](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.6.1---lts---2021-12-08-267)
+-   [\[2.6.0\] - LTS - 2021-11-18](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.6.0---lts---2021-11-18-274)
+-   [\[2.5.2\] - STS - 2021-10-20](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.5.2---sts---2021-10-20-281)
+-   [\[2.5.1\] - STS - 2021-09-29](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.5.1---sts---2021-09-29-295)
+-   [\[2.5.0\] - LTS - 2021-09-08](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.5.0---lts---2021-09-08-314)
+-   [API update in details:](/docs/sdk/csharp#name-api-update-in-details:-318)
+-   [\[2.4.0\] - LTS - 2021-08-12](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.4.0---lts---2021-08-12-336)
+-   [Dependency](/docs/sdk/csharp#name-dependency-340)
+-   [Avatar service:](/docs/sdk/csharp#name-avatar-service:-346)
+-   [Languages service:](/docs/sdk/csharp#name-languages-service:-352)
+-   [Files service:](/docs/sdk/csharp#name-files-service:-361)
+-   [ImageTools library:](/docs/sdk/csharp#name-imagetools-library:-367)
+-   [API update in details:](/docs/sdk/csharp#name-api-update-in-details:-377)
+-   [\[2.2.0\] - LTS - 2021-06-09](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.2.0---lts---2021-06-09-430)
+-   [ImageTools libray:](/docs/sdk/csharp#name-imagetools-libray:-434)
+-   [\[2.1.0\] - LTS - 2021-05-24](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.1.0---lts---2021-05-24-444)
+-   [Files service: (new)](/docs/sdk/csharp#name-files-service:-new-448)
+-   [Avatars service:](/docs/sdk/csharp#name-avatars-service:-475)
+-   [ImageTools library:](/docs/sdk/csharp#name-imagetools-library:-490)
+-   [API update in details:](/docs/sdk/csharp#name-api-update-in-details:-500)
+-   [\[2.0.0\] - LTS Beta - 2021-04-23](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-2.0.0---lts-beta---2021-04-23-656)
+-   [\[0.0.1.0\] - 2021-04-01](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-0.0.1.0---2021-04-01-667)
+-   [\[0.0.0.1-alpha\] - 2021-03-11](/doc/sdk/csharpprevious/common/lts/guides/CHANGELOG#name-0.0.0.1-alpha---2021-03-11-755)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

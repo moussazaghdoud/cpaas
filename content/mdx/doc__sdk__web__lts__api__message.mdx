@@ -1,0 +1,185 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/message"
+lastSynced: "2026-02-19T22:35:15.312Z"
+---
+# Documentation
+
+Message model
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## MessageSDK
+
+Message model. Messages are exchanged between Rainbow users in one-to-one conversations or bubbles.
+
+-   [MessageSDK](#module_MessageSDK)
+    -   [~additionalContent](#module_MessageSDK..additionalContent) : `object`
+    -   [~answeredMsgId](#module_MessageSDK..answeredMsgId) : `string`
+    -   [~id](#module_MessageSDK..id) : `string`
+    -   [~type](#module_MessageSDK..type) : `string`
+    -   [~data](#module_MessageSDK..data) : `string`
+    -   [~date](#module_MessageSDK..date) : `Date`
+    -   [~senderId](#module_MessageSDK..senderId) : `string`
+    -   [~isForwarded](#module_MessageSDK..isForwarded) : `boolean`
+    -   [~receiptStatus](#module_MessageSDK..receiptStatus) : `number`
+    -   [~status](#module_MessageSDK..status) : `string`
+    -   [~urgency](#module_MessageSDK..urgency) : `string`
+    -   [~shortFileDescriptor](#module_MessageSDK..shortFileDescriptor) : `object`
+    -   [~fileId](#module_MessageSDK..fileId) : `string`
+    -   [~messageHistory](#module_MessageSDK..messageHistory) : `Array`
+    -   [~side](#module_MessageSDK..side) : `string`
+
+### MessageSDK~additionalContent : `object`
+
+Message alternative content
+
+**Kind**: inner property of [`MessageSDK`](#module_MessageSDK)  
+**Access**: public  
+**Read only**: true  
+
+### MessageSDK~answeredMsgId : `string`
+
+ID of the messaged that was answered (if any)
+
+**Kind**: inner property of [`MessageSDK`](#module_MessageSDK)  
+**Access**: public  
+**Read only**: true  
+
+### MessageSDK~id : `string`
+
+The ID of the message
+
+**Kind**: inner property of [`MessageSDK`](#module_MessageSDK)  
+**Access**: public  
+**Read only**: true  
+
+### MessageSDK~type : `string`
+
+Message type. Can be one of the following values: - "Chat" - "File" - "FileSharing" - "FileSharing" - "WebRTC CAll" - "Recording" - "FORM" - "FORWARD"
+
+**Kind**: inner property of [`MessageSDK`](#module_MessageSDK)  
+**Access**: public  
+**Read only**: true  
+
+### MessageSDK~data : `string`
+
+The message content
+
+**Kind**: inner property of [`MessageSDK`](#module_MessageSDK)  
+**Access**: public  
+**Read only**: true  
+
+### MessageSDK~date : `Date`
+
+Message date
+
+**Kind**: inner property of [`MessageSDK`](#module_MessageSDK)  
+**Access**: public  
+**Read only**: true  
+
+### MessageSDK~senderId : `string`
+
+ID of the Rainbow user who sent the message
+
+**Kind**: inner property of [`MessageSDK`](#module_MessageSDK)  
+**Access**: public  
+**Read only**: true  
+
+### MessageSDK~isForwarded : `boolean`
+
+Boolean indicating if the message was forwarded
+
+**Kind**: inner property of [`MessageSDK`](#module_MessageSDK)  
+**Access**: public  
+**Read only**: true  
+
+### MessageSDK~receiptStatus : `number`
+
+Status of the receipt Can be one of the following values:
+
+-   0 - No receipt received yet
+-   1 - No receipt received after a while, the server doesn't answer
+-   2 - Receipt in progress
+-   3 - The server has confirmed the reception of the message
+-   4 - The message has been received but not read
+-   5 - The message has been read
+
+**Kind**: inner property of [`MessageSDK`](#module_MessageSDK)  
+**Access**: public  
+**Read only**: true  
+
+### MessageSDK~status : `string`
+
+Status of the message
+
+**Kind**: inner property of [`MessageSDK`](#module_MessageSDK)  
+**Access**: public  
+**Read only**: true  
+
+### MessageSDK~urgency : `string`
+
+Urgency level. Can be one of the following values: 'std', 'low', 'middle', 'high'
+
+**Kind**: inner property of [`MessageSDK`](#module_MessageSDK)  
+**Access**: public  
+**Read only**: true  
+
+### MessageSDK~shortFileDescriptor : `object`
+
+Short file descriptor - if file is available and attached to the message. Used to download files.
+
+**Kind**: inner property of [`MessageSDK`](#module_MessageSDK)  
+**Access**: public  
+**Read only**: true  
+
+### MessageSDK~fileId : `string`
+
+ID of the file (if any)
+
+**Kind**: inner property of [`MessageSDK`](#module_MessageSDK)  
+**Access**: public  
+**Read only**: true  
+
+### MessageSDK~messageHistory : `Array`
+
+Array representing the history of message modifications
+
+**Kind**: inner property of [`MessageSDK`](#module_MessageSDK)  
+**Access**: public  
+**Read only**: true  
+
+### MessageSDK~side : `string`
+
+Indicator showing where is the message coming from. Possible values: "L" - message comes from other user, "R" - message comes from connected user, "ADMIN" - message comes from admin
+
+**Kind**: inner property of [`MessageSDK`](#module_MessageSDK)  
+**Access**: public  
+**Read only**: true
+
+### Sur cette page
+
+-   [MessageSDK](/docs/sdk/web#name-messagesdk-3)
+-   [MessageSDK~additionalContent : object](/docs/sdk/web#name-messagesdkadditionalcontent-:-object-96)
+-   [MessageSDK~answeredMsgId : string](/docs/sdk/web#name-messagesdkansweredmsgid-:-string-105)
+-   [MessageSDK~id : string](/docs/sdk/web#name-messagesdkid-:-string-114)
+-   [MessageSDK~type : string](/docs/sdk/web#name-messagesdktype-:-string-123)
+-   [MessageSDK~data : string](/docs/sdk/web#name-messagesdkdata-:-string-132)
+-   [MessageSDK~date : Date](/docs/sdk/web#name-messagesdkdate-:-date-141)
+-   [MessageSDK~senderId : string](/docs/sdk/web#name-messagesdksenderid-:-string-150)
+-   [MessageSDK~isForwarded : boolean](/docs/sdk/web#name-messagesdkisforwarded-:-boolean-159)
+-   [MessageSDK~receiptStatus : number](/docs/sdk/web#name-messagesdkreceiptstatus-:-number-168)
+-   [MessageSDK~status : string](/docs/sdk/web#name-messagesdkstatus-:-string-209)
+-   [MessageSDK~urgency : string](/docs/sdk/web#name-messagesdkurgency-:-string-218)
+-   [MessageSDK~shortFileDescriptor : object](/docs/sdk/web#name-messagesdkshortfiledescriptor-:-object-227)
+-   [MessageSDK~fileId : string](/docs/sdk/web#name-messagesdkfileid-:-string-236)
+-   [MessageSDK~messageHistory : Array](/docs/sdk/web#name-messagesdkmessagehistory-:-array-245)
+-   [MessageSDK~side : string](/docs/sdk/web#name-messagesdkside-:-string-254)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

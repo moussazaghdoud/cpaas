@@ -1,0 +1,245 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/conversations"
+lastSynced: "2026-02-19T22:35:15.174Z"
+---
+# Documentation
+
+Conversations service
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Conversations
+
+This module is the basic module for handling conversations in Rainbow. In Rainbow, conversations are the way to get in touch with someone or something (i.e. a Rainbow contact, an external phone number, a connected thing) so a conversation is the "long tail" of communication between you and someone or something else like a bubble. A Rainbow conversation by default supports sending and receiving Instant Messages with a single recipient (one-to-one conversation) or with several persons (bubble). A conversation can be escaladed to audio and video or by adding a PBX phone call (for P2P conversation only). Using the FileStorage service, you can share files in conversations. The main methods and events proposed in that service allow to:
+
+  
+\- Create or close a Rainbow conversation (one-to-one of bubble)  
+\- Retrieve all information linked to that conversation  
+\- Listen to the conversation change
+
+**Emits**: `event:RAINBOW_ONCONVERSATIONCHANGED`, `event:RAINBOW_ONCONVERSATIONREMOVED`, `event:RAINBOW_ONCONVERSATIONSCHANGED`
+
+-   [Conversations](#module_Conversations)
+    -   [getAllConversations()](#module_Conversations+getAllConversations) ⇒ `Array`
+    -   [getCallById(strCallId)](#module_Conversations+getCallById) ⇒ `object`
+    -   [getConversationById(conversationId)](#module_Conversations+getConversationById) ⇒ `object`
+    -   [getConversationByIdDeprecated(conversationId)](#module_Conversations+getConversationByIdDeprecated) ⇒ `object`
+    -   [getConversationByBubbleId(bubbleId)](#module_Conversations+getConversationByBubbleId) ⇒ `Promise.<conversation>`
+    -   [openConversationForContact(contact)](#module_Conversations+openConversationForContact) ⇒ `Promise`
+    -   [getConversationByContactId(contactId)](#module_Conversations+getConversationByContactId) ⇒ `Promise`
+    -   [openConversationForBubble(bubble)](#module_Conversations+openConversationForBubble) ⇒ `Promise`
+    -   [closeConversation(conversationId)](#module_Conversations+closeConversation)
+    -   [closeConversationDeprecated(conversation)](#module_Conversations+closeConversationDeprecated)
+
+### conversations.getAllConversations() ⇒ `Array`
+
+Allow to get the list of existing conversations (p2p and bubbles)
+
+**Kind**: instance method of [`Conversations`](#module_Conversations)  
+**Returns**: `Array` - An array of Conversation objects  
+**Access**: public  
+
+### conversations.getCallById(strCallId) ⇒ `object`
+
+***Deprecated***
+
+Get a call by its ID by searching through all the conversations Deprecated, please use getCallById API from WebRTC Service.
+
+**Kind**: instance method of [`Conversations`](#module_Conversations)  
+**Returns**: `object` - The call if found or null in case no call was found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strCallId
+
+`string`
+
+ID of the call
+
+### conversations.getConversationById(conversationId) ⇒ `object`
+
+Get a conversation by its id (dbId field)
+
+**Kind**: instance method of [`Conversations`](#module_Conversations)  
+**Returns**: `object` - A conversation object or null if not found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+ID of the conversation
+
+### conversations.getConversationByIdDeprecated(conversationId) ⇒ `object`
+
+***Deprecated***
+
+Get a conversation by its jid. Deprecated, please use getConversationById.
+
+**Kind**: instance method of [`Conversations`](#module_Conversations)  
+**Returns**: `object` - A conversation object or null if not found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+jid of the conversation
+
+### conversations.getConversationByBubbleId(bubbleId) ⇒ `Promise.<conversation>`
+
+Get a conversation associated to a bubble (using the bubble ID to retrieve it)
+
+**Kind**: instance method of [`Conversations`](#module_Conversations)  
+**Returns**: `Promise.<conversation>` - A Promise with conversation object or null if not found  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubbleId
+
+`string`
+
+ID of the bubble (dbId field)
+
+### conversations.openConversationForContact(contact) ⇒ `Promise`
+
+Open a conversation to a contact. Deprecated. Please use getConversationByContactId. Create a new one if the conversation doesn't exist or reopen a closed conversation
+
+**Kind**: instance method of [`Conversations`](#module_Conversations)  
+**Returns**: `Promise` - The Conversation (created or retrieved) or null in case of error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contact
+
+`object`
+
+The contact involved in the conversation
+
+### conversations.getConversationByContactId(contactId) ⇒ `Promise`
+
+Get conversation by contact ID.
+
+**Kind**: instance method of [`Conversations`](#module_Conversations)  
+**Returns**: `Promise` - The Conversation (created or retrieved) or null in case of error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contactId
+
+`string`
+
+The contact involved in the conversation
+
+### conversations.openConversationForBubble(bubble) ⇒ `Promise`
+
+Open a conversation for a bubble. Deprecated. Please use getConversationByBubbleId
+
+**Kind**: instance method of [`Conversations`](#module_Conversations)  
+**Returns**: `Promise` - The Conversation (created or retrieved) or null in case of error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`object`
+
+The bubble involved in this conversation
+
+### conversations.closeConversation(conversationId)
+
+Close a conversation
+
+**Kind**: instance method of [`Conversations`](#module_Conversations)  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+The conversation to close
+
+### conversations.closeConversationDeprecated(conversation)
+
+Close a conversation
+
+**Kind**: instance method of [`Conversations`](#module_Conversations)  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversation
+
+`object`
+
+The conversation to close
+
+### Sur cette page
+
+-   [Conversations](/docs/sdk/web#name-conversations-3)
+-   [conversations.getAllConversations() ⇒ Array](/docs/sdk/web#name-conversations.getallconversations--array-77)
+-   [conversations.getCallById(strCallId) ⇒ object](/docs/sdk/web#name-conversations.getcallbyidstrcallid--object-86)
+-   [conversations.getConversationById(conversationId) ⇒ object](/docs/sdk/web#name-conversations.getconversationbyidconversationid--object-129)
+-   [conversations.getConversationByIdDeprecated(conversationId) ⇒ object](/docs/sdk/web#name-conversations.getconversationbyiddeprecatedconversationid--object-169)
+-   [conversations.getConversationByBubbleId(bubbleId) ⇒ Promise.<conversation>](/docs/sdk/web#name-conversations.getconversationbybubbleidbubbleid--promise.conversation-212)
+-   [conversations.openConversationForContact(contact) ⇒ Promise](/docs/sdk/web#name-conversations.openconversationforcontactcontact--promise-252)
+-   [conversations.getConversationByContactId(contactId) ⇒ Promise](/docs/sdk/web#name-conversations.getconversationbycontactidcontactid--promise-292)
+-   [conversations.openConversationForBubble(bubble) ⇒ Promise](/docs/sdk/web#name-conversations.openconversationforbubblebubble--promise-332)
+-   [conversations.closeConversation(conversationId)](/docs/sdk/web#name-conversations.closeconversationconversationid-372)
+-   [conversations.closeConversationDeprecated(conversation)](/docs/sdk/web#name-conversations.closeconversationdeprecatedconversation-412)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

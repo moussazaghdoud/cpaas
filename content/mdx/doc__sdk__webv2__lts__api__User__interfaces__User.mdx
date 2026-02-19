@@ -1,0 +1,235 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/User/interfaces/User"
+lastSynced: "2026-02-19T22:35:17.523Z"
+---
+# Documentation
+
+User
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [User](doc/sdk/webv2/lts/api/User/index) / User
+
+# Interface: User
+
+This interface is used to represent a Rainbow user  
+A User is defined by a set of public information (name, firstname, avatar...) and a set of private information that are only shared with contacts that are in the user's network or in the same company (email, phone numbers...)
+
+## Extended by
+
+-   [`ConnectedUser`](doc/sdk/webv2/lts/api/User/interfaces/ConnectedUser)
+
+## Properties
+
+### adminType?
+
+> `optional` **adminType**: `string`
+
+---
+
+### avatar?
+
+> `optional` **avatar**: [`UserAvatar`](doc/sdk/webv2/lts/api/User/interfaces/UserAvatar)
+
+---
+
+### company?
+
+> `optional` **company**: `Company`
+
+---
+
+### dbId
+
+> **dbId**: `string`
+
+---
+
+### displayName?
+
+> `optional` **displayName**: `string`
+
+---
+
+### firstname?
+
+> `optional` **firstname**: `string`
+
+---
+
+### id
+
+> **id**: `string`
+
+---
+
+### isBot
+
+> **isBot**: `boolean`
+
+---
+
+### isTerminated
+
+> **isTerminated**: `boolean`
+
+---
+
+### isTv
+
+> **isTv**: `boolean`
+
+---
+
+### jid
+
+> **jid**: `string`
+
+---
+
+### jobTitle?
+
+> `optional` **jobTitle**: `string`
+
+---
+
+### lastAvatarUpdateDate?
+
+> `optional` **lastAvatarUpdateDate**: [`Date`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
+
+---
+
+### lastname?
+
+> `optional` **lastname**: `string`
+
+---
+
+### login
+
+> **login**: `string`
+
+---
+
+### loginEmail?
+
+> `optional` **loginEmail**: `string`
+
+---
+
+### phoneInternalNumber?
+
+> `optional` **phoneInternalNumber**: `string`
+
+---
+
+### phoneNumbers?
+
+> `optional` **phoneNumbers**: `UserPhoneNumbers`\[\]
+
+---
+
+### rainbowTvData
+
+> **rainbowTvData**: `any`
+
+---
+
+### status
+
+> **status**: `string`
+
+---
+
+### title?
+
+> `optional` **title**: `string`
+
+## Methods
+
+### isGuest()
+
+> **isGuest**(): `boolean`
+
+#### Returns
+
+`boolean`
+
+---
+
+### subscribe()
+
+> **subscribe**(`handler`, `filterEvent`?): `Subscription`
+
+Subscribe to updates on the current contact (all events are of RBEvent type {name: string, data:any});
+
+#### Parameters
+
+• **handler**: `any`
+
+The call-back function that will be subscribed to the RxJS subject
+
+• **filterEvent?**: `string`\[\]
+
+A list of event names that the user wants to receive when subscribing (used a filter)
+
+#### Returns
+
+`Subscription`
+
+---
+
+### toJSON()
+
+> **toJSON**(): `any`
+
+#### Returns
+
+`any`
+
+### Sur cette page
+
+-   [Extended by](/docs/sdk/web#name-extended-by-13)
+-   [Properties](/docs/sdk/web#name-properties-23)
+-   [adminType?](/docs/sdk/web#name-admintype-26)
+-   [avatar?](/docs/sdk/web#name-avatar-35)
+-   [company?](/docs/sdk/web#name-company-44)
+-   [dbId](/docs/sdk/web#name-dbid-53)
+-   [displayName?](/docs/sdk/web#name-displayname-62)
+-   [firstname?](/docs/sdk/web#name-firstname-71)
+-   [id](/docs/sdk/web#name-id-80)
+-   [isBot](/docs/sdk/web#name-isbot-89)
+-   [isTerminated](/docs/sdk/web#name-isterminated-98)
+-   [isTv](/docs/sdk/web#name-istv-107)
+-   [jid](/docs/sdk/web#name-jid-116)
+-   [jobTitle?](/docs/sdk/web#name-jobtitle-125)
+-   [lastAvatarUpdateDate?](/docs/sdk/web#name-lastavatarupdatedate-134)
+-   [lastname?](/docs/sdk/web#name-lastname-143)
+-   [login](/docs/sdk/web#name-login-152)
+-   [loginEmail?](/docs/sdk/web#name-loginemail-161)
+-   [phoneInternalNumber?](/docs/sdk/web#name-phoneinternalnumber-170)
+-   [phoneNumbers?](/docs/sdk/web#name-phonenumbers-179)
+-   [rainbowTvData](/docs/sdk/web#name-rainbowtvdata-188)
+-   [status](/docs/sdk/web#name-status-197)
+-   [title?](/docs/sdk/web#name-title-206)
+-   [Methods](/docs/sdk/web#name-methods-214)
+-   [isGuest()](/docs/sdk/web#name-isguest-217)
+-   [Returns](/docs/sdk/web#name-returns-225)
+-   [subscribe()](/docs/sdk/web#name-subscribe-232)
+-   [Parameters](/docs/sdk/web#name-parameters-243)
+-   [Returns](/docs/sdk/web#name-returns-258)
+-   [toJSON()](/docs/sdk/web#name-tojson-265)
+-   [Returns](/docs/sdk/web#name-returns-273)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

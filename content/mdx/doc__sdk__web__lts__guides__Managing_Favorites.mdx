@@ -1,0 +1,115 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/guides/Managing_Favorites"
+lastSynced: "2026-02-19T22:35:16.084Z"
+---
+# Documentation
+
+Managing Favorites
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Managing Favorites
+
+Rainbow Web SDK allows you to store links to conversations with Users and Bubbles in a handy list called Favorites.
+
+Favorites are essentially a JavaScript array containing objects. Each of those objects the following properties:
+
+-   `type` - describing a type of a Favorite. Can be set either to `user` or `bubble`
+-   `id` - representing an ID of a **Favorite**
+-   `peerId` - a dbId property of a Bubble or User that is linked to Favorite object
+-   `contact` or `room` - essentially a `contact` or `bubble` object that is linked to Favorite item
+
+With those four you will have a good peak on what Users or Bubbles are the most used and essential for the application.
+
+### Retrieving Favorites List
+
+You can retrieve Favorites List from the server by calling `fetchAllFavorites()` method that returns an Array. Favorites Array can be empty when no User or Bubble has been added to Favorites. It is an asynchronous method, therefore it returns a Promise containing the Favorites Array.
+
+```javascript
+// somewhere in your code
+
+    rainbowSDK.favorites.fetchAllFavorites()
+        .then(function (favorites) {
+            // do something with the Favorites Array retrieved from the server
+        })
+        .catch(function (err) { console.log (err) })
+```
+
+### Creating a Favorite
+
+To create a Favorite (add a new object to the Favorites list), use the `favorites.createFavorite()` method which accepts a Bubble or User dbId and type as arguments. `createFavorite()` returns a Promise due to its asynchronous nature.
+
+A snippet below shows how to create a Favorite of each of the types:
+
+```javascript
+var user = UserObject;
+var bubble = BubbleObject;
+
+// Create a new Favorite from an User:
+
+rainbowSDK.favorites.createFavorite(user.dbId, "user")
+    .then( // do something once the Favorite has been created )
+    .catch( // do something in case of an error )
+
+    
+// Create a new Favorite from a Bubble:
+
+rainbowSDK.favorites.createFavorite(bubble.dbId, "bubble")
+    .then( // do something once the Favorite has been created )
+    .catch( // do something in case of an error )
+```
+
+Once a new Favorite is created, an event is going to be sent. Think of it as a confirmation of the successful Favorite creation process.
+
+```javascript
+// somewhere in your code:
+
+        favoriteCreatedEventListener(event) {
+            // event.detail contains an object of the freshly-created Favorite
+            console.log("Favorite created", event.detail)
+        }
+
+        document.addEventListener(rainbowSDK.favorites.RAINBOW_ONFAVORITECREATED, favoriteCreatedEventListener)
+```
+
+### Deleting a Favorite
+
+Analogically, it is possible to delete a Favorite from the Favorites list by calling the `favorites.deleteFavorite()` method which accepts a Favorite ID string. It is asynchronous and it returns a Promise.
+
+```javascript
+var favorite = FavoriteObject; // Favorite Object
+
+    // Delete a Favorite
+    rainbowSDK.favorites.deleteFavorite(favorite.id)
+        .then(// do something once the Favorite has been deleted)
+        .catch(// do something in case of an error)
+```
+
+Similarly to creating a Favorite, while deleting one, an event will be dispatched. It is a definite confirmation that a Favorite has been deleted.
+
+```javascript
+favoriteDeletedEventListener(event) {
+            // event.detail contains an object of the freshly-created Favorite
+            console.log("Favorite deleted", event.detail)
+        }
+
+        document.addEventListener(rainbowSDK.favorites.RAINBOW_ONFAVORITEDELETED, favoriteDeletedEventListener)
+```
+
+*Last updated April, 30th 2019*
+
+### Sur cette page
+
+-   [Managing Favorites](/docs/sdk/web#name-managing-favorites-0)
+-   [Retrieving Favorites List](/docs/sdk/web#name-retrieving-favorites-list-34)
+-   [Creating a Favorite](/docs/sdk/web#name-creating-a-favorite-41)
+-   [Deleting a Favorite](/docs/sdk/web#name-deleting-a-favorite-55)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

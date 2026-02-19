@@ -1,0 +1,230 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/core/lts/guides/020_migration_guide"
+lastSynced: "2026-02-19T22:35:13.472Z"
+---
+# Documentation
+
+Migration guide
+
+LTS release 3.XPubliée le 2025-03-17
+
+## Migration Guide
+
+V2 is now deprecated. No more fixes are expected.
+
+V3 replaced it. New features will only be available in this version.
+
+This guide indicates main tasks to migrate from V2 to V3 and enhancements added in this new version.
+
+### Simplification
+
+#### Peer objects instead of id, jid and displayName
+
+`Peer` objects are used to describe a `Bot`, `Bubble`, `CallParticipant`, `Channel`, `ConferenceParticipant`, `Contact`, `Conversation`, `MediaService` (WebRTC context), `DynamicFeed` (WebRTC context) or a user known only by a phone number.
+
+It means that for any methods using a Peer object as parameter, you can use directly a `Bot`, `Bubble`, etc ... thanks to implicit operators.
+
+See the [Peer](/docs/sdk/csharp) documentation for full details.
+
+```csharp
+Rainbonw.Application RbApplication; // a valid Rainbonw.Application object
+Rainbonw.InstantMessaging RbInstantMessaging = RbApplication.GetInstantMessaging()
+
+// ...
+
+Rainbow.Model.Contact contact; // a valid contact
+Rainbow.Model.Bubble bubble; // a valid bubble
+
+var sdkResult = RbInstantMessaging.SendMessageAsync(contact, "Hello !");
+sdkResult = RbInstantMessaging.SendMessageAsync(bubble, "Hello members of the bubble !");
+
+// => The same method is used SendMessageAsync which accepts a Peer object as first parameter
+```
+
+Now methods accept mainly objects instead of string like id or jid to avoid confusion and facilate their uses.
+
+From a `Peer` object, it's possible to get an an object (like a Contact, a Bubble, using the dedicated service):
+
+```csharp
+Rainbow.Model.Peer bubble; // a valid bubble
+```
+
+#### Aync/Await pattern
+
+Callbacks are no more used but instead async methods are used - For information here: [Asynchronous programming with async and await](https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/)
+
+```csharp
+// In V2:
+bubbles.GetAllBubbles(sdkResult => {
+  if(sdkResult.Result.Success) {
+    List<Bubble> listBubbles = res.Data;
+    //...
+  }
+  else { }
+}
+
+// In V3
+var sdkResult = await bubbles.GetAllBubblesAsync();
+if( sdkResult.Success )
+{
+    List<Bubble> listBubbles = res.Data;
+    // ...
+} else
+{}
+```
+
+#### Naming convention
+
+nameOfMethod: The method returns a result from its cache - no interaction with the server
+
+nameOfMethod**Async**: The method is asynchronous and exchanges with the server
+
+nameOfMethod**Sync**: The method will exchange with the server if data is not found in cache
+
+#### Event Application.InitializationPerformed has been removed
+
+Waiting the end on the login process is enough.
+
+```csharp
+var sdkResult = RbApplication.LoginAsync(login, password);
+if(sdkResult.Success)
+{
+    // The SDK is connected and ready to use
+}
+```
+
+#### Data in cache and bubble interactions
+
+The SDK manages a lot of data in its cache. Also to interact fully with a Bubble is necessary to be affiliated to it.
+
+All this information are described in the guide [data\_in\_cache\_and\_reconnection](/docs/sdk/csharp)
+
+#### Consts and Enums are in specific namespaces
+
+All constants values are defined in **Rainbow.Consts** namespace: Appreciation, Capability, EntityType, PresenceDetails, BubbleMemberPrivilege, PresenceLevel, BubbleMemberStatus, BubbleVisibility, CompanyOfferType, InvitationMode, SupervisionMemberRole,ConferenceType, InvitationStatus, ConnectionStatus, InvitationType, CallState, ...
+
+All enums are defined in **Rainbow.Enums** namespace: MediaSubStreamLevel, SdkErrorType,MessageReceiptType, SdkEventMode,CallStatus, DeviceType, MessageType, SdkInternalErrorEnum,CallType, Media, MessageUrgencyType, SdkMessageStorageMode, ...
+
+#### Delegates instead of EventArgs
+
+All events are now using [delegates](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/delegates/using-delegates) instead of object inherited from **EventArgs**
+
+They are defined in **Rainbow.Delegates** namespace using a naming convention to quickly understand how to use them.
+
+**ObjectDelegate** means the delegate accept **Object** as first parameter - for examples:
+
+```csharp
+public delegate void BubbleDelegate(Bubble bubble);
+public delegate void PeerDelegate(Peer bubble);
+```
+
+The documentation, for each delegate, list all events using it.
+
+#### Conversations are created automatically
+
+When necessary, the SDK will create automatically a Conversaion with the server. It was not the case before.
+
+For example, to send a IM to a Peer, a Conversation is necessary. If it doesn't already exist, the SDK will create it before to send the IM.
+
+The **Conversations** service still exists but mostly to know which one is the most recent and/or to use them as a list in a UI.
+
+### Enhancements
+
+#### Events
+
+It's possible to log or not them using:
+
+-   Restrictions.LogEvent (default value) logs events which are raised/triggered by the SDK.
+-   Restrictions.LogEventRaised (default value) logs all events raised by SDK even if not bound.
+-   Restrictions.LogEventParameters (default value) logs parameters of events which are logged - (up to 20)
+-   Restrictions.LogEventStackTrace (default value) logs stack trace of events which are logged
+
+Add notion of **stackable** and **unstackable** events - both to avoid to trigger several times same event in short period.
+
+-   **stackable** event: it's triggered only once with all stacked datas - example `ContactsAdded` event provides a list of contacts
+-   **unstackable** event: it's triggered only once with the final state - example `ContactAggregatedPresenceUpdated` event provides the last aggregated presence for one contact
+-   Nothing has changed about the way to use them. Only implementation in SDK has changed
+
+#### Differentiate logs and info output
+
+Main objects in **Rainbow.Model** namespace provides **ToString(), ToString(detailsLevel)** and their equivalent **ToLogString(), ToLogString(detailsLevel)**.
+
+Methods starting with **ToLog** permits to offuscate sensible information (for example names, emails, ...). These method are used by the SDK to log entries.
+
+Methods starting with **ToString** does the same thing without offuscation.
+
+**detailsLevel** permits to have more or less data (Consts.Details.Small, Consts.Details.Medium (default), Consts.Details.Full)
+
+**NOTE:** For tests/debugging purpose, it's perhaps usefull to avoid offuscation in log (Must no be used in production). To do this the static method **SetLogAnonymously** in **Rainbow.Util** can be used.
+
+#### JSON Parser
+
+A major rework has been done on JSON Parser.
+
+No all common language runtime types are supported:
+
+-   Boolean
+-   SByte
+-   Byte
+-   short (Int16)
+-   ushort (UInt16)
+-   int (Int32)
+-   uint (UInt32)
+-   long (Int64)
+-   ulong (UInt64)
+-   float (Single)
+-   double (Double)
+-   Decimal
+-   DateTime
+-   Char
+-   String
+
+All nullable of common language runtime types are supported (for example **String?**).
+
+**List<T>** with **T** as a common language runtime type is also supported (for example **List<String>**).
+
+**List<T> ?** is also supported (i.e. nullable List with T as a common language runtime type)
+
+**Distionary<String, T>** with **T** as a common language runtime type is also supported. (for example **Distionary<String, String>**).
+
+**Distionary<String, T> ?** with **T** as a common language runtime type is also supported (i.e. nullable Dictionary with T as a common language runtime type)
+
+The library can support JSON parsing of you own types if you implement at least 4 static methods: please refer to the guide [JSON parser](/docs/sdk/csharp)
+
+#### Documentation
+
+Each services has been splitted in category. It's easier to understand how to use them
+
+On a single page, it's possible to know for each service all events, methods and properties available grouped by category - check the guide [Methods / Events available](/docs/sdk/csharp)
+
+#### S2S event mode
+
+S2S event mode permits now to manage easily several accounts in same time using a single **S2SEventPipe** - check the guide [XMPP or Server to Server events mode](/docs/sdk/csharp)
+
+### Sur cette page
+
+-   [Migration Guide](/docs/sdk/csharp#name-migration-guide-0)
+-   [Simplification](/docs/sdk/csharp#name-simplification-12)
+-   [Peer objects instead of id, jid and displayName](/docs/sdk/csharp#name-peer-objects-instead-of-id-jid-and-displayname-15)
+-   [Aync/Await pattern](/docs/sdk/csharp#name-ayncawait-pattern-35)
+-   [Naming convention](/docs/sdk/csharp#name-naming-convention-42)
+-   [Event Application.InitializationPerformed has been removed](/docs/sdk/csharp#name-event-application.initializationperformed-has-been-removed-54)
+-   [Data in cache and bubble interactions](/docs/sdk/csharp#name-data-in-cache-and-bubble-interactions-61)
+-   [Consts and Enums are in specific namespaces](/docs/sdk/csharp#name-consts-and-enums-are-in-specific-namespaces-70)
+-   [Delegates instead of EventArgs](/docs/sdk/csharp#name-delegates-instead-of-eventargs-79)
+-   [Conversations are created automatically](/docs/sdk/csharp#name-conversations-are-created-automatically-95)
+-   [Enhancements](/docs/sdk/csharp#name-enhancements-107)
+-   [Events](/docs/sdk/csharp#name-events-110)
+-   [Differentiate logs and info output](/docs/sdk/csharp#name-differentiate-logs-and-info-output-158)
+-   [JSON Parser](/docs/sdk/csharp#name-json-parser-176)
+-   [Documentation](/docs/sdk/csharp#name-documentation-280)
+-   [S2S event mode](/docs/sdk/csharp#name-s2s-event-mode-289)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

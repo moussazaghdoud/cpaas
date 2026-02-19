@@ -1,0 +1,373 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Manage_your_profile"
+lastSynced: "2026-02-19T22:35:13.372Z"
+---
+# Documentation
+
+Android > lts > guides > Manage\_your\_profile
+
+## Manage your profile
+
+---
+
+Welcome to the tutorial on managing personal profiles using **Rainbow SDK for Android !** In this guide, we'll take you through the process of accessing the logged-in user's information, allowing you to view or update their details, change their presence status, and even choose a personalized avatar.
+
+**Rainbow concept**
+
+**Description**
+
+**IRainbowContact**
+
+Represents the public interface for accessing information about Rainbow contacts, including the logged-in user. This interface is utilized and returned by various SDK functions.
+
+**RainbowPresence**
+
+An enum providing different states of presence for an IRainbowContact. This includes utility methods for working with presence states.
+
+### Preamble
+
+---
+
+This tutorial assumes that you have followed the **Getting Started** and **Connect to Rainbow** tutorials, and that you have an active Rainbow application. Before diving into profile management, make sure:
+
+-   Your development environment is set up according to the guidelines in the [Getting Started](/docs/sdk/android) tutorial.
+-   You have successfully connected your application to the Rainbow platform as explained in the [Connect to Rainbow](/docs/sdk/android) tutorial.
+-   You have obtained the necessary authentication credentials and API keys.
+
+Now, let's explore the features of profile management with **Rainbow SDK for Android**
+
+### Retrieve the connected user
+
+---
+
+You can obtain the instance of the connected user by calling the `RainbowSdk().user().getConnectedUser()` method.  
+*Note*: If this method is called before authentication, an empty `IRainbowContact` object is returned.
+
+Once you have the user instance, you can access various properties:
+
+-   [kotlin](#codegroupTab-connected_user_kotlin)
+-   [java](#codegroupTab-connected_user_java)
+
+```kotlin
+val user = RainbowSdk().user().getConnectedUser()
+user.firstName
+user.lastName
+user.nickName
+user.presence
+user.jobTitle
+user.getFirstEmailAddress()
+user.getPhoneNumber(PhoneNumber.PhoneNumberType.HOME)
+// And so on...
+```
+
+```java
+IRainbowContact user = RainbowSdk.instance().user().getConnectedUser();
+user.getFirstName();
+user.getLastName();
+user.getNickName();
+user.getPresence();
+user.getJobTitle();
+user.getFirstEmailAddress();
+user.getPhoneNumber(PhoneNumber.PhoneNumberType.HOME);
+// And so on...
+```
+
+### Get the Last Saved Credentials in Cache
+
+---
+
+You can retrieve the login, password, or token saved in the cache, corresponding to the last credentials used for logging in. This feature is particularly useful for automatic login, allowing you to hide the login screen if the user has previously logged in.
+
+-   [kotlin](#codegroupTab-user_cache_kotlin)
+-   [java](#codegroupTab-user_cache_java)
+
+```kotlin
+val login = RainbowSdk().user().userLoginInCache
+val password = RainbowSdk().user().userPasswordInCache
+val token = RainbowSdk().user().userTokenInCache
+```
+
+```java
+String login = RainbowSdk.instance().user().getUserLoginInCache();
+String password = RainbowSdk.instance().user().getUserPasswordInCache();
+String token = RainbowSdk.instance().user().getUserTokenInCache();
+```
+
+### Change Your Presence
+
+---
+
+The user's presence can be manually adjusted to indicate that they are online, absent, busy, etc. Additionally, presence is managed automatically based on factors such as call status and device connections.
+
+The different presence states are documented in `RainbowPresence`. *Please note* the priority order for applied presence:
+
+1.  Presence received from PBX
+2.  User manually set presence
+3.  Calendar presence (if Rainbow account is linked to a calendar)
+4.  Presence during a WebRTC call
+
+To manually change the presence, use:
+
+-   [kotlin](#codegroupTab-set_presence_kotlin)
+-   [java](#codegroupTab-set_presence_java)
+
+```kotlin
+RainbowSdk().user().setPresenceTo(RainbowPresence.DND)
+```
+
+```java
+RainbowSdk.instance().user().setPresenceTo(RainbowPresence.DND, null);
+```
+
+If you need to be notified of the success or error in changing presence, include a `RainbowListener` as a parameter.
+
+Additionally, you can subscribe to changes in the `IRainbowContact` object using the `IRainbowContact.registerChangeListener` method. Provide an `IContactListener` as a parameter to receive notifications of any presence changes.
+
+Listening for changes in the user's presence is defined in section [Listen to changes](#listen-to-changes)
+
+### Update Your Personal Information
+
+---
+
+Users have the ability to modify their profile, including fields such as surname, first name, title, emails, telephone number, etc. The update operation utilizes a builder pattern to specify only the fields intended for modification.
+
+-   [kotlin](#codegroupTab-update_user_kotlin)
+-   [java](#codegroupTab-update_user_java)
+
+```kotlin
+val builder = UpdateUserRequest.Builder()
+    .firstName("FirstName")
+    .lastName("LastName")
+    .nickName("NickName")
+    .title("Title")
+    .jobTitle("JobTitle")
+    .country("GBR") // Country code ISO 3 letters
+    .emailHome("email@home.com")
+    .mobilePhone(PhoneNumber("valid_phone_number", PhoneNumber.PhoneNumberType.MOBILE))
+    .officePhone(PhoneNumber("valid_phone_number", PhoneNumber.PhoneNumberType.OFFICE))
+
+RainbowSdk().user().updateUser(builder.build(), object : RainbowListener<IRainbowContact, Unit> {
+    override fun onSuccess(data: IRainbowContact) {
+        // Handle success
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle error
+    }
+})
+```
+
+```java
+UpdateUserRequest builder = new UpdateUserRequest.Builder()
+    .firstName("FirstName")
+    .lastName("LastName")
+    .nickName("NickName")
+    .title("Title")
+    .jobTitle("JobTitle")
+    .country("GBR") // Country code ISO 3 letters
+    .emailHome("email@home.com")
+    .mobilePhone(new PhoneNumber("valid_phone_number", PhoneNumber.PhoneNumberType.MOBILE))
+    .officePhone(new PhoneNumber("valid_phone_number", PhoneNumber.PhoneNumberType.OFFICE)).build();
+
+RainbowSdk.instance().user().updateUser(builder, new RainbowListener<IRainbowContact, Unit>() {
+    @Override
+    public void onSuccess(IRainbowContact data) {
+    // Handle success
+    }
+
+    @Override
+    public void onError(@NonNull RainbowError<Unit> error) {
+    //Handle error
+    }
+});
+```
+
+### Modify the User Avatar
+
+---
+
+Change the user's photo using the `RainbowSdk().user().updatePhoto()` method.
+
+It's important to note that avatars are typically displayed in rounded or square formats. Therefore, it's advisable to capture the photo in a square format before using this method to achieve optimal avatar rendering.
+
+-   [kotlin](#codegroupTab-update_photo_kotlin)
+-   [java](#codegroupTab-update_photo_java)
+
+```kotlin
+// The file must exist and must be able to be read by the application to upload the bytes
+RainbowSdk().user().updatePhoto(file, object : RainbowListener<Unit, Unit> {
+    override fun onSuccess(data: Unit) {
+        // Handle success, you can also delete the file if it's a temporary copy
+
+        if (file.exists())
+            cameraFile.delete()
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle error, you can also delete the file if it's a temporary copy
+
+        if (file.exists())
+            cameraFile.delete()
+    }
+})
+```
+
+```java
+// The file must exist and must be able to be read by the application to upload the bytes
+RainbowSdk.instance().user().updatePhoto(file, new RainbowListener<IRainbowContact, Unit>() {
+    @Override
+    public void onSuccess(IRainbowContact data) {
+        // Handle success, you can also delete the file if it's a temporary copy
+
+        if (file.exists())
+            cameraFile.delete()
+    }
+
+    @Override
+    public void onError(@NonNull RainbowError<Unit> error) {
+            // Handle error, you can also delete the file if it's a temporary copy
+
+        if (file.exists())
+            cameraFile.delete()
+    }
+});
+```
+
+### Delete the User Avatar
+
+---
+
+To remove the user's photo, you can use the `RainbowSdk().user().deletePhoto()` method.
+
+-   [kotlin](#codegroupTab-delete_photo_kotlin)
+-   [java](#codegroupTab-delete_photo_java)
+
+```kotlin
+RainbowSdk().user().deletePhoto()
+```
+
+```java
+RainbowSdk().user().deletePhoto(null)
+```
+
+Deleting the avatar is a straightforward operation. If you need to be notified of the success or encounter an error during the deletion process, you can include a `RainbowListener` as a parameter.
+
+---
+
+### Change the User Password
+
+---
+
+To modify the user's password, utilize the `RainbowSdk().user().changeUserPassword()` method.
+
+-   [kotlin](#codegroupTab-change_password_kotlin)
+-   [java](#codegroupTab-change_password_java)
+
+```kotlin
+RainbowSdk().user().changeUserPassword("currentPassword", "newPassword", object : RainbowListener<Unit, UserRepository.ChangePasswordError> {
+    override fun onSuccess(data: Unit) {
+        // Handle success
+    }
+
+    override fun onError(error: RainbowError<UserRepository.ChangePasswordError>) {
+        when  {
+            error.errorType == UserRepository.ChangePasswordError.PASSWORD_POLICY -> // The new password doesn't comply with the password policy
+            error.errorType == UserRepository.ChangePasswordError.WRONG_ACTUAL_PASSWORD -> // The current password is incorrect
+            error.errorType == UserRepository.ChangePasswordError.SAME_PASSWORD -> // Attempting to use the same password as before
+            else -> // Generic error
+        }
+    }
+})
+```
+
+```java
+RainbowSdk.instance().user().changeUserPassword("oldPassword", "newPassword", new RainbowListener<Unit, UserRepository.ChangePasswordError>() {
+    @Override
+    public void onSuccess(Unit data) {
+        RainbowListener.super.onSuccess(data);
+    }
+
+    @Override
+    public void onError(@NonNull RainbowError<UserRepository.ChangePasswordError> error) {
+        if (error.getErrorType() == UserRepository.ChangePasswordError.PASSWORD_POLICY) {
+            // The new password doesn't comply with the password policy
+        } else if (error.getErrorType() == UserRepository.ChangePasswordError.WRONG_ACTUAL_PASSWORD) {
+            // The current password is incorrect
+        } else if (error.getErrorType() == UserRepository.ChangePasswordError.SAME_PASSWORD) {
+            // Attempting to use the same password as before
+        }
+    }
+});
+```
+
+**Note** that when the user changes their password, an event is triggered in the SDK, calling the `onUserLogoutForced()` callback method of the `Connection.IConnectionListener`. Following this event, the user is required to reconnect since API calls to the Rainbow server will no longer function.
+
+If the user changes their password from this Android device, the boolean in the callback method parameter is set to `true`. In this case, you can directly use the `userLoginInCache` and `userPasswordInCache` properties to automatically reconnect the user.
+
+Please refer to [Connect to Rainbow](/docs/sdk/android) for instructions on adding a connection listener to be notified when the user needs to reconnect.
+
+---
+
+### Listen to User Changes
+
+You can listen to changes in your user, updating the UI to display the most recent information.
+
+To implement the listener, follow these steps:
+
+-   [kotlin](#codegroupTab-user_listener_kotlin)
+-   [java](#codegroupTab-user_listener_java)
+
+```kotlin
+// Define a listener
+private val userContactListener: IContactListener = object : IContactListener {
+    override fun contactUpdated(updatedContact: IRainbowContact) {
+        // Update your UI to the latest information for the connected user
+    }
+
+    override fun onPresenceChanged(contact: IRainbowContact, presence: RainbowPresence?) {
+        // Update your UI with the new presence of the connected user
+    }
+}
+
+// Register the listener
+RainbowSdk().user().getConnectedUser().registerChangeListener(userContactListener)
+
+// When finished, don't forget to unregister the listener
+RainbowSdk().user().getConnectedUser().unregisterChangeListener(userContactListener)
+```
+
+```java
+// Define a listener
+private IContactListener userContactListener = new IRainbowContact.IContactListener() {
+    @Override
+    public void contactUpdated(@NotNull IRainbowContact updatedContact) {
+        // Update your UI to the latest information for the connected user
+    }
+
+    @Override
+    public void onPresenceChanged(@NotNull IRainbowContact contact, @Nullable RainbowPresence presence) {
+        // Update your UI with the new presence of the connected user
+    }
+});
+
+// Register the listener
+RainbowSdk.instance().user().getConnectedUser().registerChangeListener(userContactListener);
+
+// When finished, don't forget to unregister the listener
+RainbowSdk.instance().user().getConnectedUser().unregisterChangeListener(userContactListener);
+```
+
+---
+
+*Last updated January, 2024*
+
+### Sur cette page
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

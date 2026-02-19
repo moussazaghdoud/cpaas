@@ -1,0 +1,109 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/Conversations/enumerations/ConversationEvents"
+lastSynced: "2026-02-19T22:35:16.903Z"
+---
+# Documentation
+
+ConversationEvents
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [Conversations](doc/sdk/webv2/lts/api/Conversations/index) / ConversationEvents
+
+# Enumeration: ConversationEvents
+
+Conversation public events
+
+## Events
+
+### ON\_MESSAGES\_UPDATED
+
+> **ON\_MESSAGES\_UPDATED**: `"ON_MESSAGES_UPDATED"`
+
+This RBEvent is send when something occurs on conversation messages
+
+---
+
+### ON\_MESSAGE\_ADDED
+
+> **ON\_MESSAGE\_ADDED**: `"ON_MESSAGE_ADDED"`
+
+This RBEvent is send when a new message is added in this conversation
+
+---
+
+### ON\_MESSAGE\_BOOKMARKED
+
+> **ON\_MESSAGE\_BOOKMARKED**: `"ON_MESSAGE_BOOKMARKED"`
+
+This RBEvent is send when a bookmark is set in this conversation
+
+---
+
+### ON\_MESSAGE\_CACHED
+
+> **ON\_MESSAGE\_CACHED**: `"ON_MESSAGE_CACHED"`
+
+This RBEvent is send when a message is add in the "cache message". This "cache message" is used to store messages which belongs to the conversation but not already loaded. For example an old replied message.
+
+---
+
+### ON\_MESSAGE\_REPLACED
+
+> **ON\_MESSAGE\_REPLACED**: `"ON_MESSAGE_REPLACED"`
+
+This RBEvent is send when the replaced/deleted message is the last one
+
+---
+
+### ON\_MISSED\_COUNTER\_UPDATED
+
+> **ON\_MISSED\_COUNTER\_UPDATED**: `"ON_MISSED_COUNTER_UPDATED"`
+
+This RBEvent is send when the missed message counter is updated
+
+---
+
+### ON\_STATUS\_CHANGED
+
+> **ON\_STATUS\_CHANGED**: `"ON_STATUS_CHANGED"`
+
+This RBEvent is send when the conversation status is changed This status represent the user typing activity.
+
+-   ACTIVE
+-   INACTIVE
+-   COMPOSING
+-   PAUSED
+
+---
+
+### RAINBOW\_CONVERSATION\_CALL\_UPDATE
+
+> **RAINBOW\_CONVERSATION\_CALL\_UPDATE**: `"RAINBOW_CONVERSATION_CALL_UPDATE"`
+
+This RBEvent is send when In some situations when the call is "remotely picked" by another client and we update the tel call area (??) In some situations to manage the mute / unmute / sharing buttons in tell call area; This event is to be DELETED and replaced with something else;
+
+### Sur cette page
+
+-   [Events](/docs/sdk/web#name-events-13)
+-   [ON\_MESSAGES\_UPDATED](/docs/sdk/web#name-on_messages_updated-16)
+-   [ON\_MESSAGE\_ADDED](/docs/sdk/web#name-on_message_added-28)
+-   [ON\_MESSAGE\_BOOKMARKED](/docs/sdk/web#name-on_message_bookmarked-40)
+-   [ON\_MESSAGE\_CACHED](/docs/sdk/web#name-on_message_cached-52)
+-   [ON\_MESSAGE\_REPLACED](/docs/sdk/web#name-on_message_replaced-64)
+-   [ON\_MISSED\_COUNTER\_UPDATED](/docs/sdk/web#name-on_missed_counter_updated-76)
+-   [ON\_STATUS\_CHANGED](/docs/sdk/web#name-on_status_changed-88)
+-   [RAINBOW\_CONVERSATION\_CALL\_UPDATE](/docs/sdk/web#name-rainbow_conversation_call_update-122)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

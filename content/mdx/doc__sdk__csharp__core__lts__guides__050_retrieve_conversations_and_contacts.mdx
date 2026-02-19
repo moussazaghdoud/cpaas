@@ -1,0 +1,420 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/core/lts/guides/050_retrieve_conversations_and_contacts"
+lastSynced: "2026-02-19T22:35:13.802Z"
+---
+# Documentation
+
+Retrieve conversations and contacts
+
+LTS release 3.XPubliée le 2025-03-17
+
+## Retrieve conversations and contacts
+
+This guide will describe how to retrieve the list of conversations and contacts in your network.
+
+### Retrieving conversations
+
+---
+
+To retrieve all active conversations, you can use the `GetAllConversationsAsync` method of `Conversations` service.
+
+```csharp
+Rainbow.Application RbApplication = new Rainbow.Application();
+...
+Rainbow.Conversations conversations = RbApplication.GetConversations(); // To get the Conversations service
+
+var sdkResult = await conversations.GetAllConversationsAsync(); // To get from server list of conversations
+if (sdkResult.Success)
+{
+    List<Conversation> list = sdkResult.Data;  // List of conversations retrieved
+
+    foreach (Conversation conversation in list)
+    {
+        if (conversation.Peer.Type == EntityType.User)
+        {
+            // it's a peer to peer conversation (P2P)
+        }
+        else if (conversation.Peer.Type == EntityType.Bubble)
+        {
+            // it's a conversation in a Bubble / Room
+        }
+    }
+
+}
+else
+{
+    // A pb occurs
+    if (sdkResult.Result.Type == Rainbow.Enums.SdkErrorType.IncorrectUse)
+    {
+        // Bad parameters used
+        string errMsg = sdkResult.Result.IncorrectUseError.ErrorMsg;
+    }
+    else
+    {
+        // Exception occurs
+        Exception e = sdkResult.Result.ExceptionError;
+    }
+}
+```
+
+### Retrieving contacts
+
+---
+
+To retrieve the list of your contacts (from your roster), you can use the `GetAllContactsInRosterAsync` method of `Contacts` service.
+
+```csharp
+Rainbow.Application RbApplication = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = RbApplication.GetContacts(); // To get the Contacts service
+
+var sdkResult = await contacts.GetAllContactsInRosterAsync(); // To get from server list of contacts in the roster
+if (sdkResult.Success)
+{
+    List<Contact> list = sdkResult.Data;  // List of contacts   
+}
+else
+{
+    // A pb occurs
+    if (sdkResult.Result.Type == Rainbow.Enums.SdkErrorType.IncorrectUse)
+    {
+        // Bad parameters used
+        string errMsg = sdkResult.Result.IncorrectUseError.ErrorMsg;
+    }
+    else
+    {
+        // Exception occurs
+        Exception e = sdkResult.Result.ExceptionError;
+    }
+}
+```
+
+Once connected, you can use bubbles and/or have some exchanges with contacts which are not in your roster.
+
+If they are already in the cache, you can have more info about them using `GetContactByJid` or `GetContactById` methods of `Contacts` service.
+
+If they are NOT already in the cachec you can have more info from server about them using `GetContactByJidAsync` or `GetContactByIddAsync` methods of `Contacts` service. They will be added automatically added in the cache.
+
+The event `ContactsAdded` is triggered one or several contacts are added in the cache.
+
+Events `RosterContactsAdded` and `RosterContactsRemoved` permits to know when a contacts is added or removed from the roster.
+
+```csharp
+Rainbow.Application RbApplication = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = RbApplication.GetContacts(); // To get the Contacts service
+
+String userJid = "...";
+String userId = "...";
+Contact contact;
+
+contact = contacts.GetContactByJid(userJid);    // To get a contact from cache using its jid
+contact = contacts.GetContactById(userId);      // To get a contact from cache using its id
+
+var sdkResult = await contacts.GetContactByJidAsync(userJid);    // To get a contact from server  using its jid
+if (sdkResult.Success)
+{
+    contact = sdkResult.Data;  // Contact retrieved   
+}
+
+sdkResult = await contacts.GetContactByIdAsync(userId);    // To get a contact from server sing its id
+if (sdkResult.Success)
+{
+    contact = sdkResult.Data;  // Contact retrieved   
+}
+
+// Events to know when contacts have been added in the cache
+contacts.ContactsAdded += Contacts_ContactsAdded;
+
+// Events to know when contacts have been added/remove frm the roster
+contacts.RosterContactsAdded += Contacts_RosterContactsAdded; ;
+contacts.RosterContactsRemoved += Contacts_RosterContactsRemoved;
+
+
+void Contacts_ContactsAdded(List<Contact> contacts)
+{
+    // permits to know when contacts have been added to the cache
+}
+
+void Contacts_RosterContactsAdded(List<Contact> contacts)
+{
+    // permits to know when contacts have been added to the roster
+}
+
+void Contacts_RosterContactsRemoved(List<Contact> contacts)
+{
+    // permits to know when contacts have been removed from the roster
+}
+```
+
+### Managing contact information updates
+
+---
+
+If you want to manage contact information updates, you need to handle the `ContactUpdated` event of `Contacts` service.
+
+```csharp
+Rainbow.Application RbApplication = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = RbApplication.GetContacts(); // To get the Contacts service
+
+// Events to know when a contact has been updated
+contacts.ContactUpdated += Contacts_ContactUpdated;
+
+void Contacts_ContactUpdated(Contact contact)
+{
+    // a contact has been updated
+}
+```
+
+### Get contact's avatar
+
+---
+
+To get contact's avatar, you can use the `GetAvatarAsync` method of `Contacts` service.
+
+```csharp
+Rainbow.Application RbApplication = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = RbApplication.GetContacts(); // To get the Contacts service
+
+Contact contact = null; // A valid contact object or null to retrieve the avatar of the current contact
+int size = 80; // Size of the avatar (max 512 - it's always a square)
+
+var sdkResult = await contacts.GetAvatarAsync(contact, size);
+if(sdkResult.Success)
+{
+    byte[] data = sdkResult.Data; // data contains image in PNG format
+}
+```
+
+### Managing avatar update / delete
+
+---
+
+If you want to manage avatar update / delete, you need to handle `ContactAvatarUpdated of`Contacts\` service.
+
+```csharp
+Rainbow.Application RbApplication = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = RbApplication.GetContacts(); // To get the Contacts service
+
+contacts.ContactAvatarUpdated += Contacts_ContactAvatarUpdated;
+
+void Contacts_ContactAvatarUpdated(Peer peer, bool isDeleted)
+{
+    if (isDeleted)
+    {
+        // The avatar has been deleted for this peer
+    }
+    else
+    {
+        // the avatar has been updated or added for this peer
+    }
+}
+```
+
+### Search a contact - By Name
+
+---
+
+To search a contact by his name, you can use the `SearchContactsByDisplayNameAsync` method of `Contacts` service.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = RbApplication.GetContacts(); // To get the Contacts service
+
+String nameToSearch = "john";
+int maxNbResult = 20;
+
+var sdkResult = await contacts.SearchContactsByDisplayNameAsync(nameToSearch, maxNbResult);
+if (sdkResult.Success)
+{
+    SearchContactsResult searchResult = sdkResult.Data;
+
+    foreach (Contact contact in searchResult.ContactsList)
+    {
+        // Loop on all Rainbow contacts found 
+    }
+
+    foreach (Phonebook phonebook in searchResult.PhonebooksList)
+    {
+        // Loop on all contacts found in the Phonebook - Your account must be associated with a PBX to have result from the PhoneBook 
+    }
+
+    foreach (O365AdContact contact in searchResult.O365AdContactsList)
+    {
+        // Loop on all contacts found in the Active Directory of your Office 365 account - Your account must be associated with Office 365 to have result from here 
+    }
+
+    foreach (DirectoryContact contact in searchResult.DirectoryContactsList)
+    {
+        // Loop on all contacts found in your Enterprise Directory - Your account must be associated to an Enterprise and have a Directory defined 
+    }
+
+}
+```
+
+### Search a contact - By Tag
+
+---
+
+To search a contact by tag, you can use the `SearchContactsByTagAsync` method of `Contacts` service.
+
+```csharp
+Rainbow.Application RbApplication = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = RbApplication.GetContacts(); // To get the Contacts service
+
+String tagToSearch = "expert";
+int maxNbResult = 20;
+
+var sdkResult = await contacts.SearchContactsByTagAsync(tagToSearch, maxNbResult);
+if (sdkResult.Success)
+{
+    SearchContactsResult searchResult = sdkResult.Data;
+
+    foreach (Contact contact in searchResult.ContactsList)
+    {
+        // Loop on all Rainbow contacts found
+        // Only Rainbow Contacts can be found using search by tag 
+    }
+}
+```
+
+### Search a contact - By Phone number
+
+---
+
+To search a contact by tag, you can use the `SearchContactByPhoneNumberAsync` method of `Contacts` service.
+
+Only results with an exact match are returned: If the user has this phone number +33612345678 stored (international french number). A search performed with 0612345678 (national french number) will provide no result.
+
+```csharp
+Rainbow.Application RbApplication = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = RbApplication.GetContacts(); // To get the Contacts service
+
+String phoneNumberToSearch = "+33612345678";
+
+var sdkResult = await contacts.SearchContactByPhoneNumberAsync(phoneNumberToSearch);
+if (sdkResult.Success)
+{
+    SearchContactsResult searchResult = sdkResult.Data;
+
+    foreach (Contact contact in searchResult.ContactsList)
+    {
+        // Loop on all Rainbow contacts found 
+    }
+
+    foreach (Phonebook phonebook in searchResult.PhonebooksList)
+    {
+        // Loop on all contacts found in the Phonebook - Your account must be associated with a PBX to have result from the PhoneBook 
+    }
+
+    foreach (O365AdContact contact in searchResult.O365AdContactsList)
+    {
+        // Loop on all contacts found in the Active Directory of your Office 365 account - Your account must be associated with Office 365 to have result from here 
+    }
+
+    foreach (DirectoryContact contact in searchResult.DirectoryContactsList)
+    {
+        // Loop on all contacts found in your Enterprise Directory - Your account must be associated to an Enterprise and have a Directory defined 
+    }
+}
+```
+
+### Add a contact to your roster
+
+---
+
+To invite a contact in your roster (i.e. network), you can use the `SendInvitationAsync` method of `Invitations` service.
+
+According company settings, if this contact is in your company, it's automatically added in your roster. If it's not the case, it receives an invitation message and it must accept it first.
+
+```csharp
+Rainbow.Application RbApplication = new Rainbow.Application();
+...
+Rainbow.Invitations invitations = RbApplication.GetInvitations(); // To get the Invitations service
+Contact contact; // A valid contact
+
+var sdkResult = await invitations.SendInvitationAsync(contact);
+if (sdkResult.Success)
+{
+    Invitation invitation = sdkResult.Data;  // The Invitation sent
+}
+```
+
+### Remove a contact from your roster
+
+---
+
+To remove a contact from your network, you can use the `RemoveContactFromRosterAsync` method of `Contacts` service.
+
+```csharp
+Rainbow.Application RbApplication = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = RbApplication.GetContacts(); // To get Contacts service
+var sdkResult = await contacts.RemoveContactFromRosterAsync(contact);
+if (sdkResult.Success)
+{
+    // The contact is no more in thr roster
+}
+```
+
+### Managing contact added / removed from the roster from another device
+
+---
+
+If you want to know if a contact has been added / removed in the roster from another device, you need to handle `RosterContactsAdded`and `RosterContactsRemoved` events of `Contacts` service.
+
+```csharp
+Rainbow.Application RbApplication = new Rainbow.Application();
+...
+Rainbow.Contacts contacts = RbApplication.GetContacts(); // To get the Contacts service
+
+// Events to know when contacts have been added/remove frm the roster
+contacts.RosterContactsAdded += Contacts_RosterContactsAdded; ;
+contacts.RosterContactsRemoved += Contacts_RosterContactsRemoved;
+
+
+void Contacts_RosterContactsAdded(List<Contact> contacts)
+{
+    // permits to know when contacts have been added to the roster
+}
+
+void Contacts_RosterContactsRemoved(List<Contact> contacts)
+{
+    // permits to know when contacts have been removed from the roster
+}
+```
+
+### Examples
+
+You can take a look to several examples available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/SDK%20V3.X/README.md)
+
+### Sur cette page
+
+-   [Retrieve conversations and contacts](/docs/sdk/csharp#name-retrieve-conversations-and-contacts-0)
+-   [Retrieving conversations](/docs/sdk/csharp#name-retrieving-conversations-6)
+-   [Retrieving contacts](/docs/sdk/csharp#name-retrieving-contacts-14)
+-   [Managing contact information updates](/docs/sdk/csharp#name-managing-contact-information-updates-38)
+-   [Get contact's avatar](/docs/sdk/csharp#name-get-contacts-avatar-46)
+-   [Managing avatar update / delete](/docs/sdk/csharp#name-managing-avatar-update--delete-54)
+-   [Search a contact - By Name](/docs/sdk/csharp#name-search-a-contact---by-name-62)
+-   [Search a contact - By Tag](/docs/sdk/csharp#name-search-a-contact---by-tag-70)
+-   [Search a contact - By Phone number](/docs/sdk/csharp#name-search-a-contact---by-phone-number-78)
+-   [Add a contact to your roster](/docs/sdk/csharp#name-add-a-contact-to-your-roster-89)
+-   [Remove a contact from your roster](/docs/sdk/csharp#name-remove-a-contact-from-your-roster-100)
+-   [Managing contact added / removed from the roster from another device](/docs/sdk/csharp#name-managing-contact-added--removed-from-the-roster-from-another-device-108)
+-   [Examples](/docs/sdk/csharp#name-examples-116)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,566 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Connect_to_rainbow"
+lastSynced: "2026-02-19T22:35:13.259Z"
+---
+# Documentation
+
+Connect to Rainbow
+
+LTS release 2.61.0Publiée le 202-04-06
+
+## Connect to Rainbow
+
+---
+
+This tutorial details how you connect to Rainbow and more generally how you deal with the authentication and the connection parts. These steps are mandatory in order to have access to services such as voice and video calls, chat or files sharing, etc...
+
+**Rainbow concept**
+
+**Description**
+
+**Sandbox platform for developers**
+
+This Rainbow platform is dedicated to developers.  
+The Sandbox platform for developers is not connected to the Production platform and let developers be familiar with our APIs and SDKs.  
+This platform uses different users accounts and application Id.  
+Some limitations can occur regarding the performance and availability.
+
+**Production platform**
+
+This Rainbow platform is the official one with all Rainbow services and infrastructures enabling a high availability and accessibility all over the world.  
+For using it, you need to create and deploy an application.  
+This is the platform you use when connecting with our Rainbow applications.
+
+### Preamble
+
+---
+
+Incorporating the SDK facilitates connectivity with Rainbow through two distinct mechanisms:
+
+1.  **HTTP REST Requests**: REST requests are used to interact with Rainbow services to perform actions such as creating a Room, inviting users, etc. They are executed through the various APIs available in the SDK modules. For most APIs, the user must be authenticated.
+    
+2.  **Persistent Websocket Connection**: The SDK establishes and maintains a persistent connection to Rainbow through a WebSocket, enabling real-time event reception. This connection enables instantaneous updates, including incoming chat messages, call notifications, and various dynamic events. The WebSocket remains active while the application is in the foreground but suspends when the application moves to the background. To continue receiving notifications when the application is in the background or closed, it's essential to subscribe to [Push Notifications](/docs/sdk/android). This step ensures uninterrupted notification delivery. The SDK automatically manages the WebSocket connection post user authentication and provides monitoring capabilities via the `RainbowSdk().connection().state` property
+    
+
+This tutorial assumes that you have followed the [Getting Started](/docs/sdk/android) tutorial and that you have an active Rainbow application.
+
+### Sign-in to Rainbow
+
+---
+
+-   [kotlin](#codegroupTab-signin_kt)
+-   [java](#codegroupTab-signin_java)
+
+```kotlin
+RainbowSdk().connection().signIn(email, password, object : Connection.ISignInListener {
+    override fun onSignInFailed(errorCode: Connection.ErrorCode, error: RainbowError<Unit>) {
+        val errorMessage = when (errorCode) {
+            Connection.ErrorCode.CONNECTION_WRONG_LOGIN_OR_PWD -> "Incorrect username or password"
+            else -> "An error occurred"
+        }
+
+        // Handle error cases
+    }
+
+    override fun onSignInSucceeded() {
+        // User authentication successful
+    }
+})
+```
+
+```java
+RainbowSdk.instance().connection().signIn(email, password, new Connection.ISignInListener() {
+    @Override
+    public void onSignInFailed(@NonNull Connection.ErrorCode errorCode, @NonNull RainbowError<Unit> error) {
+        // Handle error cases
+    }
+
+    @Override
+    public void onSignInSucceeded() {
+        // User authentication successful
+    }
+});
+```
+
+You can find all the connection error cases in the documentation for the [ErrorCode](/docs/sdk/android) class.
+
+During the authentication phase, the `RainbowSdk().connection().state` property will transition between these states:
+
+-   **DISCONNECTED** -> Before calling the sign-in method
+-   **AUTHENTICATING** -> During the call to the sign-in method
+-   **AUTHENTICATED** -> After successful authentication
+-   **READY** -> When the XMPP connection is established
+
+After authenticating the first time, the connection information is saved and can be retrieved in the `RainbowSdk().user()` module.
+
+-   [kotlin](#codegroupTab-logincache_kt)
+-   [java](#codegroupTab-logincache_java)
+
+```kotlin
+val storedLogin = RainbowSdk().user().userLoginInCache
+val storedPassword = RainbowSdk().user().userPasswordInCache
+```
+
+```java
+String storedLogin = RainbowSdk.instance().user().getUserLoginInCache();
+String storedPassword = RainbowSdk.instance().user().getUserPasswordInCache();
+```
+
+### Sign-in on a different host
+
+---
+
+The `sign-in` methods within the SDK module offer a version that enables specifying the authentication host. This functionality provides the flexibility to select between platforms, such as the sandbox or production, as needed.
+
+-   [kotlin](#codegroupTab-signin_host_kt)
+-   [java](#codegroupTab-signin_host_java)
+
+```kotlin
+RainbowSdk().connection().signIn(email, password, "sandbox.openrainbow.com", object : Connection.ISignInListener {
+    override fun onSignInFailed(errorCode: Connection.ErrorCode, error: RainbowError<Unit>) {
+        val errorMessage = when (errorCode) {
+            Connection.ErrorCode.CONNECTION_WRONG_LOGIN_OR_PWD -> "Incorrect username or password"
+            else -> "An error occurred"
+        }
+
+        // Handle error cases
+    }
+
+    override fun onSignInSucceeded() {
+        // User authentication successful
+    }
+})
+```
+
+```java
+RainbowSdk.instance().connection().signIn(email, password, "sandbox.openrainbow.com", new Connection.ISignInListener() {
+    @Override
+    public void onSignInFailed(@NonNull Connection.ErrorCode errorCode, @NonNull RainbowError<Unit> error) {
+        // Handle error cases
+    }
+
+    @Override
+    public void onSignInSucceeded() {
+        // User authentication successful
+    }
+});
+```
+
+#### Host Connection Rules
+
+When utilizing a `sign-in` method without specifying the host parameter, the following rules govern the connection:
+
+-   The SDK defaults to the last authenticated host for subsequent connections.
+    
+-   In the absence of a prior connection, the SDK automatically connects to the official production platform, `openrainbow.com`.
+    
+
+For application development, it's advisable to leverage the Developer Sandbox Platform, `sandbox.openrainbow.com`, for optimal testing and development purposes.
+
+### Sign-in to Rainbow using a token
+
+---
+
+You can authenticate to Rainbow services using a valid user token, obtained after Single Sign-On (SSO) authentication.
+
+#### Prerequisites
+
+Ensure that Rainbow configuration is completed before using this SSO sign-in.
+
+#### Sign-in Flow
+
+1.  **Retrieve SSO URL:**
+    -   Use `fetchUserAuthenticationUrls` to obtain the user's SSO URL.
+2.  **Set Authorization Challenge:**
+    -   Set the AuthorizationChallenge based on the retrieved SSO URL.
+3.  **Generate Login URL:**
+    -   Generate the login URL, incorporating the AuthorizationChallenge.
+4.  **Display in Custom Tabs or External WebView:**
+    -   Use the generated login URL to display content in custom tabs or an external WebView.
+
+-   [kotlin](#codegroupTab-signin_sso_kt)
+-   [java](#codegroupTab-signin_sso_java)
+
+```kotlin
+RainbowSdk().connection().fetchUserAuthenticationUrls(loginString, listener = object : RainbowListener<AuthenticationUrl, Unit> {
+    override fun onSuccess(data: AuthenticationUrl) {
+        if (data.authenticationType === AuthenticationUrl.AuthenticationType.RAINBOW) {
+            // User should use a normal sign-in method
+        } else {
+            val uri = Uri.parse(data.loginUrl)
+            val challenge = uri.getQueryParameter("challenge")
+            HttpAuthorizationUtil.setAuthorizationChallenge(challenge)
+            val loginUrl = data.loginUrl + "&x-rainbow-app-auth=" + HttpAuthorizationUtil.makeAuthorizationSAMLUrlString()
+
+            // Display custom tabs or external webview
+        }
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle error cases
+    }
+})
+```
+
+```java
+RainbowSdk.instance().connection().fetchUserAuthenticationUrls("loginString", Locale.getDefault().toLanguageTag(), new RainbowListener<AuthenticationUrl, Unit>() {
+    @Override
+    public void onSuccess(AuthenticationUrl data) {
+        if (data.getAuthenticationType() == AuthenticationUrl.AuthenticationType.RAINBOW) {
+            // User should use a normal sign-in method
+        } else {
+            Uri uri = Uri.parse(data.getLoginUrl());
+            String challenge = uri.getQueryParameter("challenge");
+            HttpAuthorizationUtil.setAuthorizationChallenge(challenge);
+            String loginUrl = data.getLoginUrl() + "&x-rainbow-app-auth=" + HttpAuthorizationUtil.makeAuthorizationSAMLUrlString();
+            
+            // Display custom tabs or external webview
+        }
+    }
+
+    @Override
+    public void onError(@NonNull RainbowError<Unit> error) {
+        // Handle error cases
+    }
+});
+```
+
+**Retrieve Token from WebView:**
+
+If using WebView, retrieve the token when the page URL contains ?tkn.
+
+```kotlin
+externalWebView.webViewClient = object : WebViewClient() {
+    override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
+        if (url.contains("?tkn=")) {
+            val token = url.substring(url.indexOf("?tkn=") + 5)
+            if (token.isNotEmpty()) {
+                // SignIn with token
+            }
+        } else if (url.contains("?errtype=")) {
+            // Handle error cases
+        }
+    }
+}
+```
+
+**Configure CustomTabs in Manifest:**
+
+If using `CustomTabs`, add the following `<intent-filter>` to your `Manifest`.
+
+```xml
+<intent-filter>
+    <action android:name="android.intent.action.VIEW" />
+
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+
+    <data android:scheme="rainbow" />
+    <data android:host="*.openrainbow.com" />
+</intent-filter>
+```
+
+5.  **Sign-in with Token:**
+
+Once the token is acquired, use it to sign in using the following APIs.
+
+-   [kotlin](#codegroupTab-signin_token_kt)
+-   [java](#codegroupTab-signin_token_java)
+
+```kotlin
+RainbowSdk().connection().signIn(token, object : Connection.ISignInListener {
+    override fun onSignInFailed(errorCode: Connection.ErrorCode, error: RainbowError<Unit>) {
+        val errorMessage = when (errorCode) {
+            Connection.ErrorCode.CONNECTION_WRONG_LOGIN_OR_PWD -> "Incorrect username or password"
+            else -> "An error occurred"
+        }
+
+        // Handle error cases
+    }
+
+    override fun onSignInSucceeded() {
+        // User authentication successful
+    }
+})
+```
+
+```java
+RainbowSdk.instance().connection().signIn(token, new Connection.ISignInListener() {
+    @Override
+    public void onSignInFailed(@NonNull Connection.ErrorCode errorCode, @NonNull RainbowError<Unit> error) {
+        // Handle error cases
+    }
+
+    @Override
+    public void onSignInSucceeded() {
+        // User authentication successful
+    }
+});
+```
+
+#### Token Renewal and Expiration
+
+After the initial token authentication, it's stored in the user module for subsequent direct user authentications:
+
+-   `RainbowSdk().user().userTokenInCache`
+
+The token is automatically renewed multiple times. Upon expiration, obtaining a new token requires undergoing full authentication. When the token has expired the `sign-in` API is in error with the ErrorCode `TOKEN_MAXIMUM_RENEW_REACHED`.
+
+For additional details, refer to the [Rainbow users authentication](/docs/hub/users-authentication)
+
+### Sign-in to Rainbow using OpenID Connect (OIDC) token
+
+---
+
+To authenticate a user, you can utilize an OpenID Connect (OIDC) token generated by a third-party service.
+
+#### Prerequisites
+
+Ensure that the Rainbow configuration is completed before using this token for sign-in.
+
+#### Sign-in Flow
+
+Use the following APIs with or without the optional `host` parameter:
+
+-   [kotlin](#codegroupTab-signin_oidc_kt)
+-   [java](#codegroupTab-signin_oidc_java)
+
+```kotlin
+RainbowSdk().connection().signInWithOidcToken(token, object : Connection.ISignInListener {
+    override fun onSignInFailed(errorCode: Connection.ErrorCode, error: RainbowError<Unit>) {
+        val errorMessage = when (errorCode) {
+            Connection.ErrorCode.CONNECTION_TOKEN_NOT_VALID -> "Incorrect token"
+            else -> "An error occurred"
+        }
+
+        // Handle error cases
+    }
+
+    override fun onSignInSucceeded() {
+        // User authentication successful
+    }
+})
+```
+
+```java
+RainbowSdk.instance().connection().signInWithOidcToken(token, new Connection.ISignInListener() {
+    @Override
+    public void onSignInFailed(@NonNull Connection.ErrorCode errorCode, @NonNull RainbowError<Unit> error) {
+        // Handle error cases
+    }
+
+    @Override
+    public void onSignInSucceeded() {
+        // User authentication successful
+    }
+});
+```
+
+### Sign-in to Rainbow using Multi-Factor Authentication (MFA)
+
+---
+
+To enhance security, Rainbow supports Multi-Factor Authentication (MFA) during the sign-in process. MFA requires users to provide an additional authentication factor beyond their regular credentials.
+
+#### Prerequisites
+
+Ensure that Rainbow has been configured with Multi-Factor Authentication (MFA) support before using this sign-in method.
+
+#### Sign-in Flow
+
+1.  Call the default `signIn` method with the user's email and password.
+2.  Provide the callback `onMFARequired`.
+3.  Call `signInWithMFACode` with the verification code (`code`) and a boolean parameter `trusted` that indicates whether to add this device to the list of trusted devices.
+
+-   [kotlin](#codegroupTab-signin_mfa_kt)
+-   [java](#codegroupTab-signin_mfa_java)
+
+```kotlin
+RainbowSdk().connection().signIn(email, password, object : Connection.ISignInListener {
+    override fun onMFARequired(policy: Policy) {
+        RainbowSdk().connection().signInWithMFACode(code, trusted, this)
+    }
+
+    override fun onSignInFailed(errorCode: Connection.ErrorCode, error: RainbowError<Unit>) {
+        val errorMessage = when (errorCode) {
+            Connection.ErrorCode.CONNECTION_TOKEN_NOT_VALID -> "Incorrect token"
+            else -> "An error occurred"
+        }
+
+        // Handle error cases
+    }
+
+    override fun onSignInSucceeded() {
+        // User authentication successful after mfa verification
+    }
+})
+```
+
+```java
+RainbowSdk.instance().connection().signIn(email, password, new Connection.ISignInListener() {
+    @Override
+    public void onMFARequired(@NonNull Policy policy) {
+        RainbowSdk.instance().connection().signInWithMFACode(code, trusted, this);
+    }
+
+    @Override
+    public void onSignInFailed(@NonNull Connection.ErrorCode errorCode, @NonNull RainbowError<Unit> error) {
+        // Handle error cases
+    }
+
+    @Override
+    public void onSignInSucceeded() {
+        // User authentication successful after mfa verification
+    }
+});
+```
+
+### Listening to Connection Events
+
+---
+
+Stay informed about changes in the connection status, authentication errors, WebSocket issues, and more by subscribing to events within the `Connection` module.
+
+-   [kotlin](#codegroupTab-connection_listener_kt)
+-   [java](#codegroupTab-connection_listener_java)
+
+```kotlin
+RainbowSdk().connection().registerConnectionListener(object : Connection.IConnectionListener {
+    override fun onStateChanged(newState: Connection.ConnectionState) {
+        // Callback for connection state changes
+
+        when (newState) {
+            Connection.ConnectionState.DISCONNECTED -> // User is not authenticated
+            Connection.ConnectionState.AUTHENTICATING -> // User is authenticating
+            Connection.ConnectionState.AUTHENTICATED -> // User is authenticated
+            Connection.ConnectionState.READY -> // XMPP connection is up and running, ready to receive live events
+        }
+    }
+
+    override fun onLoginError(error: Connection.ErrorCode) {
+        // Callback for authentication errors
+    }
+
+    override fun onConnectionError() {
+        // Callback for XMPP connection errors
+    }
+
+    override fun onSSOLogout(url: String?) {
+        // Callback for SSO logout events
+    }
+
+    override fun onUserLogoutForced(restart: Boolean) {
+        // Callback for forced logout
+    }
+})
+```
+
+```java
+RainbowSdk.instance().connection().registerConnectionListener(new Connection.IConnectionListener() {
+    @Override
+    public void onStateChanged(@NonNull Connection.ConnectionState newState) {
+        // Callback for connection state changes
+        
+        switch (newState) {
+            case Connection.ConnectionState.DISCONNECTED -> // User is not authenticated
+            case Connection.ConnectionState.AUTHENTICATING -> // User is authenticating
+            case Connection.ConnectionState.AUTHENTICATED -> // User is authenticated
+            case Connection.ConnectionState.READY -> // XMPP connection is up and running, ready to receive live events
+        }
+    }
+
+    @Override
+    public void onLoginError(@NonNull Connection.ErrorCode error) {
+        // Callback for authentication errors
+    }
+
+    @Override
+    public void onConnectionError() {
+        // Callback for XMPP connection errors
+    }
+
+    @Override
+    public void onSSOLogout(@Nullable String url) {
+        // Callback for SSO logout events
+    }
+
+    @Override
+    public void onUserLogoutForced(boolean restart) {
+        // Callback for forced logout
+    }
+});
+```
+
+Don't forget to use `RainbowSdk().connection().unregisterConnectionListener(connectionSDKListener)` when you no longer need notifications to prevent memory leaks.
+
+To retrieve the current connection state at any time, use `RainbowSdk().connection().state` which returns a [ConnectionState](/docs/sdk/android) object.
+
+### Signing Out from Rainbow
+
+---
+
+Ensure a graceful disconnection and session closure by using the `signOut` method available in the `Connection` module.
+
+-   [kotlin](#codegroupTab-signout_kt)
+-   [java](#codegroupTab-signout_java)
+
+```kotlin
+RainbowSdk().connection().signOut(object : RainbowListener<Unit, Unit> {
+    override fun onSuccess(data: Unit) {
+        // Handle sign out
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle error cases
+    }
+})
+```
+
+```java
+RainbowSdk.instance().connection().signOut(new RainbowListener<>() {
+    @Override
+    public void onSuccess(Unit data) {
+        // Handle sign out
+    }
+
+    @Override
+    public void onError(@NonNull RainbowError<Unit> error) {
+        // Handle error cases
+    }
+});
+```
+
+The SDK retains previously logged-in user information until another user authenticates or manually using: `RainbowSdk().connection().resetCacheAndDatabase()`.
+
+---
+
+*Last updated January, 2024*
+
+### Sur cette page
+
+-   [Connect to Rainbow](/docs/sdk/android#name-connect-to-rainbow-0)
+-   [Preamble](/docs/sdk/android#name-preamble-37)
+-   [Sign-in to Rainbow](/docs/sdk/android#name-sign-in-to-rainbow-59)
+-   [Sign-in on a different host](/docs/sdk/android#name-sign-in-on-a-different-host-96)
+-   [Host Connection Rules](/docs/sdk/android#name-host-connection-rules-104)
+-   [Sign-in to Rainbow using a token](/docs/sdk/android#name-sign-in-to-rainbow-using-a-token-125)
+-   [Prerequisites](/docs/sdk/android#name-prerequisites-132)
+-   [Sign-in Flow](/docs/sdk/android#name-sign-in-flow-138)
+-   [Token Renewal and Expiration](/docs/sdk/android#name-token-renewal-and-expiration-217)
+-   [Sign-in to Rainbow using OpenID Connect (OIDC) token](/docs/sdk/android#name-sign-in-to-rainbow-using-openid-connect-oidc-token-236)
+-   [Prerequisites](/docs/sdk/android#name-prerequisites-243)
+-   [Sign-in Flow](/docs/sdk/android#name-sign-in-flow-249)
+-   [Sign-in to Rainbow using Multi-Factor Authentication (MFA)](/docs/sdk/android#name-sign-in-to-rainbow-using-multi-factor-authentication-mfa-256)
+-   [Prerequisites](/docs/sdk/android#name-prerequisites-263)
+-   [Sign-in Flow](/docs/sdk/android#name-sign-in-flow-269)
+-   [Listening to Connection Events](/docs/sdk/android#name-listening-to-connection-events-290)
+-   [Signing Out from Rainbow](/docs/sdk/android#name-signing-out-from-rainbow-304)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

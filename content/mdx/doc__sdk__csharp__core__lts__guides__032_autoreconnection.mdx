@@ -1,0 +1,351 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/core/lts/guides/032_autoreconnection"
+lastSynced: "2026-02-19T22:35:13.724Z"
+---
+# Documentation
+
+Auto reconnection
+
+LTS release 3.XPubliée le 2025-03-17
+
+## Auto reconnection service
+
+### Prerequisite
+
+You must first know how to connect to the Rainbow server - if it's not the case please read first this [guide](/docs/sdk/csharp).
+
+### Features available
+
+The [`AutoReconnection`](/docs/sdk/csharp) service try to automatically connectec/reconnect to the server in case of disconnection.
+
+This service is always started as soon as a login method in [`Application`](/docs/sdk/csharp) service is used.
+
+This service is stopped / cancelled:
+
+-   if [`AutoReconnection.Cancel()`](/docs/sdk/csharp#Rainbow.AutoReconnection.Cancel\(\)) method is used
+-   if the current user uses [`Application.LogoutAsync()`](/docs/sdk/csharp#Rainbow.Application.LogoutAsync\(\)) method
+-   if the maximum number of attempts is reached.
+-   if the user token has expired and [`AutoReconnection.UsePreviousLoginPwd`](/docs/sdk/csharp#Rainbow.AutoReconnection.UsePreviousLoginPwd) property is set to False.
+-   if an attempt (using token or user credentails) is not accepted by the server: inappropriate token or if this user has no more the right to access to the server (account disabled or deleted for example)
+
+When the service is stopped / cancelled, the [`AutoReconnection.Cancelled`](/docs/sdk/csharp#Rainbow.AutoReconnection.Cancelled) event is triggered.
+
+If [`AutoReconnection.CheckNetworkInterfaces`](/docs/sdk/csharp#Rainbow.AutoReconnection.CheckNetworkInterfaces) property is set to True (default value), an attempt is performed by this service only:
+
+-   if at least one network interface has its status set as **Up** (enabled and with an ip address).
+-   of if no interfarce is **Up**, cheack at least one networkt interface has its status set as **Unknown** (for compatibility purpose with some device running with old frameworks)
+
+Once connected again, the number of attempt is set to zero.
+
+If the maximum number of attempt is reached, the service is stopped and the [`AutoReconnection.MaxNbAttemptsReached`](/docs/sdk/csharp#Rainbow.AutoReconnection.MaxNbAttemptsReached) event is triggered too.
+
+Each attempt uses first the user token to connect to the server if available and if it's not expired. This service ensures to renew the current user token on its half-life.
+
+If it's no more possible to renew it, the [`AutoReconnection.TokenExpired`](/docs/sdk/csharp#Rainbow.AutoReconnection.TokenExpired) event is triggered and the connection to the server is automatically stopped.
+
+In this case, if [`AutoReconnection.UsePreviousLoginPwd`](/docs/sdk/csharp#Rainbow.AutoReconnection.UsePreviousLoginPwd) was set to False, the service is also stopped. If it was set to True, the service try to use previous credentials to connect to the server.
+
+Default values:
+
+-   [`AutoReconnection.MaxNbAttempts`](/docs/sdk/csharp#Rainbow.AutoReconnection.MaxNbAttempts) = 50
+-   [`AutoReconnection.DelayBetweenAttempts`](/docs/sdk/csharp#Rainbow.AutoReconnection.DelayBetweenAttempts) = { 200, 400, 800, 1600, 3200, 6400, ... } (in ms, not necessary to specify all values, last one is used for all others attempts
+-   [`AutoReconnection.MaxRandomDelayBetwenAttemps`](/docs/sdk/csharp#Rainbow.AutoReconnection.MaxRandomDelayBetwenAttemps) = { 100, 200, 400, 800, 1600, 3200, ... } (in ms, not necessary to specify all values, last one is used for all others attempts
+-   [`AutoReconnection.AvoidNetworkInterfaceKeywordsInDescription`](/docs/sdk/csharp#Rainbow.AutoReconnection.AvoidNetworkInterfaceKeywordsInDescription) = null (so all network interface are taken into consideration by default)
+
+**IMPORTANT NOTE:**
+
+-   The default values have been chosen to be as relevant as possible in the majority of cases
+-   If for any reason the Rainbow server is in a congestion phase, this service will take this into account and, accordingly, automatically a specific delay between retries will be used.
+
+### Code example
+
+This code is based on the one available in the guide [Connect to Rainbow](/docs/sdk/csharp).
+
+Management of events from [`AutoReconnection`](/docs/sdk/csharp) service have been added.
+
+It's interesseting to see what is happening if you start it and try to disable all your network connections.
+
+Also try to change defaults values of this service, for example with a little value for [`AutoReconnection.MaxNbAttempts`](/docs/sdk/csharp#Rainbow.AutoReconnection.MaxNbAttempts)
+
+Once you have well understood the use of this servicen, read this [advanced guide](/docs/sdk/csharp) to understand how the SDK stores data in its cache and how they are synchronized after connection/reconnection.
+
+```csharp
+using Rainbow;
+using Rainbow.Consts;
+
+String appId = ""; // To set according your settings
+String appSecretKey = ""; // To set according your settings
+String hostName = ""; // To set according your settings
+
+String login = ""; // To set according your settings
+String password = ""; // To set according your settings
+
+Boolean endProgram = false;// To know when to quit the app
+Boolean displayLoginResult = true; // To display login result information only once
+Object consoleLockObject = new Object(); // To lock until the the current consoly dislay is performed
+
+// Create Rainbow SDK objects
+var RbApplication = new Application();
+var RbAutoReconnection = RbApplication.GetAutoReconnection();
+var RbBubbles = RbApplication.GetBubbles();
+var RbContacts = RbApplication.GetContacts();
+
+// Set events that we want to follow
+RbApplication.AuthenticationFailed += RbApplication_AuthenticationFailed; // Triggered when the authentication process will fail
+RbApplication.AuthenticationSucceeded += RbApplication_AuthenticationSucceeded; // Triggered when the authentication process will succeed
+RbApplication.ConnectionStateChanged += RbApplication_ConnectionStateChanged; // Triggered when the Connection State will change
+
+RbAutoReconnection.Cancelled += RbAutoReconnection_Cancelled; // Triggered when AutoReonnection service is cancelled
+RbAutoReconnection.Started += RbAutoReconnection_Started; // Triggered when AutoReonnection service is started
+RbAutoReconnection.MaxNbAttemptsReached += RbAutoReconnection_MaxNbAttemptsReached; // Triggered when AutoReonnection service reachde the mawimun number of attempts tryig to connect to the server
+RbAutoReconnection.TokenExpired += RbAutoReconnection_TokenExpired; // Triggered when the Security Token is expired
+RbAutoReconnection.OneNetworkInterfaceOperational += RbAutoReconnection_OneNetworkInterfaceOperational; // Triggered when only one network is up ar down.
+
+// Set global configuration info
+RbApplication.SetApplicationInfo(appId, appSecretKey);
+RbApplication.SetHostInfo(hostName);
+
+// For test purpose, intentionally we set only to 10 the number of attempts before to stop the auto reconnection service 
+RbAutoReconnection.MaxNbAttempts = 10;
+
+WriteBlue("Use [ESC] at anytime to quit\r\n");
+
+// Start login
+WriteWhite("Starting login ...");
+var loginTask = RbApplication.LoginAsync(login, password); // We don't wait here since we want to quit at ayn time using ESC key
+
+do
+{
+    Thread.Sleep(200);
+    
+    CheckEscKey();
+
+    // Check if the login's task is finished AND if we nee to display the result (if not already done)
+    if(loginTask.IsCompleted && displayLoginResult)
+    {
+        displayLoginResult = false;
+
+        // Get SdkResult Object from the task
+        var loginSdkResult = loginTask.Result;
+        if (loginSdkResult.Success)
+        {
+            // We can now use the SDK
+
+            // For example, we ask Contacts in the Roster
+            var contacts = RbContacts.GetAllContactsInRoster();
+            WriteYellow($"Nb Contacts in Roster:[{contacts?.Count}]");
+
+            // We ask all Bubbles known:  unsubscribed or not, as invited or as accepted
+            var bubbles = RbBubbles.GetAllBubbles();
+            WriteYellow($"Nb bubbles known :[{bubbles?.Count}]");
+        }
+        else
+        { 
+            endProgram = true; // We want to quit since we cannot login
+
+            // Display the reason
+            if (loginSdkResult.Result.Type == Rainbow.Enums.SdkErrorType.Exception)
+                WriteRed($"LoginAsync - Exception occurs: [{loginSdkResult.Result}]");
+            else
+            {
+                if (loginSdkResult.Result.IncorrectUseError.ErrorCode == 1000)
+                    WriteRed($"LoginAsync - SDK triggered an error:{loginSdkResult.Result}");
+                else
+                    WriteRed($"LoginAsync - Server triggered an error:{loginSdkResult.Result}");
+            }
+        }
+    }
+
+} while (!endProgram); // Loop until we want to quit
+
+
+#region DEFINE METHODS TO RECEIVE EVENTS FROM RAINBOW SDK
+// Now we define methods which will be called by events defined previously
+void RbApplication_ConnectionStateChanged(Rainbow.Model.ConnectionState connectionState)
+{
+    // Display the CurrentNbAttempts
+    if (connectionState.Status == ConnectionStatus.Connecting)
+        WriteYellow($"AutoReconnection.CurrentNbAttempts: [{RbAutoReconnection.CurrentNbAttempts}]");
+
+    // We log connection state in the console - use differnte color according the status
+    ConsoleColor color;
+    switch(connectionState.Status)
+    {
+        case ConnectionStatus.Connected:
+            color = ConsoleColor.Blue;
+            break;
+
+        case ConnectionStatus.Disconnected:
+            color = ConsoleColor.Red;
+            break;
+
+        case ConnectionStatus.Connecting:
+        default:
+            color = ConsoleColor.Green;
+            break;
+
+    }
+    WriteToConsole($"Event Application.ConnectionStateChanged triggered - Connection Status: [{connectionState.Status}]", color);
+}
+
+void RbApplication_AuthenticationSucceeded()
+{
+    // Authentication Succeeded- we display in the console the info
+    WriteBlue($"Event Application.AuthenticationSucceeded triggered");
+}
+
+void RbApplication_AuthenticationFailed(SdkError sdkError)
+{
+    // Authentication failed - we display in the console the reason
+    WriteRed($"Event Application.AuthenticationFailed triggered - SdkError:\r\n[{sdkError}");
+}
+
+void RbAutoReconnection_OneNetworkInterfaceOperational(bool value)
+{
+    WriteBlue($"Event AutoReconnection.OneNetworkInterfaceOperational triggered: [{value}]");
+}
+
+void RbAutoReconnection_TokenExpired()
+{
+    WriteRed($"Event AutoReconnection.TokenExpired triggered");
+}
+
+void RbAutoReconnection_MaxNbAttemptsReached()
+{
+    WriteRed($"Event AutoReconnection.MaxNbAttemptsReached triggered");
+}
+
+void RbAutoReconnection_Started()
+{
+    WriteBlue($"Event AutoReconnection.Started triggered");
+}
+
+void RbAutoReconnection_Cancelled(SdkError sdkError)
+{
+    WriteRed($"Event AutoReconnection.Cancelled triggered - SdkError:[{sdkError}]");
+}
+
+#endregion DEFINE METHODS TO RECEIVE EVENTS FROM RAINBOW SDK
+
+#region UTILITY METHODS
+
+void CheckEscKey()
+{
+    while (Console.KeyAvailable)
+    {
+        var userInput = Console.ReadKey(true);
+        if (userInput.Key == ConsoleKey.Escape)
+        {
+            WriteBlue($"Asked to end process using [ESC] key");
+            Environment.Exit(0);
+        }
+    }
+}
+
+void WriteYellow(String message)
+{
+    WriteToConsole(message, ConsoleColor.Yellow);
+}
+
+void WriteWhite(String message)
+{
+    WriteToConsole(message, ConsoleColor.White);
+}
+
+void WriteRed(String message)
+{
+    WriteToConsole(message, ConsoleColor.Red);
+}
+
+void WriteGreen(String message)
+{
+    WriteToConsole(message, ConsoleColor.Green);
+}
+
+void WriteBlue(String message)
+{
+    WriteToConsole(message, ConsoleColor.Blue);
+}
+
+void WriteToConsole(String message, ConsoleColor? foregroundColor = null, ConsoleColor? backgroundColor = null)
+{
+    if (String.IsNullOrEmpty(message))
+        return;
+
+    ConsoleColor color = new ConsoleColor();
+
+    lock (consoleLockObject)
+    {
+        if (foregroundColor != null)
+            Console.ForegroundColor = foregroundColor.Value;
+
+        if (backgroundColor != null)
+            Console.BackgroundColor = backgroundColor.Value;
+
+        Console.WriteLine(message);
+        Console.ResetColor();
+    }
+}
+#endregion UTILITY METHODS
+```
+
+### Examples
+
+You can take a look to these examples:
+
+### Console application
+
+Content
+
+Description
+
+Login, AutoReconnection, Events
+
+Login and AutoReconnection management
+
+[README](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/SDK%20V3.X/ConsoleApp/Login%20and%20autoreconnection/README.md)
+
+### Terminal application
+
+Project Name
+
+Content
+
+Description
+
+TerminAppLogin
+
+Login, AutoReconnection
+
+Simple Login form to understand basic features and switch between different accounts
+
+[README](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/SDK%20V3.X/TerminalApp/TerminalAppLogin/README.md)
+
+TerminAppLoginSplittedView
+
+Login, AutoReconnection
+
+Simple Login form with a splitted view to manage in same time two different accounts
+
+[README](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/SDK%20V3.X/TerminalApp/TerminalAppLoginSplittedView/README.md)
+
+**NOTE**: Full list of examples available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/SDK%20V3.X/README.md)
+
+### Sur cette page
+
+-   [Auto reconnection service](/docs/sdk/csharp#name-auto-reconnection-service-0)
+-   [Prerequisite](/docs/sdk/csharp#name-prerequisite-3)
+-   [Features available](/docs/sdk/csharp#name-features-available-9)
+-   [Code example](/docs/sdk/csharp#name-code-example-121)
+-   [Examples](/docs/sdk/csharp#name-examples-140)
+-   [Console application](/docs/sdk/csharp#name-console-application-146)
+-   [Terminal application](/docs/sdk/csharp#name-terminal-application-177)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

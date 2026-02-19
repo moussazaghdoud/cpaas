@@ -1,0 +1,748 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/core/lts/guides/130_application_logging"
+lastSynced: "2026-02-19T22:35:13.937Z"
+---
+# Documentation
+
+Application logging
+
+LTS release 3.XPubliée le 2025-03-17
+
+## Application logging
+
+The Rainbow CSharp SDK is based on Microsoft Extension Logging (MEL). So it permits to use any back-ends log provider based on it.
+
+Here are some implementations: (Non-exhaustive list)
+
+-   [Sentry](https://github.com/getsentry/sentry-dotnet) provider for the Sentry service
+-   [Serilog](https://github.com/serilog/serilog-framework-logging) provider for the Serilog service
+-   [elmah.io](https://github.com/elmahio/Elmah.Io.Extensions.Logging) provider for the elmah.io service
+-   [Loggr](https://github.com/imobile3/Loggr.Extensions.Logging) provider for the Loggr service
+-   [NLog](https://github.com/NLog/NLog.Extensions.Logging) provider for the NLog service
+-   [Graylog](https://github.com/mattwcole/gelf-extensions-logging) provider for the Graylog service
+-   [Sharpbrake](https://github.com/airbrake/sharpbrake#microsoftextensionslogging-integration) provider for the Sharpbrake service
+-   [KissLog.net](https://github.com/catalingavan/KissLog-net) provider for the KissLog.net service
+
+Before, the SDK used **Nlog** internally. So now it's more flexible.
+
+If you find a bug in the Rainbon SDK C#, you have to provide logs to the support team so we can analysed it and fix it quickly.
+
+This guide is based on these full examples:
+
+-   [Configure logger](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/blob/master/SDK%20V3.X/ConsoleApp/Configure%20logger/README.md)
+-   [Configure multiple loggers](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/blob/master/SDK%20V3.X/ConsoleApp/Configure%20multiple%20loggers/README.md)
+
+## How loggers are set in the Rainbow SDK C#
+
+In the SDK, **each class** which needs to log entries define a **Ilogger** object like this:
+
+```csharp
+using Microsoft.Extensions.Logging;
+
+// ....
+
+private readonly ILogger log;
+```
+
+To initialize / create it, the simplest way is to use `CreateLogger` method from `Rainbow.LogFactory` object like this:
+
+```csharp
+log = Rainbow.LogFactory.CreateLogger<MyClass>(); // With MyClass the name of the current class
+```
+
+Then to log information inside this class you have to use something like this:
+
+```csharp
+log.LogTrace("Add a log entry with TRACE level");
+log.LogDebug("Add a log entry with DEBUG level");
+log.LogInformation("Add a log entry with INFORMATION level");
+log.LogWarning("Add a log entry with WARNING level"")
+log.LogError("Add a log entry with ERROR level");
+log.LogCritical("Add a log entry with CRITICAL level");
+```
+
+All logs will be stored in the same file.
+
+## Prefix to log in different files
+
+Perhaps you don't want to log all information in the same file. Specifically if you are using several `Rainbow.Application` object in you project. It will be very difficult, even impossible, to analyse log files if several account are used in same time ...
+
+To avoid this, prefix are used - each different for each `Rainbow.Application` used. You can also use you own prefix to your specific need to log you own log in a different log file.
+
+To do this, you need to:
+
+-   use an unique prefix when creating a `Rainbow.Application` object
+-   use this prefix in your own code which are related to this `Rainbow.Application` object. So you will find in the same file for the same prefix, the SDK log entries and you own code relatd to it
+-   use another prefix (optional), if you want to have logs in a specific file: perhaps for the code which is global and which manages several `Rainbow.Application` objects
+
+```csharp
+using Microsoft.Extensions.Logging;
+
+//...
+
+public class MyClass
+{
+    private readonly ILogger log;
+    
+    //...
+    
+    public MyClass(String loggerPrefix) // Here the constructor accepts a loggerPrefix 
+    {
+        // We create a logger which use this prefic 
+        log = Rainbow.LogFactory.CreateLogger<MyClass>(loggerPrefix); // With MyClass the name of the current class
+        
+        // ...
+        
+        / We create a Rainbow.Application with the same prefix - so all logs of this Rainbow.Application object (and sub services) will be stored in same file than the log object create just before
+        var rbApplication = = new Rainbow.Application(loggerPrefix: loggerPrefix); // We specify here the prefix use for log purpose
+    }
+}
+```
+
+## Specific logger for WebRTC and S2S
+
+In the SDK, to log entries related to WebRTC or S2S, a specific **Ilogger** object is created in each class which needs it like this:
+
+It's not possible to set a prefix for the **S2S logger**. Because S2S is used to centralized events for several accounts in the sampe point - see [Server to server (S2S) and XMPP events mode](/docs/sdk/csharp)
+
+```csharp
+logWebRtc = Rainbow.LogFactory.CreateWebRTCLogger(myLoggerPrefix); 
+
+// It's the same than using: 
+// logWebRtc = Rainbow.LogFactory.CreateLogger("WEBRTC", myLoggerPrefix);
+
+
+logS2S = Rainbow.LogFactory.CreateS2SLogger(); 
+
+// It's the same than using: 
+// logS2S = Rainbow.LogFactory.CreateLogger("S2S");
+```
+
+Example in a class:
+
+```csharp
+using Microsoft.Extensions.Logging;
+
+...
+namespace Rainbow
+{
+    public class MyClassUsingWebRTC
+    {
+        private static readonly ILogger log;
+        
+        private static readonly ILogger logWebRtc; 
+        ...
+        
+      public MyClassUsingWebRTC(String myLoggerPrefix)
+      {
+          log = Rainbow.LogFactory.CreateLogger<MyClassUsingWebRTC>(myLoggerPrefix); // With "MyClassUsingWebRTC" the name of the current class
+          logWebRtc = Rainbow.LogFactory.CreateWebRTCLogger(myLoggerPrefix); // With "MyClassUsingWebRTC" the name of the current class
+          ...
+      }
+    }
+    
+    public class MyClassUsingS2S
+    {
+        private static readonly ILogger log;
+        
+        private static readonly ILogger logS2S; 
+        ...
+        
+      public MyClassUsingS2S(String myLoggerPrefix)
+      {
+          log = Rainbow.LogFactory.CreateLogger<MyClassUsingS2S>(myLoggerPrefix); // With "MyClassUsingS2S" the name of the current class
+          
+          logS2S = Rainbow.LogFactory.CreateS2SLogger(); // With "MyClassUsingS2S" the name of the current class
+          ...
+      }
+    }
+}
+```
+
+Then to log entries, I could use **log** and/or **logWebRtc** and/or **logS2S** when it's necesssary.
+
+```csharp
+// I need to log some info NOT related to WebRTC
+log.LogDebug("log some info");
+
+// I need to log some info dedicated to WebRTC
+logWebRtc.LogDebug("log some details related to WebRTC only");
+
+// I need to log some info dedicated to S2S
+logS2S.LogDebug("log some details related to S2S only");
+
+// I need to log some info related to WebRTC but not only
+log.LogDebug("log some info related to WebTC but not totally dedicated");
+logWebRtc.LogDebug("log some info related to WebTC but not totally dedicated");
+
+// I need to log some info related to S2S but not only
+log.LogDebug("log some info related to S2S but not totally dedicated");
+logS2S.LogDebug("log some info related to S2S but not totally dedicated");
+```
+
+## How the Rainbow.LogFactory is defined
+
+Find below the code used to define `Rainbow.LogFactory` object.
+
+```csharp
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+
+namespace Rainbow
+{
+    /// <summary>
+    /// Class used to manage LoggerFactory object.
+    /// </summary>
+    public class LogFactory
+    {
+        private ILoggerFactory _factory = NullLoggerFactory.Instance;
+        private static LogFactory _appLog;
+
+        /// <summary>
+        /// Instance of this static class
+        /// </summary>
+        public static LogFactory Instance
+        {
+            get
+            {
+                _appLog ??= new LogFactory();
+                return _appLog;
+            }
+        }
+
+        /// <summary>
+        /// To create / get logger used to log specfic details about WebRTC.
+        ///  
+        /// It's the same than using **LogFactory.CreateLogger("WEBRTC")**
+        /// </summary>
+        /// <param name="prefix"><see cref="string"/> (Optional - null as default value) Prefix used to log entries</param>
+        /// <returns><see cref="ILogger"/> - ILogger interface</returns>
+        public static ILogger CreateWebRTCLogger(string prefix = null) =>
+            CreateLogger("WEBRTC", prefix);
+
+        /// <summary>
+        /// To create / get logger used to log specfic details about S2S. No prefix are used her because S2S Event type can have only instance.
+        /// 
+        /// **S2S** is used as prefix
+        /// </summary>
+        /// <returns><see cref="ILogger"/> - ILogger interface</returns>
+        public static ILogger CreateS2SLogger() =>
+            CreateLogger("S2S");
+
+        /// <summary>
+        ///  To create / get logger using a category name
+        /// </summary>
+        /// <param name="categoryName"><see cref="string"/> Category Name</param>
+        /// <param name="prefix"><see cref="string"/> (Optional - null as default value) Prefix used to log entries</param>
+        /// <returns><see cref="ILogger"/> - ILogger interface</returns>
+        public static ILogger CreateLogger(string categoryName, string prefix = null)
+        {
+            if(string.IsNullOrEmpty(prefix))
+                return Instance._factory.CreateLogger(categoryName);
+            else
+                return Instance._factory.CreateLogger($"{prefix}{categoryName}");
+        }
+
+        /// <summary>
+        /// To create / get logger using a type. 
+        ///  
+        /// Example: **LogFactory.CreateLogger&lt;Administration&gt;**
+        /// </summary>
+        /// <param name="prefix"><see cref="string"/> (Optional - null as default value) Prefix used to log entries</param>
+        /// <returns><see cref="ILogger"/> - ILogger interface</returns>
+        public static ILogger CreateLogger<T>(string prefix = null) =>
+            CreateLogger(typeof(T).ToString(), prefix);
+
+        /// <summary>
+        /// To set the ILoggerFactory used for logging purpose.
+        /// 
+        /// This method must be called before to use the SDK
+        /// </summary>
+        /// <param name="factory"><see cref="ILoggerFactory"/> interface</param>
+        public static void Set(ILoggerFactory factory)
+        {
+            Instance._factory = factory;
+            
+            // We call the LogFactory (which is nearly the same than this one) of the package Sharp.Ws.Xmpp
+            Sharp.Xmpp.LogFactory.Set(factory);
+        }
+
+        /// <summary>
+        /// To get the ILoggerFactory used for logging purpose.
+        /// </summary>
+        public static ILoggerFactory Get()
+        {
+            return Instance._factory;
+        }
+
+        private LogFactory()
+        { 
+            
+        }
+    }
+}
+```
+
+## Configure a back-end provider
+
+It's now necessary to configure a back-end provider.
+
+We will explain here how to configure **Nlog** and **SeriLog** to create log entries using rolling files when a maximum file size is reached.
+
+For differents back-end log providers or different settings, please read the documentation of your favorite back-end log providers.
+
+### Use NLog as back-end providers
+
+#### Nuget package
+
+You need to use the Nuget package **NLog.Extensions.Logging**.
+
+#### Initialization
+
+You need to initialize **Nlog** as soon as possible using a method like this **InitLogsWithNLog()** :
+
+```csharp
+using Microsoft.Extensions.Logging;
+using NLog.Config;
+using NLog.Extensions.Logging;
+using Rainbow;
+
+...
+
+Boolean InitLogsWithNLog()
+{
+    String logConfigFilePath = @"..\..\..\NLogConfiguration.xml"; // File path to a valid XML NLog configuration (or you could also use an embedded resource)
+
+    try
+    {
+        if (File.Exists(logConfigFilePath))
+        {
+            // Get content of the log file configuration
+            String logConfigContent = File.ReadAllText(logConfigFilePath, System.Text.Encoding.UTF8);
+
+            // Create configuration using XML file content
+            XmlLoggingConfiguration config = XmlLoggingConfiguration.CreateFromXmlString(logConfigContent);
+            if (config.InitializeSucceeded == true)
+            {
+                // Create Logger factory
+                var factory = LoggerFactory.Create(builder => builder.AddNLog(config));
+
+                // Set Logger factory to Rainbow SDK
+                Rainbow.LogFactory.Set(factory);
+
+                return true;
+            }
+        }
+    }
+    catch { }
+
+    return false;
+}
+```
+
+If the XML NLog configuration is correctly set, you have nothing to do more. How the log entries are stored, structured and defined are detailld in the XML.
+
+#### NLog XML configuration file WIThOUT the use of logger prefix
+
+A lot of options are available to define NLog entries, this provided example has these advantages:
+
+-   Two different loggers are used: one is dedicated to log WEBRTC information and the other to log any other information
+-   For both loggers, minimum level of information is set to **Debug**
+-   For each logger:
+    -   a file is created to save data in UTF8
+    -   a rolling system up to 10 archives is set
+    -   each archive as a maximum size of 5242880 bytes (5 Mo)
+    -   in each log entry you have the date, the log level, the thread id, the class name and the line number with the message
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <rules>
+        <logger 
+            name="WEBRTC" 
+            minlevel="Debug" 
+            writeTo="RAINBOW_WEBRTC_LOGGER"
+            final="true" />
+        <logger 
+            name="*" 
+            minlevel="Debug" 
+            writeTo="RAINBOW_DEFAULT_LOGGER"
+            />
+    </rules>
+    
+    <targets>
+        <target 
+            xsi:type="File" 
+            encoding="utf-8" 
+            name="RAINBOW_WEBRTC_LOGGER" 
+            fileName=".\RainbowSdk_WebRTC.log" 
+            archiveFileName=".\RainbowSdk_{###}_WebRTC.log" 
+            archiveAboveSize="5242880" 
+            maxArchiveFiles="10" 
+            layout="${longdate} | ${level:uppercase=true:padding=-5} | ${threadid:padding=-3} | ${callsite:className=True:fileName=False:includeSourcePath=False:methodName=True:padding=70:fixedLength=True:alignmentOnTruncation=Right}: ${callsite-linenumber:padding=-4} | ${message}"
+            />
+    
+        <target 
+            xsi:type="File" 
+            encoding="utf-8" 
+            name="RAINBOW_DEFAULT_LOGGER" 
+            fileName=".\RainbowSdk.log" 
+            archiveFileName=".\RainbowSdk_{###}.log" 
+            archiveAboveSize="5242880" 
+            maxArchiveFiles="10" 
+            layout="${longdate} | ${level:uppercase=true:padding=-5} | ${threadid:padding=-3} | ${callsite:className=True:fileName=False:includeSourcePath=False:methodName=True:padding=70:fixedLength=True:alignmentOnTruncation=Right}: ${callsite-linenumber:padding=-4} | ${message}"
+            />
+            
+    </targets>
+
+</nlog>
+```
+
+#### NLog XML configuration file WITH the use of logger prefix
+
+We suppose we want to have two Rainbow applications in sametime and want log entries stored in different file for each. We have created Rainbow Application like this:
+
+```cs
+var rbApplicationBot01 = = new Rainbow.Application(loggerPrefix: "BOT01_"); // We specify here the prefix "BOT01_" for the first instance
+
+var rbApplicationBot02 = = new Rainbow.Application(loggerPrefix: "BOT02_"); // We specify here the prefix "BOT02_" for the second instance
+```
+
+With same option used before, the XML configuration file be defined like this:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <rules>
+    
+      <!-- DEFINE BOT01 loggers -->
+        <logger 
+            name="BOT01_WEBRTC" 
+            minlevel="Debug" 
+            writeTo="BOT01_RAINBOW_WEBRTC_LOGGER"
+            final="true" />
+        <logger 
+            name="BOT01_*" 
+            minlevel="Debug" 
+            writeTo="BOT01_RAINBOW_DEFAULT_LOGGER"
+            />
+            
+      <!-- DEFINE BOT02 loggers -->        
+        <logger 
+            name="BOT02_WEBRTC" 
+            minlevel="Debug" 
+            writeTo="BOT02_RAINBOW_WEBRTC_LOGGER"
+            final="true" />
+        <logger 
+            name="BOT02_*" 
+            minlevel="Debug" 
+            writeTo="BOT02_RAINBOW_DEFAULT_LOGGER"
+            />
+    </rules>
+    
+    <targets>
+    
+      <!-- DEFINE BOT01 Targets -->
+        <target 
+            xsi:type="File" 
+            encoding="utf-8" 
+            name="BOT01_RAINBOW_WEBRTC_LOGGER" 
+            fileName=".\BOT01_RainbowSdk_WebRTC.log" 
+            archiveFileName=".\BOT01_RainbowSdk_{###}_WebRTC.log" 
+            archiveAboveSize="5242880" 
+            maxArchiveFiles="10" 
+            layout="${longdate} | ${level:uppercase=true:padding=-5} | ${threadid:padding=-3} | ${callsite:className=True:fileName=False:includeSourcePath=False:methodName=True:padding=70:fixedLength=True:alignmentOnTruncation=Right}: ${callsite-linenumber:padding=-4} | ${message}"
+            />
+    
+        <target 
+            xsi:type="File" 
+            encoding="utf-8" 
+            name="BOT01_RAINBOW_DEFAULT_LOGGER" 
+            fileName=".\BOT01_RainbowSdk.log" 
+            archiveFileName=".\BOT01_RainbowSdk_{###}.log" 
+            archiveAboveSize="5242880" 
+            maxArchiveFiles="10" 
+            layout="${longdate} | ${level:uppercase=true:padding=-5} | ${threadid:padding=-3} | ${callsite:className=True:fileName=False:includeSourcePath=False:methodName=True:padding=70:fixedLength=True:alignmentOnTruncation=Right}: ${callsite-linenumber:padding=-4} | ${message}"
+            />
+            
+      <!-- DEFINE BOT02 Targets -->
+        <target 
+            xsi:type="File" 
+            encoding="utf-8" 
+            name="BOT02_RAINBOW_WEBRTC_LOGGER" 
+            fileName=".\BOT02_RainbowSdk_WebRTC.log" 
+            archiveFileName=".\BOT02_RainbowSdk_{###}_WebRTC.log" 
+            archiveAboveSize="5242880" 
+            maxArchiveFiles="10" 
+            layout="${longdate} | ${level:uppercase=true:padding=-5} | ${threadid:padding=-3} | ${callsite:className=True:fileName=False:includeSourcePath=False:methodName=True:padding=70:fixedLength=True:alignmentOnTruncation=Right}: ${callsite-linenumber:padding=-4} | ${message}"
+            />
+    
+        <target 
+            xsi:type="File" 
+            encoding="utf-8" 
+            name="BOT02_RAINBOW_DEFAULT_LOGGER" 
+            fileName=".\BOT02_RainbowSdk.log" 
+            archiveFileName=".\BOT02_RainbowSdk_{###}.log" 
+            archiveAboveSize="5242880" 
+            maxArchiveFiles="10" 
+            layout="${longdate} | ${level:uppercase=true:padding=-5} | ${threadid:padding=-3} | ${callsite:className=True:fileName=False:includeSourcePath=False:methodName=True:padding=70:fixedLength=True:alignmentOnTruncation=Right}: ${callsite-linenumber:padding=-4} | ${message}"
+            />
+
+    </targets>
+
+</nlog>
+```
+
+### Use SeriLog as back-end providers
+
+#### Nuget packages
+
+You need to use these Nuget packages:
+
+-   **Serilog.Enrichers.Thread**
+-   **Serilog.Extensions.Logging**
+-   **Serilog.Sinks.File**
+
+#### Options
+
+A lot of options are available to define SeriLog entries, this provided example has these advantages:
+
+-   Two different loggers are used: one is dedicated to log WEBRTC information and the other to log any other information
+-   For both loggers, minimum level of information is set to **Debug**
+-   For each logger:
+    -   a file is created to save data in UTF8
+    -   a rolling system up to 10 archives is set
+    -   each archive as a maximum size of 5242880 bytes (5 Mo)
+    -   in each log entry you have the date, the log level, the thread id, the class name and the line number with the message
+
+#### Initialization WITHOUT the use of logger prefix
+
+You need to initialize **Serilog** as soon as possible using a method like this **InitLogsWithSeriLog()** :
+
+```csharp
+using Rainbow;
+
+using Serilog;
+using Serilog.Configuration;
+using Serilog.Core;
+using Serilog.Enrichers;
+using Serilog.Events;
+using Serilog.Extensions.Logging;
+using Serilog.Filters;
+
+...
+
+Boolean InitLogsWithSeriLog()
+{
+    // Define the output template
+    String outputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.ffff} | {Level:u5} | {ThreadId,-3} | {Caller} | {Message:l}{NewLine}";
+
+    var serilogLogger = new LoggerConfiguration()
+
+        // Set minimum level to log
+        .MinimumLevel.Is(Serilog.Events.LogEventLevel.Debug)
+
+        // Create a logger for WEBRTC only
+        .WriteTo.Logger(lc => lc
+            .Filter.ByIncludingOnly(Matching.FromSource("WEBRTC"))
+            // Use rolling file with up to 10 files of 5242880 bytes maximum (5 Mo)
+            .WriteTo.File(@".\RainbowSdk_WebRTC_Serilog.log", outputTemplate: outputTemplate, rollOnFileSizeLimit: true, fileSizeLimitBytes: 5242880, retainedFileCountLimit: 10, encoding: Encoding.UTF8))
+
+        .WriteTo.Logger(lc => lc
+            .Filter.ByExcluding(Matching.FromSource("WEBRTC"))
+            // Use rolling file with up to 10 files of 5242880 bytes maximum (5 Mo)
+            .WriteTo.File(@".\RainbowSdk_Serilog.log", outputTemplate: outputTemplate, rollOnFileSizeLimit: true, fileSizeLimitBytes: 5242880, retainedFileCountLimit: 10, encoding: Encoding.UTF8))
+
+
+        // We want to have Thred Id information
+        .Enrich.WithThreadId()
+
+        // We want to log class name, method name and line number => A specific class implementing ILogEventEnricher is necessary
+        .Enrich.WithCaller()
+
+        .CreateLogger();
+
+    if (serilogLogger == null)
+        return false;
+
+    // Create Log Factory
+    var factory = new SerilogLoggerFactory(serilogLogger);
+
+    // Set log factory in Rainbow SDK
+    Rainbow.LogFactory.Set(factory);
+
+    return true;
+}
+```
+
+#### Initialization WITH the use of logger prefix
+
+We suppose we want to have two Rainbow applications in sametime and want log entries stored in different file for each. We have created Rainbow Application like this:
+
+```cs
+var rbApplicationBot01 = = new Rainbow.Application(loggerPrefix: "BOT01_"); // We specify here the prefix "BOT01_" for the first instance
+
+var rbApplicationBot02 = = new Rainbow.Application(loggerPrefix: "BOT02_"); // We specify here the prefix "BOT02_" for the second instance
+```
+
+You need to initialize **Serilog** as soon as possible using a method like this **InitLogsWithSeriLog()** :
+
+```csharp
+using Rainbow;
+
+using Serilog;
+using Serilog.Configuration;
+using Serilog.Core;
+using Serilog.Enrichers;
+using Serilog.Events;
+using Serilog.Extensions.Logging;
+using Serilog.Filters;
+
+...
+
+static Boolean InitLogsWithSeriLog()
+{
+    // Define the output template
+    String outputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.ffff} | {Level:u5} | {ThreadId,-3} | {Caller} | {Message:l}{NewLine}";
+
+    var serilogLogger = new Serilog.LoggerConfiguration()
+
+        // Set minimum level to log
+        .MinimumLevel.Is(Serilog.Events.LogEventLevel.Debug)
+
+        // For "BOT01_", create a logger for WEBRTC 
+        .WriteTo.Logger(lc => lc
+            .Filter.ByIncludingOnly(l => l.Properties["SourceContext"].ToString().StartsWith("\"BOT01_WEBRTC"))
+            // Use rolling file with up to 10 files of 5242880 bytes maximum (5 Mo)
+            .WriteTo.File(@".\BOT01_RainbowSdk_Serilog_WebRTC.log", outputTemplate: outputTemplate, rollOnFileSizeLimit: true, fileSizeLimitBytes: 5242880, retainedFileCountLimit: 10, encoding: Encoding.UTF8))
+
+        // For "BOT01_", create a logger for all other sources excluding WEBRTC 
+        .WriteTo.Logger(lc => lc
+            .Filter.ByExcluding(l => l.Properties["SourceContext"].ToString().StartsWith("\"BOT01_WEBRTC"))
+            .Filter.ByIncludingOnly(l => l.Properties["SourceContext"].ToString().StartsWith("\"BOT01_"))
+            // Use rolling file with up to 10 files of 5242880 bytes maximum (5 Mo)
+            .WriteTo.File(@".\BOT01_RainbowSdk_Serilog.log", outputTemplate: outputTemplate, rollOnFileSizeLimit: true, fileSizeLimitBytes: 5242880, retainedFileCountLimit: 10, encoding: Encoding.UTF8))
+
+        // For "BOT02_", create a logger for WEBRTC 
+        .WriteTo.Logger(lc => lc
+            .Filter.ByIncludingOnly(l => l.Properties["SourceContext"].ToString().StartsWith("\"BOT02_WEBRTC"))
+            // Use rolling file with up to 10 files of 5242880 bytes maximum (5 Mo)
+            .WriteTo.File(@".\BOT02_RainbowSdk_Serilog_WebRTC.log", outputTemplate: outputTemplate, rollOnFileSizeLimit: true, fileSizeLimitBytes: 5242880, retainedFileCountLimit: 10, encoding: Encoding.UTF8))
+
+        // For "BOT02_", create a logger for all other sources excluding WEBRTC 
+        .WriteTo.Logger(lc => lc
+            .Filter.ByExcluding(l => l.Properties["SourceContext"].ToString().StartsWith("\"BOT02_WEBRTC"))
+            .Filter.ByIncludingOnly(l => l.Properties["SourceContext"].ToString().StartsWith("\"BOT02_"))
+            // Use rolling file with up to 10 files of 5242880 bytes maximum (5 Mo)
+            .WriteTo.File(@".\BOT02_RainbowSdk_Serilog.log", outputTemplate: outputTemplate, rollOnFileSizeLimit: true, fileSizeLimitBytes: 5242880, retainedFileCountLimit: 10, encoding: Encoding.UTF8))
+
+        // We want to have Thred Id information
+        .Enrich.WithThreadId()
+
+        // We want to log class name, method name and line number
+        .Enrich.WithCaller()
+
+        .CreateLogger();
+
+    if (serilogLogger == null)
+        return false;
+
+    // Create Log Factory
+    var factory = new SerilogLoggerFactory(serilogLogger);
+
+    // Set log factory in Rainbow SDK
+    Rainbow.LogFactory.Set(factory);
+
+    return true;
+}
+```
+
+#### To log class name, method name and line number
+
+To have also class name, method name and line number in log entries a specific class **CallerEnricher** implementing ILogEventEnricher is necessary.
+
+Finally it's necessary to enrich **LoggerEnrichmentConfiguration** object with **WithCaller** method.
+
+```csharp
+class CallerEnricher : ILogEventEnricher
+{
+    // Based on https://gist.github.com/nblumhardt/0e1e22f50fe79de60ad257f77653c813
+
+    public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
+    {
+        var maxMethodNameLength = 70;
+        var skip = 3;
+        while (true)
+        {
+            var stack = new StackFrame(skip);
+            if (!stack.HasMethod())
+            {
+                logEvent.AddPropertyIfAbsent(new LogEventProperty("Caller", new ScalarValue("<unknown method>")));
+                return;
+            }
+
+            var method = stack.GetMethod();
+            if (method.DeclaringType.Assembly != typeof(Log).Assembly
+                && method.DeclaringType.Name != "SerilogLogger"
+                && method.DeclaringType.Assembly != typeof(Microsoft.Extensions.Logging.Logger<>).Assembly)
+            {
+                var methodName = $"{method.DeclaringType.FullName}.{method.Name}".PadLeft(maxMethodNameLength);
+                if (methodName.Length > maxMethodNameLength)
+                    methodName = methodName.Substring(methodName.Length - maxMethodNameLength, maxMethodNameLength);
+
+                var caller = methodName + $": {stack.GetFileLineNumber().ToString().PadRight(4)}";
+                logEvent.AddPropertyIfAbsent(new LogEventProperty("Caller", new ScalarValue(caller)));
+                return;
+            }
+
+            skip++;
+        }
+    }
+
+}
+
+static class LoggerCallerEnrichmentConfiguration
+{
+    public static LoggerConfiguration WithCaller(this LoggerEnrichmentConfiguration enrichmentConfiguration)
+    {
+        return enrichmentConfiguration.With<CallerEnricher>();
+    }
+}
+```
+
+## Examples
+
+---
+
+You can take a look to several examples available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/SDK%20V3.X/README.md)
+
+### Sur cette page
+
+-   [Application logging](/docs/sdk/csharp#name-application-logging-0)
+-   [How loggers are set in the Rainbow SDK C#](/docs/sdk/csharp#name-how-loggers-are-set-in-the-rainbow-sdk-c-72)
+-   [Prefix to log in different files](/docs/sdk/csharp#name-prefix-to-log-in-different-files-90)
+-   [Specific logger for WebRTC and S2S](/docs/sdk/csharp#name-specific-logger-for-webrtc-and-s2s-120)
+-   [How the Rainbow.LogFactory is defined](/docs/sdk/csharp#name-how-the-rainbow.logfactory-is-defined-138)
+-   [Configure a back-end provider](/docs/sdk/csharp#name-configure-a-back-end-provider-145)
+-   [Use NLog as back-end providers](/docs/sdk/csharp#name-use-nlog-as-back-end-providers-157)
+-   [Nuget package](/docs/sdk/csharp#name-nuget-package-160)
+-   [Initialization](/docs/sdk/csharp#name-initialization-166)
+-   [NLog XML configuration file WIThOUT the use of logger prefix](/docs/sdk/csharp#name-nlog-xml-configuration-file-without-the-use-of-logger-prefix-176)
+-   [NLog XML configuration file WITH the use of logger prefix](/docs/sdk/csharp#name-nlog-xml-configuration-file-with-the-use-of-logger-prefix-222)
+-   [Use SeriLog as back-end providers](/docs/sdk/csharp#name-use-serilog-as-back-end-providers-233)
+-   [Nuget packages](/docs/sdk/csharp#name-nuget-packages-236)
+-   [Options](/docs/sdk/csharp#name-options-259)
+-   [Initialization WITHOUT the use of logger prefix](/docs/sdk/csharp#name-initialization-without-the-use-of-logger-prefix-304)
+-   [Initialization WITH the use of logger prefix](/docs/sdk/csharp#name-initialization-with-the-use-of-logger-prefix-311)
+-   [To log class name, method name and line number](/docs/sdk/csharp#name-to-log-class-name-method-name-and-line-number-322)
+-   [Examples](/docs/sdk/csharp#name-examples-332)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

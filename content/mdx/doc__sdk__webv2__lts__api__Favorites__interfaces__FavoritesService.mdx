@@ -1,0 +1,159 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/Favorites/interfaces/FavoritesService"
+lastSynced: "2026-02-19T22:35:17.315Z"
+---
+# Documentation
+
+FavoritesService
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [Favorites](doc/sdk/webv2/lts/api/Favorites/index) / FavoritesService
+
+# Interface: FavoritesService
+
+## Methods
+
+### addToFavorites()
+
+> **addToFavorites**(`peerRef`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Add the peer specified by its object to favorites list. The item is specified by its object instance (User or Bubble) and must be one of the following: A user, a bubble, a bot, a directory contact (from Personal Contacts or Business Contacts directories) or a Microsoft Azure AD user/Microsoft O365 contact. A ON\_FAVORITE\_CREATED event is sent afterwards at the completion of the operation to notify about the favorite creation.
+
+#### Parameters
+
+• **peerRef**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User) | [`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)
+
+Reference of the peer to add to favorites list.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### deleteFavorite()
+
+> **deleteFavorite**(`id`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Delete the favorite specified by its identifier. A ON\_FAVORITE\_DELETED event is sent afterwards at the completion of the operation to notify about the favorite deletion.
+
+#### Parameters
+
+• **id**: `string`
+
+Favorite unique identifier.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### deleteFromFavorites()
+
+> **deleteFromFavorites**(`peerRef`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Remove a peer specified by its object reference from favorites list. A ON\_FAVORITE\_DELETED event is sent afterwards at the completion of the operation to notify about the favorite deletion.
+
+#### Parameters
+
+• **peerRef**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User) | [`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)
+
+Reference of the peer to remove from favorites list.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### getFavorites()
+
+> **getFavorites**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Favorite`](doc/sdk/webv2/lts/api/Favorites/interfaces/Favorite)\[\]>
+
+Get the complete list of my favorites with an array of Favorite.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Favorite`](doc/sdk/webv2/lts/api/Favorites/interfaces/Favorite)\[\]>
+
+---
+
+### moveFavoritePosition()
+
+> **moveFavoritePosition**(`favorite`, `position`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Move a favorite in the favorites list. The favorite specified by its object reference, is moved to the index specified in the parameter. In addition, all existing favorites from this index will also have their positions automatically shifted by 1. A ON\_FAVORITES\_ORDER\_CHANGED event is sent afterwards at the completion of the operation to notify about the favorite's move.
+
+#### Parameters
+
+• **favorite**: [`Favorite`](doc/sdk/webv2/lts/api/Favorites/interfaces/Favorite)
+
+Reference of the favorite to move in the favorites list.
+
+• **position**: `number`
+
+The new position (starting from 0) of this favorite in the list.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### subscribe()
+
+> **subscribe**(`callback`, `eventNames`?): `Subscription`
+
+Subscribe to the favorites updates, all events are of RBEvent
+
+#### Parameters
+
+• **callback**
+
+The callback function that will be called when events are received
+
+• **eventNames?**: [`FavoritesServiceEvents`](doc/sdk/webv2/lts/api/Favorites/enumerations/FavoritesServiceEvents) | [`FavoritesServiceEvents`](doc/sdk/webv2/lts/api/Favorites/enumerations/FavoritesServiceEvents)\[\]
+
+(optional) array of event to listen
+
+#### Returns
+
+`Subscription`
+
+Returns RxJS Subscription
+
+### Sur cette page
+
+-   [Methods](/docs/sdk/web#name-methods-10)
+-   [addToFavorites()](/docs/sdk/web#name-addtofavorites-13)
+-   [Parameters](/docs/sdk/web#name-parameters-24)
+-   [Returns](/docs/sdk/web#name-returns-33)
+-   [deleteFavorite()](/docs/sdk/web#name-deletefavorite-40)
+-   [Parameters](/docs/sdk/web#name-parameters-51)
+-   [Returns](/docs/sdk/web#name-returns-60)
+-   [deleteFromFavorites()](/docs/sdk/web#name-deletefromfavorites-67)
+-   [Parameters](/docs/sdk/web#name-parameters-78)
+-   [Returns](/docs/sdk/web#name-returns-87)
+-   [getFavorites()](/docs/sdk/web#name-getfavorites-94)
+-   [Returns](/docs/sdk/web#name-returns-105)
+-   [moveFavoritePosition()](/docs/sdk/web#name-movefavoriteposition-112)
+-   [Parameters](/docs/sdk/web#name-parameters-123)
+-   [Returns](/docs/sdk/web#name-returns-138)
+-   [subscribe()](/docs/sdk/web#name-subscribe-145)
+-   [Parameters](/docs/sdk/web#name-parameters-156)
+-   [Returns](/docs/sdk/web#name-returns-171)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,666 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/conferences"
+lastSynced: "2026-02-19T22:35:15.037Z"
+---
+# Documentation
+
+Conferences service
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Conferences
+
+The module is responsible for creating, joining and managing web conferences. The main methods and events proposed in that module allow to:  
+\- Create and manage a web conference,  
+\- Invite and manage participants  
+\- Join a conference and manage different media streams
+
+**Emits**: `event:RAINBOW_ONWEBCONFERENCEUPDATED`, `event:RAINBOW_ONWEBRTCMEDIAERROROCCURED`, `event:RAINBOW_ONBUBBLECONFERENCESTARTED`, `event:RAINBOW_ONBUBBLECONFERENCETALKERACTIVE`, `event:RAINBOW_ONBUBBLESHARINGCONFERENCESTARTED`, `event:RAINBOW_ONWEBCONFERENCEDELEGATED`  
+**Access**: public
+
+-   [Conferences](#module_Conferences)
+    -   [isWebConferenceAllowed()](#module_Conferences+isWebConferenceAllowed) ⇒ `boolean`
+    -   [hasActiveWebConferenceSession()](#module_Conferences+hasActiveWebConferenceSession) ⇒ `boolean`
+    -   [getWebConferenceBubble()](#module_Conferences+getWebConferenceBubble) ⇒ `object`
+    -   [setActiveSpeakerValue(value)](#module_Conferences+setActiveSpeakerValue) ⇒ `boolean`
+    -   [startOrJoinWebConference(bubble)](#module_Conferences+startOrJoinWebConference) ⇒ `Promise`
+    -   [stopWebConference()](#module_Conferences+stopWebConference) ⇒ `Promise`
+    -   [muteConferenceAudio(conferenceSession)](#module_Conferences+muteConferenceAudio) ⇒ `Promise`
+    -   [unmuteConferenceAudio(conferenceSession)](#module_Conferences+unmuteConferenceAudio) ⇒ `Promise`
+    -   [muteConferenceParticipant(conferenceSession, participantId)](#module_Conferences+muteConferenceParticipant) ⇒ `Promise`
+    -   [unmuteConferenceParticipant(conferenceSession, participantId)](#module_Conferences+unmuteConferenceParticipant) ⇒ `Promise`
+    -   [muteAllConferenceParticipants(conferenceSession)](#module_Conferences+muteAllConferenceParticipants) ⇒ `Promise`
+    -   [unmuteAllConferenceParticipants(conferenceSession)](#module_Conferences+unmuteAllConferenceParticipants) ⇒ `Promise`
+    -   [addVideoToConference(conferenceSession)](#module_Conferences+addVideoToConference) ⇒ `object`
+    -   [addSharingToConference(conferenceSession)](#module_Conferences+addSharingToConference) ⇒ `object`
+    -   [removeVideoFromConference(conferenceSession)](#module_Conferences+removeVideoFromConference) ⇒ `object`
+    -   [removeSharingFromConferenceSession(conferenceSession)](#module_Conferences+removeSharingFromConferenceSession) ⇒ `object`
+    -   [showLocalVideo(conferenceSession)](#module_Conferences+showLocalVideo) ⇒ `object`
+    -   [showRemoteVideo(conferenceSession)](#module_Conferences+showRemoteVideo) ⇒ `object`
+    -   [getConferenceSessionById(conferenceId)](#module_Conferences+getConferenceSessionById) ⇒ `object`
+    -   [updateGalleryPublisher(conferenceSession, galleryElementId, newPublisher)](#module_Conferences+updateGalleryPublisher) ⇒ `Promise`
+    -   [removeGalleryPublisher(conferenceSession, galleryElementId)](#module_Conferences+removeGalleryPublisher) ⇒ `object`
+    -   [setVideoGalleryElementsNumber(elementsNumber)](#module_Conferences+setVideoGalleryElementsNumber) ⇒ `number`
+    -   [removePipVideo()](#module_Conferences+removePipVideo) ⇒ `boolean`
+    -   [updateMainVideoSession(conferenceId, sessionId)](#module_Conferences+updateMainVideoSession) ⇒ `object`
+    -   [disconnectParticipant(conferenceId, participantId, mediaType)](#module_Conferences+disconnectParticipant) ⇒ `Promise`
+    -   [getListOfRemoteVideoPublishers(conferenceSession)](#module_Conferences+getListOfRemoteVideoPublishers) ⇒ `object`
+    -   [delegateConferenceToParticipant(conferenceId, participantId)](#module_Conferences+delegateConferenceToParticipant) ⇒ `Promise`
+    -   [toggleAutoStreamQuality(value)](#module_Conferences+toggleAutoStreamQuality) ⇒ `boolean`
+    -   [getElementStreamQuality(elementId)](#module_Conferences+getElementStreamQuality) ⇒ `object`
+
+### conferences.isWebConferenceAllowed() ⇒ `boolean`
+
+Return true if web conference is allowed for your user
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `boolean` - True if allowed  
+**Access**: public  
+
+### conferences.hasActiveWebConferenceSession() ⇒ `boolean`
+
+Return true if you are already in a web conference
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `boolean` - True if already un a web conference  
+**Access**: public  
+
+### conferences.getWebConferenceBubble() ⇒ `object`
+
+Return if any, the Bubble in which the web Conference is active
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `object` - The Bubble  
+**Access**: public  
+
+### conferences.setActiveSpeakerValue(value) ⇒ `boolean`
+
+Enable or disable activeSpeaker feature - showing the active speaker video stream in #largevideo element
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `boolean` - Boolean representing input value  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+value
+
+`boolean`
+
+a boolean (true for activate, false for deactivate)
+
+### conferences.startOrJoinWebConference(bubble) ⇒ `Promise`
+
+Join or start a WebRTC Conference Connected user can not be in a call or another conference when using the API
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `Promise` - The bubble object or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`string`
+
+The bubble where the Web Conference should be started
+
+### conferences.stopWebConference() ⇒ `Promise`
+
+Stop the ongoing web conference. One of the bubbles should have an active conference endpoint
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `Promise` - Nothing or an error object depending on the result  
+**Access**: public  
+
+### conferences.muteConferenceAudio(conferenceSession) ⇒ `Promise`
+
+Mute connected user's audio in a web conference
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `Promise` - Promise resolution or object or an error depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conferenceSession
+
+`object`
+
+conference session
+
+### conferences.unmuteConferenceAudio(conferenceSession) ⇒ `Promise`
+
+Unmute connected user's audio in a WebRTC conference
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `Promise` - Promise resolution or object or an error depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conferenceSession
+
+`object`
+
+conference session
+
+### conferences.muteConferenceParticipant(conferenceSession, participantId) ⇒ `Promise`
+
+Mute conference participant.
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `Promise` - Promise resolution or object or an error depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conferenceSession
+
+`object`
+
+conference session
+
+participantId
+
+`string`
+
+conference participantId
+
+### conferences.unmuteConferenceParticipant(conferenceSession, participantId) ⇒ `Promise`
+
+Unmute conference participant.
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `Promise` - Promise resolution or object or an error depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conferenceSession
+
+`object`
+
+conference session
+
+participantId
+
+`string`
+
+conference participantId
+
+### conferences.muteAllConferenceParticipants(conferenceSession) ⇒ `Promise`
+
+Mute all conference participants. You can't mute other moderators.
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `Promise` - Promise resolution or object or an error depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conferenceSession
+
+`object`
+
+conference session object containing all the participants to mute
+
+### conferences.unmuteAllConferenceParticipants(conferenceSession) ⇒ `Promise`
+
+Unmute all conference participants. You can't unmute other moderators.
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `Promise` - Promise resolution or object or an error depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conferenceSession
+
+`object`
+
+conference session object containing all the participants to mute
+
+### conferences.addVideoToConference(conferenceSession) ⇒ `object`
+
+Adding video leg to the conference. This method activates connected user's camera stream without showing it in the application. It can be viewed by the other participants of the conference, though.
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `object` - conferenceSession with updated information if everything went well  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conferenceSession
+
+`object`
+
+conference session object
+
+### conferences.addSharingToConference(conferenceSession) ⇒ `object`
+
+Adding screen sharing leg to the conference (not supported on Safari)
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `object` - conferenceSession with updated information if everything went well  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conferenceSession
+
+`object`
+
+conference session retrieved from the event listener
+
+### conferences.removeVideoFromConference(conferenceSession) ⇒ `object`
+
+Removing local video leg from the conference. Deactivates connected user's camera stream.
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `object` - conferenceSession with updated information if everything went well  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conferenceSession
+
+`object`
+
+conference session retrieved from the event listener
+
+### conferences.removeSharingFromConferenceSession(conferenceSession) ⇒ `object`
+
+Removing local sharing leg from the conference
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `object` - conferenceSession with updated information if everything went well  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conferenceSession
+
+`object`
+
+conference session retrieved from the event listener
+
+### conferences.showLocalVideo(conferenceSession) ⇒ `object`
+
+Show existing local video stream. Populates #largevideo element.
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `object` - conferenceSession - an updated conference session  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conferenceSession
+
+`object`
+
+conference session retrieved from the event listener
+
+### conferences.showRemoteVideo(conferenceSession) ⇒ `object`
+
+Show existing remote video streams. Populates #videoGallery elements
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `object` - conferenceSession - updatedConferenceSession  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conferenceSession
+
+`object`
+
+conference session retrieved from the event listener
+
+### conferences.getConferenceSessionById(conferenceId) ⇒ `object`
+
+Retrieving a conference object by passing the conference ID
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `object` - - conferenceSession object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conferenceId
+
+`string`
+
+conference ID
+
+### conferences.updateGalleryPublisher(conferenceSession, galleryElementId, newPublisher) ⇒ `Promise`
+
+Update video stream in one of the videoGallery elements. Attaches new stream to HTML elements
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `Promise` - - Promise resolved in case of a success or error otherwise  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conferenceSession
+
+`object`
+
+conferenceSession object
+
+galleryElementId
+
+`string`
+
+string of videoGallery element id which will receive new stream (i.e. videoGallery\_1.id)
+
+newPublisher
+
+`object`
+
+Publisher that is to be attached to the videoGallery element (conferenceSession.publishers element)
+
+### conferences.removeGalleryPublisher(conferenceSession, galleryElementId) ⇒ `object`
+
+Remove video stream from one of the videoGallery elements.
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `object` - - SDK OK object or error  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conferenceSession
+
+`object`
+
+conferenceSession object
+
+galleryElementId
+
+`string`
+
+string of videoGallery element id which will receive new stream (i.e. videoGallery\_1)
+
+### conferences.setVideoGalleryElementsNumber(elementsNumber) ⇒ `number`
+
+Set the number of videoGallery elements (Rainbow Web SDK supports up to 12 videoGallery elements)
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `number` - - Number of elements set  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+elementsNumber
+
+`number`
+
+number of videoGallery elements to be set
+
+### conferences.removePipVideo() ⇒ `boolean`
+
+Remove PiP video streams (affects #conferenceVideoPip and #conferenceSharingPip elements)
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `boolean` - - returns true  
+**Access**: public  
+
+### conferences.updateMainVideoSession(conferenceId, sessionId) ⇒ `object`
+
+Changing the main video stream on demand
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `object` - - updated Conference.sessions object  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conferenceId
+
+`string`
+
+conferenceId
+
+sessionId
+
+`string`
+
+Id number of the video session that is supposed to be set as main
+
+### conferences.disconnectParticipant(conferenceId, participantId, mediaType) ⇒ `Promise`
+
+Disconnect conference participant
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `Promise` - - Promise resolution or an error depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conferenceId
+
+`string`
+
+conferenceId
+
+participantId
+
+`string`
+
+Id of the participant that is to be disconnected
+
+mediaType
+
+`string`
+
+Can be "webrtc", "webrtcSharingOnly" or "pstnAudio". Defaults to "webrtc"
+
+### conferences.getListOfRemoteVideoPublishers(conferenceSession) ⇒ `object`
+
+Provide a list of remote video publishers.
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `object` - An object containing two properties: { all: Array\[\], notActive: Array\[\] }. Each of the properties contains either an empty array or an array of publishers. Property 'all' contains all the remote video publishers in the conference. Property 'notActive' contains the remote video publishers that are not actively shown in videoGallery element  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conferenceSession
+
+`object`
+
+conferenceSession object
+
+### conferences.delegateConferenceToParticipant(conferenceId, participantId) ⇒ `Promise`
+
+Delegate web conference ownership to another participant. User must have Enterprise license to use this API.
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `Promise` - - Promise resolution or an error depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conferenceId
+
+`string`
+
+conferenceId
+
+participantId
+
+`string`
+
+Id of the participant that is to be disconnected
+
+### conferences.toggleAutoStreamQuality(value) ⇒ `boolean`
+
+Toggle Automatic Stream Quality feature. It takes care of the received video quality and automatically adapts it to the network bandwidth.
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `boolean` - - The input value  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+value
+
+`boolean`
+
+True to activate, false to desactivate
+
+### conferences.getElementStreamQuality(elementId) ⇒ `object`
+
+Get width and height of the video stream attached to the element with a given ID
+
+**Kind**: instance method of [`Conferences`](#module_Conferences)  
+**Returns**: `object` - - Object containing the height and width of the video  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+elementId
+
+`string`
+
+Element ID (i.e. "largevideo", "videoGallery\_X" etc.)
+
+### Sur cette page
+
+-   [Conferences](/docs/sdk/web#name-conferences-3)
+-   [conferences.isWebConferenceAllowed() ⇒ boolean](/docs/sdk/web#name-conferences.iswebconferenceallowed--boolean-169)
+-   [conferences.hasActiveWebConferenceSession() ⇒ boolean](/docs/sdk/web#name-conferences.hasactivewebconferencesession--boolean-178)
+-   [conferences.getWebConferenceBubble() ⇒ object](/docs/sdk/web#name-conferences.getwebconferencebubble--object-187)
+-   [conferences.setActiveSpeakerValue(value) ⇒ boolean](/docs/sdk/web#name-conferences.setactivespeakervaluevalue--boolean-196)
+-   [conferences.startOrJoinWebConference(bubble) ⇒ Promise](/docs/sdk/web#name-conferences.startorjoinwebconferencebubble--promise-236)
+-   [conferences.stopWebConference() ⇒ Promise](/docs/sdk/web#name-conferences.stopwebconference--promise-276)
+-   [conferences.muteConferenceAudio(conferenceSession) ⇒ Promise](/docs/sdk/web#name-conferences.muteconferenceaudioconferencesession--promise-285)
+-   [conferences.unmuteConferenceAudio(conferenceSession) ⇒ Promise](/docs/sdk/web#name-conferences.unmuteconferenceaudioconferencesession--promise-325)
+-   [conferences.muteConferenceParticipant(conferenceSession, participantId) ⇒ Promise](/docs/sdk/web#name-conferences.muteconferenceparticipantconferencesession-participantid--promise-365)
+-   [conferences.unmuteConferenceParticipant(conferenceSession, participantId) ⇒ Promise](/docs/sdk/web#name-conferences.unmuteconferenceparticipantconferencesession-participantid--promise-416)
+-   [conferences.muteAllConferenceParticipants(conferenceSession) ⇒ Promise](/docs/sdk/web#name-conferences.muteallconferenceparticipantsconferencesession--promise-467)
+-   [conferences.unmuteAllConferenceParticipants(conferenceSession) ⇒ Promise](/docs/sdk/web#name-conferences.unmuteallconferenceparticipantsconferencesession--promise-507)
+-   [conferences.addVideoToConference(conferenceSession) ⇒ object](/docs/sdk/web#name-conferences.addvideotoconferenceconferencesession--object-547)
+-   [conferences.addSharingToConference(conferenceSession) ⇒ object](/docs/sdk/web#name-conferences.addsharingtoconferenceconferencesession--object-587)
+-   [conferences.removeVideoFromConference(conferenceSession) ⇒ object](/docs/sdk/web#name-conferences.removevideofromconferenceconferencesession--object-627)
+-   [conferences.removeSharingFromConferenceSession(conferenceSession) ⇒ object](/docs/sdk/web#name-conferences.removesharingfromconferencesessionconferencesession--object-667)
+-   [conferences.showLocalVideo(conferenceSession) ⇒ object](/docs/sdk/web#name-conferences.showlocalvideoconferencesession--object-707)
+-   [conferences.showRemoteVideo(conferenceSession) ⇒ object](/docs/sdk/web#name-conferences.showremotevideoconferencesession--object-747)
+-   [conferences.getConferenceSessionById(conferenceId) ⇒ object](/docs/sdk/web#name-conferences.getconferencesessionbyidconferenceid--object-787)
+-   [conferences.updateGalleryPublisher(conferenceSession, galleryElementId, newPublisher) ⇒ Promise](/docs/sdk/web#name-conferences.updategallerypublisherconferencesession-galleryelementid-newpublisher--promise-827)
+-   [conferences.removeGalleryPublisher(conferenceSession, galleryElementId) ⇒ object](/docs/sdk/web#name-conferences.removegallerypublisherconferencesession-galleryelementid--object-889)
+-   [conferences.setVideoGalleryElementsNumber(elementsNumber) ⇒ number](/docs/sdk/web#name-conferences.setvideogalleryelementsnumberelementsnumber--number-940)
+-   [conferences.removePipVideo() ⇒ boolean](/docs/sdk/web#name-conferences.removepipvideo--boolean-980)
+-   [conferences.updateMainVideoSession(conferenceId, sessionId) ⇒ object](/docs/sdk/web#name-conferences.updatemainvideosessionconferenceid-sessionid--object-989)
+-   [conferences.disconnectParticipant(conferenceId, participantId, mediaType) ⇒ Promise](/docs/sdk/web#name-conferences.disconnectparticipantconferenceid-participantid-mediatype--promise-1040)
+-   [conferences.getListOfRemoteVideoPublishers(conferenceSession) ⇒ object](/docs/sdk/web#name-conferences.getlistofremotevideopublishersconferencesession--object-1102)
+-   [conferences.delegateConferenceToParticipant(conferenceId, participantId) ⇒ Promise](/docs/sdk/web#name-conferences.delegateconferencetoparticipantconferenceid-participantid--promise-1142)
+-   [conferences.toggleAutoStreamQuality(value) ⇒ boolean](/docs/sdk/web#name-conferences.toggleautostreamqualityvalue--boolean-1193)
+-   [conferences.getElementStreamQuality(elementId) ⇒ object](/docs/sdk/web#name-conferences.getelementstreamqualityelementid--object-1233)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

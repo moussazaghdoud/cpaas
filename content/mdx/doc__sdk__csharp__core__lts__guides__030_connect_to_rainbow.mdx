@@ -1,0 +1,266 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/core/lts/guides/030_connect_to_rainbow"
+lastSynced: "2026-02-19T22:35:13.707Z"
+---
+# Documentation
+
+Connect to Rainbow
+
+LTS release 3.XPubliée le 2025-03-17
+
+## Connect to Rainbow server
+
+### Prerequisites
+
+To connect to Rainbow Server, you need first to have an `applicationID` and a `secretKey` from the [developers website](/).
+
+Read first [Getting Started](/docs/sdk/csharp) if it's not the case.
+
+Then you need to have a valid Rainbow account (i.e. a login and a password).
+
+You also need to know how events and callback are managed in C# and also know how to use the [`SdkResult<T>`](/docs/sdk/csharp) object. If it's not the case read first this [guide](/docs/sdk/csharp)
+
+### Events to handle
+
+In order to follow correctly the login process, you have to handle several events from the [`Rainbow.Application`](/docs/sdk/csharp) object:
+
+-   [`ConnectionStateChanged`](/docs/sdk/csharp#Rainbow.Application.ConnectionStateChanged): triggered when the connection status has changed ([`ConnectionStatus.Disconnected`](/docs/sdk/csharp#Rainbow.Consts.ConnectionStatus.Disconnected), [`ConnectionStatus.Connecting`](/docs/sdk/csharp#Rainbow.Consts.ConnectionStatus.Connecting), [`ConnectionStatus.Connected`](/docs/sdk/csharp#Rainbow.Consts.ConnectionStatus.Connected))
+-   [`AuthenticationFailed`](/docs/sdk/csharp#Rainbow.Application.AuthenticationFailed): **(Optional)** triggered when the authentication has failed - bad login/pwd and/or bad `applicationID` and a `secretKey`
+-   [`AuthenticationSucceeded`](/docs/sdk/csharp#Rainbow.Application.AuthenticationSucceeded): **(Optional)** triggered when the authentication has succeeded
+
+It is mandatory to wait the event [`ConnectionStateChanged`](/docs/sdk/csharp#Rainbow.Application.ConnectionStateChanged) before to use the SDK with the status [`ConnectionStatus.Connected`](/docs/sdk/csharp#Rainbow.Consts.ConnectionStatus.Connected) because internally the SDK needs to get minimal information from the server to be ready.
+
+For example, the SDK needs to get features and settings available for the current user before to be fully operationnal. More details in this [advanced guide](/docs/sdk/csharp).
+
+**Note:**
+
+-   events [`AuthenticationFailed`](/docs/sdk/csharp#Rainbow.Application.AuthenticationFailed) and events [`AuthenticationSucceeded`](/docs/sdk/csharp#Rainbow.Application.AuthenticationSucceeded) are optionals.
+-   if an error occurred in the login process, the [`ConnectionStateChanged`](/docs/sdk/csharp#Rainbow.Application.ConnectionStateChanged) event contains all necessary information .
+
+Another [guide](/docs/sdk/csharp) explains some details about the [`AutoReconnection`](/docs/sdk/csharp) service which wiil try to automatically reconnect to the server in case on network trouble or if the server cannot answer to client requests.
+
+### Example
+
+Find below a basic example to manage correctly the login process in a Console application (working on Windows, Linux and MacOs).
+
+Try it with different values for example for login or password with empty / bad values to see how error are managed.
+
+```csharp
+using Rainbow;
+using Rainbow.Consts;
+
+String appId = ""; // To set according your settings
+String appSecretKey = ""; // To set according your settings
+String hostName = ""; // To set according your settings
+
+String login = ""; // To set according your settings
+String password = ""; // To set according your settings
+
+Boolean endProgram = false;// To know when to quit the app
+Boolean displayLoginResult = true; // To display login result information only once
+Object consoleLockObject = new Object(); // To lock until the the current consoly dislay is performed
+
+// Create Rainbow SDK objects
+var RbApplication = new Application();
+var RbBubbles = RbApplication.GetBubbles();
+var RbContacts = RbApplication.GetContacts();
+
+// Set events that we want to follow
+RbApplication.AuthenticationFailed += RbApplication_AuthenticationFailed; // Triggered when the authentication process will fail
+RbApplication.AuthenticationSucceeded += RbApplication_AuthenticationSucceeded; // Triggered when the authentication process will succeed
+RbApplication.ConnectionStateChanged += RbApplication_ConnectionStateChanged; // Triggered when the Connection State will change
+
+// Set global configuration info
+RbApplication.SetApplicationInfo(appId, appSecretKey);
+RbApplication.SetHostInfo(hostName);
+
+WriteBlue("Use [ESC] at anytime to quit\r\n");
+
+// Start login
+WriteWhite("Starting login ...");
+var loginTask = RbApplication.LoginAsync(login, password); // We don't wait here since we want to quit at any time using ESC key
+
+do
+{
+    Thread.Sleep(200);
+
+    CheckEscKey();
+
+    // Check if the login's task is finished AND if we need to display the result (if not already done)
+    if (loginTask.IsCompleted && displayLoginResult)
+    {
+        displayLoginResult = false;
+
+        // Get SdkResult Object from the task
+        var loginSdkResult = loginTask.Result;
+        if (loginSdkResult.Success)
+        {
+            // We can now use the SDK
+
+            // For example, we ask Contacts in the Roster
+            var contacts = RbContacts.GetAllContactsInRoster();
+            WriteYellow($"Nb Contacts in Roster:[{contacts?.Count}]");
+
+            // We ask all Bubbles known:  unsubscribed or not, as invited or as accepted
+            var bubbles = RbBubbles.GetAllBubbles();
+            WriteYellow($"Nb bubbles known :[{bubbles?.Count}]");
+        }
+        else
+        {
+            endProgram = true; // We want to quit since we cannot login
+
+            // Display the reason
+            if (loginSdkResult.Result.Type == Rainbow.Enums.SdkErrorType.Exception)
+                WriteRed($"LoginAsync - Exception occurs: [{loginSdkResult.Result}]");
+            else
+            {
+                if (loginSdkResult.Result.IncorrectUseError.ErrorCode == 1000)
+                    WriteRed($"LoginAsync - SDK triggered an error:{loginSdkResult.Result}");
+                else
+                    WriteRed($"LoginAsync - Server triggered an error:{loginSdkResult.Result}");
+            }
+        }
+    }
+
+} while (!endProgram); // Loop until we want to quit
+
+
+#region DEFINE METHODS TO RECEIVE EVENTS FROM RAINBOW SDK
+// Now we define methods which will be called by events defined previously
+void RbApplication_ConnectionStateChanged(Rainbow.Model.ConnectionState connectionState)
+{
+    // We log connection state in the console - use differnte color according the status
+    ConsoleColor color;
+    switch (connectionState.Status)
+    {
+        case ConnectionStatus.Connected:
+            color = ConsoleColor.Blue;
+            break;
+
+        case ConnectionStatus.Disconnected:
+            color = ConsoleColor.Red;
+            break;
+
+        case ConnectionStatus.Connecting:
+        default:
+            color = ConsoleColor.Green;
+            break;
+
+    }
+    WriteToConsole($"Event Application.ConnectionStateChanged triggered - Connection Status: [{connectionState.Status}]", color);
+}
+
+void RbApplication_AuthenticationSucceeded()
+{
+    // Authentication Succeeded- we display in the console the info
+    WriteBlue($"Event Application.AuthenticationSucceeded triggered");
+}
+
+void RbApplication_AuthenticationFailed(SdkError sdkError)
+{
+    // Authentication failed - we display in the console the reason
+    WriteRed($"Event Application.AuthenticationFailed triggered - SdkError:\r\n[{sdkError}");
+}
+#endregion DEFINE METHODS TO RECEIVE EVENTS FROM RAINBOW SDK
+
+#region UTILITY METHODS
+
+void CheckEscKey()
+{
+    while (Console.KeyAvailable)
+    {
+        var userInput = Console.ReadKey(true);
+        if (userInput.Key == ConsoleKey.Escape)
+        {
+            WriteBlue($"Asked to end process using [ESC] key");
+            Environment.Exit(0);
+        }
+    }
+}
+
+void WriteYellow(String message)
+{
+    WriteToConsole(message, ConsoleColor.Yellow);
+}
+
+void WriteWhite(String message)
+{
+    WriteToConsole(message, ConsoleColor.White);
+}
+
+void WriteRed(String message)
+{
+    WriteToConsole(message, ConsoleColor.Red);
+}
+
+void WriteGreen(String message)
+{
+    WriteToConsole(message, ConsoleColor.Green);
+}
+
+void WriteBlue(String message)
+{
+    WriteToConsole(message, ConsoleColor.Blue);
+}
+
+void WriteToConsole(String message, ConsoleColor? foregroundColor = null, ConsoleColor? backgroundColor = null)
+{
+    if (String.IsNullOrEmpty(message))
+        return;
+
+    lock (consoleLockObject)
+    {
+        if (foregroundColor != null)
+            Console.ForegroundColor = foregroundColor.Value;
+
+        if (backgroundColor != null)
+            Console.BackgroundColor = backgroundColor.Value;
+
+        Console.WriteLine(message);
+        Console.ResetColor();
+    }
+}
+#endregion UTILITY METHODS
+```
+
+### Examples
+
+You can take a look to these examples:
+
+### Console application
+
+Content
+
+Description
+
+Login
+
+Simple Login using await / async
+
+[README](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/SDK%20V3.X/ConsoleApp/Login%20simple/README.md)
+
+Login, Events
+
+Login and first events management
+
+[README](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/SDK%20V3.X/ConsoleApp/Login%20and%20events/README.md)
+
+**NOTE**: Full list of examples available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/SDK%20V3.X/README.md)
+
+### Sur cette page
+
+-   [Connect to Rainbow server](/docs/sdk/csharp#name-connect-to-rainbow-server-0)
+-   [Prerequisites](/docs/sdk/csharp#name-prerequisites-3)
+-   [Events to handle](/docs/sdk/csharp#name-events-to-handle-18)
+-   [Example](/docs/sdk/csharp#name-example-65)
+-   [Examples](/docs/sdk/csharp#name-examples-75)
+-   [Console application](/docs/sdk/csharp#name-console-application-81)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

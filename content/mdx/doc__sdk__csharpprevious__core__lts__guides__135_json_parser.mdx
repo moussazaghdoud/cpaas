@@ -1,0 +1,628 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharpprevious/core/lts/guides/135_json_parser"
+lastSynced: "2026-02-19T22:35:14.583Z"
+---
+# Documentation
+
+JSON parser
+
+LTS release 2.6.XPubliée le 2021-12-13
+
+## JSON
+
+To avoid dependency to complex library like **NewtonSoft.Json** or **System.Text.Json** to build JSON string from a node-tree or to generate a node tree from any valid JSON string the SDK includes [SimpleJSON](https://github.com/Bunny83/SimpleJSON) library.
+
+It's a small library but do the job quite well and ensure to the SDK to be AOT (Ahead Of Time) compatible - mandatory for the SDK to support some specific environmen like [Unity with IL2CPP backend](https://docs.unity3d.com/Manual/IL2CPP.html)
+
+This choice also avoid to follow evolution/corrections of **NewtonSoft.Json** or **System.Text.Json**.
+
+This document explains how to use this embedded library with some utility methods added to facilitate the job.
+
+## SimpleJSON objects
+
+**JSONNode** is a abstract class which is the base of all others objects
+
+**JSONString** inherits from **JSONNode** calls and represent a JSON Node which is a string in JSON representation (so potentially referencing a C# standard type like String, DateTime, )
+
+**JSONNumber** inherits from **JSONNode** calls and represent a JSON Node which is a number in JSON representation (so potentially referencing a C# standard type like int, double, float, decimal, etc ...)
+
+**JSONBool** inherits from **JSONNode** calls and represent a JSON Node which is a boolean in JSON representation
+
+**JSONNull** inherits from **JSONNode** calls and represent a JSON Node which is a null value in JSON representation
+
+**JSONObject** inherits from **JSONNode** calls and represent a JSON Node which is an object in JSON representation. So it contains one or several childrens
+
+**JSONArray** inherits from **JSONNode** calls and represent a JSON Node which is an array in JSON representation. So it contains one or several childrens
+
+**Value** property of a **JSONNode** gives the JSON representation of the node.
+
+**Tag** property of a **JSONNode** gives the **JSONNodeType** of the node: Array, Object, String, Number, NullValue, Boolean, None. You have also properties **IsArray**, **IsObject**, **IsString**, **IsNumber**, **IsNull**, **IsBool**
+
+You have the possibility to add/remove nodes by value, key or index. You have also enumerators and **Count** property
+
+You have also the possibility to access sub-node by index or by key
+
+```csharp
+JSONNode jsonNode; // A valid JSONNode object 
+...
+
+// Access a sub-node by key
+var subNodeByKey = jsonNode["id"];
+
+// Access a sub-node by index
+var subNodeByIndex = jsonNode[0];
+```
+
+## UtilJSON class
+
+The **UtilJSON** class has been created to simplify the way to create an object from a JSON String and to create JSON String from an object.
+
+**AsInt**, **AsDouble**, **AsString**, ... permits to get an int, double, string .. for an existing JSONNode using the specified key. A default value can be set if the key as not be found.
+
+```csharp
+JSONNode jsonNode; // A valid JSONNode object 
+...
+
+// Get a String of the sub node using "id" as key. An empty String is returne is not found.
+Id = UtilJson.AsString(jsonNode, "id");
+
+// Get a String of the sub node using "availabitily" as key. "offline" is returned if not found.
+Availabitily = UtilJson.AsString(jsonNode, "availabitily", "offline");
+
+// Get a Boolean of the sub node using "isTerminated" as key. True is returned if not found.
+IsTerminated = UtilJson.AsBoolean(jsonNode, "isTerminated", true);
+```
+
+Several **AddNode** methods permit to add to a JSONNode a new sub-node as int, double, string, ...
+
+```csharp
+JSONNode jsonNode; // A valid JSONNode object 
+...
+// Add a sub-node to jsonNode as String using the key "id" and the value "id_1234" 
+UtilJson.AddNode(jsonNode, "id", "id_1234");
+
+// Add a sub-node to jsonNode as DateTime using the key "lastUpdate" and the dateTime object
+DateTime dateTime = DateTime.UtcNow;  
+UtilJson.AddNode(jsonNode, "lastUpdate", dateTime);
+```
+
+## Full example
+
+**Contact** object is used here as example to demonstrate how to create a JSON String from a Contact object and to create a **Contact** object from a JSON String.
+
+**Contact** object contains a lot of properties with a standard type (i.e. String, DateTime, etc ...) and three properties not standard: **Calendars**, **Emails**, **PhoneNumbers**
+
+So we need first to parse from/to JSON this objects: **Calendar**, **EmailObject** and **PhoneNumber**
+
+For each of them, we add this methods:
+
+-   **TryJsonParse**: To create an object from a JSON String
+-   **TryToJson**: From an object create a JSON String
+
+```csharp
+public class Calendar
+{
+...
+    /// <summary>
+    /// Converts the specified JSON String to its <see cref="Calendar"/> equivalent and returns a value that indicates whetever the conversion succeeded
+    /// </summary>
+    /// <param name="jsonString"><see cref="String"/>JSON String</param>
+    /// <param name="calendar"><see cref="Calendar"/>Calendar object</param>
+    /// <returns><see cref="Boolean"/> - True on success</returns>
+    public static Boolean TryJsonParse(string jsonString, out Calendar calendar)
+    {
+        return TryJsonParse(JSON.Parse(jsonString), out calendar);
+    }
+
+    /// <summary>
+    /// Converts the specified <see cref="JSONNode"/> to its <see cref="Calendar"/> equivalent and returns a value that indicates whetever the conversion succeeded
+    /// </summary>
+    /// <param name="jsonNode"><see cref="JSONNode"/>JSONNode object</param>
+    /// <param name="calendar"><see cref="Calendar"/>Calendar object</param>
+    /// <returns><see cref="Boolean"/> - True on success</returns>
+    public static Boolean TryJsonParse(JSONNode jsonNode, out Calendar calendar)
+    {
+        calendar = null;
+
+        if ((jsonNode == null) || (!jsonNode.IsObject))
+            return false;
+
+        try
+        {
+            calendar = new ();
+            calendar.Email = UtilJson.AsString(jsonNode, "email");
+            calendar.Enabled = UtilJson.AsBoolean(jsonNode, "enabled");
+        }
+        catch
+        {
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// Converts the specified <see cref="Calendar"/> to its JSON String equivalent and returns a value that indicates whetever the conversion succeeded
+    /// </summary>
+    /// <param name="calendar"><see cref="Calendar"/>EmailObject object</param>
+    /// <param name="jsonString"><see cref="String"/>String</param>
+    /// <returns><see cref="Boolean"/> - True on success</returns>
+    public static Boolean TryToJson(Calendar calendar, out String jsonString)
+    {
+        try
+        {
+            if (TryToJson(calendar, out JSONNode jsonNode))
+            {
+                jsonString = jsonNode.ToString();
+                return true;
+            }
+        }
+        catch {}
+
+        jsonString = "";
+        return false;
+    }
+
+    /// <summary>
+    /// Converts the specified <see cref="Calendar"/> to its <see cref="JSONNode"/> equivalent and returns a value that indicates whetever the conversion succeeded
+    /// </summary>
+    /// <param name="calendar"><see cref="Calendar"/>Calendar object</param>
+    /// <param name="jsonNode"><see cref="JSONNode"/>JSONNode object</param>
+    /// <returns><see cref="Boolean"/> - True on success</returns>
+    public static Boolean TryToJson(Calendar calendar, out JSONNode jsonNode)
+    {
+        jsonNode = "";
+
+        if (calendar == null)
+            return false;
+        try
+        {
+            jsonNode = new JSONObject();
+
+            UtilJson.AddNode(jsonNode, "email", calendar.Email);
+            UtilJson.AddNode(jsonNode, "enabled", calendar.Enabled);
+        }
+        catch
+        {
+            return false;
+        }
+        return true;
+    }
+}
+
+public class EmailObject
+{
+...
+    /// <summary>
+    /// Converts the specified JSON String to its <see cref="EmailObject"/> equivalent and returns a value that indicates whetever the conversion succeeded
+    /// </summary>
+    /// <param name="jsonString"><see cref="String"/>JSON String</param>
+    /// <param name="emailObject"><see cref="EmailObject"/>EmailObject object</param>
+    /// <returns><see cref="Boolean"/> - True on success</returns>
+    public static Boolean TryJsonParse(string jsonString, out EmailObject emailObject)
+    {
+        return TryJsonParse(JSON.Parse(jsonString), out emailObject);
+    }
+
+    /// <summary>
+    /// Converts the specified <see cref="JSONNode"/> to its <see cref="EmailObject"/> equivalent and returns a value that indicates whetever the conversion succeeded
+    /// </summary>
+    /// <param name="jsonNode"><see cref="JSONNode"/>JSONNode object</param>
+    /// <param name="emailObject"><see cref="EmailObject"/>EmailObject object</param>
+    /// <returns><see cref="Boolean"/> - True on success</returns>
+    public static Boolean TryJsonParse(JSONNode jsonNode, out EmailObject emailObject)
+    {
+        emailObject = null;
+
+        if ((jsonNode == null) || (!jsonNode.IsObject))
+            return false;
+
+        try
+        {
+            emailObject = new ();
+            emailObject.Email = UtilJson.AsString(jsonNode, "email");
+            emailObject.Type = UtilJson.AsString(jsonNode, "type");
+        }
+        catch
+        {
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// Converts the specified <see cref="EmailObject"/> to its JSON String equivalent and returns a value that indicates whetever the conversion succeeded
+    /// </summary>
+    /// <param name="emailObject"><see cref="EmailObject"/>EmailObject object</param>
+    /// <param name="jsonString"><see cref="String"/>String</param>
+    /// <returns><see cref="Boolean"/> - True on success</returns>
+    public static Boolean TryToJson(EmailObject emailObject, out String jsonString)
+    {
+        try
+        {
+            if (TryToJson(emailObject, out JSONNode jsonNode))
+            {
+                jsonString = jsonNode.ToString();
+                return true;
+            }
+        }
+        catch {}
+
+        jsonString = "";
+        return false;
+    }
+
+    /// <summary>
+    /// Converts the specified <see cref="EmailObject"/> to its <see cref="JSONNode"/> equivalent and returns a value that indicates whetever the conversion succeeded
+    /// </summary>
+    /// <param name="emailObject"><see cref="EmailObject"/>EmailObject object</param>
+    /// <param name="jsonNode"><see cref="JSONNode"/>JSONNode object</param>
+    /// <returns><see cref="Boolean"/> - True on success</returns>
+    public static Boolean TryToJson(EmailObject emailObject, out JSONNode jsonNode)
+    {
+        jsonNode = "";
+
+        if (emailObject == null)
+            return false;
+        try
+        {
+            jsonNode = new JSONObject();
+
+            UtilJson.AddNode(jsonNode, "email", emailObject.Email);
+            UtilJson.AddNode(jsonNode, "type", emailObject.Type);
+        }
+        catch
+        {
+            return false;
+        }
+        return true;
+    }
+}
+
+public class PhoneNumber
+{
+...
+    /// <summary>
+    /// Converts the specified JSON String to its <see cref="PhoneNumber"/> equivalent and returns a value that indicates whetever the conversion succeeded
+    /// </summary>
+    /// <param name="jsonString"><see cref="String"/>JSON String</param>
+    /// <param name="phoneNumber"><see cref="PhoneNumber"/>PhoneNumber object</param>
+    /// <returns><see cref="Boolean"/> - True on success</returns>
+    public static Boolean TryJsonParse(string jsonString, out PhoneNumber phoneNumber)
+    {
+        return TryJsonParse(JSON.Parse(jsonString), out phoneNumber);
+    }
+
+    /// <summary>
+    /// Converts the specified <see cref="JSONNode"/> to its <see cref="PhoneNumber"/> equivalent and returns a value that indicates whetever the conversion succeeded
+    /// </summary>
+    /// <param name="jsonNode"><see cref="JSONNode"/>JSONNode object</param>
+    /// <param name="phoneNumber"><see cref="PhoneNumber"/>PhoneNumber object</param>
+    /// <returns><see cref="Boolean"/> - True on success</returns>
+    public static Boolean TryJsonParse(JSONNode jsonNode, out PhoneNumber phoneNumber)
+    {
+        phoneNumber = null;
+
+        if ((jsonNode == null) || (!jsonNode.IsObject))
+            return false;
+
+        try
+        {
+            phoneNumber = new ();
+            phoneNumber.PhoneNumberId = UtilJson.AsString(jsonNode, "phoneNumberId");
+            phoneNumber.Number = UtilJson.AsString(jsonNode, "number");
+            phoneNumber.NumberE164 = UtilJson.AsString(jsonNode, "numberE164");
+            phoneNumber.Country = UtilJson.AsString(jsonNode, "country");
+            phoneNumber.IsFromSystem = UtilJson.AsBoolean(jsonNode, "isFromSystem");
+            phoneNumber.IsVisibleByOthers = UtilJson.AsBoolean(jsonNode, "isVisibleByOthers");
+            phoneNumber.ShortNumber = UtilJson.AsString(jsonNode, "shortNumber");
+            phoneNumber.InternalNumber = UtilJson.AsString(jsonNode, "internalNumber");
+            phoneNumber.SystemId = UtilJson.AsString(jsonNode, "systemId");
+            phoneNumber.PbxId = UtilJson.AsString(jsonNode, "pbxId");
+            phoneNumber.DeviceName = UtilJson.AsString(jsonNode, "deviceName");
+            phoneNumber.VoiceMailNumber = UtilJson.AsString(jsonNode, "voiceMailNumber");
+            phoneNumber.Type = UtilJson.AsString(jsonNode, "type");
+            phoneNumber.DeviceType = UtilJson.AsString(jsonNode, "deviceType");
+        }
+        catch
+        {
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// Converts the specified <see cref="PhoneNumber"/> to its JSON String equivalent and returns a value that indicates whetever the conversion succeeded
+    /// </summary>
+    /// <param name="phoneNumber"><see cref="PhoneNumber"/>EmailObject object</param>
+    /// <param name="jsonString"><see cref="String"/>String</param>
+    /// <returns><see cref="Boolean"/> - True on success</returns>
+    public static Boolean TryToJson(PhoneNumber phoneNumber, out String jsonString)
+    {
+        try
+        {
+            if (TryToJson(phoneNumber, out JSONNode jsonNode))
+            {
+                jsonString = jsonNode.ToString();
+                return true;
+            }
+        }
+        catch {}
+
+        jsonString = "";
+        return false;
+    }
+
+    /// <summary>
+    /// Converts the specified <see cref="PhoneNumber"/> to its <see cref="JSONNode"/> equivalent and returns a value that indicates whetever the conversion succeeded
+    /// </summary>
+    /// <param name="phoneNumber"><see cref="PhoneNumber"/>PhoneNumber object</param>
+    /// <param name="jsonNode"><see cref="JSONNode"/>JSONNode object</param>
+    /// <returns><see cref="Boolean"/> - True on success</returns>
+    public static Boolean TryToJson(PhoneNumber phoneNumber, out JSONNode jsonNode)
+    {
+        jsonNode = "";
+
+        if (phoneNumber == null)
+            return false;
+        try
+        {
+            jsonNode = new JSONObject();
+
+            UtilJson.AddNode(jsonNode, "phoneNumberId", phoneNumber.PhoneNumberId);
+            UtilJson.AddNode(jsonNode, "number", phoneNumber.Number);
+            UtilJson.AddNode(jsonNode, "numberE164", phoneNumber.NumberE164);
+            UtilJson.AddNode(jsonNode, "country", phoneNumber.Country);
+            UtilJson.AddNode(jsonNode, "isFromSystem", phoneNumber.IsFromSystem);
+            UtilJson.AddNode(jsonNode, "isVisibleByOthers", phoneNumber.IsVisibleByOthers);
+            UtilJson.AddNode(jsonNode, "shortNumber", phoneNumber.ShortNumber);
+            UtilJson.AddNode(jsonNode, "internalNumber", phoneNumber.InternalNumber);
+            UtilJson.AddNode(jsonNode, "systemId", phoneNumber.SystemId);
+            UtilJson.AddNode(jsonNode, "pbxId", phoneNumber.PbxId);
+            UtilJson.AddNode(jsonNode, "deviceName", phoneNumber.DeviceName);
+            UtilJson.AddNode(jsonNode, "voiceMailNumber", phoneNumber.VoiceMailNumber);
+            UtilJson.AddNode(jsonNode, "type", phoneNumber.Type);
+            UtilJson.AddNode(jsonNode, "deviceType", phoneNumber.DeviceType);
+        }
+        catch
+        {
+            return false;
+        }
+        return true;
+    }
+}
+```
+
+We add same methods to object **Contact**: **TryJsonParse** and **TryToJson**.
+
+Notice in the code below how the three, not standard properties, **Calendars**, **Emails** and **PhoneNumbers** are managed.
+
+```csharp
+public class Contact
+{
+...
+    /// <summary>
+    /// Converts the specified JSON String to its <see cref="Contact"/> equivalent and returns a value that indicates whetever the conversion succeeded
+    /// </summary>
+    /// <param name="jsonString"><see cref="String"/>JSON String</param>
+    /// <param name="contact"><see cref="Contact"/>Contact object</param>
+    /// <returns><see cref="Boolean"/> - True on success</returns>
+    public static Boolean TryJsonParse(string jsonString, out Contact contact)
+    {
+        return TryJsonParse(JSON.Parse(jsonString), out contact);
+    }
+
+    /// <summary>
+    /// Converts the specified <see cref="JSONNode"/> to its <see cref="Contact"/> equivalent and returns a value that indicates whetever the conversion succeeded
+    /// </summary>
+    /// <param name="jsonNode"><see cref="JSONNode"/>JSONNode object</param>
+    /// <param name="contact"><see cref="Contact"/>Contact object</param>
+    /// <returns><see cref="Boolean"/> - True on success</returns>
+    public static Boolean TryJsonParse(JSONNode jsonNode, out Contact contact)
+    {
+        contact = null;
+
+        if ((jsonNode == null) || (!jsonNode.IsObject))
+            return false;
+
+        try
+        {
+            contact = new ();
+            contact.Id = UtilJson.AsString(jsonNode, "id");
+            contact.Jid_im = UtilJson.AsString(jsonNode, "jid_im");
+            contact.Jid_password = UtilJson.AsString(jsonNode, "jid_password");
+            contact.Jid_tel = UtilJson.AsString(jsonNode, "jid_tel");
+            contact.LoginEmail = UtilJson.AsString(jsonNode, "loginEmail");
+            contact.FirstName = UtilJson.AsString(jsonNode, "firstName");
+            contact.LastName = UtilJson.AsString(jsonNode, "lastName");
+            contact.DisplayName = UtilJson.AsString(jsonNode, "displayName");
+            contact.NickName = UtilJson.AsString(jsonNode, "nickName");
+            contact.InRoster = UtilJson.AsBoolean(jsonNode, "inRoster");
+            contact.IsTv = UtilJson.AsBoolean(jsonNode, "isTv");
+            contact.Title = UtilJson.AsString(jsonNode, "title");
+            contact.JobTitle = UtilJson.AsString(jsonNode, "jobTitle");
+            contact.Country = UtilJson.AsString(jsonNode, "country");
+            contact.State = UtilJson.AsString(jsonNode, "state");
+            contact.Language = UtilJson.AsString(jsonNode, "language");
+            contact.Timezone = UtilJson.AsString(jsonNode, "timezone");
+            contact.CompanyId = UtilJson.AsString(jsonNode, "companyId");
+            contact.CompanyName = UtilJson.AsString(jsonNode, "companyName");
+            contact.ShowPresence = UtilJson.AsBoolean(jsonNode, "showPresence");
+            contact.IsTerminated = UtilJson.AsBoolean(jsonNode, "isTerminated");
+            contact.GuestMode = UtilJson.AsBoolean(jsonNode, "guestMode");
+            contact.IsInDefaultCompany = UtilJson.AsBoolean(jsonNode, "isInDefaultCompany");
+            contact.IsADSearchAvailable = UtilJson.AsBoolean(jsonNode, "isADSearchAvailable");
+            contact.IsAlertNotificationEnabled = UtilJson.AsBoolean(jsonNode, "isAlertNotificationEnabled");
+            contact.LastUpdateDate = UtilJson.AsDateTime(jsonNode, "lastUpdateDate");
+            contact.LastAvatarUpdateDate = UtilJson.AsDateTime(jsonNode, "lastAvatarUpdateDate");
+            contact.LastOfflineMailReceivedDate = UtilJson.AsDateTime(jsonNode, "lastOfflineMailReceivedDate");
+            contact.Tags = UtilJson.AsStringList(jsonNode, "tags");
+
+            var emailsArray = jsonNode["emails"];
+            if (emailsArray?.IsArray == true)
+            {
+                contact.Emails = new ();
+                foreach (JSONNode jsonNodeEmailObject in emailsArray)
+                {
+                    if(EmailObject.TryJsonParse(jsonNodeEmailObject, out EmailObject emailObject))
+                        contact.Emails.Add(emailObject);
+                }
+            }
+
+            var phoneNumbersArray = jsonNode["phoneNumbers"];
+            if (phoneNumbersArray?.IsArray == true)
+            {
+                contact.PhoneNumbers = new ();
+                foreach (JSONNode jsonNodePhoneNumber in phoneNumbersArray)
+                {
+                    if(PhoneNumber.TryJsonParse(jsonNodePhoneNumber, out PhoneNumber phoneNumber))
+                        contact.PhoneNumbers.Add(phoneNumber);
+                }
+            }
+
+            var calendarsArray = jsonNode["calendars"];
+            if (calendarsArray?.IsArray == true)
+            {
+                contact.Calendars = new ();
+                foreach (JSONNode jsonNodeCalendar in calendarsArray)
+                {
+                    if(Calendar.TryJsonParse(jsonNodeCalendar, out Calendar calendar))
+                        contact.Calendars.Add(calendar);
+                }
+            }
+        }
+        catch
+        {
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// Converts the specified <see cref="Contact"/> to its JSON String equivalent and returns a value that indicates whetever the conversion succeeded
+    /// </summary>
+    /// <param name="contact"><see cref="Contact"/>EmailObject object</param>
+    /// <param name="jsonString"><see cref="String"/>String</param>
+    /// <returns><see cref="Boolean"/> - True on success</returns>
+    public static Boolean TryToJson(Contact contact, out String jsonString)
+    {
+        try
+        {
+            if (TryToJson(contact, out JSONNode jsonNode))
+            {
+                jsonString = jsonNode.ToString();
+                return true;
+            }
+        }
+        catch {}
+
+        jsonString = "";
+        return false;
+    }
+
+    /// <summary>
+    /// Converts the specified <see cref="Contact"/> to its <see cref="JSONNode"/> equivalent and returns a value that indicates whetever the conversion succeeded
+    /// </summary>
+    /// <param name="contact"><see cref="Contact"/>Contact object</param>
+    /// <param name="jsonNode"><see cref="JSONNode"/>JSONNode object</param>
+    /// <returns><see cref="Boolean"/> - True on success</returns>
+    public static Boolean TryToJson(Contact contact, out JSONNode jsonNode)
+    {
+        jsonNode = "";
+
+        if (contact == null)
+            return false;
+        try
+        {
+            jsonNode = new JSONObject();
+
+            UtilJson.AddNode(jsonNode, "id", contact.Id);
+            UtilJson.AddNode(jsonNode, "jid_im", contact.Jid_im);
+            UtilJson.AddNode(jsonNode, "jid_password", contact.Jid_password);
+            UtilJson.AddNode(jsonNode, "jid_tel", contact.Jid_tel);
+            UtilJson.AddNode(jsonNode, "loginEmail", contact.LoginEmail);
+            UtilJson.AddNode(jsonNode, "firstName", contact.FirstName);
+            UtilJson.AddNode(jsonNode, "lastName", contact.LastName);
+            UtilJson.AddNode(jsonNode, "displayName", contact.DisplayName);
+            UtilJson.AddNode(jsonNode, "nickName", contact.NickName);
+            UtilJson.AddNode(jsonNode, "inRoster", contact.InRoster);
+            UtilJson.AddNode(jsonNode, "isTv", contact.IsTv);
+            UtilJson.AddNode(jsonNode, "title", contact.Title);
+            UtilJson.AddNode(jsonNode, "jobTitle", contact.JobTitle);
+            UtilJson.AddNode(jsonNode, "country", contact.Country);
+            UtilJson.AddNode(jsonNode, "state", contact.State);
+            UtilJson.AddNode(jsonNode, "language", contact.Language);
+            UtilJson.AddNode(jsonNode, "timezone", contact.Timezone);
+            UtilJson.AddNode(jsonNode, "companyId", contact.CompanyId);
+            UtilJson.AddNode(jsonNode, "companyName", contact.CompanyName);
+            UtilJson.AddNode(jsonNode, "showPresence", contact.ShowPresence);
+            UtilJson.AddNode(jsonNode, "isTerminated", contact.IsTerminated);
+            UtilJson.AddNode(jsonNode, "guestMode", contact.GuestMode);
+            UtilJson.AddNode(jsonNode, "isInDefaultCompany", contact.IsInDefaultCompany);
+            UtilJson.AddNode(jsonNode, "isADSearchAvailable", contact.IsADSearchAvailable);
+            UtilJson.AddNode(jsonNode, "isAlertNotificationEnabled", contact.IsAlertNotificationEnabled);
+            UtilJson.AddNode(jsonNode, "lastUpdateDate", contact.LastUpdateDate);
+            UtilJson.AddNode(jsonNode, "lastAvatarUpdateDate", contact.LastAvatarUpdateDate);
+            UtilJson.AddNode(jsonNode, "lastOfflineMailReceivedDate", contact.LastOfflineMailReceivedDate);
+            UtilJson.AddNode(jsonNode, "tags", contact.Tags);
+
+            if (contact.Emails?.Count > 0)
+            {
+                JSONArray jsonArray = new();
+                foreach (var emails in contact.Emails)
+                {
+                    if (EmailObject.TryToJson(emails, out JSONNode emailsJsonNode))
+                        jsonArray.Add(emailsJsonNode);
+                }
+                UtilJson.AddNode(jsonNode, "emails", jsonArray);
+            }
+
+            if (contact.PhoneNumbers?.Count > 0)
+            {
+                JSONArray jsonArray = new();
+                foreach (var phoneNumbers in contact.PhoneNumbers)
+                {
+                    if (PhoneNumber.TryToJson(phoneNumbers, out JSONNode phoneNumbersJsonNode))
+                        jsonArray.Add(phoneNumbersJsonNode);
+                }
+                UtilJson.AddNode(jsonNode, "phoneNumbers", jsonArray);
+            }
+
+            if (contact.Calendars?.Count > 0)
+            {
+                JSONArray jsonArray = new();
+                foreach (var calendars in contact.Calendars)
+                {
+                    if (Calendar.TryToJson(calendars, out JSONNode calendarsJsonNode))
+                        jsonArray.Add(calendarsJsonNode);
+                }
+                UtilJson.AddNode(jsonNode, "calendars", jsonArray);
+            }
+        }
+        catch
+        {
+            return false;
+        }
+        return true;
+    }
+}
+```
+
+You can notice that each methods **TryJsonParse** and **TryToJson** of each objects (**Contact**, **Calendar**, **EmailObject** and **PhoneNumber**) are very similar.
+
+A internal project has been created to parse objects and their properties to create these methods in an automatic way.
+
+### Sur cette page
+
+-   [JSON](/docs/sdk/csharp#name-json-0)
+-   [SimpleJSON objects](/docs/sdk/csharp#name-simplejson-objects-15)
+-   [UtilJSON class](/docs/sdk/csharp#name-utiljson-class-52)
+-   [Full example](/docs/sdk/csharp#name-full-example-66)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,590 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/core/lts/guides/135_json_parser"
+lastSynced: "2026-02-19T22:35:13.964Z"
+---
+# Documentation
+
+JSON parser
+
+LTS release 3.XPubliée le 2025-03-17
+
+## JSON
+
+To avoid dependency to complex library like **NewtonSoft.Json** or **System.Text.Json** to build JSON string from a node-tree or to generate a node tree from any valid JSON string the SDK includes and enhances the [SimpleJSON](https://github.com/Bunny83/SimpleJSON) library.
+
+It's a small library but do the job quite well and ensure to the SDK to be AOT (Ahead Of Time) compatible - mandatory for the SDK to support some specific environment like [Unity with IL2CPP backend](https://docs.unity3d.com/Manual/IL2CPP.html)
+
+This choice also avoid to follow evolution/corrections of **NewtonSoft.Json** or **System.Text.Json**. It also avoid to have a specific version according your environment.
+
+This document explains how to use this embedded library with some utility methods added to facilitate the job.
+
+All common language runtime types are supported:
+
+-   Boolean
+-   SByte
+-   Byte
+-   short (Int16)
+-   ushort (UInt16)
+-   int (Int32)
+-   uint (UInt32)
+-   long (Int64)
+-   ulong (UInt64)
+-   float (Single)
+-   double (Double)
+-   Decimal
+-   DateTime
+-   Char
+-   String
+
+All nullable of common language runtime types are supported (for example **String?**).
+
+**List<T>** with **T** as a common language runtime type is also supported (for example **List<String>**).
+
+**List<T> ?** is also supported (i.e. nullable List with T as a common language runtime type)
+
+**Distionary<String, T>** with **T** as a common language runtime type is also supported. (for example **Distionary<String, String>**).
+
+**Distionary<String, T> ?** with **T** as a common language runtime type is also supported (i.e. nullable Dictionary with T as a common language runtime type)
+
+## SimpleJSON objects
+
+**JSONNode** is a abstract class which is the base of all others objects
+
+**JSONString** inherits from **JSONNode** calls and represent a JSON Node which is a string in JSON representation (so potentially referencing a C# standard type like String, DateTime, )
+
+**JSONNumber** inherits from **JSONNode** calls and represent a JSON Node which is a number in JSON representation (so potentially referencing a C# standard type like int, double, float, decimal, etc ...)
+
+**JSONBool** inherits from **JSONNode** calls and represent a JSON Node which is a boolean in JSON representation
+
+**JSONNull** inherits from **JSONNode** calls and represent a JSON Node which is a null value in JSON representation
+
+**JSONObject** inherits from **JSONNode** calls and represent a JSON Node which is an object in JSON representation. So it contains one or several childrens
+
+**JSONArray** inherits from **JSONNode** calls and represent a JSON Node which is an array in JSON representation. So it contains one or several childrens
+
+**Value** property of a **JSONNode** gives the JSON representation of the node.
+
+**Tag** property of a **JSONNode** gives the **JSONNodeType** of the node: Array, Object, String, Number, NullValue, Boolean, None. You have also properties **IsArray**, **IsObject**, **IsString**, **IsNumber**, **IsNull**, **IsBool**
+
+You can add/remove nodes by value, key or index. You have also enumerators and **Count** property
+
+You can access sub-node by index or by key or use enumeration.
+
+```csharp
+String jsonString = "{\"type\":\"room\",\"peer\":\"room_129dd7c359834009980be7241e3f12c1@muc.openrainbow.net\",\"peerId\":\"632469c100e14c9bf133e889\",\"id\":\"1664355528235028\"}";
+
+Rainbow.SimpleJSON.JSONNode jsonNode;
+
+// Parse String to get JSONNode
+jsonNode = Rainbow.SimpleJSON.JSON.Parse(jsonString);
+
+// Is it an Array or an Object ?
+if (jsonNode.IsArray)
+{
+    // It's an array
+}
+else if(jsonNode.IsObject)
+{
+    // It's an object
+}
+
+// Access a sub-node by key
+var subNodeByKey = jsonNode["type"];
+
+// Access a sub-node by index
+var subNodeByIndex = jsonNode[0];
+
+// Enumerate all keys and get sub node
+foreach (var key in jsonNode.Keys)
+{
+    var subNode = jsonNode[key];
+}
+
+// Get JSON for JSONNode
+String json =  jsonNode.ToString();
+// OUTPUT of json:
+/*
+{"type":"room","peer":"room_129dd7c359834009980be7241e3f12c1@muc.openrainbow.net","peerId":"632469c100e14c9bf133e889","id":"1664355528235028"}
+*/
+
+json  =  jsonNode.ToString(avoidNull: true, indent: true); // It's possible to avoid null (true by default) and indent the result (false by default)
+// OUTPUT of json:
+/*
+{
+  "type" : "room",
+  "peer" : "room_129dd7c359834009980be7241e3f12c1@muc.openrainbow.net",
+  "peerId" : "632469c100e14c9bf133e889",
+  "id" : "1664355528235028"
+}
+*/
+
+// Get all content in a Dictionary
+Dictionary<string, object>? dico = jsonNode;
+//or
+dico = Rainbow.SimpleJSON.JSON.Parse(jsonString);
+```
+
+## Create JSON
+
+Using only `Rainbow.SimpleJSON`:
+
+```csharp
+using Rainbow.Model;
+using Rainbow.SimpleJSON;
+
+JSONObject jsonObject = new();
+
+// Add element (same for all common types)
+jsonObject["id"] = "my id";
+// OR
+jsonObject.Add("id", "my id");
+
+// Add a list of common types
+jsonArray = new();
+jsonArray.Add("list element 1");
+jsonArray.Add("list element 2");
+jsonObject["idsList"] = jsonArray;
+// OR
+jsonObject["idsList"] = new List<String> { "list element 1", "list element 2" };
+
+// Add a sub object
+jsonSubObject = new();
+jsonSubObject["sub1"]  = "sub value";
+jsonSubObject["sub2"] = 0;
+jsonObject["obj"] = jsonSubObject;
+// OR
+jsonObject["obj"] = new Dictionary<String, Object>
+{
+    { "sub1", "sub value" },
+    { "sub2", 0 }
+};
+```
+
+Using only C# objects:
+
+```csharp
+using Rainbow.Model;
+using Rainbow.SimpleJSON;
+
+// CREATE JSON: Using only .Net object
+Dictionary<String, Object> dico = new()
+{
+    { "id",  "my id"},
+    { "idsList", new List<String>{ "list element 1", "list element 2" } },
+    { "obj", new Dictionary<String, Object>
+        {
+            { "sub1", "sub value" },
+            { "sub2", 0 }
+        } 
+    },
+};
+
+// Get JSONNode or JSON
+var jsonNode = JSON.ToJsonNode(dico);
+var json = JSON.ToJson(dico);
+// OUTPUT of json:
+/*
+{"id":"my id","idsList":["list element 1","list element 2"],"obj":{"sub1":"sub value","sub2":0}}
+*/
+
+json = JSON.ToJson(dico, avoidNull: true, indent: true);  // It's possible to avoid null (true by default) and indent the result (false by default)
+// Output of the JSON:
+/*
+{
+  "id" : "my id",
+  "idsList" : [
+    "list element 1",
+    "list element 2"
+  ],
+  "obj" : {
+    "sub1" : "sub value",
+    "sub2" : 0
+  }
+}
+*/
+```
+
+## Read JSON
+
+```csharp
+using Rainbow.Model;
+using Rainbow.SimpleJSON;
+
+var json =
+@"{""id"":""665dafe0ffb1bd3a8cf9c624"",""name"":""LPF2LVJEB"",""type"":""desktop"",""userId"":""665dafdee8957c9b279b8d16"",""companyId"":""602d3998db669a452dba8756"",""jid_im"":""f215088cdf834902a04744beb2faa6f5@openrainbow.net"",""jid_resource"":""sdk_net_13284fdca14e4b4aab62b8b7cadb006c"",""creationDate"":""2024-06-03T11:58:24.633Z"",""ipAddresses"":[""192.168.56.1"",""10.11.91.44"",""10.64.2.253"",""172.26.176.1"",""172.22.160.1""],""domainUsername"":""CORP\\maetz"",""macAddresses"":[""0A:00:27:00:00:12"",""00:FF:10:F3:61:67"",""64:BC:58:DE:82:F8"",""00:15:5D:7F:20:00"",""00:15:5D:2B:BE:74""],""tags"":[]}";
+
+var jsonNode = JSON.Parse(json);
+
+String id = jsonNode["id"]; // Implicit operator used
+//OR
+var id_ = jsonNode["id"].As<String>();
+
+// Possible to set default value if a node i not specified
+var type = jsonNode["id"].As<String>("desktop");
+
+// Parse arrays
+var ipAddressesNode = jsonNode["ipAddresses"];
+if(ipAddressesNode?.IsArray == true)
+{
+    foreach(var node in ipAddressesNode.Values)
+    {
+
+    }
+}
+
+// Parse Object
+if (jsonNode?.IsObject == true)
+{
+    foreach (var key in jsonNode.Keys)
+    {
+        var node = jsonNode[key];
+        if (node?.IsArray == true)
+        {
+            // TODO - need to loop on all items
+        }
+        else if (node?.IsObject == true)
+        {
+            // TODO - need to get all sub elements
+        }
+        else
+        {
+            // TODO - need to manage the element using:
+            //      node.IsBoolean,  node.IsNull,  node.IsNumber or node.IsString
+        }
+    }
+}
+```
+
+## Extending JSON parsing
+
+The library can support JSON parsing of new types if 4 static methods are implemented (here MyClass is the new class we want to extend)
+
+```csharp
+public class MyClass
+{
+    /// <summary>
+    /// Converts the specified <see cref="JSONNode"/> to its <see cref="MyClass"/> equivalent from the specified node name
+    /// </summary>
+    public static MyClass FromJsonNode(JSONNode jsonNode, String nodeName = null)
+    {
+    // TODO - depends of fields of MyClass that we want to parse in JSON 
+    }
+    
+    /// <summary>
+    /// Returns a JSONNode equivalent of this object
+    /// </summary>
+    public static JSONNode ToJsonNode(MyClass obj)
+    {
+    // TODO - depends of fields of MyClass that we want to parse in JSON
+    }
+    
+    /// <summary>
+    /// Implicit Constructor from <see cref="MyClass"/> list to <see cref="JSONNode"/>
+    /// </summary>
+    /// <param name="objectToJsonNode"><see cref="MyClass"/>MyClass</param>
+    public static implicit operator JSONNode(AlertDevice objectToJsonNode)
+        => ToJsonNode(objectToJsonNode);
+
+    /// <summary>
+    /// Implicit Constructor from <see cref="JSONNode"/> to <see cref="MyClass"/> list
+    /// </summary>s
+    /// <param name="jsonNodeToObject"><see cref="JSONNode"/>JSONNode Value</param>
+    public static implicit operator MyClass(JSONNode jsonNodeToObject)
+        => FromJsonNode(jsonNodeToObject);
+}
+```
+
+To be even more flexible (even if it's not necessary), in the SDK we add also 4 others methods (so we can manage from JSON directly)
+
+```csharp
+public class MyClass
+{
+    /// <summary>
+    /// Converts the specified JSON String to its <see cref="MyClass"/> equivalent from the specified node name
+    /// </summary>
+    public static MyClass FromJson(string jsonString, String nodeName = null)
+        => FromJsonNode(JSON.Parse(jsonString), nodeName);
+    
+    /// <summary>
+    /// Returns a JSON String equivalent of this object
+    /// </summary>
+    public String ToJson(Boolean avoidNull = true, Boolean indent = false)
+        => ToJson(this, avoidNull: avoidNull, indent: indent);
+
+    /// <summary>
+    /// Returns a JSON String equivalent of this object
+    /// </summary>
+    public static String ToJson(MyClass obj, Boolean avoidNull = true, Boolean indent = false)
+        => ToJsonNode(obj)?.ToString(avoidNull: avoidNull, indent: indent);
+
+    /// <summary>
+    /// Returns a JSONNode equivalent of this object
+    /// </summary>
+    /// <returns><see cref="JSONNode"/> - JSONNode object</returns>
+    public JSONNode ToJsonNode() 
+        => ToJsonNode(this);
+}
+```
+
+Once it's done you can easily manage **MyClass** from JSON (read or write):
+
+```csharp
+using Rainbow.Model;
+using Rainbow.SimpleJSON;
+
+MyClass myObj = new();
+
+// Create JSON or JSONNode from this object
+var jsonNode = JSON.ToJsonNode(myObj);
+// or
+// jsonNode = MyClass.ToJsonNode(myObj)
+var json = JSON.ToJson(myClass);
+
+// Create this object from a JSON or JSONNode
+myObj = MyClass.FromJsonNode(JSON.Parse(json);
+myObj = MyClass.FromJsonNode(jsonNode);
+```
+
+## Full example with `AlertDevice`
+
+`AlertDevice` object is defined like this:
+
+```csharp
+public class AlertDevice
+{
+    /// <summary>
+    /// <see cref="String"/> - Device Id
+    /// </summary>
+    public string Id { get; set; }
+
+    /// <summary>
+    /// <see cref="String"/> - Device Name
+    /// </summary>
+    public string Name { get; set; }
+
+    /// <summary>
+    /// <see cref="String"/> - Device type (Allowed values: web, desktop, mac, android, ios)
+    /// </summary>
+    public string Type { get; set; }
+
+    /// <summary>
+    /// <see cref="String"/> - User Id using this device
+    /// </summary>
+    public string UserId { get; set; }
+
+    /// <summary>
+    /// <see cref="String"/> - Company to which belongs this device (user's company).
+    /// </summary>
+    public string CompanyId { get; set; }
+
+    /// <summary>
+    /// <see cref="String"/> - User Jabber IM identifier (copied from the associated user)
+    /// </summary>
+    public string Jid_im { get; set; }
+
+    /// <summary>
+    /// <see cref="String"/> - Resource part of the full jid used by the device to connect to xmpp server. 
+    /// </summary>
+    public string Jid_resource { get; set; }
+
+    /// <summary>
+    /// <see cref="DateTime"/> - Device creation date
+    /// </summary>
+    public DateTime CreationDate { get; set; }
+
+    /// <summary>
+    /// <see cref="List{String}"/> - Ip Addresses 
+    /// </summary>
+    public List<String> IpAddresses { get; set; }
+
+    /// <summary>
+    /// <see cref="String"/> - Domain\Username of the device. 
+    /// </summary>
+    public string DomainUsername { get; set; }
+
+    /// <summary>
+    /// <see cref="List{String}"/> - Mac Addresses
+    /// </summary>
+    public List<String> MacAddresses { get; set; }
+
+    /// <summary>
+    /// <see cref="String"/> - An Array of free tags associated to the device. (max 5 tags. Each 64 characters max)
+    /// </summary>
+    public List<String> Tags{ get; set; }
+
+    /// <summary>
+    /// <see cref="Geolocation"/> - Geolocation of the device. (only latitude and longitude (in degrees) are used for the moment)
+    /// </summary>
+    public Geolocation Geolocation { get; set; }
+}
+```
+
+To extend support of JSON parsing of this object we have implemented the methods like this:
+
+**NOTE**: Since `AlertDevice` is using a `Geolocation` object, this `Geolocation` object has also implemented this new methods to support JSON Parsing.
+
+```csharp
+public class AlertDevice
+{
+    /// <summary>
+    /// Converts the specified <see cref="JSONNode"/> to its <see cref="AlertDevice"/> equivalent from the specified node name
+    /// </summary>
+    public static AlertDevice FromJsonNode(JSONNode jsonNode, String nodeName = null)
+    {
+      if ((jsonNode == null) || (!jsonNode.IsObject))
+          return null;
+
+      if(!String.IsNullOrWhiteSpace(nodeName))
+          return FromJsonNode(jsonNode[nodeName]);
+      
+      AlertDevice alertDevice = new ();
+      alertDevice.Id = jsonNode["id"];
+      alertDevice.Name = jsonNode["name"];
+      alertDevice.Type = jsonNode["type"];
+      alertDevice.UserId = jsonNode["userId"];
+      alertDevice.CompanyId = jsonNode["companyId"];
+      alertDevice.Jid_im = jsonNode["jid_im"];
+      alertDevice.Jid_resource = jsonNode["jid_resource"];
+      alertDevice.CreationDate = jsonNode["creationDate"];
+      alertDevice.IpAddresses = jsonNode["ipAddresses"];
+      alertDevice.DomainUsername = jsonNode["domainUsername"];
+      alertDevice.MacAddresses = jsonNode["macAddresses"];
+      alertDevice.Tags = jsonNode["tags"];
+      alertDevice.Geolocation = Geolocation.FromJsonNode(jsonNode, "geolocation");
+      return alertDevice;
+    }
+    
+    /// <summary>
+    /// Returns a JSONNode equivalent of this object
+    /// </summary>
+    public static JSONNode ToJsonNode(AlertDevice alertDevice)
+    {
+            if (alertDevice == null) return null;
+            var jsonNode = new JSONObject();
+
+            jsonNode["id"] = alertDevice.Id;
+            jsonNode["name"] = alertDevice.Name;
+            jsonNode["type"] = alertDevice.Type;
+            jsonNode["userId"] = alertDevice.UserId;
+            jsonNode["companyId"] = alertDevice.CompanyId;
+            jsonNode["jid_im"] = alertDevice.Jid_im;
+            jsonNode["jid_resource"] = alertDevice.Jid_resource;
+            jsonNode["creationDate"] = alertDevice.CreationDate;
+            jsonNode["ipAddresses"] = alertDevice.IpAddresses;
+            jsonNode["domainUsername"] = alertDevice.DomainUsername;
+            jsonNode["macAddresses"] = alertDevice.MacAddresses;
+            jsonNode["tags"] = alertDevice.Tags;
+            jsonNode["geolocation"] = Geolocation.ToJsonNode(alertDevice.Geolocation);
+            return jsonNode;
+    }
+    
+    /// <summary>
+    /// Implicit Constructor from <see cref="AlertDevice"/> list to <see cref="JSONNode"/>
+    /// </summary>
+    /// <param name="objectToJsonNode"><see cref="AlertDevice"/>AlertDevice</param>
+    public static implicit operator JSONNode(AlertDevice objectToJsonNode)
+        => ToJsonNode(objectToJsonNode);
+
+    /// <summary>
+    /// Implicit Constructor from <see cref="JSONNode"/> to <see cref="AlertDevice"/> list
+    /// </summary>s
+    /// <param name="jsonNodeToObject"><see cref="JSONNode"/>JSONNode Value</param>
+    public static implicit operator AlertDevice(JSONNode jsonNodeToObject)
+        => FromJsonNode(jsonNodeToObject);
+    
+    /// <summary>
+    /// Converts the specified JSON String to its <see cref="AlertDevice"/> equivalent from the specified node name
+    /// </summary>
+    public static AlertDevice FromJson(string jsonString, String nodeName = null)
+        => FromJsonNode(JSON.Parse(jsonString), nodeName);
+    
+    /// <summary>
+    /// Returns a JSON String equivalent of this object
+    /// </summary>
+    public String ToJson(Boolean avoidNull = true, Boolean indent = false)
+        => ToJson(this, avoidNull: avoidNull, indent: indent);
+
+    /// <summary>
+    /// Returns a JSON String equivalent of this object
+    /// </summary>
+    public static String ToJson(AlertDevice obj, Boolean avoidNull = true, Boolean indent = false)
+        => ToJsonNode(obj)?.ToString(avoidNull: avoidNull, indent: indent);
+
+    /// <summary>
+    /// Returns a JSONNode equivalent of this object
+    /// </summary>
+    /// <returns><see cref="JSONNode"/> - JSONNode object</returns>
+    public JSONNode ToJsonNode() 
+        => ToJsonNode(this);
+}
+```
+
+Example with valid data:
+
+```csharp
+using Rainbow.Model;
+using Rainbow.SimpleJSON;
+
+JSONNode jsonNode;
+JSONObject jsonObject;
+String json;
+
+// --------------------
+// JSON representation of an AlertDevice:
+json =
+@"{""id"":""665dafe0ffb1bd3a8cf9c624"",""name"":""LPF2LVJEB"",""type"":""desktop"",""userId"":""665dafdee8957c9b279b8d16"",""companyId"":""602d3998db669a452dba8756"",""jid_im"":""f215088cdf834902a04744beb2faa6f5@openrainbow.net"",""jid_resource"":""sdk_net_13284fdca14e4b4aab62b8b7cadb006c"",""creationDate"":""2024-06-03T11:58:24.633Z"",""ipAddresses"":[""192.168.56.1"",""10.11.91.44"",""10.64.2.253"",""172.26.176.1"",""172.22.160.1""],""domainUsername"":""CORP\\maetz"",""macAddresses"":[""0A:00:27:00:00:12"",""00:FF:10:F3:61:67"",""64:BC:58:DE:82:F8"",""00:15:5D:7F:20:00"",""00:15:5D:2B:BE:74""],""tags"":[]}";
+
+jsonNode = JSON.Parse(json);
+
+// Create AlertDevice from JSON
+AlertDevice alertDeviceFromJson = AlertDevice.FromJsonNode(jsonNode);
+// or
+alertDeviceFromJson = jsonNode; // Implicit operator JSONNode to AlertDevice
+// alertDeviceFromJson.Id => "665dafe0ffb1bd3a8cf9c624"
+// alertDeviceFromJson.name => "LPF2LVJEB"
+// ...
+
+// Create JSON or JSONNode from AlertDevice
+JSONNode jsonNodeFromAlertDevice = AlertDevice.ToJsonNode(alertDeviceFromJson);
+// or
+jsonNodeFromAlertDevice = JSON.ToJsonNode(alertDeviceFromJson);
+// or
+jsonNodeFromAlertDevice = alertDeviceFromJson;// Implicit operator AlertDevice to JSONNode
+
+String jsonFromAlertDevice = jsonNodeFromAlertDevice.ToString();
+// or
+jsonFromAlertDevice = JSON.ToJson(alertDeviceFromJson);
+
+// You can also add direclty an AlertDevice to a JSONObject 
+jsonObject = new();
+jsonObject["alertDevice"] = alertDeviceFromJson; // Implicit operator AlertDevice to JSONNode
+
+AlertDevice otherAlertDevice = jsonObject["alertDevice"];  // Implicit operator JSONNode to AlertDevice
+
+Dictionary<String, Object> dico = new()
+{
+    { "alertDevice",  alertDeviceFromJson}
+};
+
+// Get JSONNode or JSON
+jsonNode = JSON.ToJsonNode(dico);
+json = JSON.ToJson(dico);
+```
+
+### Sur cette page
+
+-   [JSON](/docs/sdk/csharp#name-json-0)
+-   [SimpleJSON objects](/docs/sdk/csharp#name-simplejson-objects-110)
+-   [Create JSON](/docs/sdk/csharp#name-create-json-147)
+-   [Read JSON](/docs/sdk/csharp#name-read-json-158)
+-   [Extending JSON parsing](/docs/sdk/csharp#name-extending-json-parsing-162)
+-   [Full example with AlertDevice](/docs/sdk/csharp#name-full-example-with--177)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

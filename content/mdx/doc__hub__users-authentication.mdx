@@ -1,0 +1,189 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "docs-hub"
+source: "https://developers.openrainbow.com/doc/hub/users-authentication"
+lastSynced: "2026-02-19T22:35:13.169Z"
+---
+# Documentation
+
+Users authentication
+
+## Users authentication
+
+---
+
+Dealing with users authentication is always an important part of your development. It should be done carefully to avoid any security issue.
+
+This guide will explain in details:
+
+-   The kind of Rainbow applications you can build
+    
+-   How to authenticate your users for each kind of applications
+    
+-   Best practices to secure your `secret key` and to protect Rainbow users data.
+    
+
+### Kinds of applications
+
+There are four kind of applications that exist:
+
+-   **Rainbow applications**: We call Rainbow applications the applications delivered by ALE International. These applications are out of the scope of this guide.
+    
+-   **Rainbow sibling applications**: We call Rainbow sibling applications or just Rainbow siblings, any application that asks the user to log-in with his Rainbow credential. Each time you are building this kind of application which can be a *connector*, an *extension* or a *Rainbow plugin* that allows to access your Rainbow account and data in order to leverage your Rainbow experience. These applications augment the Rainbow features and integration with others platforms.
+    
+-   **Rainbow sibling services**: We call Rainbow sibling services, any backend application that either dialogs with existing Rainbow users such as a *bot* or automates provisionning or management of Rainbow accounts such a *business process* connected to Rainbow that creates new Rainbow accounts.
+    
+-   **Rainbow third party applications**: All others applications are called Rainbow third party applications. Theses applications have already an authentication mechanism offered by the third party platform (ie: your application and platform). In that case, your application will use Rainbow to offer new services "as if they have been developped" by you. Your application consumes Rainbow as a service.
+    
+
+**Note**: If you don't know the kind of application you are building, ask you if your application can interact with existing Rainbow users. If yes, you are probably developing a Rainbow sibling application or service. If you don't want any interaction from Rainbow users because your application is dedicated to your own users with user profiles managed by your platform, you are building a Rainbow third party application.
+
+#### SUM-UP
+
+Kind of applications
+
+Details
+
+**Rainbow siblings**
+
+Rainbow users connect using their Rainbow accounts in these applications.  
+Interactions with Rainbow users using Rainbow applications or other Rainbow sibling applications could occur and have to be managed.  
+  
+**These applications access your Rainbow identity and all the data you generated on Rainbow. You can generate new Rainbow data from these applications**.
+
+**Rainbow siblings services**
+
+These services are running on a backend infrastructure that is connected to Rainbow.  
+Interactions with Rainbow users using Rainbow applications or other Rainbow sibling applications could occur and have to be managed.  
+  
+**Depending on the level of rights, the Rainbow account used to provide the service can access or not to the profile of Rainbow users and manage them. These applications have no access to users data.**
+
+**Rainbow Third party**
+
+Users of these applications are existing users of a third party application. These users are not aware of Rainbow and so Rainbow credentials are not known by them.  
+They log-in using their third party credentials and receive a token on behalf the Rainbow users to be able to make requests to Rainbow.  
+  
+**These applications create new Rainbow users. Interactions with Rainbow applications, Rainbow sibling applications, Rainbow sibling services or any other not managed third party applications should not happen to avoid unexpected behavior**.
+
+### Authentication methods
+
+The following points are good practices for securing your application and the data of your users. You should follow them carefully when in production. For development on the Sandbox platform, you can work without them.
+
+#### For Rainbow sibling applications
+
+Authentication method offered for Rainbow sibling applications is based on using a Basic Authentication from the application with the Rainbow credentials of the users. Rainbow SDK for C#, Rainbow SDK for Web and Rainbow SDK for NodeJS support OAuth2 authentication mecanism in addition to basic authentication.
+
+#### For Rainbow sibling services
+
+As mentionned, Rainbow sibling services work on a backend that can be hosted on our own datacenter, on a cloud hosting specialist or by us.
+
+Rainbow accounts used by these backend services can authenticate directly to Rainbow either using the Rainbow Authentication REST API provided or the SDK for Node.JS if permitted by the backend.
+
+The following diagram describes the complete flow. The main points are the following:
+
+-   Sibling services use Rainbow accounts that have to be created manually with the desired level of rights.
+    
+-   Depending the services provided, REST API can be used instead of the SDK for NodeJS. Both cases work in the same way.
+    
+
+![img80](/docs/hub/../assets/service_authentication_flow.png)
+
+#### For Rainbow third party applications
+
+As mentionned in the table above, authentication of these applications relies on the third party authentication mechanism already in place. Interactions for authenticating associated Rainbow accounts will be done after and only if third party authentication has been done successfully.
+
+The following diagram describes the complete flow. The main points are the following:
+
+-   Each third party account will be associated to a Rainbow account in order to connect to Rainbow.
+    
+-   When the third party authentication has succeeded in step 1, the third party backend will get the Rainbow credentials associated to the third party account in step 2 and then logs-in the user to get an active token in step 3.
+    
+-   This token is then sent to the application part in step 4 to be given to the SDK.
+    
+-   Once received, the SDK is able to invoke Rainbow API with this token. In case of expiration of the token, the SDK is alerted and can renew it several times. After the final expiration, a specific message is then sent back the the application than can propose the login page again.
+    
+
+![](/docs/hub/../assets/users_authentication_flow.png)
+
+Note: An additionnal step 2' has been added to the diagram to show when needed Rainbow accounts can be created.
+
+#### For Rainbow third party applications with guests
+
+Third party applications can use **GUEST** accounts when there is only a temporaly interaction between the user and Rainbow which can stay **anonymous**.
+
+The following diagram describes the complete flow. This is approximatively the same as for a **USER** except that you don't need an authentication in your application (3rd party authentication) before creating the guest account.
+
+![](/docs/hub/../assets/guests_authentication_flow.png)
+
+*Note*: Guest accounts have always a time to live parameter defined (default 48 hours) and so you don't need to manually delete them.
+
+#### OAuth2 Authentication
+
+Rainbow uses [OAuth 2 protocol](https://tools.ietf.org/html/draft-ietf-oauth-v2-12) to ensure authentication and authorization.
+
+One of the advantages of using OAuth 2.0 protocol is removing the responsibility for storing the user credentials from the third-party applications developers. Also, by outsourcing the authentication flow to Rainbow servers, the developers no longer need to maintain their own servers and ensure the application of numerous security measures.
+
+It also provides a set of advantages for the users who want to restrict the usage of their personal data linked to a Rainbow account. With OAuth 2.0 the users can also limit or even revoke the access of the third-party applications to their data.
+
+The main principle of OAuth 2.0 protocol is to separate the role of the client from that of the resource owner (Rainbow).
+
+The basic idea behind the OAuth 2.0 is to ensure a protocol flow between the three (optionally four) principal roles explained in the context of Rainbow flow below:
+
+1.  **Resource owner** - user providing an access to his data (protected resource)
+2.  **Resource server** - Rainbow server hosting the protected resources
+3.  **Client** - Third-party application trying to access resources on behalf of the Resource Owner
+4.  **Authorization server** - Server which sends the authorization token to the Resource server
+
+### Best practices
+
+#### Securing the secret key
+
+The best way to secure your secret key is to never introduce it on client side (for example application front-end side). Instead, rely on your backend infrastructure and platform to keep it safe and only communicate it to Rainbow from your backend.
+
+Application part only need a token to access to Rainbow.
+
+Our SDKs offer the possibility to set the application Id and secret key in order to let you develop in an easy way without having to deploy or use your backend. But don't keep this way when deploying your application on production.
+
+#### Creating Rainbow accounts on the fly
+
+It is a best practice to create Rainbow accounts when the user needs it instead of relying on a provisionning way such as through a mass-provisionning tool or worst through a lot of HTTP requests.
+
+You can create Rainbow accounts either when the end-user signs to the third party application (your application) or the first time he logs-in to the third party application. Your backend will just have to send a request to Raibow to create the account using a `company_admin` account.
+
+### Interested in
+
+---
+
+-   [Understanding Rainbow core concepts](/docs/hub/rainbow-core-concepts)
+    
+-   [Knowing Rainbow users](/docs/hub/users-in-rainbow)
+    
+-   [Discovering Rainbow visibility and privacy rules](/docs/hub/users-visibility-and-privacy)
+    
+
+---
+
+*Last updated August, 26th 2022*
+
+### Sur cette page
+
+-   [Users authentication](/docs/hub/users-authentication#name-users-authentication-0)
+-   [Kinds of applications](/docs/hub/users-authentication#name-kinds-of-applications-27)
+-   [SUM-UP](/docs/hub/users-authentication#name-sum-up-58)
+-   [Authentication methods](/docs/hub/users-authentication#name-authentication-methods-99)
+-   [For Rainbow sibling applications](/docs/hub/users-authentication#name-for-rainbow-sibling-applications-105)
+-   [For Rainbow sibling services](/docs/hub/users-authentication#name-for-rainbow-sibling-services-111)
+-   [For Rainbow third party applications](/docs/hub/users-authentication#name-for-rainbow-third-party-applications-138)
+-   [For Rainbow third party applications with guests](/docs/hub/users-authentication#name-for-rainbow-third-party-applications-with-guests-175)
+-   [OAuth2 Authentication](/docs/hub/users-authentication#name-oauth2-authentication-190)
+-   [Best practices](/docs/hub/users-authentication#name-best-practices-230)
+-   [Securing the secret key](/docs/hub/users-authentication#name-securing-the-secret-key-233)
+-   [Creating Rainbow accounts on the fly](/docs/hub/users-authentication#name-creating-rainbow-accounts-on-the-fly-245)
+-   [Interested in](/docs/hub/users-authentication#name-interested-in-254)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

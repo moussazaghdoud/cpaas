@@ -1,0 +1,400 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharpprevious/core/lts/guides/060_make_an_IM_conversation"
+lastSynced: "2026-02-19T22:35:14.438Z"
+---
+# Documentation
+
+Managing an IM conversation
+
+LTS release 2.6.XPubliée le 2021-12-13
+
+## Managing an IM conversation
+
+This guide explains how to retrieve messages from a conversation (P2P or from a Bubble) and how to send new ones.
+
+### Open a conversation
+
+---
+
+To open a conversation from a contact, you need to use the `Conversations` object and use `GetOrCreateConversationFromUserId` method.
+
+To open a conversation from a bubble, you need to use the `Conversations` object and use `GetOrCreateConversationFromBubbleId` method.
+
+In both cases, if the conversation didn't exist, it's created automatically.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Conversations conversations = myApp.GetConversations();
+...
+Rainbow.Contact contact; // Your contact
+Rainbow.Bubble bubble; // Your bubble
+...
+
+Rainbow.Conversation conversationWithContact = conversations.GetOrCreateConversationFromUserId(contact.Id);
+
+Rainbow.Conversation conversationWithBubble = conversations.GetOrCreateConversationFromBubbleId(bubble.Id);
+```
+
+### Retrieving conversations
+
+---
+
+To retrieve all active conversations, you can use the `GetAllConversations` method of `Conversations` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Conversations conversations = myApp.GetConversations();
+
+conversations.GetAllConversations(callback =>
+{
+  if(callback.Result.Success)
+  {
+    List<Conversation> list = callback.Data;  // List of conversations
+    
+    foreach(Conversation conversation in list)
+    {
+      if(conversation.Type == Conversation.ConversationType.User)
+      {
+        // it's a peer to peer conversation (P2P)
+      }
+      else if(conversation.Type == Conversation.ConversationType.Room)
+      {
+        // it's a conversation in a Bubble / Room
+      }
+    }
+    
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Remove a conversation
+
+---
+
+To remove a conversation, you can call `RemoveFromConversations` method from `Conversations` object.
+
+The conversation is removed from the conversations list but messages already exchanged are not deleted.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Conversations conversations = myApp.GetConversations();
+...
+Rainbow.Conversation conversation; // Your conversation
+
+conversations.RemoveFromConversations(conversation, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // conversation has been well removed
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Get last messages received in a conversation
+
+---
+
+To get the last messages exchanged in a conversation, the `GetMessagesFromConversation` method of `InstantMessaging` object must be used.
+
+This method store messages in a cache for each conversation.
+
+If you call again this method, older messages from previous result are retrieved until there is no more message.
+
+For performance reason, it's not possible to get all messages in one call. You need to call several times `GetMessagesFromConversation` until you received no more messages.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.InstantMessaging instantMessaging = myApp.GetInstantMessaging();
+...
+Rainbow.Conversation conversation; // Your conversation
+int nbMessages = 20; // Nb message to retrieve
+
+instantMessaging.GetMessagesFromConversation(conversation, nbMessages, callback =>
+{
+  if(callback.Result.Success)
+  {
+    List<Message> list = callback.Data; // List of messages just retrieved
+    int nb = list.Count; // Nb of messages - if nb < nbMessages there is no more message
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Get messages already in cache from a conversation
+
+---
+
+To get messages already in cache from a conversation, use `GetAllMessagesFromConversationFromCache` method of `InstantMessaging` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.InstantMessaging instantMessaging = myApp.GetInstantMessaging();
+...
+Rainbow.Conversation conversation; // Your conversation
+
+List<Message> list = instantMessaging.GetAllMessagesFromConversationFromCache(conversation);
+```
+
+### Send a message to a conversation
+
+---
+
+To send a message to a conversation, use `SendMessageToConversation` method of `InstantMessaging` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.InstantMessaging instantMessaging = myApp.GetInstantMessaging();
+...
+Rainbow.Conversation conversation; // Your conversation
+String message = "Hello !"; // Your message
+
+instantMessaging.SendMessageToConversation(conversation, message, null, UrgencyType.Std, null, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // message sent
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Manage message receipt state
+
+---
+
+A message can have different receipt status (cf. enum `Rainbow.Model.ReceiptType`)
+
+-   `ServerReceived`: The server has received the message
+-   `ClientReceived`: The client has received the message
+-   `ClientRead`: The client has received and read the message
+-   `None`: unknown state
+
+When a message is received, the SDK automatically send to the recipeint the receipt status `ClientReceived`
+
+To manage message receipt status, you need to handle the `ReceiptReceived` event of `InstantMessaging` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.InstantMessaging instantMessaging = myApp.GetInstantMessaging();
+...
+
+instantMessaging.ReceiptReceived += MyApp_ReceiptReceived;
+
+
+private void MyApp_ReceiptReceived(object sender, EventHandler<ReceiptReceivedEventArgs> evt)
+{
+    string messageId = event.MessageID; // ID of the message
+    ReceiptType receiptType = event.ReceiptType; // Receipt state
+}
+```
+
+### Mark a message as read
+
+---
+
+When a message is received, the SDK automatically send to the recipient the receipt status `ClientReceived`.
+
+On your own, you need to send a receipt of type `ClientRead` when the message received has been read.
+
+To send a receipt of type `ClientRead`, you need to use `MarkMessageAsRead` method of `InstantMessaging` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.InstantMessaging instantMessaging = myApp.GetInstantMessaging();
+...
+String conversationIdId; // Your conversation Id
+String messageId; // Your message Id
+
+instantMessaging.MarkMessageAsRead(conversationIdId, messageId, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // message marked as read 
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Send the "Is typing" status
+
+---
+
+To send the 'isTyping' status, you need to use `SendIsTypingInConversation` method of `InstantMessaging` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.InstantMessaging instantMessaging = myApp.GetInstantMessaging();
+...
+Rainbow.Conversation conversation; // Your conversation
+bool isTyping = true; // True to indicate "is Typing" - False for the contrary
+
+instantMessaging.SendIsTypingInConversation(conversation, isTyping, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // taken into account
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Manage 'isTyping' status form other users
+
+---
+
+To know when someone 'isTyping', you need to use `UserTypingChanged` event of `InstantMessaging` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.InstantMessaging instantMessaging = myApp.GetInstantMessaging();
+...
+instantMessaging.UserTypingChanged += MyApp_UserTypingChanged;
+
+
+private void MyApp_UserTypingChanged(object sender, EventHandler<UserTypingEventArgs> evt)
+{
+    String conversationId = evt.ConversationId; // ID of the conversation
+    String ContactJid = evt.ContactJid; // Jid of  the contact
+    bool Iscyping = evt.IsTyping; // Is he typing or not ?
+    ...
+}
+```
+
+### Manage incoming message
+
+---
+
+To know when a new message is received, you need to use `MessageReceived` event of `InstantMessaging` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.InstantMessaging instantMessaging = myApp.GetInstantMessaging();
+...
+instantMessaging.MessageReceived += MyApp_MessageReceived;
+
+
+private void MyApp_MessageReceived(object sender, EventHandler<MessageEventArgs> evt)
+{
+    String conversationId = evt.ConversationId; // ID of the conversation
+    Message message = evt.Message; // Message object
+    bool carbonCopy = evt.CarbonCopy; // Is-it a message sent by the current user from another device ?
+    ...
+}
+```
+
+**NOTE:** To receive messages from a bubble you need first to join it. For this, you need to get/create a conversation with it or to have the info from this bubble using `GetAllBubbles` method from `Bubbles` object.
+
+### Sur cette page
+
+-   [Managing an IM conversation](/docs/sdk/csharp#name-managing-an-im-conversation-0)
+-   [Open a conversation](/docs/sdk/csharp#name-open-a-conversation-6)
+-   [Retrieving conversations](/docs/sdk/csharp#name-retrieving-conversations-20)
+-   [Remove a conversation](/docs/sdk/csharp#name-remove-a-conversation-28)
+-   [Get last messages received in a conversation](/docs/sdk/csharp#name-get-last-messages-received-in-a-conversation-39)
+-   [Get messages already in cache from a conversation](/docs/sdk/csharp#name-get-messages-already-in-cache-from-a-conversation-56)
+-   [Send a message to a conversation](/docs/sdk/csharp#name-send-a-message-to-a-conversation-64)
+-   [Manage message receipt state](/docs/sdk/csharp#name-manage-message-receipt-state-72)
+-   [Mark a message as read](/docs/sdk/csharp#name-mark-a-message-as-read-108)
+-   [Send the "Is typing" status](/docs/sdk/csharp#name-send-the-is-typing-status-122)
+-   [Manage 'isTyping' status form other users](/docs/sdk/csharp#name-manage-istyping-status-form-other-users-130)
+-   [Manage incoming message](/docs/sdk/csharp#name-manage-incoming-message-138)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

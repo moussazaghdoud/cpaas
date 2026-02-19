@@ -1,0 +1,520 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharpprevious/core/lts/guides/090_managing_files"
+lastSynced: "2026-02-19T22:35:14.477Z"
+---
+# Documentation
+
+Managing files
+
+LTS release 2.6.XPubliée le 2021-12-13
+
+## Managing files
+
+This guide explains how to manage files in your conversations: how to share a file, delete, get the list and the quota usage.
+
+A `FileDescriptor` object is used to describe a file shared in Rainbow:
+
+-   Id
+-   Name
+-   Type (image, voiceMessage, conversationRecording or other)
+-   Size
+-   etc ...
+
+### List of all (received, sent or both) files
+
+---
+
+You need first the service `FileStorage` from `Application` using `GetFileStorage()` method.
+
+To get the list of all received files (i.e. the list of all files that the SDK user as received in all conversations: Bubbles, Peer To Peer, ...) you use `GetAllFilesDescriptorsReceived` from `FileStorage` service.
+
+To get the list of all sent files (i.e. the list of all files that the SDK user as sent in all conversations: Bubbles, Peer To Peer, ...) you use `GetAllFilesDescriptorsSent` from `FileStorage` service.
+
+To get the list of all files (receivde and sent) then you use `GetAllFilesDescriptors` from `FileStorage` service.
+
+To know where this file has been shared use the property `Viewers` of the `FileDescriptor` object.
+
+Below it's an example using `GetAllFilesDescriptorsReceived` (it will be nearly exactly the same using `GetAllFilesDescriptorsSent` or `GetAllFilesDescriptors` )
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.FileStorage fileStorage = myApp.GetFileStorage();
+...
+
+// Here we consider to be connected / initialized with the server
+
+fileStorage.GetAllFilesDescriptorsReceived(callback =>
+{
+    if (callback.Result.Success)
+    {
+        List<FileDescriptor> fileDescriptorList = callback.Data;
+        foreach (FileDescriptor fileDescriptor in fileDescriptorList)
+        {
+
+            String id = fileDescriptor.Id;              // Id of the file
+            String name = fileDescriptor.FileName ;     // Name of the file
+            long size = fileDescriptor.Size;            // Size of the file
+            ...
+
+            // Check where this file has been shared
+            List<FileViewer> viewers = fileDescriptor.Viewers;
+            foreach (FileViewer viewer in viewers)
+            {
+                String type = viewer.Type; // "user",  "room" or "channel"
+                String viewerId = viewer.ViewerId; // It's a Contact Id or a bubble Id according its type
+                ...
+            }
+        }
+    }
+    else
+    {
+        // A pb occurs
+        if (callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+        {
+            // Bad parameters used
+            string errMsg = callback.Result.IncorrectUseError.ErrorMsg;
+        }
+        else
+        {
+            // Exception occurs
+            Exception e = callback.Result.ExceptionError;
+        }
+    }
+});
+```
+
+### List of files (received, sent or both) by conversation
+
+---
+
+Generally, it's better to to get the list of files (received, sent or both) in a specific conversation.
+
+To do this you can use `GetFilesDescriptorReceivedInConversationId`, `GetFilesDescriptorSentInConversationId` or `GetFilesDescriptorInConversationId` methods from `FileStorage` service.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.FileStorage fileStorage = myApp.GetFileStorage();
+...
+// Once connected
+Rainbow.Conversation conversation; // A conversation previously set / retrieved
+
+// To get list of files received in a conversation
+fileStorage.GetFilesDescriptorReceivedInConversationId(conversation.Id, callback =>
+{
+    if (callback.Result.Success)
+    {
+        // Get the list of received files in this conversation 
+        List<FileDescriptor> fileDescriptorList = callback.Data;
+        // ...
+        
+    }
+    else
+    {
+        // A pb occurs ...
+    }
+});
+
+// To get list of files sent in a conversation
+fileStorage.GetFilesDescriptorSentInConversationId(conversation.Id, callback =>
+{
+    if (callback.Result.Success)
+    {
+        // Get the list of sent files in this conversation 
+        List<FileDescriptor> fileDescriptorList = callback.Data;
+        // ...
+        
+    }
+    else
+    {
+        // A pb occurs ...
+    }
+});
+
+// To get list of files (received and sent) in a conversation
+fileStorage.GetFilesDescriptorInConversationId(conversation.Id, callback =>
+{
+    if (callback.Result.Success)
+    {
+        // Get the list of files (received and sent) in this conversation 
+        List<FileDescriptor> fileDescriptorList = callback.Data;
+        // ...
+        
+    }
+    else
+    {
+        // A pb occurs ...
+    }
+});
+```
+
+### How to share/upload a file
+
+---
+
+To share a file with someone (or to a bubble), the best is to send him (or them) a message with a file. So he/they can see it in the conversation stream.
+
+To do this, the method `SendMessageWithFileToConversation` can be used from `InstantMessaging` service.
+
+This method has 2 callbacks:
+
+-   The first one permits to know if a `Rainbow.Model.FileDescriptor` has been well created. If it's the case, internally, the SDK automatically starts the file upload.
+-   The second one to know if the file upload has been successfully completed and if a message has been well send to the conversation
+
+The second callback is fired **ONLY** if the first callback is a success.
+
+The larger the shared file, the longer the delay between the two callbacks.
+
+**NOTE**: It's important to have the `FileDescriptor` if you want to follow the status of the file upload (bytes already uploaded for example) - cf. next chapter for more details
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.InstantMessaging instantMessaging = myApp.GetInstantMessaging();
+...
+// Here we consider to be connected/initialized with the server
+
+String message;                      // A message associated to the file - can be empty/null
+String filePath;                    // A valid path to the file to share/upload
+Rainbow.Conversation conversation;  // A conversation previously set / retrieved 
+
+instantMessaging.SendMessageWithFileToConversation(conversation, message, filePath, null, UrgencyType.Std, null,
+  callbackFileDescriptor =>
+  {
+      if (callbackFileDescriptor.Result.Success)
+      {
+          // A file descriptor has been well created on server side - the upload can start internally in the SDK
+          FileDescriptor fileDescriptor = callbackFileDescriptor.Data;
+          String fileDesciptorId = fileDescriptor.Id; // Use this ID to follow the upload - See next chapter
+      }
+      else
+      {
+          // A pb occurs
+          if (callbackFileDescriptor.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+          {
+              // Bad parameters used
+              string errMsg = callbackFileDescriptor.Result.IncorrectUseError.ErrorMsg;
+          }
+          else
+          {
+              // Exception occurs
+              Exception e = callbackFileDescriptor.Result.ExceptionError;
+          }
+      }
+  },
+  callbackMessage =>
+  {
+      // This callback is fired ONLY if previous callback is a success
+
+      if (callbackMessage.Result.Success)
+      {
+          // The message with a file descriptor has been well sent to the specified conversation
+      }
+      else
+      {
+          // A pb occurs
+          if (callbackMessage.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+          {
+              // Bad parameters used
+              string errMsg = callbackMessage.Result.IncorrectUseError.ErrorMsg;
+          }
+          else
+          {
+              // Exception occurs
+              Exception e = callbackMessage.Result.ExceptionError;
+          }
+      }
+  });
+);
+```
+
+### Follow the progress of the file upload
+
+---
+
+When a file is uploaed/shared in a conversation (cf. previous chapter), it could be necessary to know the status of the file upload.
+
+For this, the event `FileUploadUpdated` must be used from `FileStorage` service. This event use the `FileUploadEventArgs` object to describe the status of the upload. It contains these properties:
+
+-   **SizeUploaded**: The size of data already uploaded
+-   **InProgress**: True if the upload is in progres, False if it's finished
+-   **Completed**: True if the upload is finished and done correctly
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.FileStorage fileStorage = myApp.GetFileStorage();
+
+fileStorage.FileUploadUpdated += FileStorage_FileUploadUpdated; // We want to manage this event
+
+String fileDesciptorId; // An Id of a FileDescriptor
+
+private void FileStorage_FileUploadUpdated(object sender, FileUploadEventArgs evt)
+{
+    // A file upload is in progress - we check first if it's the one we want to follow
+    if(evt.FileDescriptor.Id == fileDesciptorId)
+    {
+      // Is it still in progress ?
+      if(evt.InProgress)
+      {
+        long sizeUploaded = evt.SizeUploaded; // Size already uploaded - in bytes 
+      }
+      else // The upload is finished, is-it done totally ?
+      {
+        if(evt.Completed)
+        {
+          // Upload done well 
+        }
+        else
+        {
+          // Upload stopped / not completed 
+        }
+      } 
+    }
+}
+
+...
+// Here we consider to be connected/initialized with the server
+
+String message;                      // A message associated to the file - can be empty/null
+String filePath;                    // A valid path to the file to share/upload
+Rainbow.Conversation conversation;  // A conversation previously set / retrieved 
+
+instantMessaging.SendMessageWithFileToConversation(conversation, message, filePath, null, UrgencyType.Std, null,
+  callbackFileDescriptor =>
+  {
+      if (callbackFileDescriptor.Result.Success)
+      {
+          // A file descriptor has been well created on server side - the upload can start internally in the SDK
+          FileDescriptor fileDescriptor = callbackFileDescriptor.Data;
+          fileDesciptorId = fileDescriptor.Id; // Store Id of this FileDescriptor, Used to follow specifically its upload progress
+      }
+      else
+      {
+          // A pb occurs
+          if (callbackFileDescriptor.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+          {
+              // Bad parameters used
+              string errMsg = callbackFileDescriptor.Result.IncorrectUseError.ErrorMsg;
+          }
+          else
+          {
+              // Exception occurs
+              Exception e = callbackFileDescriptor.Result.ExceptionError;
+          }
+      }
+  },
+  callbackMessage =>
+  {
+      // This callback is fired ONLY if previous callback is a success
+
+      if (callbackMessage.Result.Success)
+      {
+          // The message with a file descriptor has been well sent to the specified conversation
+      }
+      else
+      {
+          // A pb occurs
+          if (callbackMessage.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+          {
+              // Bad parameters used
+              string errMsg = callbackMessage.Result.IncorrectUseError.ErrorMsg;
+          }
+          else
+          {
+              // Exception occurs
+              Exception e = callbackMessage.Result.ExceptionError;
+          }
+      }
+  });
+);
+```
+
+### How to share/upload a file without to send an IM message
+
+---
+
+It's also possible to share/upload a file with someone (or in a bubble) without to send an IM message.
+
+In this case, this file will be only visible in UI using the **documents** tab in the conversation panel. No message will be added in the conversation stream.
+
+To do this, the method `UploadFile` can be used from `FileStorage` service.
+
+This method has 2 callbacks:
+
+-   The first one permits to know if a `Rainbow.Model.FileDescriptor` has been well created. If it's the case, internally, the SDK automatically starts the file upload.
+-   The second one to know if the file upload has been successfully completed.
+
+The second callback is fired **ONLY** if the first callback is a success.
+
+The larger the shared file, the longer the delay between the two callbacks.
+
+**NOTE**: It's important to have the `FileDescriptor` if you want to follow the status of the file upload (bytes already uploaded for example)
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.FileStorage fileStorage = myApp.GetFileStorage();
+
+fileStorage.FileUploadUpdated += FileStorage_FileUploadUpdated; // We want to manage this event
+
+String fileDesciptorId; // An Id of a FileDescriptor
+
+private void FileStorage_FileUploadUpdated(object sender, FileUploadEventArgs evt)
+{
+    // A file upload is in progress - we check first if it's the one we want to follow
+    if(evt.FileDescriptor.Id == fileDesciptorId)
+    {
+      // Is it still in progress ?
+      if(evt.InProgress)
+      {
+        long sizeUploaded = evt.SizeUploaded; // Size already uploaded - in bytes 
+      }
+      else // The upload is finished, is-it done totally ?
+      {
+        if(evt.Completed)
+        {
+          // Upload done well 
+        }
+        else
+        {
+          // Upload stopped / not completed 
+        }
+      } 
+    }
+}
+
+...
+// Here we consider to be connected/initialized with the server
+
+String filePath;                    // A valid path to the file to share/upload
+Rainbow.Conversation conversation;  // A conversation previously set / retrieved 
+
+fileStorage.UploadFile(filePathToUpload, conversation.PeerId, conversation.Type,
+  callbackFileDescriptor =>
+  {
+      if (callbackFileDescriptor.Result.Success)
+      {
+          // A file descriptor has been well created on server side - the upload can start internally in the SDK
+          FileDescriptor fileDescriptor = callbackFileDescriptor.Data;
+          fileDesciptorId = fileDescriptor.Id; // Store Id of this FileDescriptor, Used to follow specifically its upload progress
+      }
+      else
+      {
+          // A pb occurs
+          if (callbackFileDescriptor.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+          {
+              // Bad parameters used
+              string errMsg = callbackFileDescriptor.Result.IncorrectUseError.ErrorMsg;
+          }
+          else
+          {
+              // Exception occurs
+              Exception e = callbackFileDescriptor.Result.ExceptionError;
+          }
+      }
+  },
+  callbackResult =>
+  {
+      // This callback is fired ONLY if previous callback is a success
+
+      if (callbackResult.Result.Success)
+      {
+          // The file has been well uploaded
+      }
+      else
+      {
+          // A pb occurs
+          if (callbackResult.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+          {
+              // Bad parameters used
+              string errMsg = callbackResult.Result.IncorrectUseError.ErrorMsg;
+          }
+          else
+          {
+              // Exception occurs
+              Exception e = callbackResult.Result.ExceptionError;
+          }
+      }
+  });
+);
+```
+
+### Download a file shared
+
+---
+
+To start the file download you need its `FileDescriptor` Id and use `DownloadFile` method from `FileStorage` object.
+
+Then you can check the download progress using `FileDownloadUpdated` event - it's nearly the same way to handle it than `FileUploadUpdated` event explained in previous chapter.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.FileStorage fileStorage = myApp.GetFileStorage();
+
+fileStorage.FileDownloadUpdated += FileStorage_FileDownloadUpdated; // We want to manage this event
+...
+// Once connected
+String fileDescriptorId;    // An Id of a FileDescriptor object previously set
+String destinationFolder;   // A valid path to an existing folder to store the file - oyou need to have write access
+String destinationFileName; // The name of the file saved on the disk
+
+FileStorage.DownloadFile(fileDescriptorId, destinationFolder, destinationFileName, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // The download has well started 
+    // The `FileDownloadUpdated` event will be called to know the download progress 
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+
+private void FileStorage_FileDownloadUpdated(object sender, FileDownloadEventArgs evt)
+{
+    // A file download is in progress - we check first if it's the one we want to follow
+    if(evt.FileId == fileDescriptorId)
+    {
+      // Is it still in progress ?
+      if(evt.InProgress)
+      {
+        long sizeUploaded = evt.SizeUploaded; // Size already uploaded - in bytes    
+        long fileSize = evt.FileSize;         // Full Size on the fille - in bytes
+      }
+      else // The upload is finished, is-it done totally ?
+      {
+        if(evt.Completed)
+        {
+          // Download done well 
+        }
+      } 
+    }
+}
+```
+
+### Sur cette page
+
+-   [Managing files](/docs/sdk/csharp#name-managing-files-0)
+-   [List of all (received, sent or both) files](/docs/sdk/csharp#name-list-of-all-received-sent-or-both-files-36)
+-   [List of files (received, sent or both) by conversation](/docs/sdk/csharp#name-list-of-files-received-sent-or-both-by-conversation-59)
+-   [How to share/upload a file](/docs/sdk/csharp#name-how-to-shareupload-a-file-70)
+-   [Follow the progress of the file upload](/docs/sdk/csharp#name-follow-the-progress-of-the-file-upload-105)
+-   [How to share/upload a file without to send an IM message](/docs/sdk/csharp#name-how-to-shareupload-a-file-without-to-send-an-im-message-133)
+-   [Download a file shared](/docs/sdk/csharp#name-download-a-file-shared-171)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

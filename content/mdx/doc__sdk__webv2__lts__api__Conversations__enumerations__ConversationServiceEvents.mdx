@@ -1,0 +1,161 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/Conversations/enumerations/ConversationServiceEvents"
+lastSynced: "2026-02-19T22:35:16.919Z"
+---
+# Documentation
+
+ConversationServiceEvents
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [Conversations](doc/sdk/webv2/lts/api/Conversations/index) / ConversationServiceEvents
+
+# Enumeration: ConversationServiceEvents
+
+## Events
+
+### ON\_ACTIVE\_CALL\_CHANGE
+
+> **ON\_ACTIVE\_CALL\_CHANGE**: `"ON_ACTIVE_CALL_CHANGE"`
+
+ON\_ACTIVE\_CALL\_CHANGE
+
+#### Param
+
+\[optional\] The conversation where the call is now ACTIVE or RINGING\_OUTGOING; COULD BE NULL if no call is active
+
+#### Param
+
+\[optional\] The call hat is now ACTIVE or RINGING\_OUTGOING; COULD BE NULL if no call is active (the current call is no longer active) This RBEvent is send when there's update on the current active call; If no call is currently active, the event will be send with NO CONVERSATION AND NO CALL
+
+---
+
+### ON\_CALL\_IN\_CONVERSATION\_UPDATE
+
+> **ON\_CALL\_IN\_CONVERSATION\_UPDATE**: `"ON_CALL_IN_CONVERSATION_UPDATE"`
+
+ON\_CALL\_IN\_CONVERSATION\_UPDATE
+
+#### Param
+
+The conversation related to the call (sometimes the converation will be null, as it has been deleted)
+
+#### Param
+
+The related call This RBEvent is send when there's updated in the call inside the conversation; For Telephony calls, the conversation could be null;
+
+---
+
+### ON\_CONVERSATION\_CREATED
+
+> **ON\_CONVERSATION\_CREATED**: `"ON_CONVERSATION_CREATED"`
+
+ON\_CONVERSATION\_CREATED
+
+#### Param
+
+the new conversation This RBEvent is send when a conversation has been created from the user (or from another client)
+
+---
+
+### ON\_CONVERSATION\_REMOVED
+
+> **ON\_CONVERSATION\_REMOVED**: `"ON_CONVERSATION_REMOVED"`
+
+ON\_CONVERSATION\_REMOVED
+
+#### Param
+
+the concerned conversation This RBEvent is send when a conversation has been removed from the user (or from another client)
+
+---
+
+### ON\_MESSAGE\_ADDED\_IN\_CONVERSATION
+
+> **ON\_MESSAGE\_ADDED\_IN\_CONVERSATION**: `"ON_MESSAGE_ADDED_IN_CONVERSATION"`
+
+ON\_MESSAGE\_ADDED\_IN\_CONVERSATION
+
+#### Param
+
+The conversation where the message is being added This RBEvent is send when a new message is added to a conversation
+
+---
+
+### ON\_MESSAGE\_MODIFIED\_IN\_CONVERSATION
+
+> **ON\_MESSAGE\_MODIFIED\_IN\_CONVERSATION**: `"ON_MESSAGE_MODIFIED_IN_CONVERSATION"`
+
+ON\_MESSAGE\_MODIFIED\_IN\_CONVERSATION
+
+#### Param
+
+The conversation where the message is being modified This RBEvent is send when a message is being modified (or deleted) in the conversation
+
+---
+
+### ON\_NEW\_CALL\_IN\_CONVERSATION
+
+> **ON\_NEW\_CALL\_IN\_CONVERSATION**: `"ON_NEW_CALL_IN_CONVERSATION"`
+
+ON\_NEW\_CALL\_IN\_CONVERSATION
+
+#### Param
+
+The conversation to which the call is attached This RBEvent is send when a new call is added to the conversation; Could be used to manage the list of all conversations with calls
+
+---
+
+### ON\_REMOVE\_CALL\_IN\_CONVERSATION
+
+> **ON\_REMOVE\_CALL\_IN\_CONVERSATION**: `"ON_REMOVE_CALL_IN_CONVERSATION"`
+
+ON\_REMOVE\_CALL\_IN\_CONVERSATION
+
+#### Param
+
+The conversation to which the call is removed This RBEvent is send when a new call is removed from the conversation; Could be used to manage the list of all conversations with calls
+
+---
+
+### ON\_SERVICE\_STARTED
+
+> **ON\_SERVICE\_STARTED**: `"ON_SERVICE_STARTED"`
+
+This RBEvent is send when the conversation service is started and ready to be used (also fired after loss of network and reconnection)
+
+### Sur cette page
+
+-   [Events](/docs/sdk/web#name-events-10)
+-   [ON\_ACTIVE\_CALL\_CHANGE](/docs/sdk/web#name-on_active_call_change-13)
+-   [Param](/docs/sdk/web#name-param-24)
+-   [Param](/docs/sdk/web#name-param-30)
+-   [ON\_CALL\_IN\_CONVERSATION\_UPDATE](/docs/sdk/web#name-on_call_in_conversation_update-37)
+-   [Param](/docs/sdk/web#name-param-48)
+-   [Param](/docs/sdk/web#name-param-54)
+-   [ON\_CONVERSATION\_CREATED](/docs/sdk/web#name-on_conversation_created-61)
+-   [Param](/docs/sdk/web#name-param-72)
+-   [ON\_CONVERSATION\_REMOVED](/docs/sdk/web#name-on_conversation_removed-79)
+-   [Param](/docs/sdk/web#name-param-90)
+-   [ON\_MESSAGE\_ADDED\_IN\_CONVERSATION](/docs/sdk/web#name-on_message_added_in_conversation-97)
+-   [Param](/docs/sdk/web#name-param-108)
+-   [ON\_MESSAGE\_MODIFIED\_IN\_CONVERSATION](/docs/sdk/web#name-on_message_modified_in_conversation-115)
+-   [Param](/docs/sdk/web#name-param-126)
+-   [ON\_NEW\_CALL\_IN\_CONVERSATION](/docs/sdk/web#name-on_new_call_in_conversation-133)
+-   [Param](/docs/sdk/web#name-param-144)
+-   [ON\_REMOVE\_CALL\_IN\_CONVERSATION](/docs/sdk/web#name-on_remove_call_in_conversation-151)
+-   [Param](/docs/sdk/web#name-param-162)
+-   [ON\_SERVICE\_STARTED](/docs/sdk/web#name-on_service_started-169)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

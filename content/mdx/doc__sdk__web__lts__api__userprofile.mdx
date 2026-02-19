@@ -1,0 +1,433 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/userprofile"
+lastSynced: "2026-02-19T22:35:15.456Z"
+---
+# Documentation
+
+User profile service
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## UserProfile
+
+This service manages with your Rainbow user profile and the presence of your contacts. The main methods and events proposed in that service allow to:  
+\- Updating the user firstname and lastname,  
+\- Updating the user phone number,  
+\- Updating the user avatar (based on a file to send)
+
+-   [UserProfile](#module_UserProfile)
+    -   [getProfile()](#module_UserProfile+getProfile) ⇒ `object`
+    -   [getProfileOffer()](#module_UserProfile+getProfileOffer) ⇒ `string`
+    -   [getOptions()](#module_UserProfile+getOptions) ⇒ `Array`
+    -   [updateUserInformations(firstName, lastName, title, nickName, jobTitle, country, workEmail, personalEmail)](#module_UserProfile+updateUserInformations) ⇒ `Promise`
+    -   [updateFirstName(strFirstname)](#module_UserProfile+updateFirstName) ⇒ `Promise`
+    -   [updateLastName(strLastName)](#module_UserProfile+updateLastName) ⇒ `Promise`
+    -   [updatePhoneNumber(type, deviceType, strPhoneNumber, country)](#module_UserProfile+updatePhoneNumber) ⇒ `Promise`
+    -   [deletePhoneNumber(type, deviceType)](#module_UserProfile+deletePhoneNumber) ⇒ `Promise`
+    -   [updatePhotoFromUrl(imgUrl)](#module_UserProfile+updatePhotoFromUrl) ⇒ `Promise`
+    -   [updateWorkEmail(strEmail)](#module_UserProfile+updateWorkEmail) ⇒ `Promise`
+    -   [updatePersonalEmail(strEmail)](#module_UserProfile+updatePersonalEmail) ⇒ `Promise`
+    -   [deleteWorkEmail()](#module_UserProfile+deleteWorkEmail) ⇒ `Promise`
+    -   [deletePersonalEmail()](#module_UserProfile+deletePersonalEmail) ⇒ `Promise`
+    -   [updateCountry(countryStr)](#module_UserProfile+updateCountry) ⇒ `Promise`
+    -   [updateLanguage(languageStr)](#module_UserProfile+updateLanguage) ⇒ `Promise`
+    -   [updateTitle(titleStr)](#module_UserProfile+updateTitle) ⇒ `Promise`
+    -   [updateNickName(nickNameStr)](#module_UserProfile+updateNickName) ⇒ `Promise`
+    -   [updateJobTitle(jobTitleStr)](#module_UserProfile+updateJobTitle) ⇒ `Promise`
+
+### userProfile.getProfile() ⇒ `object`
+
+Get user profile
+
+**Kind**: instance method of [`UserProfile`](#module_UserProfile)  
+**Returns**: `object` - User Profile  
+**Access**: public  
+
+### userProfile.getProfileOffer() ⇒ `string`
+
+Get user profile offer
+
+**Kind**: instance method of [`UserProfile`](#module_UserProfile)  
+**Returns**: `string` - Profile offer  
+**Access**: public  
+
+### userProfile.getOptions() ⇒ `Array`
+
+Get options associated to user
+
+**Kind**: instance method of [`UserProfile`](#module_UserProfile)  
+**Returns**: `Array` - Profile offer  
+**Access**: public  
+
+### userProfile.updateUserInformations(firstName, lastName, title, nickName, jobTitle, country, workEmail, personalEmail) ⇒ `Promise`
+
+Change my current user information
+
+**Kind**: instance method of [`UserProfile`](#module_UserProfile)  
+**Returns**: `Promise` - User Profile  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+firstName
+
+`string`
+
+\[optional\] The first name
+
+lastName
+
+`string`
+
+\[optional\] The last name
+
+title
+
+`string`
+
+\[optional\] The title
+
+nickName
+
+`string`
+
+\[optional\] The nick name
+
+jobTitle
+
+`string`
+
+\[optional\] The job title
+
+country
+
+`string`
+
+\[optional\] The country
+
+workEmail
+
+`string`
+
+\[optional\] The work email of the user
+
+personalEmail
+
+`string`
+
+\[optional\] The personal email of the user
+
+### userProfile.updateFirstName(strFirstname) ⇒ `Promise`
+
+Change my firstname
+
+**Kind**: instance method of [`UserProfile`](#module_UserProfile)  
+**Returns**: `Promise` - User Profile  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strFirstname
+
+`string`
+
+The first name
+
+### userProfile.updateLastName(strLastName) ⇒ `Promise`
+
+Change my last name
+
+**Kind**: instance method of [`UserProfile`](#module_UserProfile)  
+**Returns**: `Promise` - User Profile  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strLastName
+
+`string`
+
+String representing last name
+
+### userProfile.updatePhoneNumber(type, deviceType, strPhoneNumber, country) ⇒ `Promise`
+
+Change a Number. You will have to give the number type and device type. The API will first check the existing phone numbers. If a phone number exist with a given type and deviceType, it will be updated with the new number. If a number already exists within
+
+**Kind**: instance method of [`UserProfile`](#module_UserProfile)  
+**Returns**: `Promise` - User Profile  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+type
+
+`string`
+
+The number type. One of the folowwing "home", "work", "other"
+
+deviceType
+
+`string`
+
+The number device type. One of the folowwing "landline", "mobile", "fax", "other"
+
+strPhoneNumber
+
+`string`
+
+The number to change.
+
+country
+
+`string`
+
+\[optional\] The number's country in ISO 3166-1 alpha-3 format. See https://en.wikipedia.org/wiki/ISO\_3166-1\_alpha-3
+
+### userProfile.deletePhoneNumber(type, deviceType) ⇒ `Promise`
+
+Change a Number. You will have to give the number type and device type.
+
+**Kind**: instance method of [`UserProfile`](#module_UserProfile)  
+**Returns**: `Promise` - User profile  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+type
+
+`string`
+
+The number type. One of the folowwing "home", "work", "other"
+
+deviceType
+
+`string`
+
+The number device type. One of the folowwing "landline", "mobile", "fax", "other"
+
+### userProfile.updatePhotoFromUrl(imgUrl) ⇒ `Promise`
+
+Change my avatar/photo Only jpg/jpeg and png images are accepted. Default max size is 4Mo (may be different for some organisations) Note: for the moment images are cropped/resized to 512 x 512
+
+**Kind**: instance method of [`UserProfile`](#module_UserProfile)  
+**Returns**: `Promise` - Nothing or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+imgUrl
+
+`string`
+
+The url to the photo
+
+### userProfile.updateWorkEmail(strEmail) ⇒ `Promise`
+
+Update Work Email address
+
+**Kind**: instance method of [`UserProfile`](#module_UserProfile)  
+**Returns**: `Promise` - User profile or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strEmail
+
+`string`
+
+new email address
+
+### userProfile.updatePersonalEmail(strEmail) ⇒ `Promise`
+
+Update personal Email address
+
+**Kind**: instance method of [`UserProfile`](#module_UserProfile)  
+**Returns**: `Promise` - User profile or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strEmail
+
+`string`
+
+new email address
+
+### userProfile.deleteWorkEmail() ⇒ `Promise`
+
+Delete work email address
+
+**Kind**: instance method of [`UserProfile`](#module_UserProfile)  
+**Returns**: `Promise` - User profile or an error object depending on the result  
+**Access**: public  
+
+### userProfile.deletePersonalEmail() ⇒ `Promise`
+
+Delete personal email address
+
+**Kind**: instance method of [`UserProfile`](#module_UserProfile)  
+**Returns**: `Promise` - User profile or an error object depending on the result  
+**Access**: public  
+
+### userProfile.updateCountry(countryStr) ⇒ `Promise`
+
+Update user's country
+
+**Kind**: instance method of [`UserProfile`](#module_UserProfile)  
+**Returns**: `Promise` - User profile or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+countryStr
+
+`string`
+
+String representing country
+
+### userProfile.updateLanguage(languageStr) ⇒ `Promise`
+
+Update user's language
+
+**Kind**: instance method of [`UserProfile`](#module_UserProfile)  
+**Returns**: `Promise` - User profile or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+languageStr
+
+`string`
+
+String representing a language
+
+### userProfile.updateTitle(titleStr) ⇒ `Promise`
+
+Update user's title
+
+**Kind**: instance method of [`UserProfile`](#module_UserProfile)  
+**Returns**: `Promise` - User profile or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+titleStr
+
+`string`
+
+String representing a title
+
+### userProfile.updateNickName(nickNameStr) ⇒ `Promise`
+
+Update user's nick name
+
+**Kind**: instance method of [`UserProfile`](#module_UserProfile)  
+**Returns**: `Promise` - User profile or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+nickNameStr
+
+`string`
+
+String representing a nickname
+
+### userProfile.updateJobTitle(jobTitleStr) ⇒ `Promise`
+
+Update user's job title
+
+**Kind**: instance method of [`UserProfile`](#module_UserProfile)  
+**Returns**: `Promise` - User profile or an error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+jobTitleStr
+
+`string`
+
+String representing job title
+
+### Sur cette page
+
+-   [UserProfile](/docs/sdk/web#name-userprofile-3)
+-   [userProfile.getProfile() ⇒ object](/docs/sdk/web#name-userprofile.getprofile--object-111)
+-   [userProfile.getProfileOffer() ⇒ string](/docs/sdk/web#name-userprofile.getprofileoffer--string-120)
+-   [userProfile.getOptions() ⇒ Array](/docs/sdk/web#name-userprofile.getoptions--array-129)
+-   [userProfile.updateUserInformations(firstName, lastName, title, nickName, jobTitle, country, workEmail, personalEmail) ⇒ Promise](/docs/sdk/web#name-userprofile.updateuserinformationsfirstname-lastname-title-nickname-jobtitle-country-workemail-personalemail--promise-138)
+-   [userProfile.updateFirstName(strFirstname) ⇒ Promise](/docs/sdk/web#name-userprofile.updatefirstnamestrfirstname--promise-255)
+-   [userProfile.updateLastName(strLastName) ⇒ Promise](/docs/sdk/web#name-userprofile.updatelastnamestrlastname--promise-295)
+-   [userProfile.updatePhoneNumber(type, deviceType, strPhoneNumber, country) ⇒ Promise](/docs/sdk/web#name-userprofile.updatephonenumbertype-devicetype-strphonenumber-country--promise-335)
+-   [userProfile.deletePhoneNumber(type, deviceType) ⇒ Promise](/docs/sdk/web#name-userprofile.deletephonenumbertype-devicetype--promise-408)
+-   [userProfile.updatePhotoFromUrl(imgUrl) ⇒ Promise](/docs/sdk/web#name-userprofile.updatephotofromurlimgurl--promise-459)
+-   [userProfile.updateWorkEmail(strEmail) ⇒ Promise](/docs/sdk/web#name-userprofile.updateworkemailstremail--promise-499)
+-   [userProfile.updatePersonalEmail(strEmail) ⇒ Promise](/docs/sdk/web#name-userprofile.updatepersonalemailstremail--promise-539)
+-   [userProfile.deleteWorkEmail() ⇒ Promise](/docs/sdk/web#name-userprofile.deleteworkemail--promise-579)
+-   [userProfile.deletePersonalEmail() ⇒ Promise](/docs/sdk/web#name-userprofile.deletepersonalemail--promise-588)
+-   [userProfile.updateCountry(countryStr) ⇒ Promise](/docs/sdk/web#name-userprofile.updatecountrycountrystr--promise-597)
+-   [userProfile.updateLanguage(languageStr) ⇒ Promise](/docs/sdk/web#name-userprofile.updatelanguagelanguagestr--promise-637)
+-   [userProfile.updateTitle(titleStr) ⇒ Promise](/docs/sdk/web#name-userprofile.updatetitletitlestr--promise-677)
+-   [userProfile.updateNickName(nickNameStr) ⇒ Promise](/docs/sdk/web#name-userprofile.updatenicknamenicknamestr--promise-717)
+-   [userProfile.updateJobTitle(jobTitleStr) ⇒ Promise](/docs/sdk/web#name-userprofile.updatejobtitlejobtitlestr--promise-757)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

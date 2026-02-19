@@ -1,0 +1,95 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/Calls/enumerations/CallEvents"
+lastSynced: "2026-02-19T22:35:16.527Z"
+---
+# Documentation
+
+CallEvents
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [Calls](doc/sdk/webv2/lts/api/Calls/index) / CallEvents
+
+# Enumeration: CallEvents
+
+Call events send to other services Can listen to it via `Call.subscribe()` API.
+
+## Events
+
+### ON\_CALL\_CAPABILITIES\_UPDATED
+
+> **ON\_CALL\_CAPABILITIES\_UPDATED**: `"ON_CALL_CAPABILITIES_UPDATED"`
+
+This `RBEvent` is sent when the call capabilities have been updated.  
+The new call capabilities can be retrieved via the 'capabilities' property.
+
+---
+
+### ON\_CALL\_MEDIA\_UPDATED
+
+> **ON\_CALL\_MEDIA\_UPDATED**: `"ON_CALL_MEDIA_UPDATED"`
+
+This `RBEvent` is sent when there have been changes in the media used by the local or the remote user.  
+By change we mean the addition or removal of a media (Video/Sharing) for the current call.
+
+---
+
+### ON\_CALL\_MUTE\_CHANGE
+
+> **ON\_CALL\_MUTE\_CHANGE**: `"ON_CALL_MUTE_CHANGE"`
+
+This `RBEvent` is sent when the status of the mute of the call (On or Off) has changed.  
+The new mute status can be retrieved via the 'isMuted' property.
+
+---
+
+### ON\_CALL\_NETWORK\_QUALITY\_CHANGE
+
+> **ON\_CALL\_NETWORK\_QUALITY\_CHANGE**: `"ON_CALL_NETWORK_QUALITY_CHANGE"`
+
+This `RBEvent` is sent when during a call, the network quality has changed.  
+
+#### Event Data
+
+data - The current network quality for the call
+
+---
+
+### ON\_CALL\_STATUS\_CHANGE
+
+> **ON\_CALL\_STATUS\_CHANGE**: `"ON_CALL_STATUS_CHANGE"`
+
+This `RBEvent` is sent when the status of the call (from a telephone point of view) has changed.  
+The new call status can be retrieved via the 'callStatus' property.
+
+---
+
+### ON\_CALL\_UPDATED\_EVENT
+
+> **ON\_CALL\_UPDATED\_EVENT**: `"ON_CALL_UPDATED_EVENT"`
+
+This `RBEvent` is sent when when the call has evolved and as a result some of its properties, such as its status, have been updated.
+
+### Sur cette page
+
+-   [Events](/docs/sdk/web#name-events-13)
+-   [ON\_CALL\_CAPABILITIES\_UPDATED](/docs/sdk/web#name-on_call_capabilities_updated-16)
+-   [ON\_CALL\_MEDIA\_UPDATED](/docs/sdk/web#name-on_call_media_updated-28)
+-   [ON\_CALL\_MUTE\_CHANGE](/docs/sdk/web#name-on_call_mute_change-40)
+-   [ON\_CALL\_NETWORK\_QUALITY\_CHANGE](/docs/sdk/web#name-on_call_network_quality_change-52)
+-   [Event Data](/docs/sdk/web#name-event-data-63)
+-   [ON\_CALL\_STATUS\_CHANGE](/docs/sdk/web#name-on_call_status_change-70)
+-   [ON\_CALL\_UPDATED\_EVENT](/docs/sdk/web#name-on_call_updated_event-82)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

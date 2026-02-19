@@ -1,0 +1,154 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/Conversations/interfaces/ConversationService"
+lastSynced: "2026-02-19T22:35:17.053Z"
+---
+# Documentation
+
+ConversationService
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [Conversations](doc/sdk/webv2/lts/api/Conversations/index) / ConversationService
+
+# Interface: ConversationService
+
+## Methods
+
+### getCallConversations()
+
+> **getCallConversations**(): [`Conversation`](doc/sdk/webv2/lts/api/Conversations/interfaces/Conversation)\[\]
+
+Get the array of all current call conversations, regardless of type (phone or webrtc)
+
+#### Returns
+
+[`Conversation`](doc/sdk/webv2/lts/api/Conversations/interfaces/Conversation)\[\]
+
+---
+
+### getConversation()
+
+> **getConversation**(`convRef`, `type`?): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Conversation`](doc/sdk/webv2/lts/api/Conversations/interfaces/Conversation)\>
+
+Async method which get conversation for a bubble, a user or via conversation id. Conversation is first search in service cache then server side.
+
+#### Parameters
+
+• **convRef**: `string` | [`User`](doc/sdk/webv2/lts/api/User/interfaces/User) | [`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)
+
+a bubble, a user or a conversation id
+
+• **type?**: `"room"` | `"contact"`
+
+the conversation type
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Conversation`](doc/sdk/webv2/lts/api/Conversations/interfaces/Conversation)\>
+
+---
+
+### getConversations()
+
+> **getConversations**(): [`Conversation`](doc/sdk/webv2/lts/api/Conversations/interfaces/Conversation)\[\]
+
+Get the array of current conversations
+
+#### Returns
+
+[`Conversation`](doc/sdk/webv2/lts/api/Conversations/interfaces/Conversation)\[\]
+
+---
+
+### globalSearch()
+
+> **globalSearch**(`searchedText`, `limit`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`SearchTextConvResults`\>
+
+Method used to search for text in all rooms and conversation. The searched text length should be 3+ characters. This API will return a list of all conversations / rooms with the number of occurances of the searched text in each one. If you need to get the results for a given conversation/room only, then use this API: searchForTextInConversation
+
+#### Parameters
+
+• **searchedText**: `string`
+
+the text to be searched in all conversations and rooms
+
+• **limit**: `number`
+
+the maximum number results to take. Default value is 500;
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`SearchTextConvResults`\>
+
+---
+
+### removeConversation()
+
+> **removeConversation**(`conversation`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+This method remove locally and server side a conversation; Should be used on conversations already created on server and not local ones
+
+#### Parameters
+
+• **conversation**: [`Conversation`](doc/sdk/webv2/lts/api/Conversations/interfaces/Conversation)
+
+the conversation to remove
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### subscribe()
+
+> **subscribe**(`handler`, `eventNames`?): `Subscription`
+
+Subscribe to updates from the service (all events are of RBEvent);
+
+#### Parameters
+
+• **handler**
+
+The call-back function that will be subscribed to the RxJS subject
+
+• **eventNames?**: [`ConversationServiceEvents`](doc/sdk/webv2/lts/api/Conversations/enumerations/ConversationServiceEvents) | [`ConversationServiceEvents`](doc/sdk/webv2/lts/api/Conversations/enumerations/ConversationServiceEvents)\[\]
+
+array of event to listen
+
+#### Returns
+
+`Subscription`
+
+### Sur cette page
+
+-   [Methods](/docs/sdk/web#name-methods-10)
+-   [getCallConversations()](/docs/sdk/web#name-getcallconversations-13)
+-   [Returns](/docs/sdk/web#name-returns-24)
+-   [getConversation()](/docs/sdk/web#name-getconversation-31)
+-   [Parameters](/docs/sdk/web#name-parameters-42)
+-   [Returns](/docs/sdk/web#name-returns-57)
+-   [getConversations()](/docs/sdk/web#name-getconversations-64)
+-   [Returns](/docs/sdk/web#name-returns-75)
+-   [globalSearch()](/docs/sdk/web#name-globalsearch-82)
+-   [Parameters](/docs/sdk/web#name-parameters-93)
+-   [Returns](/docs/sdk/web#name-returns-108)
+-   [removeConversation()](/docs/sdk/web#name-removeconversation-115)
+-   [Parameters](/docs/sdk/web#name-parameters-126)
+-   [Returns](/docs/sdk/web#name-returns-135)
+-   [subscribe()](/docs/sdk/web#name-subscribe-142)
+-   [Parameters](/docs/sdk/web#name-parameters-153)
+-   [Returns](/docs/sdk/web#name-returns-168)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

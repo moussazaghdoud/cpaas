@@ -1,0 +1,520 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharpprevious/core/lts/guides/080_managing_bubbles"
+lastSynced: "2026-02-19T22:35:14.460Z"
+---
+# Documentation
+
+Managing bubbles
+
+LTS release 2.6.XPubliée le 2021-12-13
+
+## Managing bubbles
+
+This guide explains how to manage bubbles (also called rooms): add, remove participants, create / rename / delete bubble.
+
+To manage them you need to have the global `Bubbles` object from the `Application` object using `GetBubbles` method.
+
+### Get list of existing bubbles
+
+---
+
+Once you have the global `Bubbles` object, you have the list of existings bubbles using `GetAllBubbles`.
+
+You can use the `Creator` property to know if your the creator of this `Bubble` or just a member.
+
+Only bubbles where you are a member (as moderator or as simple member) are returned - even if you are still in `Bubble.MemberStatus` set as `Bubble.MemberStatus.Invited`
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+Rainbow.Contacts contacts = myApp.GetContacts();
+...
+// Once connected
+Contact myContact = contacts.GetCurrentContact();
+...
+
+bubbles.GetAllBubbles(callback =>
+{
+  if(callback.Result.Success)
+  {
+    List<Bubble> listBubbles = callback.Data;
+    // Loop on each bubble
+    foreach(Bubble bubble in listBubbles)
+    {
+      if(bubble.Creator == myContact.Id)
+      {
+        // You are the creator of this bubble
+      }
+      else
+      {
+        // You are just a member of this bubble
+      }
+    }
+    
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Get list of bubble's member
+
+---
+
+To know the list of members, you can use the `Users` property of `Bubble` object.
+
+Each member has a `Bubble.MemberStatus` property (Invited, Accepted or Unsubscribed) and a `Bubble.MemberPrivilege` property ( Guest, User, Moderator or Owner).
+
+```csharp
+// Once connected
+Rainbow.Bubble bubble; // A bubble previously found / set
+...
+
+// Loop on each member
+foreach(Bubble.Member member in bubble.Users)
+{
+  if(member.MemberStatus == Bubble.MemberStatus.Accepted)
+  {
+    // This member has accepted to be a member of this bubble
+  }
+  
+  if(member.MemberPrivilege == Bubble.MemberPrivilege.Owner)
+  {
+    // This member is the owner of this bubble
+  }
+  
+}
+```
+
+### Add a member to a bubble
+
+---
+
+To add a member to a bubble you can use `AddContactById` method from `Bubbles` object.
+
+You must use the bubble Id, the contact Id and set `Bubble.MemberPrivilege` you want for this contact.
+
+An invitation is sent to him. It has its `Bubble.MemberStatus` set to `Invited` until it accept or reject the invitation.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+...
+// Once connected
+Rainbow.Bubble bubble;    // A bubble previously found / set
+Rainbow.Contact contact;  // A contact previously found / set
+Bubble.MemberPrivilege privilege = Bubble.MemberPrivilege.User // We provide user privilege to this contact
+...
+
+bubbles.AddContactById(bubble.Id, contact.Id, privilege, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // An invitation has been sent to this contact - it must first accept it to acces to this bubble
+    // So for the moment its `Bubble.MemberStatus` is set to `Invited`  
+    
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Remove a member from a bubble
+
+---
+
+To remove a member from a bubble you can use `RemoveContactById` method from `Bubbles` object.
+
+You must use the bubble Id and the contact Id. Only a moderator or the owner of the bubble can successfully use this method.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+...
+// Once connected
+Rainbow.Bubble bubble;    // A bubble previously found / set
+Rainbow.Contact contact;  // A contact previously found / set
+...
+
+bubbles.RemoveContactById(bubble.Id, contact.Id, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // This contact is no more a member of the bubble
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Leave a bubble
+
+---
+
+To leave a bubble you can use `LeaveBubble` method from `Bubbles` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+...
+// Once connected
+Rainbow.Bubble bubble;    // A bubble previously found / set
+...
+
+bubbles.LeaveBubble(bubble.Id, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // Your are no more a member of the bubble
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Accept or decline an invitation to be a bubble's member
+
+---
+
+When a contact is added as a member in a bubble an invitation is sent to him. He must accept it before to really access to the bubble.
+
+If the invitation is sent when you are connected, an event is received using `BubbleInvitationReceived` from `Bubbles` object.
+
+Then you can use the `AcceptInvitation` or `DeclineInvitation` methods using bubble Id to accpet or decline it.
+
+You can also know pending invitation using `Bubbles` object - see next section for more details
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+
+bubbles.BubbleInvitationReceived += Bubbles_BubbleInvitationReceived; // We want to manage this event
+...
+
+private void Bubbles_BubbleInvitationReceived(object sender, BubbleInvitationEventArgs evt)
+{
+    // An invitation to a bubble has recevied
+    String bubbleId = evt.BubbleId;       // Id of the bubble
+    String BubbleName = evt.BubbleName;   // Name of the bubble
+    String UserId = evt.UserId;           // Id of the user who sent the invitation
+    
+    // You can accept it
+    bubbles.AcceptInvitation(bubbleId, callback=>
+    {
+      if(callback.Result.Success)
+      {
+        // You are no a member of this bubble 
+      }
+      else
+      {
+        // A pb occurs
+        if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+        {
+          // Bad parameters used
+          string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+        }
+        else
+        {
+          // Exception occurs
+          Exception e = callback.Result.ExceptionError;
+        }
+      }
+    }); 
+    
+    
+    // Or you can decline it
+    bubbles.DeclineInvitation(bubbleId, callback=>
+    {
+      if(callback.Result.Success)
+      {
+        // You don't want to be a member of this bubble 
+      }
+      else
+      {
+        // A pb occurs
+        if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+        {
+          // Bad parameters used
+          string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+        }
+        else
+        {
+          // Exception occurs
+          Exception e = callback.Result.ExceptionError;
+        }
+      }
+    });
+}
+```
+
+### Manage pending invitations list as a bubble member
+
+---
+
+To know if you are invited as a member of a bubble, you need to loop on all its members and check if you have the `Bubble.MemberStatus` property set to `Bubble.MemberStatus.Invited`
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+Rainbow.Contacts contacts = myApp.GetContacts();
+...
+// Once connected
+Contact myContact = contacts.GetCurrentContact(); // The current contact
+Rainbow.Bubble bubble;                            // A bubble previously found / set  
+...
+Boolean pendingInviation = false;
+
+foreach(Bubble.Member member in bubble.Users)
+{
+  if( (member.UserId == myContact.Id)   // 
+    && (member.Status == Bubble.MemberStatus.Invited) )
+  {
+    // Current contact has been invited in this bubble
+    pendingInviation = true;
+    break;  
+  } 
+}
+
+if(pendingInviation)
+{
+  // Now current contact can accept or declinet the invitation ...
+}
+```
+
+### Create a bubble
+
+---
+
+You can create bubble using `Bubbles` object and the method `CreateBubble`.
+
+You must specify a name, a topic and a `Bubble.BubbleVisibility` (AsPrivate or AsPublic).
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+...
+//Once connected
+Bubble bubbleMarketing = null;         // We want to create a "Marketing team" bubble and store it in this object
+
+String bubbleName = "Marketing team";
+String bubbleTopic = "Marketing corner";
+String bubbleVisibility = Bubble.BubbleVisibility.AsPrivate; // Only for private use
+
+bubbles.CreateBubble(bubbleName, bubbleTopic, bubbleVisibility, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // We have created the "Marketing team" bubble - now we store it
+    bubbleMarketing = callback.Data;
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Update a bubble
+
+---
+
+You can update bubble using `Bubbles` object and the method `UpdateBubble`.
+
+You must specify new information: name, topic and Bubble.BubbleVisibility\` (AsPrivate or AsPublic).
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+...
+//Once connected
+Bubble bubbleMarketing;     // A bubble previously found / set taht we want to update
+
+String bubbleName = "Marketing Staff"; // Set a new name
+String bubbleTopic = "Marketing corner";  // Set a new topic
+String bubbleVisibility = Bubble.BubbleVisibility.AsPrivate; // Only for private use
+
+bubbles.UpdateBubble(bubbleMarketing.Id, bubbleName, bubbleTopic, bubbleVisibility, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // We have updated the "Marketing team" bubble 
+    bubbleMarketing = callback.Data;
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Archive a bubble
+
+---
+
+You can archive a bubble using `Bubbles` object and the method `ArchiveBubble`.
+
+An archived bubble is locked but previous messages exchanged are still accessible.
+
+Only a owner can archive a bubble.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+...
+//Once connected
+Bubble bubble; // A bubble previously found / set
+
+bubbles.ArchiveBubble(bubble.Id, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // The bubble is now archived 
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Delete a bubble
+
+---
+
+You can delete a bubble using `Bubbles` object and the method `DeleteBubble`.
+
+Once deleted, all its content is definitively lost.
+
+Only a owner can delete a bubble.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.Bubbles bubbles = myApp.GetBubbles();
+...
+//Once connected
+Bubble bubble; // A bubble previously found / set
+
+bubbles.DeleteBubble(bubble.Id, callback =>
+{
+  if(callback.Result.Success)
+  {
+    // The bubble is now archived 
+  }
+  else
+  {
+    // A pb occurs
+    if(callback.Result.Type == SdkError.SdkErrorType.IncorrectUse)
+    {
+      // Bad parameters used
+      string errMsg = callback.Result.IncorrectUseError.ErrorMsg; 
+    }
+    else
+    {
+      // Exception occurs
+      Exception e = callback.Result.ExceptionError;
+    }
+  }
+});
+```
+
+### Sur cette page
+
+-   [Managing bubbles](/docs/sdk/csharp#name-managing-bubbles-0)
+-   [Get list of existing bubbles](/docs/sdk/csharp#name-get-list-of-existing-bubbles-9)
+-   [Get list of bubble's member](/docs/sdk/csharp#name-get-list-of-bubbles-member-23)
+-   [Add a member to a bubble](/docs/sdk/csharp#name-add-a-member-to-a-bubble-34)
+-   [Remove a member from a bubble](/docs/sdk/csharp#name-remove-a-member-from-a-bubble-48)
+-   [Leave a bubble](/docs/sdk/csharp#name-leave-a-bubble-59)
+-   [Accept or decline an invitation to be a bubble's member](/docs/sdk/csharp#name-accept-or-decline-an-invitation-to-be-a-bubbles-member-67)
+-   [Manage pending invitations list as a bubble member](/docs/sdk/csharp#name-manage-pending-invitations-list-as-a-bubble-member-84)
+-   [Create a bubble](/docs/sdk/csharp#name-create-a-bubble-92)
+-   [Update a bubble](/docs/sdk/csharp#name-update-a-bubble-103)
+-   [Archive a bubble](/docs/sdk/csharp#name-archive-a-bubble-114)
+-   [Delete a bubble](/docs/sdk/csharp#name-delete-a-bubble-128)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

@@ -1,0 +1,473 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/guides/Creating_audio_and_video_conferences"
+lastSynced: "2026-02-19T22:35:15.810Z"
+---
+# Documentation
+
+Creating audio and video conferences
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Creating audio and video conferences
+
+---
+
+You can use Rainbow SDK for Web to create a WebRTC-based audio and video multi-party conference.
+
+WebRTC is a technology allowing the developers to ensure a real-time communication (RTC) in the browser, should it be a peer-to-peer conversation or a multi-party conference.
+
+The goal of this tutorial is to show how easy it is to create and modify an audio and video multi-party conference by using Rainbow SDK for Web.
+
+By the end of this tutorial you will be able to:
+
+-   Create an audio and video conference;
+-   Use audio stream in your conference;
+-   Chat with up to 4 rainbow users using audio and video;
+-   Add and remove video streams from your conference;
+-   Finish or quit conference;
+
+### Basic prerequisites
+
+---
+
+In order to proceed to creating audio and video conferences, you would need a thorough understanding of the concepts like [Rainbow Connection](doc/sdk/web/lts/guides/Connecting_to_Rainbow), [Chatting with Rainbow Users](doc/sdk/web/lts/guides/Chatting_with_Rainbow_users) or [Chatting in Rainbow Bubbles](doc/sdk/web/lts/guides/Chatting_in_Rainbow_bubbles). Shortly, you need to have your application ready and started. Make sure you can connect with your Rainbow accounts, search for contacts, [check your browser capabilities (audio, video)](doc/sdk/web/lts/guides/Initiating_audio_and_video_calls), etc.
+
+### Introduction
+
+---
+
+**WebRTC call** concept presented in the context of Rainbow SDK for Web can be divided into two parts.
+
+First one is a **peer-to-peer (P2P)** connection between two users. This connection is relatively simple to introduce and its idea is quite straightforward. In order to learn how to establish a P2P audio/video connection, read the chapter called [Initiating audio and video calls](doc/sdk/web/lts/guides/Initiating_audio_and_video_calls).
+
+Second one is a **multi-party conference** which is the main topic of this tutorial.
+
+### Checking if user has active conference sessions
+
+---
+
+Rainbow SDK can handle one conference at a time. That means a user which has an active conference session can not start or join any other conference until he finishes (or quits) the existing one.
+
+You can check whether the user that is logged in has active conference session by using the function `rainbowSDK.conferences.hasActiveConferenceSession()` which returns a Boolean. This function is available at any time for the logged in users.
+
+```javascript
+//... somewhere in your code
+if (rainbowSDK.conferences.hasActiveConferenceSession()) {
+    return true;
+    // You are not able to start or join a web conference
+} else {
+    return false;
+    // You are free to start or join a web conference
+}
+```
+
+The response gives you an important information as a user which has an active conference session can not start or join web conference.
+
+### Creating a web conference
+
+---
+
+To create a web conference, you need to call the following function: `rainbowSDK.conferences.startOrJoinWebConference(bubble)`, and pass your existing bubble as the argument.
+
+`startOrJoinWebConference()` function returns a promise, so the example of the code would look like that:
+
+```javascript
+//... somewhere in your code
+rainbowSDK.conferences
+    .startOrJoinWebConference(bubble)
+    .then(bubbleWithWebConf => {
+        // Everything went fine, WebRTC conference is launched
+        bubble = bubbleWithWebConf;
+    })
+    .catch(error => {
+        // Something went wrong, handle the error
+    });
+```
+
+Having a **Bubble** object is essential to be able to create a WebRTC conference using Rainbow SDK for Web. If you have not created a Bubble yet, please check our tutorial [Chatting in Rainbow Bubbles](doc/sdk/web/lts/guides/Chatting_in_Rainbow_bubbles).
+
+`startOrJoinWebConference()` function works both for the conference organizator (Bubble owner) as well as for the members of a Bubble who want to join the conference. Rainbow Web SDK will verify the user role and act accordingly.
+
+### Listening to the conference events
+
+---
+
+From this moment on you can start receiving the updates on the `conferenceSession` object. In order to listen to the change events you should use an event listener in your code.
+
+```javascript
+var onWebConferenceUpdated = function(event) {
+    // do something with the conference object
+    var conferenceSession = event.detail
+    console.log(conferenceSession);
+};
+
+//... somewhere in your code
+document.addEventListener(rainbowSDK.conferences.RAINBOW_ONWEBCONFERENCEUPDATED, onWebConferenceUpdated)
+```
+
+Event listener is passing a `conferenceSession` object to your function. You can use this object in order to get the informations about the current state of the conference. Consider it as the entry point to all the operations that you will later perform on your WebRTC conference application.
+
+**All the important informations about the existing web conference will be passed through that object.**
+
+It is quite important for many functions that you might potentially want to use in your application, so make sure you have this event listener included in your code. Also, do always keep the latest `conferenceSession` object for reference.
+
+In the following part of the tutorial you will find plenty of references to the `conferenceSession` object.
+
+### Other ways of getting the `conferenceSession` object
+
+You can retrieve the conference object by passing `conferenceId` parameter to the function `getConferenceSessionById(conferenceId)`.
+
+One of the ways of getting `conferenceId` string is looking through the `bubble` object that you already are capable to inspect. Once the Conference in the Bubble is established `bubble` object's `confEndpoints` property is populated with data. The snippet below will illustrate a potential way of using it.
+
+**Be careful, though!** It takes time for server to update the `bubble` object return it to the client (your browser). If you ask for the `confEndpoints` too early, due to the asynchronous nature of the request, you will receive an empty array (which can potentially crash your application).
+
+To avoid such situation, listen to the event `RAINBOW_ONBUBBLEUPDATED` and check whether the latest `bubble` object comes equipped with `confEndpoints` information.
+
+Here is how an example of the code might look like:
+
+```javascript
+var conference = null;
+
+var getConferenceObject = function(bubble) {
+    // Do something when bubble contains confEndpoints property which is populated
+    if (bubble.confEndpoints.length === 0) {
+        return null;
+    }
+    /// confEndpoints array contains at least one item
+    conferenceId = bubble.confEndpoints[0].confEndpointId;
+    return rainbowSDK.conferences.getConferenceSessionById(conferenceId);
+};
+
+//function executed when the RAINBOW_ONBUBBLEUPDATED is fired.
+var onBubbleUpdated = function(event) {
+    var bubble = event.detail;
+    conference = getConferenceObject(bubble);
+};
+
+document.addEventListener(rainbowSDK.bubbles.RAINBOW_ONBUBBLEUPDATED, onBubbleUpdated)
+```
+
+### Audio conference
+
+---
+
+In order to establish an audio stream in your conference, you need to ensure a proper structure of your HTML file. The rule is basically the same as in case of a P2P audio call.
+
+```html
+<!-- somewhere in your code -->
+<audio id="globalAudioTag" autoplay style="display:none;"></audio>
+```
+
+Make sure the **id** property of the `<audio>` tag is set to `globalAudioTag`.
+
+### Adding a video stream to the conference
+
+---
+
+Once you have your audio conference up and going, you can add the video streams.
+
+As in the case of audio conference you need to make sure you have the following tags included in your HTML template:
+
+```html
+<!-- somewhere in your code -->
+
+<!-- global tag, needed for bootstrapping the video streams -->
+<video id="globalVideoTag" autoplay style="display:none;"></video>
+
+<!-- main distant video stream -->
+<video id="largevideo" autoplay></video>
+
+<!-- local video stream -->
+<video id="conferenceVideoPip" autoplay muted></video>
+
+<!-- local sharing stream -->
+<video id="conferenceSharingPip" autoplay muted ></video>
+
+<!-- gallery tags, presenting up to 4 distant streams at the time -->
+<video id="videoGallery_1" autoplay></video>
+
+<video id="videoGallery_2" autoplay></video>
+
+<video id="videoGallery_3" autoplay></video>
+
+<video id="videoGallery_4" autoplay></video>
+```
+
+#### Start sharing local video stream
+
+First, call a function `addVideoToConference()` in order to update the conference object with the current media streams passing through your browser.
+
+```javascript
+rainbowSDK.conferences.addVideoToConference(conferenceSession);
+```
+
+Please note that we are passing the latest `conferenceSession` object retrieved from the event listener presented above.
+
+Now, we can add the local video stream to the application. In order to make sure whether you are able to present your local stream, you can verify whether the updated `conferenceSession` object's property `hasLocalVideo` is set to true.
+
+```javascript
+//...
+
+if (conferenceSession.hasLocalVideo === true) {
+    rainbowSDK.conferences.showLocalVideo(conferenceSession);
+}
+
+//...
+```
+
+#### Distant video stream
+
+At the same time, we can start checking for the distant streams. `conferenceSession` object has a `videoGallery` property which contains a four-element array. Each of the elements represents a slot that can be populated by a distant video stream.
+
+To add existing video streams to your HTML `<video>` tag, call `showRemoteVideo()` function as below:
+
+```javascript
+// ...
+
+rainbowSDK.conferences.showRemoteVideo(conferenceSession);
+
+// ...
+```
+
+Here again, you need to pass the latest `conferenceSession` object that you can get from the method called by the event listener (as per above). In this case, though, it is only necessary to run `showRemoteVideo` only when the `conferenceSession` object contains a new information about a remote video stream (i.e. when a new stream is added)
+
+### Choosing the main video stream
+
+---
+
+It is possible to choose the main video stream which will be displayed in the `<video>` element marked with `id="largevideo"` attribute. You have the choice between four video streams that are available at the same time.
+
+To change the main video stream, call `updateMainVideoSession()` function which takes two strings as parameters: `conferenceId` and `sessionId`. To get each of them you need to inspect the latest `conferenceSession` object (received, for instance, by the event listener). `conferenceId` is simply the value of `id` property of the `conferenceSession` object.
+
+The other parameter that we need, `sessionId`, is hidden just a tiny bit deeper. Just above we have mentioned `videoGallery` property. It is an array containing four elements (think: slots) that are populated once one of the conference participants adds a distant video stream. When there's only one of your conversation partners sharing the video with you, the process is simple: `<video id="largevideo">` element represents the same stream as the `<video id="videoGallery_1">` one. Once another participant decides to share the video stream, `<video id="videoGallery_2"` will be populated but `largevideo` will keep on showing the first stream. Accordingly, the `videoGallery` array should contain two elements with `state` set to `busy` (make sure you have received the latest update of the `conference` object).
+
+To change the main video stream to the second element in the `videoGallery`, you need to retrieve its `sessionId` value, just as in the snippet below.
+
+```javascript
+// somewhere in your code
+
+var conferenceId = conferenceSession.id;
+var sessionId_1 = conferenceSession.videoGallery[0];
+var sessionId_2 = conferenceSession.videoGallery[1];
+var sessionId_3 = conferenceSession.videoGallery[2];
+var sessionId_4 = conferenceSession.videoGallery[3];
+
+// choosing the first stream to be displayed as the main one
+rainbowSDK.conferences.updateMainVideoSession(conferenceId, sessionId_1);
+
+// choosing the third stream to be displayed as the main one
+rainbowSDK.conferences.updateMainVideoSession(conferenceId, sessionId_3);
+```
+
+### Remove video stream from the conference
+
+---
+
+To remove the video stream from the conference, call `removeVideoFromConference()` function (don't forget to pass the current `conferenceSession` object as the argument).
+
+```javascript
+// ...
+
+rainbowSDK.conferences.removeVideoFromConference(conferenceSession);
+// function returns an updated conference object
+
+// ...
+```
+
+### Screen sharing
+
+Rainbow Web SDK offers a possibility to share your screen with the other participants of the conference. To do so, you will need to use `addSharingToConference()` method as in the example below:
+
+```javascript
+rainbowSDK.conferences.addSharingToConference(conferenceSession);
+```
+
+Similarly, you can remove the screen sharing stream from your conference by calling `removeSharingFromConferenceSession()`:
+
+```javascript
+rainbowSDK.conferences.removeSharingFromConference(conferenceSession);
+```
+
+This feature is available for Firefox and Chrome.
+
+To display the screen sharing flow in your application, you need to use exactly the same functions and in case of a standard video stream.: `showRemoteVideo`, `showLocalVideo` etc.
+
+### Who is speaking
+
+---
+
+`conferenceSession` object contains the information on the conference participant who is currently talking.
+
+To find out who is currently using the audio stream, check its `talkers` property. Every time someone starts talking, `conferenceSession` object is updated and passed by an event emitter (you can listen to the event by using the listener, as explained above).
+
+The `talkers` property contains an array of strings. Each of those strings represent `publisherId` value which can be compared with the `publishers` property or with the publisher represented in the `videoGallery` property. Do not forget that `publisherId` is not the same as `userId` that you can use with multiple functions of contact service.
+
+### Ending web conference
+
+---
+
+To finish a web conference, use `stopWebConference()` function as in the example below:
+
+```javascript
+rainbowSDK.conferences
+    .stopWebConference()
+    .then(function() {
+        console.log("Web conference stopped");
+    })
+    .catch(function(err) {
+        console.log(err);
+    });
+```
+
+Again, to ensure the stability of the connection between the clients and the server, function `stopWebConference()` returns a promise that can be handled by your application.
+
+### Changes
+
+Starting version v1.78.0 Rainbow Web SDK offers a new `conferencesService` module that replaces part of methods that were previously available in `bubblesService`. The goal is to bring more clarity and separation between multiple services available in the SDK followed by more consistency in naming. Below please find a comprehensive list of changes:
+
+**API:**
+
+BubblesService
+
+ConferencesService
+
+isWebRtcConferenceAllowed
+
+isWebConferenceAllowed
+
+hasActiveConferenceSession
+
+hasActiveWebConferenceSession
+
+getWebRtcConferenceBubble
+
+getWebConferenceBubble
+
+startOrJoinWebRtcConference
+
+startOrJoinWebConference
+
+startOrJoinSharingWebRtcConference
+
+startOrJoinWebConference
+
+setActiveSpeakerValue
+
+setActiveSpeakerValue
+
+muteConferenceAudio
+
+muteConferenceAudio
+
+unmuteConferenceAudio
+
+unmuteConferenceAudio
+
+muteConferenceParticipant
+
+muteConferenceParticipant
+
+unmuteConferenceParticipant
+
+unmuteConferenceParticipant
+
+muteAllConferenceParticipants
+
+muteAllConferenceParticipants
+
+unmuteAllConferenceParticipants
+
+unmuteAllConferenceParticipants
+
+stopWebRtcConference
+
+stopWebConference
+
+addMediaToConferenceSession
+
+addVideoToConference
+
+addSharingToConferenceSession
+
+addSharingToConference
+
+removeMediaFromConferenceSession
+
+removeVideoFromConference
+
+removeSharingFromConferenceSession
+
+removeSharingFromConference
+
+addLocalVideoStreamToConference
+
+showLocalVideo
+
+addDistantVideoStreamToConference
+
+showRemoteVideo
+
+getConferenceSessionById
+
+getConferenceSessionById
+
+updateGalleryPublisher
+
+updateGalleryPublisher
+
+removeGalleryPublisher
+
+removeGalleryPublisher
+
+disconnectParticipant
+
+disconnectParticipant
+
+**EVENTS:**
+
+BubblesService
+
+ConferencesService
+
+RAINBOW\_ONBUBBLECONFERENCESTARTEDINVITATIONRECEIVED
+
+RAINBOW\_ONBUBBLECONFERENCESTARTED
+
+RAINBOW\_ONBUBBLESHARINGCONFERENCESTARTEDINVITATIONRECEIVED
+
+RAINBOW\_ONBUBBLESHARINGCONFERENCESTARTED
+
+Please refer to conferencesService documentation and API list for further details.
+
+---
+
+*Last updated September, 7th 2021*
+
+### Sur cette page
+
+-   [Creating audio and video conferences](/docs/sdk/web#name-creating-audio-and-video-conferences-0)
+-   [Basic prerequisites](/docs/sdk/web#name-basic-prerequisites-43)
+-   [Introduction](/docs/sdk/web#name-introduction-50)
+-   [Checking if user has active conference sessions](/docs/sdk/web#name-checking-if-user-has-active-conference-sessions-63)
+-   [Creating a web conference](/docs/sdk/web#name-creating-a-web-conference-77)
+-   [Listening to the conference events](/docs/sdk/web#name-listening-to-the-conference-events-94)
+-   [Other ways of getting the conferenceSession object](/docs/sdk/web#name-other-ways-of-getting-the-object-114)
+-   [Audio conference](/docs/sdk/web#name-audio-conference-133)
+-   [Adding a video stream to the conference](/docs/sdk/web#name-adding-a-video-stream-to-the-conference-144)
+-   [Start sharing local video stream](/docs/sdk/web#name-start-sharing-local-video-stream-155)
+-   [Distant video stream](/docs/sdk/web#name-distant-video-stream-169)
+-   [Choosing the main video stream](/docs/sdk/web#name-choosing-the-main-video-stream-182)
+-   [Remove video stream from the conference](/docs/sdk/web#name-remove-video-stream-from-the-conference-199)
+-   [Screen sharing](/docs/sdk/web#name-screen-sharing-207)
+-   [Who is speaking](/docs/sdk/web#name-who-is-speaking-224)
+-   [Ending web conference](/docs/sdk/web#name-ending-web-conference-237)
+-   [Changes](/docs/sdk/web#name-changes-248)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

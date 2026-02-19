@@ -1,0 +1,394 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/admin"
+lastSynced: "2026-02-19T22:35:14.802Z"
+---
+# Documentation
+
+Admin service
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Admin
+
+This module allows to manage a company and the invited users. The main methods and events proposed in that module allow to:  
+\- Create and manage your company,  
+\- Invite and manage participants
+
+**Access**: public
+
+-   [Admin](#module_Admin)
+    -   *API*
+        -   [createEssentialCompany(strName, strCountry)](#module_Admin+createEssentialCompany) ⇒ `Promise`
+        -   [createUserForCompany(strLogin, strFirstName, strLastName, strPassword, companyId, tags)](#module_Admin+createUserForCompany) ⇒ `Promise`
+        -   [createUserForCompanyDeprecated(strLogin, strFirstName, strLastName, strPassword, companyId, tags)](#module_Admin+createUserForCompanyDeprecated) ⇒ `Promise`
+        -   [removeUserFromCompany(user)](#module_Admin+removeUserFromCompany) ⇒ `Promise`
+        -   [fetchUsersByPattern(searchPattern, page, pageSize)](#module_Admin+fetchUsersByPattern) ⇒ `Promise`
+        -   [fetchUsersByTag(tag, page, pageSize)](#module_Admin+fetchUsersByTag) ⇒ `Promise`
+        -   [updateUserTags(user, tags)](#module_Admin+updateUserTags) ⇒ `Promise`
+        -   [setVisibilityForCompany(company, visibleByCompany)](#module_Admin+setVisibilityForCompany) ⇒ `Promise`
+    -   *EVENTS*
+        -   [~createCompany(strName, strCountry, strState)](#module_Admin..createCompany) ⇒ `Promise`
+        -   [~removeCompany(companyId)](#module_Admin..removeCompany) ⇒ `Promise`
+        -   [~removeCompanyDeprecated(company)](#module_Admin..removeCompanyDeprecated) ⇒ `Promise`
+
+### admin.createEssentialCompany(strName, strCountry) ⇒ `Promise`
+
+Create essential company
+
+**Kind**: instance method of [`Admin`](#module_Admin)  
+**Returns**: `Promise` - Promise containing company object or error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strName
+
+`string`
+
+Company name
+
+strCountry
+
+`string`
+
+String representing company's country
+
+### admin.createUserForCompany(strLogin, strFirstName, strLastName, strPassword, companyId, tags) ⇒ `Promise`
+
+Create a new user for a given company
+
+**Kind**: instance method of [`Admin`](#module_Admin)  
+**Returns**: `Promise` - Promise containing a new user object or an error depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strLogin
+
+`string`
+
+User login
+
+strFirstName
+
+`string`
+
+User first name
+
+strLastName
+
+`string`
+
+User last name
+
+strPassword
+
+`string`
+
+User password
+
+companyId
+
+`string`
+
+ID of Company for which the user is supposed to be created
+
+tags
+
+`Array.<string>`
+
+Array of tags for the user (optional)
+
+### admin.createUserForCompanyDeprecated(strLogin, strFirstName, strLastName, strPassword, companyId, tags) ⇒ `Promise`
+
+***Deprecated***
+
+Create a new user for a given company
+
+**Kind**: instance method of [`Admin`](#module_Admin)  
+**Returns**: `Promise` - Promise containing a new user object or an error depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strLogin
+
+`string`
+
+User login
+
+strFirstName
+
+`string`
+
+User first name
+
+strLastName
+
+`string`
+
+User last name
+
+strPassword
+
+`string`
+
+User password
+
+companyId
+
+`string`
+
+ID of Company for which the user is supposed to be created
+
+tags
+
+`Array.<string>`
+
+Array of tags for the user (optional)
+
+### admin.removeUserFromCompany(user) ⇒ `Promise`
+
+Remove a user from its company
+
+**Kind**: instance method of [`Admin`](#module_Admin)  
+**Returns**: `Promise` - Promise resolution or an error depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+user
+
+`object`
+
+User object
+
+### admin.fetchUsersByPattern(searchPattern, page, pageSize) ⇒ `Promise`
+
+Perform a complex search for users
+
+**Kind**: instance method of [`Admin`](#module_Admin)  
+**Returns**: `Promise` - Promise with an array of users found or error message  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+searchPattern
+
+`string`
+
+String representing a tag to search
+
+page
+
+`number`
+
+Page number (optional; defaults to 1)
+
+pageSize
+
+`number`
+
+pageSize (optional; defaults to 10)
+
+### admin.fetchUsersByTag(tag, page, pageSize) ⇒ `Promise`
+
+Perform a complex search for users
+
+**Kind**: instance method of [`Admin`](#module_Admin)  
+**Returns**: `Promise` - Promise with an array of users found or error message  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+tag
+
+`string`
+
+String representing a tag to search
+
+page
+
+`number`
+
+Page number (optional; defaults to 1)
+
+pageSize
+
+`number`
+
+pageSize (optional; defaults to 10)
+
+### admin.updateUserTags(user, tags) ⇒ `Promise`
+
+Update user tags
+
+**Kind**: instance method of [`Admin`](#module_Admin)  
+**Returns**: `Promise` - Promise resolution or an error depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+user
+
+`object`
+
+User to update (object)
+
+tags
+
+`Array.<string>`
+
+Tags to update (array of min 1, max 5 elements)
+
+### admin.setVisibilityForCompany(company, visibleByCompany) ⇒ `Promise`
+
+Change visibility for a company
+
+**Kind**: instance method of [`Admin`](#module_Admin)  
+**Returns**: `Promise` - Promise resolution or an error depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+company
+
+`object`
+
+Company which visibility is to be changed
+
+visibleByCompany
+
+`object`
+
+Company that is to be allowed to see company (argument 1)
+
+### Admin~createCompany(strName, strCountry, strState) ⇒ `Promise`
+
+Create a company
+
+**Kind**: inner method of [`Admin`](#module_Admin)  
+**Returns**: `Promise` - Promise containing company object or error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+strName
+
+`string`
+
+Company name
+
+strCountry
+
+`string`
+
+String representing company's country
+
+strState
+
+`string`
+
+String representing company's state
+
+### Admin~removeCompany(companyId) ⇒ `Promise`
+
+Remove a company by passing its ID
+
+**Kind**: inner method of [`Admin`](#module_Admin)  
+**Returns**: `Promise` - Promise containing company object or error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+companyId
+
+`string`
+
+Company ID
+
+### Admin~removeCompanyDeprecated(company) ⇒ `Promise`
+
+***Deprecated***
+
+Remove a company - deprecated method, please use removeCompany
+
+**Kind**: inner method of [`Admin`](#module_Admin)  
+**Returns**: `Promise` - Promise containing company object or error object depending on the result  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+company
+
+`object`
+
+Company object
+
+### Sur cette page
+
+-   [Admin](/docs/sdk/web#name-admin-3)
+-   [admin.createEssentialCompany(strName, strCountry) ⇒ Promise](/docs/sdk/web#name-admin.createessentialcompanystrname-strcountry--promise-93)
+-   [admin.createUserForCompany(strLogin, strFirstName, strLastName, strPassword, companyId, tags) ⇒ Promise](/docs/sdk/web#name-admin.createuserforcompanystrlogin-strfirstname-strlastname-strpassword-companyid-tags--promise-144)
+-   [admin.createUserForCompanyDeprecated(strLogin, strFirstName, strLastName, strPassword, companyId, tags) ⇒ Promise](/docs/sdk/web#name-admin.createuserforcompanydeprecatedstrlogin-strfirstname-strlastname-strpassword-companyid-tags--promise-239)
+-   [admin.removeUserFromCompany(user) ⇒ Promise](/docs/sdk/web#name-admin.removeuserfromcompanyuser--promise-337)
+-   [admin.fetchUsersByPattern(searchPattern, page, pageSize) ⇒ Promise](/docs/sdk/web#name-admin.fetchusersbypatternsearchpattern-page-pagesize--promise-377)
+-   [admin.fetchUsersByTag(tag, page, pageSize) ⇒ Promise](/docs/sdk/web#name-admin.fetchusersbytagtag-page-pagesize--promise-439)
+-   [admin.updateUserTags(user, tags) ⇒ Promise](/docs/sdk/web#name-admin.updateusertagsuser-tags--promise-501)
+-   [admin.setVisibilityForCompany(company, visibleByCompany) ⇒ Promise](/docs/sdk/web#name-admin.setvisibilityforcompanycompany-visiblebycompany--promise-552)
+-   [Admin~createCompany(strName, strCountry, strState) ⇒ Promise](/docs/sdk/web#name-admincreatecompanystrname-strcountry-strstate--promise-603)
+-   [Admin~removeCompany(companyId) ⇒ Promise](/docs/sdk/web#name-adminremovecompanycompanyid--promise-665)
+-   [Admin~removeCompanyDeprecated(company) ⇒ Promise](/docs/sdk/web#name-adminremovecompanydeprecatedcompany--promise-705)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

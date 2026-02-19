@@ -1,0 +1,381 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/guides/Connecting_to_Rainbow"
+lastSynced: "2026-02-19T22:35:15.772Z"
+---
+# Documentation
+
+Connecting to Rainbow
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## Connecting to Rainbow
+
+---
+
+This tutorial will help you understand how to connect to Rainbow and how to call its APIs.
+
+### Rainbow Knowledge
+
+---
+
+Here are some Rainbow wordings that will help you understanding this guide.
+
+**Rainbow concept**
+
+**Details**
+
+**Sandbox platform for developers**
+
+This Rainbow platform is dedicated to developers.  
+The Sandbox platform for developers is not connected to the Production platform and let developers be familiar with our APIs and SDKs.  
+This platform uses different accounts.
+
+**Production platform**
+
+This Rainbow platform is the official one with all Rainbow services and infrastructures enabling a high availability and accessibility all over the world.  
+This is the platform you use to connect to our Rainbow applications.
+
+### Preamble
+
+---
+
+In order to better understand how to use the Rainbow Web SDK, here are some technicals points:
+
+-   Rainbow offers REST APIs. When you use the Rainbow Web SDK, you do not have to know how to call them. The Rainbow Web SDK offers methods that hide these API to simplify your work (the SDK calls them internally).
+    
+-   Most of these REST APIs coming from Rainbow are asynchronous which means that the server's response do not come immediately. And to not block your application, the request do not wait for the answer to avoid UX issues. To simplify your work, most of the time, the SDK will use JavaScript Promise to let you build build asynchronous requests. If it is not possible, you will have to listen to events for handling late answers or notifications. With all that stuff, your application will be able to handle notifications such as incoming instant messages. If you are not familiar with JavaScript Promise, you can have a look to the example below to see how to implement a Promise based behavior. You can also spend time on the Stack Overflow or search others available tutorials.
+    
+-   Once you are logged to Rainbow, a Websocket connection is opened between your application (in fact the SDK for Web) and Rainbow in order to receive notifications that come from people or things (e.g. phone devices, materials etc.). The SDK for Web defines a lot of events that you have to handle in your application to be notified when something happens. Look at the example below to know how to subscribe to these events.
+    
+
+### Sign in to Rainbow
+
+---
+
+By default, when calling the method `signin()`, you will sign in to the **Rainbow Sandbox platform for developers**. So you need to have your Sandbox account enabled. If not, use the Rainbow API Hub to connect and to activate your Sandbox developer account. You will receive an email with your Sandbox credentials shortly.
+
+If you want to connect to the **Rainbow Production platform**, you have to use the API `signinOnRainbowOfficial()`. You can use your Rainbow credentials to connect.
+
+Before being able to sign in, you need to listen to the event `RAINBOW_ONREADY` to know when the SDK for Web is ready to be used.
+
+The following example works using jQuery to catch the event fired by the SDK.
+
+Note: Do not forget to add your application ID and secret key when using the method `initialize()`. In case you need more help, read the guide [Injecting Id and secret key](doc/sdk/web/lts/guides/Adding_id_and_secret_key)
+
+```js
+var onReady = function onReady() {
+
+        var myRainbowLogin = "login";       // Replace by your login
+        var myRainbowPassword = "password"; // Replace by your password
+
+        // The SDK for Web is ready to be used, so you can sign in
+        rainbowSDK.connection.signin(myRainbowLogin, myRainbowPassword)
+        .then(function(account) {
+              // Successfully signed to Rainbow and the SDK is started completely. Rainbow data can be retrieved.
+              ...
+        })
+        .catch(function(err) {
+              // An error occurs (e.g. bad credentials). Application could be informed that sign in has failed
+              ...
+        });
+    };
+
+    // Listen when the SDK is ready
+    document.addEventListener(rainbowSDK.RAINBOW_ONREADY, onReady)
+}
+```
+
+### Listen to authentication events
+
+---
+
+During the authentication step, some events are available. Here is the list of these events you could listen to know if your SDK has been correctly signed and started.
+
+**Service**
+
+**Event**
+
+**Value (String)**
+
+**Description**
+
+**sdk.connection**
+
+`RAINBOW_ONSIGNED`
+
+"signed"
+
+Authentication of the user succeeds
+
+**sdk.connection**
+
+`RAINBOW_ONSTARTED`
+
+"started"
+
+All SDK services have been started
+
+#### Event RAINBOW\_ONSIGNED
+
+---
+
+This event is fired as soon as the SDK for Web has signed successfully to Rainbow to let you retrieve your account information and token. This event is fired before the event **RAINBOW\_ONSTARTED**.
+
+At this stage, the SDK for Web can not retrieve data nor invoke services. You have to wait either for the event **RAINBOW\_ONSTARTED** or for the fulfillment of the `signin()` promise.
+
+#### Event RAINBOW\_ONSTARTED
+
+---
+
+This event is fired when the SDK for Web is connected to Rainbow (i.e. after calling the login API) and when all SDK services are ready to be used. This event is fired just before giving the hand to the application after calling the `signin()` method.
+
+At this stage, the SDK can retrieve data from Rainbow and invoke any services.
+
+#### Code sample
+
+---
+
+Here is a code sample that illustrates these events:
+
+```js
+var onReady = function onReady() {
+
+        var myRainbowLogin = "login";       // Replace by your login
+        var myRainbowPassword = "password"; // Replace by your password
+
+        // The SDK for Web is ready to be used, so you can sign in
+        rainbowSDK.connection.signin(myRainbowLogin, myRainbowPassword)
+        .then(function(account) {
+              // Successfully signed to Rainbow and the SDK is started completely. Rainbow data could be retrieved.
+              ...
+        })
+        .catch(function(err) {
+              // An error occurs (e.g. bad credentials). Application could be informed that sign in has failed
+              ...
+        });
+    };
+
+    var onSigned = function onSigned(event) {
+        let account = event.detail;
+        // Authentication has been performed successfully. Account information could be retrieved.
+    };
+
+    var onStarted = function onStarted(event, account) {
+        // Do something once the SDK is ready to call Rainbow services
+        ...
+    };
+
+    // Listen when the SDK is ready
+    document.addEventListener(rainbowSDK.RAINBOW_ONREADY, onReady)
+
+    // Listen when the SDK is signed
+    document.addEventListener(rainbowSDK.connection.RAINBOW_ONSIGNED, onSigned)
+
+    // Listen when the SDK is started
+    document.addEventListener(rainbowSDK.connection.RAINBOW_ONSTARTED, onStarted)
+
+}
+```
+
+### Listen to network events
+
+---
+
+Once you are connected, it is interesting to know the state of the connection between your application and Rainbow. The principle is based on the state of the Websocket connection: if the Websocket is disconnected, then your application can be considered as disconnected because you will not receive events coming from Rainbow anymore. Here is the list of available events.
+
+**Service**
+
+**Event**
+
+**Value (String)**
+
+**Description**
+
+**sdk.connection**
+
+`RAINBOW_ONCONNECTIONSTATECHANGED`
+
+"rainbowconnectionstatechanged"
+
+Indicate the current state of the connection to Rainbow
+
+#### Event RAINBOW\_ONCONNECTIONSTATECHANGED
+
+This event is fired each time the connection state to Rainbow changes.
+
+This event contains the property `status` which is a `string` representing the current connection state. This state can be one of the following values: `RAINBOW_CONNECTIONCONNECTED`, `RAINBOW_CONNECTIONINPROGRESS` or `RAINBOW_CONNECTIONDISCONNECTED`
+
+#### State RAINBOW\_CONNECTIONCONNECTED
+
+---
+
+This status is reached when the Websocket connection has been established between the SDK and Rainbow.
+
+In that case, your application is able to receive notifications or messages coming from Rainbow.
+
+#### State RAINBOW\_CONNECTIONINPROGRESS
+
+---
+
+This status is reached when the Websocket connection is in progress. The SDK is currently trying to connect to Rainbow.
+
+At this stage, your application is not able to receive Rainbow notifications or messages.
+
+#### State RAINBOW\_CONNECTIONDISCONNECTED
+
+---
+
+This status is reached when the connection to Rainbow has been lost. The Websocket connection is not established between the SDK and Rainbow anymore (e.g. it could be due to a bad network condition etc.). Based on the Websocket connection, it can take some time to detect whether the connection is broken.
+
+At this stage, your application is no more able to receive Rainbow notifications or messages.
+
+This status is the default status used when the SDK is initialized.
+
+#### Code sample
+
+---
+
+Here in a code sample that illustrates the event and the associated status:
+
+```js
+var onConnectionStateChangeEvent = function onConnectionStateChangeEvent(event) {
+        let status = event.detail.status;
+
+        switch(status) {
+            case rainbowSDK.connection.RAINBOW_CONNECTIONCONNECTED:
+                // The state of the connection has changed to "connected" which means that your application is now connected to Rainbow
+                break;
+            case rainbowSDK.connection.RAINBOW_CONNECTIONINPROGRESS:
+                // The state of the connection is now in progress which means that your application try to connect to Rainbow
+                break;
+            case rainbowSDK.connection.RAINBOW_CONNECTIONDISCONNECTED:
+                // The state of the connection changed to "disconnected" which means that your application is no more connected to Rainbow
+                break;
+            default:
+                break;
+        };
+    };
+
+    // Subscribe to Rainbow connection change event
+    document.addEventListener(rainbowSDK.connection.RAINBOW_ONCONNECTIONSTATECHANGED, onConnectionStateChangeEvent)
+}
+```
+
+### Listen to sign-out events
+
+---
+
+When the user signs out from Rainbow, you can listen to the following event to know the SDK has been successfully stopped.
+
+**Service**
+
+**Event**
+
+**Value (String)**
+
+**Description**
+
+**sdk.connection**
+
+`RAINBOW_ONSTOPPED`
+
+"stopped"
+
+All SDK services have been stopped
+
+#### Event **RAINBOW\_ONSTOPPED**
+
+---
+
+This event is fired when the SDK for Web is disconnected from Rainbow (e.g. after calling the method `signout()`) and when all SDK services have been stopped. Once receiving this event, you can not call SDK methods. You can only try to sign in again.
+
+#### Code Sample
+
+---
+
+```js
+var signout = function signout() {
+
+        // The SDK for Web is ready to be used, so you can sign in
+        rainbowSDK.connection.signout()
+        .then(function() {
+              // Successfully signed out from Rainbow
+              ...
+        })
+        .catch(function(err) {
+              // An error occurs during the stop of the Rainbow SDK
+              ...
+        });
+    };
+
+    var onStopped = function onStopped(event) {
+        // The SDK has been completely stopped.
+        ...
+    };
+
+    // Listen when the SDK is stopped
+    document.addEventListener(rainbowSDK.connection.RAINBOW_ONSTOPPED, onStopped)
+
+}
+```
+
+### Reconnection
+
+---
+
+The SDK for Web does not provide an automatic way to reconnect because this mechanism is often linked to the application part. But you need to do something when the application detects that the connection is lost with Rainbow. By listening to the event shown before, you can simply:
+
+-   Alert your user that the connection is broken
+    
+-   Call the `signout()` method from the SDK for Web which will close properly the connection
+    
+-   After receiving the event `RAINBOW_ONSTOPPED` (which means that the SDK for Web has been stopped), you can call again the `signin()` method.
+    
+
+If the network conditions are good again, your application should reconnect to Rainbow.
+
+### Related links
+
+---
+
+-   [Injecting Application ID and Secret Key](doc/sdk/web/lts/guides/Adding_id_and_secret_key)
+    
+-   [Integrating JavaScript frameworks](doc/sdk/web/lts/guides/Integrating_JS_frameworks)
+    
+-   [Integrating AngularJS applications](doc/sdk/web/lts/guides/Loading_Angular_1x_applications)
+    
+
+---
+
+*Last updated October, 12th 2018*
+
+### Sur cette page
+
+-   [Connecting to Rainbow](/docs/sdk/web#name-connecting-to-rainbow-0)
+-   [Rainbow Knowledge](/docs/sdk/web#name-rainbow-knowledge-7)
+-   [Preamble](/docs/sdk/web#name-preamble-44)
+-   [Sign in to Rainbow](/docs/sdk/web#name-sign-in-to-rainbow-68)
+-   [Listen to authentication events](/docs/sdk/web#name-listen-to-authentication-events-88)
+-   [Event RAINBOW\_ONSIGNED](/docs/sdk/web#name-event-rainbow_onsigned-143)
+-   [Event RAINBOW\_ONSTARTED](/docs/sdk/web#name-event-rainbow_onstarted-153)
+-   [Code sample](/docs/sdk/web#name-code-sample-163)
+-   [Listen to network events](/docs/sdk/web#name-listen-to-network-events-171)
+-   [Event RAINBOW\_ONCONNECTIONSTATECHANGED](/docs/sdk/web#name-event-rainbow_onconnectionstatechanged-212)
+-   [State RAINBOW\_CONNECTIONCONNECTED](/docs/sdk/web#name-state-rainbow_connectionconnected-221)
+-   [State RAINBOW\_CONNECTIONINPROGRESS](/docs/sdk/web#name-state-rainbow_connectioninprogress-231)
+-   [State RAINBOW\_CONNECTIONDISCONNECTED](/docs/sdk/web#name-state-rainbow_connectiondisconnected-241)
+-   [Code sample](/docs/sdk/web#name-code-sample-254)
+-   [Listen to sign-out events](/docs/sdk/web#name-listen-to-sign-out-events-262)
+-   [Event RAINBOW\_ONSTOPPED](/docs/sdk/web#name-event-rainbow_onstopped-303)
+-   [Code Sample](/docs/sdk/web#name-code-sample-310)
+-   [Reconnection](/docs/sdk/web#name-reconnection-315)
+-   [Related links](/docs/sdk/web#name-related-links-342)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

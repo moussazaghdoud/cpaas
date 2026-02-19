@@ -1,0 +1,327 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharpprevious/webrtc/lts/guides/CHANGELOG"
+lastSynced: "2026-02-19T22:35:14.776Z"
+---
+# Documentation
+
+Changelog
+
+LTS release 1.XPubliée le 2024-07-01Comparer
+
+## SDK.WebRTC for C#
+
+### \[1.0.0\] - 2024-07-01
+
+#### Changed
+
+-   **.Net 6.0** as target plateform has been removed (obsolete). **.Net Std 2.0, 2.1** and **.Net 8.0** are still in targets platform.
+
+---
+
+### \[0.0.15-STS\] - 2024-05-27
+
+#### Changed
+
+-   **Breaking** `WebRTCCommunications`: Add parameter **subStreamLevel** in \`SubscribeToMediaPublication()'
+
+---
+
+### \[0.0.14-STS\] - 2024-03-19
+
+#### Added
+
+-   `DataChannel`: new class - before a IDataChannel interface was used
+-   `DataChannel.Close()`: permits to unsubscribe to remote DataChannel or To remove DataChannel of the current user
+-   `DataChannelDescriptor`: new class
+-   `MediaStreamTrackDescriptor`: IsMediaService property
+-   `WebRTCCommunications`: CanSubscribeToMediaService(), IsSubscribedToMediaService(), SubscribeToMediaService(), UnsubscribeToMediaService(), GetMediaServicesSubscribed() and GetMediaServicesAvailable() methods
+-   `WebRTCCommunications`: HoldMediaPublication(), HoldMediaService(), GetTracks() and GetDataChannels() methods
+-   `WebRTCCommunications`: OnMediaServiceUpdated event
+
+#### Fixed
+
+-   `WebRTCCommunications`: avoid crash in GetOrCreateInstance() when simultaneous bots are used
+-   `WebRTCCommunications`: Update medias currenlty used (local or remote) before OnMediaPublicationUpdated event is raised
+
+#### Changed
+
+-   **Breaking** `DataChannelInCallDelegate`: Signature changed to use a `DataChannelDescriptor`
+
+---
+
+### \[0.0.13-STS\] - 2024-01-15
+
+#### Added
+
+-   Add .Net 8.0 as target plateform (.Net Std 2.0, 2.1 and .Net 6.0 are still in targets platform) .Net 6.0 target platform will be removed in April.
+-   (Alpha support) Allow to manage DataChannel in a Conference . Only one DataChannel can be created for the moment by user but several can be subscribed.
+
+#### Fixed
+
+-   PeerConnection are closed/disposed in a better way
+-   in P2P and Conference, media status are set correctly: SendRecv, SendOnly, RecvOnly, Inactive
+
+---
+
+### \[0.0.12-STS\] - 2023-12-08
+
+#### Fixed
+
+-   `WebRTCCommunications`: Event `CallUpdated` could be not raised if a media was added or removed in conference by a remote peer
+
+---
+
+### \[0.0.11-STS\] - 2023-09-05
+
+#### Changed
+
+-   Use last version of SDK.Medias to use FFmpeg v6.0 libraries
+-   WebRTCCommunications: Allow to set ConfigurationOptions object in MakeCall(), AnswerCall(), StartAndJoinConference(), JoinConference(), AddVideo(), AddSharing(), AddDataChannel()
+
+---
+
+### \[0.0.10\] - STS - 2023-07-07
+
+---
+
+## Enhancements
+
+-   **Allow to suscribe to dynamic feed** (i.e. to see in one stream the active talker if he's using its web cam):
+    -   **DynamicFeed** property (new) in **MediaPublication** object must be set to true when **SubscribeToMediaPublication** is used to subscribe to video media publication.
+    -   Once subscription is done, event **OnTrack** is raised. Then the **DynamicFeed** property (new) of **MediaStreamTrackDescriptor** object permits to know that this track contains the dynamic feed.
+
+## Framework targets
+
+-   .Net Core App 3.1 is no more targetted (already deprecated by Microsoft).
+-   .Net Standardd 2.0 / 2.1 and .Net 6.0 are still targetted
+
+### \[0.0.9\] - STS - 2023-05-26
+
+---
+
+## Fix:
+
+-   Test to check if Video subscription must be done was incorrect
+-   In Conference, when sharing is added, a session-initiate is received. We have to send session-terminate if we don't subscribe to it.
+-   In Conference: Subscribe/Unsubscribe on Media before/after the join is now well managed.
+-   In P2P, Video and Sharing stream from remote are handled faster
+-   Correclty handle stream status to create a valid SDP
+
+## Enhancements:
+
+Architecture has been reworked to build a common library compatible with a **Desktop WebRTC implementation** and **Unity WebRTC implementation**.
+
+The **Desktop WebRTC implementation** is equivalent in term of features, dependencies and target platform as the previous version of this library: - Based on **SipSorcery**, **FFmpeg** and **SDL2** - Target **Windows, MacOS** and **Linux**
+
+The **Unity WebRTC implementation** permits to use Rainbow SDK C# with WebRTC features in a **Unity project** - **Unity** use the WebRTC implementation provided by the Chromium project. - **Unity** targets Android, iOS but also Windows, Mac, Linux, Extended Reality devices (XR), Consoles (PS5, XBox, Switch), WebGL
+
+It was necessary to create a new package called **Rainbow.CSharp.SDK.WebRTC.Abstractions** which provide objects and interfaces to inherit / use to be compatible with this new package architecture.
+
+To provide **Desktop WebRTC implementation**, a new Nuget package, **Rainbow.CSharp.SDK.WebRTC.Desktop**, implements interfaces and use objects defined in **Rainbow.CSharp.SDK.WebRTC.Abstractions**.
+
+To provide **Unity WebRTC implementation**, a new Unity package, **Rainbow.CSharp.SDK.WebRTC.Unity**, implements interfaces and use objects defined in **Rainbow.CSharp.SDK.WebRTC.Abstractions**. This package is not yet available publicly but it has been tested with success on Android and some XR devices
+
+There is no more media or device management in this package. It's done in each implementation since it's specific for each.
+
+### \[0.0.8\] - STS - 2023-02-10
+
+---
+
+-   Thanks to new version of the **SDK C# Medias**, it's now possible to decode incoming media (Audio, Video and Sharing ) from P2P call or Conference call.
+    
+-   **Connecting** state is now correctly managed to avoid to add/remove a media when it's not possible
+    
+-   Internally several fixes have been done to avoid CPU usage, to enhance memory management and to clean seveal parts of the code
+    
+
+### \[0.0.7\] - STS - 2023-01-20
+
+---
+
+-   Major rework to avoid memory leak. Use of **IDisposable** interface in objects using unmanaged objects to ensure to dispose them.
+    
+-   `StartAndJoinConference` and `JoinConference` no more use parameters about media subscriptions
+    
+-   Methods about media subscriptions have been renamed for simplification and can be used in Conference or P2P context:
+    
+    -   IsSubscribedToMediaPublication
+        
+    -   SubscribeToMediaPublication
+        
+    -   UnsubscribeToMediaPublication
+        
+    -   IsSharingPublicationAvailable
+        
+    -   CanSubscribeToMediaPublication
+        
+    -   GetMediaPublicationsSubscribed
+        
+    -   GetMediaPublicationsAvailable
+        
+    -   AllowToSubscribeToHisOwnMediaPublication (not useable in a P2P context)
+        
+-   `ImageDelegateInCall` and `ErrorDelegateInCall` events now use parameter **media** to know more specifcally which kind of media is used (Video or Sharing)
+    
+-   `ConferenceMediaPublicationUpdated' has been renamed`OnMediaPublicationUpdated\`
+    
+
+### \[0.0.6\] - STS - 2022-12-07
+
+---
+
+-   Fix NAT Traversal problem: Fix mainly P2P calls which could not be created according network topology of users.
+    
+-   Fix media switch: (for example from one video stream to another one): avoid to send new SDP negociation
+    
+-   Fix several memory links
+    
+-   Great Rework of the API to use new package `Rainbow.SDK.Medias`
+    
+    -   `Rainbow.SDK.Medias` package is dedicated to manage Video / Audio streams (local / remote file, IP TV, Stream server), Devices detection and uses (Webcam, Screen, Headset, Speaker, Microphone)
+        
+    -   Allow to create a Video stream from one or several video streams using filters:
+        
+        -   scale, crop, pad, resize, change fps, add subtitles can be done
+            
+        -   mosaic / overlay can be used to display several streams as input to create one ouput
+            
+        -   and lot more - read documentation of this package
+            
+
+### \[0.0.5\] - STS - 2022-10-05
+
+---
+
+-   Enriched documentation
+    
+-   Technical delivery to modify the validity date of the SDK
+    
+
+### \[0.0.4\] - STS - 2022-09-14
+
+---
+
+## Fix
+
+Catch exception when trying to send Video or Audio packets on a no more valid Peer Connection
+
+### \[0.0.3\] - STS - 2022-08-23
+
+---
+
+## Fix
+
+An error could be raised when audio negociation is performed again for the same communications (for example when a media is added or removed).
+
+## Enhancements
+
+**It's now possible to log on different files if several instance of the SDK (Core) is used in sametime** (for example if you use several bots in the same process).
+
+You need to set to the new parameter `loggerPrefix` a different value for each instance when `Rainbow.Application` object is created. You also need to use a different configuration file for your logger. See the online documentation for more details.
+
+You have nothing more to change when WebRTCCommunications is created.used for this.
+
+### \[0.0.2\] - STS - 2022-07-01
+
+---
+
+### Enhancement
+
+**WebRTCCommunications service**:
+
+-   Add events OnAudioLocalSourceError, OnAudioPlaybackSourceError, OnVideoLocalSourceError and OnSharingLocalSourceError. These events are triggered when a device is not reachable OR when in use it's no more accessible (device unplugged, file no more accessible)
+-   GetVideoRecordingDevices method accepts 2 optional parameters **cameraInput**, **monitorInput** (both set to true by default) to avoid to get Camera and/or Monitor as Video input devices
+
+### Fix:
+
+**WebRTCCommunications service**: In Conference allow to stream the same file with Audio AND Video in same time. It's was already ok in P2P.
+
+[Samples](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/WebRTC) have been updated to use the new version of this SDK
+
+### \[0.0.1\] - STS - 2022-06-15
+
+---
+
+Permits to manage WebRTC communications: **Peer To Peer** or in a **Conference** on **Linux, MacOS and Windows**.
+
+**Peer To Peer communication features**:
+
+-   Answer, Decline, Make, Retract, Hang up call
+    
+-   Add / Remove Video or Sharing
+    
+-   Mute / Unmute Audio, Video or Sharing
+    
+-   Call status: Ringing incoming, ringing outgoing, in progress, ...
+    
+-   Audio Stream: Output and Input are supported
+    
+-   Video Stream: Output is supported. **Input is not supported** (work still in progress)
+    
+
+**Conference features**:
+
+-   Start, Join Conference
+    
+-   Participants list
+    
+-   Publishers list
+    
+-   Mute / Unmute: current user but also other Peers if current user is a moderator of the conference
+    
+-   Call status: Ringing incoming, ringing outgoing, in progress, ...
+    
+-   Display Active Talker. **Current user of this SDK is never seen as Active Talker** (work still in progress)
+    
+-   Add / Remove Video or Sharing
+    
+-   Subscribe (automatically or manualy) to publication of Peers (Video or Sharing)
+    
+-   Request / Refuse / Accept Sharing transfert
+    
+-   Conference delegation
+    
+-   Audio Stream: Output and Input are supported
+    
+-   Video Stream: Ouput is supported. **Input is not supported** (work still in progress)
+    
+
+**Samples available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/WebRTC)**
+
+### Sur cette page
+
+-   [SDK.WebRTC for C#](/docs/sdk/csharp#name-sdk.webrtc-for-c-0)
+-   [\[1.0.0\] - 2024-07-01](/doc/sdk/csharpprevious/webrtc/lts/guides/CHANGELOG#name-1.0.0---2024-07-01-3)
+-   [\[0.0.15-STS\] - 2024-05-27](/doc/sdk/csharpprevious/webrtc/lts/guides/CHANGELOG#name-0.0.15-sts---2024-05-27-17)
+-   [\[0.0.14-STS\] - 2024-03-19](/doc/sdk/csharpprevious/webrtc/lts/guides/CHANGELOG#name-0.0.14-sts---2024-03-19-31)
+-   [\[0.0.13-STS\] - 2024-01-15](/doc/sdk/csharpprevious/webrtc/lts/guides/CHANGELOG#name-0.0.13-sts---2024-01-15-100)
+-   [\[0.0.12-STS\] - 2023-12-08](/doc/sdk/csharpprevious/webrtc/lts/guides/CHANGELOG#name-0.0.12-sts---2023-12-08-134)
+-   [\[0.0.11-STS\] - 2023-09-05](/doc/sdk/csharpprevious/webrtc/lts/guides/CHANGELOG#name-0.0.11-sts---2023-09-05-148)
+-   [\[0.0.10\] - STS - 2023-07-07](/doc/sdk/csharpprevious/webrtc/lts/guides/CHANGELOG#name-0.0.10---sts---2023-07-07-168)
+-   [Enhancements](/docs/sdk/csharp#name-enhancements-172)
+-   [Framework targets](/docs/sdk/csharp#name-framework-targets-194)
+-   [\[0.0.9\] - STS - 2023-05-26](/doc/sdk/csharpprevious/webrtc/lts/guides/CHANGELOG#name-0.0.9---sts---2023-05-26-209)
+-   [Fix:](/docs/sdk/csharp#name-fix:-213)
+-   [Enhancements:](/docs/sdk/csharp#name-enhancements:-243)
+-   [\[0.0.8\] - STS - 2023-02-10](/doc/sdk/csharpprevious/webrtc/lts/guides/CHANGELOG#name-0.0.8---sts---2023-02-10-267)
+-   [\[0.0.7\] - STS - 2023-01-20](/doc/sdk/csharpprevious/webrtc/lts/guides/CHANGELOG#name-0.0.7---sts---2023-01-20-288)
+-   [\[0.0.6\] - STS - 2022-12-07](/doc/sdk/csharpprevious/webrtc/lts/guides/CHANGELOG#name-0.0.6---sts---2022-12-07-361)
+-   [\[0.0.5\] - STS - 2022-10-05](/doc/sdk/csharpprevious/webrtc/lts/guides/CHANGELOG#name-0.0.5---sts---2022-10-05-416)
+-   [\[0.0.4\] - STS - 2022-09-14](/doc/sdk/csharpprevious/webrtc/lts/guides/CHANGELOG#name-0.0.4---sts---2022-09-14-432)
+-   [Fix](/docs/sdk/csharp#name-fix-436)
+-   [\[0.0.3\] - STS - 2022-08-23](/doc/sdk/csharpprevious/webrtc/lts/guides/CHANGELOG#name-0.0.3---sts---2022-08-23-442)
+-   [Fix](/docs/sdk/csharp#name-fix-446)
+-   [Enhancements](/docs/sdk/csharp#name-enhancements-452)
+-   [\[0.0.2\] - STS - 2022-07-01](/doc/sdk/csharpprevious/webrtc/lts/guides/CHANGELOG#name-0.0.2---sts---2022-07-01-464)
+-   [Enhancement](/docs/sdk/csharp#name-enhancement-468)
+-   [Fix:](/docs/sdk/csharp#name-fix:-486)
+-   [\[0.0.1\] - STS - 2022-06-15](/doc/sdk/csharpprevious/webrtc/lts/guides/CHANGELOG#name-0.0.1---sts---2022-06-15-495)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

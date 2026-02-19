@@ -1,0 +1,142 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/core/lts/guides/055_managing_users_guests"
+lastSynced: "2026-02-19T22:35:13.812Z"
+---
+# Documentation
+
+Managing users and guests
+
+LTS release 3.XPubliée le 2025-03-17
+
+## Managing Users and Guests
+
+This guide explains:
+
+-   How to manage Organisations and Companies
+-   How to manage User, Guest and GuestMode
+-   How to manage Company Link
+-   How to manage Bubble Link
+
+It's based on a full example available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/SDK%20V3.X/ConsoleApp/Manage%20Users%20and%20Guests/README.md)
+
+You need an admin account to manage nearly all this features except Bubble Link creation and GuestMode
+
+### Organisation
+
+According its rights, an admin account can manage one or several organisations.
+
+In an organisation, you can have several companies.
+
+You have to use the [Administration](/docs/sdk/csharp) service.
+
+You have these methods:
+
+-   CreateOrganisationAsync(), DeleteOrganisationAsync() and UpdateOrganisationAsync()
+-   GetOrganisationsAsync() and GetOrganisationAsync()
+-   AddCompanyToOrganisationAsync() and RemoveCompanyFromOrganisationAsync()
+
+If you don't have the right to manage organisation, an error will be raised by the server.
+
+### Company
+
+According its rights, an admin account can manage one or several companies.
+
+In an organisation, you can have several companies.
+
+You have to use the [Administration](/docs/sdk/csharp) service.
+
+You have these methods:
+
+-   CreateCompanyAsync(), DeleteCompanyAsync() and UpdateCompanyAsync()
+-   GetCompaniesAsync() and GetCompanyAsync()
+-   InviteUserInCompanyAsync()
+
+If you don't have the right to manage company, an error will be raised by the server.
+
+### Create User and GuestMode
+
+According its rights, an admin account can create users and guests.
+
+You have to use the [Administration](/docs/sdk/csharp) service.
+
+It's possible to create them in several ways:
+
+-   CreateUserAsync() - a standard user is created
+-   CreateUserWithCompanyLinkAsync() - a standard user is created using a Company Link (see dedicated chapter). **It's not necessary to have admin rights to use this method**
+-   CreateUserWithBubbleLinkAsync() - a **GuestMode** is created using a Bubble Link (see dedicated chapter). **It's not necessary to have admin rights to use this method**
+
+### Differences between standard User and GuestMode
+
+To know if a Contact is a GuestMode, check **GuestMode** property of a [Contact](/docs/sdk/csharp)
+
+A GuestMode can be created **without admin rights** using **Administration.CreateUserWithBubbleLinkAsync()**
+
+GuestMode restrictions:
+
+-   it has been created thanks to a Bubble Link - so it's related to a bubble
+-   it will be disabled / removed:
+    -   when the conference of this bubble is finished and if it has joined it
+    -   or after 48 hours
+-   it can't have a network / roster: No user can be added to the guest's network (subject to change).
+-   it can’t be added to a user's network.
+-   it can’t do search (subject to change).
+-   it can’t create a bubble, a channel or a group (can be added into bubbles, channels or groups).
+-   it can't be associated to Hybrid or Hub devices
+-   it CAN post a file (can receive files).
+-   **it CAN participate to the conference related to this bubble**
+-   **it CAN be found by search**
+
+### Company Link
+
+According its rights, an admin account can create Company Link.
+
+You have to use the [Administration](/docs/sdk/csharp) service.
+
+You have these methods:
+
+-   CreateJoinCompanyLinkAsync(), DeleteJoinCompanyLinkAsync()
+-   GetJoinCompanyLinksAsync()
+-   GetDomainNameFromBubbleLink()
+
+If you don't have the right to manage Company Link, an error will be raised by the server.
+
+Once you have a valid Company Link, you can create users **without admin rights** using **Administration.CreateUserWithCompanyLinkAsync()**.
+
+### Bubble Link
+
+Any user who is Owner or Moderator of a Bubble can manage Bubble Link.
+
+You have to use the [Bubbles](/docs/sdk/csharp) service.
+
+You have these methods:
+
+-   CreateBubbleLinkAsync(), RemoveBubbleLinkAsync(), GenerateNewBubbleLinkAsync()
+-   GetBubbleLinkAsync()
+-   CheckBubbleLinkValidityAsync()
+-   JoinByBubbleLinkAsync() - to join a bubble if you have it's Bubble Link
+
+Once you have a valid Bubble Link, you can create GuestMode **without admin rights** using **Administration.CreateUserWithBubbleLinkAsync()**
+
+### Examples
+
+You can take a look to several examples available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/SDK%20V3.X/README.md)
+
+### Sur cette page
+
+-   [Managing Users and Guests](/docs/sdk/csharp#name-managing-users-and-guests-0)
+-   [Organisation](/docs/sdk/csharp#name-organisation-34)
+-   [Company](/docs/sdk/csharp#name-company-69)
+-   [Create User and GuestMode](/docs/sdk/csharp#name-create-user-and-guestmode-104)
+-   [Differences between standard User and GuestMode](/docs/sdk/csharp#name-differences-between-standard-user-and-guestmode-133)
+-   [Company Link](/docs/sdk/csharp#name-company-link-209)
+-   [Bubble Link](/docs/sdk/csharp#name-bubble-link-244)
+-   [Examples](/docs/sdk/csharp#name-examples-281)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

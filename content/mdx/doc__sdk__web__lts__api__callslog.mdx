@@ -1,0 +1,191 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/callslog"
+lastSynced: "2026-02-19T22:35:14.901Z"
+---
+# Documentation
+
+CallsLog service
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## CallsLog
+
+This service allow to get the call log and manage it. The main methods and events proposed in that service allow to:  
+\- Get all calls log  
+\- Delete one or all calls log  
+\- Mark calls as read / unread
+
+**Emits**: `event:RAINBOW_ONCALLLOGUPDATED`, `event:RAINBOW_ONCALLLOGACKUPDATED`  
+**Access**: public
+
+-   [CallsLog](#module_CallsLog)
+    -   [fetchCallLogs(numberOfCallLogs)](#module_CallsLog+fetchCallLogs) ⇒ `Promise`
+    -   [fetchPaginatedCallLogs(numberOfElementsPerPage)](#module_CallsLog+fetchPaginatedCallLogs) ⇒ `Promise`
+    -   [getMissedCallLogCounter()](#module_CallsLog+getMissedCallLogCounter) ⇒ `number`
+    -   [getMissedCallLogNumber()](#module_CallsLog+getMissedCallLogNumber) ⇒ `number`
+    -   [deleteOneCallLog(id)](#module_CallsLog+deleteOneCallLog) ⇒ `boolean`
+    -   [deleteCallLogsForContact(jid)](#module_CallsLog+deleteCallLogsForContact) ⇒ `boolean`
+    -   [deleteAllCallLogs()](#module_CallsLog+deleteAllCallLogs) ⇒ `void`
+    -   [markCallLogAsRead(id)](#module_CallsLog+markCallLogAsRead) ⇒ `void`
+    -   [markAllCallsLogsAsRead()](#module_CallsLog+markAllCallsLogsAsRead) ⇒ `void`
+    -   [isInitialized()](#module_CallsLog+isInitialized) ⇒ `boolean`
+
+### callsLog.fetchCallLogs(numberOfCallLogs) ⇒ `Promise`
+
+Get the Call-logs for current user; If this is the first time, the API will load the latest 'numberOfCallLogs' entries for this user Otherwise it will give all the available already loaded call-logs for this user; The user is able to ask for more call-logs via fetchPaginatedCallLogs API;
+
+**Kind**: instance method of [`CallsLog`](#module_CallsLog)  
+**Returns**: `Promise` - Promise with an array of call log entry  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+numberOfCallLogs
+
+`number`
+
+Specify number of call logs to fetch from the server. Defaults to 100. (max value allowed 250)
+
+### callsLog.fetchPaginatedCallLogs(numberOfElementsPerPage) ⇒ `Promise`
+
+Get all available call-logs already loaded + the new fetched from the server
+
+**Kind**: instance method of [`CallsLog`](#module_CallsLog)  
+**Returns**: `Promise` - Promise with an array of call log entry  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+numberOfElementsPerPage
+
+`number`
+
+Specify number of call logs to fetch from the server. Defaults to 100. (max value allowed 250)
+
+### callsLog.getMissedCallLogCounter() ⇒ `number`
+
+Get the number of call missed (state === "missed" && direction === "incoming")
+
+**Kind**: instance method of [`CallsLog`](#module_CallsLog)  
+**Returns**: `number` - The number of call missed  
+**Access**: public  
+
+### callsLog.getMissedCallLogNumber() ⇒ `number`
+
+Get the number of call missed (state === "missed" && direction === "incoming") You can call this method before retrieving all the callLogs from the server (by using fetch)
+
+**Kind**: instance method of [`CallsLog`](#module_CallsLog)  
+**Returns**: `number` - The number of call missed  
+**Access**: public  
+
+### callsLog.deleteOneCallLog(id) ⇒ `boolean`
+
+Delete a call log from it's id You have to listen to event `RAINBOW_ONCALLLOGUPDATED` to know when the action is finished
+
+**Kind**: instance method of [`CallsLog`](#module_CallsLog)  
+**Returns**: `boolean` - true  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The call log id to remove
+
+### callsLog.deleteCallLogsForContact(jid) ⇒ `boolean`
+
+Delete all calls log items associated to a contact's given jid You have to listen to event `RAINBOW_ONCALLLOGUPDATED` to know when the action is finished
+
+**Kind**: instance method of [`CallsLog`](#module_CallsLog)  
+**Returns**: `boolean` - true  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+jid
+
+`string`
+
+The call log id to remove
+
+### callsLog.deleteAllCallLogs() ⇒ `void`
+
+Delete all call logs history You have to listen to event `RAINBOW_ONCALLLOGUPDATED` to know when the action is finished
+
+**Kind**: instance method of [`CallsLog`](#module_CallsLog)  
+**Access**: public  
+
+### callsLog.markCallLogAsRead(id) ⇒ `void`
+
+Mark a call log item as read You have to listen to event `RAINBOW_ONCALLLOGACKUPDATED` to know when the action is finished
+
+**Kind**: instance method of [`CallsLog`](#module_CallsLog)  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The call log id
+
+### callsLog.markAllCallsLogsAsRead() ⇒ `void`
+
+Mark all call log items as read You have to listen to event `RAINBOW_ONCALLLOGACKUPDATED` to know when the action is finished
+
+**Kind**: instance method of [`CallsLog`](#module_CallsLog)  
+**Access**: public  
+
+### callsLog.isInitialized() ⇒ `boolean`
+
+Check if the call log history has been received from Rainbow A false answer means that the call logs have not yet been retrieved from the server.
+
+**Kind**: instance method of [`CallsLog`](#module_CallsLog)  
+**Returns**: `boolean` - True if the call logs have been retrieved. False elsewhere.  
+**Access**: public
+
+### Sur cette page
+
+-   [CallsLog](/docs/sdk/web#name-callslog-3)
+-   [callsLog.fetchCallLogs(numberOfCallLogs) ⇒ Promise](/docs/sdk/web#name-callslog.fetchcalllogsnumberofcalllogs--promise-74)
+-   [callsLog.fetchPaginatedCallLogs(numberOfElementsPerPage) ⇒ Promise](/docs/sdk/web#name-callslog.fetchpaginatedcalllogsnumberofelementsperpage--promise-114)
+-   [callsLog.getMissedCallLogCounter() ⇒ number](/docs/sdk/web#name-callslog.getmissedcalllogcounter--number-154)
+-   [callsLog.getMissedCallLogNumber() ⇒ number](/docs/sdk/web#name-callslog.getmissedcalllognumber--number-163)
+-   [callsLog.deleteOneCallLog(id) ⇒ boolean](/docs/sdk/web#name-callslog.deleteonecalllogid--boolean-172)
+-   [callsLog.deleteCallLogsForContact(jid) ⇒ boolean](/docs/sdk/web#name-callslog.deletecalllogsforcontactjid--boolean-212)
+-   [callsLog.deleteAllCallLogs() ⇒ void](/docs/sdk/web#name-callslog.deleteallcalllogs--void-252)
+-   [callsLog.markCallLogAsRead(id) ⇒ void](/docs/sdk/web#name-callslog.markcalllogasreadid--void-261)
+-   [callsLog.markAllCallsLogsAsRead() ⇒ void](/docs/sdk/web#name-callslog.markallcallslogsasread--void-301)
+-   [callsLog.isInitialized() ⇒ boolean](/docs/sdk/web#name-callslog.isinitialized--boolean-310)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

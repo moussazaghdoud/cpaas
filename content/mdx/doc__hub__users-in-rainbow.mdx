@@ -1,0 +1,319 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "docs-hub"
+source: "https://developers.openrainbow.com/doc/hub/users-in-rainbow"
+lastSynced: "2026-02-19T22:35:13.184Z"
+---
+# Documentation
+
+Rainbow users
+
+## Rainbow users
+
+---
+
+### Preamble[](/docs/hub/users-in-rainbow#preamble)
+
+---
+
+Rainbow users are in the center of the **relationship machine**. Understanding how Rainbow users are managed and work is important to build the best experience in your application.
+
+This guide describes in details some main concepts that you need to know:
+
+-   What are the different roles of users in Rainbow and the associated rights ?
+    
+-   How profiles impact the rights of a user ?
+    
+-   How applications impact the rights of a user ?
+    
+-   Why the user's company location is important ?
+    
+
+### Introduction on roles in Rainbow[](/docs/hub/users-in-rainbow#role_introduction)
+
+---
+
+In Rainbow, different `roles` exist to offer individual experiences: Sometimes, you need to have users with a limited connection time while sometimes, you need to do administrative tasks such as creating new Rainbow accounts. These different behaviors can be obtained by giving to the user who executes the action a specific role.
+
+In Rainbow, there are three main different roles: The **User** role, the **Guest** role and the **Administrator** role. All these kind of users may interact each other and are not limited to dialog with users of the same role.
+
+#### User role[](/docs/hub/users-in-rainbow#user_role)
+
+The `user` role is the basic role used in Rainbow. By default when creating an account you have the user role. With this role, a user can interact with anybody by actions like sending an instant message, calling in audio or video, sharing his computer screen, a file, etc...
+
+The main characteristics are:
+
+-   Accounts with user role never expire (as opposed to accounts with guest role).
+    
+-   Accounts with user role can connect to our ALE Rainbow applications and are not limited to third party applications (as opposed to accounts with guest role).
+    
+-   Accounts with user role can't do administrative tasks (as opposed) to accounts with administrator role).
+    
+
+Account of type `user` can be created by using the Node.JS SDK or directly from our REST APIs.
+
+#### Guest role (CPaaS role)[](/docs/hub/users-in-rainbow#guest_role)
+
+The `guest` role can be seen as the user role but with a limited set of capabilities and a limited life duration. Concretely, this role has to be used when a user will have a short interaction with Rainbow such as when visiting a Web site and when this interaction could stay anonymous or with a limited identity (for example we don't need that the user logs in to his account).
+
+The main characteristics are:
+
+-   Accounts with guest role expire. By default after 48 hours but this duration can be fixed guest by guest at creation step. Once expired, Rainbow interactions are refused for this account.
+    
+-   Accounts with guest role can't connect to our ALE Rainbow applications. These accounts have to be created and used exclusively in third party applications.
+    
+-   Accounts with guest role can't have a network: No user can be added to the guest's network (subject to change).
+    
+-   Accounts with guest role can’t be added to a user's network.
+    
+-   Accounts with guest role can’t do search (subject to change).
+    
+-   Accounts with guest role can't be found by search.
+    
+-   Accounts with guest role can’t post a file (can receive files).
+    
+-   Accounts with guest role can’t create a bubble, a channel or a group (can be added into bubbles, channels or groups).
+    
+-   Accounts with guest role can't be associated to a PBX device.
+    
+
+Account of type `guest` can be created by using the Node.JS SDK or directly from our REST APIs.
+
+> 💡 **NOTE**  
+> Don't confuse CPaaS user Guest role with the UCaaS feature joining a Bubble in guest Mode.  
+> UCaaS guestMode is totally independent of CPaaS role. It was designed for joining a Bubble with meet.openrainbow.com for users without any account.
+
+#### Administrator role[](/docs/hub/users-in-rainbow#administrator_role)
+
+The administrator role don't exist practically but is in fact a set of different roles for doing administrative, provisionning or business tasks. The most common administrator role is the `admin` role. When having the admin role, an account can do administrative tasks and provisionning tasks. Two types (meaning levels) of admin roles exist: the `company_admin` type and the `org_admin` type. The role admin of type company\_admin is given to any accounts who manage a company and the users included. When managing several companies, we use the role admin of type org\_admin. For Business Partners, others roles exist for being able to buy & sell licenses such as `bp_admin` and `bp_finance`. For developers, they are administrators of their owned applications and so have the role of `app_admin`.
+
+The main characteristics are:
+
+-   Accounts with administrator role never expire.
+    
+-   Accounts with administrator role have the user role too.
+    
+-   An account can have several administrator roles such as admin and app\_admin.
+    
+-   Accounts with admin or app\_admin role can't do business tasks (unlike accounts with bp\_admin or bp\_finance role).
+    
+-   Accounts with admin or bp\_admin/bp\_finance can't manage applications (unlike accounts with app\_admin role)
+    
+
+### Rights in Rainbow[](/docs/hub/users-in-rainbow#rights)
+
+---
+
+#### Rights given by roles[](/docs/hub/users-in-rainbow#rights_role)
+
+As described in the previous paragraph, the role gives to the account a set of global rights that can be divided between **Communication** right, **Administration** right and **Business** right:
+
+-   **Communication right** is the right to send and receive instant messages, call others rainbow users, exchange files, etc...
+    
+-   **Administrations right** is the rights to create users and manage them, associate anc configure PBX devices, etc...
+    
+-   **Business right** is the rights to buy Rainbow licenses resell them, etc...
+    
+
+This following table sums-up the relation between roles and rights.
+
+Role
+
+Communication Right
+
+Administration Right
+
+Business Right
+
+**USER**
+
+YES
+
+NO
+
+NO
+
+**GUEST**
+
+PARTIAL
+
+NO
+
+NO
+
+**ADMINSTRATOR**
+
+YES
+
+YES
+
+YES  
+Only bp\_finance, bp\_admin
+
+#### Rights given by profiles[](/docs/hub/users-in-rainbow#rights_profile)
+
+Profiles in Rainbow are the subscriptions owned by an account and so profiles give to this account more or less rights on features. As an example, with a lower profile, you are limited to invite a few people to a bubble. Using an higher profile, you will be able to invite more users. So for each role, you can have differents features available or limits available depending on the profiles the account has. In Rainbow, you can subscribe to the **Essential** profile which is the most used profile in Rainbow. By default when creating a Rainbow account on your own, you have the Essential profile. Then you can subscribe to move your account to our **Business** or **Enterprise** profiles. Generally speaking, this action is done by your Rainbow administrator. You can't do it on your own as a user. Finally, you can subscribe to some **Conference** profiles to be able to schedule conference bridges.
+
+As these profiles are linked to subscriptions and mainly to differentiate your experience in our Rainbow applications, when developping a third party application, in most of the cases, new accounts created by your application will have the Essential profile. You don't need to care about the profile of the account. The exception is when you create applications where users connect using their existing Rainbow account. In that case, they inherit from their existing profiles.
+
+The complete list of profiles and associated rights can be found in the [Rainbow Offer guide](https://www.al-enterprise.com/en/rainbow/subscription-plans).
+
+The next paragraph explains why you don't need to take care about the account profile in third party applications.
+
+#### Rights given by applications[](/docs/hub/users-in-rainbow#rights_applications)
+
+When a user connects to Rainbow using an application, his current profile (which can be already the sum of several profiles) is augmented by the application profile. When connecting using our ALE Rainbow applications, the associated application profile does not contain new or differents rights. On the other side, when connecting using any third party applications, the associated profile contains lots of new rights and different limitations. That's why even an account with an Essential profile can access to features limited to others profile when using a third party applications. The reason is that when using a third party applications, you (as a developer who offer these features) are already paying us using the **Pay-As-You-Go** model or the **Business** model.
+
+Here is the list of available features or extra limitations in third party applications brought by the application profile that leverage the account role and the account profile.
+
+Role
+
+Rights
+
+Features / Limit
+
+Description
+
+Administrator
+
+Company metrics
+
+YES
+
+You have access to company usage metrics (REST API)
+
+Administrator
+
+Max number of admin account
+
+10
+
+Up to 10 admin account can be created
+
+Administrator
+
+Mass-provisioning
+
+YES
+
+Users can be imported to Rainbow using CSV (REST API)
+
+User
+
+Max number of bubble users
+
+5000
+
+Max number of users per bubble
+
+User
+
+Bubble members promotion
+
+YES
+
+Members in bubble can be promoted
+
+User
+
+Call Subject
+
+YES
+
+A call subject (text information) can be associated to a PSTN Call and WebRTC audio/video call
+
+User
+
+Channels management
+
+YES
+
+Channels can be created and managed
+
+User
+
+Support of Telephony features
+
+Call forward, deflect, nomadic, second call, transfer, voice mail and phonebook
+
+Advanced telephony features \[1\]
+
+User
+
+WebRTC Gateway
+
+YES outgoing call
+
+You can make a WebRTC call to a PSTN device \[1\]
+
+User
+
+WebRTC Conference
+
+10
+
+You can do a WebRTC conference in audio & video \[1\]
+
+User
+
+WebRTC call recording
+
+YES
+
+WebRTC calls can be recorded locally or on Rainbow \[1\]
+
+\[1\]: Will be available soon through SDK.
+
+#### Rights of a Rainbow user[](/docs/hub/users-in-rainbow#rights_user)
+
+We can summarize by saying that the rights of a Rainbow account are given by 3 things: the role, the profile and the application. Together they define the rights of a Rainbow user.
+
+There are additional factors that impact the rights of an account to do interactions with others Rainbow users. These factors are the visibility of a user and his membership in one hand and the relations an account have with others.
+
+### Country of company[](/docs/hub/users-in-rainbow#country)
+
+---
+
+When creating a third party application, in most cases, you need to create a company to keep your Rainbow accounts private and not reachable from an other application. And when creating a company, the main parameter to set is the `country` of this company.
+
+The country of the company where accounts will be created is important because it has an impact on the performance of your application. By setting the country, in fact **you localyze the Rainbow data in one of our datacenters**. And depending on this location, if not set correctly, the global performance can be degraded because the latency to access the data will be higher. For example, you create an application for San Francisco users and you create a company located in France. In that case, when using your application, each request will be sent to one of our European datacenters instead of an American datacenter.
+
+By default, if country is not specified, data are located in an european datacenter.
+
+In case of deploying an application targetting a large numbers of accounts worldwide, you will need to contact us for putting in place the right environment. Please contact our local support sales team.
+
+### Interested in[](/docs/hub/users-in-rainbow#interested_in)
+
+---
+
+-   [Mastering Rainbow core concepts](/#/documentation/doc/hub/rainbow-core-concepts)
+    
+-   [Visibility and privacy rules](/#/documentation/doc/hub/users-visibility-and-privacy)
+    
+
+---
+
+*Last updated July, 25th 2022*
+
+### Sur cette page
+
+-   [Rainbow users](/docs/hub/users-in-rainbow#name-rainbow-users-0)
+-   [Preamble](/docs/hub/users-in-rainbow#name-preamble--4)
+-   [Introduction on roles in Rainbow](/docs/hub/users-in-rainbow#name-introduction-on-roles-in-rainbow--36)
+-   [User role](/docs/hub/users-in-rainbow#name-user-role--46)
+-   [Guest role (CPaaS role)](/docs/hub/users-in-rainbow#name-guest-role-cpaas-role--75)
+-   [Administrator role](/docs/hub/users-in-rainbow#name-administrator-role--139)
+-   [Rights in Rainbow](/docs/hub/users-in-rainbow#name-rights-in-rainbow--175)
+-   [Rights given by roles](/docs/hub/users-in-rainbow#name-rights-given-by-roles--179)
+-   [Rights given by profiles](/docs/hub/users-in-rainbow#name-rights-given-by-profiles--267)
+-   [Rights given by applications](/docs/hub/users-in-rainbow#name-rights-given-by-applications--282)
+-   [Rights of a Rainbow user](/docs/hub/users-in-rainbow#name-rights-of-a-rainbow-user--468)
+-   [Country of company](/docs/hub/users-in-rainbow#name-country-of-company--477)
+-   [Interested in](/docs/hub/users-in-rainbow#name-interested-in--493)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

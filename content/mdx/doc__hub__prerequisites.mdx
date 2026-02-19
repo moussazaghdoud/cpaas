@@ -1,0 +1,298 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "docs-hub"
+source: "https://developers.openrainbow.com/doc/hub/prerequisites"
+lastSynced: "2026-02-19T22:35:13.127Z"
+---
+# Documentation
+
+Prerequisites
+
+## Prerequisites
+
+---
+
+The following paragraphes list the prerequisites to developing with Rainbow.
+
+### If you're developing Web application
+
+---
+
+When developing Web applications, you will use mainly the **SDK for Web**. Here is the list of requirements you need.
+
+Requirements
+
+SDK for Web
+
+**OS**
+
+Windows, MacOS, Linux \[1\]
+
+**Target**
+
+Chrome, Firefox, Safari, Edge \[2\]
+
+**Server**
+
+Any web server \[3\]
+
+**Knowledge**
+
+Front-end Web development
+
+**Size**
+
+~3.5MB
+
+**Availability**
+
+YES
+
+**Dependencies**
+
+JQuery 2.3.1, AngularJS 1.7.5 \[4\], Moment 2.x
+
+\[1\]: VDI environments are not supported. SDK for Web may be used on mobile platforms but induce a higher battery consumption than using our mobile SDKs.
+
+\[2\]: Audio and Video services based on WebRTC are accessible on Chrome, Edge and Firefox only.
+
+\[3\]: Like Apache, NodeJS, Nginx. Node.JS is mandatory for installing the Rainbow SDK for Web.
+
+\[4\]: Starting from version 1.54, Rainbow Web SDK will work only with AngularJS 1.7.5. Old versions of the Rainbow Web SDK still work with AngularJS 1.5.7.
+
+### If you're developing Server side applications
+
+---
+
+If you're developing Server side applications, you could use either the **SDK for Node.JS**, the **SDK CSharp** or directly our **REST APIs** for administrative tasks.
+
+Requirements
+
+SDK for Node.JS
+
+SDK for CSharp
+
+REST API
+
+**OS**
+
+Windows, MacOS, Linux \[1\]
+
+Windows, MacOS, Linux
+
+Any OS
+
+**Target**
+
+Node.JS application
+
+Web application
+
+Any application
+
+**Environment**
+
+Node.JS
+
+.Net environment
+
+Any languages
+
+**Knowledge**
+
+Back-end Web development
+
+Back-end Web development
+
+REST development
+
+**Event Pipe**
+
+XMPP
+
+XMPP or S2S
+
+\-
+
+**Size**
+
+~1MB
+
+~2.5MB
+
+\-
+
+**Availability**
+
+YES
+
+YES
+
+YES
+
+**Dependencies**
+
+Node.JS active LTS version \[2\]
+
+\[1\]: VDI environments are not supported.
+
+\[2\]: SDK Node.JS is supported only from the active NodeJS and NPM LTS version.
+
+### If you're developing Mobile applications
+
+---
+
+If you're developing mobile applications, you could use the **SDK for Android** , the **SDK for iOS**, the **SDK CSharp** or the **SDK ReactNative**.
+
+Requirements
+
+SDK for Android
+
+SDK for iOS
+
+SDK CSharp
+
+SDK ReactNative
+
+**OS**
+
+Android  
+Starting Marshmallow
+
+iOS  
+Starting iOS 13
+
+iOS Starting iOS 9  
+Android Starting Lollipop
+
+iOS>=9, Android >= 6 (Marshmallow)
+
+**Target**
+
+An Android device
+
+An iOS device
+
+An iOS device or and Adnroid device
+
+An iOS or Android device
+
+**Environment**
+
+Android device or AVD
+
+iOS device or virtual device
+
+iOS device, Android or virtual device
+
+iOS, Android or virtual device, VSCode or equivalent
+
+**Knowledge**
+
+Android development  
+Android Studio development
+
+Objectice C or Swift \[1\]  
+XCode development
+
+CSharp (Xamarin on iOS and on Androidd).  
+Can reuse existing Objective C or Java code
+
+JavaScript, ReactNative
+
+**Size**
+
+~15MB
+
+~15MB
+
+~5MB
+
+\[1\]: Swift applications can import and use our SDK for iOS based on Objective C.
+
+#### Developing Mobile Web applications
+
+In case of multi-platforms applications based on Web technologies (JavaScript), you can use our SDK for Web but with the following limitations:
+
+Theme
+
+ANDROID
+
+iOS
+
+**MEDIA**
+
+**More battery consumption**  
+WebRTC Audio and Video call can induce a higher battery usage.
+
+**No Audio/Video Call**  
+Browsers on iOS are based on WebKit which is not yet supported by our SDK Web.
+
+**PUSH**
+
+**More battery/data consumtion**  
+Websocket connection will be maintained (to receive notifications) when in background which can induce a higher battery and data usage.
+
+**No Push notifications**  
+Web applications in background can't received incoming notifications
+
+**Note:** At this time of writing, support of Webkit based browsers is in progress.
+
+**Note:** Building hybrid applications (eg. Cordova, Ionic...) will allow you to receive push notifications on all platforms.
+
+#### Developing Mobile Hybrid applications
+
+At this time of writing, we have not experienced enough Mobile Hybrid based applications with the **SDK Web** for supporting this kind of applications officially. We are relaying on your experiments to help us moving in that direction.
+
+### If you're developing Desktop applications
+
+---
+
+If you're developing desktop applications, you could use the the **SDK CSharp**
+
+Requirements
+
+SDK CSharp (Beta version)
+
+**OS**
+
+Windows, MacOS
+
+**Knowledge**
+
+CSharp development
+
+**Size**
+
+~5MB
+
+### Interested in
+
+---
+
+-   [Developing on the Rainbow Sandbox](/docs/hub/developer-sandboxed-platform)
+    
+-   [Understanding Rainbow core concepts](/docs/hub/rainbow-core-concepts)
+    
+
+---
+
+*Last updated August, 26th 2022*
+
+### Sur cette page
+
+-   [Prerequisites](/docs/hub/prerequisites#name-prerequisites-0)
+-   [If you're developing Web application](/docs/hub/prerequisites#name-if-youre-developing-web-application-7)
+-   [If you're developing Server side applications](/docs/hub/prerequisites#name-if-youre-developing-server-side-applications-96)
+-   [If you're developing Mobile applications](/docs/hub/prerequisites#name-if-youre-developing-mobile-applications-241)
+-   [Developing Mobile Web applications](/docs/hub/prerequisites#name-developing-mobile-web-applications-359)
+-   [Developing Mobile Hybrid applications](/docs/hub/prerequisites#name-developing-mobile-hybrid-applications-410)
+-   [If you're developing Desktop applications](/docs/hub/prerequisites#name-if-youre-developing-desktop-applications-416)
+-   [Interested in](/docs/hub/prerequisites#name-interested-in-461)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

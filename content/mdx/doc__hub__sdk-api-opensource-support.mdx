@@ -1,0 +1,272 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "docs-hub"
+source: "https://developers.openrainbow.com/doc/hub/sdk-api-opensource-support"
+lastSynced: "2026-02-19T22:35:13.152Z"
+---
+# Documentation
+
+REST API and SDK stability policies
+
+## Rainbow REST APIs and SDKs stability and compatibility policies
+
+---
+
+This document describes how ALE International supports and deprecates legacy Rainbow REST APIs, Rainbow SDKs, Rainbow CLI tool and Rainbow open-source libraries published to give developers time to transition to the latest version or at least a compatible one.
+
+### Rainbow REST APIs policies
+
+---
+
+The following policies rules apply to all Rainbow REST APIs published in the Rainbow for Developers platform.
+
+#### Rainbow REST APIs compatibility policy
+
+Wherever possible, Rainbow REST API resources and their representations (i.e. parameters sent and received) will be maintained in a backwards compatible manner.
+
+This means that Rainbow REST APIs are backwards compatible: A program written against one version of that API will continue to work the same way, without modification, against future versions of the API.
+
+If it is necessary to change an API resource or representation in a way that is not backwards compatible (breaking change), a new resource will be created using the new representation, and the old resource will be maintained in accordance with the deprecation policy, described at the end of this document.
+
+#### Rainbow REST APIs stability policy
+
+Rainbow REST APIs fulfill the following stability rule: An existing resource and his representation will continue to exist with the same meaning in future versions. This means:
+
+-   The meaning of HTTP response codes can be trusted. Each API may return several HTTP response codes but these codes once defined never change. No new HTTP response codes are introduced in existing API once published.
+    
+-   A resource may support additional query parameters in future versions but they will not be mandatory. The absence of a value or a default value (as appropriate) will maintain prior behavior.
+    
+-   If a resource accepts a representation (e.g. via POST or PUT), it will continue to accept the same representation in future versions. Additional properties that are recognized in a resource will not be mandatory, and the default value assumed in their absence will be chosen to maintain the previous meaning of the resource.
+    
+-   Representations based on media type "Application/JSON" have additional stability guarantees such as:
+    
+    -   If a property exists in a JSON object returned by the REST API, it will continue to be returned with the same name, and the same value type (i.e. String, number, array or object).
+        
+    -   If a property has a primitive type and the APIs documentation does not explicitly limit its possible values, clients must not assume the values are constrained to a particular set of possible responses.
+        
+    -   If a property of an object is not explicitly declared as mandatory in the API, clients must not assume it will be present.
+        
+    -   New properties may be added to a representation at any time, but a new property must not alter the meaning of an existing property.
+        
+    -   If a property of an object is a URI, then the resource identified by that URI must maintain the same compatibility guarantee.
+        
+
+In some specific cases, the behavior of a Rainbow REST APIs may change without explicit deprecation period if the existing behavior is incorrect or constitutes a security or privacy vulnerability. In that cases, the changelog will describe the issue and a possible workaround if exists.
+
+-   Rainbow REST APIs having incorrect resources or representations may be changed to fulfill REST architecture requirements. For example, in case of APIs with content type "Application/JSON", the parameters names and values may be modified if they are considered as incorrect (e.g. API that returns 'null' instead of an empty array when returning an empty list of users). This is considered as bug and will be corrected as soon as possible.
+    
+-   Rainbow REST APIs that constitute a security or privacy vulnerability may be blocked resulting in an HTTP 404 not found when calling these APIs. That case may be temporary.
+    
+
+#### Rainbow REST APIs resource/rate limits and paging policy
+
+Resource rate limits, if any, and the default and maximum sizes of paged data are not considered part of the APIs and may change without explicit deprecation period and policy.
+
+For example, an API can be changed to return by default only the 30 first results instead of the 100 first one to optimize bandwidth consumption.
+
+Resource rate limits and default and maximum sizes of paged data are described in the APIs documentation published on the Rainbow for Developers for all APIs concerned. When changed, the APIs documentation will be updated and the changelog will summarize those changes. See the deprecation policy chapter.
+
+### Rainbow SDKs and Rainbow CLI tool policies
+
+---
+
+The following policies rules apply to all Rainbow SDKs published in the Rainbow for Developers platform (i.e. SDK for Web, SDK for Node.JS, SDK for C#, SDK for Android, SDK for iOS and SDK for ReactNative) and for the Rainbow CLI tool.
+
+#### Rainbow SDKs and Rainbow CLI tool compatibility policy
+
+Wherever possible, Rainbow SDKs and the Rainbow CLI tool will be maintained in a backwards compatible manner versus the evolution of Rainbow (e.g. Rainbow cloud platform evolution).
+
+This means that Rainbow SDKs and Rainbow CLI tool are backwards compatible versus Rainbow:
+
+-   A program written using one version of a SDK will continue to work the same way, without modification, versus future versions of Rainbow.
+-   The Rainbow CLI tool will continue to work the same way, without modification, versus future versions or Rainbow.
+
+##### Details about Rainbow SDKs compatibility versus support
+
+Even if it is not required to update a Rainbow SDK used in your application each time a new version is published (except in case of breaking change, see below), it is *strongly recommended* to use the currently supported LTS version in order to get official support and fixes. No fixes will be released for unsupported versions. Please refer to [SDK Supported Versions](/docs/hub/lts-support-sdk-version) for details about the Rainbow SDKs support policy.
+
+If it is necessary to update a Rainbow SDK or the Rainbow CLI tool (breaking change) due to a technical evolution of the Rainbow platform or to update a third-party library included in this SDK or tool for security reason or a critical issue impacting it, a new Rainbow SDK or Rainbow CLI tool will be published and this current Rainbow SDK or Rainbow CLI tool will be maintained in accordance with the deprecation policy, attached at the end of this document.
+
+#### Rainbow SDKs and Rainbow CLI tool stability policy
+
+##### Rainbow SDKs stability policy
+
+The Rainbow SDKs stability policy concerns public API of Rainbow SDKs and public commands of the Rainbow CLI tool.
+
+A Rainbow SDKs public API fulfill the following stability rule: An existing public API will continue to exist with the same definition and meaning in future versions. This means:
+
+-   The synchronicity of the API will not change. A SDK API that returns a result in an asynchronous manner (i.e. Promise based) will stay asynchronous.
+    
+-   A SDK API may support additional input parameters in future versions but they will not be mandatory and added after existing parameters.
+    
+-   A SDK API may support additional return parameters when the result content type is a JSON object.
+    
+
+Additionally, new SDK API may be added to the SDK but they don't need to be called explicitly in order to have the same SDK behavior than in a previous release.
+
+For easing Rainbow SDKs evolution, the following cases are not considered as a SDK breaking change and will not be subject to the Rainbow deprecation policy:
+
+-   The behavior or the name of a Rainbow SDK API may change if the existing behavior is incorrect or if the naming is no more homogenous according to the evolution of this SDK.
+    
+-   An existing Rainbow SDK API may be removed according to the evolution of this SDK.
+    
+
+In these cases, the APIs documentation associated to this SDK will be updated according to the changes and the Rainbow SDK changelog will describe this evolution with the necessary information to overcome this change. Clients that want to use this SDK must do the change.
+
+##### Rainbow CLI tool stability policy
+
+A Rainbow CLI tool command fulfill the following stability rule: An existing public command will continue to exist with the same definition and meaning in future versions. This means:
+
+-   The name of the commands will not change.
+    
+-   The required and optional parameters name will not change.
+    
+-   The returned content when using the JSON output will not change.
+    
+
+Additionally, new command may be added to the Rainbow CLI tool but they don't need to be called explicitly in order to have the same behavior than in a previous release.
+
+For easing Rainbow CLI evolution, the following cases are not considered as a Rainbow CLI tool breaking change and will not be subjected to the Rainbow deprecation policy:
+
+-   The behavior or the name of a Rainbow CLI tool command may change if the existing behavior is incorrect or if the naming is no more homogenous according to the evolution of Rainbow CLI tool.
+    
+-   An existing Rainbow CLI tool command may be removed according to the evolution of this tool.
+    
+
+In these cases, the Rainbow CLI tool changelog may describe this evolution with the necessary information to overcome this change. Clients that want to use this Rainbow CLI tool version must do the change.
+
+### Rainbow open source libraries support policies
+
+---
+
+The following policies rules apply to all Rainbow open-source libraries published in the Rainbow for Developers platform and on the GitHub space (e.g. Rainbow Chatbot, starter-kits, etc.).
+
+#### Rainbow open-source library compatibility policy
+
+Wherever possible, Rainbow open-source libraries will be maintained in a backwards compatible manner versus the evolution of Rainbow (e.g. Rainbow cloud platform evolution).
+
+This means that Rainbow open-source libraries are backwards compatible with Rainbow: A program written using one version of that library will continue to work the same way, without modification, with future versions of Rainbow.
+
+Rainbow open-source libraries are updated regularly with new version of the Rainbow SDK they embed. Clients must not assume that Rainbow open-source library are aligned with the latest Rainbow SDK published.
+
+Nevertheless, Rainbow open-source libraries are not subject to the deprecation policy rules when it is necessary to change the SDK:
+
+-   These open-source libraries as provided "as is" and have a specific ALE International license.
+    
+-   There is no deprecation announcement, migration period and target removal. Clients must follow the deprecation policy associated to the SDK embedded in that open-source library.
+    
+
+At any time, Alcatel-Lucent Enterprise may stop updating these open-source libraries.
+
+At any time, Alcatel-Lucent Enterprise may remove these open-source libraries from the Github space
+
+#### Rainbow open-source libraries stability policy
+
+Clients must not assume that new version of open-source libraries works in the same manner as the current one.
+
+To ease the evolution of these open-source, new version of these libraries may have a different behavior. Change will be described in the changelog to overcome it, for example:
+
+-   Public API offered in these open-source may change.
+    
+-   Internal way of working of starter-kits may change.
+    
+
+### Global deprecation policy
+
+---
+
+The Rainbow REST APIs, Rainbow SDKs, Rainbow CLI tool and open-source libraries deprecation policy is composed of three steps:
+
+#### The deprecation announcement release
+
+Deprecated item (future breaking change) will be marked as "deprecated" in the APIs documentation (for APIs) published in the Rainbow for Developers web site (https://developers.openrainbow.com).
+
+The changelog associated to this item will contain all the information necessary to overcome this breaking change (e.g. new resource to use, new parameter to add, etc...).
+
+The changelog associated to this item will contain the target removal release.
+
+Eventually, developers may receive the changelog automatically by subscribing to the Rainbow for Developers information channel.
+
+#### The period of migration
+
+The deprecated item WILL be available in its original form for at least *3 RELEASES* of the item starting from the deprecation announcement release (approximately 3 months).
+
+The developer is assumed to make the change following the changelog that explains how to migrate from the deprecated item to the new one (if exists).
+
+#### The target removal release
+
+After this period or migration, the deprecated item may be removed without any new announcement and clients must not assume it will still be present.
+
+Note: For SDKs, a version will always remain available as it is a downloadable package, however beyond it's end-of-life date (i.e. after the target removal release), it may rely upon APIs or methods which are no longer supported, so clients must not assume an SDK which is end-of-life is functional.
+
+### Changelog
+
+---
+
+Each `Changelog` contains the complete list of changes of the release.
+
+#### Types of changes:
+
+-   **Breaking** This section lists the changes delivered in the SDK that need specific actions from the developer in order to keep the compatibility with this new version of the SDK. E.g An API has been renamed, a new parameter has to be used... The modifications will be applied after a period equivalent to *3 RELEASES*. Developers should therefore take appropriate steps to migrate to a supported SDK version as soon as possible.
+    
+-   **Added** for new features.
+    
+-   **Changes** for changes delivered that don't break the compatibility with the existing version of the SDK such as a new API.
+    
+-   **Removed** for now removed features.
+    
+-   **Fixed** for any bug fixes.
+    
+-   **Deprecated** for soon-to-be removed features.
+    
+-   **Security** in case of vulnerabilities.
+    
+-   **Dependencies** for dependency and compatibility changes.
+    
+-   **Target** for target changes.
+    
+-   **Enhancements** for improvements.
+    
+-   **Others**: for all other changes.
+    
+
+### Interested in
+
+---
+
+-   [Supporting and contributing to Rainbow](/docs/hub/support-contributing)
+    
+-   [Discovering Rainbow development best practices](/docs/hub/best-practices)
+    
+
+---
+
+*Last updated March 5, 2024*
+
+### Sur cette page
+
+-   [Rainbow REST APIs and SDKs stability and compatibility policies](/docs/hub/sdk-api-opensource-support#name-rainbow-rest-apis-and-sdks-stability-and-compatibility-policies-0)
+-   [Rainbow REST APIs policies](/docs/hub/sdk-api-opensource-support#name-rainbow-rest-apis-policies-7)
+-   [Rainbow REST APIs compatibility policy](/docs/hub/sdk-api-opensource-support#name-rainbow-rest-apis-compatibility-policy-14)
+-   [Rainbow REST APIs stability policy](/docs/hub/sdk-api-opensource-support#name-rainbow-rest-apis-stability-policy-26)
+-   [Rainbow REST APIs resource/rate limits and paging policy](/docs/hub/sdk-api-opensource-support#name-rainbow-rest-apis-resourcerate-limits-and-paging-policy-96)
+-   [Rainbow SDKs and Rainbow CLI tool policies](/docs/hub/sdk-api-opensource-support#name-rainbow-sdks-and-rainbow-cli-tool-policies-108)
+-   [Rainbow SDKs and Rainbow CLI tool compatibility policy](/docs/hub/sdk-api-opensource-support#name-rainbow-sdks-and-rainbow-cli-tool-compatibility-policy-115)
+-   [Rainbow SDKs and Rainbow CLI tool stability policy](/docs/hub/sdk-api-opensource-support#name-rainbow-sdks-and-rainbow-cli-tool-stability-policy-145)
+-   [Rainbow open source libraries support policies](/docs/hub/sdk-api-opensource-support#name-rainbow-open-source-libraries-support-policies-239)
+-   [Rainbow open-source library compatibility policy](/docs/hub/sdk-api-opensource-support#name-rainbow-open-source-library-compatibility-policy-246)
+-   [Rainbow open-source libraries stability policy](/docs/hub/sdk-api-opensource-support#name-rainbow-open-source-libraries-stability-policy-279)
+-   [Global deprecation policy](/docs/hub/sdk-api-opensource-support#name-global-deprecation-policy-300)
+-   [The deprecation announcement release](/docs/hub/sdk-api-opensource-support#name-the-deprecation-announcement-release-307)
+-   [The period of migration](/docs/hub/sdk-api-opensource-support#name-the-period-of-migration-322)
+-   [The target removal release](/docs/hub/sdk-api-opensource-support#name-the-target-removal-release-331)
+-   [Changelog](/docs/hub/sdk-api-opensource-support#name-changelog-340)
+-   [Types of changes:](/docs/hub/sdk-api-opensource-support#name-types-of-changes:-347)
+-   [Interested in](/docs/hub/sdk-api-opensource-support#name-interested-in-407)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

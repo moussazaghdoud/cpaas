@@ -1,0 +1,531 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/User/interfaces/ConnectedUser"
+lastSynced: "2026-02-19T22:35:17.501Z"
+---
+# Documentation
+
+ConnectedUser
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [User](doc/sdk/webv2/lts/api/User/index) / ConnectedUser
+
+# Interface: ConnectedUser
+
+This interface is used to represent a Rainbow user  
+A User is defined by a set of public information (name, firstname, avatar...) and a set of private information that are only shared with contacts that are in the user's network or in the same company (email, phone numbers...)
+
+## Extends
+
+-   [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)
+
+## Properties
+
+### adminType?
+
+> `optional` **adminType**: `string`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`adminType`](doc/sdk/webv2/lts/api/User/interfaces/User#admintype)
+
+---
+
+### avatar?
+
+> `optional` **avatar**: [`UserAvatar`](doc/sdk/webv2/lts/api/User/interfaces/UserAvatar)
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`avatar`](doc/sdk/webv2/lts/api/User/interfaces/User#avatar)
+
+---
+
+### company?
+
+> `optional` **company**: `Company`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`company`](doc/sdk/webv2/lts/api/User/interfaces/User#company)
+
+---
+
+### dbId
+
+> **dbId**: `string`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`dbId`](doc/sdk/webv2/lts/api/User/interfaces/User#dbid)
+
+---
+
+### displayName?
+
+> `optional` **displayName**: `string`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`displayName`](doc/sdk/webv2/lts/api/User/interfaces/User#displayname)
+
+---
+
+### firstname?
+
+> `optional` **firstname**: `string`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`firstname`](doc/sdk/webv2/lts/api/User/interfaces/User#firstname)
+
+---
+
+### id
+
+> **id**: `string`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`id`](doc/sdk/webv2/lts/api/User/interfaces/User#id)
+
+---
+
+### isBot
+
+> **isBot**: `boolean`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`isBot`](doc/sdk/webv2/lts/api/User/interfaces/User#isbot)
+
+---
+
+### isTerminated
+
+> **isTerminated**: `boolean`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`isTerminated`](doc/sdk/webv2/lts/api/User/interfaces/User#isterminated)
+
+---
+
+### isTv
+
+> **isTv**: `boolean`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`isTv`](doc/sdk/webv2/lts/api/User/interfaces/User#istv)
+
+---
+
+### jid
+
+> **jid**: `string`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`jid`](doc/sdk/webv2/lts/api/User/interfaces/User#jid)
+
+---
+
+### jobTitle?
+
+> `optional` **jobTitle**: `string`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`jobTitle`](doc/sdk/webv2/lts/api/User/interfaces/User#jobtitle)
+
+---
+
+### lastAvatarUpdateDate?
+
+> `optional` **lastAvatarUpdateDate**: [`Date`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`lastAvatarUpdateDate`](doc/sdk/webv2/lts/api/User/interfaces/User#lastavatarupdatedate)
+
+---
+
+### lastname?
+
+> `optional` **lastname**: `string`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`lastname`](doc/sdk/webv2/lts/api/User/interfaces/User#lastname)
+
+---
+
+### login
+
+> **login**: `string`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`login`](doc/sdk/webv2/lts/api/User/interfaces/User#login)
+
+---
+
+### loginEmail?
+
+> `optional` **loginEmail**: `string`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`loginEmail`](doc/sdk/webv2/lts/api/User/interfaces/User#loginemail)
+
+---
+
+### phoneInternalNumber?
+
+> `optional` **phoneInternalNumber**: `string`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`phoneInternalNumber`](doc/sdk/webv2/lts/api/User/interfaces/User#phoneinternalnumber)
+
+---
+
+### phoneNumbers?
+
+> `optional` **phoneNumbers**: `UserPhoneNumbers`\[\]
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`phoneNumbers`](doc/sdk/webv2/lts/api/User/interfaces/User#phonenumbers)
+
+---
+
+### rainbowTvData
+
+> **rainbowTvData**: `any`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`rainbowTvData`](doc/sdk/webv2/lts/api/User/interfaces/User#rainbowtvdata)
+
+---
+
+### status
+
+> **status**: `string`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`status`](doc/sdk/webv2/lts/api/User/interfaces/User#status)
+
+---
+
+### title?
+
+> `optional` **title**: `string`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`title`](doc/sdk/webv2/lts/api/User/interfaces/User#title)
+
+## Methods
+
+### deleteAccount()
+
+> **deleteAccount**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Delete current user Account. This method deletes the connectedUser account and all its associated data. Depending on the configuration of the company hosting the connectedUser, this method may not work.
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### getAvailablePresenceStatusList()
+
+> **getAvailablePresenceStatusList**(): `string`\[\]
+
+Return a list of status that the user can currently Set (via changeMyPresence API); Values are \['online', 'away', 'xa', 'dnd'\]
+
+-   online: user goes to online (or can 'exit') any manual state; In case of a call in progress, the user will go to busy state;
+-   away: a manual Away state
+-   xa: 'invisble' or 'appear offline' manual state
+-   dnd: Do not disturb manual state
+
+#### Returns
+
+`string`\[\]
+
+Returns an array of all available values to be used if the user wants to change his presence
+
+---
+
+### getWebrtcAudioEnabled()
+
+> **getWebrtcAudioEnabled**(): `boolean`
+
+Remove the current user custom avatar (reset to default avatar)
+
+#### Returns
+
+`boolean`
+
+---
+
+### isGuest()
+
+> **isGuest**(): `boolean`
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`isGuest`](doc/sdk/webv2/lts/api/User/interfaces/User#isguest)
+
+---
+
+### removeCustomAvatar()
+
+> **removeCustomAvatar**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`User`](doc/sdk/webv2/lts/api/User/interfaces/User)\>
+
+Remove the current user custom avatar (reset to default avatar)
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`User`](doc/sdk/webv2/lts/api/User/interfaces/User)\>
+
+---
+
+### setCustomAvatar()
+
+> **setCustomAvatar**(`base64AvatarImg`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`User`](doc/sdk/webv2/lts/api/User/interfaces/User)\>
+
+Users have a default avatar generated from the initials of their first and/or last names. Ex: User John Do, will have the default avatar : JD. But this avatar can be overloaded by an image chosen by the user
+
+#### Parameters
+
+• **base64AvatarImg**: `string`
+
+Base64 image to be uploaded
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`User`](doc/sdk/webv2/lts/api/User/interfaces/User)\>
+
+---
+
+### setPresenceStatus()
+
+> **setPresenceStatus**(`status`): `void`
+
+Set the current user presence status (if allowed); The status list can be get at all time via computeStatusList
+
+#### Parameters
+
+• **status**: `string`
+
+The presence status that the user wants to set to his user. The status list can be get via computeStatusList API
+
+#### Returns
+
+`void`
+
+---
+
+### subscribe()
+
+> **subscribe**(`handler`, `filterEvent`?): `Subscription`
+
+Subscribe to updates on the current contact (all events are of RBEvent type {name: string, data:any});
+
+#### Parameters
+
+• **handler**: `any`
+
+The call-back function that will be subscribed to the RxJS subject
+
+• **filterEvent?**: `string`\[\]
+
+A list of event names that the user wants to receive when subscribing (used a filter)
+
+#### Returns
+
+`Subscription`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`subscribe`](doc/sdk/webv2/lts/api/User/interfaces/User#subscribe)
+
+---
+
+### toJSON()
+
+> **toJSON**(): `any`
+
+#### Returns
+
+`any`
+
+#### Inherited from
+
+[`User`](doc/sdk/webv2/lts/api/User/interfaces/User).[`toJSON`](doc/sdk/webv2/lts/api/User/interfaces/User#tojson)
+
+---
+
+### updateCustomData()
+
+> **updateCustomData**(`customData`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`User`](doc/sdk/webv2/lts/api/User/interfaces/User)\>
+
+Update the user's custom data (emergencyImSound, enablePushToTalkTone, guideTourDisplayed, etc...)
+
+#### Parameters
+
+• **customData**: [`Record`](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type)<`string`, `string`\>
+
+to be send to the server for update
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`User`](doc/sdk/webv2/lts/api/User/interfaces/User)\>
+
+---
+
+### updatePassword()
+
+> **updatePassword**(`oldPassword`, `newPassword`, `async`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`User`](doc/sdk/webv2/lts/api/User/interfaces/User)\>
+
+Update the user's password
+
+#### Parameters
+
+• **oldPassword**: `string`
+
+the old password
+
+• **newPassword**: `string`
+
+the new password
+
+• **async**: `boolean`
+
+if TRUE, the resolve of this API will be done once the change is taken into account also on XMPP side; Default value is FALSE
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`User`](doc/sdk/webv2/lts/api/User/interfaces/User)\>
+
+---
+
+### updateProfile()
+
+> **updateProfile**(`userProfile`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`User`](doc/sdk/webv2/lts/api/User/interfaces/User)\>
+
+Update the user's profile data (name, emails, numbers, etc)
+
+#### Parameters
+
+• **userProfile**: [`UserProfile`](doc/sdk/webv2/lts/api/User/interfaces/UserProfile)
+
+the userProfile to be send to the server for update
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`User`](doc/sdk/webv2/lts/api/User/interfaces/User)\>
+
+### Sur cette page
+
+-   [Extends](/docs/sdk/web#name-extends-13)
+-   [Properties](/docs/sdk/web#name-properties-23)
+-   [adminType?](/docs/sdk/web#name-admintype-26)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-34)
+-   [avatar?](/docs/sdk/web#name-avatar-41)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-49)
+-   [company?](/docs/sdk/web#name-company-56)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-64)
+-   [dbId](/docs/sdk/web#name-dbid-71)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-79)
+-   [displayName?](/docs/sdk/web#name-displayname-86)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-94)
+-   [firstname?](/docs/sdk/web#name-firstname-101)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-109)
+-   [id](/docs/sdk/web#name-id-116)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-124)
+-   [isBot](/docs/sdk/web#name-isbot-131)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-139)
+-   [isTerminated](/docs/sdk/web#name-isterminated-146)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-154)
+-   [isTv](/docs/sdk/web#name-istv-161)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-169)
+-   [jid](/docs/sdk/web#name-jid-176)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-184)
+-   [jobTitle?](/docs/sdk/web#name-jobtitle-191)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-199)
+-   [lastAvatarUpdateDate?](/docs/sdk/web#name-lastavatarupdatedate-206)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-214)
+-   [lastname?](/docs/sdk/web#name-lastname-221)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-229)
+-   [login](/docs/sdk/web#name-login-236)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-244)
+-   [loginEmail?](/docs/sdk/web#name-loginemail-251)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-259)
+-   [phoneInternalNumber?](/docs/sdk/web#name-phoneinternalnumber-266)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-274)
+-   [phoneNumbers?](/docs/sdk/web#name-phonenumbers-281)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-289)
+-   [rainbowTvData](/docs/sdk/web#name-rainbowtvdata-296)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-304)
+-   [status](/docs/sdk/web#name-status-311)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-319)
+-   [title?](/docs/sdk/web#name-title-326)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-334)
+-   [Methods](/docs/sdk/web#name-methods-340)
+-   [deleteAccount()](/docs/sdk/web#name-deleteaccount-343)
+-   [Returns](/docs/sdk/web#name-returns-354)
+-   [getAvailablePresenceStatusList()](/docs/sdk/web#name-getavailablepresencestatuslist-361)
+-   [Returns](/docs/sdk/web#name-returns-394)
+-   [getWebrtcAudioEnabled()](/docs/sdk/web#name-getwebrtcaudioenabled-404)
+-   [Returns](/docs/sdk/web#name-returns-415)
+-   [isGuest()](/docs/sdk/web#name-isguest-422)
+-   [Returns](/docs/sdk/web#name-returns-430)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-436)
+-   [removeCustomAvatar()](/docs/sdk/web#name-removecustomavatar-443)
+-   [Returns](/docs/sdk/web#name-returns-454)
+-   [setCustomAvatar()](/docs/sdk/web#name-setcustomavatar-461)
+-   [Parameters](/docs/sdk/web#name-parameters-472)
+-   [Returns](/docs/sdk/web#name-returns-481)
+-   [setPresenceStatus()](/docs/sdk/web#name-setpresencestatus-488)
+-   [Parameters](/docs/sdk/web#name-parameters-499)
+-   [Returns](/docs/sdk/web#name-returns-508)
+-   [subscribe()](/docs/sdk/web#name-subscribe-515)
+-   [Parameters](/docs/sdk/web#name-parameters-526)
+-   [Returns](/docs/sdk/web#name-returns-541)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-547)
+-   [toJSON()](/docs/sdk/web#name-tojson-554)
+-   [Returns](/docs/sdk/web#name-returns-562)
+-   [Inherited from](/docs/sdk/web#name-inherited-from-568)
+-   [updateCustomData()](/docs/sdk/web#name-updatecustomdata-575)
+-   [Parameters](/docs/sdk/web#name-parameters-586)
+-   [Returns](/docs/sdk/web#name-returns-595)
+-   [updatePassword()](/docs/sdk/web#name-updatepassword-602)
+-   [Parameters](/docs/sdk/web#name-parameters-613)
+-   [Returns](/docs/sdk/web#name-returns-634)
+-   [updateProfile()](/docs/sdk/web#name-updateprofile-641)
+-   [Parameters](/docs/sdk/web#name-parameters-652)
+-   [Returns](/docs/sdk/web#name-returns-661)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

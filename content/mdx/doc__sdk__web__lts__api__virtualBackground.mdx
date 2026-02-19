@@ -1,0 +1,213 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/web/lts/api/virtualBackground"
+lastSynced: "2026-02-19T22:35:15.472Z"
+---
+# Documentation
+
+Virtual Background service
+
+LTS release 4.0.0Publiée le 2022-12-21
+
+## .startProcessStream(stream, serviceName) ⇒ `Promise.<MediaStream>`
+
+**Kind**: instance function  
+**Returns**: `Promise.<MediaStream>` - Return the modified stream  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+stream
+
+`MediaStream`
+
+The MediaStream that we will process
+
+serviceName
+
+`string`
+
+The name of service that calls the method (optional, for debug purpose)
+
+## .stopProcessStream()
+
+Stop the effect of virtual Background
+
+**Kind**: instance function  
+**Access**: public  
+
+## .setBackgroundMode(type, url)
+
+Set the type and url of the virtual background
+
+**Kind**: instance function  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+type
+
+`string`
+
+The type of virtual Background ('none", 'image', 'blur', 'blur-plus', 'video')
+
+url
+
+`string`
+
+The url of virtual Background
+
+## .getBackgroundMode() ⇒ `any`
+
+get the type and url od the virtual background
+
+**Kind**: instance function  
+**Returns**: `any` - Return the type and url of the background image  
+**Access**: public  
+
+## .setMirror(mirror)
+
+Set the stream in mirror mode or not
+
+**Kind**: instance function  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+mirror
+
+`boolean`
+
+True if the stream is in mirror mode
+
+## .getMirror() ⇒ `boolean`
+
+**Kind**: instance function  
+**Returns**: `boolean` - Return true if the stream is in mirror mode  
+**Access**: public  
+
+## .putPersonnalBackgroundImage(backgroundUser, loadBgUrl) ⇒ `Promise.<void>`
+
+Asynchronous method to add user's virtual background on server
+
+**Kind**: instance function  
+**Returns**: `Promise.<void>` - return the response  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+backgroundUser
+
+`any`
+
+the background to add
+
+loadBgUrl
+
+`string`
+
+the local path of the background to add
+
+## .deletePersonnalBackgroundImage(backgroundIdUser)
+
+Asynchronous method to delete user's virtual background on server
+
+**Kind**: instance function  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+backgroundIdUser
+
+`string`
+
+the id's background to delete
+
+## .putAdminBackgroundImage(backgroundCompany) ⇒ `void`
+
+Asynchronous method to add company's virtual background on server
+
+**Kind**: instance function  
+**Returns**: `void` - Returns the server response  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+backgroundCompany
+
+`any`
+
+the background to add
+
+## .deleteAdminBackgroundImage(backgroundIdAdmin)
+
+Asynchronous method to delete user's virtual background on server
+
+**Kind**: instance function  
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+backgroundIdAdmin
+
+`string`
+
+the id's background to delete
+
+## .getInstance() ⇒ `VirtualBackgroundService`
+
+This VirtualBackgroundService singleton
+
+**Kind**: static function  
+**Returns**: `VirtualBackgroundService` - the virtualBackgroundService singleton  
+**Access**: public
+
+### Sur cette page
+
+-   [.startProcessStream(stream, serviceName) ⇒ Promise.<MediaStream>](/docs/sdk/web#name-.startprocessstreamstream-servicename--promise.mediastream-3)
+-   [.stopProcessStream()](/docs/sdk/web#name-.stopprocessstream-51)
+-   [.setBackgroundMode(type, url)](/docs/sdk/web#name-.setbackgroundmodetype-url-60)
+-   [.getBackgroundMode() ⇒ any](/docs/sdk/web#name-.getbackgroundmode--any-111)
+-   [.setMirror(mirror)](/docs/sdk/web#name-.setmirrormirror-120)
+-   [.getMirror() ⇒ boolean](/docs/sdk/web#name-.getmirror--boolean-160)
+-   [.putPersonnalBackgroundImage(backgroundUser, loadBgUrl) ⇒ Promise.<void>](/docs/sdk/web#name-.putpersonnalbackgroundimagebackgrounduser-loadbgurl--promise.void-166)
+-   [.deletePersonnalBackgroundImage(backgroundIdUser)](/docs/sdk/web#name-.deletepersonnalbackgroundimagebackgroundiduser-217)
+-   [.putAdminBackgroundImage(backgroundCompany) ⇒ void](/docs/sdk/web#name-.putadminbackgroundimagebackgroundcompany--void-257)
+-   [.deleteAdminBackgroundImage(backgroundIdAdmin)](/docs/sdk/web#name-.deleteadminbackgroundimagebackgroundidadmin-297)
+-   [.getInstance() ⇒ VirtualBackgroundService](/docs/sdk/web#name-.getinstance--virtualbackgroundservice-337)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

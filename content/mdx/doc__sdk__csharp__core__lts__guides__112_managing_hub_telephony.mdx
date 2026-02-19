@@ -1,0 +1,361 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/csharp/core/lts/guides/112_managing_hub_telephony"
+lastSynced: "2026-02-19T22:35:13.899Z"
+---
+# Documentation
+
+Managing hub telephony
+
+LTS release 3.XPubliée le 2025-03-17
+
+## Managing hub telephony
+
+This guide explains how to manage hub telephony using [HubTelephony service](/docs/sdk/csharp). You need an account associated to a **cloud PBX**.
+
+If you have an account associated to a **PBX System** - like OXO or OXE - please refer to the guide [Managing hub telephony](/docs/sdk/csharp)
+
+Using [HubTelephony service](/docs/sdk/csharp) you can make call, hang up and hold/unhold call. You can also transfer or deflect the call. You call also manage your call forward status.
+
+A specific example about Hub Telephony is available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/blob/master/SDK%20V3.X/TerminalApp/TerminalAppHubTelephony/README.md).
+
+### Get telephony status, PBX Agent info and the device used
+
+---
+
+First you must know if the hub telephony service is available (so if you have the permission to use this feature). You must use the `GetTelephonyStatus()`.
+
+If you have the permission you can know the PBX Agent version used using `GetPBXAgentInformation()`, get information about emergency numbers using `GetEmergencyNumbersAndOptionsAsync()` and get information about devices (using `GetCurrentDevice()` and `GetDevices()`).
+
+If you have several devices, you can select which one is the **current one** using `SetCurrentDeviceAsync()`.
+
+Event `TelephonyStatusUpdated` is also triggered when the status of the hub telephony service is updated.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.HubTelephony telephony = myApp.GetHubTelephony();
+...
+//Once connected
+
+// Do we have the right to use the telephony feature ?
+if( telephony.GetTelephonyStatus() )
+{
+  // Get  PBX Agent information
+  PbxAgentInfo pbxAgentInfo =  telephony.GetPBXAgentInformation();
+  
+  // Get emergency numbers / info?
+  var sdkResult = await telephony.GetEmergencyNumbersAndOptionsAsync();
+  if(sdkResult.Success)
+  {
+    var emergencyNumbersAndOptions = sdkResult.Data;
+  }
+  
+  // Get current device information 
+  var currentDevice = telephony.GetCurrentDevice();
+  
+}
+```
+
+### Check voice mail feature and get its number
+
+---
+
+To know if you have a voice mail, you must use `VoiceMailAvailable()`.
+
+To know the voice mail number, you must use `GetVoiceMailPhoneNumber()`.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.HubTelephony telephony = myApp.GetHubTelephony();
+...
+//Once connected
+
+Boolean voiceMailAvailable = telephony.VoiceMailAvailable();
+String  voiceMailNumber = telephony.GetVoiceMailPhoneNumber(); // Return NULL is voice mail is not available
+```
+
+### Make a call
+
+---
+
+You can make a call using `MakeCallAsync()` or `MakeCallToMevoAsync()`.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.HubTelephony telephony = myApp.GetHubTelephony();
+...
+//Once connected
+
+String phoneNumber = "156";               // An internal number to reach an person in your enterprise
+// OR 
+// String phoneNumber = "+33612345678";   // A canonical phone number
+
+var sdkResult =  await telephony.MakeCallAsync(phoneNumber);
+if(sdkResult.Success)
+{
+  // The call has started from the server
+  String callId = callback.Id; // Id ot the call 
+}
+else
+{
+  // A pb occurs ....
+}
+```
+
+### Answer, Release, Transfer, Hold, Retrieve call
+
+---
+
+With **Call** object, you can easily manage it using `AnswerCallAsync()`, `ReleaseCallAsync()`, `HoldCallAsync()`, `RetrieveCallAsync()`, `DeflectCallAsync()`
+
+Once a call is hold use `RetrieveCallAsync()` to unhold it.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.HubTelephony telephony = myApp.GetHubTelephony();
+...
+//Once connected
+
+Call currentCall; // A call previously set
+
+var sdkResult = telephony.AnswerCallAsync(currentCalld);
+if(sdkResult.Success)
+{
+  // The call has been well answered  
+}
+else
+{
+  // A pb occurs ....
+}
+...
+
+var sdkResult = telephony.ReleaseCallAsync(currentCall);
+if(sdkResult.Success)
+{
+    // The call has been well released  
+}
+else
+{
+  // A pb occurs ....
+}
+
+...
+
+var sdkResult = telephony.HoldCallAsync(currentCall);
+if(sdkResult.Success)
+{
+    // The call has been hold  
+}
+else
+{
+  // A pb occurs ....
+}
+
+...
+
+var sdkResult = telephony.RetrieveCallAsync(currentCall);
+if(sdkResult.Success)
+{
+    // The call is no more hold  
+}
+else
+{
+  // A pb occurs ....
+}
+
+...
+
+String phoneNumber = "456"; // An internal or a canonical phone number 
+
+var sdkResult = telephony.DeflectCallAsync(currentCall, phoneNumber);
+{
+    // The call has been well deflect  
+}
+else
+{
+  // A pb occurs ....
+}
+```
+
+### Tranfer, BlindTransfer call
+
+---
+
+To perform a transfer, two calls in progress are necessary. One is necessary hold and the other one is active. Then using the two calls, you can use `TransferCallAsync()`.
+
+To blind transfer a call only you need to have one call in progress and a phone number and use `BlindTransferCallAsync()`.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.HubTelephony telephony = myApp.GetHubTelephony();
+...
+//Once connected
+
+Call activeCall;  // A call previously set as an active call
+Call heldCall;    // A call previously set as an hold call
+
+var sdkResult = telephony.TransferCallAsync(activeCall, heldCall);
+if(sdkResult.Success)
+{
+    // The active call has been transfered to the held call - your are no more in a call
+}
+else
+{
+  // A pb occurs ....
+}
+
+...
+
+Call activeCall;  // A call previously set as an active call
+String phoneNumber = "123"; // phone number where to transfer the call
+
+var sdkResult = telephony.BlindTransferCallAsync(activeCall, phoneNumber);
+if(sdkResult.Success)
+{
+    // The active call has been transfered to the phone number
+}
+else
+{
+  // A pb occurs ....
+}
+```
+
+### Manage call forward
+
+---
+
+You can manage call forward using `GetCallForwardStatusList()`, `SetImmediateCallForwardAsync()`, `SetOnBusyCallForwardAsync()` and `SetOnNoReplyCallForwardAsync()`.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.HubTelephony telephony = myApp.GetHubTelephony();
+...
+//Once connected
+
+// To get status list of call forward
+var callForwardStatusList = telephony.GetCallForwardStatusList();
+
+...
+
+Boolean activate = true; // True to activate call forward
+String destinationType = Rainbow.Consts.HubCallForwardDestinationType.InternalNumber; // or VoiceMail, ExternalNumber ...
+String number = "101"; // Here an internal number
+
+var sdkResult = await telephony.SetImmediateCallForwardAsync(activate, destinationType, number);
+if(sdkResult.Success)
+{
+    // Now incoming calls are directly forwarded to the specified number
+}
+else
+{
+  // A pb occurs ....
+}
+
+...
+
+Boolean activate = true; // True to activate call forward
+String destinationType = Rainbow.Consts.HubCallForwardDestinationType.InternalNumber; // or VoiceMail, ExternalNumber ...
+String number = "101"; // Here an internal number
+
+var sdkResult = await telephony.SetOnBusyCallForwardAsync(activate, destinationType, number);
+if(sdkResult.Success)
+{
+    // Now, if busy, incoming calls are forwarded to the specified number
+}
+else
+{
+  // A pb occurs ....
+}
+
+...
+
+Boolean activate = true; // True to activate call forward
+String destinationType = Rainbow.Consts.HubCallForwardDestinationType.InternalNumber; // or VoiceMail, ExternalNumber ...
+String number = "101"; // Here an internal number
+
+var sdkResult = await telephony.SetOnNoReplyCallForwardAsync(activate, destinationType, number);
+if(sdkResult.Success)
+{
+    // Now, on no reply, incoming calls are forwarded to the specified number
+}
+else
+{
+  // A pb occurs ....
+}
+```
+
+### Manage voice message
+
+---
+
+You can know the list of voice messages in your voice mail using `GetVoiceMessagesListAsync()`. Then you can have some information like the date of the call, its duration, the caller.
+
+You can delete a voice message using `DeleteVoiceMessageAsync()` or all voice messages using `DeleteAllVoiceMessagesAsync()`;
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+Rainbow.HubTelephony telephony = myApp.GetHubTelephony();
+...
+//Once connected
+
+var sdkResult = telephony.GetVoiceMessagesListAsync();
+if(sdkResult.Success)
+{
+    // Get list of voice message
+    List<VoiceMessage> voiceMessagesList = sdkResult.Data;
+    foreach(VoiceMessage voiceMessage in voiceMessagesList)
+    {
+      String id = voiceMessage.id;              // Id of the voice message
+      Peer peer = voiceMessage.Peer;            // Peer as the caller who let this voice message - if it's a knoww contact Id/Jid are available, if not phoneNumber is available
+      Boolean unread = voiceMessage.Unread;     // To know if the messsage has been already "read"
+      DateTime date = voiceMessage.Date;        // Date of the call
+      Int32 duration = voiceMessage.Duration;   // Duration of the call (in seconds)
+    } 
+}
+else
+{
+  // A pb occurs ....
+}
+
+...
+
+VoiceMessage voiceMessage; // An voice message already set
+
+var sdkResult = telephony.DeleteVoiceMessageAsync(voiceMessage);
+if(sdkResult.Success)
+{
+    // The voice message has been deleted  
+}
+else
+{
+  // A pb occurs ....
+}
+```
+
+### Examples
+
+---
+
+A specific example about Hub Telephony is available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/blob/master/SDK%20V3.X/TerminalApp/TerminalAppHubTelephony/README.md).
+
+You can take a look to several examples available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/SDK%20V3.X/README.md).
+
+### Sur cette page
+
+-   [Managing hub telephony](/docs/sdk/csharp#name-managing-hub-telephony-0)
+-   [Get telephony status, PBX Agent info and the device used](/docs/sdk/csharp#name-get-telephony-status-pbx-agent-info-and-the-device-used-15)
+-   [Check voice mail feature and get its number](/docs/sdk/csharp#name-check-voice-mail-feature-and-get-its-number-32)
+-   [Make a call](/docs/sdk/csharp#name-make-a-call-43)
+-   [Answer, Release, Transfer, Hold, Retrieve call](/docs/sdk/csharp#name-answer-release-transfer-hold-retrieve-call-51)
+-   [Tranfer, BlindTransfer call](/docs/sdk/csharp#name-tranfer-blindtransfer-call-62)
+-   [Manage call forward](/docs/sdk/csharp#name-manage-call-forward-73)
+-   [Manage voice message](/docs/sdk/csharp#name-manage-voice-message-81)
+-   [Examples](/docs/sdk/csharp#name-examples-92)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback

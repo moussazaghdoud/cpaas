@@ -1,0 +1,926 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble"
+lastSynced: "2026-02-19T22:35:16.326Z"
+---
+# Documentation
+
+Bubble
+
+LTS release 5.0.0Publiée le 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
+
+---
+
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [Bubbles](doc/sdk/webv2/lts/api/Bubbles/index) / Bubble
+
+# Interface: Bubble
+
+## Properties
+
+### autoAcceptInvitation
+
+> `readonly` **autoAcceptInvitation**: `boolean`
+
+When set to true, allows to automatically add participants in the bubble (default behavior is that participants need to accept the bubble invitation first before being a member of this bubble)
+
+---
+
+### avatar
+
+> `readonly` **avatar**: `string`
+
+The bubble avatar
+
+---
+
+### avatarContacts
+
+> `readonly` **avatarContacts**: `any`\[\]
+
+The avatar of each participants of the bubble
+
+---
+
+### containerId
+
+> `readonly` **containerId**: `string`
+
+ID of container this bubble belongs to
+
+---
+
+### creationDate?
+
+> `optional` `readonly` **creationDate**: [`Date`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
+
+The creation date of the bubble
+
+---
+
+### customData
+
+> `readonly` **customData**: `any`
+
+Custom data associated to the bubble
+
+---
+
+### dbId
+
+> `readonly` **dbId**: `string`
+
+The bubble database Identifier
+
+---
+
+### guestPhoneNumbers
+
+> `readonly` **guestPhoneNumbers**: `string`\[\]
+
+List of guest phonenumbers
+
+---
+
+### history
+
+> `readonly` **history**: `string`
+
+Allow newcomers to access or not messages history. If the value is "all", a newcomer can retrieve the full bubble messages history
+
+---
+
+### isActive
+
+> `readonly` **isActive**: `boolean`
+
+True if the bubble is actived
+
+---
+
+### isAlertNotificationEnabled
+
+> **isAlertNotificationEnabled**: `boolean`
+
+If the bubble has alert notification feature enabled
+
+---
+
+### isModerator
+
+> `readonly` **isModerator**: `boolean`
+
+True if the bubble is moderated by the connected user
+
+---
+
+### isOwnedByGroup
+
+> **isOwnedByGroup**: `boolean`
+
+If the bubble is created as part of Rainbow Voice Hunting group
+
+---
+
+### jid
+
+> `readonly` **jid**: `string`
+
+The jid associated to this bubble
+
+---
+
+### lastActivityDate?
+
+> `optional` `readonly` **lastActivityDate**: [`Date`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date)
+
+last activity date of bubble
+
+---
+
+### members
+
+> `readonly` **members**: [`BubbleUser`](doc/sdk/webv2/lts/api/Bubbles/interfaces/BubbleUser)\[\]
+
+The members of the bubble
+
+---
+
+### name
+
+> `readonly` **name**: `string`
+
+The name of the bubble
+
+---
+
+### nameForLogs
+
+> `readonly` **nameForLogs**: `string`
+
+The name used in logs of the bubble
+
+---
+
+### organizers
+
+> `readonly` **organizers**: [`BubbleUser`](doc/sdk/webv2/lts/api/Bubbles/interfaces/BubbleUser)\[\]
+
+The organizers of the bubble
+
+---
+
+### owner
+
+> `readonly` **owner**: `boolean`
+
+True if the bubble is owned by the connected user
+
+---
+
+### ownerContact
+
+> `readonly` **ownerContact**: `any`
+
+The owner of the bubble
+
+---
+
+### rxSubject
+
+> `readonly` **rxSubject**: `Subject`<`any`\>
+
+Observable subject for bubble
+
+---
+
+### status
+
+> `readonly` **status**: [`BubbleUserStatus`](doc/sdk/webv2/lts/api/Bubbles/enumerations/BubbleUserStatus)
+
+The status of the connected user in the bubble ('invited', 'accepted', 'unsubscribed', 'rejected' or 'deleted')
+
+---
+
+### tags
+
+> `readonly` **tags**: `any`\[\]
+
+Tags describing the bubble
+
+---
+
+### topic
+
+> `readonly` **topic**: `string`
+
+The topic of the bubble
+
+---
+
+### type
+
+> `readonly` **type**: `string`
+
+The type of the bubble
+
+---
+
+### users
+
+> `readonly` **users**: [`BubbleUser`](doc/sdk/webv2/lts/api/Bubbles/interfaces/BubbleUser)\[\]
+
+The list of users of the bubble (invited, joined and removed)
+
+---
+
+### usersReady
+
+> `readonly` **usersReady**: `BehaviorSubject`<`boolean`\>
+
+True when all bubble users have been retreived
+
+## Methods
+
+### acceptInvitation()
+
+> **acceptInvitation**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+Accept invitation to join a bubble
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+---
+
+### addRainbowTVs()
+
+> **addRainbowTVs**(`androidTVs`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+Add rainbow TVs to the bubble;
+
+#### Parameters
+
+• **androidTVs**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)\[\]
+
+users from type Rainbow TV
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+---
+
+### addUser()
+
+> **addUser**(`user`, `privilege`?, `reason`?, `withoutInvitation`?): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+Add user to the bubble; Can be used to directly add user without invitation or as a moderator
+
+#### Parameters
+
+• **user**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)
+
+The user to add in the bubble
+
+• **privilege?**: [`BubbleUserPrivilege`](doc/sdk/webv2/lts/api/Bubbles/enumerations/BubbleUserPrivilege)
+
+The user privilege in this bubble ('user', 'moderator' or 'guest'), by default is 'user'
+
+• **reason?**: `string`
+
+Text that will be join in the invitation
+
+• **withoutInvitation?**: `boolean`
+
+When set to true no invitation is sent
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+---
+
+### changeOwner()
+
+> **changeOwner**(`newOwner`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+Change the owner of the bubble
+
+#### Parameters
+
+• **newOwner**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)
+
+The user that should be the new owner
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+---
+
+### createBubbleLink()
+
+> **createBubbleLink**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`string`\>
+
+Method to create bubble "guest" access code
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`string`\>
+
+---
+
+### declineInvitation()
+
+> **declineInvitation**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+Decline invitation to join a bubble
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+---
+
+### delete()
+
+> **delete**(`createArchive`?): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+Delete own bubble. If createArchive is TRUE, the bubble will be archived, i.e. all users can only read the content that's already in the bubble, but no further action can be done inside the bubble All participants in the bubble will go to UNSUBSCRIBED state (read-only)
+
+#### Parameters
+
+• **createArchive?**: `boolean`
+
+If TRUE, the bubble will be archived for all users (i.e. read only mode for all users still inside);
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+---
+
+### deleteBubbleLink()
+
+> **deleteBubbleLink**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+Method to delete bubble "guest" access code
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`void`\>
+
+---
+
+### getAllAcceptedUsers()
+
+> **getAllAcceptedUsers**(): [`BubbleUser`](doc/sdk/webv2/lts/api/Bubbles/interfaces/BubbleUser)\[\]
+
+Method to retrieve all users of the bubble that have accepted
+
+#### Returns
+
+[`BubbleUser`](doc/sdk/webv2/lts/api/Bubbles/interfaces/BubbleUser)\[\]
+
+---
+
+### getAutoAcceptInvitation()
+
+> **getAutoAcceptInvitation**(): `boolean`
+
+Method to retrieve autoAcceptInvitation status
+
+#### Returns
+
+`boolean`
+
+---
+
+### getAutoRegister()
+
+> **getAutoRegister**(): `string`
+
+Method to retrieve auto register status
+
+#### Returns
+
+`string`
+
+---
+
+### getBubbleLink()
+
+> **getBubbleLink**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`string`\>
+
+Method to get bubble "guest" access code
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`string`\>
+
+---
+
+### getDialInCode()
+
+> **getDialInCode**(): `string`
+
+Method to retrieve conference.dialInCode code
+
+#### Returns
+
+`string`
+
+---
+
+### getDisableTimeStats()
+
+> **getDisableTimeStats**(): `boolean`
+
+Method to retrieve conference.disableTimeStats status
+
+#### Returns
+
+`boolean`
+
+---
+
+### getIncludeAllPhoneNumbers()
+
+> **getIncludeAllPhoneNumbers**(): `boolean`
+
+Method to retrieve conference.includeAllPhoneNumbers code
+
+#### Returns
+
+`boolean`
+
+---
+
+### getMuteUponEntry()
+
+> **getMuteUponEntry**(): `boolean`
+
+Method to retrieve conference.muteUponEntry status
+
+#### Returns
+
+`boolean`
+
+---
+
+### getNameForLogs()
+
+> **getNameForLogs**(): `string`
+
+Method helper retrieve the name of the bubble as displayed in the logs
+
+#### Returns
+
+`string`
+
+---
+
+### getPhoneNumbers()
+
+> **getPhoneNumbers**(): `DialInPhoneNumber`\[\]
+
+Method to retrieve conference.phoneNumbers array status
+
+#### Returns
+
+`DialInPhoneNumber`\[\]
+
+---
+
+### getPlayEntryTone()
+
+> **getPlayEntryTone**(): `boolean`
+
+Method to retrieve conference.playEntryTone status
+
+#### Returns
+
+`boolean`
+
+---
+
+### getWebConferenceOwnerId()
+
+> **getWebConferenceOwnerId**(): `string`
+
+In case of active web conference, we might know the owner of the conference inside; This API will return the ID of the owner
+
+#### Returns
+
+`string`
+
+---
+
+### inviteUsers()
+
+> **inviteUsers**(`users`, `emails`?, `privilege`?): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+Mass provisionning API, allow to invite users and guests to the bubble; The guests will receive an email to join the bubble.
+
+#### Parameters
+
+• **users**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)\[\]
+
+The users to add bubble
+
+• **emails?**: `string`\[\]
+
+List of emails to invite to the bubble
+
+• **privilege?**: [`BubbleUserPrivilege`](doc/sdk/webv2/lts/api/Bubbles/enumerations/BubbleUserPrivilege)
+
+privilege to be applied to all invited users (moderator for instance)
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+---
+
+### isUserModerator()
+
+> **isUserModerator**(`user`): `boolean`
+
+Check if the given user is a moderator of the bubble
+
+#### Parameters
+
+• **user**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)
+
+The user to check
+
+#### Returns
+
+`boolean`
+
+---
+
+### isUserOwner()
+
+> **isUserOwner**(`user`): `boolean`
+
+Check if the given user is the owner of the bubble
+
+#### Parameters
+
+• **user**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)
+
+The user to check
+
+#### Returns
+
+`boolean`
+
+---
+
+### isWebConferenceBubble()
+
+> **isWebConferenceBubble**(): `boolean`
+
+Method helper to know if bubble is a web conference bubble (SFU)
+
+#### Returns
+
+`boolean`
+
+---
+
+### isWebinarRoom()
+
+> **isWebinarRoom**(): `boolean`
+
+Method helper to know if bubble is a webinar bubble
+
+#### Returns
+
+`boolean`
+
+---
+
+### leave()
+
+> **leave**(`createArchive`?): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+User leaves the bubble. If createArchive is TRUE, the bubble will be archived, i.e. the user can only read the content that's already in the bubble, but no further action can be done inside the bubble The participant will go to UNSUBSCRIBED state (read-only)
+
+#### Parameters
+
+• **createArchive?**: `boolean`
+
+If TRUE, the bubble will be archived for my user
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+---
+
+### removeCustomAvatar()
+
+> **removeCustomAvatar**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+Remove this bubble custom avatar (reset to default avatar)
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+---
+
+### removeUser()
+
+> **removeUser**(`user`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+Remove a user from the Bubble. API only available for moderators / owner of the bubble The user will no longer have access to this bubble nor the history
+
+#### Parameters
+
+• **user**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)
+
+the contact that should be removed
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+---
+
+### resetBubbleLink()
+
+> **resetBubbleLink**(): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`string`\>
+
+Method to reset bubble "guest" access code
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<`string`\>
+
+---
+
+### setCustomAvatar()
+
+> **setCustomAvatar**(`base64AvatarImg`, `width`?, `height`?): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+Bubbles have a default avatar made up of the avatars of the first 4 participants in the bubble. But this avatar can be overloaded by an image chosen by the user
+
+#### Parameters
+
+• **base64AvatarImg**: `string`
+
+The image to be set
+
+• **width?**: `number`
+
+The width of the image to be set
+
+• **height?**: `number`
+
+The height of the image to be set
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+---
+
+### subscribe()
+
+> **subscribe**(`handler`, `eventNames`?): `Subscription`
+
+Subscribe to updates on this bubble (all events are of `RBEvent` type)
+
+#### Parameters
+
+• **handler**
+
+The call-back function that will be subscribed to the RxJS subject
+
+• **eventNames?**: [`BubbleEvents`](doc/sdk/webv2/lts/api/Bubbles/enumerations/BubbleEvents) | [`BubbleEvents`](doc/sdk/webv2/lts/api/Bubbles/enumerations/BubbleEvents)\[\]
+
+#### Returns
+
+`Subscription`
+
+---
+
+### toJSON()
+
+> **toJSON**(): `any`
+
+Method to return a simplified JSON re^resentation of the Bubble object
+
+#### Returns
+
+`any`
+
+---
+
+### updateAllUsersPrivilege()
+
+> **updateAllUsersPrivilege**(`privilege`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+Like updateUserPrivilege API, but all active users. NB API only available for Owner of the bubble and not the other moderators; All users can be updated to "moderator" or demoted to "user";
+
+#### Parameters
+
+• **privilege**: [`BubbleUserPrivilege`](doc/sdk/webv2/lts/api/Bubbles/enumerations/BubbleUserPrivilege)
+
+User privilege : "moderator" or "user"
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+---
+
+### updateCustomData()
+
+> **updateCustomData**(`customData`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+Update the bubble custom data
+
+#### Parameters
+
+• **customData**: `any`
+
+the custom data to be set to the bubble
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+---
+
+### updateSettings()
+
+> **updateSettings**(`bubbleSettings`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+Update the bubble settings
+
+#### Parameters
+
+• **bubbleSettings**: [`BubbleSettings`](doc/sdk/webv2/lts/api/Bubbles/interfaces/BubbleSettings)
+
+The settings to be updated in the bubble
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+---
+
+### updateUserPrivilege()
+
+> **updateUserPrivilege**(`user`, `privilege`): [`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+Update user's privilege in the Bubble. API only available for moderators / owner of the bubble; The user can be updated to "moderator" or "user";
+
+#### Parameters
+
+• **user**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)
+
+The user that should be update
+
+• **privilege**: [`BubbleUserPrivilege`](doc/sdk/webv2/lts/api/Bubbles/enumerations/BubbleUserPrivilege)
+
+User privilege : "moderator" or "user"
+
+#### Returns
+
+[`Promise`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[`Bubble`](doc/sdk/webv2/lts/api/Bubbles/interfaces/Bubble)\>
+
+### Sur cette page
+
+-   [Properties](/docs/sdk/web#name-properties-10)
+-   [autoAcceptInvitation](/docs/sdk/web#name-autoacceptinvitation-13)
+-   [avatar](/docs/sdk/web#name-avatar-25)
+-   [avatarContacts](/docs/sdk/web#name-avatarcontacts-37)
+-   [containerId](/docs/sdk/web#name-containerid-49)
+-   [creationDate?](/docs/sdk/web#name-creationdate-61)
+-   [customData](/docs/sdk/web#name-customdata-73)
+-   [dbId](/docs/sdk/web#name-dbid-85)
+-   [guestPhoneNumbers](/docs/sdk/web#name-guestphonenumbers-97)
+-   [history](/docs/sdk/web#name-history-109)
+-   [isActive](/docs/sdk/web#name-isactive-121)
+-   [isAlertNotificationEnabled](/docs/sdk/web#name-isalertnotificationenabled-133)
+-   [isModerator](/docs/sdk/web#name-ismoderator-145)
+-   [isOwnedByGroup](/docs/sdk/web#name-isownedbygroup-157)
+-   [jid](/docs/sdk/web#name-jid-169)
+-   [lastActivityDate?](/docs/sdk/web#name-lastactivitydate-181)
+-   [members](/docs/sdk/web#name-members-193)
+-   [name](/docs/sdk/web#name-name-205)
+-   [nameForLogs](/docs/sdk/web#name-nameforlogs-217)
+-   [organizers](/docs/sdk/web#name-organizers-229)
+-   [owner](/docs/sdk/web#name-owner-241)
+-   [ownerContact](/docs/sdk/web#name-ownercontact-253)
+-   [rxSubject](/docs/sdk/web#name-rxsubject-265)
+-   [status](/docs/sdk/web#name-status-277)
+-   [tags](/docs/sdk/web#name-tags-289)
+-   [topic](/docs/sdk/web#name-topic-301)
+-   [type](/docs/sdk/web#name-type-313)
+-   [users](/docs/sdk/web#name-users-325)
+-   [usersReady](/docs/sdk/web#name-usersready-337)
+-   [Methods](/docs/sdk/web#name-methods-348)
+-   [acceptInvitation()](/docs/sdk/web#name-acceptinvitation-351)
+-   [Returns](/docs/sdk/web#name-returns-362)
+-   [addRainbowTVs()](/docs/sdk/web#name-addrainbowtvs-369)
+-   [Parameters](/docs/sdk/web#name-parameters-380)
+-   [Returns](/docs/sdk/web#name-returns-389)
+-   [addUser()](/docs/sdk/web#name-adduser-396)
+-   [Parameters](/docs/sdk/web#name-parameters-407)
+-   [Returns](/docs/sdk/web#name-returns-434)
+-   [changeOwner()](/docs/sdk/web#name-changeowner-441)
+-   [Parameters](/docs/sdk/web#name-parameters-452)
+-   [Returns](/docs/sdk/web#name-returns-461)
+-   [createBubbleLink()](/docs/sdk/web#name-createbubblelink-468)
+-   [Returns](/docs/sdk/web#name-returns-479)
+-   [declineInvitation()](/docs/sdk/web#name-declineinvitation-486)
+-   [Returns](/docs/sdk/web#name-returns-497)
+-   [delete()](/docs/sdk/web#name-delete-504)
+-   [Parameters](/docs/sdk/web#name-parameters-515)
+-   [Returns](/docs/sdk/web#name-returns-524)
+-   [deleteBubbleLink()](/docs/sdk/web#name-deletebubblelink-531)
+-   [Returns](/docs/sdk/web#name-returns-542)
+-   [getAllAcceptedUsers()](/docs/sdk/web#name-getallacceptedusers-549)
+-   [Returns](/docs/sdk/web#name-returns-560)
+-   [getAutoAcceptInvitation()](/docs/sdk/web#name-getautoacceptinvitation-567)
+-   [Returns](/docs/sdk/web#name-returns-578)
+-   [getAutoRegister()](/docs/sdk/web#name-getautoregister-585)
+-   [Returns](/docs/sdk/web#name-returns-596)
+-   [getBubbleLink()](/docs/sdk/web#name-getbubblelink-603)
+-   [Returns](/docs/sdk/web#name-returns-614)
+-   [getDialInCode()](/docs/sdk/web#name-getdialincode-621)
+-   [Returns](/docs/sdk/web#name-returns-632)
+-   [getDisableTimeStats()](/docs/sdk/web#name-getdisabletimestats-639)
+-   [Returns](/docs/sdk/web#name-returns-650)
+-   [getIncludeAllPhoneNumbers()](/docs/sdk/web#name-getincludeallphonenumbers-657)
+-   [Returns](/docs/sdk/web#name-returns-668)
+-   [getMuteUponEntry()](/docs/sdk/web#name-getmuteuponentry-675)
+-   [Returns](/docs/sdk/web#name-returns-686)
+-   [getNameForLogs()](/docs/sdk/web#name-getnameforlogs-693)
+-   [Returns](/docs/sdk/web#name-returns-704)
+-   [getPhoneNumbers()](/docs/sdk/web#name-getphonenumbers-711)
+-   [Returns](/docs/sdk/web#name-returns-722)
+-   [getPlayEntryTone()](/docs/sdk/web#name-getplayentrytone-729)
+-   [Returns](/docs/sdk/web#name-returns-740)
+-   [getWebConferenceOwnerId()](/docs/sdk/web#name-getwebconferenceownerid-747)
+-   [Returns](/docs/sdk/web#name-returns-758)
+-   [inviteUsers()](/docs/sdk/web#name-inviteusers-765)
+-   [Parameters](/docs/sdk/web#name-parameters-776)
+-   [Returns](/docs/sdk/web#name-returns-797)
+-   [isUserModerator()](/docs/sdk/web#name-isusermoderator-804)
+-   [Parameters](/docs/sdk/web#name-parameters-815)
+-   [Returns](/docs/sdk/web#name-returns-824)
+-   [isUserOwner()](/docs/sdk/web#name-isuserowner-831)
+-   [Parameters](/docs/sdk/web#name-parameters-842)
+-   [Returns](/docs/sdk/web#name-returns-851)
+-   [isWebConferenceBubble()](/docs/sdk/web#name-iswebconferencebubble-858)
+-   [Returns](/docs/sdk/web#name-returns-869)
+-   [isWebinarRoom()](/docs/sdk/web#name-iswebinarroom-876)
+-   [Returns](/docs/sdk/web#name-returns-887)
+-   [leave()](/docs/sdk/web#name-leave-894)
+-   [Parameters](/docs/sdk/web#name-parameters-905)
+-   [Returns](/docs/sdk/web#name-returns-914)
+-   [removeCustomAvatar()](/docs/sdk/web#name-removecustomavatar-921)
+-   [Returns](/docs/sdk/web#name-returns-932)
+-   [removeUser()](/docs/sdk/web#name-removeuser-939)
+-   [Parameters](/docs/sdk/web#name-parameters-950)
+-   [Returns](/docs/sdk/web#name-returns-959)
+-   [resetBubbleLink()](/docs/sdk/web#name-resetbubblelink-966)
+-   [Returns](/docs/sdk/web#name-returns-977)
+-   [setCustomAvatar()](/docs/sdk/web#name-setcustomavatar-984)
+-   [Parameters](/docs/sdk/web#name-parameters-995)
+-   [Returns](/docs/sdk/web#name-returns-1016)
+-   [subscribe()](/docs/sdk/web#name-subscribe-1023)
+-   [Parameters](/docs/sdk/web#name-parameters-1034)
+-   [Returns](/docs/sdk/web#name-returns-1046)
+-   [toJSON()](/docs/sdk/web#name-tojson-1053)
+-   [Returns](/docs/sdk/web#name-returns-1064)
+-   [updateAllUsersPrivilege()](/docs/sdk/web#name-updateallusersprivilege-1071)
+-   [Parameters](/docs/sdk/web#name-parameters-1082)
+-   [Returns](/docs/sdk/web#name-returns-1091)
+-   [updateCustomData()](/docs/sdk/web#name-updatecustomdata-1098)
+-   [Parameters](/docs/sdk/web#name-parameters-1109)
+-   [Returns](/docs/sdk/web#name-returns-1118)
+-   [updateSettings()](/docs/sdk/web#name-updatesettings-1125)
+-   [Parameters](/docs/sdk/web#name-parameters-1136)
+-   [Returns](/docs/sdk/web#name-returns-1145)
+-   [updateUserPrivilege()](/docs/sdk/web#name-updateuserprivilege-1152)
+-   [Parameters](/docs/sdk/web#name-parameters-1163)
+-   [Returns](/docs/sdk/web#name-returns-1178)
+
+---
+
+Ce contenu vous a-t-il été utile ?OuiNon
+
+Feedback
