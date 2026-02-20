@@ -16,13 +16,13 @@ export async function GET() {
     return NextResponse.json({
       user: {
         id: data.id,
-        loginEmail: data.loginEmail,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        displayName: data.displayName,
-        companyId: data.companyId,
-        companyName: data.companyName,
-        jid_im: data.jid_im,
+        loginEmail: data.loginEmail || "",
+        firstName: data.firstName || "",
+        lastName: data.lastName || "",
+        displayName: data.displayName || "",
+        companyId: data.companyId || "",
+        companyName: data.companyName || "",
+        jid_im: data.jid_im || "",
       },
     });
   } catch {

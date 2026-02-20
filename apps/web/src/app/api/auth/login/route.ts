@@ -66,13 +66,13 @@ export async function POST(req: NextRequest) {
     const response = NextResponse.json({
       user: {
         id: user.id,
-        loginEmail: user.loginEmail,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        displayName: user.displayName,
-        companyId: user.companyId,
-        companyName: user.companyName,
-        jid_im: user.jid_im,
+        loginEmail: user.loginEmail || "",
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        displayName: user.displayName || "",
+        companyId: user.companyId || "",
+        companyName: user.companyName || "",
+        jid_im: user.jid_im || "",
       },
     });
 

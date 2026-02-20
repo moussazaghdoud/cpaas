@@ -39,14 +39,14 @@ export default function PortalLayout({
               <>
                 Signed in as{" "}
                 <span className="font-medium text-foreground">
-                  {user.displayName || `${user.firstName} ${user.lastName}`}
+                  {user.displayName || [user.firstName, user.lastName].filter(Boolean).join(" ") || user.loginEmail}
                 </span>
               </>
             )}
           </div>
           <button
             onClick={handleLogout}
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            className="text-sm font-medium text-red-400 hover:text-red-300 transition-colors cursor-pointer"
           >
             Sign out
           </button>

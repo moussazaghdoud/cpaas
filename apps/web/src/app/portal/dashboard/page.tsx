@@ -45,7 +45,7 @@ export default function DashboardPage() {
     <div className="mx-auto max-w-5xl space-y-8">
       <div>
         <h1 className="text-2xl font-bold">
-          Welcome back{user ? `, ${user.firstName}` : ""}
+          Welcome back{user && (user.firstName || user.loginEmail) ? `, ${user.firstName || user.loginEmail}` : ""}
         </h1>
         <p className="mt-1 text-muted-foreground">
           Here&apos;s an overview of your developer account.
