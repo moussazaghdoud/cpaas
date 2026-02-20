@@ -42,15 +42,22 @@ function getSdkContent(slug: string): SdkSection[] {
   const other: SdkSection["pages"] = [];
   let homePage: { label: string; href: string } | null = null;
 
+  const GENERIC_TITLES = new Set([
+    "CPaaS SDK for business communication solutions | Rainbow",
+    "Rainbow",
+    "",
+  ]);
+
   for (const page of matching) {
     const href = "/docs/" + page.slug.replace(/^doc\//, "");
-    const label =
-      page.meta.title ||
-      page.slug
-        .split("/")
-        .pop()!
-        .replace(/_/g, " ")
-        .replace(/\b\w/g, (c) => c.toUpperCase());
+    const rawTitle = page.meta.title;
+    const label = (rawTitle && !GENERIC_TITLES.has(rawTitle))
+      ? rawTitle
+      : page.slug
+          .split("/")
+          .pop()!
+          .replace(/_/g, " ")
+          .replace(/\b\w/g, (c) => c.toUpperCase());
 
     if (page.slug === `doc/sdk/${slug}/home` || page.slug === `doc/sdk/${slug}`) {
       homePage = { label, href };

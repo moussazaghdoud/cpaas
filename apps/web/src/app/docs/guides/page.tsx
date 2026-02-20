@@ -30,13 +30,15 @@ function getGuides(): Record<string, GuideLink[]> {
     if (page.content.includes("Document introuvable")) continue;
 
     const href = "/docs/" + page.slug.replace(/^doc\//, "");
-    const title =
-      page.meta.title ||
-      page.slug
-        .split("/")
-        .pop()!
-        .replace(/_/g, " ")
-        .replace(/\b\w/g, (c) => c.toUpperCase());
+    const rawTitle = page.meta.title;
+    const isGeneric = !rawTitle || rawTitle.includes("CPaaS SDK") || rawTitle === "Rainbow";
+    const title = isGeneric
+      ? page.slug
+          .split("/")
+          .pop()!
+          .replace(/_/g, " ")
+          .replace(/\b\w/g, (c) => c.toUpperCase())
+      : rawTitle;
 
     // Determine category from path
     let category = "General";

@@ -16,17 +16,20 @@ function getChangelogs() {
       if (p.content.includes("Document introuvable")) return false;
       return true;
     })
-    .map((p) => ({
-      title:
-        p.meta.title ||
-        p.slug
-          .split("/")
-          .pop()!
-          .replace(/_/g, " ")
-          .replace(/\b\w/g, (c) => c.toUpperCase()),
+    .map((p) => {
+      const rawTitle = p.meta.title;
+      const isGeneric = !rawTitle || rawTitle.includes("CPaaS SDK") || rawTitle === "Rainbow";
+      return {
+      title: isGeneric
+        ? p.slug
+            .split("/")
+            .pop()!
+            .replace(/_/g, " ")
+            .replace(/\b\w/g, (c) => c.toUpperCase())
+        : rawTitle,
       href: "/docs/" + p.slug.replace(/^doc\//, ""),
       sdk: extractSdk(p.slug),
-    }))
+    }})
     .sort((a, b) => a.title.localeCompare(b.title));
 }
 

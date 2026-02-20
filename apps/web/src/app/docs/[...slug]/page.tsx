@@ -110,7 +110,11 @@ export default async function DynamicDocsPage({ params }: Props) {
           <Breadcrumbs items={breadcrumbs} />
 
           <article className="prose">
-            {page.meta.title && <h1>{page.meta.title}</h1>}
+            {page.meta.title &&
+              !page.meta.title.includes("CPaaS SDK") &&
+              page.meta.title !== "Rainbow" && (
+              <h1>{page.meta.title}</h1>
+            )}
 
             {/* Render MDX content as HTML (pre-converted markdown) */}
             <div dangerouslySetInnerHTML={{ __html: markdownToHtml(page.content) }} />
