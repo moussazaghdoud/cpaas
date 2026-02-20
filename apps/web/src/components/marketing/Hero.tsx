@@ -44,10 +44,16 @@ export function Hero() {
               </svg>
             </Link>
             <Link
+              href="/docs/getting-started"
+              className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 text-sm font-medium border border-border text-foreground rounded-lg hover:bg-muted transition-colors"
+            >
+              Quickstart guide
+            </Link>
+            <Link
               href="/api-reference"
               className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 text-sm font-medium border border-border text-foreground rounded-lg hover:bg-muted transition-colors"
             >
-              View API reference
+              API reference
             </Link>
           </div>
         </div>
