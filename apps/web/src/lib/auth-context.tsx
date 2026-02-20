@@ -62,6 +62,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     refresh();
   }, [refresh]);
 
+  // Auto-renew token every 50 minutes (JWT lasts 1h)
+  useEffect(() => {
+    if (!user) return;
+    const interval = setInterval(async () => {
+      try {
+        const res = await fetch("/api/auth/renew", { method: "POST" });
+        if (!res.ok) {
+          setUser(null);
+        }
+      } catch {
+        // Silently fail — next navigation will trigger login
+      }
+    }, 50 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, [user]);
+
   const login = async (email: string, password: string) => {
     const res = await fetch("/api/auth/login", {
       method: "POST",

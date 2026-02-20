@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { SITE_NAME } from "@/lib/constants";
@@ -15,7 +15,6 @@ export default function LoginPage() {
 }
 
 function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const { login } = useAuth();
   const [email, setEmail] = useState("");
@@ -32,10 +31,10 @@ function LoginForm() {
 
     try {
       await login(email, password);
-      router.push(redirect);
+      // Full navigation ensures the httpOnly cookie is reliably sent on the next request
+      window.location.href = redirect;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
-    } finally {
       setLoading(false);
     }
   }
