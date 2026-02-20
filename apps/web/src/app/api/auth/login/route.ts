@@ -28,9 +28,15 @@ export async function POST(req: NextRequest) {
     );
 
     if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
+      const text = await res.text();
+      let body: Record<string, string> = {};
+      try { body = JSON.parse(text); } catch {}
+      console.error("Rainbow login failed:", res.status, text);
       return NextResponse.json(
-        { error: body.errorMsg || body.errorDetails || "Invalid credentials" },
+        {
+          error: body.errorMsg || body.errorDetails || `Login failed (${res.status})`,
+          debug: { status: res.status, url: `${apiUrl}/api/rainbow/authentication/v1.0/login`, response: text.slice(0, 500) },
+        },
         { status: res.status }
       );
     }
