@@ -44,9 +44,15 @@ export async function POST(req: NextRequest) {
     );
 
     if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
+      const text = await res.text();
+      let body: Record<string, string> = {};
+      try { body = JSON.parse(text); } catch {}
       return NextResponse.json(
-        { error: body.errorMsg || body.errorDetails || `Login failed (${res.status})` },
+        {
+          error: body.errorMsg || `Login failed (${res.status})`,
+          detail: body.errorDetails || "",
+          code: body.errorDetailsCode || null,
+        },
         { status: res.status }
       );
     }
