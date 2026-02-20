@@ -6,11 +6,13 @@ import { useState } from "react";
 import { NAV_ITEMS, SITE_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { SearchModal } from "@/components/ui/SearchModal";
+import { useAuth } from "@/lib/auth-context";
 
 export function Header() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const { user, loading } = useAuth();
 
   return (
     <>
@@ -55,14 +57,23 @@ export function Header() {
               </kbd>
             </button>
 
-            <Link
-              href="https://developers.openrainbow.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden sm:inline-flex px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
-            >
-              Get API Keys
-            </Link>
+            {!loading && (
+              user ? (
+                <Link
+                  href="/portal/dashboard"
+                  className="hidden sm:inline-flex px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+                >
+                  Portal
+                </Link>
+              ) : (
+                <Link
+                  href="/login"
+                  className="hidden sm:inline-flex px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+                >
+                  Sign in
+                </Link>
+              )
+            )}
 
             {/* Mobile menu button */}
             <button
@@ -100,13 +111,25 @@ export function Header() {
                   {item.label}
                 </Link>
               ))}
-              <Link
-                href="https://developers.openrainbow.com"
-                target="_blank"
-                className="mt-2 px-4 py-2 text-sm font-medium text-center bg-primary text-primary-foreground rounded-lg"
-              >
-                Get API Keys
-              </Link>
+              {!loading && (
+                user ? (
+                  <Link
+                    href="/portal/dashboard"
+                    onClick={() => setMobileOpen(false)}
+                    className="mt-2 px-4 py-2 text-sm font-medium text-center bg-primary text-primary-foreground rounded-lg"
+                  >
+                    Portal
+                  </Link>
+                ) : (
+                  <Link
+                    href="/login"
+                    onClick={() => setMobileOpen(false)}
+                    className="mt-2 px-4 py-2 text-sm font-medium text-center bg-primary text-primary-foreground rounded-lg"
+                  >
+                    Sign in
+                  </Link>
+                )
+              )}
             </nav>
           </div>
         )}

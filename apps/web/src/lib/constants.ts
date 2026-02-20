@@ -26,8 +26,8 @@ export const FOOTER_SECTIONS = [
     links: [
       { label: "Getting Started", href: "/docs/getting-started" },
       { label: "Guides", href: "/docs/guides" },
-      { label: "API Keys", href: "https://developers.openrainbow.com", external: true },
-      { label: "Sandbox", href: "https://developers.openrainbow.com", external: true },
+      { label: "API Keys", href: "/portal/applications" },
+      { label: "Sandbox", href: "/portal/sandbox" },
     ],
   },
   {
