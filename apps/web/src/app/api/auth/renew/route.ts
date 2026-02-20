@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { rainbowFetch } from "@/lib/rainbow-api";
 
 export async function POST() {
@@ -16,18 +15,20 @@ export async function POST() {
     const data = await res.json();
     const token = data.token;
 
-    if (token) {
-      const cookieStore = await cookies();
-      cookieStore.set("rainbow_token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        path: "/",
-        maxAge: 3600,
-      });
+    if (!token) {
+      return NextResponse.json({ error: "No token in renewal response" }, { status: 502 });
     }
 
-    return NextResponse.json({ ok: true });
+    const response = NextResponse.json({ ok: true });
+    response.cookies.set("rainbow_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 3600,
+    });
+
+    return response;
   } catch {
     return NextResponse.json({ error: "Token renewal failed" }, { status: 401 });
   }

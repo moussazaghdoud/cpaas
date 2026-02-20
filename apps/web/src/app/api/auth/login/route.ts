@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { createHash } from "crypto";
 import { getRainbowApiUrl } from "@/lib/rainbow-api";
 
 export async function POST(req: NextRequest) {
@@ -16,14 +16,28 @@ export async function POST(req: NextRequest) {
     const basicAuth = Buffer.from(`${email}:${password}`).toString("base64");
     const apiUrl = getRainbowApiUrl();
 
+    // Build headers
+    const headers: Record<string, string> = {
+      accept: "application/json",
+      authorization: `Basic ${basicAuth}`,
+    };
+
+    // Rainbow requires x-rainbow-app-auth for application-level auth
+    const appId = process.env.RAINBOW_APP_ID;
+    const appSecret = process.env.RAINBOW_APP_SECRET;
+    if (appId && appSecret) {
+      const hash = createHash("sha256")
+        .update(appSecret + password)
+        .digest("hex");
+      const appAuth = Buffer.from(`${appId}:${hash}`).toString("base64");
+      headers["x-rainbow-app-auth"] = `Basic ${appAuth}`;
+    }
+
     const res = await fetch(
       `${apiUrl}/api/rainbow/authentication/v1.0/login`,
       {
         method: "GET",
-        headers: {
-          accept: "application/json",
-          authorization: `Basic ${basicAuth}`,
-        },
+        headers,
         cache: "no-store",
       }
     );
@@ -39,18 +53,17 @@ export async function POST(req: NextRequest) {
     const data = await res.json();
     const token = data.token;
 
-    const cookieStore = await cookies();
-    cookieStore.set("rainbow_token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 3600, // 1 hour (Rainbow JWT lifetime)
-    });
+    if (!token) {
+      return NextResponse.json(
+        { error: "No token received from Rainbow" },
+        { status: 502 }
+      );
+    }
 
     const user = data.loggedInUser || {};
 
-    return NextResponse.json({
+    // Set cookie on the NextResponse for reliability
+    const response = NextResponse.json({
       user: {
         id: user.id,
         loginEmail: user.loginEmail,
@@ -62,6 +75,16 @@ export async function POST(req: NextRequest) {
         jid_im: user.jid_im,
       },
     });
+
+    response.cookies.set("rainbow_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 3600,
+    });
+
+    return response;
   } catch {
     return NextResponse.json(
       { error: "Internal server error" },
