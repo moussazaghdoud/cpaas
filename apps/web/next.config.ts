@@ -23,6 +23,11 @@ const nextConfig: NextConfig = {
       { source: "/pricing", destination: "/docs/hub/application-lifecycle", permanent: true },
       { source: "/home", destination: "/", permanent: true },
       { source: "/profile", destination: "/portal/profile", permanent: true },
+      // Legacy API doc paths
+      { source: "/api/admin/:path*", destination: "/api-reference", permanent: true },
+      { source: "/api/authentication/:path*", destination: "/api-reference", permanent: true },
+      { source: "/enduser/:path*", destination: "/api-reference", permanent: true },
+      { source: "/customercare/:path*", destination: "/api-reference", permanent: true },
       // Legacy /doc/ paths
       { source: "/doc/hub", destination: "/docs", permanent: true },
       { source: "/doc/sdk/node/:path*", destination: "/docs/sdk/node", permanent: true },

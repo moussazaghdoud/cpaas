@@ -233,14 +233,26 @@ const LINK_REWRITES: Record<string, string> = {
 function rewriteLink(href: string): string {
   // Skip external links and anchors
   if (href.startsWith("http") || href.startsWith("#") || href.startsWith("mailto:")) return href;
-  // Already a /docs/ or /api-reference/ or /portal/ path — leave as-is
+  // Skip static asset references (old webpack hashed files) — nothing to link to
+  if (href.startsWith("/static/media/")) return href;
+  // Already a correct path — leave as-is
   if (href.startsWith("/docs/") || href.startsWith("/api-reference") || href.startsWith("/portal/") || href.startsWith("/login") || href.startsWith("/signup") || href.startsWith("/support") || href.startsWith("/legal") || href.startsWith("/changelog")) return href;
+  // Old Angular hash-router links: /#/documentation/doc/hub/... → /docs/hub/...
+  if (href.startsWith("/#/documentation/doc/")) return "/docs/" + href.slice(20);
+  if (href.startsWith("/#/documentation/")) return "/docs/" + href.slice(17);
   // Strip hash for lookup, preserve it after rewrite
   const [path, hash] = href.split("#");
+  const suffix = hash ? `#${hash}` : "";
   const target = LINK_REWRITES[path];
-  if (target) return hash ? `${target}#${hash}` : target;
-  // Links like doc/sdk/... (without leading slash) → /docs/...
-  if (href.startsWith("doc/")) return "/docs/" + href.slice(4);
+  if (target) return target + suffix;
+  // /doc/... (with leading slash) → /docs/...
+  if (path.startsWith("/doc/")) return "/docs/" + path.slice(5) + suffix;
+  // doc/... (without leading slash) → /docs/...
+  if (path.startsWith("doc/")) return "/docs/" + path.slice(4) + suffix;
+  // /api/... → /api-reference
+  if (path.startsWith("/api/")) return "/api-reference" + suffix;
+  // /enduser/... and /customercare/... → /api-reference
+  if (path.startsWith("/enduser/") || path.startsWith("/customercare/")) return "/api-reference" + suffix;
   return href;
 }
 
