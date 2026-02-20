@@ -4,6 +4,7 @@ import { listContentPages, getContentPage } from "@/lib/content";
 import { markdownToHtml } from "@/lib/markdown";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { TableOfContents } from "@/components/docs/TableOfContents";
+import { CmsEditButton } from "@/components/docs/CmsEditButton";
 
 // Enable dynamic rendering so edits via CMS appear immediately
 export const dynamicParams = true;
@@ -138,6 +139,9 @@ export default async function DynamicDocsPage({ params }: Props) {
         {/* Table of contents */}
         <TableOfContents />
       </div>
+
+      {/* Floating edit button — only visible to CMS admins */}
+      <CmsEditButton slug={page.slug} />
     </div>
   );
 }
