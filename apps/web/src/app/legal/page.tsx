@@ -18,7 +18,7 @@ export default function LegalPage() {
         <h2 id="terms">Terms of Service</h2>
         <p>
           By using Rainbow APIs and SDKs, you agree to the{" "}
-          <a href="https://developers.openrainbow.com/legal" target="_blank" rel="noopener noreferrer">
+          <a href="/legal/terms">
             Rainbow Developer Terms of Service
           </a>.
         </p>

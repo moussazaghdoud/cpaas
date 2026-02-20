@@ -36,12 +36,10 @@ export default function HomePage() {
               API reference
             </Link>
             <Link
-              href="https://developers.openrainbow.com"
-              target="_blank"
+              href="/portal/sandbox"
               className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 text-sm font-medium border border-border text-foreground rounded-lg hover:bg-muted transition-colors"
             >
               Try sandbox
-              <span className="ml-1 text-xs">&#8599;</span>
             </Link>
           </div>
         </div>

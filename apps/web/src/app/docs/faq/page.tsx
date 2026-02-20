@@ -36,9 +36,7 @@ export default function FaqPage() {
         <p>
           Rainbow provides a sandbox environment for development and testing at
           no cost. Visit the{" "}
-          <a href="https://developers.openrainbow.com" target="_blank" rel="noopener noreferrer">
-            Developer Hub
-          </a>{" "}
+          <a href="/signup">Developer Portal</a>{" "}
           to create a free account.
         </p>
 

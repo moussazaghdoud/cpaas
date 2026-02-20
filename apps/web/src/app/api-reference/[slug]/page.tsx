@@ -120,17 +120,9 @@ export default async function ApiDetailPage({ params }: Props) {
         ))}
       </div>
 
-      {/* Link to original docs */}
+      {/* Spec info */}
       <div className="mt-12 p-4 rounded-lg border border-[var(--border)] text-sm text-[var(--muted-foreground)] max-w-3xl">
-        Spec format: {api.specFormat} &middot; Generated from{" "}
-        <a
-          href={`https://developers.openrainbow.com/doc/rest/api/${slug}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[var(--accent)] hover:underline"
-        >
-          Rainbow Developer Hub
-        </a>
+        Spec format: {api.specFormat} &middot; Generated from Rainbow OpenAPI specification
       </div>
     </div>
   );

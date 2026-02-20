@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { SDK_LIST } from "@/lib/constants";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-import { Callout } from "@/components/ui/Callout";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -44,20 +43,6 @@ export default async function SDKPage({ params }: Props) {
           features into your {sdk.language} applications.
         </p>
 
-        <Callout type="info">
-          <p>
-            This SDK documentation is sourced from the{" "}
-            <a
-              href={`https://developers.openrainbow.com/doc/sdk/${slug}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Rainbow Developer Hub
-            </a>
-            . Run <code>pnpm content:sync</code> to refresh the content.
-          </p>
-        </Callout>
-
         <h2 id="overview">Overview</h2>
         <p>
           The {sdk.name} provides APIs for:
@@ -74,21 +59,16 @@ export default async function SDKPage({ params }: Props) {
 
         <h2 id="installation">Installation</h2>
         <p>
-          Refer to the platform-specific installation guide on the{" "}
-          <a
-            href={`https://developers.openrainbow.com/doc/sdk/${slug}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            official documentation
-          </a>.
+          Refer to the platform-specific{" "}
+          <a href={`/docs/sdk/${slug}`}>installation guide</a>{" "}
+          for detailed setup instructions.
         </p>
 
         <h2 id="guides">Guides</h2>
         <p>
           The SDK includes comprehensive guides covering common use cases.
-          After running the content sync pipeline, detailed guides will be
-          available here.
+          Browse the <a href="/docs/guides">guides section</a> for tutorials
+          on messaging, voice, conferencing, and more.
         </p>
       </div>
     </div>

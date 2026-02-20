@@ -39,7 +39,7 @@ export default function GettingStartedPage() {
 
             <h2 id="prerequisites">Prerequisites</h2>
             <ul>
-              <li>A Rainbow account — <a href="https://developers.openrainbow.com" target="_blank" rel="noopener noreferrer">sign up here</a></li>
+              <li>A Rainbow account — <Link href="/signup">sign up here</Link></li>
               <li>Node.js 16+ (for the Node.js SDK) or any HTTP client for REST APIs</li>
             </ul>
 
@@ -52,7 +52,7 @@ export default function GettingStartedPage() {
 
             <h2 id="create-application">Create your application</h2>
             <ol>
-              <li>Log in to the <a href="https://developers.openrainbow.com" target="_blank" rel="noopener noreferrer">Rainbow Developer Hub</a></li>
+              <li>Log in to the <Link href="/portal/dashboard">Developer Portal</Link></li>
               <li>Navigate to the Applications section</li>
               <li>Click &quot;Create Application&quot;</li>
               <li>Fill in your application details (name, description, platform)</li>
