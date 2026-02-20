@@ -7,6 +7,16 @@ node_modules/
 # Crawled raw HTML (large, regenerable)
 content/raw/*.html
 
+# Raw OpenAPI specs (large, regenerable — keep api-summary.json)
+content/openapi/authentication.json
+content/openapi/admin.json
+content/openapi/enduser.json
+content/openapi/applications.json
+content/openapi/metrics.json
+content/openapi/invoicing.json
+content/openapi/subscription.json
+content/openapi/ngcpprovisioning.json
+
 # Build outputs
 apps/web/out/
 apps/web/.next/

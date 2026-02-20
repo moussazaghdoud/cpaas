@@ -1,0 +1,3117 @@
+{
+  "authentication": {
+    "slug": "authentication",
+    "label": "Authentication",
+    "category": "Core",
+    "title": "Rainbow authentication portal",
+    "description": "# Rainbow authentication portal API guide\n\n## Preamble\n\n[Download Postman collection][0]\n\n### Introduction\n\nThis guide describes list of API services that are provided by OT Rainbow authentication portal system. Services are used to manage OT Rainbow authentication.\n\n### Protocol\n\nREST interface is ",
+    "version": "1.256.2",
+    "specFormat": "2.0",
+    "basePath": "",
+    "endpointCount": 20,
+    "methodCounts": {
+      "GET": 13,
+      "POST": 5,
+      "DELETE": 1,
+      "PUT": 1
+    },
+    "tags": [
+      "Apikeys",
+      "Authentication",
+      "Authentication Urls",
+      "Multifactor Rainbow Authentication",
+      "Oauth Authentication",
+      "Oidc Client",
+      "Passwordless",
+      "Saml-authentication"
+    ],
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/rainbow/authentication/v1.0/validator",
+        "summary": "Validate user JWT",
+        "description": "This API allows to get a validation status on a token.",
+        "tag": "Authentication",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/authentication/v1.0/login",
+        "summary": "Login user",
+        "description": "This API allows Rainbow users to login.\n\nThe application is also authenticated during the user login.\n\nThe login provided by the user is matched against the loginEmail or the authenticationExternalUid",
+        "tag": "Authentication",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/authentication/v1.0/logout",
+        "summary": "Logout user",
+        "description": "This API allows Rainbow users to logout.\n\nNote: This API must not be called with ApiKey as authentication method.",
+        "tag": "Authentication",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/authentication/v1.0/renew",
+        "summary": "Renew user JWT",
+        "description": "This API allows Rainbow users to renew their JSON Web Token (<abbr title=\\\"JSON Web Token\\\">JWT</abbr>), thus\nextending the expiration date of their current JWT.\n\nThis API requires user to be authenti",
+        "tag": "Authentication",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/authentication/v1.0/urls",
+        "summary": "Get user authentication URLs",
+        "description": "This API allows Rainbow users to know that URL they can use to perform a login.\n\nThe authentication URLs depends on the user and/or his company's setting:\n- user can be configured to use:\n  - Rainbow ",
+        "tag": "Authentication Urls",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/authentication/v1.0/mfa/recovery/login",
+        "summary": "Realize login with recovery code",
+        "description": "This API realize the second authentication with a recovery code as second factor\n\nIf login is successful, the API returns a **JSON Web Token** (<abbr title=\\\"JSON Web Token\\\">JWT</abbr>) which has\nto ",
+        "tag": "Multifactor Rainbow Authentication",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/authentication/v1.0/mfa/totp/login",
+        "summary": "Realize totp login",
+        "description": "This API realize the second authentication with a totp code as second factor\n\nIf login is successful, the API returns a **JSON Web Token** (<abbr title=\\\"JSON Web Token\\\">JWT</abbr>) which has\nto be p",
+        "tag": "Multifactor Rainbow Authentication",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/authentication/v1.0/oauth/authorize",
+        "summary": "1 - OAuth Authorization Request",
+        "description": "This endpoints allows applications to get authorization from Rainbow users to use Rainbow APIs\nwith their account. This delegation of access can be performed using OAuth 2.0 **Authorization code** gra",
+        "tag": "Oauth Authentication",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/authentication/v1.0/oauth/token",
+        "summary": "2 - OAuth Access Token Request",
+        "description": "This endpoints allows applications to get an access token allowing them to use Rainbow APIs with\nthe account of the related Rainbow user.\n\nAccess token has a short lifetime (1 hour). A refresh token i",
+        "tag": "Oauth Authentication",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/authentication/v1.0/oidc-client/login",
+        "summary": "Initiate an OIDC authentication",
+        "description": "This API allows Rainbow users to login using OpenID Connect (OIDC) authentication (using authorization code grant)\nif this type of authentication is provided by their company.\n\nAuthorization code gran",
+        "tag": "Oidc Client",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/authentication/v1.0/oidc-client/logout",
+        "summary": "Initiate an OIDC logout",
+        "description": "This API allows Rainbow users to logout using OpenID Connect (OIDC) authentication ([RP-Initiated Logout](https://openid.net/specs/openid-connect-rpinitiated-1_0.html)).\n\nIn order to use this API:\n- T",
+        "tag": "Oidc Client",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/authentication/v1.0/passwordless/code",
+        "summary": "1 - Get an access code to realize a passwordless login",
+        "description": "This API allows the user to get a once-time access code (OTP) to be used for passwordless login.\nThis access code has then to be provided to the API [POST /api/rainbow/authentication/v1.0/passwordless",
+        "tag": "Passwordless",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/authentication/v1.0/passwordless/login",
+        "summary": "2 - Realize a passwordless login",
+        "description": "This API allows Rainbow users to use a once-time access code (OTP) in order to login to Rainbow.\n\nThis API is meant to be used by users configured to use passwordless authentication method:\n- either t",
+        "tag": "Passwordless",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/authentication/v1.0/saml/login",
+        "summary": "Initiate an SAML authentication",
+        "description": "This API allows Rainbow users to login using SAML authentication if this type of authentication is provided by their company.",
+        "tag": "Saml-authentication",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/authentication/v1.0/apikeys/{apiKeyId}",
+        "summary": "Delete an API_KEY",
+        "description": "Users can delete an API_KEY",
+        "tag": "Apikeys",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/authentication/v1.0/apikeys/{apiKeyId}",
+        "summary": "Get an API_KEY",
+        "description": "Get an API_KEY",
+        "tag": "Apikeys",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/authentication/v1.0/apikeys/{apiKeyId}",
+        "summary": "Update an API_KEY",
+        "description": "Users can change the API_KEY",
+        "tag": "Apikeys",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/authentication/v1.0/apikeys",
+        "summary": "Get all API_KEYs",
+        "description": "Allow a user to get all his API_KEYs, or an administrator to get all API_KEYs of a user that he's responsible",
+        "tag": "Apikeys",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/authentication/v1.0/apikeys",
+        "summary": "Generate a new API_KEY for authentication",
+        "description": "Users can create an API_KEY for authentication\n\nThe number of ApiKeys a user can create is limited to 100.",
+        "tag": "Apikeys",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/authentication/v1.0/apikeys/current",
+        "summary": "Get current API_KEY",
+        "description": "Get data of the currently used API_KEY",
+        "tag": "Apikeys",
+        "deprecated": false
+      }
+    ]
+  },
+  "enduser": {
+    "slug": "enduser",
+    "label": "Enduser Portal",
+    "category": "Core",
+    "title": "Rainbow Enduser portal",
+    "description": "# Rainbow end user portal API guide\n\n## Preamble\n\n[Download Postman collection][0]\n\n### Introduction\n\nThis guide describes list of API services that are provided by OT Rainbow End user portal. This portal is dedicated to end user features.\n\n### Protocol\n\nREST interface is used for sending/receiving ",
+    "version": "1.256.2",
+    "specFormat": "2.0",
+    "basePath": "",
+    "endpointCount": 85,
+    "methodCounts": {
+      "GET": 34,
+      "POST": 22,
+      "DELETE": 14,
+      "PUT": 15
+    },
+    "tags": [
+      "Avatar",
+      "Companies",
+      "Conversations",
+      "Favorites",
+      "Groups",
+      "Meetings",
+      "Password",
+      "Pin List",
+      "Rooms",
+      "Rooms Avatar",
+      "Rooms Custom Data",
+      "Rooms Open Invite",
+      "Rooms Owner Check",
+      "Rooms Users",
+      "To Do List",
+      "User Backgrounds",
+      "Users",
+      "Users Avatar",
+      "Users Telephony Keys"
+    ],
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/avatar/{entityId}",
+        "summary": "Get user, company or bot avatar",
+        "description": "This API can be used to retrieve users, companies or bots avatar.\n\nExample: GET https://openrainbow.com/api/avatar/56c5c19f94141765119f896c?size=128\n\nClients can request avatars in a given size by spe",
+        "tag": "Avatar",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/companies",
+        "summary": "Create a company",
+        "description": "A user belonging to the 'Default' company is able to create his own company.\n<br/> Then he is automatically moved to it and becomes the 'company_admin' of it.\n<br/>\n<br/> <b>The company's name is chec",
+        "tag": "Companies",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/companies",
+        "summary": "Get all companies",
+        "description": "This API allows users to get all companies.\n<br/>\n<br/> Users with <code>user</code> role can only retrieve their own company and companies they can see\n(companies with <code>visibility</code>=<code>p",
+        "tag": "Companies",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/companies/{companyId}/administrators",
+        "summary": "Get company administrators",
+        "description": "This API allows users to list users being administrator of a company.\n<br/>\n<br/> <b>Users can only retrieve administrators of their own company and administrators of companies visible by their own co",
+        "tag": "Companies",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/companies/{companyId}",
+        "summary": "Get a company data",
+        "description": "This API allows user to get a company data.\n<br/>\n<br/> <b>Users can only retrieve their own company and companies they can see</b>\n(companies with <code>visibility</code>=<code>public</code>, compani",
+        "tag": "Companies",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/conversations/search",
+        "summary": "Count the number of hits of a substring in all user's conversations",
+        "description": "This API can be used to search a text substring in all conversations for a given user from recent to old messages.\nFor technical reasons, the same `limit` value applies on all peer to peer conversatio",
+        "tag": "Conversations",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/conversations",
+        "summary": "Create a conversation",
+        "description": "This API can be used to create a conversation for a given user with either another rainbow user, a room or with a bot.\nThis API can only be used by user himself (i.e. userId of logged in user = value ",
+        "tag": "Conversations",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/conversations",
+        "summary": "Get all conversations",
+        "description": "This API can be used to retrieve the list of user's conversations.\nThis API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> When a clien",
+        "tag": "Conversations",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/conversations/{conversationId}",
+        "summary": "Delete a conversation",
+        "description": "This API can be used to delete a conversation for a given user. This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> When a conversa",
+        "tag": "Conversations",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/conversations/{conversationId}",
+        "summary": "Update a conversation",
+        "description": "This API can be used to update a conversation for a given user. This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> When a conversa",
+        "tag": "Conversations",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/conversations/{conversationId}/markallread",
+        "summary": "Mark all unread messages in the conversation as read",
+        "description": "This API can be used to mark all unread messages in a conversation as read.\nThis API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)",
+        "tag": "Conversations",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/conversations/{conversationId}/bookmark",
+        "summary": "remove a conversation bookmark",
+        "description": "This API can be used to set or replace a bookmarked message in a conversation.\nThis API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)",
+        "tag": "Conversations",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/conversations/{conversationId}/bookmark",
+        "summary": "Set or replace a conversation bookmark",
+        "description": "This API can be used to set or replace a bookmarked message in a conversation.\nThis API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)",
+        "tag": "Conversations",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/conversations/search/hits",
+        "summary": "Show all matching messages (references) for a given peer",
+        "description": "This API can be used to return all matching messages for one specific peer. This API can only be used by user himself (i.e. userId of logged-in user = value of userId parameter in URL)",
+        "tag": "Conversations",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/favorites",
+        "summary": "Get all users's favorite",
+        "description": "This API can be used to retrieve the list of user's favorites.\nThis API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> Example: GET htt",
+        "tag": "Favorites",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/favorites",
+        "summary": "Add a favorite to user's favorite list",
+        "description": "This API can be used to add a favorite in user's favorites list.\n- favorite of type `channel` are gathered in a specific set named 'favoriteChannels' and only accessible using the API </br>\nGET /api/r",
+        "tag": "Favorites",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/favorites/peers/{peerId}/check",
+        "summary": "Check if a peer is set as favorite",
+        "description": "This API can be used to check if a given peerId is in user's favorites.\n\nThis API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n\nExample: GET http",
+        "tag": "Favorites",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/favorites/{favoriteId}",
+        "summary": "Get a favorite by Id",
+        "description": "This API can be used to retrieve a specific user's favorite by Id.\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> Exampl",
+        "tag": "Favorites",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/favorites/{favoriteId}",
+        "summary": "Remove a favorite from a user's favorites list",
+        "description": "This API can be used to remove a favorite from a user's favorites list.\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> E",
+        "tag": "Favorites",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/favorites/{favoriteId}",
+        "summary": "Move favorite to position x in favorite list",
+        "description": "This API can be used to update a favorite's position in favorite list.\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> Ex",
+        "tag": "Favorites",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/groups/{groupId}/users/{userIdToProcess}",
+        "summary": "Add a user in a group",
+        "description": "This API can be used to add a user in a group.\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> When a user is added in a ",
+        "tag": "Groups",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/groups/{groupId}/users/{userIdToProcess}",
+        "summary": "Remove a user from a group",
+        "description": "This API can be used to remove a user from a group.\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> When a user is remove",
+        "tag": "Groups",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/groups",
+        "summary": "Create a group",
+        "description": "This API can be used to create a group.\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> When a group is created using thi",
+        "tag": "Groups",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/groups",
+        "summary": "Get all user's groups",
+        "description": "This API can be used to retrieve the list of user's groups (i.e. groups having owner field equal to provided userId).\n<br/> This API can only be used by user himself (i.e. userId of logged in user = v",
+        "tag": "Groups",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/groups/{groupId}",
+        "summary": "Delete a group",
+        "description": "This API can be used to delete a group.\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> When a group is deleted using thi",
+        "tag": "Groups",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/groups/{groupId}",
+        "summary": "Get a group",
+        "description": "This API can be used to retrieve a specific user's groups.\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> Users being in",
+        "tag": "Groups",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/groups/{groupId}",
+        "summary": "Update a group",
+        "description": "This API can be used to update a group.\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> When a group is updated using thi",
+        "tag": "Groups",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/ad-hoc",
+        "summary": "Start an ad hoc conference.",
+        "description": "The ad hoc command initiates an ad hoc conference (end user portal creates the associated room, conference portal starts the conference).",
+        "tag": "Meetings",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/change-password",
+        "summary": "Update user password",
+        "description": "This API can be used to update password of logged in user.\nThis API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/>Note than when user p",
+        "tag": "Password",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/pins/{types}/{peerId}/{pinId}",
+        "summary": "Get users pin with peerId by Id",
+        "description": "This API can be used to get a user pin with peerId by Id.\nThis API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> Example: GET http://o",
+        "tag": "Pin List",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/pins/{types}/{peerId}/{pinId}",
+        "summary": "Remove a pin from a user's pin list with peerId",
+        "description": "This API can be used to remove a pin in user's Pins list with peerId..\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> Wh",
+        "tag": "Pin List",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/pins/{types}/{peerId}/{pinId}",
+        "summary": "update a pin in user's pin list with peerId",
+        "description": "This API can be used to update a pin in user's pin list with peerId.\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> When",
+        "tag": "Pin List",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/pins/{types}/{peerId}",
+        "summary": "Get users's pin list with peerId",
+        "description": "This API can be used to retrieve the list of user's Pins.\nThis API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> Example: GET http://o",
+        "tag": "Pin List",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/pins/{types}/{peerId}",
+        "summary": "Add a pin to user's pin list with peerId",
+        "description": "This API can be used to add a pin in user's Pins list with peerId.\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> When a",
+        "tag": "Pin List",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/enduser/v1.0/rooms/{roomId}/avatar",
+        "summary": "Delete room avatar",
+        "description": "This API can be used to delete avatar image for the given roomId.\n<br/> This API can only be used by one room's moderator.\n<br/>\n<br/> When an avatar is deleted, the field <code>lastAvatarUpdateDate</",
+        "tag": "Rooms Avatar",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/rooms/{roomId}/avatar",
+        "summary": "Upload room avatar",
+        "description": "This API can be used to upload avatar image for the given roomId. This API can only be used by one room's moderator.\n<br/> Rules:\n<ul>\n    <li> Avatar file has to be sent directly in http body (no JSo",
+        "tag": "Rooms Avatar",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/room-avatar/{roomId}",
+        "summary": "Get room's avatar",
+        "description": "This API can be used to retrieve room's avatar.\n<br/> Example: GET https://openrainbow.com/api/room-avatar/56c5c19f94141765119f896c?size=128\n<br/>\n<br/> Clients can request avatars in a given size by ",
+        "tag": "Rooms Avatar",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/enduser/v1.0/rooms/{roomId}/custom-data",
+        "summary": "Manage custom data",
+        "description": "<b>Only a moderator is allowed to set or reset custom data</b>",
+        "tag": "Rooms Custom Data",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/rooms/open-invites/validate",
+        "summary": "Check the validity of the openInviteId",
+        "description": "Rainbow users may use a public URL to join a meeting\nThe public URL format is designed by the Rainbow application programmer and must contain at least an 'openInviteId'.\nThis openInviteId is an UUID-V",
+        "tag": "Rooms Open Invite",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/rooms/{roomId}/owners/{userId}/check",
+        "summary": "Check new owner to promote",
+        "description": "This api must be called by any client that want to promote a new owner. It compares the current owner capabilities with the next owner to set instead\n- The next owner must be registered in the room as",
+        "tag": "Rooms Owner Check",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/rooms/{roomId}/users",
+        "summary": "Add a user",
+        "description": "This API allows to add a user in a room.\n\nNotes:\n- If the logged in user is not register into the wanted room, and if he hasn't a 'moderator'\nprivilege, a (403) forbidden error is sent.\n- Users with v",
+        "tag": "Rooms Users",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/rooms/{roomId}/users",
+        "summary": "Get all active users from a room",
+        "description": "get active users from a room. A user is considered as 'active' when his status is 'invited' or 'accepted'\nExample: GET /api/rainbow/enduser/v1.0/rooms/5841475f9f4ceb902756326e/users?format=full&sortFi",
+        "tag": "Rooms Users",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/rooms/{roomId}/users/{userId}",
+        "summary": "Get a user room data",
+        "description": "If the logged in user is not register into the wanted room , a forbidden error is sent.\n\nAdmin shall be able to disallow the use of bubbles, either for the whole company, or per user.\nUser that does n",
+        "tag": "Rooms Users",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/enduser/v1.0/rooms/{roomId}/users/{userId}",
+        "summary": "Delete a user from a room",
+        "description": "If the logged in user is not registered (declared in the room and <code>status</code> is not <code>deleted</code>) into the wanted room, and if he hasn't a 'moderator' privilege, a (403) forbidden err",
+        "tag": "Rooms Users",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/enduser/v1.0/rooms/{roomId}/users/{userId}",
+        "summary": "Change a user data",
+        "description": "If the logged in user is not registered (declared in the room and <code>status</code> is not <code>deleted</code>) into the wanted room, and if he hasn't a 'moderator' privilege, a (403) forbidden err",
+        "tag": "Rooms Users",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/rooms",
+        "summary": "Create a room",
+        "description": "Rainbow users/administrator can create/delete rooms based on multi-chat principle and\nchange several room related data fields.\n<br/> When a room is created, person that has created the room gets room ",
+        "tag": "Rooms",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/rooms",
+        "summary": "Get all rooms visible by the user requesting it",
+        "description": "Display a list of short room description including:  <b>id</b> - room identifier, <b>name</b> - room name<br/>\nGet all rooms visible by the user requesting it (the private rooms the user is part of an",
+        "tag": "Rooms",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/enduser/v1.0/rooms/{roomId}",
+        "summary": "Delete a room",
+        "description": "This API allows to delete a room.\n<br/> A message stanza is sent to room users as a private room message. This event allows clients to display notifications:\n<pre><code class=\"language-html\">&lt;messa",
+        "tag": "Rooms",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/rooms/{roomId}",
+        "summary": "Get a room data from its id",
+        "description": "Get a rooms data visible by the user requesting it (a private room the user is part of or a public room)<br/>\n\nAdmin shall be able to disallow the use of bubbles, either for the whole company, or per ",
+        "tag": "Rooms",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/enduser/v1.0/rooms/{roomId}",
+        "summary": "Change room data",
+        "description": "This API allows to update room data.\n<br/> A message stanza with the updated room data is sent to all room users. This event allows clients to be notified of the up-to-date room data when they join th",
+        "tag": "Rooms",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/rooms/{roomId}/public-links",
+        "summary": "Get a room public link as moderator",
+        "description": "Any member with an Organizer role (`moderator` privilege) should be able to share the link of the bubble.\nThis api allow to get the openInviteId bound with the given room with following restrictions:\n",
+        "tag": "Rooms",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/rooms/jids",
+        "summary": "Get all room jids the user is a member of",
+        "description": "Provide the list of room JIDs a user is a member of",
+        "tag": "Rooms",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/rooms/ids",
+        "summary": "Get rooms data by list of room ids",
+        "description": "Display a list of short room description including:  <b>id</b> - room identifier, <b>name</b> - room name<br/>\nGet rooms data by list of room ids\n\nUser that does not have the right to use bubbles (use",
+        "tag": "Rooms",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/enduser/v1.0/rooms/{roomId}/archive",
+        "summary": "Close the room for all users definitely",
+        "description": "This API allows to close the room in one step. The other alternative is to change the status for each room users not deactivated yet.\n<br/>All users currently having the status 'invited' or 'accepted'",
+        "tag": "Rooms",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/enduser/v1.0/rooms/{roomId}/demote-all",
+        "summary": "Demote all active users not yet demoted as 'user' except the owner",
+        "description": "all members of the bubble except the owner previously 'moderator' will loose this privilege.</br>\n<br/>All users currently having the status 'accepted' will receive a message/stanza . This event allow",
+        "tag": "Rooms",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/enduser/v1.0/rooms/{roomId}/promote-all",
+        "summary": "Promote all active users not yet promoted as 'moderator'",
+        "description": "All members of the bubble with the status 'accepted' or 'invited', not yet promoted as 'moderator' will get this privilege. Guest are out of the scope.</br>\n<br/>All users currently having the status ",
+        "tag": "Rooms",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/todos",
+        "summary": "Get users's to do list",
+        "description": "This API can be used to retrieve the list of user's todos.\nThis API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> Example: GET http://",
+        "tag": "To Do List",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/todos",
+        "summary": "Add a to do to user's to do list",
+        "description": "This API can be used to add a todo in user's todos list.\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/>\n<br/> When a tod",
+        "tag": "To Do List",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/todos/category",
+        "summary": "Create a todo category",
+        "description": "This API can be used to add a todo in user's todos list.\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/>\n<br/> When a tod",
+        "tag": "To Do List",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/todos/properties/{categoryId}",
+        "summary": "Create/update properties of user's to do by categoryId",
+        "description": "This API can be used to create/update properties of user's to do by categoryId.\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>",
+        "tag": "To Do List",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/todos/properties/{categoryId}",
+        "summary": "Remove a category's properties from a user's to do list",
+        "description": "This API can be used to remove a category's properties from a user's to do list.\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/",
+        "tag": "To Do List",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/todos/category/{categoryId}",
+        "summary": "Get users's to do list by category id",
+        "description": "This API can be used to retrieve users's to do list by category id; including all the associated to do\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId ",
+        "tag": "To Do List",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/todos/category/{categoryId}",
+        "summary": "Remove a todo's category from a user's to do list",
+        "description": "This API can be used to remove a todo's category from a user's todos list; including all the associated to do\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of ",
+        "tag": "To Do List",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/todos/{todoId}",
+        "summary": "Get a to do by Id",
+        "description": "This API can be used to retrieve a specific user's todo by Id.\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> Example: G",
+        "tag": "To Do List",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/todos/{todoId}",
+        "summary": "Remove a to do from a user's to do list",
+        "description": "This API can be used to remove a todo from a user's todos list.\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> When a to",
+        "tag": "To Do List",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/todos/{todoId}",
+        "summary": "Update a to do in user's to do list",
+        "description": "This API can be used to update a todo in user's todos list.\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> When a todo i",
+        "tag": "To Do List",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/backgrounds/{backgroundId}",
+        "summary": "Get user's background",
+        "description": "This API can be used to retrieve user's background (logo).\n<br/> Example: GET https://openrainbow.com/api/backgrounds/625eace8edc658748e53c2d2?size=128\n<br/>\n<br/> Client can request backgrounds in a ",
+        "tag": "User Backgrounds",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/avatar",
+        "summary": "Delete user avatar",
+        "description": "This API can be used to delete avatar image for logged in user.\n<br/> This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL).\n<br/>\n<br/> When an ",
+        "tag": "Users Avatar",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/avatar",
+        "summary": "Upload user avatar",
+        "description": "This API can be used to upload avatar image for logged in user. This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL).\n<br/> Rules:\n<ul>\n    <li>",
+        "tag": "Users Avatar",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/telephony-keys/{keyId}",
+        "summary": "Remove one Phone touch of a user",
+        "description": "This API can be used to delete one programmable phone touch of a user.\n<br/> Example: DELETE https://openrainbow.com/api/rainbow/enduser/v1.0/users/56d0277a0261b53142a5cab5/telephony-keys/60e45024c8da",
+        "tag": "Users Telephony Keys",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/telephony-keys/{keyId}",
+        "summary": "Update one Phone touch of a user",
+        "description": "This API can be used to modify a programmable phone touch of a user. For example to lock or unlock a key.\n\nIt's also possible to only modify the position of a key in the user's list.</br>\nSo it’s allo",
+        "tag": "Users Telephony Keys",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/telephony-keys/shareable",
+        "summary": "Common Phone touch",
+        "description": "This API returns all common programmable keys that a user can select and not yet selected.\n\nThis keys can be of different types:\n- Speed dialing – contains a number to dial\n- Feature code – contains e",
+        "tag": "Users Telephony Keys",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/telephony-keys",
+        "summary": "Programmable Phone touch of a user",
+        "description": "This API can be used to list all the programmable phone touch of a user.\n\nUsers with a paid Rainbow license (business or enterprise) can manage and use programmable keys for their softphone.\n\nThis key",
+        "tag": "Users Telephony Keys",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/telephony-keys",
+        "summary": "Add one Phone touch of a user",
+        "description": "This API can be used to create one programmable phone touch of a user.\n\nThe end user can choose the position of the key from the creation. Use the url parameter `position`.\n\nThis keys can be of differ",
+        "tag": "Users Telephony Keys",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}/telephony-keys/shareable/{keyId}",
+        "summary": "Select one Common Phone touch",
+        "description": "This API allows a user to select one common programmable keys.\n\nUsers with a paid Rainbow license (business or enterprise) can use programmable keys set by his administrator for their softphone.\n\nThis",
+        "tag": "Users Telephony Keys",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/users/me",
+        "summary": "Get logged in user data",
+        "description": "This API can be used to get logged in user data.\n<br/>\n<br/> This API is especially useful for OAuth authentication, as logged in user data are not sent back to the\nOAuth client.",
+        "tag": "Users",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/users/me/presences",
+        "summary": "Get logged in user presence information",
+        "description": "This API can be used by the user to check his presence information (available, busy, away, etc)\nfor the different device he uses.\n\nA brute force defense is activated when too much request have been re",
+        "tag": "Users",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/users/jids/{jid_im}",
+        "summary": "Get user data by jid_im",
+        "description": "This API can be used to get a user from its jid_im.\n<br/>\n<br/> According to the user found, the fields which can be returned (according to the requested format) are not the same.\n<br/> This depends o",
+        "tag": "Users",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}",
+        "summary": "Get user data",
+        "description": "This API can be used to get a user.\n<br/>\n<br/> According to the user found, the fields which can be returned (according to the requested format) are not the same.\n<br/> This depends on logged in user",
+        "tag": "Users",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/enduser/v1.0/users/{userId}",
+        "summary": "Update user data",
+        "description": "This API can be used to update data of logged in user. This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)\n<br/>\n<br/> A presence stanza is sen",
+        "tag": "Users",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/enduser/v1.0/users/networks",
+        "summary": "Get user network",
+        "description": "This API allows to list user's roster.\n<br/>\n<br/> A field showPresence is added in the response for all users to indicate if the presence is shared between\nlogged in user and this user.",
+        "tag": "Users",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/users/loginemails",
+        "summary": "Get users by list of loginemail",
+        "description": "This API allows also to search a list of users by loginEmails.\n<br/>\n<br/> The search is case insensitive (users' loginEmail is always in lowercase, and the API automatically lowercase\nall the loginEm",
+        "tag": "Users",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/users/self-register",
+        "summary": "Self register a user",
+        "description": "This API allows a user to self register a user account in Rainbow application.\n\nDifferent use cases are handled by this API for the user account creation, depending on the provided parameter:\n\n## 1. t",
+        "tag": "Users",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/users/ids",
+        "summary": "Search a list of users by ids",
+        "description": "This API allows also to search a list of users by ids.\n<br/>\n<br/> Only basic fields of users are returned in the response\n(id, firstName, lastName, companyId, companyName, jid_im, lastAvatarUpdateDat",
+        "tag": "Users",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/enduser/v1.0/users/jids",
+        "summary": "Search a list of users by jid_ims",
+        "description": "This API allows also to search a list of users by jid_ims.\n<br/>\n<br/> Only basic fields of users are returned in the response\n(id, firstName, lastName, companyId, companyName, jid_im, lastAvatarUpdat",
+        "tag": "Users",
+        "deprecated": false
+      }
+    ]
+  },
+  "admin": {
+    "slug": "admin",
+    "label": "Admin Portal",
+    "category": "Admin",
+    "title": "Rainbow admin portal",
+    "description": "# Rainbow administrator portal API guide\n\n## Preamble\n\n[Download Postman collection][0]\n\n### Introduction\n\nThis guide describes list of API services that are provided by OT Rainbow management portal system. Services are used to manage OT Rainbow system entities\n\n### Protocol\n\nREST interface is used ",
+    "version": "1.256.9",
+    "specFormat": "3.0.3",
+    "basePath": "https://openrainbow.com",
+    "endpointCount": 109,
+    "methodCounts": {
+      "GET": 46,
+      "DELETE": 18,
+      "PUT": 22,
+      "POST": 23
+    },
+    "tags": [
+      "Avatar",
+      "Companies",
+      "Companies Avatar",
+      "Companies Backgrounds",
+      "Companies Banner",
+      "Companies Calendars",
+      "Companies Cloudpbx Groups",
+      "Companies Custom Data",
+      "Companies Sites",
+      "Companies Splashscreen",
+      "Customisation Template",
+      "Guardian",
+      "Join Companies Links",
+      "Organisations",
+      "Organisations Companies",
+      "Sites",
+      "Sites Systems",
+      "Systems",
+      "Systems Groups",
+      "Systems Phone Numbers",
+      "Systems Phone Numbers Multi Companies",
+      "Systems Reset Password",
+      "Systems Telephony Keys",
+      "Users",
+      "Users External Presence",
+      "Users Networks",
+      "Users Presence",
+      "Users Profiles",
+      "Users Profiles Features",
+      "Users Telephony Keys"
+    ],
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/avatar/{entityId}",
+        "summary": "Get user, company or bot avatar",
+        "description": "This API can be used to retrieve users, companies or bots avatar.\n\nExample: GET https://openrainbow.com/api/avatar/56c5c19f94141765119f896c?size=128\n\nClients can request avatars in a given size by spe",
+        "tag": "Avatar",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}",
+        "summary": "Delete a company",
+        "description": "This API allows administrators to delete a company.\n\nUsers with `superadmin` role can delete any company (except default and terminated companies).\n\nUsers with `bp_admin` or `bp_finance` role can only",
+        "tag": "Companies",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}",
+        "summary": "Get a company data",
+        "description": "Users with 'superadmin', 'support', 'customer_success_admin', 'sales_analytics' or 'business_admin' role can retrieve any company.\n<br/> <b>Users with admin role (and not having superadmin nor support",
+        "tag": "Companies",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}",
+        "summary": "Update a company",
+        "description": "Users with superadmin role can update any company.\nUsers with admin role (and not having superadmin role) can only update their own company.\n<br/>\n<br/> Default and Terminated companies can't be renam",
+        "tag": "Companies",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/companies",
+        "summary": "Get all companies",
+        "description": "This API allows administrator to retrieve companies they can administrate.\n<br/>\n<br/> Users with 'superadmin', 'support', 'customer_success_admin' or 'business_admin' role can retrieve all companies.",
+        "tag": "Companies",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/companies",
+        "summary": "Create a company",
+        "description": "Only superadmin, BP admin, BP finance and organisation admin can create companies with this API.\n<br/>\n<br/> Companies created by a `bp_admin` or a `bp_finance` (without organisation admin role) are a",
+        "tag": "Companies",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/administrators",
+        "summary": "Get company administrators",
+        "description": "This API allows administrators to list users being administrator of a company.\n<br/>\n<br/> Users with `superadmin`, `support` role can list administrators from any company.\n<br/>\n<br/> Users with `bp_",
+        "tag": "Companies",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/service-description",
+        "summary": "Get company service description file",
+        "description": "This API allows administrators to get service description pdf file uploaded by superadmin",
+        "tag": "Companies",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/app-customisation",
+        "summary": "Get company App Customisation",
+        "description": "See (<a href=\"#api-themes-GetCompanyTheme\">Company gets a given theme</a>)",
+        "tag": "Companies",
+        "deprecated": true
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/app-customisation",
+        "summary": "Set company App Customisation",
+        "description": "See (<a href=\"#api-themes-UpdateCompanyTheme\">Company updates a given theme</a>)",
+        "tag": "Companies",
+        "deprecated": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/app-feature-customisation",
+        "summary": "Get company App feature Customisation",
+        "description": "This API allows administrators to list the features customisation elements for the company.\n<br/>\n<br/> Retrieves the application features customisation elements (e.g. conversation pane, menu pane, se",
+        "tag": "Companies",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/app-feature-customisation",
+        "summary": "Set company App feature Customisation",
+        "description": "This API allows administrators to set or update the feature customisation elements for the company.\n<br/>\n<br/> These elements (e.g. conversation pane, menu pane, services) will then be available to t",
+        "tag": "Companies",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/companies/default",
+        "summary": "Get default company data",
+        "description": "This API allows to get the default Rainbow company.\n<br/> Example: GET https://openrainbow.com/api/rainbow/admin/v1.0/companies/default",
+        "tag": "Companies",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/users",
+        "summary": "Update a user properties",
+        "description": "This API allows administrators to update properties for all company users (that could be categorized by using specific tag) among :\n - isActive",
+        "tag": "Companies",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/avatar",
+        "summary": "Delete company's avatar",
+        "description": "This API can be used to delete avatar image for a given companyId.\n<br/>\n<br/> Only a superadmin is allowed to handle avatars for 'Default' and 'Terminated' companies.",
+        "tag": "Companies Avatar",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/avatar",
+        "summary": "Upload company's avatar",
+        "description": "This API can be used to upload avatar image for a given companyId\n\nRules:\n- Avatar file has to be sent directly in http body (no JSon).\n- Only **jpeg**, **jpg** and **png** files are supported. Approp",
+        "tag": "Companies Avatar",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/backgrounds/{backgroundId}",
+        "summary": "Get company's background",
+        "description": "This API can be used to retrieve company's background (logo).\n<br/> Example: GET https://openrainbow.com/api/backgrounds/625eace8edc658748e53c2d2?size=128\n<br/>\n<br/> Client can request backgrounds in",
+        "tag": "Companies Backgrounds",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/banner",
+        "summary": "Delete company's banner",
+        "description": "This API can be used to delete avatar image for a given companyId.\n<br/>\n<br/> Only a superadmin is allowed to handle avatars for 'Default' and 'Terminated' companies.",
+        "tag": "Companies Banner",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/banner",
+        "summary": "Upload company's banner",
+        "description": "This API can be used to upload banner image for a given companyId\n<br/>\n<br/> Rules:\n<ul>\n    <li> Banner file has to be sent directly in http body (no JSon). </li>\n    <li> Only <b>jpeg, jpg and png<",
+        "tag": "Companies Banner",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/banner/{companyId}",
+        "summary": "Get company's banner",
+        "description": "This API can be used to retrieve company's banner in addition to the logo retrieved via /api/avatar/{companyId}.\n<br/> Example: GET https://openrainbow.com/api/banner/56c5c19f94141765119f896c?size=128",
+        "tag": "Companies Banner",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/calendars/{calendarId}",
+        "summary": "Delete a calendar",
+        "description": "This API allows to delete a Calendar.",
+        "tag": "Companies Calendars",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/calendars/{calendarId}",
+        "summary": "Get a calendar",
+        "description": "This API allows to get a calendar for a given company\n\n<br/>Example: GET https://openrainbow.com/api/rainbow/admin/v1.0/companies/5cd545b3a07de465fb123456/calendars/5cd545b3a07de465fb185969",
+        "tag": "Companies Calendars",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/calendars/{calendarId}",
+        "summary": "Update a calendar",
+        "description": "This API allows to modify settings of a Calendar.\n<br>Modification can be done on the following settings of a calendar:\n<ul>\n    <li>Calendar name</li>\n    <li>Calendar office hours: </li>\n    The \"op",
+        "tag": "Companies Calendars",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/calendars",
+        "summary": "Get all calendars",
+        "description": "This API allows to get all the calendars for a given company\n\n<br/>Example: GET https://openrainbow.com/api/rainbow/admin/v1.0/companies/5cd545b3a07de465fb123456/calendars?limit=100&offset=0&sortField",
+        "tag": "Companies Calendars",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/calendars",
+        "summary": "Create a company calendar",
+        "description": "This API allows to create a new Calendar.",
+        "tag": "Companies Calendars",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/calendars/{calendarId}/mode",
+        "summary": "Update a calendar mode",
+        "description": "This API allows to modify mode of a Calendar.\n<br>Modification will be forwarded to welcome services linked to it if the company have a Cloud PBX:\n<br/> You can force to open when you're closed (at th",
+        "tag": "Companies Calendars",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/groups",
+        "summary": "Get all cloud PBX groups",
+        "description": "This API allows to get all the groups of a Cloud PBX for a given company\n\n<br/>Example: GET https://openrainbow.com/api/rainbow/admin/v1.0/companies/5cd545b3a07de465fb123456/groups?limit=100&offset=0&",
+        "tag": "Companies Cloudpbx Groups",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/groups/{groupId}",
+        "summary": "Get a cloud PBX group",
+        "description": "This API allows to get data of a Cloud PBX group",
+        "tag": "Companies Cloudpbx Groups",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/custom-data",
+        "summary": "Manage custom data",
+        "description": "This API is still working, but customData management can now be done directly\nat company creation (using API [POST /api/rainbow/admin/v1.0/companies](#api-companies-PostCompanies)\nor with a company up",
+        "tag": "Companies Custom Data",
+        "deprecated": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/sites",
+        "summary": "Get all sites linked with this company",
+        "description": "This API allows administrator to retrieve sites linked to a given company\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> get sites linked to all companies existing in Rainbow.\n<br/> <cod",
+        "tag": "Companies Sites",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/splashscreen/{companyId}",
+        "summary": "Get company's splash screen image",
+        "description": "This API can be used to retrieve company's splash screen in addition to the logo retrieved via /api/avatar/{companyId}.\n<br/> Example: GET https://openrainbow.com/api/splashscreen/56c5c19f94141765119f",
+        "tag": "Companies Splashscreen",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/splashscreen",
+        "summary": "Delete company's splash screen",
+        "description": "This API can be used to delete splash screen image for a given companyId.",
+        "tag": "Companies Splashscreen",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/splashscreen",
+        "summary": "Get information of company's splash screen",
+        "description": "This API can be used to get some information of splash screen image for a given companyId\n<br/> Note: If the company has no splash screen, this API return the splash screen of its BP company.",
+        "tag": "Companies Splashscreen",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/splashscreen",
+        "summary": "Upload company's splash screen",
+        "description": "This API can be used to upload splash screen image for a given companyId\n<br/>\n<br/> Rules:\n<ul>\n    <li> Splash screen file has to be sent directly in http body (no JSon). </li>\n    <li> Only <b>jpeg",
+        "tag": "Companies Splashscreen",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/splashscreen/used",
+        "summary": "Choose the default company's splash screen or the uploaded one",
+        "description": "This API can be used to choose the default or the uploaded splash screen image for a given companyId",
+        "tag": "Companies Splashscreen",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/customisations/templates/apply",
+        "summary": "Apply a templates to a company or a user",
+        "description": "This API allows an administrator to apply an application customisation template to a company or a user\n\n## Why is an application template?\n- An application template is a set of key feature controlled ",
+        "tag": "Customisation Template",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/customisations/templates",
+        "summary": "Create a template",
+        "description": "This API allows an administrator to create an application customisation template for the given company.\n\n- The name of the template must be unique among all of its belonging to the company.\n- The temp",
+        "tag": "Customisation Template",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/customisations/templates",
+        "summary": "Get all available customisation templates",
+        "description": "This API allows administrator to retrieve application customisation templates supported by a given company.\n\n`superadmin` and `support` can get templates available for any company (the requested compa",
+        "tag": "Customisation Template",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/admin/v1.0/customisations/templates/{templateId}",
+        "summary": "Delete a template",
+        "description": "This API allows an administrator to delete an application customisation template.\n\nUsers with `superadmin` role can delete any private template.\n\nUsers with `bp_admin` or `admin` role can only delete ",
+        "tag": "Customisation Template",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/customisations/templates/{templateId}",
+        "summary": "Get requested template",
+        "description": "This API allows administrator to retrieve the requested application customisation template\n\nExample: GET https://openrainbow.com/api/rainbow/admin/v1.0/customisations/templates/5d3704dc78ef1b101f69a01",
+        "tag": "Customisation Template",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/customisations/templates/{templateId}",
+        "summary": "Update a template",
+        "description": "This API allows an administrator to update an application customisation template.\n\n<b>`A public template can't be updated using this API. Update is only allowed via a database migration.`</b>\n\n\n<b>`On",
+        "tag": "Customisation Template",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/guardian/request-status/{companyId}",
+        "summary": "Ask monitoring info about a guardian action done onto company identified by companyId",
+        "description": "This API can be used to monitor on going actions around guardian crisis",
+        "tag": "Guardian",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/guardian/start",
+        "summary": "Start a Guardian crisis",
+        "description": "This API can be used to start a guardian crisis",
+        "tag": "Guardian",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/guardian/stop",
+        "summary": "Stop a Guardian crisis",
+        "description": "This API can be used to stop a guardian crisis",
+        "tag": "Guardian",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/join-companies/links/{joinCompanyLinkId}",
+        "summary": "Delete a join company link",
+        "description": "This API can be used by company `admin` users to delete a join company link by id\n\nJoin company links allow company administrators to generate an id that can be used by users to create their\naccount i",
+        "tag": "Join Companies Links",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/join-companies/links/{joinCompanyLinkId}",
+        "summary": "Get a join company link",
+        "description": "This API can be used by company `admin` users to get a join company link by id\n\nJoin company links allow company administrators to generate an id that can be used by users to create their\naccount in t",
+        "tag": "Join Companies Links",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/join-companies/links/{joinCompanyLinkId}",
+        "summary": "Update a join company link",
+        "description": "This API can be used by company `admin` users to update a join company link for his company.\n\nJoin company links allow company administrators to generate an id that can be used by users to create thei",
+        "tag": "Join Companies Links",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/join-companies/links",
+        "summary": "Get all join company links",
+        "description": "This API can be used by company `admin` users to list existing join company links for his company.\n\nJoin company links allow company administrators to generate an id that can be used by users to creat",
+        "tag": "Join Companies Links",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/companies/{companyId}/join-companies/links",
+        "summary": "Create a join company link",
+        "description": "This API can be used by company `admin` users to create a join company link for his company.\n\nJoin company links allow company administrators to generate an id that can be used by users to create thei",
+        "tag": "Join Companies Links",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/organisations",
+        "summary": "Get all organisations",
+        "description": "Users with 'superadmin', 'support', 'business_admin' or 'admin' role can retrieve all organisations.\nUsers with admin role (and not having superadmin, business_admin nor support role) can only retriev",
+        "tag": "Organisations",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/organisations/{organisationId}",
+        "summary": "Get an organisation data",
+        "description": "Users with 'superadmin', 'business_admin', 'support' or 'admin' role can retrieve any company.<br/>\n<b>Users with admin role (and not having superadmin, business_admin nor support role) can only retri",
+        "tag": "Organisations",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/organisations/{organisationId}",
+        "summary": "Update an organisation",
+        "description": "Update organisation data",
+        "tag": "Organisations",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/admin/v1.0/organisations/{organisationId}/companies/{companyId}",
+        "summary": "Unlink the company to an organization",
+        "description": "Unlink the company to an organization",
+        "tag": "Organisations Companies",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/organisations/{organisationId}/companies",
+        "summary": "Get all companies linked with this organization",
+        "description": "For the 'Enterprise (E1)' offer, the premium offer, the Multi-Layer organization is defined.\n<br/>It describes a hierarchy including ORGANIZATIONS/COMPANIES/SITES/SYSTEMS.\n<br/>This api gets all compa",
+        "tag": "Organisations Companies",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/organisations/{organisationId}/companies",
+        "summary": "Link a company to an organization",
+        "description": "For the 'Enterprise (E1)' offer, the premium offer, the Multi-Layer organization is defined.\n<br/>It describes a hierarchy including ORGANIZATIONS/COMPANIES/SITES/SYSTEMS.\n<br/>This api links a compan",
+        "tag": "Organisations Companies",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/admin/v1.0/sites/{siteId}",
+        "summary": "Delete a site",
+        "description": "This API allows administrator to delete a site for a company they administrate.\n<br/>\n<br/> <code>superadmin</code> can delete sites for all companies existing in Rainbow.\n<br/> <code>bp_admin</code> ",
+        "tag": "Sites",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/sites/{siteId}",
+        "summary": "Get a site data",
+        "description": "This API allows administrator to retrieve a given site.\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can get all sites existing in Rainbow.\n<br/> <code>bp_admin</code> can only get vis",
+        "tag": "Sites",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/sites/{siteId}",
+        "summary": "Update a site",
+        "description": "This API allows administrator to update a given site.\n<br/>\n<br/> <code>superadmin</code> can update all sites existing in Rainbow.\n<br/> <code>bp_admin</code> can only update sites linked to End Cust",
+        "tag": "Sites",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/sites",
+        "summary": "Get all sites",
+        "description": "This API allows administrator to retrieve sites they can administrate.\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> get all sites existing in Rainbow.\n<br/> <code>bp_admin</code> only ",
+        "tag": "Sites",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/sites",
+        "summary": "Create a site",
+        "description": "This API allows administrator to create a site for a company they administrate.\n<br/>\n<br/> <code>superadmin</code> can create sites for all companies existing in Rainbow.\n<br/> <code>bp_admin</code> ",
+        "tag": "Sites",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/admin/v1.0/sites/{siteId}/systems/{systemId}",
+        "summary": "Unlink a system to a site",
+        "description": "This API allows administrator to delete a link between a system and a site\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can unlink any systems from any sites existing in Rainbow.\n<br/>",
+        "tag": "Sites Systems",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/sites/{siteId}/systems",
+        "summary": "Get all systems linked with this site",
+        "description": "This API allows administrator to retrieve systems linked to a given site\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can get systems linked to all companies existing in Rainbow.\n<br/>",
+        "tag": "Sites Systems",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/sites/{siteId}/systems",
+        "summary": "Link a system to a site",
+        "description": "This API allows administrator to link a system to a given site\n<br/>\n<br/> A PABX can be multi tenant.\n<br/> When a PABX is shared, that means in our data model: 'A system is shared between several si",
+        "tag": "Sites Systems",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/admin/v1.0/systems/{systemId}",
+        "summary": "Delete a system",
+        "description": "This API allows administrator to delete a given system.\n<br/>\n<br/> <code>superadmin</code> can delete systems linked to all sites existing in Rainbow.\n<br/> <code>bp_admin</code> can only delete syst",
+        "tag": "Systems",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/systems/{systemId}",
+        "summary": "Get a system data",
+        "description": "This API allows administrator to retrieve a given system.\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can get all systems existing in Rainbow.\n<br/> <code>bp_admin</code> can only get",
+        "tag": "Systems",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/systems/{systemId}",
+        "summary": "Update a system",
+        "description": "This API allows administrator to update a given system.\n<br/>\n<br/> <code>superadmin</code> can update systems linked to all sites existing in Rainbow.\n<br/> <code>bp_admin</code> can only update syst",
+        "tag": "Systems",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/systems",
+        "summary": "Get all systems",
+        "description": "This API allows administrator to retrieve systems they can administrate.\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> get all systems existing in Rainbow.\n<br/> <code>bp_admin</code> o",
+        "tag": "Systems",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/systems",
+        "summary": "Create a system",
+        "description": "This API allows administrator to create a system.\n<br/> A system hosts the CCA (Call Control Agent) configuration.\n<br/>\n<br/> <code>superadmin</code> can create systems linked to all sites existing i",
+        "tag": "Systems",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/systems/countries",
+        "summary": "Get list of countries allowed for systems",
+        "description": "This API allows to retrieve the list of countries supported by Rainbow Server for systems country field.",
+        "tag": "Systems",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/systems/pbxid/{pbxId}",
+        "summary": "Get a system data by pbxId",
+        "description": "This API allows administrator to retrieve a given system from its pbxId.\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can get all systems existing in Rainbow.\n<br/> <code>bp_admin</cod",
+        "tag": "Systems",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/admin/v1.0/systems/{systemId}/groups/{groupId}",
+        "summary": "Remove a system from a group",
+        "description": "Remove system to a group. If the system doesn't exist in the group, an error is raised (404 Not found)\n<br/>A systems group is a logical set of systems (pabx), sharing the same dial plan and linked th",
+        "tag": "Systems Groups",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/systems/{systemId}/groups/{groupId}",
+        "summary": "Add a new system to a group",
+        "description": "Add a new system to a group. If the system already exists in the group or inside another one, an error is raised (409 Conflict)\n<br/>A systems group is a logical set of systems (pabx), sharing the sam",
+        "tag": "Systems Groups",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/admin/v1.0/systems/groups/{groupId}",
+        "summary": "Delete a systems group",
+        "description": "Delete a systems groups.",
+        "tag": "Systems Groups",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/systems/groups/{groupId}",
+        "summary": "Get systems group data",
+        "description": "A systems group is a logical set of systems (pabx), sharing the same dial plan and linked through a private network.\n<br/>Systems belonging to this group may either belonging to the same Site, or belo",
+        "tag": "Systems Groups",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/systems/groups/{groupId}",
+        "summary": "Rename a systems group",
+        "description": "Only allow a systems group renaming.",
+        "tag": "Systems Groups",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/systems/groups",
+        "summary": "Get all systems groups",
+        "description": "Get all systems groups.\n<br/>A systems group is a logical set of systems (pabx), sharing the same dial plan and linked through a private network.\n<br/>Systems belonging to this group may either belong",
+        "tag": "Systems Groups",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/systems/groups",
+        "summary": "Create a systems group",
+        "description": "A systems group is a logical set of systems (pabx), sharing the same dial plan and linked through a private network.\n<br/>Systems belonging to this group may either belonging to the same Site, or belo",
+        "tag": "Systems Groups",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/systems/{systemId}/phone-numbers",
+        "summary": "Get all system phone numbers",
+        "description": "This API allows to list all phoneNumbers associated to a given system (pbx).\n<br/>\n<br/> Users with <code>superadmin</code> or <code>support</code> role can retrieve phoneNumbers from any system.\n<br/",
+        "tag": "Systems Phone Numbers",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/systems/{systemId}/phone-numbers/{phoneNumberId}",
+        "summary": "Get a system phone number",
+        "description": "This API allows to retrieve a specific phoneNumber associated to a given system (pbx).\n<br/>\n<br/> Users with <code>superadmin</code> or <code>support</code> role can retrieve phoneNumbers from any sy",
+        "tag": "Systems Phone Numbers",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/systems/{systemId}/phone-numbers/{phoneNumberId}",
+        "summary": "Update a system phone number",
+        "description": "This API allows to update a phone number for a given system (pbx).\n\nIt can be used to link a system phoneNumber to a Rainbow user by setting `userId` parameter.\nIf `userId` parameter is provided, `jid",
+        "tag": "Systems Phone Numbers",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/systems/{systemId}/phone-numbers/multi-companies",
+        "summary": "Get all companyPrefix for a isCentrex system",
+        "description": "Sharing a system between several companies\n<br/>\nSince 1.47.0 release, configuring companies sharing a multi-tenant system is possible.<br/>\nAn OXE or third_party system can be multi-company.<br/>\nA m",
+        "tag": "Systems Phone Numbers Multi Companies",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/systems/{systemId}/reset-password",
+        "summary": "Reset CCCA jid password",
+        "description": "It would be necessary to reset the password used by the CCCA to join rainbow infrastructure.\n<br/>Among system data fields, jid_pbxagent and jid_pbxagent_password are used by the CCCA to try an authen",
+        "tag": "Systems Reset Password",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/admin/v1.0/systems/{systemId}/telephony-keys/{keyId}",
+        "summary": "Remove one Phone touch of a system",
+        "description": "This API can be used to delete one programmable phone touch of a user or of a company's keys group.\n<br/> Example: DELETE https://openrainbow.com/api/rainbow/admin/v1.0/systems/56d0277a0261b53142a5cab",
+        "tag": "Systems Telephony Keys",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/systems/{systemId}/telephony-keys/{keyId}",
+        "summary": "Update one Phone touch shareable",
+        "description": "This API can be used to modify one programmable phone touch of a system, users or company's group linked with this system can share.\n\n\n<br/> A message stanza is sent to each user having selected this ",
+        "tag": "Systems Telephony Keys",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/systems/{systemId}/telephony-keys",
+        "summary": "Programmable Phone touch shareable",
+        "description": "This API can be used to list all the programmable phone touch of a system.\n\n\nThis keys can be of different types:\n- Speed dialing – contains a number to dial\n- Feature code – contains either a dialing",
+        "tag": "Systems Telephony Keys",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/systems/{systemId}/telephony-keys",
+        "summary": "Add one Phone touch shareable",
+        "description": "This API can be used to create one programmable phone touch of a system, users linked with this system can share.\n\n\nThis keys can be of different types:\n- Speed dialing – contains a number to dial\n- F",
+        "tag": "Systems Telephony Keys",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/systems/{systemId}/telephony-keys/users/{userId}",
+        "summary": "Get shared key assigned to a user",
+        "description": "This API can be used to get the list of shared telephony keys already assigned to a user.",
+        "tag": "Systems Telephony Keys",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/systems/{systemId}/telephony-keys/{keyId}/assign",
+        "summary": "Assign one shared key to a user or to a company keys group",
+        "description": "This API can be used to assign one programmable phone touch of a system, users or company keys group linked with this system use.\n\nIf the key assigned is active (active = true), then the feature keys ",
+        "tag": "Systems Telephony Keys",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/systems/{systemId}/telephony-keys/{keyId}/unassign",
+        "summary": "Unassign one shared key from a user or a company group",
+        "description": "This API can be used to unassign one programmable phone touch of a system, users or company's keys group linked with this system use.\n\n\n<br/> A message stanza is sent to the user to warn him a new key",
+        "tag": "Systems Telephony Keys",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/admin/v1.0/users/{userId}",
+        "summary": "Delete a user",
+        "description": "This API can be used to delete a user.\n<br/>\n<br/> <b>BP Admin</b> and <b>BP Finance</b> users can only delete users being in a company linked to their BP company.\n<br/> <b>Admin</b> users can only de",
+        "tag": "Users",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/users/{userId}",
+        "summary": "Get a user data",
+        "description": "This API can be used to get a user.\n<br/>\n<br/> Users with <code>superadmin</code>, <code>business_admin</code>, <code>customer_success_admin</code>, <code>support</code> role can retrieve any user wh",
+        "tag": "Users",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/users/{userId}",
+        "summary": "Update a user",
+        "description": "This API can be used to update data of a user.\n\nA presence stanza is sent to updated user's resources and users being in user's roster.\nThis allow clients to be notified that this user has been update",
+        "tag": "Users",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/users/{userId}/delete-cancelled",
+        "summary": "Restore a pending user account deletion",
+        "description": "Instead of deactivate a user account definitely, it is allowed to pending the user account for 10 days before terminate it or restore it.</br>\n<a href=\"#api-users-DeleteUsers\">DELETE /api/rainbow/admi",
+        "tag": "Users",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/users/{userId}/delete-forced",
+        "summary": "Confirm a pending user account deletion",
+        "description": "Instead of deactivate a user account definitely, it is allowed to pending the user account for 10 days before terminate it or restore it.</br>\n<a href=\"#api-users-DeleteUsers\">DELETE /api/rainbow/admi",
+        "tag": "Users",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/users",
+        "summary": "Get all users",
+        "description": "This API allows administrators to list users.\n<br/>\n<br/> Users with <code>superadmin</code>, <code>business_admin</code>, <code>customer_success_admin</code>, <code>support</code> role can retrieve u",
+        "tag": "Users",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/users",
+        "summary": "Create a user",
+        "description": "This api creates a user in Rainbow application.\n\nJabber identifiers (IM and TEL) are generated and user is created in XMPP server.\n\nRights depending on logged in user's roles:\n- Users with `bp_admin` ",
+        "tag": "Users",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/admin/v1.0/users/{userId}/external-presence",
+        "summary": "Remove user external presence information",
+        "description": "Remove user's external presence.\n<br/> Example: DELETE https://openrainbow.com/api/rainbow/admin/v1.0/users/56d0277a0261b53142a5cab5/external-presence\n\nA brute force defense is activated when too much",
+        "tag": "Users External Presence",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/users/{userId}/external-presence",
+        "summary": "Retrieve user external presence information",
+        "description": "Retrieve user's external presence.\n<br/> Example: GET https://openrainbow.com/api/rainbow/admin/v1.0/users/56d0277a0261b53142a5cab5/external-presence",
+        "tag": "Users External Presence",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/users/{userId}/external-presence",
+        "summary": "Create/Update user external presence information",
+        "description": "Company Admin shall be able to inject a presence that will be used by Rainbow client to process global user presence,\nthat allow CPAAS application to modify user's presence according to it's need.\nOnl",
+        "tag": "Users External Presence",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/users/{userId}/networks",
+        "summary": "Add users to user network",
+        "description": "This API can be used to add users to requested user networks.\n<br/>\n<br/> BETA: this API is currently in beta. Restriction: only 1 user can be provided in users array (others are ignored)\n<br/>\n<br/> ",
+        "tag": "Users Networks",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/users/{userId}/presences",
+        "summary": "Get user presence information",
+        "description": "Company admin shall be able to check if a user can be reached or not, by checking the presence information (available, busy, away, etc).\nAdmin will have to select a user to get a presence snapshot whe",
+        "tag": "Users Presence",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/users/{userId}/profiles/features",
+        "summary": "Get a user profiles features",
+        "description": "This API can be used to get features associated to the user through its profiles.\n\nA user can be assigned to several profiles (if an admin has assigned subscription licences to the user).\n\nBy default,",
+        "tag": "Users Profiles Features",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/admin/v1.0/users/{userId}/profiles/subscriptions/{subscriptionId}",
+        "summary": "Delete a user profile",
+        "description": "This API can be used to un-assign a company's subscription from user profiles.\n<br/>\n<br/> Profile linked to company's default subscription can't be removed.\n<br/>\n<br/> <code>superadmin</code> can re",
+        "tag": "Users Profiles",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/users/{userId}/profiles/subscriptions/{subscriptionId}",
+        "summary": "Add a user profile",
+        "description": "This API can be used to assign a company's subscription to user profiles (user must be in the\nsame company than the company which own the subscription).\n<br/>\n<br/> By default, when users are created ",
+        "tag": "Users Profiles",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/users/{userId}/profiles",
+        "summary": "Get a user profiles",
+        "description": "This API can be used to get a user's profiles.\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can get profiles from any existing user in Rainbow.\n<br/> <code>bp_admin</code> and <code>bp",
+        "tag": "Users Profiles",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/admin/v1.0/users/{userId}/telephony-keys/{keyId}",
+        "summary": "Remove one Phone touch of a user",
+        "description": "This API can be used to delete one programmable phone touch of a user.\n<br/> Example: DELETE https://openrainbow.com/api/rainbow/admin/v1.0/users/56d0277a0261b53142a5cab5/telephony-keys/60e45024c8da19",
+        "tag": "Users Telephony Keys",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/admin/v1.0/users/{userId}/telephony-keys/{keyId}",
+        "summary": "Update one Phone touch of a user",
+        "description": "This API can be used to modify a programmable phone touch of a user. For example to lock or unlock a key.\n\nIt's also possible to only modify the position of a key in the user's list.</br>\nSo it’s allo",
+        "tag": "Users Telephony Keys",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/admin/v1.0/users/{userId}/telephony-keys",
+        "summary": "Programmable Phone touch of a user",
+        "description": "This API can be used to list all the programmable phone touch of a user.\n\nUsers with a paid Rainbow license (business or enterprise) can manage and use programmable keys for their softphone.\n\nThis key",
+        "tag": "Users Telephony Keys",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/admin/v1.0/users/{userId}/telephony-keys",
+        "summary": "Add one Phone touch of a user",
+        "description": "This API can be used to create one programmable phone touch of a user.\n\n\nThis keys can be of different types:\n- Speed dialing – contains a number to dial\n- Feature code – contains either a dialing cod",
+        "tag": "Users Telephony Keys",
+        "deprecated": false
+      }
+    ]
+  },
+  "applications": {
+    "slug": "applications",
+    "label": "Applications",
+    "category": "Platform",
+    "title": "Rainbow Application Portal",
+    "description": "# Rainbow application portal API guide\n\n## Preamble\n\n[Download Postman collection][0]\n\n### Introduction\n\nThis guide describes list of API services that are provided by OT Rainbow Application portal. This portal is dedicated to app features.\n\n### Protocol\n\nREST interface is used for sending/receiving",
+    "version": "1.256.0",
+    "specFormat": "3.0.3",
+    "basePath": "https://openrainbow.com",
+    "endpointCount": 18,
+    "methodCounts": {
+      "POST": 5,
+      "GET": 6,
+      "DELETE": 2,
+      "PUT": 5
+    },
+    "tags": [
+      "Applications",
+      "Applications Pushnotificationsettings",
+      "Developers"
+    ],
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/api/rainbow/applications/v1.0/applications/{appId}/push-settings",
+        "summary": "Create an application push notification settings.",
+        "description": "This API allows to create application push notification settings.\n<br/>",
+        "tag": "Applications Pushnotificationsettings",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/applications/v1.0/applications/{appId}/push-settings",
+        "summary": "Get all application push notification settings data.",
+        "description": "This API allows to get all application push notification settings.\n<br/>",
+        "tag": "Applications Pushnotificationsettings",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/applications/v1.0/applications/{appId}/push-settings/{id}",
+        "summary": "Delete an application push notification settings",
+        "description": "This API allows to delete an application push notification settings.\n<br/>",
+        "tag": "Applications Pushnotificationsettings",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/applications/v1.0/applications/{appId}/push-settings/{id}",
+        "summary": "Get an application push notification settings data.",
+        "description": "This API allows to get an application push notification settings.\n<br/>",
+        "tag": "Applications Pushnotificationsettings",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/applications/v1.0/applications/{appId}/push-settings/{id}",
+        "summary": "Update an application push notification settings",
+        "description": "This API allows to update an application push notification settings.\n<br/>",
+        "tag": "Applications Pushnotificationsettings",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/applications/v1.0/applications",
+        "summary": "Get all applications created (in deployment or deployed) by the user.",
+        "description": "This API can be used to retrieve the list of applications created by the user.\n<br>\nUser with only <code>bp_finance</code> role can only retrieve applications:\n- owned by an <code>app_admin</code> bel",
+        "tag": "Applications",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/applications/v1.0/applications",
+        "summary": "Create an application.",
+        "description": "Rainbow users can create their own applications.",
+        "tag": "Applications",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/applications/v1.0/applications/{appId}/restart",
+        "summary": "Restart an application.",
+        "description": "<br/> Rainbow developers can restart their own applications.\n<br/>\n<br/> If application's kpi is \"rainbowstore\", then \"restart\" should use rainbowstore APIs.",
+        "tag": "Applications",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/applications/v1.0/applications/{appId}/stop",
+        "summary": "Stop an application.",
+        "description": "<br/> Rainbow users can stop their own applications.\n<br/>\n<br/> If application's kpi is \"rainbowstore\", then \"stop\" should use rainbowstore APIs.",
+        "tag": "Applications",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/applications/v1.0/applications/{appId}",
+        "summary": "Delete an application.",
+        "description": "<br/> Rainbow developers can delete their own applications.\n<br/>\n<br/> If application's kpi is \"rainbowstore\", then deletion should use rainbowstore APIs.",
+        "tag": "Applications",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/applications/v1.0/applications/{appId}",
+        "summary": "Get an application data.",
+        "description": "app_admin can see their own applications and applications belonging to other developers of their\ncompany.",
+        "tag": "Applications",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/applications/v1.0/applications/{appId}",
+        "summary": "Update an application.",
+        "description": "Rainbow users can update their own applications.",
+        "tag": "Applications",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/applications/v1.0/applications/{appId}/request-deploy",
+        "summary": "Request the deployment of an application.",
+        "description": "<br/> Rainbow users can update their own applications.\n<br/>\n<br/> If application's kpi is \"rainbowstore\", then the deployment should use rainbowstore APIs.\n<br/> If application's kpi is \"appconnect\",",
+        "tag": "Applications",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/applications/v1.0/applications/{appId}/embed",
+        "summary": "Get an embed frame for application.",
+        "description": "This API allows a user to generate an iframe to embed  Rainbow application.",
+        "tag": "Applications",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/applications/v1.0/applications/{appId}/embedding",
+        "summary": "Get an embedding frame for application.",
+        "description": "This API allows to get an embedding iframe with a target URL.",
+        "tag": "Applications",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/applications/v1.0/developers/confirm",
+        "summary": "Confirm that a user has requested a developer account creation.",
+        "description": "This API can be used to confirm that a user has requested a developer account creation.\nUsed only in the 2 steps onboarding scenario. See (#applications/developers:applications/developers/PostRegister",
+        "tag": "Developers",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/applications/v1.0/developers/feedback",
+        "summary": "Allows a developer to send feedback.",
+        "description": "This API allows a developer to send a feedback.",
+        "tag": "Developers",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/applications/v1.0/developers/offer",
+        "summary": "Allows a developer to choose offer by email.",
+        "description": "This API allows a developer to choose.",
+        "tag": "Developers",
+        "deprecated": false
+      }
+    ]
+  },
+  "subscription": {
+    "slug": "subscription",
+    "label": "Subscription",
+    "category": "Billing",
+    "title": "Rainbow subscription portal",
+    "description": "# Rainbow subscription portal API guide\n\n## Preamble\n\n[Download Postman collection][0]\n\n### Introduction\n\nThis guide describes list of API services that are provided by OT Rainbow End user portal. This portal is dedicated to end user features.\n\n### Protocol\n\nREST interface is used for sending/receiv",
+    "version": "1.256.4",
+    "specFormat": "2.0",
+    "basePath": "",
+    "endpointCount": 16,
+    "methodCounts": {
+      "GET": 11,
+      "POST": 3,
+      "DELETE": 1,
+      "PUT": 1
+    },
+    "tags": [
+      "Invoices",
+      "Offers",
+      "Quotations",
+      "Subscriptions",
+      "Subscriptions From File"
+    ],
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/rainbow/subscription/v1.0/companies/{companyId}/invoices",
+        "summary": "Get company invoices",
+        "description": "This API retrieves the list of invoices available on Zuora for the requested company.\n<br/>\n<br/> <code>superadmin</code> can list invoices being available to any company existing in Rainbow.\n<br/> <c",
+        "tag": "Invoices",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/subscription/v1.0/companies/{companyId}/invoices/files/{fileId}",
+        "summary": "Get an invoice file",
+        "description": "This API retrieves an invoice file available on Zuora. The file is in PDF format.\n<br/>\n<br/> <code>superadmin</code> can get invoice files belonging to any company existing in Rainbow.\n<br/> <code>bp",
+        "tag": "Invoices",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/subscription/v1.0/companies/{companyId}/offers/{offerId}",
+        "summary": "Get an offer",
+        "description": "Get an offer from its id\n<br/>\n<br/> The requested offer must be in the requested company's assigned catalog, otherwise an error 403 is returned.",
+        "tag": "Offers",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/subscription/v1.0/companies/{companyId}/offers",
+        "summary": "Get offers",
+        "description": "This API retrieves the list of offers available to the requested company.\n<br/> The available offers for a company corresponds to the offers being in the catalog assigned to this company.\n<br/>\n<br/> ",
+        "tag": "Offers",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/subscription/v1.0/companies/{companyId}/quotations",
+        "summary": "Create a quotation for a company and an offer",
+        "description": "This API can be used to create a quotation for a given offer for a given company\n(creation of a subscription in preview mode).\n<br/>\n<br/> <code>superadmin</code> can create quotation for any company ",
+        "tag": "Quotations",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/subscription/v1.0/companies/{companyId}/subscriptions/files",
+        "summary": "Create subscriptions by file",
+        "description": "This API can be used to upload pre paid offers from ACTIS file, to set in the given company subscriptions.\n<br/> Rules:\n<ul>\n    <li> ACTIS file has to be sent directly in http body (no JSon). </li>\n ",
+        "tag": "Subscriptions From File",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/subscription/v1.0/companies/{companyId}/subscriptions",
+        "summary": "Subscribe to an offer",
+        "description": "/!\\ For now, only resell model is managed (i.e. a bp_finance of BP VAD/IR/DR buy a subscription for one of his customer companies (EC)\nor bp_finance of BP VAD buy a subscription for one of his BP IR).",
+        "tag": "Subscriptions",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/subscription/v1.0/companies/{companyId}/subscriptions",
+        "summary": "Get company subscriptions",
+        "description": "This API can be used to list all subscriptions subscribed by a company.\n<br/> All companies have at least a subscription to the default (free) offer.\n<br/>\n<br/> <code>superadmin</code>, <code>busines",
+        "tag": "Subscriptions",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/subscription/v1.0/companies/{companyId}/subscriptions/{subscriptionId}",
+        "summary": "Delete a subscription",
+        "description": "This API can be used to delete or terminate a given company subscription.\n<br/>\n<br/> <code>superadmin</code> can delete subscriptions for every company. <code>superadmin</code> can delete subscriptio",
+        "tag": "Subscriptions",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/subscription/v1.0/companies/{companyId}/subscriptions/{subscriptionId}",
+        "summary": "Get a company subscription",
+        "description": "This API can be used to get a subscription of a company.\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can get subscriptions of all companies existing in Rainbow.\n<br/> <code>business_a",
+        "tag": "Subscriptions",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/subscription/v1.0/companies/{companyId}/subscriptions/{subscriptionId}",
+        "summary": "Update a subscription",
+        "description": "This API can be used to update a given company subscription.\n<br/>\n<br/> Currently only <code>maxNumberUsers</code> can be updated, so update is restricted to subscriptions linked to\noffers having bus",
+        "tag": "Subscriptions",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/subscription/v1.0/companies/{companyId}/subscriptions/features",
+        "summary": "Get company subscription features",
+        "description": "This API can be used to get features available to the company through its subscriptions.\n\nSubscriptions bring to the company features (through a profile depending of the subscribed offer).\nEach subscr",
+        "tag": "Subscriptions",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/subscription/v1.0/companies/{companyId}/subscriptions/counters",
+        "summary": "Get company subscriptions counters",
+        "description": "This API can be used to list counters regarding all offers subscribed by a BP company and its customers / resellers.\n<br/> This API can only be used for BP companies (whatever the bpType).\n<br/>\n<br/>",
+        "tag": "Subscriptions",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/subscription/v1.0/companies/{companyId}/subscriptions/default",
+        "summary": "Get default company subscription",
+        "description": "This API can be used to get default subscription of a company (i.e. subscription to default Rainbow offer).\n<br/>\n<br/> <code>superadmin</code>, <code>business_admin</code> and <code>support</code> ca",
+        "tag": "Subscriptions",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/subscription/v1.0/companies/{companyId}/subscriptions/prepaid",
+        "summary": "List prepaid subscriptions expiring soon",
+        "description": "This API can be used to list prepaid subscriptions ending soon\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can list prepaid subscriptions of any company(ies) existing in Rainbow.\n<br/",
+        "tag": "Subscriptions",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/subscription/v1.0/companies/{companyId}/subscriptions/{subscriptionId}/users",
+        "summary": "List users being assigned to a given subscription",
+        "description": "This API can be used to list users having a given subscription in their profile\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can get users attached to any company subscriptions existin",
+        "tag": "Subscriptions",
+        "deprecated": false
+      }
+    ]
+  },
+  "invoicing": {
+    "slug": "invoicing",
+    "label": "Invoicing",
+    "category": "Billing",
+    "title": "Rainbow Invoicing portal",
+    "description": "# Rainbow invoicing portal API guide\n\n## Preamble\n\n[Download Postman collection][0]\n\n### Introduction\n\nThis guide describes list of API services that are provided by OT Rainbow Invoicing portal. This portal is dedicated to end user features.\n\n### Protocol\n\nREST interface is used for sending/receivin",
+    "version": "1.256.0",
+    "specFormat": "2.0",
+    "basePath": "",
+    "endpointCount": 2,
+    "methodCounts": {
+      "GET": 2
+    },
+    "tags": [
+      "Invoices"
+    ],
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/rainbow/invoicing/v1.0/invoices/{invoicePath}",
+        "summary": "Download an available invoice",
+        "description": "This API allows <code>superadmin</code>, <code>bp_finance</code> and <code>admin</code> to download a given invoice.\n<br/>\nTo download an invoice, admin should use filepath provided by GET /api/rainbo",
+        "tag": "Invoices",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/invoicing/v1.0/invoices",
+        "summary": "List all available invoices",
+        "description": "This API allows <code>superadmin</code>, <code>bp_finance</code> and <code>admin</code> to list all available invoices.\n<br/>",
+        "tag": "Invoices",
+        "deprecated": false
+      }
+    ]
+  },
+  "metrics": {
+    "slug": "metrics",
+    "label": "Metrics",
+    "category": "Analytics",
+    "title": "Rainbow Metrics Portal",
+    "description": "# Rainbow metrics portal API guide\n\n## Preamble\n\n[Download Postman collection][0]\n\n### Introduction\n\nThis guide describes list of API services that are provided by OT Rainbow metrics portal.\n\n### Protocol\n\nREST interface is used for sending/receiving OT rainbow API messages. HTTP requests GET, DELET",
+    "version": "1.256.0",
+    "specFormat": "2.0",
+    "basePath": "",
+    "endpointCount": 7,
+    "methodCounts": {
+      "GET": 7
+    },
+    "tags": [
+      "Analytic Metrics",
+      "Cpaas Metrics"
+    ],
+    "endpoints": [
+      {
+        "method": "GET",
+        "path": "/api/rainbow/metrics/v1.0/analyticmetrics/companies/{companyId}/customers",
+        "summary": "Get all companies stats of a bpadmin.",
+        "description": "This API can be used to retrieve stats of all companies under the given bpadmin",
+        "tag": "Analytic Metrics",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/metrics/v1.0/analyticmetrics/companies/{companyId}",
+        "summary": "Get companies stats",
+        "description": "This API can be used to retrieve stats for a given company or grouped stats of all companies under a given BP company",
+        "tag": "Analytic Metrics",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/metrics/v1.0/analyticmetrics/companies/{companyId}/daily",
+        "summary": "Get day to day stats for companies",
+        "description": "This API can be used to retrieve daily stats for a given company or grouped stats of all companies under a given BP company",
+        "tag": "Analytic Metrics",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/metrics/v1.0/analyticmetrics/companies/{companyId}/customers/flat",
+        "summary": "Get first level clients stats of companyId or itself if EC",
+        "description": "This API can be used to get stats (aggregated if BP) of first level customers for a given BP. If the company is an EC, it returns stats of this EC only.\n<br/> The response of this API can be used to e",
+        "tag": "Analytic Metrics",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/metrics/v1.0/cpaasmetrics/{applicationId}",
+        "summary": "Retrieve CPaaS metrics for an application.",
+        "description": "Rainbow users with developer role can create applications and can retrieve CPaaS metrics for their own applications.\n<br/>'fromDate' parameter to 'toDate' parameter range are restricted according the ",
+        "tag": "Cpaas Metrics",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/metrics/v1.0/cpaasmetrics/apiGroupsMapping",
+        "summary": "Retrieve the mapping of CPaaS metric groups.",
+        "description": "Retrieve the mapping of CPaaS metric groups.",
+        "tag": "Cpaas Metrics",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/metrics/v1.0/cpaasmetrics",
+        "summary": "Retrieve aggregated CPaaS metrics for all applications of an application owner.",
+        "description": "Rainbow users with developer role can create applications and can retrieve CPaaS metrics for their own applications.\n<br/>'fromDate' parameter to 'toDate' parameter range are restricted according the ",
+        "tag": "Cpaas Metrics",
+        "deprecated": false
+      }
+    ]
+  },
+  "ngcpprovisioning": {
+    "slug": "ngcpprovisioning",
+    "label": "Voice / CloudPBX",
+    "category": "Telephony",
+    "title": "Rainbow Voice Communication Platform Provisioning portal",
+    "description": "# Rainbow Voice Communication Platform Provisioning portal API guide\n\n## Preamble\n\n[Download Postman collection][0]\n\n### Introduction\n\nThis guide describes list of API services that are provided by Rainbow Voice Communication Platform provisioning portal system. Services are used to manage Rainbow V",
+    "version": "1.256.8",
+    "specFormat": "2.0",
+    "basePath": "",
+    "endpointCount": 102,
+    "methodCounts": {
+      "DELETE": 17,
+      "GET": 44,
+      "PUT": 20,
+      "POST": 21
+    },
+    "tags": [
+      "Cloudpbx",
+      "Cloudpbx Dects",
+      "Cloudpbx Device Keys",
+      "Cloudpbx Devices",
+      "Cloudpbx Greetings",
+      "Cloudpbx Group Forwards",
+      "Cloudpbx Group Voicemail Greetings",
+      "Cloudpbx Phone Numbers",
+      "Cloudpbx Recordings",
+      "Cloudpbx Subscribers",
+      "Cloudpbx Welcome",
+      "External Sip Trunks",
+      "Rvcp Devicemodel"
+    ],
+    "endpoints": [
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}",
+        "summary": "Delete a CloudPBX",
+        "description": "This API allows to delete a CloudPBX\n<br/>\n\n<br/> <code>superadmin</code> and <code>support</code> can delete all CloudPBXs existing in Rainbow\n<br/> <code>bp_admin</code> can only delete CloudPBXs li",
+        "tag": "Cloudpbx",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}",
+        "summary": "Get a CloudPBX data",
+        "description": "This API allows administrator to retrieve a CloudPBX using its identifier\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can get all CloudPBXs existing in Rainbow\n<br/> <code>bp_admin</c",
+        "tag": "Cloudpbx",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}",
+        "summary": "Update a CloudPBX",
+        "description": "This API updates a CloudPBX for a given company\n<br/>\n<br/> <code>superadmin</code> can update CloudPBX for all companies\n<br/> <code>bp_admin</code> can only update CloudPBX for their End Customer co",
+        "tag": "Cloudpbx",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/barring-options/custom-numbers-restriction",
+        "summary": "Get customized set of prohibited numbers applicable on the CloudPBX",
+        "description": "This API allows administrator to retrieve customized set of prohibited numbers applicable on the CloudPBX\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can get customized set of prohibi",
+        "tag": "Cloudpbx",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/barring-options/custom-numbers-restriction",
+        "summary": "Update customized set of prohibited numbers applicable on the CloudPBX",
+        "description": "This API updates customized set of prohibited numbers applicable on the CloudPBX\n<br/>\n<br/> <code>superadmin</code> can update CloudPBXs for all companies\n<br/> <code>bp_admin</code> can only update ",
+        "tag": "Cloudpbx",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/barring-options",
+        "summary": "Get list of traffic barring options available for a CloudPBX",
+        "description": "This API allows administrator to retrieve a list of traffic barring options supported by a CloudPBX\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can get traffic barring options for all",
+        "tag": "Cloudpbx",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/cli-options",
+        "summary": "Get CloudPBX CLI policy for outbound calls",
+        "description": "This API allows administrator to retrieve the CloudPBX CLI options for outbound calls\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can get cli options for all CloudPBXs existing in Rai",
+        "tag": "Cloudpbx",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/cli-options",
+        "summary": "Update a CloudPBX cli options configuration",
+        "description": "This API updates a CloudPBX cli options configuration for a given company\n<br/>\n<br/> <code>superadmin</code> can update CloudPBX for all companies\n<br/> <code>bp_admin</code> can only update CloudPBX",
+        "tag": "Cloudpbx",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs",
+        "summary": "Get list of CloudPBXs",
+        "description": "This API allows administrator to retrieve a list of CloudPBXs\n<br/>\n<br/> <code>superadmin</code>, <code>support</code>, <code>sales_analytics</code> and <code>customer_success_admin</code> can get al",
+        "tag": "Cloudpbx",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs",
+        "summary": "Create a CloudPBX",
+        "description": "This API creates a CloudPBX for a given company\n<br/>RVCP Instance where the new CloudPBX will be created is selected according company's country\n<br/>Note that this new CloudPBX will be in fact a new",
+        "tag": "Cloudpbx",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/devicemodels/{deviceModelId}",
+        "summary": "Get details about a device model",
+        "description": "Allows administrator to retrieve the details of a device model\n<br/>Can be invoked in two different ways:\n<ul>\n <li>By requesting with 'Accept: application/json' HTTP header: The returned resource wil",
+        "tag": "Cloudpbx",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/devicemodels",
+        "summary": "Get list of device models available for a CloudPBX",
+        "description": "Allows administrator to retrieve the list of device models supported by a CloudPBX\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can get device models for all CloudPBXs existing in Rain",
+        "tag": "Cloudpbx",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/emergency-numbers",
+        "summary": "Get Emergency numbers and emergency options available for a CloudPBX",
+        "description": "This API allows administrator to retrieve Emergency Numbers and Emergency Options supported by a CloudPBX\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can get Emergency Numbers and Eme",
+        "tag": "Cloudpbx",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/numbering-plan",
+        "summary": "Get CloudPBX numbering plan detailed information",
+        "description": "This API allows administrator to retrieve the CloudPBX numbering Plan detailed information\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can get numbering Plan detailed information for ",
+        "tag": "Cloudpbx",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/languages",
+        "summary": "Get list of languages available for a CloudPBX",
+        "description": "This API allows administrator to retrieve a list of languages supported by a CloudPBX\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can get languages for all CloudPBXs existing in Rainb",
+        "tag": "Cloudpbx",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/peer-authentication-options",
+        "summary": "Get CloudPBX peer authentication options",
+        "description": "This API allows administrator to retrieve the CloudPBX peer authentication options\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can get peer authentication options for all CloudPBXs ex",
+        "tag": "Cloudpbx",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/peer-authentication-options",
+        "summary": "Update peer authentication options for a given CloudPBX",
+        "description": "This API updates peer authentication options for a given CloudPBX\n<br/>\n<br/> <code>superadmin</code> can update CloudPBXs for all companies\n<br/> <code>bp_admin</code> can only update CloudPBXs for t",
+        "tag": "Cloudpbx",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/overflow",
+        "summary": "Update a CloudPBX overflow configuration",
+        "description": "This API updates a CloudPBX overflow configuration for a given company\n<br/>\n<br/> <code>superadmin</code> can update CloudPBX for all companies\n<br/> <code>bp_admin</code> can only update CloudPBX fo",
+        "tag": "Cloudpbx",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/dect-bases/{dectBaseId}/extensions/{deviceId}",
+        "summary": "Unassign an extension from a DECT base",
+        "description": "Unassign an extension from a DECT base\n<br/>",
+        "tag": "Cloudpbx Dects",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/dect-bases/{dectBaseId}/extensions",
+        "summary": "Get all extensions of a DECT base",
+        "description": "Retrieve all extensions of a DECT base assigned into a CloudPBX\n<br/>\n<br/> Get all extensions assigned to a given DECT base.",
+        "tag": "Cloudpbx Dects",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/dect-bases/{dectBaseId}/extensions",
+        "summary": "Assign an extension to a DECT base",
+        "description": "Assign an extension to a DECT base\n<br/>",
+        "tag": "Cloudpbx Dects",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/dect-bases/{dectBaseId}/secondaryBases",
+        "summary": "Get all secondary bases linked to a primary DECT base",
+        "description": "Retrieve all secondary bases of a DECT base assigned into a CloudPBX\n<br/>\n<br/> Get all secondary bases linked to a given DECT base.",
+        "tag": "Cloudpbx Dects",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/dect-bases",
+        "summary": "Get all DECT bases of a CloudPBX",
+        "description": "Retrieve all DECT bases assigned into a CloudPBX\n<br/>\n<br/> Get all DECT bases assigned to a given CloudPBX. The request can be filtered to retrieve only the DECT bases linked together (by chainId).",
+        "tag": "Cloudpbx Dects",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/dect-bases/{dectBaseId}/debug",
+        "summary": "Grant access to debug session",
+        "description": "This API allows to grant access to debug session on the given DECT base.\n<br/> When debug session is granted on the DECT base, admins can retrieve the WBM admin login, password and url to access the D",
+        "tag": "Cloudpbx Dects",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/dect-bases/{dectBaseId}/debug",
+        "summary": "Revoke access from debug session",
+        "description": "This API allows to revoke access to debug session on the given DECT base.\n<br/> When revoked, the debug session can no longer be used.\n<br/> The WBM password is no longer visible (changed).\n<br/> Plea",
+        "tag": "Cloudpbx Dects",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/dect-bases/{dectBaseId}/reboot",
+        "summary": "Request the DECT base to reboot",
+        "description": "This API allows to reboot a DECT base",
+        "tag": "Cloudpbx Dects",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/devices/{deviceId}/programmable-keys/{keyNum}",
+        "summary": "Delete a programmable key from a SIP Device",
+        "description": "Delete a programmable keys from a SIP deskphone device, or an expansion module\n<br/> Only keys created by this API can be deleted, not the ones created by a service (i.e. Manager-assistant).\n<br><br>\n",
+        "tag": "Cloudpbx Device Keys",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/devices/{deviceId}/programmable-keys",
+        "summary": "Get a SIP Device programmable keys",
+        "description": "Retrieve all programmable keys of a SIP deskphone device",
+        "tag": "Cloudpbx Device Keys",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/devices/{deviceId}/programmable-keys",
+        "summary": "Create a programmable key on a SIP Device",
+        "description": "Creation of a programmable key on a SIP deskphone device or one of its expansion module\n<br/>Programmable key type can be:\n<ul>\n    <li><code>forward</code>: Activate / deactivate immediate forward to",
+        "tag": "Cloudpbx Device Keys",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/devices/{deviceId}/programmable-keys",
+        "summary": "Update programmable keys on a SIP Device module",
+        "description": "Update programmable keys for a given module of a SIP deskphone device\n<br/>See programmable key creation for supported types\n<br/><b>NOTE1:</b><i> All programmable keys of the device's module will be ",
+        "tag": "Cloudpbx Device Keys",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/devices/{deviceId}/modules",
+        "summary": "Add a device module",
+        "description": "Add an expansion module to the device.\n<br/> Some models of the Myriad deskphone serie (M3, M5, M7 and M8) support expansion modules referenced EM_20 and EM_200. Please refer to marketing datasheets t",
+        "tag": "Cloudpbx Devices",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/devices",
+        "summary": "Create a new SIP Device into the CloudPBX",
+        "description": "This API allows to create a new SIP device into a CloudPBX. This SIP device can then be assigned to an existing subscriber",
+        "tag": "Cloudpbx Devices",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/devices",
+        "summary": "Get all SIP devices of a CloudPBX",
+        "description": "This API allows administrator to retrieve all SIP devices assigned into a CloudPBX\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can get all devices existing in Rainbow.\n<br/> <code>bp_",
+        "tag": "Cloudpbx Devices",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/devices/{deviceId}/reset",
+        "summary": "Request factory reset of the SIP device",
+        "description": "This API allows to reset a SIP deskphone device to its factory settings.\n<br/><b><i>Be aware that the device will no longer be operational, and should, after the factory reset, need to be manually con",
+        "tag": "Cloudpbx Devices",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/devices/{deviceId}",
+        "summary": "Get a SIP Device",
+        "description": "Retrieve a SIP device using the given deviceId",
+        "tag": "Cloudpbx Devices",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/devices/{deviceId}",
+        "summary": "Remove a SIP Device from a CloudPBX",
+        "description": "This API allows to remove a SIP Device from a CloudPBX. To do so, the SIP device must no longer be associated to a subscriber.\n<br/> Example: DELETE https://sandbox.openrainbow.com/api/rainbow/rvcppro",
+        "tag": "Cloudpbx Devices",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/devices/{deviceId}",
+        "summary": "Update a SIP Device",
+        "description": "This API allows to update a SIP device",
+        "tag": "Cloudpbx Devices",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/devices/{deviceId}/registrations",
+        "summary": "Get SIP registrations information of a device",
+        "description": "This API allows to retrieve SIP registrations information relative to a device.",
+        "tag": "Cloudpbx Devices",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/devices/{deviceId}/debug",
+        "summary": "Grant access to debug session",
+        "description": "This API allows to grant access to debug session on the given device.\n<br/> When debug session is granted on the device, admins can retrieve the admin password of the device, url to access the device ",
+        "tag": "Cloudpbx Devices",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/devices/{deviceId}/debug",
+        "summary": "Revoke access from debug session",
+        "description": "This API allows to revoke access to debug session on the given device.\n<br/> When revoked, the debug session can no longer be used.\n<br/> The admin password is no longer visible (changed).",
+        "tag": "Cloudpbx Devices",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/devices/{deviceId}/reboot",
+        "summary": "Request the SIP device to reboot",
+        "description": "This API allows to reboot a SIP deskphone device.",
+        "tag": "Cloudpbx Devices",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/devices/{deviceId}/modules/{moduleId}",
+        "summary": "Remove a device module",
+        "description": "Remove an expansion module from a device.\n<br/> Note that all programmable keys hosted by the module will be deleted<br/>",
+        "tag": "Cloudpbx Devices",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/greetings/{fileId}",
+        "summary": "Delete the requested greeting",
+        "description": "API used to delete the requested greeting.\n<br/>Note: only non active and non default greetings can be deleted from the file storage.\n\n<br/> Example:<br/> DELETE https://sandbox.openrainbow.com/api/ra",
+        "tag": "Cloudpbx Greetings",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/greetings/{fileId}",
+        "summary": "Get the requested greeting",
+        "description": "Used to retrieve the requested greeting, identified by its fileId.\n<br/>Can be invoked in two different ways:\n<ul>\n <li>By requesting with 'Accept: application/json' HTTP header: The returned resource",
+        "tag": "Cloudpbx Greetings",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/greetings",
+        "summary": "Delete all greetings",
+        "description": "Delete all the greetings associated to the cloudpbx.\n<br/>First of all, greetings will be restored to their default values (or cleared if default value is empty).\n<br/>Then, all stored greetings will ",
+        "tag": "Cloudpbx Greetings",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/greetings",
+        "summary": "Get the available greetings",
+        "description": "API used to retrieve cloudpbx's greetings that can be set for various announcement purpose.\n<br/>Configurable greetings are contextualized. That means some predefined scopes can be used to handle thes",
+        "tag": "Cloudpbx Greetings",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/greetings/{fileId}/activate",
+        "summary": "Activate the greeting",
+        "description": "Activate the greeting identified by the given fileId\n<br/>\n<br/>\n<br/> Example:<br/> POST https://sandbox.openrainbow.com/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/:systemId/greetings/5fae91d4a1d2a0",
+        "tag": "Cloudpbx Greetings",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/greetings/{greetingId}/restore",
+        "summary": "restore the default greeting",
+        "description": "Restore the default voice prompt for the given greetingId\n<br/>The default audio file for the greeting is the one set by the system, when setting the company language.\n<br/>\n<br/> Example:<br/> POST h",
+        "tag": "Cloudpbx Greetings",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/greetings/{greetingId}",
+        "summary": "Upload a new greeting file",
+        "description": "Used to set a new greeting file by uploading an audio file, to be played by, e.g., the welcome service, before recording, or as auto attendant menu selection.\n<br/>Some remarks about the greeting uplo",
+        "tag": "Cloudpbx Greetings",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/greetings/{fileId}/settings",
+        "summary": "Update fields of greeting",
+        "description": "Modify the greeting settings identified by the given fileId",
+        "tag": "Cloudpbx Greetings",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/groups/{groupId}/forwards",
+        "summary": "Get forwards of a group (or a call queue)",
+        "description": "This API allows to get a group's forwards of a CloudPBX.\n<br/> Example: GET https://sandbox.openrainbow.com/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/5c6aeb5b7817b9050c517e20/groups/5c6aeb5b7817b905",
+        "tag": "Cloudpbx Group Forwards",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/groups/{groupId}/forwards/{callForwardType}",
+        "summary": "Update forwards of a group",
+        "description": "This API allows to update forwards of a group (or call queue) of a CloudPBX.\n<br/> Example: PUT https://sandbox.openrainbow.com/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/5c6aeb5b7817b9050c517e20/gro",
+        "tag": "Cloudpbx Group Forwards",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/phone-numbers/ddi/{phoneNumberId}/users/{userId}",
+        "summary": "Associate a MAIN DDI number to a Rainbow Hub User",
+        "description": "This API allows to associate a MAIN DDI number to a Rainbow user.\n<br/> Example: POST https://sandbox.openrainbow.com/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/5c9e2be00d9ebd10f0dad5e6/phone-numbers",
+        "tag": "Cloudpbx Phone Numbers",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/phone-numbers/ddi/{phoneNumberId}/users/{userId}",
+        "summary": "Disassociate MAIN DDI number from a Rainbow user",
+        "description": "This API allows to disassociate MAIN DDI number from a Rainbow user.\n<br/> Example: DELETE https://sandbox.openrainbow.com/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/5c9e2be00d9ebd10f0dad5e6/phone-nu",
+        "tag": "Cloudpbx Phone Numbers",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/phone-numbers/ddi/{phoneNumberId}",
+        "summary": "Delete a DDI number for a given CloudPBX",
+        "description": "This API allows to delete a DDI number for a CloudPBX.\n<br>> Note : Default DDI can be deleted only if it is the last DDI of the CloudPBX\n<br/> Example: DELETE https://sandbox.openrainbow.com/api/rain",
+        "tag": "Cloudpbx Phone Numbers",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/phone-numbers/ddi",
+        "summary": "List DDI numbers associated to a CloudPBX",
+        "description": "This API allows to get the list of DDI numbers associated to a CloudPBX.\n<br/> Example: GET https://sandbox.openrainbow.com/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/5c9e2be00d9ebd10f0dad5e6/phone-n",
+        "tag": "Cloudpbx Phone Numbers",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/phone-numbers/ddi",
+        "summary": "Create a DDI number",
+        "description": "This API allows to create a DDI number for a CloudPBX.\n<br/> Example: POST https://sandbox.openrainbow.com/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/5c9e2be00d9ebd10f0dad5e6/phone-numbers/ddi\n\n<br/>",
+        "tag": "Cloudpbx Phone Numbers",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/phone-numbers/free",
+        "summary": "Get unassigned CloudPBX internal phone numbers",
+        "description": "This API allows to list all unassigned internal phone numbers for a given CloudPBX system.",
+        "tag": "Cloudpbx Phone Numbers",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/phone-numbers/ddi/{phoneNumberId}/default",
+        "summary": "Set DDI as default CloudPBX DDI",
+        "description": "This API allows to set a DDI number as default DDI for a CloudPBX.\n<br/> Example: POST https://sandbox.openrainbow.com/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/5c9e2be00d9ebd10f0dad5e6/phone-number",
+        "tag": "Cloudpbx Phone Numbers",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/phone-numbers/ddi/{phoneNumberId}/sites/{siteId}/default",
+        "summary": "Set DDI as default CloudPBX site DDI",
+        "description": "This API allows to set a DDI number as default DDI for a CloudPBX site. If it's already the site default DDI, it will be remove as the default one\n<br/> Example: POST https://sandbox.openrainbow.com/a",
+        "tag": "Cloudpbx Phone Numbers",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/recordings/{recordId}",
+        "summary": "Delete the requested recording",
+        "description": "Complete deletion of the requested recording, descriptor and audio file.\n\n<br/> Example: DELETE https://sandbox.openrainbow.com/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/5fc2a9c2c6bda124728ae60b/rec",
+        "tag": "Cloudpbx Recordings",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/recordings/{recordId}",
+        "summary": "Get the requested recording",
+        "description": "Retrieve the requested recording\n<br/>It can invoked in two ways:\n<ul>\n <li>By requesting with 'Accept: application/json' HTTP header: The returned resource will be the record descriptor in JSON forma",
+        "tag": "Cloudpbx Recordings",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/recordings",
+        "summary": "Delete a list of recording",
+        "description": "Deletion of the provided list of recording\n\n<br/> Example: DELETE https://sandbox.openrainbow.com/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/5fc2a9c2c6bda124728ae60b/recordings?recordIds=4b3f58bdc9fe",
+        "tag": "Cloudpbx Recordings",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/recordings",
+        "summary": "Get the available recordings",
+        "description": "Retrieve the cloudpbx's recordings\n<br/><i><b>Please refer to local regulations to check if recording conversations is permitted by law.</b></i>\n<br/>Recording can be activated on cloud PBX users by a",
+        "tag": "Cloudpbx Recordings",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/recording-settings",
+        "summary": "Get the cloudpbx recording settings",
+        "description": "Retrieve cloudpbx's recording settings",
+        "tag": "Cloudpbx Recordings",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/recording-settings",
+        "summary": "Set the cloudpbx recording settings",
+        "description": "Set the cloudpbx's recording settings",
+        "tag": "Cloudpbx Recordings",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/recordings",
+        "summary": "Get recordings (scope can be an entire organization)",
+        "description": "Retrieve recordings according filters (Scope is the entire list of companies manageable by LoggedIn user)\n<br/>\n<br/> Note that this API can be used <b>only</b> by SuperAdmin or Organization Admin\n<br",
+        "tag": "Cloudpbx Recordings",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/recordings/{phoneNumberId}",
+        "summary": "Activate or deactivate the recording for the subscriber",
+        "description": "Activate or deactivate subscriber's recordings",
+        "tag": "Cloudpbx Recordings",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/subscribers/{phoneNumberId}/devices",
+        "summary": "Assign a SIP Device to a CloudPBX subscriber",
+        "description": "This API allows to assign a SIP device to a CloudPBX Subscriber.\n<br/>The device must have been previously created.\n<br/>Assigning a device to a subscriber can de done by specifying the device Id (pre",
+        "tag": "Cloudpbx Subscribers",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/subscribers/{phoneNumberId}/devices",
+        "summary": "Get all SIP devices assigned to a subscriber",
+        "description": "This API allows administrator to retrieve all SIP devices assigned to a subscriber\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can get all devices existing in Rainbow.\n<br/> <code>bp_",
+        "tag": "Cloudpbx Subscribers",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/subscribers",
+        "summary": "Create a CloudPBX Subscriber for a Rainbow User.",
+        "description": "This API allows to create a new CloudPBX Subscriber for a Rainbow User.\n<br/> This new subscriber will appear as a new entry into \"phoneNumbers\" list of the targeted Rainbow User.\n<br/> As a result, t",
+        "tag": "Cloudpbx Subscribers",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/subscribers/{phoneNumberId}",
+        "summary": "Delete a CloudPBX Subscriber (identified by its phone Number identifier)",
+        "description": "This API allows to delete a CloudPBX Subscriber. All its associated SIP devices become free for other subscribers.\n<br/> Example: DELETE https://sandbox.openrainbow.com/api/rainbow/rvcpprovisioning/v1",
+        "tag": "Cloudpbx Subscribers",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/subscribers/{phoneNumberId}",
+        "summary": "Get a CloudPBX subscriber",
+        "description": "This API allows to get data of a CloudPBX Subscriber\n<br/> Example: GET https://sandbox.openrainbow.com/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/5c6aeb5b7817b9050c517e20/subscribers/5c790e7b722ee82",
+        "tag": "Cloudpbx Subscribers",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/subscribers/{phoneNumberId}/devices/{deviceId}",
+        "summary": "Remove association between subscriber and SIP device",
+        "description": "This API allows to remove association between subscriber and the Sip Device (SIP device becomes available for another subscriber)\n<br/> Example: DELETE https://sandbox.openrainbow.com/api/rainbow/rvcp",
+        "tag": "Cloudpbx Subscribers",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/subscribers/{phoneNumberId}/devices/{deviceId}",
+        "summary": "Get a specific SIP device assigned to a subscriber",
+        "description": "This API allows administrator to retrieve a given SIP device assigned to a subscriber\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can get all devices existing in Rainbow.\n<br/> <code>",
+        "tag": "Cloudpbx Subscribers",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/subscribers/{phoneNumberId}/registrations",
+        "summary": "Get info on all registered SIP devices for a subscriber",
+        "description": "This API allows administrator to retrieve registrations info on all devices registered for a subscriber\n<br/>\n<br/> <code>superadmin</code> and <code>support</code> can get all registrations info exis",
+        "tag": "Cloudpbx Subscribers",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/subscribers/{phoneNumberId}/cli-options",
+        "summary": "Get subscriber CLI options",
+        "description": "This API allows to get CLI policy of a CloudPBX Subscriber\n<br/> Example: GET https://sandbox.openrainbow.com/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/5c6aeb5b7817b9050c517e20/subscribers/5c790e7b7",
+        "tag": "Cloudpbx Subscribers",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/subscribers/{phoneNumberId}/pstn-device-options",
+        "summary": "Get subscriber PSTN device options",
+        "description": "This API allows to get PSTN Device options of a CloudPBX Subscriber\n<br/> Example: GET https://sandbox.openrainbow.com/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/5c6aeb5b7817b9050c517e20/subscribers/",
+        "tag": "Cloudpbx Subscribers",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/subscribers/{phoneNumberId}/pstn-device-options",
+        "summary": "Update subscriber PSTN device options",
+        "description": "This API allows to update PSTN Device options of a CloudPBX Subscriber",
+        "tag": "Cloudpbx Subscribers",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/subscribers/{phoneNumberId}/sip-headers",
+        "summary": "Get subscriber custom SIP headers",
+        "description": "This API allows to get custom SIP headers of a CloudPBX Subscriber\n<br/> Example: GET https://sandbox.openrainbow.com/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/5c6aeb5b7817b9050c517e20/subscribers/5",
+        "tag": "Cloudpbx Subscribers",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/subscribers/{phoneNumberId}/sip-headers",
+        "summary": "Update subscriber custom SIP headers",
+        "description": "This API allows to update custom SIP headers of a CloudPBX Subscriber",
+        "tag": "Cloudpbx Subscribers",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/subscribers/{phoneNumberId}/barring-options",
+        "summary": "Update subscriber traffic barring options",
+        "description": "This API allows to update traffic barring options of a CloudPBX Subscriber",
+        "tag": "Cloudpbx Subscribers",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/subscribers/{phoneNumberId}/callforwardoptions/externalcallforward",
+        "summary": "Configure the external call forward options",
+        "description": "This API allows configure the authorization on external call forward of a CloudPBX Subscriber",
+        "tag": "Cloudpbx Subscribers",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/subscribers/{phoneNumberId}/overflow",
+        "summary": "Update overflow configuration of a subscriber",
+        "description": "This API allows to update overflow data of a CloudPBX Subscriber",
+        "tag": "Cloudpbx Subscribers",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/subscribers/{phoneNumberId}/overflow/status",
+        "summary": "Get the overflow status of a subscriber",
+        "description": "This API allows to get overflow data of a CloudPBX Subscriber",
+        "tag": "Cloudpbx Subscribers",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/ivrs/{ivrId}",
+        "summary": "Delete a welcome or welcome service",
+        "description": "This API allows to delete a Cloud PBX Welcome (<b style=\"color:red\">DEPRECATED</b>) or Welcome Service.\n<br/> Example: DELETE https://sandbox.openrainbow.com/api/rainbow/rvcpprovisioning/v1.0/cloudpbx",
+        "tag": "Cloudpbx Welcome",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/ivrs/{ivrId}",
+        "summary": "Update a Welcome or Welcome Service",
+        "description": "This API allows to update a Cloud PBX Welcome (<b style=\"color:red\">DEPRECATED</b>) or Welcome Service.\n<br/> Example: POST https://sandbox.openrainbow.com/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/",
+        "tag": "Cloudpbx Welcome",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/ivrs/welcomes/{ivrId}",
+        "summary": "Get a Welcome of a specific system",
+        "description": "Will be replace by {get} /api/rainbow/admin/v1.0/companies/:companyId/calendars/:calendarId  Get a company calendar with backend 203",
+        "tag": "Cloudpbx Welcome",
+        "deprecated": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/ivrs/welcomes/officehours/{ivrId}",
+        "summary": "Get a Welcome office hours",
+        "description": "Will be replace by {get} /api/rainbow/admin/v1.0/companies/:companyId/calendars/:calendarId  Get a company calendar with backend 203",
+        "tag": "Cloudpbx Welcome",
+        "deprecated": true
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/ivrs/welcomes/officehours/{ivrId}",
+        "summary": "Update Welcome office hours",
+        "description": "Will be replace by {put} /api/rainbow/admin/v1.0/companies/:companyId/calendars/:calendarId  Update a company calendar with backend 203",
+        "tag": "Cloudpbx Welcome",
+        "deprecated": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/ivrs/welcomeservices",
+        "summary": "Get all Welcome services for a specific system",
+        "description": "This API allows to get data of a all Welcome services of a specific system",
+        "tag": "Cloudpbx Welcome",
+        "deprecated": false
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/ivrs/welcomeservices",
+        "summary": "Create a Welcome Service",
+        "description": "This API allows to create a new CloudPBX Welcome Service.\n<br/> Example: POST https://sandbox.openrainbow.com/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/5c6aeb5b7817b9050c517e20/ivrs/welcomeservices",
+        "tag": "Cloudpbx Welcome",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/ivrs/welcomes",
+        "summary": "Get all Welcomes of a specific system",
+        "description": "Will be replace by {get} /api/rainbow/admin/v1.0/companies/:companyId/calendars/:calendarId  Get all company calendars with backend 203",
+        "tag": "Cloudpbx Welcome",
+        "deprecated": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/ivrs/welcomes",
+        "summary": "Create a Welcome",
+        "description": "Will be replace by {post} /api/rainbow/admin/v1.0/companies/:companyId/calendars  Create a company calendar with backend 203",
+        "tag": "Cloudpbx Welcome",
+        "deprecated": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/groups/{groupId}/voicemail-greetings",
+        "summary": "Create a voicemail greeting for a group",
+        "description": "This API can be used to create a voicemail greeting for a cloudpbx's group.\n<br/>Request body must contain audio file content.",
+        "tag": "Cloudpbx Group Voicemail Greetings",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/groups/{groupId}/voicemail-greetings",
+        "summary": "Retrieve voicemail greetings for a group",
+        "description": "This API can be used to retrieve customized voicemail greetings for a cloudpbx's group.",
+        "tag": "Cloudpbx Group Voicemail Greetings",
+        "deprecated": false
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/groups/{groupId}/voicemail-greetings/{greetingId}",
+        "summary": "Delete a voicemail greeting for a group",
+        "description": "This API can be used to delete a voicemail greeting for a cloudpbx's group.",
+        "tag": "Cloudpbx Group Voicemail Greetings",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/groups/{groupId}/voicemail-greetings/{greetingId}",
+        "summary": "Retrieve a voicemail greeting (audio file) for a group",
+        "description": "This API can be used to retrieve a voicemail greeting (audio file) for a cloudpbx's group.",
+        "tag": "Cloudpbx Group Voicemail Greetings",
+        "deprecated": false
+      },
+      {
+        "method": "PUT",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/cloudpbxs/{systemId}/groups/{groupId}/voicemail-greetings/{greetingId}",
+        "summary": "Update audio file associated to a voicemail greeting",
+        "description": "This API can be used to update the audio file associated to a voicemail greeting.\n<br/>Request body must contain audio file content.",
+        "tag": "Cloudpbx Group Voicemail Greetings",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/external-trunks/{externalTrunkId}",
+        "summary": "Retrieve an external SIP trunk using its unique identifier (available also for Hybrid Trunk)",
+        "description": "This API allows to retrieve an external SIP trunk using its identifier (available also for Hybrid Trunk)",
+        "tag": "External Sip Trunks",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/external-trunks",
+        "summary": "Retrieve a list of external SIP trunks (including Hybrid Trunks)",
+        "description": "<br/> This API allows <code>superadmin</code>, <code>bp_admin</code>, <code>company_admin</code> or <code>organisation_admin</code>  to retrieve a list of external SIP trunks (including Hybrid Trunks)",
+        "tag": "External Sip Trunks",
+        "deprecated": false
+      },
+      {
+        "method": "GET",
+        "path": "/api/rainbow/rvcpprovisioning/v1.0/rvcp-instances/{rvcpInstanceId}/devicemodels/{deviceModelId}",
+        "summary": "Get details about a device model",
+        "description": "Allows administrator to retrieve the details of a device model\n<br/>Can be invoked in two different ways:\n<ul>\n <li>By requesting with 'Accept: application/json' HTTP header: The returned resource wil",
+        "tag": "Rvcp Devicemodel",
+        "deprecated": false
+      }
+    ]
+  }
+}

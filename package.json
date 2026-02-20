@@ -6,7 +6,8 @@
   "scripts": {
     "crawl": "node scripts/crawl/index.mjs",
     "transform": "node scripts/transform/index.mjs",
-    "content:sync": "node scripts/crawl/index.mjs && node scripts/transform/index.mjs",
+    "content:sync": "node scripts/crawl/index.mjs && node scripts/transform/index.mjs && node scripts/openapi-summary.mjs",
+    "openapi:sync": "node scripts/openapi-summary.mjs",
     "dev": "cd apps/web && npm run dev",
     "build": "cd apps/web && npm run build",
     "validate": "node scripts/validate.mjs"
