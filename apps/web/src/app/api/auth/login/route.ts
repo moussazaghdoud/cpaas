@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createHash } from "crypto";
 import { getRainbowApiUrl } from "@/lib/rainbow-api";
 
 export async function POST(req: NextRequest) {
@@ -16,28 +15,14 @@ export async function POST(req: NextRequest) {
     const basicAuth = Buffer.from(`${email}:${password}`).toString("base64");
     const apiUrl = getRainbowApiUrl();
 
-    // Build headers
-    const headers: Record<string, string> = {
-      accept: "application/json",
-      authorization: `Basic ${basicAuth}`,
-    };
-
-    // Rainbow requires x-rainbow-app-auth for application-level auth
-    const appId = process.env.RAINBOW_APP_ID;
-    const appSecret = process.env.RAINBOW_APP_SECRET;
-    if (appId && appSecret) {
-      const hash = createHash("sha256")
-        .update(appSecret + password)
-        .digest("hex");
-      const appAuth = Buffer.from(`${appId}:${hash}`).toString("base64");
-      headers["x-rainbow-app-auth"] = `Basic ${appAuth}`;
-    }
-
     const res = await fetch(
       `${apiUrl}/api/rainbow/authentication/v1.0/login`,
       {
         method: "GET",
-        headers,
+        headers: {
+          accept: "application/json",
+          authorization: `Basic ${basicAuth}`,
+        },
         cache: "no-store",
       }
     );
@@ -62,7 +47,6 @@ export async function POST(req: NextRequest) {
 
     const user = data.loggedInUser || {};
 
-    // Set cookie on the NextResponse for reliability
     const response = NextResponse.json({
       user: {
         id: user.id,
