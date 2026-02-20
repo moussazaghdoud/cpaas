@@ -4,6 +4,7 @@ import { SITE_URL } from "@/lib/constants";
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     "",
+    "/get-started",
     "/docs",
     "/docs/getting-started",
     "/docs/guides",

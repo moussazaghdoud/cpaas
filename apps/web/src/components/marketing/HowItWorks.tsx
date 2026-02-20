@@ -54,10 +54,10 @@ export function HowItWorks() {
 
         <div className="mt-12 text-center">
           <Link
-            href="/docs/getting-started"
+            href="/get-started"
             className="inline-flex items-center px-6 py-3 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
-            Follow the quickstart guide
+            Start the setup wizard
             <svg className="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
