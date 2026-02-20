@@ -21,9 +21,9 @@ export async function GET() {
     return NextResponse.json({ error: "Rainbow API error", status: res.status });
   }
 
-  const data = await res.json();
+  const raw = await res.json();
+  const data = raw.data || raw;
 
-  // Return only the relevant fields (not the full response for security)
   return NextResponse.json({
     id: data.id,
     loginEmail: data.loginEmail,
@@ -34,6 +34,7 @@ export async function GET() {
     jid_im: data.jid_im,
     emails: data.emails,
     companyName: data.companyName,
-    _allKeys: Object.keys(data),
+    _topKeys: Object.keys(raw),
+    _userKeys: Object.keys(data),
   });
 }

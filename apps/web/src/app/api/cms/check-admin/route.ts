@@ -25,7 +25,8 @@ export async function GET() {
     return NextResponse.json({ admin: false });
   }
 
-  const user = await res.json();
+  const raw = await res.json();
+  const user = raw.data || raw;
   const email = (user.loginEmail || "").toLowerCase();
   const list = allowed.split(",").map((e) => e.trim().toLowerCase());
 

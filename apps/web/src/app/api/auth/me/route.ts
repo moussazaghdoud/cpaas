@@ -11,19 +11,13 @@ export async function GET() {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
 
-    const data = await res.json();
-
-    // Try multiple fields to find the email
-    const email =
-      data.loginEmail ||
-      (data.emails && data.emails[0]?.email) ||
-      (data.jid_im ? data.jid_im.split("@")[0] + "@" + data.jid_im.split("@")[1]?.replace(/^[^.]+\./, "") : "") ||
-      "";
+    const raw = await res.json();
+    const data = raw.data || raw;
 
     return NextResponse.json({
       user: {
-        id: data.id,
-        loginEmail: email,
+        id: data.id || "",
+        loginEmail: data.loginEmail || "",
         firstName: data.firstName || "",
         lastName: data.lastName || "",
         displayName: data.displayName || data.nickName || "",

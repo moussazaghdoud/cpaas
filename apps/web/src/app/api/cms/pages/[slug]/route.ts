@@ -21,8 +21,9 @@ async function requireAuth(): Promise<{ email: string } | NextResponse> {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
 
-  const user = await res.json();
-  const email = user.loginEmail || "";
+  const raw = await res.json();
+  const user = raw.data || raw;
+  const email = (user.loginEmail || "").toLowerCase();
 
   const allowed = process.env.CMS_ADMIN_EMAILS;
   if (allowed) {
