@@ -21,17 +21,17 @@ export async function generateStaticParams() {
     const pages = listContentPages();
     return pages
       .filter((p) => {
-        if (!p.slug.startsWith("doc__")) return false;
-        const rest = p.slug.replace(/^doc__/, "");
+        if (!p.slug.startsWith("doc/")) return false;
+        const rest = p.slug.replace(/^doc\//, "");
         // Exclude routes with dedicated pages
-        const firstPart = rest.split("__")[0];
+        const firstPart = rest.split("/")[0];
         if (EXCLUDED_SLUGS.has(firstPart)) return false;
-        // Exclude bare "doc__" pages that would conflict with /docs
+        // Exclude bare "doc" pages that would conflict with /docs
         if (!rest || rest === "") return false;
         return true;
       })
       .map((p) => {
-        const parts = p.slug.replace(/^doc__/, "").split("__");
+        const parts = p.slug.replace(/^doc\//, "").split("/");
         return { slug: parts };
       });
   } catch (e) {
