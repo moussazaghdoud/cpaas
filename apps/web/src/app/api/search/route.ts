@@ -5,6 +5,11 @@ import * as path from "path";
 
 let searchIndex: MiniSearch | null = null;
 
+/** Invalidate the cached search index (called by CMS on save/delete) */
+export function invalidateSearchIndex() {
+  searchIndex = null;
+}
+
 interface SearchDoc {
   id: string;
   title: string;
