@@ -17,8 +17,8 @@ const RAW_DIR = path.join(ROOT, 'content/raw');
 const REPORT_PATH = path.join(ROOT, 'content/auth-discovery-report.json');
 
 const BASE_URL = 'https://developers.openrainbow.com';
-const DELAY_MS = 1500;
-const MAX_PAGES = 500;
+const DELAY_MS = 1000;
+const MAX_PAGES = 2000;
 const TIMEOUT_MS = 30000;
 
 // Load .env manually (no dotenv dependency)
@@ -41,12 +41,17 @@ async function loadEnv() {
   }
 }
 
-// Skip patterns: only skip auto-generated class/method API pages
+// Skip patterns: only skip non-content files
 const SKIP_PATTERNS = [
-  /\/doc\/sdk\/[^/]+\/[^/]+\/[^/]+\/api\//, // Auto-generated JSDoc/Doxygen per-class pages
   /\/static\/media\//,                        // PDF/media downloads
   /redoc-index\.html/,                        // ReDoc pages (we have OpenAPI specs already)
   /swagger\.json/,                            // Raw spec files
+  /\.pdf$/,                                   // PDF files
+  /\.zip$/,                                   // Zip files
+  /\.png$/,                                   // Image files
+  /\.xml$/,                                   // XML files
+  /\.md$/,                                    // Raw markdown files on the server
+  /\.cdx$/,                                   // CDX files
 ];
 
 // Authenticated section seeds + missed SDK guide pages
@@ -228,18 +233,25 @@ async function crawl() {
   const results = [];
   const errors = [];
 
-  // Load already-crawled URLs from previous run to avoid re-crawling
-  try {
-    const prevReport = JSON.parse(await fs.readFile(
-      path.join(ROOT, 'content/discovery-report.json'), 'utf-8'
-    ));
-    for (const page of prevReport.pages || []) {
-      // Mark as visited so we don't re-crawl, but still discover new links from them
-    }
-    console.log(`📋 Previous crawl had ${prevReport.pages?.length || 0} pages`);
-  } catch { /* no previous report */ }
+  // Load already-crawled URLs from previous runs to skip them
+  let previouslyCrawled = 0;
+  for (const reportFile of ['discovery-report.json', 'auth-discovery-report.json']) {
+    try {
+      const prevReport = JSON.parse(await fs.readFile(
+        path.join(ROOT, 'content', reportFile), 'utf-8'
+      ));
+      for (const page of prevReport.pages || []) {
+        const norm = normalizeUrl(page.url);
+        if (norm) {
+          visited.add(norm);
+          previouslyCrawled++;
+        }
+      }
+    } catch { /* no previous report */ }
+  }
+  console.log(`📋 Skipping ${previouslyCrawled} already-crawled pages`);
 
-  // Seed queue
+  // Seed queue from SEED_URLS
   for (const seed of SEED_URLS) {
     const norm = normalizeUrl(seed);
     if (norm && !visited.has(norm)) {
@@ -247,6 +259,27 @@ async function crawl() {
       queue.push(norm);
     }
   }
+
+  // Also seed from previously-discovered-but-not-crawled URLs
+  for (const reportFile of ['discovery-report.json', 'auth-discovery-report.json']) {
+    try {
+      const report = JSON.parse(await fs.readFile(
+        path.join(ROOT, 'content', reportFile), 'utf-8'
+      ));
+      for (const url of report.allUrls || []) {
+        const norm = normalizeUrl(url);
+        if (norm && !visited.has(norm)) {
+          const linkPath = new URL(norm).pathname;
+          const shouldSkip = SKIP_PATTERNS.some(p => p.test(linkPath));
+          if (!shouldSkip) {
+            visited.add(norm);
+            queue.push(norm);
+          }
+        }
+      }
+    } catch { /* no report */ }
+  }
+  console.log(`   Queue after seeding from reports: ${queue.length} URLs`);
 
   console.log(`\n🚀 Starting authenticated crawler on ${BASE_URL}`);
   console.log(`   Seeds: ${queue.length} URLs`);

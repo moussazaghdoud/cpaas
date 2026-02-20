@@ -1,0 +1,12 @@
+# Pages that consistently timeout during crawl
+# These are SDK landing pages — very heavy SPAs that exceed the 30s timeout
+# They need to be crawled manually or with a longer timeout
+#
+# Last checked: 2026-02-20
+
+https://developers.openrainbow.com/doc/sdk/node
+https://developers.openrainbow.com/doc/sdk/web
+https://developers.openrainbow.com/doc/sdk/android
+https://developers.openrainbow.com/doc/sdk/ios
+https://developers.openrainbow.com/doc/sdk/csharp
+https://developers.openrainbow.com/doc/sdk/reactnative
