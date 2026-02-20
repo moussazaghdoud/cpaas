@@ -89,7 +89,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       throw new Error(data.error || "Login failed");
     }
     const data = await res.json();
-    setUser(data.user);
+    // Use the typed email as fallback if API returns empty loginEmail
+    const u = data.user;
+    if (!u.loginEmail) u.loginEmail = email;
+    setUser(u);
   };
 
   const signup = async (data: SignupData) => {
