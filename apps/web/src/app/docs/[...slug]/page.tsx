@@ -168,8 +168,11 @@ function markdownToHtml(md: string): string {
   html = html.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
   html = html.replace(/\*([^*]+)\*/g, "<em>$1</em>");
 
-  // Links
-  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+  // Links — rewrite old portal paths before converting to HTML
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, href) => {
+    const rewritten = rewriteLink(href);
+    return `<a href="${rewritten}">${text}</a>`;
+  });
 
   // Unordered lists
   html = html.replace(/^- (.+)$/gm, "<li>$1</li>");
@@ -205,6 +208,40 @@ function markdownToHtml(md: string): string {
   );
 
   return html;
+}
+
+/** Rewrite legacy portal links to new site paths */
+const LINK_REWRITES: Record<string, string> = {
+  "/android": "/docs/sdk/android",
+  "/ios": "/docs/sdk/ios",
+  "/web": "/docs/sdk/web",
+  "/webv2": "/docs/sdk/webv2",
+  "/node": "/docs/sdk/node",
+  "/csharp": "/docs/sdk/csharp",
+  "/reactnative": "/docs/sdk/reactnative",
+  "/cli": "/docs/sdk/cli",
+  "/apis": "/api-reference",
+  "/applications": "/portal/applications",
+  "/billing": "/portal/billing",
+  "/dashboard": "/portal/dashboard",
+  "/sandbox": "/portal/sandbox",
+  "/home": "/",
+  "/pricing": "/docs/hub/application-lifecycle",
+  "/profile": "/portal/profile",
+};
+
+function rewriteLink(href: string): string {
+  // Skip external links and anchors
+  if (href.startsWith("http") || href.startsWith("#") || href.startsWith("mailto:")) return href;
+  // Already a /docs/ or /api-reference/ or /portal/ path — leave as-is
+  if (href.startsWith("/docs/") || href.startsWith("/api-reference") || href.startsWith("/portal/") || href.startsWith("/login") || href.startsWith("/signup") || href.startsWith("/support") || href.startsWith("/legal") || href.startsWith("/changelog")) return href;
+  // Strip hash for lookup, preserve it after rewrite
+  const [path, hash] = href.split("#");
+  const target = LINK_REWRITES[path];
+  if (target) return hash ? `${target}#${hash}` : target;
+  // Links like doc/sdk/... (without leading slash) → /docs/...
+  if (href.startsWith("doc/")) return "/docs/" + href.slice(4);
+  return href;
 }
 
 function escapeHtml(str: string): string {

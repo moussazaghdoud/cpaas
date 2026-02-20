@@ -6,6 +6,24 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Legacy short SDK paths (old portal)
+      { source: "/android", destination: "/docs/sdk/android", permanent: true },
+      { source: "/ios", destination: "/docs/sdk/ios", permanent: true },
+      { source: "/web", destination: "/docs/sdk/web", permanent: true },
+      { source: "/webv2", destination: "/docs/sdk/webv2", permanent: true },
+      { source: "/node", destination: "/docs/sdk/node", permanent: true },
+      { source: "/csharp", destination: "/docs/sdk/csharp", permanent: true },
+      { source: "/reactnative", destination: "/docs/sdk/reactnative", permanent: true },
+      { source: "/cli", destination: "/docs/sdk/cli", permanent: true },
+      { source: "/apis", destination: "/api-reference", permanent: true },
+      { source: "/applications", destination: "/portal/applications", permanent: true },
+      { source: "/billing", destination: "/portal/billing", permanent: true },
+      { source: "/dashboard", destination: "/portal/dashboard", permanent: true },
+      { source: "/sandbox", destination: "/portal/sandbox", permanent: true },
+      { source: "/pricing", destination: "/docs/hub/application-lifecycle", permanent: true },
+      { source: "/home", destination: "/", permanent: true },
+      { source: "/profile", destination: "/portal/profile", permanent: true },
+      // Legacy /doc/ paths
       { source: "/doc/hub", destination: "/docs", permanent: true },
       { source: "/doc/sdk/node/:path*", destination: "/docs/sdk/node", permanent: true },
       { source: "/doc/sdk/web/:path*", destination: "/docs/sdk/web", permanent: true },
