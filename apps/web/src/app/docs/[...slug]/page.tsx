@@ -111,23 +111,11 @@ export default async function DynamicDocsPage({ params }: Props) {
             {/* Render MDX content as HTML (pre-converted markdown) */}
             <div dangerouslySetInnerHTML={{ __html: markdownToHtml(page.content) }} />
 
-            {/* Source attribution */}
-            {page.meta.source && (
+            {/* Last updated */}
+            {page.meta.lastSynced && (
               <div className="mt-12 pt-6 border-t border-[var(--border)]">
                 <p className="text-sm text-[var(--muted-foreground)]">
-                  Content synced from{" "}
-                  <a
-                    href={page.meta.source}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[var(--accent)] hover:underline"
-                  >
-                    source
-                  </a>
-                  {page.meta.lastSynced && (
-                    <> on {new Date(page.meta.lastSynced).toLocaleDateString()}</>
-                  )}
-                  .
+                  Last updated on {new Date(page.meta.lastSynced).toLocaleDateString()}.
                 </p>
               </div>
             )}
