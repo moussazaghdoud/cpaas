@@ -83,7 +83,11 @@ export const FEATURES = [
 export const SDK_LIST = [
   { name: "Node.js SDK", slug: "node", language: "JavaScript/TypeScript" },
   { name: "Web SDK", slug: "web", language: "JavaScript" },
+  { name: "Web SDK v2", slug: "webv2", language: "JavaScript/TypeScript" },
   { name: "Android SDK", slug: "android", language: "Java/Kotlin" },
   { name: "iOS SDK", slug: "ios", language: "Swift/Objective-C" },
   { name: "C# SDK", slug: "csharp", language: "C#/.NET" },
+  { name: "React Native SDK", slug: "reactnative", language: "JavaScript/TypeScript" },
+  { name: "CLI SDK", slug: "cli", language: "Command Line" },
+  { name: "S2S Starter Kit", slug: "s2s-starterkit-nodejs", language: "Node.js" },
 ] as const;

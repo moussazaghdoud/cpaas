@@ -16,9 +16,13 @@ const EXCLUDED_EXACT = new Set([
   "sdk",            // /docs/sdk has its own page.tsx
   "sdk/node",       // /docs/sdk/[slug] handles these
   "sdk/web",
+  "sdk/webv2",
   "sdk/android",
   "sdk/ios",
   "sdk/csharp",
+  "sdk/reactnative",
+  "sdk/cli",
+  "sdk/s2s-starterkit-nodejs",
 ]);
 
 export async function generateStaticParams() {
