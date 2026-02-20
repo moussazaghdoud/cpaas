@@ -1,0 +1,4338 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/rbvoice"
+lastSynced: "2026-02-20T07:12:32.607Z"
+---
+# Documentation
+
+Rainbow Voice Service
+
+LTS release 2.XPublished on 2025-01-01
+
+## RBVoiceService
+
+This service manages the rainbow voice Systems.  
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [RBVoiceService](#module_RBVoiceService)
+    -   *Rainbow Voice CLI Options*
+        -   [retrieveAllAvailableCallLineIdentifications()](#module_RBVoiceService+retrieveAllAvailableCallLineIdentifications) ⇒ `Promise.<any>`
+        -   [retrieveCurrentCallLineIdentification()](#module_RBVoiceService+retrieveCurrentCallLineIdentification) ⇒ `Promise.<any>`
+        -   [setCurrentActiveCallLineIdentification(policy, phoneNumberId)](#module_RBVoiceService+setCurrentActiveCallLineIdentification) ⇒ `Promise.<any>`
+    -   *Rainbow Voice Cloud PBX group*
+        -   [addMemberToGroup(groupId, memberId, position, roles, status)](#module_RBVoiceService+addMemberToGroup) ⇒ `Promise.<any>`
+        -   [deleteVoiceMessageAssociatedToAGroup(groupId, messageId)](#module_RBVoiceService+deleteVoiceMessageAssociatedToAGroup) ⇒ `Promise.<any>`
+        -   [getVoiceMessagesAssociatedToGroup(groupId, limit, offset, sortField, sortOrder, fromDate, toDate, callerName, callerNumber)](#module_RBVoiceService+getVoiceMessagesAssociatedToGroup) ⇒ `Promise.<any>`
+        -   [getGroupForwards(groupId)](#module_RBVoiceService+getGroupForwards) ⇒ `Promise.<any>`
+        -   [getTheUserGroup(type)](#module_RBVoiceService+getTheUserGroup) ⇒ `Promise.<any>`
+        -   [joinAGroup(groupId)](#module_RBVoiceService+joinAGroup) ⇒ `Promise.<any>`
+        -   [joinAllGroups()](#module_RBVoiceService+joinAllGroups) ⇒ `Promise.<any>`
+        -   [leaveAGroup(groupId)](#module_RBVoiceService+leaveAGroup) ⇒ `Promise.<any>`
+        -   [leaveAllGroups()](#module_RBVoiceService+leaveAllGroups) ⇒ `Promise.<any>`
+        -   [removeMemberFromGroup(groupId, memberId)](#module_RBVoiceService+removeMemberFromGroup) ⇒ `Promise.<any>`
+        -   [retrieveNumberReadUnreadMessagesForHuntingGroupsOfLoggedUser()](#module_RBVoiceService+retrieveNumberReadUnreadMessagesForHuntingGroupsOfLoggedUser) ⇒ `Promise.<any>`
+        -   [updateAVoiceMessageAssociatedToAGroup(groupId, messageId, read)](#module_RBVoiceService+updateAVoiceMessageAssociatedToAGroup) ⇒ `Promise.<any>`
+        -   [updateAGroup(groupId, externalNumberId, isEmptyAllowed)](#module_RBVoiceService+updateAGroup) ⇒ `Promise.<any>`
+        -   [updateGroupForward(groupId, callForwardType, destinationType, numberToForward, activate, noReplyDelay, managerIds, rvcpAutoAttendantId)](#module_RBVoiceService+updateGroupForward) ⇒ `Promise.<any>`
+        -   [updateGroupMember(groupId, memberId, position, roles, status)](#module_RBVoiceService+updateGroupMember) ⇒ `Promise.<any>`
+    -   *Rainbow Voice Deskphones*
+        -   [activateDeactivateDND(activate)](#module_RBVoiceService+activateDeactivateDND) ⇒ `Promise.<any>`
+        -   [configureAndActivateDeactivateForward(callForwardType, type, number, timeout, activated)](#module_RBVoiceService+configureAndActivateDeactivateForward) ⇒ `Promise.<any>`
+        -   [retrieveActiveForwards()](#module_RBVoiceService+retrieveActiveForwards) ⇒ `Promise.<any>`
+        -   [retrieveDNDState()](#module_RBVoiceService+retrieveDNDState) ⇒ `Promise.<any>`
+        -   [searchUsersGroupsContactsByName(displayName, limit)](#module_RBVoiceService+searchUsersGroupsContactsByName) ⇒ `Promise.<any>`
+    -   *Rainbow Voice Personal Routines*
+        -   [activatePersonalRoutine(routineId)](#module_RBVoiceService+activatePersonalRoutine) ⇒ `Promise.<any>`
+        -   [createCustomPersonalRoutine(name)](#module_RBVoiceService+createCustomPersonalRoutine) ⇒ `Promise.<any>`
+        -   [deleteCustomPersonalRoutine(routineId)](#module_RBVoiceService+deleteCustomPersonalRoutine) ⇒ `Promise.<any>`
+        -   [getPersonalRoutineData(routineId)](#module_RBVoiceService+getPersonalRoutineData) ⇒ `Promise.<any>`
+        -   [getAllPersonalRoutines(userId)](#module_RBVoiceService+getAllPersonalRoutines) ⇒ `Promise.<any>`
+        -   [updatePersonalRoutineData(routineId, dndPresence, name, deviceMode, presence, immediateCallForward, busyCallForward, noreplyCallForward, huntingGroups)](#module_RBVoiceService+updatePersonalRoutineData) ⇒ `Promise.<any>`
+    -   *Rainbow Voice Routing*
+        -   [manageUserRoutingData(destinations, currentDeviceId)](#module_RBVoiceService+manageUserRoutingData) ⇒ `Promise.<any>`
+        -   [retrievetransferRoutingData(calleeId, addresseeId, addresseePhoneNumber)](#module_RBVoiceService+retrievetransferRoutingData) ⇒ `Promise.<any>`
+        -   [retrieveUserRoutingData()](#module_RBVoiceService+retrieveUserRoutingData) ⇒ `Promise.<any>`
+    -   *Rainbow Voice Voice*
+        -   [retrieveVoiceUserSettings()](#module_RBVoiceService+retrieveVoiceUserSettings) ⇒ `Promise.<any>`
+        -   [addParticipant3PCC(callId, callData)](#module_RBVoiceService+addParticipant3PCC) ⇒ `Promise.<any>`
+        -   [answerCall3PCC(callId, callData)](#module_RBVoiceService+answerCall3PCC) ⇒ `Promise.<any>`
+        -   [blindTransferCall3PCC(callId, callData)](#module_RBVoiceService+blindTransferCall3PCC) ⇒ `Promise.<any>`
+        -   [deflectCall3PCC(callId, callData)](#module_RBVoiceService+deflectCall3PCC) ⇒ `Promise.<any>`
+        -   [holdCall3PCC(callId, callData)](#module_RBVoiceService+holdCall3PCC) ⇒ `Promise.<any>`
+        -   [makeCall3PCC(callData)](#module_RBVoiceService+makeCall3PCC) ⇒ `Promise.<any>`
+        -   [mergeCall3PCC(activeCallId, callData)](#module_RBVoiceService+mergeCall3PCC) ⇒ `Promise.<any>`
+        -   [pickupCall3PCC(callData)](#module_RBVoiceService+pickupCall3PCC) ⇒ `Promise.<any>`
+        -   [releaseCall3PCC(callId, legId)](#module_RBVoiceService+releaseCall3PCC) ⇒ `Promise.<any>`
+        -   [retrieveCall3PCC(callId, callData)](#module_RBVoiceService+retrieveCall3PCC) ⇒ `Promise.<any>`
+        -   [sendDTMF3PCC(callId, callData)](#module_RBVoiceService+sendDTMF3PCC) ⇒ `Promise.<any>`
+        -   [snapshot3PCC(callId, deviceId, seqNum)](#module_RBVoiceService+snapshot3PCC) ⇒ `Promise.<any>`
+        -   [transferCall3PCC(activeCallId, callData)](#module_RBVoiceService+transferCall3PCC) ⇒ `Promise.<any>`
+        -   [deleteAVoiceMessage(messageId)](#module_RBVoiceService+deleteAVoiceMessage) ⇒ `Promise.<any>`
+        -   [deleteAllVoiceMessages(messageId)](#module_RBVoiceService+deleteAllVoiceMessages) ⇒ `Promise.<any>`
+        -   [getEmergencyNumbersAndEmergencyOptions()](#module_RBVoiceService+getEmergencyNumbersAndEmergencyOptions) ⇒ `Promise.<any>`
+        -   [getVoiceMessages(limit, offset, sortField, sortOrder, fromDate, toDate, callerName, callerNumber)](#module_RBVoiceService+getVoiceMessages) ⇒ `Promise.<any>`
+        -   [getUserDevices()](#module_RBVoiceService+getUserDevices) ⇒ `Promise.<any>`
+        -   [updateVoiceMessage(messageId, urlData)](#module_RBVoiceService+updateVoiceMessage) ⇒ `Promise.<any>`
+    -   *Rainbow Voice Voice Forward*
+        -   [forwardCall(callForwardType, userId, urlData)](#module_RBVoiceService+forwardCall) ⇒ `Promise.<any>`
+        -   [getASubscriberForwards(userId)](#module_RBVoiceService+getASubscriberForwards) ⇒ `Promise.<any>`
+    -   *Rainbow Voice Voice Search Hunting Groups*
+        -   [searchCloudPBXhuntingGroups(name)](#module_RBVoiceService+searchCloudPBXhuntingGroups) ⇒ `Promise.<any>`
+
+---
+
+### rbVoiceService.retrieveAllAvailableCallLineIdentifications() ⇒ `Promise.<any>`
+
+This api returns all CLI options available.
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+Detailed information about Calling Line Identification (CLI)
+
+policy
+
+String
+
+CLI **policy** applied.  
+It indicates which kind of number is used as CLI  
+Detailed description of **policy** meanings:  
+\* **company\_policy** : CLI will be the **Default identifier** as defined at company level (as a result it can be either the Company Number or the Work phone of the user ; according the chosen CLI company policy)  
+\* **user\_ddi\_number** : CLI will be the **Work phone** of the user  
+\* **installation\_ddi\_number** : CLI will be the **Company number**  
+\* **other\_ddi\_number** : CLI will be a **Hunting Group number** the user belongs to. Can be also **another number authorized** by Admin  
+Possible values : `company_policy`, `user_ddi_number`, `installation_ddi_number`, `other_ddi_number`
+
+companyPolicy optionnel
+
+String
+
+Only when policy is "company\_policy" ; it indicates what is the CLI policy defined at company level  
+Possible values : `user_ddi_number`, `installation_ddi_number`
+
+phoneNumberId
+
+String
+
+phoneNumber Unique identifier that is used for identifying selected CLI
+
+number
+
+String
+
+phoneNumber value that is used as CLI
+
+type optionnel
+
+String
+
+Only when CLI policy is "other\_ddi\_number" ; allows to differentiate Hunting Groups with another number  
+Possible values : `Group`, `Other`
+
+name optionnel
+
+String
+
+Only when CLI policy is "other\_ddi\_number" and type is "Group". It is then the Group name
+
+**Category**: Rainbow Voice CLI Options
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Promise<any>` return result.
+
+---
+
+### rbVoiceService.retrieveCurrentCallLineIdentification() ⇒ `Promise.<any>`
+
+This api returns current Call line identification.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Category**: Rainbow Voice CLI Options
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### rbVoiceService.setCurrentActiveCallLineIdentification(policy, phoneNumberId) ⇒ `Promise.<any>`
+
+This api allows user to set the current CLI.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+Detailed information about Calling Line Identification (CLI)
+
+policy
+
+String
+
+CLI **policy** applied.  
+It indicates which kind of number is used as CLI  
+Detailed description of **policy** meanings:  
+\* **company\_policy** : CLI will be the **Default identifier** as defined at company level (as a result it can be either the Company Number or the Work phone of the user ; according the chosen CLI company policy)  
+\* **user\_ddi\_number** : CLI will be the **Work phone** of the user  
+\* **installation\_ddi\_number** : CLI will be the **Company number**  
+\* **other\_ddi\_number** : CLI will be a **Hunting Group number** the user belongs to. Can be also **another number authorized** by Admin  
+Posible values : `company_policy`, `user_ddi_number`, `installation_ddi_number`, `other_ddi_number`
+
+companyPolicy optionnel
+
+String
+
+Only when policy is "company\_policy" ; it indicates what is the CLI policy defined at company level  
+Possible values : `user_ddi_number`, `installation_ddi_number`
+
+phoneNumberId
+
+String
+
+phoneNumber Unique identifier that is used for identifying selected CLI
+
+number
+
+String
+
+phoneNumber value that is used as CLI
+
+type optionnel
+
+String
+
+Only when CLI policy is "other\_ddi\_number" ; allows to differentiate Hunting Groups with another number  
+Possible values : `Group`, `Other`
+
+name optionnel
+
+String
+
+Only when CLI policy is "other\_ddi\_number" and type is "Group". It is then the Group name
+
+**Category**: Rainbow Voice CLI Options
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+policy
+
+`string`
+
+CLI policy to apply.Possible values : "company\_policy", "user\_ddi\_number", "installation\_ddi\_number", "other\_ddi\_number"
+
+phoneNumberId
+
+`string`
+
+phoneNumber Unique Identifier of the ddi we want to apply (parameter only mandatory when selected CLI policy is "other\_ddi\_number"
+
+---
+
+### rbVoiceService.addMemberToGroup(groupId, memberId, position, roles, status) ⇒ `Promise.<any>`
+
+This part of the API allows a user having manager role on a group to add another user.  
+The added user can be any user belonging to the same company.  
+The position of the inserted member is important in case of a hunting group with serial or circular policy, and also in case of a manager\_assistant group with several assistants.  
+The position is meaningless in case of parallel hunting group.  
+Manager can choose to set the default status of the added user to 'idle' or 'active' (default value, user will be involved in call distribution for hunting group).  
+In case of a manager\_assistant group the status can be:  
+  
+
+-   'idle': the newly inserted member is just 'declared', and not provisioned on cloud PBX side  
+    
+-   'active': the newly inserted manager or assistant is configured and ready  
+      
+    Manager can also set the added user role, defining if this user is an agent and/or manager in a hunting group (assistant or manager in case of manager\_assistant group).  
+    
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+Group Object
+
+id
+
+String
+
+Group unique identifier
+
+type optionnel
+
+String
+
+Group type  
+Default value : `hunting_group`  
+Possible values : `hunting_group`, `manager_assistant`
+
+name
+
+String
+
+Group name - displayed on the caller phone set for hunting group type
+
+policy optionnel
+
+String
+
+Group policy - applicable to hunting group type only  
+Default value : `parallel`  
+Possible values : `serial`, `parallel`, `circular`
+
+members
+
+Object\[\]
+
+List of group members.
+
+memberId
+
+String
+
+Member (user) unique identifier
+
+displayName
+
+String
+
+Member display name
+
+roles optionnel
+
+String\[\]
+
+Member role inside the group  
+Default value : `[agent`  
+Possible values : `manager`, `agent`, `assistant`
+
+status optionnel
+
+String
+
+Member status inside the group  
+Default value : `active`  
+Possible values : `active`, `idle`
+
+**Category**: Rainbow Voice Cloud PBX group
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+groupId
+
+`string`
+
+Unique identifier of the Cloud PBX group to update
+
+memberId
+
+`string`
+
+Unique identifier (userId) of the user to add
+
+position
+
+`number`
+
+Position of the user inside the group, from 1 to last.
+
+roles
+
+`Array.<string>`
+
+Member roles inside the group. Default value : agent.Possible value : agent, manager, assistant
+
+status
+
+`string`
+
+Member status inside the group. Default : active. Possible value : active, idle
+
+---
+
+### rbVoiceService.deleteVoiceMessageAssociatedToAGroup(groupId, messageId) ⇒ `Promise.<any>`
+
+Deletion of the given voice message.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Cloud PBX group
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+groupId
+
+`string`
+
+Unique identifier of the Cloud PBX group to update
+
+messageId
+
+`string`
+
+Message identifier (userId) of the user to add
+
+---
+
+### rbVoiceService.getVoiceMessagesAssociatedToGroup(groupId, limit, offset, sortField, sortOrder, fromDate, toDate, callerName, callerNumber) ⇒ `Promise.<any>`
+
+Returns the list of voice messages associated to a group.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+id
+
+String
+
+voice message identifier
+
+fileName
+
+String
+
+File name of the voice message - composed of the voice message date
+
+mime
+
+String
+
+MIME type of the voice message file  
+Possible values : `audio/mpeg`
+
+size
+
+Number
+
+Size of the voice message file (in bytes).
+
+duration
+
+Number
+
+Duration of the voice message (in seconds)
+
+date
+
+Date
+
+Date of the voice message
+
+callerInfo
+
+Object
+
+Caller party info
+
+data
+
+Object\[\]
+
+Voice messages
+
+number
+
+String
+
+Caller number
+
+name optionnel
+
+String
+
+Caller name, if available
+
+firstName optionnel
+
+String
+
+Caller firstName, if available
+
+lastName optionnel
+
+String
+
+Caller lastName, if available
+
+userId optionnel
+
+String
+
+Caller user identifier if it can be resolved.
+
+jid optionnel
+
+String
+
+Caller Jid if it can be resolved.
+
+**Category**: Rainbow Voice Cloud PBX group
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+groupId
+
+`string`
+
+Unique identifier of the Cloud PBX group to update
+
+limit
+
+`number`
+
+`100`
+
+Allow to specify the number of voice messages to retrieve. Default value : 100
+
+offset
+
+`number`
+
+`0`
+
+Allow to specify the position of first voice messages to retrieve. Default value : 0
+
+sortField
+
+`string`
+
+`name`
+
+Sort voice messages list based on the given field. Default value : date
+
+sortOrder
+
+`number`
+
+`-1`
+
+Specify order when sorting voice messages. Default is descending. Default value : -1. Possible values : -1, 1
+
+fromDate
+
+`string`
+
+List voice messages created after the given date.
+
+toDate
+
+`string`
+
+List voice messages created before the given date.
+
+callerName
+
+`string`
+
+List voice messages with caller party name containing the given value.
+
+callerNumber
+
+`string`
+
+List voice messages with caller party number containing the given value.
+
+---
+
+### rbVoiceService.getGroupForwards(groupId) ⇒ `Promise.<any>`
+
+This API allows to get all cloud PBX group forwards.  
+The cloud PBX group forwards can be of two different types:  
+
+-   groupForwards: applies to hunting group - supported forward types for this kind of group are all listed in the response (immediate, overflow (reprensents busy/unavailable for non parallel and busy/unavailable/noReply for parallel))
+-   members: applies to manager\_assistant group - list the individual forwards of every managers of the group. These individual forwards are filtered to the only immediate forward, with a destinationType of 'managersecretary' (a.k.a. 'Do Not Disturb forward to assistants')  
+    Inside a manager\_assistant group, both manager and assistant can retrieve the group forwards. Inside a hunting group, only the manager can see it (i.e. users with role only set to 'agent' are not allowed to consult the group forwards).  
+      
+    For hunting\_group on return data "name" or concerned "id" with value "null" if the user/rvcpGroup/rvcpAutoAttendant is deleted, please remove the forward.  
+    
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Cloud PBX group
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+groupId
+
+`string`
+
+Unique identifier of the Cloud PBX group to update
+
+---
+
+### rbVoiceService.getTheUserGroup(type) ⇒ `Promise.<any>`
+
+This API allows to retrieve the groups where the logged user is member.  
+For a hunting group, a user can have two roles inside the group: manager and/or agent.  
+For a manager\_assistant group, a user can be manager OR assistant, not both.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object\[\]
+
+Group Object
+
+id
+
+String
+
+Group unique identifier
+
+type optionnel
+
+String
+
+Group type  
+Default value : `hunting_group`  
+Possible values : `hunting_group`, `manager_assistant`
+
+name
+
+String
+
+Group name - displayed on the caller phone set for hunting group type
+
+policy optionnel
+
+String
+
+Group policy - applicable to hunting group type only  
+Default value : `parallel`  
+Possible values : `serial`, `parallel`, `circular`
+
+skippedGroups optionnel
+
+String\[\]
+
+List of group Identifier from which user has not been able to leave due to restrictions
+
+members
+
+Object\[\]
+
+List of group members.
+
+memberId
+
+String
+
+Member (user) unique identifier
+
+displayName
+
+String
+
+Member display name
+
+roles optionnel
+
+String\[\]
+
+Member role inside the group  
+Default value : `[agent`  
+Possible values : `manager`, `agent`, `assistant`
+
+status optionnel
+
+String
+
+Member status inside the group  
+Default value : `active`  
+Possible values : `active`, `idle`
+
+**Category**: Rainbow Voice Cloud PBX group
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+type
+
+`string`
+
+Filter only groups of the given type. Possible values : hunting\_group, manager\_assistant
+
+---
+
+### rbVoiceService.joinAGroup(groupId) ⇒ `Promise.<any>`
+
+This part of the API allows a user to join a group.  
+To be able to join in a group, the member must have been already declared inside the group, by a manager or an administrator.  
+Only the status of the member will be altered (idle to active). His roles will remain untouched (assistant, agent and/or manager).  
+Only users with role 'agent' or 'assistant' can join or leave a group.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+Group Object
+
+id
+
+String
+
+Group unique identifier
+
+type optionnel
+
+String
+
+Group type  
+Default value : `hunting_group`  
+Possible values : `hunting_group`, `manager_assistant`
+
+name
+
+String
+
+Group name - displayed on the caller phone set for hunting group type
+
+policy optionnel
+
+String
+
+Group policy - applicable to hunting group type only  
+Default value : `parallel`  
+Possible values : `serial`, `parallel`, `circular`
+
+members
+
+Object\[\]
+
+List of group members.
+
+memberId
+
+String
+
+Member (user) unique identifier
+
+displayName
+
+String
+
+Member display name
+
+roles optionnel
+
+String\[\]
+
+Member role inside the group  
+Default value : `[agent`  
+Possible values : `manager`, `agent`, `assistant`
+
+status optionnel
+
+String
+
+Member status inside the group  
+Default value : `active`  
+Possible values : `active`, `idle`
+
+**Category**: Rainbow Voice Cloud PBX group
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+groupId
+
+`string`
+
+The group identifier to join.
+
+---
+
+### rbVoiceService.joinAllGroups() ⇒ `Promise.<any>`
+
+Allow a user to join all the groups he belongs to.  
+Only users of hunting groups with role 'agent' can leave all their groups in one go.  
+If user if already logged out of a given group, logout action for this group will be skipped.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Cloud PBX group
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### rbVoiceService.leaveAGroup(groupId) ⇒ `Promise.<any>`
+
+This part of the API allows a user to leave a group.  
+To be able to leave in a group, a member must have been already declared inside the group, by a manager or an administrator.  
+Only the status of the member will be altered (active to idle). His roles will remain untouched (assistant, agent and/or manager).  
+Only users with role 'agent' or 'assistant' can join or leave a group.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+Group Object
+
+id
+
+String
+
+Group unique identifier
+
+type optionnel
+
+String
+
+Group type  
+Default value : `hunting_group`  
+Possible values : `hunting_group`, `manager_assistant`
+
+name
+
+String
+
+Group name - displayed on the caller phone set for hunting group type
+
+policy optionnel
+
+String
+
+Group policy - applicable to hunting group type only  
+Default value : `parallel`  
+Possible values : `serial`, `parallel`, `circular`
+
+members
+
+Object\[\]
+
+List of group members.
+
+memberId
+
+String
+
+Member (user) unique identifier
+
+displayName
+
+String
+
+Member display name
+
+roles optionnel
+
+String\[\]
+
+Member role inside the group  
+Default value : `[agent`  
+Possible values : `manager`, `agent`, `assistant`
+
+status optionnel
+
+String
+
+Member status inside the group  
+Default value : `active`  
+Possible values : `active`, `idle`
+
+**Category**: Rainbow Voice Cloud PBX group
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+groupId
+
+`string`
+
+The group identifier to leave.
+
+---
+
+### rbVoiceService.leaveAllGroups() ⇒ `Promise.<any>`
+
+Allow a user to leave all the groups he belongs to.  
+Only users of hunting groups with role 'agent' can leave all their groups in one go.  
+If user if already logged out of a given group, logout action for this group will be skipped.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+Group Object
+
+id
+
+String
+
+Group unique identifier
+
+type optionnel
+
+String
+
+Group type  
+Default value : `hunting_group`  
+Possible values : `hunting_group`, `manager_assistant`
+
+name
+
+String
+
+Group name - displayed on the caller phone set for hunting group type
+
+policy optionnel
+
+String
+
+Group policy - applicable to hunting group type only  
+Default value : `parallel`  
+Possible values : `serial`, `parallel`, `circular`
+
+members
+
+Object\[\]
+
+List of group members.
+
+memberId
+
+String
+
+Member (user) unique identifier
+
+displayName
+
+String
+
+Member display name
+
+roles optionnel
+
+String\[\]
+
+Member role inside the group  
+Default value : `[agent`  
+Possible values : `manager`, `agent`, `assistant`
+
+status optionnel
+
+String
+
+Member status inside the group  
+Default value : `active`  
+Possible values : `active`, `idle`
+
+**Category**: Rainbow Voice Cloud PBX group
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### rbVoiceService.removeMemberFromGroup(groupId, memberId) ⇒ `Promise.<any>`
+
+This part of the API allows a manager to remove a member from a group.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Cloud PBX group
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+groupId
+
+`string`
+
+Unique identifier of the Cloud PBX group to update
+
+memberId
+
+`string`
+
+Unique identifier of the member to remove
+
+---
+
+### rbVoiceService.retrieveNumberReadUnreadMessagesForHuntingGroupsOfLoggedUser() ⇒ `Promise.<any>`
+
+Returns the number of read/unread messages for each hunting group where logged in user is a member.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object\[\]
+
+Messages summary for each hunting group where logged in user is a member
+
+groupId
+
+String
+
+Group identifier
+
+groupName
+
+String
+
+Group name
+
+messages
+
+Object\[\]
+
+List of read/unread messages per type
+
+type
+
+String
+
+Messages type  
+Possible values : `voicemail`, `email`, `fax`, `video`
+
+new
+
+Number
+
+Number of unread voice messages
+
+old
+
+Number
+
+Number of read voice messages
+
+totalByType
+
+Object\[\]
+
+Total of messages grouped by their type
+
+type
+
+String
+
+Messages type  
+Possible values : `voicemail`, `email`, `fax`, `video`
+
+new
+
+Number
+
+Unread messages sum for all group messages where logged in user is a member.
+
+old
+
+Number
+
+Read messages sum for all group messages where logged in user is a member.
+
+**Category**: Rainbow Voice Cloud PBX group
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### rbVoiceService.updateAVoiceMessageAssociatedToAGroup(groupId, messageId, read) ⇒ `Promise.<any>`
+
+Update the given voice message - mark it as read or unread When a message is 'unread', it is considered as a new message. On the opposite, a 'read' message is considered as an old message.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Cloud PBX group
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+groupId
+
+`string`
+
+Unique identifier of the Cloud PBX group to update
+
+messageId
+
+`string`
+
+Message Identifier
+
+read
+
+`boolean`
+
+Mark the message as read or unread
+
+---
+
+### rbVoiceService.updateAGroup(groupId, externalNumberId, isEmptyAllowed) ⇒ `Promise.<any>`
+
+This API allows a manager of to group to modify some settings of a Cloud PBX hunting group.  
+Modification can be done on the following settings of a group:  
+
+-   Assign a public phone number to the group
+-   Allow or not empty group  
+    To assign a public number, the following steps should be performed:  
+    
+-   Retrieve the list of available phone numbers: (list DDI numbers from RVCP Provisioning portal)
+-   Provide the externalNumberId of the selected phone number in the body of this update request
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+Group Object
+
+id
+
+String
+
+Group unique identifier
+
+type optionnel
+
+String
+
+Group type  
+Default value : `hunting_group`  
+Possible values : `hunting_group`, `manager_assistant`
+
+name
+
+String
+
+Group name - displayed on the caller phone set for hunting group type
+
+policy optionnel
+
+String
+
+Group policy - applicable to hunting group type only  
+Default value : `parallel`  
+Possible values : `serial`, `parallel`, `circular`
+
+members
+
+Object\[\]
+
+List of group members.
+
+memberId
+
+String
+
+Member (user) unique identifier
+
+displayName
+
+String
+
+Member display name
+
+roles optionnel
+
+String\[\]
+
+Member role inside the group  
+Default value : `[agent`  
+Possible values : `manager`, `agent`, `assistant`
+
+status optionnel
+
+String
+
+Member status inside the group  
+Default value : `active`  
+Possible values : `active`, `idle`
+
+**Category**: Rainbow Voice Cloud PBX group
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+groupId
+
+`string`
+
+Unique identifier of the Cloud PBX group to update
+
+externalNumberId
+
+`string`
+
+Identifier of the public phone number assigned to the group - applicable to hunting group type only
+
+isEmptyAllowed
+
+`boolean`
+
+Indicates if the last active member can leave the group or not - applicable to hunting group only.
+
+---
+
+### rbVoiceService.updateGroupForward(groupId, callForwardType, destinationType, numberToForward, activate, noReplyDelay, managerIds, rvcpAutoAttendantId) ⇒ `Promise.<any>`
+
+This API allows to update the forwards of a cloud PBX group.  
+Setting a forward on a group has different implications depending on the type of group.  
+For a ***hunting group***, it implies setting a forward on the dedicated subscriber of the cloud PBX associated with the group. The supported forward types in this case are: 'immediate', 'overflow'. Overflow is:  
+  
+
+-   for parallel: 'busy', 'noreply' and 'unavailable'
+-   for others: 'busy', unavailable' Only user with manager role inside the hunting group can set up a forward for the group.  
+    Forward destinations are limited to externalNumber, autoAttendant and internalNumber for hunting group.  
+      
+    For a ***manager\_assistant group***, only 'immediate' forward type to 'managersecretary' destination is allowed in this API.  
+    When requested by an assistant, update of the forward will be sent to every active managers of the group, unless filtered by the 'managerIds' parameter.  
+    When requested by a manager, only its own forward is concerned ('managerIds' parameter is not used).  
+      
+    Additional remarks on group forward:  
+      
+    
+-   Users can access their forwards from the dedicated forward API ([Voice Forward](#api-Voice_Forward))
+-   ...but only this API allows to deal with the 'managersecretary' for destination type (as an assistant to set or cancel the DND of its manager(s), or as the manager itself)
+-   Setting DND on a manager will then override its previous immediate forward (if set). After cancelling the DND, the previous forward will NOT be restored.
+-   When setting a noreply forward, providing a noReplyDelay timeout, pay attention that this timeout can be later changed if hunting group changes (add / remove member).
+-   In manager\_assistant groups, if forward is activated and the group is then modified, the forward will be cancelled if there are no longer any active assistants after the modification.
+-   A forward can be indirectly cancelled after a group modification (case of manager\_assistant group, with assistant(s) no longer active).
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Cloud PBX group
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+groupId
+
+`string`
+
+Unique identifier of the Cloud PBX group to update
+
+callForwardType
+
+`string`
+
+The forward type to update. Only 'immediate' supported in case of manager\_assistant group. Possible values : immediate, overflow
+
+destinationType
+
+`string`
+
+The destination type. Mandatory for activation. 'managersecretary' only for manager\_assistant. 'internalNumber', 'externalNumber', 'autoAttendant' only for hunting group. Possible values : internalnumber, externalnumber, autoattendant, managersecretary
+
+numberToForward
+
+`number`
+
+The number to forward. Mandatory for destinationType = internalnumber or externalnumber.
+
+activate
+
+`boolean`
+
+Activate or cancel a forward.
+
+noReplyDelay
+
+`number`
+
+in case of 'overflow' forward type on parallel hunting group, timeout in seconds after which the call will be forwarded. Default value : 20. Possible values : {10-60}.
+
+managerIds
+
+`Array.<string>`
+
+List of manager ids to set forward on (Manager\_assistant group type with destination type 'managersecretary' only.  
+For assistant(s) only).  
+If not provided, all active managers of the group will be concerned by this forward.
+
+rvcpAutoAttendantId
+
+`string`
+
+Unique identifier of the auto attendant, only for hunting\_group for autoAttendant destinationType
+
+---
+
+### rbVoiceService.updateGroupMember(groupId, memberId, position, roles, status) ⇒ `Promise.<any>`
+
+This part of the API allows a manager to update a member inside a group.  
+Update consists in changing the status of the member, or its roles, or its position inside the group.  
+Some updates are specific to the type of group:  
+
+-   Hunting group only can support several roles for a member (e.g. manager and agent)
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+Group Object
+
+id
+
+String
+
+Group unique identifier
+
+type optionnel
+
+String
+
+Group type  
+Default value : `hunting_group`  
+Possible values : `hunting_group`, `manager_assistant`
+
+name
+
+String
+
+Group name - displayed on the caller phone set for hunting group type
+
+policy optionnel
+
+String
+
+Group policy - applicable to hunting group type only  
+Default value : `parallel`  
+Possible values : `serial`, `parallel`, `circular`
+
+members
+
+Object\[\]
+
+List of group members.
+
+memberId
+
+String
+
+Member (user) unique identifier
+
+displayName
+
+String
+
+Member display name
+
+roles optionnel
+
+String\[\]
+
+Member role inside the group  
+Default value : `[agent]`  
+Possible values : `manager`, `agent`, `assistant`
+
+status optionnel
+
+String
+
+Member status inside the group  
+Default value : `active`  
+Possible values : `active`, `idle`
+
+**Category**: Rainbow Voice Cloud PBX group
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+groupId
+
+`string`
+
+Unique identifier of the Cloud PBX group to update
+
+memberId
+
+`string`
+
+Unique identifier of the group member
+
+position
+
+`number`
+
+Position of the user inside a serial group, from 1 to last. Meaningless in case of parallel hunting group
+
+roles
+
+`Array.<string>`
+
+Member roles inside the group. Default value : \["agent"\]. Possible values : agent, manager, assistant
+
+status
+
+`string`
+
+`active`
+
+Member status inside the group. Default value : active. Possible values : active, idle
+
+---
+
+### rbVoiceService.activateDeactivateDND(activate) ⇒ `Promise.<any>`
+
+This API allows logged in user to activate or deactivate his DND state.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Deskphones
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+activate
+
+`boolean`
+
+Set to "true" to activate or "false' to deactivate user DND.
+
+---
+
+### rbVoiceService.configureAndActivateDeactivateForward(callForwardType, type, number, timeout, activated) ⇒ `Promise.<any>`
+
+This API allows logged in user to activate or deactivate a forward.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+type optionnel
+
+String
+
+The destination type (Optional in case of deactivation)).  
+Possible values : `number`, `voicemail`
+
+number optionnel
+
+String
+
+Forward destination number (Optional if forward destination type is `voicemail`).
+
+timeout optionnel
+
+Number
+
+In case of `noreply` forward type, timeout in seconds after which the call will be forwarded.  
+Default value : `20`  
+Possible values : `{10-60}`
+
+activated
+
+Boolean
+
+Activate or deactivate current forward.
+
+**Category**: Rainbow Voice Deskphones
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+callForwardType
+
+`string`
+
+The forward type to update. Possible values : immediate, busy, noreply .
+
+type
+
+`string`
+
+The destination type (Optional in case of deactivation)). Possible values : number, voicemail .
+
+number
+
+`string`
+
+Forward destination number (Optional if forward destination type is voicemail).
+
+timeout
+
+`number`
+
+In case of noreply forward type, timeout in seconds after which the call will be forwarded. Default value : 20 . Possible values : {10-60} .
+
+activated
+
+`boolean`
+
+Activate or deactivate current forward.
+
+---
+
+### rbVoiceService.retrieveActiveForwards() ⇒ `Promise.<any>`
+
+This API allows logged in user to retrieve his active forwards.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Deskphones
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### rbVoiceService.retrieveDNDState() ⇒ `Promise.<any>`
+
+This API allows logged in user to retrieve his DND state.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Deskphones
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### rbVoiceService.searchUsersGroupsContactsByName(displayName, limit) ⇒ `Promise.<any>`
+
+This API allows to retrieve phone numbers associated to Rainbow users, groups, Office365 contacts and external directories contacts.  
+  
+Search by displayName (query parameter `displayName`):  
+
+-   The search is done on users/contacts' \`firstName\` and \`lastName\`, and search is done in
+    -   all Rainbow public users and users being in companies visible by logged in user's company,
+    -   external directories (like Office365) linked to logged in user's company.  
+        
+-   If logged in user's has visibility \`closed\` or \`isolated\`, or \`same\_than\_company\` and logged in user's company has visibility \`closed\` or \`isolated\`, search is done only on users being in companies visible by logged in user's company.  
+    
+-   Search on display name can be:  
+    -   firstName and lastName exact match (ex: 'John Doe' find 'John Doe')
+    -   partial match (ex: 'Jo Do' find 'John Doe')
+    -   case insensitive (ex: 'john doe' find 'John Doe')
+    -   accents insensitive (ex: 'herve mothe' find 'Hervé Mothé')
+    -   on only firstname or lastname (ex: 'john' find 'John Doe')
+    -   order firstname / lastname does not matter (ex: 'doe john' find 'John Doe').
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object\[\]
+
+List of user, group, contact Objects.
+
+firstName optionnel
+
+String
+
+User, contact first name
+
+lastName optionnel
+
+String
+
+User, contact last name
+
+companyName optionnel
+
+String
+
+User company name if known and different of logged in user company
+
+displayName
+
+String
+
+User, group, contact display name
+
+category
+
+String
+
+Specify where user, group or contact has been found  
+Possible values : `my_company`, `other_company`, `other_directory`
+
+phonenumbers
+
+Object\[\]
+
+List of phone numbers linked to user, group or contact
+
+number
+
+String
+
+User, group or contact phone number
+
+type
+
+String
+
+Phone number type  
+Possible values : `home`, `work`, `other`
+
+deviceType optionnel
+
+String
+
+Device type  
+Possible values : `landline`, `mobile`, `fax`, `other`
+
+**Category**: Rainbow Voice Deskphones
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+displayName
+
+`string`
+
+Search users, groups, contacts on the given name.
+
+limit
+
+`number`
+
+`20`
+
+Allow to specify the number of users, groups or contacts to retrieve (Max: 50). Default value : 20
+
+---
+
+### rbVoiceService.activatePersonalRoutine(routineId) ⇒ `Promise.<any>`
+
+This api activates a user's personal routine.  
+A supervisor can request to activate the personal routine of a user by providing its identifier as a parameter.  
+The requesting user must be supervisor of the given supervised user.
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+Detailed information about Rvcp Personal Routines
+
+routines
+
+Object\[\]
+
+Routines data array of routine objects
+
+id
+
+String
+
+Routine unique identifier
+
+name
+
+String
+
+Name of the routine
+
+type optionnel
+
+String
+
+Type of routine  
+Possible values : `At`, `work`, `Out`, `of`, `office`, `On`, `break`, `Custom`
+
+active
+
+Boolean
+
+Is the routine activated  
+Default value : `false`
+
+inSync
+
+Boolean
+
+Boolean to know if last activation or active routine update is done
+
+issuesLastSync
+
+Object
+
+Indications about issues last activation or active routine update
+
+dndPresence
+
+Boolean
+
+presence
+
+Boolean
+
+cliOptions
+
+Boolean
+
+deviceMode
+
+Boolean
+
+immediateCallForward
+
+Boolean
+
+busyCallForward
+
+Boolean
+
+noreplyCallForward
+
+Boolean
+
+huntingGroups
+
+Boolean
+
+**Category**: Rainbow Voice Personal Routines
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+routineId
+
+`string`
+
+A user routine unique identifier.
+
+---
+
+### rbVoiceService.createCustomPersonalRoutine(name) ⇒ `Promise.<any>`
+
+This api create a user's custom personal routine.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+Detailed information about Rvcp Personal Routines
+
+type optionnel
+
+String
+
+Type of routine  
+Possible values : `At`, `work`, `Out`, `of`, `office`, `On`, `break`, `Custom`
+
+id
+
+String
+
+Routine unique identifier
+
+active
+
+Boolean
+
+Is the routine activated  
+Default value : `false`
+
+name
+
+String
+
+Name of the routine
+
+dndPresence
+
+Boolean
+
+If set to true, on routine activation the presence will be set to "dnd", if false "online", soon deprecated with presence object  
+Default value : `true`
+
+deviceMode
+
+Object
+
+Device mode data
+
+manage
+
+Boolean
+
+Is device mode managed on routine activation  
+Default value : `false`
+
+mode
+
+String
+
+Device mode value, same choice(s) as in Rainbow GUI  
+Default value : `computer`  
+Possible values : `computer`, `office_phone`
+
+immediateCallForward
+
+Object
+
+Immediate call forward data
+
+manage
+
+Boolean
+
+Is immediate call forward managed on routine activation  
+Default value : `false`
+
+callForwardType
+
+String
+
+Default value : `immediate`
+
+activate
+
+Boolean
+
+Default value : `false`
+
+number
+
+String
+
+Default value : `null`
+
+destinationType
+
+String
+
+Default value : `null`  
+Possible values : `voicemail`, `internalnumber`, `externalnumber`
+
+busyCallForward
+
+Object
+
+Busy call forward data
+
+manage
+
+Boolean
+
+Is busy call forward managed on routine activation  
+Default value : `false`
+
+callForwardType
+
+String
+
+Default value : `busy`
+
+activate
+
+Boolean
+
+Default value : `false`
+
+number
+
+String
+
+Default value : `null`
+
+destinationType
+
+String
+
+Default value : `null`  
+Possible values : `voicemail`, `internalnumber`, `externalnumber`, `overflowvoicemail`
+
+noreplyCallForward
+
+Object
+
+No reply call forward data
+
+manage
+
+Boolean
+
+Is noreply call forward managed on routine activation  
+Default value : `false`
+
+callForwardType
+
+String
+
+Default value : `noreply`
+
+activate
+
+Boolean
+
+Default value : `false`
+
+number
+
+String
+
+Default value : `null`
+
+destinationType
+
+String
+
+Default value : `null`  
+Possible values : `voicemail`, `internalnumber`, `externalnumber`, `overflowvoicemail`
+
+noReplyDelay
+
+Number
+
+huntingGroups
+
+Object
+
+manage
+
+Boolean
+
+Default value : `false`
+
+withdrawAll optionnel
+
+Boolean
+
+Not for work routine  
+Default value : `true`
+
+huntingGroupsWithdraw optionnel
+
+Object\[\]
+
+Array of objects on user status in each hunting groups, only for work routine
+
+rvcpGroupId
+
+String
+
+Hunting group unique identifier
+
+presence
+
+Object
+
+Presence configuration, value can be overwritten by user
+
+status
+
+String
+
+User's status in the hunting group  
+Possible values : `active`, `idle`
+
+manage
+
+Boolean
+
+Manage presence on routine activation
+
+value
+
+String
+
+Same choices as in Rainbow GUI  
+Possible values : `dnd`, `online`, `invisible`, `away`
+
+cliOptions
+
+Object
+
+Cli options configuration
+
+manage
+
+Boolean
+
+Manage cli options on routine activation
+
+policy
+
+String
+
+Cli options policy  
+Possible values : `company_policy`, `installation_number`, `user_ddi_number`, `other_ddi_number`
+
+phoneNumberId
+
+String
+
+Phone number id in "other\_ddi\_number" policy
+
+**Category**: Rainbow Voice Personal Routines
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+name
+
+`string`
+
+Name of the new routine between 1 and 255 characters.
+
+---
+
+### rbVoiceService.deleteCustomPersonalRoutine(routineId) ⇒ `Promise.<any>`
+
+This api delete a user's custom personal routine.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Personal Routines
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+routineId
+
+`string`
+
+A user routine unique identifier.
+
+---
+
+### rbVoiceService.getPersonalRoutineData(routineId) ⇒ `Promise.<any>`
+
+This api returns a user's personal routine data.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+Detailed information about Rvcp Personal Routines
+
+type optionnel
+
+String
+
+Type of routine  
+Possible values : `At`, `work`, `Out`, `of`, `office`, `On`, `break`, `Custom`
+
+id
+
+String
+
+Routine unique identifier
+
+active
+
+Boolean
+
+Is the routine activated  
+Default value : `false`
+
+name
+
+String
+
+Name of the routine
+
+dndPresence
+
+Boolean
+
+If set to true, on routine activation the presence will be set to "dnd", if false "online", soon deprecated with presence object  
+Default value : `true`
+
+deviceMode
+
+Object
+
+Device mode data
+
+manage
+
+Boolean
+
+Is device mode managed on routine activation  
+Default value : `false`
+
+mode
+
+String
+
+Device mode value, same choice(s) as in Rainbow GUI  
+Default value : `computer`  
+Possible values : `computer`, `office_phone`
+
+immediateCallForward
+
+Object
+
+Immediate call forward data
+
+manage
+
+Boolean
+
+Is immediate call forward managed on routine activation  
+Default value : `false`
+
+callForwardType
+
+String
+
+Default value : `immediate`
+
+activate
+
+Boolean
+
+Default value : `false`
+
+number
+
+String
+
+Default value : `null`
+
+destinationType
+
+String
+
+Default value : `null`  
+Possible values : `voicemail`, `internalnumber`, `externalnumber`
+
+busyCallForward
+
+Object
+
+Busy call forward data
+
+manage
+
+Boolean
+
+Is busy call forward managed on routine activation  
+Default value : `false`
+
+callForwardType
+
+String
+
+Default value : `busy`
+
+activate
+
+Boolean
+
+Default value : `false`
+
+number
+
+String
+
+Default value : `null`
+
+destinationType
+
+String
+
+Default value : `null`  
+Possible values : `voicemail`, `internalnumber`, `externalnumber`, `overflowvoicemail`
+
+noreplyCallForward
+
+Object
+
+No reply call forward data
+
+manage
+
+Boolean
+
+Is noreply call forward managed on routine activation  
+Default value : `false`
+
+callForwardType
+
+String
+
+Default value : `noreply`
+
+activate
+
+Boolean
+
+Default value : `false`
+
+number
+
+String
+
+Default value : `null`
+
+destinationType
+
+String
+
+Default value : `null`  
+Possible values : `voicemail`, `internalnumber`, `externalnumber`, `overflowvoicemail`
+
+noReplyDelay
+
+Number
+
+huntingGroups
+
+Object
+
+manage
+
+Boolean
+
+Default value : `false`
+
+withdrawAll optionnel
+
+Boolean
+
+Not for work routine  
+Default value : `true`
+
+huntingGroupsWithdraw optionnel
+
+Object\[\]
+
+Array of objects on user status in each hunting groups, only for work routine
+
+rvcpGroupId
+
+String
+
+Hunting group unique identifier
+
+presence
+
+Object
+
+Presence configuration, value can be overwritten by user
+
+status
+
+String
+
+User's status in the hunting group  
+Possible values : `active`, `idle`
+
+manage
+
+Boolean
+
+Manage presence on routine activation
+
+value
+
+String
+
+Same choices as in Rainbow GUI  
+Possible values : `dnd`, `online`, `invisible`, `away`
+
+cliOptions
+
+Object
+
+Cli options configuration
+
+manage
+
+Boolean
+
+Manage cli options on routine activation
+
+policy
+
+String
+
+Cli options policy  
+Possible values : `company_policy`, `installation_number`, `user_ddi_number`, `other_ddi_number`
+
+phoneNumberId
+
+String
+
+Phone number id in "other\_ddi\_number" policy
+
+**Category**: Rainbow Voice Personal Routines
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+routineId
+
+`string`
+
+A user routine unique identifier.
+
+---
+
+### rbVoiceService.getAllPersonalRoutines(userId) ⇒ `Promise.<any>`
+
+This api returns all user's personal routines data  
+  
+A supervisor can request the personal routines of a user by providing its identifier as a parameter.  
+The requesting user must be supervisor of the given supervised user.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+Detailed information about Rvcp Personal Routines
+
+routines
+
+Object\[\]
+
+Routines data array of routine objects
+
+id
+
+String
+
+Routine unique identifier
+
+name
+
+String
+
+Name of the routine
+
+type optionnel
+
+String
+
+Type of routine  
+Possible values : `At`, `work`, `Out`, `of`, `office`, `On`, `break`, `Custom`
+
+active
+
+Boolean
+
+Is the routine activated  
+Default value : `false`
+
+inSync
+
+Boolean
+
+Boolean to know if last activation or active routine update is done
+
+issuesLastSync
+
+Object
+
+Indications about issues last activation or active routine update
+
+dndPresence
+
+Boolean
+
+presence
+
+Boolean
+
+cliOptions
+
+Boolean
+
+deviceMode
+
+Boolean
+
+immediateCallForward
+
+Boolean
+
+busyCallForward
+
+Boolean
+
+noreplyCallForward
+
+Boolean
+
+huntingGroups
+
+Boolean
+
+**Category**: Rainbow Voice Personal Routines
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+userId
+
+`string`
+
+Identifier of the user for which we want to get the personal routines. Requesting user must be a supervisor.
+
+---
+
+### rbVoiceService.updatePersonalRoutineData(routineId, dndPresence, name, deviceMode, presence, immediateCallForward, busyCallForward, noreplyCallForward, huntingGroups) ⇒ `Promise.<any>`
+
+This api updates a user's personal routine data, it's not possible to update the work routine, it contains memorized data before the activation of another routine.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+cliOptions optionnel
+
+Object
+
+Cli options configuration
+
+manage
+
+Boolean
+
+Manage cli options on routine activation
+
+policy
+
+String
+
+Cli options policy  
+Possible values : `company_policy`, `installation_number`, `user_ddi_number`, `other_ddi_number`
+
+phoneNumberId
+
+String
+
+Phone number id in "other\_ddi\_number" policy
+
+data
+
+Object
+
+Detailed information about Rvcp Personal Routines
+
+name
+
+String
+
+name of the routine
+
+dndPresence
+
+Boolean
+
+If set to true, on routine activation the presence will be set to "dnd", if false "online", soon deprecated with presence object  
+Default value : `true`
+
+deviceMode
+
+Object
+
+Device mode data
+
+manage
+
+Boolean
+
+Is device mode managed on routine activation  
+Default value : `false`
+
+mode
+
+String
+
+Device mode value, same choice(s) as in Rainbow GUI  
+Default value : `computer`  
+Possible values : `computer`, `office_phone`
+
+immediateCallForward
+
+Object
+
+Immediate call forward data
+
+manage
+
+Boolean
+
+Is immediate call forward managed on routine activation  
+Default value : `false`
+
+callForwardType
+
+String
+
+Default value : `immediate`
+
+activate
+
+Boolean
+
+Default value : `false`
+
+number
+
+String
+
+Default value : `null`
+
+destinationType
+
+String
+
+Default value : `null`  
+Possible values : `voicemail`, `internalnumber`, `externalnumber`
+
+busyCallForward
+
+Object
+
+Busy call forward data
+
+manage
+
+Boolean
+
+Is busy call forward managed on routine activation  
+Default value : `false`
+
+callForwardType
+
+String
+
+Default value : `busy`
+
+activate
+
+Boolean
+
+Default value : `false`
+
+number
+
+String
+
+Default value : `null`
+
+destinationType
+
+String
+
+Default value : `null`  
+Possible values : `voicemail`, `internalnumber`, `externalnumber`, `overflowvoicemail`
+
+noreplyCallForward
+
+Object
+
+No reply call forward data
+
+manage
+
+Boolean
+
+Is noreply call forward managed on routine activation  
+Default value : `false`
+
+callForwardType
+
+String
+
+Default value : `noreply`
+
+activate
+
+Boolean
+
+Default value : `false`
+
+number
+
+String
+
+Default value : `null`
+
+destinationType
+
+String
+
+Default value : `null`  
+Possible values : `voicemail`, `internalnumber`, `externalnumber`, `overflowvoicemail`
+
+noReplyDelay
+
+Number
+
+huntingGroups
+
+Object
+
+manage
+
+Boolean
+
+Default value : `false`
+
+type optionnel
+
+String
+
+Type of routine  
+Possible values : `At`, `work`, `Out`, `of`, `office`, `On`, `break`, `Custom`
+
+withdrawAll optionnel
+
+Boolean
+
+Default value : `true`
+
+active
+
+Boolean
+
+Is the routine activated  
+Default value : `false`
+
+issuesLastSync optionnel
+
+Object
+
+Indications about issues if the routine was active
+
+dndPresence
+
+Boolean
+
+presence
+
+Boolean
+
+cliOptions
+
+Boolean
+
+deviceMode
+
+Boolean
+
+immediateCallForward
+
+Boolean
+
+busyCallForward
+
+Boolean
+
+noreplyCallForward
+
+Boolean
+
+presence
+
+Object
+
+Presence configuration, value can be overwritten by user
+
+huntingGroups
+
+Boolean
+
+manage
+
+Boolean
+
+Manage presence on routine activation
+
+value
+
+String
+
+Same choices as in Rainbow GUI  
+Possible values : `dnd`, `online`, `invisible`, `away`
+
+**Category**: Rainbow Voice Personal Routines
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+routineId
+
+`string`
+
+A user routine unique identifier.
+
+dndPresence
+
+`boolean`
+
+Configure dndPresence on routine activation, or online on fallback to work routine, soon deprecated with presence object
+
+name
+
+`string`
+
+New routine name, not for default routine.
+
+deviceMode
+
+`Object`
+
+Device mode configuration  
+\- deviceMode.manage : boolean Manage device mode on routine activation  
+\- deviceMode.mode : string Same choices as in Rainbow GUI. Possible values : computer, office\_phone  
+
+presence
+
+`Object`
+
+Presence configuration, value can be overwritten by user  
+\- presence.manage : boolean Manage presence on routine activation  
+\- presence.value : string Same choices as in Rainbow GUI. Possible values : dnd, online, invisible, away  
+
+immediateCallForward
+
+`Object`
+
+immediate call forward configuration  
+\- immediateCallForward.manage : boolean Manage immediate call forward  
+\- immediateCallForward.activate : boolean  
+\- immediateCallForward.number optionnel : string Mandatory on destinationType internalnumber or externalnumber  
+\- immediateCallForward.destinationType optionnel : string Possible values : voicemail, internalnumber, externalnumber  
+
+busyCallForward
+
+`Object`
+
+Busy call forward configuration  
+\- busyCallForward.manage : boolean Manage busy call forward  
+\- busyCallForward.activate : boolean  
+\- busyCallForward.number optionnel : string Mandatory on destinationType internalnumber or externalnumber  
+\- busyCallForward.destinationType optionnel : string Possible values : voicemail, internalnumber, externalnumber  
+
+noreplyCallForward
+
+`Object`
+
+Noreply call forward configuration  
+\- noreplyCallForward.manage : boolean Manage noreply call forward  
+\- noreplyCallForward.activate : boolean  
+\- noreplyCallForward.number optionnel : string Mandatory on destinationType internalnumber or externalnumber  
+\- noreplyCallForward.destinationType optionnel : string Possible values : voicemail, internalnumber, externalnumber  
+\- noreplyCallForward.noReplyDelay : number timeout in seconds after which the call will be forwarded Default value : 20 Ordre de grandeur : 10-60  
+
+huntingGroups
+
+`Object`
+
+Hunting groups configuration  
+\- huntingGroups.withdrawAll Boolean Withdraw from all hunting groups or keep the work data  
+\- huntingGroups.manage Boolean Manage hunting groups configuration  
+
+---
+
+### rbVoiceService.manageUserRoutingData(destinations, currentDeviceId) ⇒ `Promise.<any>`
+
+This api allows user routing management  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+destinations
+
+Object\[\]
+
+Which devices will be ringing when an incoming call is received
+
+deviceId
+
+String
+
+Destination identifier
+
+type
+
+String
+
+Destination type (`webrtc` : destination is a softphone ; `sip` : destination is a SIP deskphone)  
+Possible values : `sip`, `webrtc`
+
+currentDeviceId
+
+String
+
+Which device is used for handling 3PCC initial requests (like "Make Call")
+
+current
+
+String
+
+(Deprecated) Which device is used for handling 3PCC initial requests (like "Make Call")
+
+**Category**: Rainbow Voice Routing
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+destinations
+
+`string`
+
+List of device's identifiers indicating which devices will receive incoming calls.
+
+currentDeviceId
+
+`string`
+
+Device's identifier to use for 3Pcc initial requests like "Make Call".
+
+---
+
+### rbVoiceService.retrievetransferRoutingData(calleeId, addresseeId, addresseePhoneNumber) ⇒ `Promise.<any>`
+
+For transfer, get addressee routing data.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+jid\_im
+
+String
+
+Addressee Jabber identifier (WebRTC).
+
+phoneNumber
+
+String
+
+Addressee phone number (deskphone or external number).
+
+**Category**: Rainbow Voice Routing
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+calleeId
+
+`string`
+
+Callee user identifier.
+
+addresseeId
+
+`string`
+
+Addressee user identifier (in case of Rainbow user).
+
+addresseePhoneNumber
+
+`string`
+
+Addressee phone number (short or external number).
+
+---
+
+### rbVoiceService.retrieveUserRoutingData() ⇒ `Promise.<any>`
+
+This api returns user routing information.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+destinations
+
+Object\[\]
+
+Which devices will be ringing when an incoming call is received
+
+deviceId
+
+String
+
+Destination identifier
+
+type
+
+String
+
+Destination type (`webrtc` : destination is a softphone ; `sip` : destination is a SIP deskphone)  
+Possible values : `sip`, `webrtc`
+
+currentDeviceId
+
+String
+
+Which device is used for handling 3PCC initial requests (like "Make Call")
+
+current
+
+String
+
+(Deprecated) Which device is used for handling 3PCC initial requests (like "Make Call")
+
+**Category**: Rainbow Voice Routing
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### rbVoiceService.retrieveVoiceUserSettings() ⇒ `Promise.<any>`
+
+Allows logged in user to retrieve his voice settings.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+Response data
+
+emulatedRingBackTone
+
+Boolean
+
+Indicate that emulated ringback tone is active
+
+**Category**: Rainbow Voice Voice
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### rbVoiceService.addParticipant3PCC(callId, callData) ⇒ `Promise.<any>`
+
+Adds a participant in a call, as a one step conference.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Voice
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+Call identifier.
+
+callData
+
+`Object`
+
+:  
+callData.callee : string Contains the callee number.  
+
+---
+
+### rbVoiceService.answerCall3PCC(callId, callData) ⇒ `Promise.<any>`
+
+This is a 3PCC answer call.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Voice
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+Call identifier.
+
+callData
+
+`Object`
+
+:  
+callData.legId : string Leg identifier, on which the call will be answered.  
+
+---
+
+### rbVoiceService.blindTransferCall3PCC(callId, callData) ⇒ `Promise.<any>`
+
+This is a 3PCC blind transfer call. Immediate transfer of an active call to a new destination.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Voice
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+Call identifier.
+
+callData
+
+`Object`
+
+:  
+callData.destination : Object if destination type is a `String`, its content is treated as the phone number to call, if destination type is an `Object` with following attributes is expected:  
+callData.destination.userId : string Identifier of the user to call.  
+callData.destination.resource : string Specific user resource to call.  
+
+---
+
+### rbVoiceService.deflectCall3PCC(callId, callData) ⇒ `Promise.<any>`
+
+This is a 3PCC deflect call. During ringing state, user transfer the call to another destination.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Voice
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+Call identifier.
+
+callData
+
+`Object`
+
+:  
+callData.destination : string The number to deflect to.  
+
+---
+
+### rbVoiceService.holdCall3PCC(callId, callData) ⇒ `Promise.<any>`
+
+This is a 3PCC hold call.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Voice
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+Call identifier.
+
+callData
+
+`Object`
+
+:  
+callData.legId : string Leg identifier, from which the call will be held.  
+
+---
+
+### rbVoiceService.makeCall3PCC(callData) ⇒ `Promise.<any>`
+
+This api makes a 3PCC call between 2 users.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Voice
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+callData
+
+`Object`
+
+Object with :  
+callData.deviceId : string Identifier of the device from which the call should be initiated.  
+callData.callerAutoAnswer : boolean Indicates if the call should be automatically answered by the caller (if true). Default value : false.  
+callData.anonymous : boolean If true, the caller identity will not be presented to the other call parties. Default value : false.  
+callData.calleeExtNumber : string The format could be anything the user can type, it will be transformed in E164 format.  
+callData.calleePbxId : string PBX identifier on which the callee is attached.  
+callData.calleeShortNumber : string Callee short number. CalleePbxId must be provided with calleeShortNumber, as it is used to check that caller and callee are on the same pbx.  
+callData.calleeCountry : string Callee country code. If not specified, the logged user country code will be used.  
+callData.dialPadCalleeNumber : string Callee number ; with the same format as if number was dialed By EndUser using a deskphone :  
+That means that inside this parameter, we can have internal number ; or external number (for national and international calls) but in that case the outgoing prefix must be present.  
+This parameter support also the E.164 format.  
+Examples of accepted number into this parameter:  
+\- +33299151617 : national or international call to France  
+\- 0 00 XXXXXXXXX : for international calls where 0 is PBX outbound prefix and 00 the international prefix (spaces are not mandatory, it is for better understanding)  
+\- 0 0 XXXXXXXXX : for national calls where 0 is PBX outbound prefix and 0 the national prefix (spaces are not mandatory, it is for better understanding)  
+\- 0 XXXX : for services where 0 is PBX outbound prefix (space is not mandatory, it is for better understanding)  
+\- XXXXX : for internal calls  
+  
+This parameter is used only if other "callee" parameters are not set.  
+
+---
+
+### rbVoiceService.mergeCall3PCC(activeCallId, callData) ⇒ `Promise.<any>`
+
+This is a 3PCC merge call. Merge an held call into the active call (single call or conference call).  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Voice
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+activeCallId
+
+`string`
+
+Active call identifier.  
+
+callData
+
+`Object`
+
+Object with :  
+callData.heldCallId : string Held call identifier.  
+
+---
+
+### rbVoiceService.pickupCall3PCC(callData) ⇒ `Promise.<any>`
+
+3PCC pickup call can be used in case of manager/assistant context, when an assistant wants to pickup a call on a manager. To allow such pickup, the following checks must be fulfilled:
+
+-   The user initiating the pickup must be an active assistant in the same group as the manager .  
+    
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Voice
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+callData
+
+`Object`
+
+Object with :  
+callData.deviceId : string Identifier of the device from which the call should be initiated.  
+callData.callerAutoAnswer : string Indicates if the call should be automatically answered by the caller (if true). Default value : false.  
+callData.calleeShortNumber : string Callee short number.  
+
+---
+
+### rbVoiceService.releaseCall3PCC(callId, legId) ⇒ `Promise.<any>`
+
+This is a 3PCC release call.  
+If the legId is not specified, the resulting operation will be considered as a 'clearCall'.  
+If specified, a 'clearConnection' will be invoked.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Voice
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+Call identifier.
+
+legId
+
+`string`
+
+Leg identifier, from which the call will be released.  
+
+---
+
+### rbVoiceService.retrieveCall3PCC(callId, callData) ⇒ `Promise.<any>`
+
+This is a 3PCC retrieve call.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Voice
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+Call identifier.
+
+callData
+
+`Object`
+
+:  
+callData.legId : string Leg identifier, from which the call will be retrieved.  
+
+---
+
+### rbVoiceService.sendDTMF3PCC(callId, callData) ⇒ `Promise.<any>`
+
+This is a 3PCC send DTMF.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Voice
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+Call identifier.
+
+callData
+
+`Object`
+
+:  
+callData.legId : string Leg identifier, on which the DTMF will be sent.  
+callData.digits : string Digits to send.  
+
+---
+
+### rbVoiceService.snapshot3PCC(callId, deviceId, seqNum) ⇒ `Promise.<any>`
+
+This is a 3PCC Snapshot of the user's calls and devices.  
+Providing a callId will restrict the snapshot to the given call. The same principle applies to the deviceId for the user's devices states.  
+A synchronisation check can also be used by the client to see if any changes have been correctly notified by the server.  
+To use this mechanism, the client will send the last sequence number received, either from events, or when requesting the last snapshot.  
+The main advantage of using this sequence number is to minimize the data flow between the client and the server.  
+Returning the complete snapshot result is only necessary when sequence numbers are different between the server and the client.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+data : Object snapshot Calls and/or devices snapshot
+
+**Category**: Rainbow Voice Voice
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+callId
+
+`string`
+
+Snapshot will be filtered with the given callId.
+
+deviceId
+
+`string`
+
+Snapshot will be filtered with the given deviceId.
+
+seqNum
+
+`string`
+
+If provided and different from the server's sequence number, full snapshot will be returned. If provided seqNum is the same as the one on the server, no snapshot returned (client and server are sync).
+
+---
+
+### rbVoiceService.transferCall3PCC(activeCallId, callData) ⇒ `Promise.<any>`
+
+This is a 3PCC transfer call. Transfer the active call to the given held call.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Voice
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+activeCallId
+
+`string`
+
+Active call identifier.
+
+callData
+
+`Object`
+
+:  
+callData.heldCallId : string Held call identifier.  
+
+---
+
+### rbVoiceService.deleteAVoiceMessage(messageId) ⇒ `Promise.<any>`
+
+Deletion of the given voice message.  
+When deleted, the user will receive a MWI XMPP notification.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Voice
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+messageId
+
+`string`
+
+Message identifier.
+
+---
+
+### rbVoiceService.deleteAllVoiceMessages(messageId) ⇒ `Promise.<any>`
+
+Deletion of all user's voice messages.  
+When updated, the user will receive a MWI XMPP notification.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Voice
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+messageId
+
+`string`
+
+Message identifier.
+
+---
+
+### rbVoiceService.getEmergencyNumbersAndEmergencyOptions() ⇒ `Promise.<any>`
+
+This api returns emergency numbers the user can use (+ emergency options).  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+emergencyNumbers
+
+Object\[\]
+
+Array of emergency numbers
+
+outgoingPrefix
+
+String
+
+Reminder of what is the outgoing prefix for the Cloud PBX
+
+emergencyOptions
+
+Object
+
+Emergency options
+
+callAuthorizationWithSoftPhone
+
+Boolean
+
+Indicates if SoftPhone can perform an emergency call over voip
+
+number
+
+String
+
+emergency number
+
+description
+
+String
+
+description of the emergency number
+
+**Category**: Rainbow Voice Voice
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### rbVoiceService.getVoiceMessages(limit, offset, sortField, sortOrder, fromDate, toDate, callerName, callerNumber) ⇒ `Promise.<any>`
+
+Returns the list of voice messages.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+id
+
+String
+
+voice message identifier
+
+fileName
+
+String
+
+File name of the voice message - composed of the voice message date
+
+mime
+
+String
+
+MIME type of the voice message file  
+Possible values : `audio/mpeg`
+
+size
+
+Number
+
+Size of the voice message file (in bytes).
+
+duration
+
+Number
+
+Duration of the voice message (in seconds)
+
+date
+
+Date
+
+Date of the voice message
+
+callerInfo
+
+Object
+
+Caller party info
+
+data
+
+Object\[\]
+
+Voice messages
+
+number
+
+String
+
+Caller number
+
+name optionnel
+
+String
+
+Caller name, if available
+
+firstName optionnel
+
+String
+
+Caller firstName, if available
+
+lastName optionnel
+
+String
+
+Caller lastName, if available
+
+userId optionnel
+
+String
+
+Caller user identifier if it can be resolved.
+
+jid optionnel
+
+String
+
+Caller Jid if it can be resolved.
+
+**Category**: Rainbow Voice Voice
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+limit
+
+`number`
+
+`100`
+
+Allow to specify the number of voice messages to retrieve. Default value : 100.
+
+offset
+
+`number`
+
+`0`
+
+Allow to specify the position of first voice messages to retrieve. Default value : 0.
+
+sortField
+
+`string`
+
+`date`
+
+Sort voice messages list based on the given field. Default value : date.
+
+sortOrder
+
+`number`
+
+`-1`
+
+Specify order when sorting voice messages. Default is descending. Default value : -1. Possible values : -1, 1 .
+
+fromDate
+
+`string`
+
+List voice messages created after the given date.
+
+toDate
+
+`string`
+
+List voice messages created before the given date.
+
+callerName
+
+`string`
+
+List voice messages with caller party name containing the given value.
+
+callerNumber
+
+`string`
+
+List voice messages with caller party number containing the given value.
+
+---
+
+### rbVoiceService.getUserDevices() ⇒ `Promise.<any>`
+
+This api returns user devices information.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Array of
+
+Champ
+
+Type
+
+Description
+
+id
+
+String
+
+Device Unique Identifier
+
+deviceId
+
+String
+
+Device identifier to use for 3PCC requests (like MakeCall)
+
+type
+
+String
+
+Device type (enumeration ; values are : "sip" ; "webrtc")
+
+jid\_wrg
+
+String
+
+Jabber identifier of the associated Web Rtc Gateway (only set when type is "webrtc")
+
+**Category**: Rainbow Voice Voice
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### rbVoiceService.updateVoiceMessage(messageId, urlData) ⇒ `Promise.<any>`
+
+Update the given voice message - mark it as read or unread.  
+When a message is 'unread', it is considered as a new message. On the opposite, a 'read' message is considered as an old message.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+Champ
+
+Type
+
+Description
+
+messageUpdateResult
+
+Object
+
+message Updated message
+
+**Category**: Rainbow Voice Voice
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+messageId
+
+`string`
+
+Message Identifier.
+
+urlData
+
+`Object`
+
+:  
+urlData.read : boolean Mark the message as read or unread.  
+
+---
+
+### rbVoiceService.forwardCall(callForwardType, userId, urlData) ⇒ `Promise.<any>`
+
+This api activates/deactivates a forward.  
+Group forward (immediate/managersecretary) is not supported here. There is a dedicated API for group forward management (Cloud PBX group forwards)  
+If the destinationType is "voicemail" and overflow is enabled on the Cloud PBX or/and forced on the subscriber, the overflow configuration (noReplyDelay) will be use.  
+  
+A supervisor can also set the forward of a user by providing its identifier as a parameter, as well as the supervision group identifier.  
+In such case, the requesting user must be supervisor of the given supervision group, and the requested user must 'supervised' in the given group.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Voice Forward
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+callForwardType
+
+`string`
+
+The forward type to update. Possible values : immediate, busy, noreply
+
+userId
+
+`string`
+
+Identifier of the user for which we want to set the forwards. Requesting user must be a supervisor.
+
+urlData
+
+`Object`
+
+:  
+urlData.destinationType : string The destination type. Possible values : internalNumber, externalNumber, voicemail .  
+urlData.number : string The number to forward.  
+urlData.activate : boolean Activate or cancel a forward.  
+urlData.noReplyDelay : number in case of 'noreply' forward type, timeout in seconds after which the call will be forwarded. Default value : 20. Possible values : {10-60} .  
+
+---
+
+### rbVoiceService.getASubscriberForwards(userId) ⇒ `Promise.<any>`
+
+This api gets the user forwards.  
+For internalnumber forward, on return data you will see the userId/rvcpGroupId/rvcpAutoAttendantId with the associated name.  
+If name equals "null" or the id equals "null", the concerned user/rvcpGroup/rvcpAutoAttendantId is deleted, please remove the associated forward.  
+  
+A supervisor can request the forwards of a user by providing its identifier as a parameter.  
+The requesting user must be supervisor of the given supervised user.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Voice Forward
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+userId
+
+`string`
+
+Identifier of the user for which we want to get the forwards. Requesting user must be a supervisor.
+
+---
+
+### rbVoiceService.searchCloudPBXhuntingGroups(name) ⇒ `Promise.<any>`
+
+This API allows to retrieve Cloud PBX Hunting Groups.  
+
+**Kind**: instance method of [`RBVoiceService`](#module_RBVoiceService)
+
+**Returns**: `Promise.<any>` - the result.
+
+**Category**: Rainbow Voice Voice Search Hunting Groups
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+name
+
+`string`
+
+Search hunting groups on the given name
+
+---
+
+### On this page
+
+-   [RBVoiceService](/docs/sdk/node#name-rbvoiceservice-3)
+-   [rbVoiceService.retrieveAllAvailableCallLineIdentifications() ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.retrieveallavailablecalllineidentifications--promise.any-359)
+-   [rbVoiceService.retrieveCurrentCallLineIdentification() ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.retrievecurrentcalllineidentification--promise.any-478)
+-   [rbVoiceService.setCurrentActiveCallLineIdentification(policy, phoneNumberId) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.setcurrentactivecalllineidentificationpolicy-phonenumberid--promise.any-500)
+-   [rbVoiceService.addMemberToGroup(groupId, memberId, position, roles, status) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.addmembertogroupgroupid-memberid-position-roles-status--promise.any-658)
+-   [rbVoiceService.deleteVoiceMessageAssociatedToAGroup(groupId, messageId) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.deletevoicemessageassociatedtoagroupgroupid-messageid--promise.any-894)
+-   [rbVoiceService.getVoiceMessagesAssociatedToGroup(groupId, limit, offset, sortField, sortOrder, fromDate, toDate, callerName, callerNumber) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.getvoicemessagesassociatedtogroupgroupid-limit-offset-sortfield-sortorder-fromdate-todate-callername-callernumber--promise.any-958)
+-   [rbVoiceService.getGroupForwards(groupId) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.getgroupforwardsgroupid--promise.any-1300)
+-   [rbVoiceService.getTheUserGroup(type) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.gettheusergrouptype--promise.any-1365)
+-   [rbVoiceService.joinAGroup(groupId) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.joinagroupgroupid--promise.any-1556)
+-   [rbVoiceService.joinAllGroups() ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.joinallgroups--promise.any-1736)
+-   [rbVoiceService.leaveAGroup(groupId) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.leaveagroupgroupid--promise.any-1761)
+-   [rbVoiceService.leaveAllGroups() ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.leaveallgroups--promise.any-1941)
+-   [rbVoiceService.removeMemberFromGroup(groupId, memberId) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.removememberfromgroupgroupid-memberid--promise.any-2093)
+-   [rbVoiceService.retrieveNumberReadUnreadMessagesForHuntingGroupsOfLoggedUser() ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.retrievenumberreadunreadmessagesforhuntinggroupsofloggeduser--promise.any-2157)
+-   [rbVoiceService.updateAVoiceMessageAssociatedToAGroup(groupId, messageId, read) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.updateavoicemessageassociatedtoagroupgroupid-messageid-read--promise.any-2320)
+-   [rbVoiceService.updateAGroup(groupId, externalNumberId, isEmptyAllowed) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.updateagroupgroupid-externalnumberid-isemptyallowed--promise.any-2395)
+-   [rbVoiceService.updateGroupForward(groupId, callForwardType, destinationType, numberToForward, activate, noReplyDelay, managerIds, rvcpAutoAttendantId) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.updategroupforwardgroupid-callforwardtype-destinationtype-numbertoforward-activate-noreplydelay-managerids-rvcpautoattendantid--promise.any-2619)
+-   [rbVoiceService.updateGroupMember(groupId, memberId, position, roles, status) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.updategroupmembergroupid-memberid-position-roles-status--promise.any-2791)
+-   [rbVoiceService.activateDeactivateDND(activate) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.activatedeactivatedndactivate--promise.any-3040)
+-   [rbVoiceService.configureAndActivateDeactivateForward(callForwardType, type, number, timeout, activated) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.configureandactivatedeactivateforwardcallforwardtype-type-number-timeout-activated--promise.any-3093)
+-   [rbVoiceService.retrieveActiveForwards() ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.retrieveactiveforwards--promise.any-3251)
+-   [rbVoiceService.retrieveDNDState() ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.retrievedndstate--promise.any-3276)
+-   [rbVoiceService.searchUsersGroupsContactsByName(displayName, limit) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.searchusersgroupscontactsbynamedisplayname-limit--promise.any-3301)
+-   [rbVoiceService.activatePersonalRoutine(routineId) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.activatepersonalroutineroutineid--promise.any-3562)
+-   [rbVoiceService.createCustomPersonalRoutine(name) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.createcustompersonalroutinename--promise.any-3808)
+-   [rbVoiceService.deleteCustomPersonalRoutine(routineId) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.deletecustompersonalroutineroutineid--promise.any-4329)
+-   [rbVoiceService.getPersonalRoutineData(routineId) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.getpersonalroutinedataroutineid--promise.any-4382)
+-   [rbVoiceService.getAllPersonalRoutines(userId) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.getallpersonalroutinesuserid--promise.any-4903)
+-   [rbVoiceService.updatePersonalRoutineData(routineId, dndPresence, name, deviceMode, presence, immediateCallForward, busyCallForward, noreplyCallForward, huntingGroups) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.updatepersonalroutinedataroutineid-dndpresence-name-devicemode-presence-immediatecallforward-busycallforward-noreplycallforward-huntinggroups--promise.any-5149)
+-   [rbVoiceService.manageUserRoutingData(destinations, currentDeviceId) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.manageuserroutingdatadestinations-currentdeviceid--promise.any-5813)
+-   [rbVoiceService.retrievetransferRoutingData(calleeId, addresseeId, addresseePhoneNumber) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.retrievetransferroutingdatacalleeid-addresseeid-addresseephonenumber--promise.any-5949)
+-   [rbVoiceService.retrieveUserRoutingData() ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.retrieveuserroutingdata--promise.any-6063)
+-   [rbVoiceService.retrieveVoiceUserSettings() ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.retrievevoiceusersettings--promise.any-6160)
+-   [rbVoiceService.addParticipant3PCC(callId, callData) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.addparticipant3pcccallid-calldata--promise.any-6224)
+-   [rbVoiceService.answerCall3PCC(callId, callData) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.answercall3pcccallid-calldata--promise.any-6288)
+-   [rbVoiceService.blindTransferCall3PCC(callId, callData) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.blindtransfercall3pcccallid-calldata--promise.any-6352)
+-   [rbVoiceService.deflectCall3PCC(callId, callData) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.deflectcall3pcccallid-calldata--promise.any-6416)
+-   [rbVoiceService.holdCall3PCC(callId, callData) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.holdcall3pcccallid-calldata--promise.any-6480)
+-   [rbVoiceService.makeCall3PCC(callData) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.makecall3pcccalldata--promise.any-6544)
+-   [rbVoiceService.mergeCall3PCC(activeCallId, callData) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.mergecall3pccactivecallid-calldata--promise.any-6597)
+-   [rbVoiceService.pickupCall3PCC(callData) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.pickupcall3pcccalldata--promise.any-6661)
+-   [rbVoiceService.releaseCall3PCC(callId, legId) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.releasecall3pcccallid-legid--promise.any-6721)
+-   [rbVoiceService.retrieveCall3PCC(callId, callData) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.retrievecall3pcccallid-calldata--promise.any-6785)
+-   [rbVoiceService.sendDTMF3PCC(callId, callData) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.senddtmf3pcccallid-calldata--promise.any-6849)
+-   [rbVoiceService.snapshot3PCC(callId, deviceId, seqNum) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.snapshot3pcccallid-deviceid-seqnum--promise.any-6913)
+-   [rbVoiceService.transferCall3PCC(activeCallId, callData) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.transfercall3pccactivecallid-calldata--promise.any-6991)
+-   [rbVoiceService.deleteAVoiceMessage(messageId) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.deleteavoicemessagemessageid--promise.any-7055)
+-   [rbVoiceService.deleteAllVoiceMessages(messageId) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.deleteallvoicemessagesmessageid--promise.any-7108)
+-   [rbVoiceService.getEmergencyNumbersAndEmergencyOptions() ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.getemergencynumbersandemergencyoptions--promise.any-7161)
+-   [rbVoiceService.getVoiceMessages(limit, offset, sortField, sortOrder, fromDate, toDate, callerName, callerNumber) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.getvoicemessageslimit-offset-sortfield-sortorder-fromdate-todate-callername-callernumber--promise.any-7269)
+-   [rbVoiceService.getUserDevices() ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.getuserdevices--promise.any-7597)
+-   [rbVoiceService.updateVoiceMessage(messageId, urlData) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.updatevoicemessagemessageid-urldata--promise.any-7686)
+-   [rbVoiceService.forwardCall(callForwardType, userId, urlData) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.forwardcallcallforwardtype-userid-urldata--promise.any-7778)
+-   [rbVoiceService.getASubscriberForwards(userId) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.getasubscriberforwardsuserid--promise.any-7853)
+-   [rbVoiceService.searchCloudPBXhuntingGroups(name) ⇒ Promise.<any>](/docs/sdk/node#name-rbvoiceservice.searchcloudpbxhuntinggroupsname--promise.any-7906)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

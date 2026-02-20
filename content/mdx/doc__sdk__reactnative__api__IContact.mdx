@@ -1,0 +1,553 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/IContact"
+lastSynced: "2026-02-20T07:12:33.433Z"
+---
+# Documentation
+
+IContact
+
+## Typedefs
+
+[IContact](#IContact) : `Interface`
+
+Contact interface
+
+[IEmail](#IEmail) : `Interface`
+
+Email sender interface.
+
+[IPhoneNumber](#IPhoneNumber) : `Interface`
+
+PhoneNumber status interface.
+
+## IContact : `Interface`
+
+Contact interface, its `extends` from the [IPeer](/docs/sdk/reactnative/api/IPeer)
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+jId
+
+`string`
+
+the JId of the contact.
+
+contactName
+
+`string`
+
+The full name of the contact.
+
+imageURL
+
+`string`
+
+the URL the contact profile picture.
+
+presence
+
+``[`Presence`](#Presence)``
+
+the presence of the contact.
+
+isInvited
+
+`boolean`
+
+used to indicate if the contact has been invited.
+
+isRoster
+
+`boolean`
+
+used to indicate if the contact is on the network or not.
+
+emails
+
+``[`IEmail[]`](#IEmail)``
+
+array of the emails of the contact .
+
+phoneNumbers
+
+``[`IPhoneNumber[]`](#IPhoneNumber)``
+
+array of the phone numbers of the contact.
+
+companyName
+
+`string`
+
+the company name of the contact.
+
+jobTitle
+
+`string`
+
+The job title of the Contact.
+
+companyId
+
+`string`
+
+The company id of the contact.
+
+isCorporate
+
+`boolean`
+
+used to indicate if its a Corporate account type.
+
+isPhoneBook
+
+`boolean`
+
+used to indicate if its a phone book account type.
+
+isOffice365
+
+`boolean`
+
+used to indicate if is Office365 account type.
+
+firstAvailableNumber
+
+`string`
+
+used to get the first Available mobile Number.
+
+isRainbowUser
+
+`boolean`
+
+used to indicate if it is a Rainbow user or not.
+
+## IEmail : `Interface`
+
+Email interface.
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+type
+
+``[`EmailType[]`](#EmailType)``
+
+the email type .
+
+value
+
+`string`
+
+the email value.
+
+## IPhoneNumber : `Interface`
+
+PhoneNumber status interface.
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+type
+
+``[`PhoneType[]`](#PhoneType)``
+
+the Phone number type .
+
+value
+
+`string`
+
+Phone number value.
+
+## EmailType : `enum`
+
+**Kind**: global enum **Access**: public **Read only**: true **Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+HOME
+
+`string`
+
+`HOME`
+
+Home email type .
+
+WORK
+
+`string`
+
+`WORK`
+
+Work email type.
+
+MOBILE
+
+`string`
+
+`MOBILE`
+
+MOBILE email type .
+
+OTHER
+
+`string`
+
+`OTHER`
+
+OTHER email type .
+
+CUSTOM
+
+`string`
+
+`CUSTOM`
+
+Custom email type .
+
+UNKNOWN
+
+`string`
+
+`UNKNOWN`
+
+Unknown email type .
+
+## PhoneType : `enum`
+
+**Kind**: global enum **Access**: public **Read only**: true **Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+WORK
+
+`string`
+
+`Extension number`
+
+Work phone type .
+
+FAX\_WORK
+
+`string`
+
+`Work Fax`
+
+Fax work phone type
+
+FAX\_HOME
+
+`string`
+
+`Personal Fax`
+
+Fax home phone type .
+
+WORK\_MOBILE
+
+`string`
+
+`Work mobile`
+
+Work mobile phone type .
+
+MAIN
+
+`string`
+
+`MAIN`
+
+Main phone type.
+
+OFFICE
+
+`string`
+
+`Office`
+
+Office phone type.
+
+COMPANY\_MAIN
+
+`string`
+
+`Work Phone`
+
+Company Main phone type.
+
+MOBILE
+
+`string`
+
+`Personal Mobile`
+
+Mobile phone type
+
+HOME
+
+`string`
+
+`Personal Home`
+
+Home phone type.
+
+CUSTOM
+
+`string`
+
+`CUSTOM`
+
+Custom phone type .
+
+UNKNOWN
+
+`string`
+
+`UNKNOWN`
+
+UnKnown phone type.
+
+OTHER
+
+`string`
+
+`OTHER`
+
+Other phone type.
+
+## Presence : `enum`
+
+**Kind**: global enum **Access**: public **Read only**: true **Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+offline
+
+`string`
+
+`offline`
+
+offline .
+
+online
+
+`string`
+
+`online`
+
+online
+
+mobile\_online
+
+`string`
+
+`mobile_online`
+
+Mobile Online.
+
+manual\_away
+
+`string`
+
+`Away`
+
+when user set his presence manually away
+
+away
+
+`string`
+
+`Away`
+
+away .
+
+DoNotDisturb
+
+`string`
+
+`Do not disturb`
+
+Do not disturb.
+
+DND presentation
+
+`string`
+
+`DND presentation`
+
+DND presentation.
+
+busy
+
+`string`
+
+`busy`
+
+Busy.
+
+busy\_audio
+
+`string`
+
+`Busy audio`
+
+Busy audio
+
+busy\_video
+
+`string`
+
+`Busy video`
+
+Busy video.
+
+busy\_phone
+
+`string`
+
+`Busy phone`
+
+Busy phone.
+
+subscribe
+
+`string`
+
+`subscribe`
+
+subscribe
+
+unsubscribed
+
+`string`
+
+`unsubscribed`
+
+unsubscribed.
+
+## IContactsStyleProps : `Interface`
+
+IContactsStyleProps interface.
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+containerStyle
+
+`ViewStyle`
+
+The Wrapping Container style
+
+tabBarUnderline
+
+`ViewStyle`
+
+Tab underline style
+
+tabActiveText
+
+`TextStyle`
+
+Tab text style when is selected
+
+tabText
+
+`TextStyle`
+
+Tab text style when is Unselected
+
+tabBackground
+
+`ViewStyle`
+
+Tab background style
+
+accessToContactsContainer
+
+`ViewStyle`
+
+The view Style when the Local phone contact permission is denied
+
+title
+
+`TextStyle`
+
+Warning Text title Style when the Local phone contact permission is denied
+
+message
+
+`TextStyle`
+
+Warning Text description Style when the Local phone contact permission is denied
+
+button
+
+`ViewStyle`
+
+`Open Setting` button style for the local phone contacts is denied
+
+buttonText
+
+`TextStyle`
+
+`Open Setting` button text style for the local phone contacts is denied
+
+### On this page
+
+-   [Typedefs](/docs/sdk/reactnative/api/IContact#name-typedefs-0)
+-   [IContact : Interface](/docs/sdk/reactnative/api/IContact#name-icontact-:-interface-7)
+-   [IEmail : Interface](/docs/sdk/reactnative/api/IContact#name-iemail-:-interface-212)
+-   [IPhoneNumber : Interface](/docs/sdk/reactnative/api/IContact#name-iphonenumber-:-interface-263)
+-   [EmailType : enum](/docs/sdk/reactnative/api/IContact#name-emailtype-:-enum-314)
+-   [PhoneType : enum](/docs/sdk/reactnative/api/IContact#name-phonetype-:-enum-427)
+-   [Presence : enum](/docs/sdk/reactnative/api/IContact#name-presence-:-enum-624)
+-   [IContactsStyleProps : Interface](/docs/sdk/reactnative/api/IContact#name-icontactsstyleprops-:-interface-835)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

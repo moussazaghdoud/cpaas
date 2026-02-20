@@ -1,0 +1,130 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/ConversationServices"
+lastSynced: "2026-02-20T07:12:33.362Z"
+---
+# Documentation
+
+Conversation Service
+
+### Conversation Services
+
+---
+
+### Preamble
+
+---
+
+The Conversations Service provides methods for managing conversations, including retrieving conversations, sending conversations by email, deleting conversation messages, and retrieving conversations by JID.
+
+## Methods
+
+### getConversations()
+
+---
+
+Retrieves all conversations.
+
+-   Returns: `void`
+-   Example:
+
+```typescript
+import { conversationsService } from 'react-native-rainbow-module'
+...
+const getConversationList = () => {
+  conversationsService.getConversations();
+}
+// listen the conversation list result
+eventEmitter.addListener(
+      EventType.conversationsUpdated,
+      (eventData: IConversation[]) => {
+        // handle conversation list
+      }
+    );
+```
+
+-   Note: This method triggers the EventType.conversationsUpdated event.
+
+### sendConversationByEmail(conversationJid: string)
+
+Sends a conversation by email.
+
+-   Parameters
+    
+    -   `conversationJid`: The JID of the conversation to send.
+-   Returns: `void`
+    
+-   Example:
+    
+
+```ts
+import { conversationsService } from 'react-native-rainbow-module'
+...
+const sendConversation = (conversationJid: string) => {
+  conversationsService.sendConversationByEmail(conversationJid: string);
+}
+```
+
+### deleteConversationMessages(conversationJid: string)
+
+```
+Deletes the messages of a conversation.
+```
+
+-   Parameters
+    
+    -   `conversationJid`: The JID of the conversation to delete messages from.
+-   Returns: `void`
+    
+-   Example:
+    
+
+```ts
+import { conversationsService } from 'react-native-rainbow-module'
+...
+const deleteConversation = (conversationJid: string) => {
+  onversationsService.deleteConversationMessages(conversationJid: string);
+}
+```
+
+### getConversationByJid(conversationJid: string)
+
+Retrieves a conversation by JID.
+
+-   Parameters
+    -   `conversationJid`: The JID of the conversation to retrieve.
+-   Returns: `void`
+-   Example:
+
+```ts
+import { conversationsService } from 'react-native-rainbow-module'
+...
+const sendConversation = (conversationJid: string) => {
+conversationsService.getConversationByJid(conversationJid);
+```
+
+### Events
+
+The Conversations Service triggers the following events:
+
+-   `EventType.conversationsUpdated`: Triggered when the conversation list is updated.
+-   `EventType.conversationsUpdated`: Triggered when a conversation is deleted.
+
+### On this page
+
+-   [Conversation Services](/docs/sdk/reactnative/api/ConversationServices#name-conversation-services-0)
+-   [Preamble](/docs/sdk/reactnative/api/ConversationServices#name-preamble-4)
+-   [Methods](/docs/sdk/reactnative/api/ConversationServices#name-methods-11)
+-   [getConversations()](/docs/sdk/reactnative/api/ConversationServices#name-getconversations-14)
+-   [sendConversationByEmail(conversationJid: string)](/docs/sdk/reactnative/api/ConversationServices#name-sendconversationbyemailconversationjid:-string-41)
+-   [deleteConversationMessages(conversationJid: string)](/docs/sdk/reactnative/api/ConversationServices#name-deleteconversationmessagesconversationjid:-string-72)
+-   [getConversationByJid(conversationJid: string)](/docs/sdk/reactnative/api/ConversationServices#name-getconversationbyjidconversationjid:-string-101)
+-   [Events](/docs/sdk/reactnative/api/ConversationServices#name-events-132)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

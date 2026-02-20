@@ -1,0 +1,1482 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/message"
+lastSynced: "2026-02-20T07:12:32.430Z"
+---
+# Documentation
+
+Message
+
+LTS release 2.XPublished on 2025-01-01
+
+## Classes
+
+[Message](#Message)
+
+## Functions
+
+[MessageFactory()](#MessageFactory)
+
+This class is used to create a message from data object
+
+## Message
+
+**Kind**: global class
+
+**Access**: public
+
+-   [Message](#Message)
+    -   [Message()](#new_Message_new)
+    -   *API*
+        -   [id](#Message+id)
+        -   [answeredMsg](#Message+answeredMsg)
+        -   [answeredMsgId](#Message+answeredMsgId)
+        -   [answeredMsgDate](#Message+answeredMsgDate)
+        -   [answeredMsgStamp](#Message+answeredMsgStamp)
+        -   [fromJid](#Message+fromJid)
+        -   [side](#Message+side)
+        -   [resource](#Message+resource)
+        -   [date](#Message+date)
+        -   [toJid](#Message+toJid)
+        -   [type](#Message+type)
+        -   [content](#Message+content)
+        -   [receiptStatus](#Message+receiptStatus)
+        -   [lang](#Message+lang)
+        -   [cc](#Message+cc)
+        -   [cctype](#Message+cctype)
+        -   [isEvent](#Message+isEvent)
+        -   [event](#Message+event)
+        -   [alternativeContent](#Message+alternativeContent)
+        -   [isMarkdown](#Message+isMarkdown)
+        -   [subject](#Message+subject)
+        -   [oob](#Message+oob)
+        -   [fromBubbleJid](#Message+fromBubbleJid)
+        -   [fromBubbleUserJid](#Message+fromBubbleUserJid)
+        -   [geoloc](#Message+geoloc)
+        -   [attention](#Message+attention)
+        -   [mentions](#Message+mentions)
+        -   [voiceMessage](#Message+voiceMessage)
+        -   [urgency](#Message+urgency)
+        -   [urgencyAck](#Message+urgencyAck)
+        -   [historyIndex](#Message+historyIndex)
+        -   [attachedMsgId](#Message+attachedMsgId)
+        -   [attachIndex](#Message+attachIndex)
+        -   [attachNumber](#Message+attachNumber)
+        -   [eventJid](#Message+eventJid)
+        -   [originalMessageReplaced](#Message+originalMessageReplaced)
+        -   [confOwnerId](#Message+confOwnerId)
+        -   [confOwnerDisplayName](#Message+confOwnerDisplayName)
+        -   [confOwnerJid](#Message+confOwnerJid)
+        -   [conversation](#Message+conversation)
+        -   [isForwarded](#Message+isForwarded)
+        -   [forwardedMsg](#Message+forwardedMsg)
+        -   [replacedByMessage](#Message+replacedByMessage)
+        -   [deleted](#Message+deleted)
+        -   [modified](#Message+modified)
+        -   [rainbowCpaas](#Message+rainbowCpaas)
+    -   *API*
+        -   [Type](#Message.Type) : `enum`
+        -   [ReceiptStatus](#Message.ReceiptStatus) : `enum`
+        -   [Side](#Message.Side) : `enum`
+
+---
+
+### Message()
+
+This class is used to represent a message in a conversation  
+A message is exchanged when discussing in One-to-One or in a Bubble.
+
+---
+
+### message.id
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+id
+
+`string`
+
+The ID of the Message
+
+---
+
+### message.answeredMsg
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+answeredMsg
+
+`string`
+
+The answered message of the message answered
+
+---
+
+### message.answeredMsgId
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+answeredMsgId
+
+`string`
+
+The Id of the message answered
+
+---
+
+### message.answeredMsgDate
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+answeredMsgDate
+
+`string`
+
+The Date of the message answered
+
+---
+
+### message.answeredMsgStamp
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+answeredMsgStamp
+
+`string`
+
+The Stamp of the message answered
+
+---
+
+### message.fromJid
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+fromJid
+
+`string`
+
+The JID (without the resource) of the user who sent this Message. Can be the identity of a user or a user inside a Bubble
+
+---
+
+### message.side
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+side
+
+`Side`
+
+The message originator Message.Side.RIGHT is the bot and Message.Side.LT is other side.
+
+---
+
+### message.resource
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+resource
+
+`string`
+
+The resource of the user who sent this message
+
+---
+
+### message.date
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+date
+
+`Date`
+
+The creation date of the message
+
+---
+
+### message.toJid
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+toJid
+
+`string`
+
+The JID of the recipient of this message
+
+---
+
+### message.type
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+type
+
+`string`
+
+The type of the message. Can be `chat` or `groupchat`
+
+---
+
+### message.content
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+content
+
+`string`
+
+The content of this message (text)
+
+---
+
+### message.receiptStatus
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+receiptStatus
+
+`ReceiptStatus`
+
+The state of the receipt
+
+---
+
+### message.lang
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+lang
+
+`string`
+
+The language of the content for this Message (if specified)
+
+---
+
+### message.cc
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+cc
+
+`Boolean`
+
+True if the message is a carbon-copy (duplicated message due to several resources used)
+
+---
+
+### message.cctype
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+cctype
+
+`string`
+
+The Carbon-copy type. Can be `sent` or `received`
+
+---
+
+### message.isEvent
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isEvent
+
+`Boolean`
+
+True if the message is an event (a specific admin message in Bubble - should not be considered as text message)
+
+---
+
+### message.event
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+event
+
+`string`
+
+Contains the name of the event (only filled if isEvent=true)
+
+---
+
+### message.alternativeContent
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+alternativeContent
+
+`Array.<Object>`
+
+The list of alternative contents
+
+alternativeContent.message
+
+`String`
+
+The alternative message content
+
+alternativeContent.type
+
+`String`
+
+The alternative message content-type
+
+---
+
+### message.isMarkdown
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isMarkdown
+
+`boolean`
+
+If the message is a markdown type message
+
+---
+
+### message.subject
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+subject
+
+`string`
+
+The subject of the message (if provided)
+
+---
+
+### message.oob
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+oob
+
+`Object`
+
+The description of an attached file to the message (if provided)
+
+oob.url
+
+`String`
+
+The file URL
+
+oob.mime
+
+`String`
+
+The file mime-type
+
+oob.filename
+
+`String`
+
+The file name
+
+oob.filesize
+
+`Number`
+
+The file size
+
+---
+
+### message.fromBubbleJid
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+fromBubbleJid
+
+`string`
+
+The JID of the bubble that received the message. (Only for `groupchat` message)
+
+---
+
+### message.fromBubbleUserJid
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+fromBubbleUserJid
+
+`string`
+
+The JID of the user who send the message without the JID of the Bubble. (Only for `groupchat` message)
+
+---
+
+### message.geoloc
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+geoloc
+
+`geoloc`
+
+---
+
+### message.attention
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+attention
+
+`object`
+
+Boolean to indicate if the current logged user is mentionned in the message.
+
+---
+
+### message.mentions
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+mentions
+
+`Array.<any>`
+
+Array of contacts mentionned in the message.
+
+---
+
+### message.voiceMessage
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+voiceMessage
+
+`any`
+
+---
+
+### message.urgency
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+urgency
+
+`string`
+
+the urgency of message ('std', 'low', 'middle', 'high')
+
+---
+
+### message.urgencyAck
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+urgencyAck
+
+`boolean`
+
+give the information that an urgent message has been updated.
+
+---
+
+### message.historyIndex
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+historyIndex
+
+`Array.<any>`
+
+the historyIndex of the message.
+
+---
+
+### message.attachedMsgId
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+attachedMsgId
+
+`string`
+
+the attachedMsgId of the message.
+
+---
+
+### message.attachIndex
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+attachIndex
+
+`string`
+
+the attachIndex of the message.
+
+---
+
+### message.attachNumber
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+attachNumber
+
+`string`
+
+the attachNumber of the message.
+
+---
+
+### message.eventJid
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+eventJid
+
+`string`
+
+the eventJid of the message.
+
+---
+
+### message.originalMessageReplaced
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+originalMessageReplaced
+
+[`Message`](#Message)
+
+the originalMessageReplaced of the message.
+
+---
+
+### message.confOwnerId
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+confOwnerId
+
+`string`
+
+the confOwnerId of the message.
+
+---
+
+### message.confOwnerDisplayName
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+confOwnerDisplayName
+
+`string`
+
+the confOwnerDisplayName of the message.
+
+---
+
+### message.confOwnerJid
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+confOwnerJid
+
+`string`
+
+the confOwnerJid of the message.
+
+---
+
+### message.conversation
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+conversation
+
+`Conversation`
+
+The Conversation the message belongs to (if provided)
+
+---
+
+### message.isForwarded
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isForwarded
+
+`boolean`
+
+the message has been forwarded.
+
+---
+
+### message.forwardedMsg
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+forwardedMsg
+
+`any`
+
+original message that has been forwarded.
+
+---
+
+### message.replacedByMessage
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+replacedBuMessage
+
+[`Message`](#Message)
+
+original message has been replaced by the spotted Message..
+
+---
+
+### message.deleted
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+deleted
+
+`boolean`
+
+the message has been deleted.
+
+---
+
+### message.modified
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+modified
+
+`boolean`
+
+the message has been modified.
+
+---
+
+### message.rainbowCpaas
+
+**Kind**: instance property of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+rainbowCpaas
+
+`Object`
+
+the message CPaaS API hidden data.
+
+---
+
+### Message.Type : `enum`
+
+The Type of message.
+
+**Kind**: static enum of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+CHAT
+
+`Object`
+
+`{key:0,value:Chat}`
+
+A chat message
+
+FILE
+
+`Object`
+
+`{key:1,value:File}`
+
+A file message
+
+FS
+
+`Object`
+
+`{key:2,value:FileSharing}`
+
+A file message
+
+WEBRTC
+
+`Object`
+
+`{key:4,value:WebRTC CAll}`
+
+A WebRTC message
+
+RECORDING
+
+`Object`
+
+`{key:5,value:Recording}`
+
+A Recording message
+
+FORM
+
+`Object`
+
+`{key:6,value:FORM}`
+
+A Form message
+
+---
+
+### Message.ReceiptStatus : `enum`
+
+The Status of the Receipt.
+
+**Kind**: static enum of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+NONE
+
+`number`
+
+`0`
+
+No receipt received yet
+
+ERROR
+
+`number`
+
+`1`
+
+No receipt received after a while (The server doesn't answer)
+
+IN\_PROGRESS
+
+`number`
+
+`2`
+
+Receipt in progress
+
+SENT
+
+`number`
+
+`3`
+
+The server has confirmed the reception of the message
+
+UNREAD
+
+`number`
+
+`4`
+
+The message has been received but not read
+
+READ
+
+`number`
+
+`5`
+
+The message has been read
+
+---
+
+### Message.Side : `enum`
+
+The Side of Message's from
+
+**Kind**: static enum of [`Message`](#Message)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+LEFT
+
+`string`
+
+`L`
+
+Message is from a recipient
+
+RIGHT
+
+`string`
+
+`R`
+
+Message is from me
+
+ADMIN
+
+`string`
+
+`ADMIN`
+
+Specific admin message
+
+---
+
+## MessageFactory()
+
+This class is used to create a message from data object
+
+**Kind**: global function
+
+**Access**: public
+
+---
+
+### On this page
+
+-   [Classes](/docs/sdk/node#name-classes-0)
+-   [Functions](/docs/sdk/node#name-functions-4)
+-   [Message](/docs/sdk/node#name-message-11)
+-   [Message()](/docs/sdk/node#name-message-297)
+-   [message.id](/docs/sdk/node#name-message.id-307)
+-   [message.answeredMsg](/docs/sdk/node#name-message.answeredmsg-354)
+-   [message.answeredMsgId](/docs/sdk/node#name-message.answeredmsgid-401)
+-   [message.answeredMsgDate](/docs/sdk/node#name-message.answeredmsgdate-448)
+-   [message.answeredMsgStamp](/docs/sdk/node#name-message.answeredmsgstamp-495)
+-   [message.fromJid](/docs/sdk/node#name-message.fromjid-542)
+-   [message.side](/docs/sdk/node#name-message.side-589)
+-   [message.resource](/docs/sdk/node#name-message.resource-636)
+-   [message.date](/docs/sdk/node#name-message.date-683)
+-   [message.toJid](/docs/sdk/node#name-message.tojid-730)
+-   [message.type](/docs/sdk/node#name-message.type-777)
+-   [message.content](/docs/sdk/node#name-message.content-824)
+-   [message.receiptStatus](/docs/sdk/node#name-message.receiptstatus-871)
+-   [message.lang](/docs/sdk/node#name-message.lang-918)
+-   [message.cc](/docs/sdk/node#name-message.cc-965)
+-   [message.cctype](/docs/sdk/node#name-message.cctype-1012)
+-   [message.isEvent](/docs/sdk/node#name-message.isevent-1059)
+-   [message.event](/docs/sdk/node#name-message.event-1106)
+-   [message.alternativeContent](/docs/sdk/node#name-message.alternativecontent-1153)
+-   [message.isMarkdown](/docs/sdk/node#name-message.ismarkdown-1222)
+-   [message.subject](/docs/sdk/node#name-message.subject-1269)
+-   [message.oob](/docs/sdk/node#name-message.oob-1316)
+-   [message.fromBubbleJid](/docs/sdk/node#name-message.frombubblejid-1407)
+-   [message.fromBubbleUserJid](/docs/sdk/node#name-message.frombubbleuserjid-1454)
+-   [message.geoloc](/docs/sdk/node#name-message.geoloc-1501)
+-   [message.attention](/docs/sdk/node#name-message.attention-1542)
+-   [message.mentions](/docs/sdk/node#name-message.mentions-1589)
+-   [message.voiceMessage](/docs/sdk/node#name-message.voicemessage-1636)
+-   [message.urgency](/docs/sdk/node#name-message.urgency-1677)
+-   [message.urgencyAck](/docs/sdk/node#name-message.urgencyack-1724)
+-   [message.historyIndex](/docs/sdk/node#name-message.historyindex-1771)
+-   [message.attachedMsgId](/docs/sdk/node#name-message.attachedmsgid-1818)
+-   [message.attachIndex](/docs/sdk/node#name-message.attachindex-1865)
+-   [message.attachNumber](/docs/sdk/node#name-message.attachnumber-1912)
+-   [message.eventJid](/docs/sdk/node#name-message.eventjid-1959)
+-   [message.originalMessageReplaced](/docs/sdk/node#name-message.originalmessagereplaced-2006)
+-   [message.confOwnerId](/docs/sdk/node#name-message.confownerid-2053)
+-   [message.confOwnerDisplayName](/docs/sdk/node#name-message.confownerdisplayname-2100)
+-   [message.confOwnerJid](/docs/sdk/node#name-message.confownerjid-2147)
+-   [message.conversation](/docs/sdk/node#name-message.conversation-2194)
+-   [message.isForwarded](/docs/sdk/node#name-message.isforwarded-2241)
+-   [message.forwardedMsg](/docs/sdk/node#name-message.forwardedmsg-2288)
+-   [message.replacedByMessage](/docs/sdk/node#name-message.replacedbymessage-2335)
+-   [message.deleted](/docs/sdk/node#name-message.deleted-2382)
+-   [message.modified](/docs/sdk/node#name-message.modified-2429)
+-   [message.rainbowCpaas](/docs/sdk/node#name-message.rainbowcpaas-2476)
+-   [Message.Type : enum](/docs/sdk/node#name-message.type-:-enum-2523)
+-   [Message.ReceiptStatus : enum](/docs/sdk/node#name-message.receiptstatus-:-enum-2649)
+-   [Message.Side : enum](/docs/sdk/node#name-message.side-:-enum-2775)
+-   [MessageFactory()](/docs/sdk/node#name-messagefactory-2859)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

@@ -3,16 +3,365 @@ title: "CPaaS SDK for business communication solutions | Rainbow"
 description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
 type: "docs-hub"
 source: "https://developers.openrainbow.com/doc/hub/users-visibility-and-privacy"
-lastSynced: "2026-02-19T22:35:13.191Z"
+lastSynced: "2026-02-20T07:12:23.908Z"
 ---
 # Documentation
 
-Hub > users-visibility-and-privacy
+Visibility and privacy rules
 
-### Sur cette page
+## Visibility and Privacy rules
 
 ---
 
-Ce contenu vous a-t-il été utile ?OuiNon
+There is an important concept in Rainbow that you can't ignore because this will have an impact on your development. This is about **Rainbow identity**.
+
+A Rainbow identity is the unique digital identification of someone or something. This is who you are in Rainbow and how you are seen by others. And as an identity can be applied to a bot, to a IOT device, to everything that can connect to Rainbow, this is how this entity is identified in Rainbow.
+
+In Rainbow, identities follow 2 kinds or rules:
+
+-   The Rainbow **visibility** rules
+    
+-   The Rainbow **privacy** rules
+    
+
+You need to understand how these concepts work if you want to connect people and things. This guide will help you understanding these concepts.
+
+### Visibility
+
+---
+
+In Rainbow, when you search for someone or something using his or its name and when there is no result returned, you can't conclude immediately that the user or the thing has no Rainbow account. An account can exist but due to his or its **visibility**, you have not the right to find him or it and so to interact with him or it.
+
+This is called the **visibility rules**.
+
+These visibility rules depends on two criterias:
+
+-   The visibility of the surrounding Rainbow company
+    
+-   The visibility of the Rainbow account representing a user or a thing.
+    
+
+#### Visibility of Rainbow companies
+
+Regarding the visibility of a Rainbow company, the value can be **public**, **private** or **organization** which in fact is equivalent to **visible** or **not visible**.
+
+Visibility of the company
+
+Rule
+
+**Public**
+
+A public company is **visible** from other companies.  
+All Rainbow accounts created in that company are **public** too.
+
+**Private**
+
+A private company is **not visible** from other companies.  
+Rainbow accounts created in that company could be **public** or **private**.
+
+**Organization**
+
+An organization company that is **visible only by companies from the same organization**.  
+Rainbow account created in that company are **public** from inside the organization and **private** from outside the organization.
+
+#### Visibility of Rainbow accounts
+
+Regarding the visibility of a Rainbow account, the value can be **public** or **private** which in fact is equivalent to **visible** or **not visible**
+
+Visibility of an account
+
+Rule
+
+**Public**
+
+A public Rainbow account is **visible** from any others Rainbow account.  
+Limited to companies in the same organization when the surrounding company has a visibility **organization**.
+
+**Private**
+
+A private Rainbow account is **visible** only from Rainbow accounts of the same company.  
+Consequently, a private Rainbow account is **not visible** from Rainbow accounts outside its company.
+
+#### Visibility of Rainbow accounts in the default Rainbow Company
+
+Rainbow accounts that are not attached to a specific company are attached to a virtual default company called 'Rainbow'. This virtual company (Rainbow) is public which means that any Rainbow accounts are public too.
+
+#### Rainbow Visibility rules
+
+The visibility rules are the following:
+
+-   **Rule #1**: If you know only the `name` or the `loginEmail` of a user, you are able to find the Rainbow associated account only if this user is public or in the same company as you.
+    
+-   **Rule #2**: If you know the `id` or the `jid`, you will be able to find Rainbow associated accounts no matter if the account is public or private.
+    
+
+### Privacy
+
+---
+
+In Rainbow, when you search for someone or something and when you find him or it, you can see that depending on the user found, you have not access to the same level of information due to the **privacy**.
+
+This is called the **privacy rules**.
+
+These rules allow to protect your identity from other users and avoid other users to stole or use information without your consent.
+
+Basically, there are 2 levels of privacy:
+
+-   The **restricted** level: Only a subset of information is accessible.
+    
+-   The **full** level: All information of the user's identity is accessible.
+    
+
+#### Restricted level of information
+
+When you have only access to a restricted level of information of a Rainbow account, you have access to the following information.
+
+*Note*: Depending SDK used, fields name can be different.
+
+Fields
+
+Description
+
+`id`
+
+The account id
+
+`jid_im`
+
+The account JID IM
+
+`firstname`
+
+The account firstname
+
+`lastname`
+
+The account lastname
+
+`company`
+
+The company name
+
+`companyId`
+
+The company Id
+
+`guestmode`
+
+True if the account is a guest
+
+`lastUpdateDate`
+
+The last time the information has been updated.
+
+`lastAvatarUpdateDate`
+
+The last time the avatar has been updated.  
+If null, no avatar has been set
+
+`isTerminated`
+
+True if the account has been closed
+
+Note: An additional `loginEmail` field is received when the searched user is part of the same company of the user who made the search.
+
+#### Full level of information
+
+When you have a full access to an account information, you will be able to retrieve all the fields from the restricted and all other fields filled.
+
+Fields
+
+Description
+
+`id`
+
+The account id
+
+`jid_im`
+
+The account JID IM
+
+`firstname`
+
+The account firstname
+
+`lastname`
+
+The account lastname
+
+`company`
+
+The company name
+
+`companyId`
+
+The company Id
+
+`guestmode`
+
+True if the account is a guest
+
+`lastUpdateDate`
+
+The last time the information has been updated.
+
+`lastAvatarUpdateDate`
+
+The last time the avatar has been updated.  
+If null, no avatar has been set
+
+`isTerminated`
+
+True if the account has been closed
+
+`country`
+
+The account country
+
+`emails`
+
+A list of emails addresses
+
+`jid_tel`
+
+The account JID TEL
+
+`language`
+
+The account language
+
+`loginEmail`
+
+The account login email
+
+`phoneNumbers`
+
+A list of phone numbers
+
+`roles`
+
+A list of account roles
+
+#### Privacy rules
+
+The privacy rules are the following:
+
+-   **Rule #1**: You have access to the full level of information when you are in the same company of the user searched.
+    
+-   **Rule #2**: Rule #1 doesn't apply when you are in the default Rainbow company. Only restricted level of information is accessible.
+    
+-   **Rule #3**: You have access to the restricted level of information when you are not in the same company of the user searched
+    
+-   **Rule #4**: When a account is in your network, rule 3 doesn't apply. You have access to the full level of information no matter of the company.
+    
+
+#### Impact of adding an account to your network
+
+#### Interaction with Rainbow accounts
+
+Only the visibility of a account has an impact on the interaction you can have with it. The privacy as no impact. Rainbow interactions don't depend on the level of information you have on a contact. You are able to react him at least using instant messages.
+
+The following table lists the possible **direct** interactions you can have between accounts.
+
+Visibility of the account
+
+Is interaction possible
+
+In the same company
+
+**YES**
+
+Is private in an other company
+
+**NO**
+
+Is public in an other company
+
+**YES**
+
+#### Searching or getting information
+
+Rainbow SDKs offer several ways to search for an account and get information on it:
+
+-   **Search by account name**: You only need to have a part of a name at least to be able to use this search. Using a search returns always the restricted level of information. If the account is in the same company as you, you can have access to the full information using its `id`.
+    
+-   **Search by account loginEmail**: This way of searching a context will be **deprecated** soon and so should not be used anymore.
+    
+-   **Get information by Rainbow account Id**: If you know the Rainbow ID of an account, you could have access to its information. Depending on the privacy rules, you will have a restricted or full access.
+    
+-   **Get information by Rainbow account JID IM**: If you know the Rainbow JID IM of an account, you could have access to its information. Depending on the privacy rules, you will have a restricted or full access.
+    
+
+### Summary table
+
+---
+
+Here is a summary of the how accounts are seen depending on the visibility rules and privacy rules.
+
+Visibility of the account
+
+Visibility
+
+Level of privacy
+
+**Private or public in the same company**
+
+**VISIBLE**
+
+**FULL**
+
+**Private in other company**
+
+**NOT VISIBLE**
+
+\-
+
+**Public in other company**
+
+**VISIBLE**
+
+**RESTRICTED**  
+(\*)
+
+(\*) If account is in your network, you have access to the full level of information.
+
+*Note*: if you are in the Rainbow default company and you found a contact in the same Rainbow default company, you will have access to the restricted level of information.
+
+### Interested in
+
+---
+
+-   [Understanding Rainbow core concepts](/docs/hub/rainbow-core-concepts)
+    
+-   [Knowing Rainbow users](/docs/hub/users-in-rainbow)
+    
+-   [Discovering Rainbow core concepts](/docs/hub/rainbow-core-concepts)
+    
+
+---
+
+*Last updated July, 25th 2022*
+
+### On this page
+
+-   [Visibility and Privacy rules](/docs/hub/users-visibility-and-privacy#name-visibility-and-privacy-rules-0)
+-   [Visibility](/docs/hub/users-visibility-and-privacy#name-visibility-28)
+-   [Visibility of Rainbow companies](/docs/hub/users-visibility-and-privacy#name-visibility-of-rainbow-companies-53)
+-   [Visibility of Rainbow accounts](/docs/hub/users-visibility-and-privacy#name-visibility-of-rainbow-accounts-97)
+-   [Visibility of Rainbow accounts in the default Rainbow Company](/docs/hub/users-visibility-and-privacy#name-visibility-of-rainbow-accounts-in-the-default-rainbow-company-133)
+-   [Rainbow Visibility rules](/docs/hub/users-visibility-and-privacy#name-rainbow-visibility-rules-139)
+-   [Privacy](/docs/hub/users-visibility-and-privacy#name-privacy-157)
+-   [Restricted level of information](/docs/hub/users-visibility-and-privacy#name-restricted-level-of-information-185)
+-   [Full level of information](/docs/hub/users-visibility-and-privacy#name-full-level-of-information-291)
+-   [Privacy rules](/docs/hub/users-visibility-and-privacy#name-privacy-rules-447)
+-   [Impact of adding an account to your network](/docs/hub/users-visibility-and-privacy#name-impact-of-adding-an-account-to-your-network-475)
+-   [Interaction with Rainbow accounts](/docs/hub/users-visibility-and-privacy#name-interaction-with-rainbow-accounts-481)
+-   [Searching or getting information](/docs/hub/users-visibility-and-privacy#name-searching-or-getting-information-528)
+-   [Summary table](/docs/hub/users-visibility-and-privacy#name-summary-table-556)
+-   [Interested in](/docs/hub/users-visibility-and-privacy#name-interested-in-619)
+
+---
+
+Was this content helpful to you?YesNo
 
 Feedback

@@ -1,0 +1,420 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/Events"
+lastSynced: "2026-02-20T07:12:33.385Z"
+---
+# Documentation
+
+Events
+
+## Members
+
+[Events](#Events)
+
+This module handle every events that come from native Rainbow.  
+To receive them, you need to subscribe individually to each of the following events see method provided by the class below.  
+
+## Functions
+
+[addListener(e, listener)](#addListener)
+
+Adds a listener to be invoked when events of the specified type are emitted.The data arguments emitted will be passed to the listener function.
+
+[removeListener(e, listener)](#removeListener)
+
+Removes the given listener for event of specific type.
+
+## Events
+
+This module handle every events that come from native Rainbow.  
+To receive them, you need to subscribe individually to each of the following events see method provided by the class below.  
+
+**Kind**: global variable **Emits**: [`ContactsUpdated`](#Events+event_ContactsUpdated), [`LocalContactsUpdated`](#Events+event_LocalContactsUpdated), [`CurrentUserUpdated`](#Events+event_CurrentUserUpdated), [`CurrentUserSignedOut`](#Events+event_CurrentUserSignedOut), [`PresenceUpdated`](#Events+event_PresenceUpdated), [`ConnectedUserUpdated`](#Events+event_ConnectedUserUpdated), [`ResetPswResult`](#Events+event_ResetPswResult), [`CurrentCall`](#Events+event_CurrentCall), [`CallAdded`](#Events+event_CallAdded), [`CallUpdated`](#Events+event_CallUpdated), [`CallRemoved`](#Events+event_CallRemoved), [`MicStateUpdated`](#Events+event_MicStateUpdated), [`SpeakerStateUpdated`](#Events+event_SpeakerStateUpdated), [`SessionAdded`](#Events+event_SessionAdded), [`SessionUpdated`](#Events+event_SessionUpdated), [`SecondSessionAdded`](#Events+event_SecondSessionAdded), [`SecondSessionUpdated`](#Events+event_SecondSessionUpdated), [`SessionRemoved`](#Events+event_SessionRemoved), [`SessionAllRemoved`](#Events+event_SessionAllRemoved), `Events#event:NomadicUpdated`, [`CallForwardingResult`](#Events+event_CallForwardingResult), [`CallForwardStatus`](#Events+event_CallForwardStatus), [`CallForwardOptionsUpdated`](#Events+event_CallForwardOptionsUpdated), [`TelephonyStatusUpdated`](#Events+event_TelephonyStatusUpdated), [`TelephonyCapabilityUpdate`](#Events+event_TelephonyCapabilityUpdate), [`CallForwardNumberDestination`](#Events+event_CallForwardNumberDestination), `Events#event:SessionsCountUpdated`, [`SecondSessionRemoved`](#Events+event_SecondSessionRemoved), [`MakePbxCallResponse`](#Events+event_MakePbxCallResponse), [`RetrieveForbidden`](#Events+event_RetrieveForbidden), [`NomadicNumberUpdated`](#Events+event_NomadicNumberUpdated), `Events#event:NoNomadicNumberEntered`, [`ConversationsUpdated`](#Events+event_ConversationsUpdated), [`CallLogsUpdated`](#Events+event_CallLogsUpdated), [`MissedCallLogsUpdated`](#Events+event_MissedCallLogsUpdated), [`MissedCallUnreadCounterUpdated`](#Events+event_MissedCallUnreadCounterUpdated), [`VoiceMailUnreadCounterUpdated`](#Events+event_VoiceMailUnreadCounterUpdated), [`VoiceMailCapabilityUpdate`](#Events+event_VoiceMailCapabilityUpdate), [`MessagesUpdated`](#Events+event_MessagesUpdated), [`IsTyping`](#Events+event_IsTyping), [`FileDownloadProgressUpdated`](#Events+event_FileDownloadProgressUpdated), [`FileDownloadFinished`](#Events+event_FileDownloadFinished), `Events#event:ThumpnailUpdated`, [`FileAttachProgressUpdated`](#Events+event_FileAttachProgressUpdated), [`FileAttachFinished`](#Events+event_FileAttachFinished), `Events#event:AppConfiguration`, `Events#event:AppVersion`, [`ContactsSearchResult`](#Events+event_ContactsSearchResult), [`SearchError`](#Events+event_SearchError), [`SearchFinished`](#Events+event_SearchFinished), [`BubblesListUpdated`](#Events+event_BubblesListUpdated), [`CreateBubbleResult`](#Events+event_CreateBubbleResult), [`AddParticipantResult`](#Events+event_AddParticipantResult), [`SentInvitationsUpdated`](#Events+event_SentInvitationsUpdated), [`ReceivedInvitationsUpdated`](#Events+event_ReceivedInvitationsUpdated), `Events#event:InvitationResponse`, [`IsNetworkAvailable`](#Events+event_IsNetworkAvailable)
+
+-   [Events](#Events)
+    -   ["ContactsUpdated"](#Events+event_ContactsUpdated)
+    -   ["LocalContactsUpdated"](#Events+event_LocalContactsUpdated)
+    -   ["CurrentUserUpdated"](#Events+event_CurrentUserUpdated)
+    -   ["CurrentUserSignedOut"](#Events+event_CurrentUserSignedOut)
+    -   ["PresenceUpdated"](#Events+event_PresenceUpdated)
+    -   ["LocalContactsUpdated"](#Events+event_LocalContactsUpdated)
+    -   ["ConnectedUserUpdated"](#Events+event_ConnectedUserUpdated)
+    -   ["ForgetPwdEmailResult"](#Events+event_ForgetPwdEmailResult)
+    -   ["ResetPswResult"](#Events+event_ResetPswResult)
+    -   ["CurrentCall"](#Events+event_CurrentCall)
+    -   ["CallAdded"](#Events+event_CallAdded)
+    -   ["CallUpdated"](#Events+event_CallUpdated)
+    -   ["CallRemoved"](#Events+event_CallRemoved)
+    -   ["MicStateUpdated"](#Events+event_MicStateUpdated)
+    -   ["SpeakerStateUpdated"](#Events+event_SpeakerStateUpdated)
+    -   ["SessionAdded"](#Events+event_SessionAdded)
+    -   ["SessionUpdated"](#Events+event_SessionUpdated)
+    -   ["SecondSessionAdded"](#Events+event_SecondSessionAdded)
+    -   ["SecondSessionUpdated"](#Events+event_SecondSessionUpdated)
+    -   ["SessionRemoved"](#Events+event_SessionRemoved)
+    -   ["SessionAllRemoved"](#Events+event_SessionAllRemoved)
+    -   ["CallForwardingResult"](#Events+event_CallForwardingResult)
+    -   ["CallForwardStatus"](#Events+event_CallForwardStatus)
+    -   ["CallForwardOptionsUpdated"](#Events+event_CallForwardOptionsUpdated)
+    -   ["TelephonyStatusUpdated"](#Events+event_TelephonyStatusUpdated)
+    -   ["TelephonyCapabilityUpdate"](#Events+event_TelephonyCapabilityUpdate)
+    -   ["LocalContactsUpdated"](#Events+event_LocalContactsUpdated)
+    -   ["CallForwardNumberDestination"](#Events+event_CallForwardNumberDestination)
+    -   ["SecondSessionRemoved"](#Events+event_SecondSessionRemoved)
+    -   ["MakePbxCallResponse"](#Events+event_MakePbxCallResponse)
+    -   ["RetrieveForbidden"](#Events+event_RetrieveForbidden)
+    -   ["NomadicNumberUpdated"](#Events+event_NomadicNumberUpdated)
+    -   ["ConversationsUpdated"](#Events+event_ConversationsUpdated)
+    -   ["CallLogsUpdated"](#Events+event_CallLogsUpdated)
+    -   ["missedCallLogsUpdated"](#Events+event_missedCallLogsUpdated)
+    -   ["MissedCallUnreadCounterUpdated"](#Events+event_MissedCallUnreadCounterUpdated)
+    -   ["VoiceMailUnreadCounterUpdated"](#Events+event_VoiceMailUnreadCounterUpdated)
+    -   ["VoiceMailCapabilityUpdate"](#Events+event_VoiceMailCapabilityUpdate)
+    -   ["MessagesUpdated"](#Events+event_MessagesUpdated)
+    -   ["IsTyping"](#Events+event_IsTyping)
+    -   ["FileDownloadProgressUpdated"](#Events+event_FileDownloadProgressUpdated)
+    -   ["FileDownloadFinished"](#Events+event_FileDownloadFinished)
+    -   ["FileAttachProgressUpdated"](#Events+event_FileAttachProgressUpdated)
+    -   ["FileAttachFinished"](#Events+event_FileAttachFinished)
+    -   ["ContactsSearchResult"](#Events+event_ContactsSearchResult)
+    -   ["SearchError"](#Events+event_SearchError)
+    -   ["SearchFinished"](#Events+event_SearchFinished)
+    -   ["BubblesListUpdated"](#Events+event_BubblesListUpdated)
+    -   ["CreateBubbleResult"](#Events+event_CreateBubbleResult)
+    -   ["AddParticipantResult"](#Events+event_AddParticipantResult)
+    -   ["SentInvitationsUpdated"](#Events+event_SentInvitationsUpdated)
+    -   ["ReceivedInvitationsUpdated"](#Events+event_ReceivedInvitationsUpdated)
+    -   ["IsNetworkAvailable"](#Events+event_IsNetworkAvailable)
+
+### "ContactsUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the Rainbow roster contacts updated.
+
+### "LocalContactsUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the local phone contacts updated.
+
+### "CurrentUserUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the Connected user updated.
+
+### "CurrentUserSignedOut"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the connected Rainbow user logged out.
+
+### "PresenceUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the presence updated.
+
+### "LocalContactsUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the Presence for the connected user has updated.
+
+### "ConnectedUserUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the Rainbow connected user information has updated.
+
+### "ForgetPwdEmailResult"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when you send a reset password email.
+
+### "ResetPswResult"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when you received a rest password result .
+
+### "CurrentCall"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when there is a current pbx or webrtc call.
+
+### "CallAdded"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when a webrtc call has been added.
+
+### "CallUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the active webrtc call has modified.
+
+### "CallRemoved"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the active webrtc call has removed.
+
+### "MicStateUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the microphone state has muted/unmuted.
+
+### "SpeakerStateUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the speaker state has been updated
+
+### "SessionAdded"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when a pbx call has been added.
+
+### "SessionUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the current pbx call has been updated.
+
+### "SecondSessionAdded"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when a second pbx call has been added.
+
+### "SecondSessionUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when a second pbx call has been updated.
+
+### "SessionRemoved"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the current active pbx call ended.
+
+### "SessionAllRemoved"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when all the active pbx call has been ended.
+
+### "CallForwardingResult"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when there is a change in the call forwarding status.
+
+### "CallForwardStatus"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired withe the current forward status new value.
+
+### "CallForwardOptionsUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the call forwarding options has been updated.
+
+### "TelephonyStatusUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the telephony status has been updated.
+
+### "TelephonyCapabilityUpdate"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the telephony capability has been updated.
+
+### "LocalContactsUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the phone number to forward the call has been changed.
+
+### "CallForwardNumberDestination"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the counts of the active sessions has been updated.
+
+### "SecondSessionRemoved"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the second session has been removed.
+
+### "MakePbxCallResponse"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when you failed to start a pbx call.
+
+### "RetrieveForbidden"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when retrieving the muted call has been failed .
+
+### "NomadicNumberUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the nomadic number has been updated.
+
+### "ConversationsUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when conversations for the connected user has been updated.
+
+### "CallLogsUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the callLogs for the connected user has been updated.
+
+### "MissedCallLogsUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the missed callLogs for the connected user has been updated.
+
+### "MissedCallUnreadCounterUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the counter of the unread missed calls has been Updated.
+
+### "VoiceMailUnreadCounterUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the counter of the unread voice mail has been Updated.
+
+### "VoiceMailCapabilityUpdate"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the voiceMail capability has been updated.
+
+### "MessagesUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the IM has been updated.
+
+### "IsTyping"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the typing state for IM changes.
+
+### "FileDownloadProgressUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when downloading file is on InProgress.
+
+### "FileDownloadFinished"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when downloading the file has been finished.
+
+### "FileAttachProgressUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when attaching files.
+
+### "FileAttachFinished"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when attaching files finished.
+
+### "ContactsSearchResult"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when there is an update in the contacts search result.
+
+### "SearchError"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when there is an error while doing a search .
+
+### "SearchFinished"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the search for contacts finished.
+
+### "BubblesListUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when bubbles List has been updated.
+
+### "CreateBubbleResult"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired after creation a bubble.
+
+### "AddParticipantResult"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired after adding a participant to a bubble.
+
+### "SentInvitationsUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the sent invitations by the connected Rainbow user has been updated.
+
+### "ReceivedInvitationsUpdated"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when the received invitations has been updated.
+
+### "IsNetworkAvailable"
+
+**Kind**: event emitted by [`Events`](#Events) **Access**: public **Descriptions**: Fired when Wifi Or 3G connection changed.
+
+### addListener(e, listener)
+
+---
+
+Adds a listener to be invoked when events of the specified type are emitted.The data arguments emitted will be passed to the listener function.
+
+**Kind**: global function **Access**: public
+
+Param
+
+Type
+
+Description
+
+e
+
+`EventType`
+
+Name of the event to listen to.
+
+listener
+
+`function`
+
+Function to invoke when the specified event is emitted.
+
+### removeListener(e, listener)
+
+---
+
+Removes the given listener for event of specific type.
+
+**Kind**: global function **Access**: public
+
+Param
+
+Type
+
+Description
+
+e
+
+`EventType`
+
+Name of the event to emit.
+
+listener
+
+`function`
+
+Function to invoke when the specified event is emitted.
+
+### On this page
+
+-   [Members](/docs/sdk/reactnative/api/Events#name-members-0)
+-   [Functions](/docs/sdk/reactnative/api/Events#name-functions-4)
+-   [Events](/docs/sdk/reactnative/api/Events#name-events-11)
+-   ["ContactsUpdated"](/docs/sdk/reactnative/api/Events#name-contactsupdated-297)
+-   ["LocalContactsUpdated"](/docs/sdk/reactnative/api/Events#name-localcontactsupdated-303)
+-   ["CurrentUserUpdated"](/docs/sdk/reactnative/api/Events#name-currentuserupdated-309)
+-   ["CurrentUserSignedOut"](/docs/sdk/reactnative/api/Events#name-currentusersignedout-315)
+-   ["PresenceUpdated"](/docs/sdk/reactnative/api/Events#name-presenceupdated-321)
+-   ["LocalContactsUpdated"](/docs/sdk/reactnative/api/Events#name-localcontactsupdated-327)
+-   ["ConnectedUserUpdated"](/docs/sdk/reactnative/api/Events#name-connecteduserupdated-333)
+-   ["ForgetPwdEmailResult"](/docs/sdk/reactnative/api/Events#name-forgetpwdemailresult-339)
+-   ["ResetPswResult"](/docs/sdk/reactnative/api/Events#name-resetpswresult-345)
+-   ["CurrentCall"](/docs/sdk/reactnative/api/Events#name-currentcall-351)
+-   ["CallAdded"](/docs/sdk/reactnative/api/Events#name-calladded-357)
+-   ["CallUpdated"](/docs/sdk/reactnative/api/Events#name-callupdated-363)
+-   ["CallRemoved"](/docs/sdk/reactnative/api/Events#name-callremoved-369)
+-   ["MicStateUpdated"](/docs/sdk/reactnative/api/Events#name-micstateupdated-375)
+-   ["SpeakerStateUpdated"](/docs/sdk/reactnative/api/Events#name-speakerstateupdated-381)
+-   ["SessionAdded"](/docs/sdk/reactnative/api/Events#name-sessionadded-387)
+-   ["SessionUpdated"](/docs/sdk/reactnative/api/Events#name-sessionupdated-393)
+-   ["SecondSessionAdded"](/docs/sdk/reactnative/api/Events#name-secondsessionadded-399)
+-   ["SecondSessionUpdated"](/docs/sdk/reactnative/api/Events#name-secondsessionupdated-405)
+-   ["SessionRemoved"](/docs/sdk/reactnative/api/Events#name-sessionremoved-411)
+-   ["SessionAllRemoved"](/docs/sdk/reactnative/api/Events#name-sessionallremoved-417)
+-   ["CallForwardingResult"](/docs/sdk/reactnative/api/Events#name-callforwardingresult-423)
+-   ["CallForwardStatus"](/docs/sdk/reactnative/api/Events#name-callforwardstatus-429)
+-   ["CallForwardOptionsUpdated"](/docs/sdk/reactnative/api/Events#name-callforwardoptionsupdated-435)
+-   ["TelephonyStatusUpdated"](/docs/sdk/reactnative/api/Events#name-telephonystatusupdated-441)
+-   ["TelephonyCapabilityUpdate"](/docs/sdk/reactnative/api/Events#name-telephonycapabilityupdate-447)
+-   ["LocalContactsUpdated"](/docs/sdk/reactnative/api/Events#name-localcontactsupdated-453)
+-   ["CallForwardNumberDestination"](/docs/sdk/reactnative/api/Events#name-callforwardnumberdestination-459)
+-   ["SecondSessionRemoved"](/docs/sdk/reactnative/api/Events#name-secondsessionremoved-465)
+-   ["MakePbxCallResponse"](/docs/sdk/reactnative/api/Events#name-makepbxcallresponse-471)
+-   ["RetrieveForbidden"](/docs/sdk/reactnative/api/Events#name-retrieveforbidden-477)
+-   ["NomadicNumberUpdated"](/docs/sdk/reactnative/api/Events#name-nomadicnumberupdated-483)
+-   ["ConversationsUpdated"](/docs/sdk/reactnative/api/Events#name-conversationsupdated-489)
+-   ["CallLogsUpdated"](/docs/sdk/reactnative/api/Events#name-calllogsupdated-495)
+-   ["MissedCallLogsUpdated"](/docs/sdk/reactnative/api/Events#name-missedcalllogsupdated-501)
+-   ["MissedCallUnreadCounterUpdated"](/docs/sdk/reactnative/api/Events#name-missedcallunreadcounterupdated-507)
+-   ["VoiceMailUnreadCounterUpdated"](/docs/sdk/reactnative/api/Events#name-voicemailunreadcounterupdated-513)
+-   ["VoiceMailCapabilityUpdate"](/docs/sdk/reactnative/api/Events#name-voicemailcapabilityupdate-519)
+-   ["MessagesUpdated"](/docs/sdk/reactnative/api/Events#name-messagesupdated-525)
+-   ["IsTyping"](/docs/sdk/reactnative/api/Events#name-istyping-531)
+-   ["FileDownloadProgressUpdated"](/docs/sdk/reactnative/api/Events#name-filedownloadprogressupdated-537)
+-   ["FileDownloadFinished"](/docs/sdk/reactnative/api/Events#name-filedownloadfinished-543)
+-   ["FileAttachProgressUpdated"](/docs/sdk/reactnative/api/Events#name-fileattachprogressupdated-549)
+-   ["FileAttachFinished"](/docs/sdk/reactnative/api/Events#name-fileattachfinished-555)
+-   ["ContactsSearchResult"](/docs/sdk/reactnative/api/Events#name-contactssearchresult-561)
+-   ["SearchError"](/docs/sdk/reactnative/api/Events#name-searcherror-567)
+-   ["SearchFinished"](/docs/sdk/reactnative/api/Events#name-searchfinished-573)
+-   ["BubblesListUpdated"](/docs/sdk/reactnative/api/Events#name-bubbleslistupdated-579)
+-   ["CreateBubbleResult"](/docs/sdk/reactnative/api/Events#name-createbubbleresult-588)
+-   ["AddParticipantResult"](/docs/sdk/reactnative/api/Events#name-addparticipantresult-594)
+-   ["SentInvitationsUpdated"](/docs/sdk/reactnative/api/Events#name-sentinvitationsupdated-600)
+-   ["ReceivedInvitationsUpdated"](/docs/sdk/reactnative/api/Events#name-receivedinvitationsupdated-606)
+-   ["IsNetworkAvailable"](/docs/sdk/reactnative/api/Events#name-isnetworkavailable-612)
+-   [addListener(e, listener)](/docs/sdk/reactnative/api/Events#name-addlistenere-listener-618)
+-   [removeListener(e, listener)](/docs/sdk/reactnative/api/Events#name-removelistenere-listener-670)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

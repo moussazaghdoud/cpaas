@@ -1,0 +1,350 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/tutorials/GettingStarted"
+lastSynced: "2026-02-20T07:12:33.637Z"
+---
+# Documentation
+
+Getting started
+
+# Getting Started
+
+---
+
+Welcome to the Alcatel-Lucent Enterprise Rainbow React Native Software Development Kit (SDK)!
+
+## Preamble
+
+---
+
+The Alcatel-Lucent Enterprise (ALE) Rainbow SDK is a React Native library that allows you to connect your native Android and iOS applications to the Rainbow platform.
+
+This guide will walk you through setting up your environment and installing the SDK in a modern React Native project.
+
+### Prerequisites
+
+---
+
+Before you begin, ensure you have the following installed and configured for React Native development:
+
+-   **Node.js**: Active LTS version recommended.
+-   **npm** or **yarn(preferred)**.
+-   **React Native CLI**.
+-   **Xcode** for iOS development.
+-   **Android Studio** for Android development.
+
+For a detailed guide on setting up your development environment, please follow the official [React Native documentation](https://reactnative.dev/docs/environment-setup).
+
+### Installation
+
+---
+
+Adding the Rainbow SDK to your project is straightforward. In your React Native project's root directory, run:
+
+```bash
+# Using npm
+npm install react-native-rainbow-module
+
+# Or using yarn
+yarn add react-native-rainbow-module
+```
+
+#### iOS Installation
+
+For iOS, you need to install the native dependencies (Pods):
+
+```bash
+cd ios && pod install
+```
+
+### Peer Dependencies
+
+To function correctly, the Rainbow SDK requires several peer dependencies to be installed in your project. These are libraries that the SDK depends on but does not bundle, giving you greater control over your app's dependency tree.
+
+You will need to install the following packages:
+
+```bash
+# Using npm
+npm install react-native-localize react-native-permissions react-native-vector-icons react-native-keyboard-controller
+
+# Or using yarn
+yarn add react-native-localize react-native-permissions react-native-vector-icons react-native-keyboard-controller
+```
+
+After installing, you will need to configure them for each platform.
+
+### Credential Storage
+
+The Rainbow SDK does **not** handle the storage of user credentials (e.g., email and password). This is the responsibility of the consuming application.
+
+We recommend using a secure storage solution like `react-native-keychain` to store credentials. You will need to install and configure it in your application, then use it to save credentials on successful login and load them for silent login.
+
+For an example of how to implement this, please see the `LoginForm.tsx` and `ForgotPassword.tsx` components in the [example application](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples).
+
+#### iOS Installation
+
+For iOS, you need to install the native dependencies (Pods):
+
+```bash
+cd ios && pod install
+```
+
+#### Android Installation
+
+For Android, React Native's autolinking feature will handle most of the setup. However, you need to perform the following configuration steps.
+
+### Android Configuration
+
+---
+
+#### 1\. Set Minimum SDK Version
+
+The Rainbow SDK requires a minimum Android SDK version of 26. Open your project's `android/app/build.gradle` file and set `minSdkVersion`.
+
+```groovy
+// android/app/build.gradle
+android {
+    defaultConfig {
+        ...
+        minSdkVersion 26
+    }
+    ...
+}
+```
+
+#### 2\. Add the Rainbow Maven Repository
+
+In your project's root `android/build.gradle` file, add the Open Rainbow maven repository:
+
+```groovy
+// android/build.gradle
+allprojects {
+    repositories {
+        ...
+        maven { url "http://maven.openrainbow.io" }
+    }
+}
+```
+
+#### 3\. Initialize the SDK in `MainApplication`
+
+This is a critical step. You must initialize the Rainbow SDK in your `MainApplication` file before the React Native application starts. This is done by calling `RainbowPackage.setApplication()` in the `onCreate` method.
+
+**For Kotlin (`MainApplication.kt`):**
+
+```kotlin
+import com.ale.rainbow.rn.RainbowPackage
+
+class MainApplication : Application(), ReactApplication {
+
+    // ... other code
+
+    override fun onCreate() {
+        super.onCreate()
+        RainbowPackage.setApplication(this, MainActivity::class.java)
+        SoLoader.init(this, false)
+        // ... other code
+    }
+}
+```
+
+**For Java (`MainApplication.java`):**
+
+```java
+import com.ale.rainbow.rn.RainbowPackage;
+
+public class MainApplication extends Application implements ReactApplication {
+
+    // ... other code
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        RainbowPackage.setApplication(this, MainActivity.class);
+        SoLoader.init(this, /* native exopackage */ false);
+        // ... other code
+    }
+}
+```
+```groovy
+// android/build.gradle
+allprojects {
+    repositories {
+        ...
+        maven { url "http://maven.openrainbow.io" }
+    }
+}
+```
+
+# Initialize the SDK
+
+---
+
+#### STEP 1 : Create a Rainbow application
+
+To initialize the SDK you need an **applicationID** and a **secretKey** from the [Rainbow Developer Hub](https://hub.openrainbow.com/). This information allows you to identify your application and allows you to use the Rainbow platform. For more information, see Applications [lifecycle](https://hub.openrainbow.com/#/documentation/doc/hub/application-lifecycle) which explains what is the purpose, how to create an application, and how to get the application ID and the secret key.
+
+### STEP 2 : Add Configuration File
+
+The Rainbow SDK now uses a platform-specific configuration file for initialization. You need to add a `rainbow-config.json` file in both iOS and Android projects:
+
+#### Configuration File Structure
+
+Your `rainbow-config.json` should have the following structure:
+
+```json
+[
+   {
+       "HOST":"openrainbow.com",
+       "APP_ID":"your app id for .com host",
+       "SEC_KEY":"your secret key"
+    },
+    {
+       "HOST":"openrainbow.net",
+       "APP_ID":"your app id for .net host",
+       "SEC_KEY":"your secret key"
+    },
+    {
+       "HOST":"sandbox.openrainbow.com",
+       "APP_ID":"your app id for .sandbox host",
+       "SEC_KEY":"your secret key"
+    }
+]
+```
+
+#### Android Configuration
+
+1.  Create a `rainbow-config.json` file in the `android/app/src/main/res/raw` directory.
+2.  Add the configuration JSON to the file.
+
+**The configuration will be automatically loaded in `MainApplication.kt` when you call `RainbowPackage.setApplication` before React Native starts.**
+
+#### iOS Configuration
+
+1.  Create a `rainbow-config.json` file in the `ios/` directory.
+2.  Add the configuration JSON to the file.
+
+**The configuration will be automatically loaded in `AppDelegate.m` when you call `RainbowPackage.setApplication` before React Native starts.**
+
+you need to Read and parse the JSON file in `AppDelegate.m`. then Get the default configuration (first one) or the configuration you want and set it in the Rainbow SDK. Finally you need to initialize the SDK with those credentials. see example below:
+
+```ios
+NSDictionary *defaultConfig  = [[RNRainbowRn sharedManager] getConfigurationForCurrentHost ];
+  NSString *appId = defaultConfig[@"APP_ID"];
+  NSString *secretKey = defaultConfig[@"SEC_KEY"];
+  [[ServicesManager sharedInstance] setAppID:appId secretKey:secretKey];
+```
+
+#### STEP 2 : Initialize the SDK
+
+You need to initialize the Rainbow SDK in your application in order to connect to Rainbow and be able to use Rainbow features. once you create your application and obtained your appId and secret key successfully, you have to create a configuration JSON file and set your app credentials as mentioned in the [Configuration File Structure](#configuration-file-structure).
+
+The RN SDK will read this credential and use the app and secret key to initialize the SDK into your app.
+
+##### Android
+
+In the `onCreate()` method of your application (`MyApp.java`), you need to pass your application and your MainActivity class(needed for handling push notification) to the RainbowPackage Rainbow SDK by calling the static method `setApplication` from RainbowPackage.
+
+```
+public class MyApp extends Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+         RainbowPackage.setApplication(this, MainActivity.class);
+         ...
+    }
+    ...
+}
+```
+
+##### iOS
+
+In the `didFinishLaunchingWithOptions` method of your application (`AppDelegate.m`), you need to initialize the Rainbow SDK.
+
+1.  Add the following import in the `AppDelegate.m`
+
+```
+#import <RNRainbowRn.h>
+```
+
+2.  Adding the RNRainbowRn configuration setups:
+
+```
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+ ...
+ //find the bridge declaration
+  RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+ ...
+ //add the following line
+  [[RNRainbowRn sharedManager] initRainbowServiceManager:bridge];
+  NSDictionary *defaultConfig  = [[RNRainbowRn sharedManager] getConfigurationForCurrentHost ];
+  NSString *appId = defaultConfig[@"APP_ID"];
+  NSString *secretKey = defaultConfig[@"SEC_KEY"];
+  [[ServicesManager sharedInstance] setAppID:appId secretKey:secretKey];
+  ...
+}
+```
+
+### Initialization Flow
+
+The SDK initialization flow is now handled natively for better security and performance:
+
+#### iOS:
+
+1.  Configuration is loaded in AppDelegate.mm
+2.  Credentials are passed to the native SDK before React Native starts
+3.  No JavaScript bridge overhead for initialization
+
+#### Android:
+
+1.  Configuration is loaded in MainApplication.kt
+2.  Credentials are passed to the native SDK before React Native starts
+3.  No JavaScript bridge overhead for initialization
+
+### Troubleshooting
+
+If you encounter initialization issues:
+
+1.  Verify the rainbow-config.json file exists in both locations
+2.  Check that the file is properly formatted JSON
+3.  Ensure the credentials are correct from the Rainbow Developer Hub
+4.  Verify that the file is properly included in your app's build process
+
+That's it! You are now ready to start building your application with the Rainbow SDK. To learn how to connect to Rainbow and manage authentication, please see the [Connecting to Rainbow & Authentication](./connecting_to_rainbow.md) guide.
+
+*Last updated November, 25th 2025*
+
+### On this page
+
+-   [Preamble](/docs/sdk/reactnative/tutorials/GettingStarted#name-preamble-7)
+-   [Prerequisites](/docs/sdk/reactnative/tutorials/GettingStarted#name-prerequisites-17)
+-   [Installation](/docs/sdk/reactnative/tutorials/GettingStarted#name-installation-54)
+-   [iOS Installation](/docs/sdk/reactnative/tutorials/GettingStarted#name-ios-installation-62)
+-   [Peer Dependencies](/docs/sdk/reactnative/tutorials/GettingStarted#name-peer-dependencies-69)
+-   [Credential Storage](/docs/sdk/reactnative/tutorials/GettingStarted#name-credential-storage-82)
+-   [iOS Installation](/docs/sdk/reactnative/tutorials/GettingStarted#name-ios-installation-94)
+-   [Android Installation](/docs/sdk/reactnative/tutorials/GettingStarted#name-android-installation-101)
+-   [Android Configuration](/docs/sdk/reactnative/tutorials/GettingStarted#name-android-configuration-107)
+-   [1\. Set Minimum SDK Version](/docs/sdk/reactnative/tutorials/GettingStarted#name-1.-set-minimum-sdk-version-111)
+-   [2\. Add the Rainbow Maven Repository](/docs/sdk/reactnative/tutorials/GettingStarted#name-2.-add-the-rainbow-maven-repository-118)
+-   [3\. Initialize the SDK in MainApplication](/docs/sdk/reactnative/tutorials/GettingStarted#name-3.-initialize-the-sdk-in--125)
+-   [STEP 1 : Create a Rainbow application](/docs/sdk/reactnative/tutorials/GettingStarted#name-step-1-:-create-a-rainbow-application-144)
+-   [STEP 2 : Add Configuration File](/docs/sdk/reactnative/tutorials/GettingStarted#name-step-2-:-add-configuration-file-150)
+-   [Configuration File Structure](/docs/sdk/reactnative/tutorials/GettingStarted#name-configuration-file-structure-156)
+-   [Android Configuration](/docs/sdk/reactnative/tutorials/GettingStarted#name-android-configuration-163)
+-   [iOS Configuration](/docs/sdk/reactnative/tutorials/GettingStarted#name-ios-configuration-181)
+-   [STEP 2 : Initialize the SDK](/docs/sdk/reactnative/tutorials/GettingStarted#name-step-2-:-initialize-the-sdk-203)
+-   [Initialization Flow](/docs/sdk/reactnative/tutorials/GettingStarted#name-initialization-flow-241)
+-   [iOS:](/docs/sdk/reactnative/tutorials/GettingStarted#name-ios:-247)
+-   [Android:](/docs/sdk/reactnative/tutorials/GettingStarted#name-android:-267)
+-   [Troubleshooting](/docs/sdk/reactnative/tutorials/GettingStarted#name-troubleshooting-287)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

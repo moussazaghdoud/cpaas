@@ -8,12 +8,17 @@ interface Props {
   params: Promise<{ slug: string[] }>;
 }
 
-// Routes that already have dedicated pages — exclude from catch-all
-const EXCLUDED_SLUGS = new Set([
+// Exact paths that have dedicated route files — exclude from catch-all
+const EXCLUDED_EXACT = new Set([
   "getting-started",
   "guides",
   "faq",
-  "sdk",
+  "sdk",            // /docs/sdk has its own page.tsx
+  "sdk/node",       // /docs/sdk/[slug] handles these
+  "sdk/web",
+  "sdk/android",
+  "sdk/ios",
+  "sdk/csharp",
 ]);
 
 export async function generateStaticParams() {
@@ -23,11 +28,10 @@ export async function generateStaticParams() {
       .filter((p) => {
         if (!p.slug.startsWith("doc/")) return false;
         const rest = p.slug.replace(/^doc\//, "");
-        // Exclude routes with dedicated pages
-        const firstPart = rest.split("/")[0];
-        if (EXCLUDED_SLUGS.has(firstPart)) return false;
         // Exclude bare "doc" pages that would conflict with /docs
         if (!rest || rest === "") return false;
+        // Exclude only exact paths with dedicated pages (not subtrees)
+        if (EXCLUDED_EXACT.has(rest)) return false;
         return true;
       })
       .map((p) => {

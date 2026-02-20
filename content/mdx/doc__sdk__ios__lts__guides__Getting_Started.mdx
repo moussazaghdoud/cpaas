@@ -1,0 +1,175 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/ios/lts/guides/Getting_Started"
+lastSynced: "2026-02-20T07:12:29.155Z"
+---
+# Documentation
+
+Getting started
+
+LTS release 2.12.0Published on 2024-07-23
+
+## Rainbow SDK for iOS: Getting Started
+
+---
+
+Welcome to the Alcatel-Lucent Enterprise **Rainbow Software Development Kit (SDK) for iOS**!
+
+The **Rainbow SDK for iOS** is a Objective-C library that works on iPhone and iPad devices. Its powerful APIs enable you to create the best iOS applications using Alcatel-Lucent Enterprise [Rainbow](https://www.openrainbow.com).
+
+Getting started with the Rainbow SDK for iOS could not be easier. By importing the library to your existing iOS project, you have access to the services of **Rainbow** that let you add voice and video, files sharing, group chat and much more to your application.
+
+*Note*: The Rainbow SDK for iOS also embeds the WebRTC audio/video stack from **Google**.
+
+### Rainbow knowledge
+
+---
+
+Here are some Rainbow wordings that will help you understanding this guide.
+
+Rainbow concept
+
+Details
+
+**Rainbow**
+
+Alcatel-Lucent Rainbow™ is a cloud-based, enterprise-grade, Unified Communication as a Service (UCaaS) and Communication Platform as a Service (CPaaS) that connects people, systems and things.
+
+**Events**
+
+Events are asynchronous messages or notifications that come from Rainbow when something related to your data happens.  
+By listening to theses events, your application will be able to react and inform the user of these changes.
+
+**Methods**
+
+Methods are all the SDK functions your application can call to enable Rainbow services such as initiating a WebRTC call, sending a file, etc. Methods of the SDK can be synchronous or asynchronous but most of the case, you will have to rely on events to receive the changes.
+
+### Preamble
+
+---
+
+Our **Rainbow SDK for iOS** is an Objective-C library dedicated for **iPhone** and **iPad** devices for building collaborative applications with chat, group-chat, voice and video calls, voice and video conferences, file sharing, notifications and much more...
+
+Adding this library to your existing project will give you **super-powers** to build applications that will change the life of your users. It will never has been so easy to give them the possibility to chat, call and access important information in real time using their iPhone and iPad.
+
+Take time to read this guide to understand the basics and the prerequisites and then code what you ever dreamed!
+
+### Prerequisites
+
+---
+
+#### iOS
+
+---
+
+The Rainbow SDK for iOS supports older versions of iOS up to :
+
+Pre-requisites
+
+Version supported
+
+iOS
+
+**\>= 15.0**
+
+*Note*: Even if we still support older versions of Apple iOS, we recommend to stay closer to Apple guidelines and supported versions.
+
+#### Platforms supported
+
+---
+
+Platforms
+
+Supported
+
+iPhone (iOS)
+
+**YES**
+
+iPad (iOS)
+
+**YES**
+
+TV (tvOS)
+
+**NO**
+
+Watch (watchOS)
+
+**NO**
+
+Mac (macOS)
+
+**NO**
+
+*Note*: Contact us if you have projets that target not currently supported platforms.
+
+#### Language Compatibility
+
+---
+
+Even if the Rainbow SDK for iOS is an **Objective-C** library, you can develop your application using **Objective-C** or **Swift**.
+
+Have a look to our [Hello World guide](/docs/sdk/ios) that will describe how to develop an Hello World application using Objective-C or Swift.
+
+Additionnal sample in Objective-C or Swift can be found on our [Github repositories for iOS](https://github.com/Rainbow-CPaaS/Rainbow-iOS-SDK-Samples).
+
+*Note*: As Swift is not our primary target language, don't hesitate to report any issues on the forum. It will help us moving to a full Swift support.
+
+#### Rainbow developer account and application
+
+---
+
+You need a **Rainbow developer account** and a **Rainbow application** in order to use the Rainbow SDK for iOS.
+
+Connect to the [Rainbow for developers](/) to sign-up for a Rainbow developer account and for creating and managing your Rainbow applications.
+
+### What is the Rainbow SDK for iOS?
+
+---
+
+The Rainbow SDK for iOS is a library you have to use to connect and access Alcatel-Lucent Enterprise Rainbow.
+
+This library gives you access to all Rainbow services such as calling someone in voice and video, chatting, sharing a file, etc...
+
+In fact, this library will manage for you all the complicated part needed to synchronize your data with Rainbow and for sending and receiving information, files, voice and video from your recipients.
+
+Once importing to your project, you will have access to a `ServicesManager` object that represents the Rainbow root entry to the library. Using it, you will be able to access to your data and send requests to Rainbow and so to other Rainbow users by calling *Rainbow methods*.
+
+This library is divided in services that let you access to a set of methods that communicate with Rainbow.
+
+Additionnaly, you will have to use the `NotificationCenter` to subscribe to *Rainbow events* to be notified of asynchronous things such as an incoming chat message or an incoming voice call.
+
+### See also
+
+---
+
+-   [Hello World](/docs/sdk/ios)
+    
+-   [Connecting to Rainbow](/docs/sdk/ios)
+    
+-   [Adding Push Notifications](/docs/sdk/ios)
+    
+
+---
+
+### On this page
+
+-   [Rainbow SDK for iOS: Getting Started](/docs/sdk/ios#name-rainbow-sdk-for-ios:-getting-started-0)
+-   [Rainbow knowledge](/docs/sdk/ios#name-rainbow-knowledge-16)
+-   [Preamble](/docs/sdk/ios#name-preamble-61)
+-   [Prerequisites](/docs/sdk/ios#name-prerequisites-74)
+-   [iOS](/docs/sdk/ios#name-ios-78)
+-   [Platforms supported](/docs/sdk/ios#name-platforms-supported-110)
+-   [Language Compatibility](/docs/sdk/ios#name-language-compatibility-171)
+-   [Rainbow developer account and application](/docs/sdk/ios#name-rainbow-developer-account-and-application-187)
+-   [What is the Rainbow SDK for iOS?](/docs/sdk/ios#name-what-is-the-rainbow-sdk-for-ios-197)
+-   [See also](/docs/sdk/ios#name-see-also-219)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

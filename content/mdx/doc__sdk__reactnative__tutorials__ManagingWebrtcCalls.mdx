@@ -1,0 +1,373 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/tutorials/ManagingWebrtcCalls"
+lastSynced: "2026-02-20T07:12:33.761Z"
+---
+# Documentation
+
+Manage Audio and Video calls
+
+### MANAGING AUDIO AND VIDEO CALLS
+
+---
+
+## Preamble
+
+---
+
+Using Rainbow React Native SDK, you can make audio and video calls to your contacts thanks to Webrtc. This tutorial will help you understanding how it works and will give you the hints for adding the possibility in your application to communicate in audio and video successfully.
+
+You can Also start a Webrtc Conference and screen sharing in a your bubble.For more details on this check [Managing Conferences](/docs/sdk/reactnative/tutorials/managing_conferences)
+
+### RAINBOW KNOWLEDGE
+
+---
+
+Here are some Rainbow wordings that will help you understanding this guide.
+
+Rainbow concept
+
+Details
+
+A peer
+
+A peer is a participant of a call in a peer-to-peer call or in a conference call.
+
+WebRTC Peer to Peer Call
+
+This is a call between two users\[caller and the callee or the recipient.
+
+An audio only Call
+
+An audio only call uses only the microphone for dispatching the audio to the recipient
+
+An Video call
+
+A video call uses the camera for dispatching both audio and video legs to the recipient
+
+A sharing call
+
+A sharing call uses the screen or an application for dispatching a data leg to the recipient. The call can be initiated with or without an audio leg. The audio leg can be added during the call.
+
+Escalate to video call
+
+When in an audio call, you can decide at any time to add a video leg with your recipients
+
+Lock conference call
+
+when you initiate a conference call you can lock it to prevent other participant from joining the call. Check [lock conferences section](/docs/sdk/reactnative/api/ConferenceServices)
+
+Delegate Conference Call
+
+The initiator of the conference call can delegate the control to another attendee then leave the conference. Check [Delegate conferences section](/docs/sdk/reactnative/api/ConferenceServices)
+
+WebRTC Conference call
+
+This is a call between two or more users in a bubble. Check [Managing Conferences](/docs/sdk/reactnative/tutorials/managing_conferences)
+
+In our [example app](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/tree/main/src/Calls), we provided a sample code on how you can handle your webrtc calls and manage conference calls.
+
+---
+
+### Webrtc CALLS \[Peer To Peer Call\]
+
+Rainbow React Native SDK manage the webrtc\[Audio/video\] calls for you. Its able to handle only one WebRTC call at a time. RN SDK provide a customizable components for each peer to peer (p2p) webrtc call and allow you to customize the call view and actions buttons based on your app needs.
+
+In this tutorial we will talking bout the following:
+
+-   How to use [Peer To Peer Call Component](#P2PCall).
+-   Listen to the peer to peer event: [EventType.P2PCallUpdated](#EventType.P2PCallUpdated).
+-   Get more detail bout [P2PCallView](#P2PCallView) for the peer to peer UI view and how to add your customization to it.
+-   Get more detail bout [P2PActionsView](#P2PActionsView) for the peer tp peer action buttons and how to add your customization to it.
+-   Get more detail bout [P2P Video Streams](#P2PVideoStreams) for the peer tp peer video calls including: remote video, local video and screen sharing video and how to add your customization to it.
+
+---
+
+### How to use
+
+This example bellow will show to you how to use P2P Call in general and simple way. If you wanna more detail how to use it, you can check the [Sample Code](\(https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/tree/main/src/Calls/P2PCalls/P2PCall.tsx\)).
+
+`Please Note:` in the `Sample Code` we listen beside the event `EventType.P2PCallUpdated` we listen to `EventType.GetCurrentCall` event too. And the reason that we need to get the current call after retrieving the call view, please read this link for more info [Retrieve Active Call View](/docs/sdk/reactnative/tutorials/CurrentCallServices).
+
+```tsx
+import { Body, Container, Header, Text } from 'native-base';
+import React, { FunctionComponent, useEffect, useState } from 'react';
+import {View} from 'react-native';
+import {
+    P2PCallView,
+    IP2PCall,
+    P2PCallActions,
+    eventEmitter,
+    EventType,
+    CallTypeName,
+} from 'react-native-rainbow-module';
+
+ const P2PCall: FunctionComponent<IProps> = ({}) => {
+
+    const [p2pCall, setP2PCall] = useState<IP2PCall>();
+
+    useEffect(() => {
+         // Listen to call updated event including call added , modified and removed
+        const callUpdatedListener = eventEmitter.addListener(EventType.P2PCallUpdated, (call?: IP2PCall) => {
+            logger.info(`updateCurrentCall ${call?.callId}`);
+            setP2PCall(call);
+        });
+
+        return () => {
+            callUpdatedListener.remove();
+        };
+    });
+
+// Check if there is a valid P2P Call to show it to the user.
+    if (p2pCall) {
+        return (
+            <Container>
+                <Header>
+                    <Body>
+                        <Text >{p2pCall.callPeer.name}</Text>
+                    </Body>
+                </Header >
+                <View >
+                    <P2PCallView call={p2pCall} renderActiveCallView={renderActiveCallView} />
+                    <P2PCallActions call={p2pCall} renderIncomingP2PCallActions={renderIncomingCallActions} />
+                </View>
+            </Container>
+        );
+    } else return null;
+
+}
+```
+
+**Peer To Peer Call Screenshot**
+
+![](doc/sdk/reactnative/screenShots/p2p1.png)
+
+---
+
+**P2P Updated Events:**
+
+First, you need to listen to the P2P update call event `EventType.P2PCallUpdated` that triggers on call updated (added, modified, removed), where the result will be as [IP2PCall](/docs/sdk/reactnative/api/CallTypes).
+
+```tsx
+const peerToPeerCallUpdatedListener = eventEmitter.addListener(EventType.P2PCallUpdated, (call?: IP2PCall) => {
+            // incase of the removed call, the call event will be `undefined`
+            setP2PCall(call);
+        });
+```
+
+---
+
+### P2P Call View
+
+Rainbow RN SDk provide you a resumable component for p2p call view, that handle the incoming, active and outgoing view for the webrtc call. In addition it allow you to override the default style and view and add your own view customization.
+
+#
+
+Name
+
+Type
+
+Description
+
+1
+
+call
+
+[IP2PCall](/docs/sdk/reactnative/api/CallTypes)
+
+The p2p call object
+
+2
+
+renderIncomingCallView
+
+(call: [IP2PCall](/docs/sdk/reactnative/api/CallTypes)) => React.ReactNode
+
+\[`optional`\] Incase you wanna override the default view, you can use it to add your own custom view for the `Incoming p2p webRTC Call`
+
+3
+
+renderOutgoingCallView
+
+(call: [IP2PCall](/docs/sdk/reactnative/api/CallTypes)) => React.ReactNode
+
+\[`optional`\] Incase you wanna override the default view, you can use it to add your own custom view for the `Outgoing p2p webRTC Call`
+
+4
+
+renderActiveCallView
+
+(call: [IP2PCall](/docs/sdk/reactnative/api/CallTypes)) => React.ReactNode
+
+\[`optional`\] Incase you wanna override the default view, you can use it to add your own custom view for the `Outgoing p2p webRTC Call`
+
+```tsx
+const renderCustomIncomingCallView = () => {
+        if (callState === CallState.RINGING_INCOMING) {
+              return (
+                  // your own custom incoming call view
+              )
+        } else { return null; }
+
+    }
+    const CallView =   <P2PCallView call={p2pCall} renderIncomingCallView={renderCustomIncomingCallView} />
+```
+
+If you wanna more detail how to use it, you can check the [Sample Code](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/tree/main/src/Calls/P2PCalls/P2PCall.tsx).
+
+**Peer To Peer Call View Screenshot**
+
+![](doc/sdk/reactnative/screenShots/p2p2.png)
+
+---
+
+**P2P Call Actions View**
+
+Rainbow RN SDK provide you `P2PCallActions` component that handle all the webrtc call actions\[Answer,End,Decline,Mute,..\] . Also you can override the default buttons view by calling the optional props listed in table below:
+
+#
+
+Name
+
+Type
+
+Description
+
+1
+
+call
+
+[IP2PCall](/docs/sdk/reactnative/api/CallTypes)
+
+The webrtc call object
+
+2
+
+renderIncomingP2PCallActions
+
+(call: [IP2PCall](/docs/sdk/reactnative/api/CallTypes)) => React.ReactNode
+
+\[`optional`\] Incase you wanna override the default Buttons view, you can use it to add your own custom view for the `Incoming Call Call`
+
+3
+
+renderOutgoingP2PCallActions
+
+(call: [IP2PCall](/docs/sdk/reactnative/api/CallTypes)) => React.ReactNode
+
+\[`optional`\] Incase you wanna override the default Buttons view, you can use it to add your own custom view for the `Outgoing Call Call`
+
+4
+
+renderActiveP2PCallActions
+
+(call: [IP2PCall](/docs/sdk/reactnative/api/CallTypes)) => React.ReactNode
+
+\[`optional`\] Incase you wanna override the default Buttons view, you can use it to add your own custom view for the `Outgoing Call Call`
+
+```tsx
+const renderIncomingCallActions = () => {
+        if (p2pCall) {
+            return (
+                <>
+                    <AnswerAudioCallButton call={p2pCall} />
+                    <EndP2PCallButton call={p2pCall} />
+                </>
+            )
+        }
+        return null;
+
+    }
+const CallButtonsView =  <P2PCallActions call={p2pCall} renderIncomingP2PCallActions={renderIncomingCallActions} />
+```
+
+**Peer To Peer Actions View Screenshot**
+
+![](doc/sdk/reactnative/screenShots/p2p3.png)
+
+If you wanna more detail how to use it, you can check the [Sample Code](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/tree/main/src/Calls/P2PCalls/P2PCall.tsx).
+
+Also, Rainbow RN SDK provide you a customizable Actions buttons components you can use if you want to customize yr call action views
+
+#
+
+Name
+
+props
+
+Description
+
+1
+
+EndP2PCallButton
+
+(`call`: [IP2PCall](/docs/sdk/reactnative/api/CallTypes))  
+(`style`:{ icon?: TextStyle, container?: ViewStyle })  
+(`iconName`:string)
+
+call `<EndP2PCallButton call={call} iconName='yourIconName' style={{}}/>` to end the active webrtc call , also you can pass your custom style and icon name
+
+2
+
+AnswerAudioCallButton
+
+(`call`: [IP2PCall](/docs/sdk/reactnative/api/CallTypes))  
+(`style`:{ icon?: TextStyle, container?: ViewStyle })  
+(`iconName`:string)
+
+call `<AnswerAudioCallButton call={call} iconName='yourIconName' style={{}}/>` to answer an incoming webrtc audio call, also you can pass your custom style and icon name
+
+3
+
+AnswerVideoCallButton
+
+(`call`: [IP2PCall](/docs/sdk/reactnative/api/CallTypes))  
+(`style`:{ icon?: TextStyle, container?: ViewStyle })  
+(`iconName`:string)
+
+call `<AnswerVideoCallButton call={call} iconName='yourIconName' style={{}}/>` to answer an incoming webrtc video call, also you can pass your custom style and icon name
+
+4
+
+AddVideoButton
+
+(`call`: [IP2PCall](/docs/sdk/reactnative/api/CallTypes))  
+(`style`:{ icon?: TextStyle, container?: ViewStyle })  
+(`iconName`:string)
+
+call `<AddVideoButton call={call} iconName='yourIconName' style={{}}/>` to add video stream during the webrtc call, also you can pass your custom style and icon name
+
+**Note**: Rainbow SDK use [react-native-vector-icons directory](https://oblador.github.io/react-native-vector-icons/) for icons, if you want to customize the icon you need to pick another icon name form this directory.
+
+---
+
+**P2P Video Streams**
+
+If you are sharing your video in the call, Rainbow RN SDK will handle the video stream .
+
+-   If you want to display the `Remote video`, you need to call `<RemoteWebrtcVideo call={p2pCallObject} />` component and pass the call object to it .
+-   If you want to display the `Local video`, you need to call `<MyLocalWebrtcVideo call={p2pCallObject} />` component and pass the call object to it .
+-   If you want to display the `Screen sharing` video, you need to call `<ShareVideo call={p2pCallObject} />` component and pass the call object to it .
+
+For more details on how to use it,check function **[renderActiveCallView](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/tree/main/src/Calls/P2PCalls/P2PCall.tsx)** in sample code
+
+**Peer To Peer Video Streams Screenshot**
+
+![](doc/sdk/reactnative/screenShots/p2p4.png)
+
+### On this page
+
+-   [MANAGING AUDIO AND VIDEO CALLS](/docs/sdk/reactnative/tutorials/ManagingWebrtcCalls#name-managing-audio-and-video-calls-0)
+-   [Preamble](/docs/sdk/reactnative/tutorials/ManagingWebrtcCalls#name-preamble-4)
+-   [RAINBOW KNOWLEDGE](/docs/sdk/reactnative/tutorials/ManagingWebrtcCalls#name-rainbow-knowledge-14)
+-   [Webrtc CALLS \[Peer To Peer Call\]](/doc/sdk/reactnative/tutorials/ManagingWebrtcCalls#name-webrtc-calls-peer-to-peer-call-111)
+-   [How to use](/docs/sdk/reactnative/tutorials/ManagingWebrtcCalls#name-how-to-use-148)
+-   [P2P Call View](/docs/sdk/reactnative/tutorials/ManagingWebrtcCalls#name-p2p-call-view-186)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

@@ -1,0 +1,315 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/s2s"
+lastSynced: "2026-02-20T07:12:32.633Z"
+---
+# Documentation
+
+S2S Service
+
+LTS release 2.XPublished on 2025-01-01
+
+## s2s
+
+This module handles the s2s API's methods to Rainbow.  
+  
+  
+The main methods proposed in that module allow to:  
+\- Signin in s2s mode  
+\- List the user's connections in s2s mode  
+\- Manage presence  
+\- Send presence in bubble  
+\- Send messages  
+\- ...  
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [s2s](#module_s2s)
+    -   *API*
+        -   *S2S Management*
+            -   [listConnectionsS2S()](#module_s2s+listConnectionsS2S) ⇒ `Promise.<Object, ErrorManager>`
+            -   [checkS2Sconnection()](#module_s2s+checkS2Sconnection) ⇒ `Promise.<Object, ErrorManager>`
+            -   [deleteAllConnectionsS2S()](#module_s2s+deleteAllConnectionsS2S) ⇒ `Promise.<Object, ErrorManager>`
+            -   [infoS2S(s2sConnectionId)](#module_s2s+infoS2S) ⇒ `Promise.<Object, ErrorManager>`
+        -   *S2S Methods*
+            -   [sendMessageInConversation(conversationId, msg)](#module_s2s+sendMessageInConversation) ⇒ `Promise.<Object, ErrorManager>`
+            -   [sendCorrectedChatMessage(conversationId, origMsgId, msg)](#module_s2s+sendCorrectedChatMessage) ⇒ `Promise.<Object, ErrorManager>`
+            -   [sendForwardChatMessage(conversationId, msgId, msg, conversationDestId)](#module_s2s+sendForwardChatMessage) ⇒ `Promise.<Object, ErrorManager>`
+    -   *EVENTS*
+        -   [~ROOMROLE](#module_s2s..ROOMROLE) : `enum`
+        -   [~CHATSTATE](#module_s2s..CHATSTATE) : `enum`
+
+---
+
+### s2s.listConnectionsS2S() ⇒ `Promise.<Object, ErrorManager>`
+
+List all the connected user's connexions.  
+
+**Kind**: instance method of [`s2s`](#module_s2s)
+
+**Category**: S2S Management
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Object` - List of connexions or an error object depending on the result
+
+---
+
+### s2s.checkS2Sconnection() ⇒ `Promise.<Object, ErrorManager>`
+
+check the S2S connection with a head request.  
+
+**Kind**: instance method of [`s2s`](#module_s2s)
+
+**Category**: S2S Management
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Object` - List of connexions or an error object depending on the result
+
+---
+
+### s2s.deleteAllConnectionsS2S() ⇒ `Promise.<Object, ErrorManager>`
+
+Delete all the connected user's S2S connexions.  
+
+**Kind**: instance method of [`s2s`](#module_s2s)
+
+**Category**: S2S Management
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Object` - List of connexions or an error object depending on the result
+
+---
+
+### s2s.infoS2S(s2sConnectionId) ⇒ `Promise.<Object, ErrorManager>`
+
+Get information about a S2S connexions.  
+
+**Kind**: instance method of [`s2s`](#module_s2s)
+
+**Category**: S2S Management
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Object` - List of connexions or an error object depending on the result
+
+Param
+
+Type
+
+Description
+
+s2sConnectionId
+
+`string`
+
+The id of the S2S conneexion to retrieve information about.
+
+---
+
+### s2s.sendMessageInConversation(conversationId, msg) ⇒ `Promise.<Object, ErrorManager>`
+
+Send a message in a conversation. Note, corrected message is not yet supported.  
+
+**Kind**: instance method of [`s2s`](#module_s2s)
+
+**Category**: S2S Methods
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Object` - result or an error object depending on the result
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+msg
+
+`any`
+
+The message object to send.  
+{  
+"message": {  
+"subject": "Greeting",  
+"lang": "en",  
+"contents": \[  
+{  
+"type": "text/markdown",  
+"data": "## Hello Bob"  
+}  
+\],  
+"body": "Hello world"  
+}  
+}  
+
+---
+
+### s2s.sendCorrectedChatMessage(conversationId, origMsgId, msg) ⇒ `Promise.<Object, ErrorManager>`
+
+Send a corrected message in a conversation.  
+
+**Kind**: instance method of [`s2s`](#module_s2s)
+
+**Category**: S2S Methods
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Object` - result or an error object depending on the result
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+id of the conversation
+
+origMsgId
+
+`string`
+
+id of the original message
+
+msg
+
+`any`
+
+The message object update.  
+{  
+"message": {  
+"subject": "Greeting",  
+"lang": "en",  
+"contents": \[  
+{  
+"type": "text/markdown",  
+"data": "## Hello Bob"  
+}  
+\],  
+"body": "Hello world"  
+}  
+}  
+
+---
+
+### s2s.sendForwardChatMessage(conversationId, msgId, msg, conversationDestId) ⇒ `Promise.<Object, ErrorManager>`
+
+Forward a message from a conversation to another one.  
+
+**Kind**: instance method of [`s2s`](#module_s2s)
+
+**Category**: S2S Methods
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Object` - result or an error object depending on the result
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+id of the conversation.
+
+msgId
+
+`string`
+
+Message id.
+
+msg
+
+`string`
+
+The message object to send.  
+{  
+"message": {  
+"subject": "Greeting",  
+"lang": "en",  
+"contents": \[  
+{  
+"type": "text/markdown",  
+"data": "## Hello Bob"  
+}  
+\],  
+"body": "Hello world"  
+}  
+}  
+
+conversationDestId
+
+`string`
+
+the id of the destination conversation Destination conversation id
+
+---
+
+### s2s~ROOMROLE : `enum`
+
+The role of the Contact in the Bubble.
+
+**Kind**: inner enum of [`s2s`](#module_s2s)
+
+**Access**: public
+
+**Read only**: true
+
+---
+
+### s2s~CHATSTATE : `enum`
+
+The state of the Chat in the conversation.
+
+**Kind**: inner enum of [`s2s`](#module_s2s)
+
+**Access**: public
+
+**Read only**: true
+
+---
+
+### On this page
+
+-   [s2s](/docs/sdk/node#name-s2s-3)
+-   [s2s.listConnectionsS2S() ⇒ Promise.<Object, ErrorManager>](/docs/sdk/node#name-s2s.listconnectionss2s--promise.object-errormanager-101)
+-   [s2s.checkS2Sconnection() ⇒ Promise.<Object, ErrorManager>](/docs/sdk/node#name-s2s.checks2sconnection--promise.object-errormanager-123)
+-   [s2s.deleteAllConnectionsS2S() ⇒ Promise.<Object, ErrorManager>](/docs/sdk/node#name-s2s.deleteallconnectionss2s--promise.object-errormanager-145)
+-   [s2s.infoS2S(s2sConnectionId) ⇒ Promise.<Object, ErrorManager>](/docs/sdk/node#name-s2s.infos2ss2sconnectionid--promise.object-errormanager-167)
+-   [s2s.sendMessageInConversation(conversationId, msg) ⇒ Promise.<Object, ErrorManager>](/docs/sdk/node#name-s2s.sendmessageinconversationconversationid-msg--promise.object-errormanager-217)
+-   [s2s.sendCorrectedChatMessage(conversationId, origMsgId, msg) ⇒ Promise.<Object, ErrorManager>](/docs/sdk/node#name-s2s.sendcorrectedchatmessageconversationid-origmsgid-msg--promise.object-errormanager-278)
+-   [s2s.sendForwardChatMessage(conversationId, msgId, msg, conversationDestId) ⇒ Promise.<Object, ErrorManager>](/docs/sdk/node#name-s2s.sendforwardchatmessageconversationid-msgid-msg-conversationdestid--promise.object-errormanager-350)
+-   [s2s~ROOMROLE : enum](/docs/sdk/node#name-s2sroomrole-:-enum-433)
+-   [s2s~CHATSTATE : enum](/docs/sdk/node#name-s2schatstate-:-enum-452)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

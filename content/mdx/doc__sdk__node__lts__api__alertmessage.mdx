@@ -1,0 +1,664 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/alertmessage"
+lastSynced: "2026-02-20T07:12:31.564Z"
+---
+# Documentation
+
+AlertMessage
+
+LTS release 2.XPublished on 2025-01-01
+
+## Classes
+
+[AlertMessage](#AlertMessage)
+
+[AlertMessageInfo](#AlertMessageInfo)
+
+## AlertMessage
+
+**Kind**: global class
+
+**Access**: public
+
+-   [AlertMessage](#AlertMessage)
+    -   [AlertMessage()](#new_AlertMessage_new)
+    -   [id](#AlertMessage+id)
+    -   [toJid](#AlertMessage+toJid)
+    -   [fromJid](#AlertMessage+fromJid)
+    -   [fromResource](#AlertMessage+fromResource)
+    -   [identifier](#AlertMessage+identifier)
+    -   [sender](#AlertMessage+sender)
+    -   [sent](#AlertMessage+sent)
+    -   [status](#AlertMessage+status)
+    -   [msgType](#AlertMessage+msgType)
+    -   [references](#AlertMessage+references)
+    -   [scope](#AlertMessage+scope)
+    -   [info](#AlertMessage+info)
+
+---
+
+### AlertMessage()
+
+This class represents an Alert Message received from server on an Alert Device.  
+
+---
+
+### alertMessage.id
+
+**Kind**: instance property of [`AlertMessage`](#AlertMessage)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+id
+
+`string`
+
+The ID of the AlertMessage
+
+---
+
+### alertMessage.toJid
+
+**Kind**: instance property of [`AlertMessage`](#AlertMessage)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+toJid
+
+`string`
+
+The JID of the recipient of this alert message
+
+---
+
+### alertMessage.fromJid
+
+**Kind**: instance property of [`AlertMessage`](#AlertMessage)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+fromJid
+
+`string`
+
+The JID (without the resource) of the user who sent this alert message.
+
+---
+
+### alertMessage.fromResource
+
+**Kind**: instance property of [`AlertMessage`](#AlertMessage)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+fromResource
+
+`string`
+
+The resource of the user who sent this message
+
+---
+
+### alertMessage.identifier
+
+**Kind**: instance property of [`AlertMessage`](#AlertMessage)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+identifier
+
+`string`
+
+The Identifier of the alert message (alertId). It's the one to use in
+
+---
+
+### alertMessage.sender
+
+**Kind**: instance property of [`AlertMessage`](#AlertMessage)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+sender
+
+`string`
+
+The Sender of the alert message
+
+---
+
+### alertMessage.sent
+
+**Kind**: instance property of [`AlertMessage`](#AlertMessage)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+sent
+
+`string`
+
+The Date time when sent
+
+---
+
+### alertMessage.status
+
+**Kind**: instance property of [`AlertMessage`](#AlertMessage)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+status
+
+`string`
+
+The Status ("Actual" or "Test")
+
+---
+
+### alertMessage.msgType
+
+**Kind**: instance property of [`AlertMessage`](#AlertMessage)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+msgType
+
+`string`
+
+The Msg Type ("Alert", "Cancel", "Update")
+
+---
+
+### alertMessage.references
+
+**Kind**: instance property of [`AlertMessage`](#AlertMessage)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+references
+
+`string`
+
+The The group listing identifying earlier message(s) referenced by the alert message. The extended message identifier(s) (in the form "sender,identifier,sent")
+
+---
+
+### alertMessage.scope
+
+**Kind**: instance property of [`AlertMessage`](#AlertMessage)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+id
+
+`string`
+
+The scope of the AlertMessage
+
+---
+
+### alertMessage.info
+
+**Kind**: instance property of [`AlertMessage`](#AlertMessage)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+info
+
+[`AlertMessageInfo`](#AlertMessageInfo)
+
+The Info of the AlertMessage
+
+---
+
+## AlertMessageInfo
+
+**Kind**: global class
+
+-   [AlertMessageInfo](#AlertMessageInfo)
+    -   [AlertMessageInfo()](#new_AlertMessageInfo_new)
+    -   [category](#AlertMessageInfo+category)
+    -   [event](#AlertMessageInfo+event)
+    -   [urgency](#AlertMessageInfo+urgency)
+    -   [certainty](#AlertMessageInfo+certainty)
+    -   [expires](#AlertMessageInfo+expires)
+    -   [senderName](#AlertMessageInfo+senderName)
+    -   [headline](#AlertMessageInfo+headline)
+    -   [description](#AlertMessageInfo+description)
+    -   [descriptionMimeType](#AlertMessageInfo+descriptionMimeType)
+    -   [instruction](#AlertMessageInfo+instruction)
+    -   [contact](#AlertMessageInfo+contact)
+
+---
+
+### AlertMessageInfo()
+
+This class represents an Alert Message Info object describing an Alert message sent or received.  
+  
+Cf: CAP V1.2 - http://docs.oasis-open.org/emergency/cap/v1.2/CAP-v1.2-os.html .  
+
+---
+
+### alertMessageInfo.category
+
+**Kind**: instance property of [`AlertMessageInfo`](#AlertMessageInfo)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+id
+
+`string`
+
+The Category of the AlertMessageInfo
+
+---
+
+### alertMessageInfo.event
+
+**Kind**: instance property of [`AlertMessageInfo`](#AlertMessageInfo)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+event
+
+`string`
+
+The Event of the AlertMessageInfo
+
+---
+
+### alertMessageInfo.urgency
+
+**Kind**: instance property of [`AlertMessageInfo`](#AlertMessageInfo)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+urgency
+
+`string`
+
+The Urgency of the AlertMessageInfo
+
+---
+
+### alertMessageInfo.certainty
+
+**Kind**: instance property of [`AlertMessageInfo`](#AlertMessageInfo)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+certainty
+
+`string`
+
+The Certainty of the AlertMessageInfo
+
+---
+
+### alertMessageInfo.expires
+
+**Kind**: instance property of [`AlertMessageInfo`](#AlertMessageInfo)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+expires
+
+`string`
+
+The Expires of the AlertMessageAlertMessageInfo
+
+---
+
+### alertMessageInfo.senderName
+
+**Kind**: instance property of [`AlertMessageInfo`](#AlertMessageInfo)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+senderName
+
+`string`
+
+The SenderName of the AlertMessageInfo
+
+---
+
+### alertMessageInfo.headline
+
+**Kind**: instance property of [`AlertMessageInfo`](#AlertMessageInfo)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+headline
+
+`string`
+
+The Headline of the AlertMessageInfo
+
+---
+
+### alertMessageInfo.description
+
+**Kind**: instance property of [`AlertMessageInfo`](#AlertMessageInfo)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+description
+
+`string`
+
+The Description of the AlertMessageInfo
+
+---
+
+### alertMessageInfo.descriptionMimeType
+
+**Kind**: instance property of [`AlertMessageInfo`](#AlertMessageInfo)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+descriptionMimeType
+
+`string`
+
+The Description Mime Type of the AlertMessageInfo
+
+---
+
+### alertMessageInfo.instruction
+
+**Kind**: instance property of [`AlertMessageInfo`](#AlertMessageInfo)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+instruction
+
+`string`
+
+The Instruction of the AlertMessageInfo
+
+---
+
+### alertMessageInfo.contact
+
+**Kind**: instance property of [`AlertMessageInfo`](#AlertMessageInfo)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+contact
+
+`string`
+
+The Contact of the AlertMessageInfo
+
+---
+
+### On this page
+
+-   [Classes](/docs/sdk/node#name-classes-0)
+-   [AlertMessage](/docs/sdk/node#name-alertmessage-7)
+-   [AlertMessage()](/docs/sdk/node#name-alertmessage-94)
+-   [alertMessage.id](/docs/sdk/node#name-alertmessage.id-104)
+-   [alertMessage.toJid](/docs/sdk/node#name-alertmessage.tojid-151)
+-   [alertMessage.fromJid](/docs/sdk/node#name-alertmessage.fromjid-198)
+-   [alertMessage.fromResource](/docs/sdk/node#name-alertmessage.fromresource-245)
+-   [alertMessage.identifier](/docs/sdk/node#name-alertmessage.identifier-292)
+-   [alertMessage.sender](/docs/sdk/node#name-alertmessage.sender-339)
+-   [alertMessage.sent](/docs/sdk/node#name-alertmessage.sent-386)
+-   [alertMessage.status](/docs/sdk/node#name-alertmessage.status-433)
+-   [alertMessage.msgType](/docs/sdk/node#name-alertmessage.msgtype-480)
+-   [alertMessage.references](/docs/sdk/node#name-alertmessage.references-527)
+-   [alertMessage.scope](/docs/sdk/node#name-alertmessage.scope-574)
+-   [alertMessage.info](/docs/sdk/node#name-alertmessage.info-621)
+-   [AlertMessageInfo](/docs/sdk/node#name-alertmessageinfo-668)
+-   [AlertMessageInfo()](/docs/sdk/node#name-alertmessageinfo-747)
+-   [alertMessageInfo.category](/docs/sdk/node#name-alertmessageinfo.category-757)
+-   [alertMessageInfo.event](/docs/sdk/node#name-alertmessageinfo.event-804)
+-   [alertMessageInfo.urgency](/docs/sdk/node#name-alertmessageinfo.urgency-851)
+-   [alertMessageInfo.certainty](/docs/sdk/node#name-alertmessageinfo.certainty-898)
+-   [alertMessageInfo.expires](/docs/sdk/node#name-alertmessageinfo.expires-945)
+-   [alertMessageInfo.senderName](/docs/sdk/node#name-alertmessageinfo.sendername-992)
+-   [alertMessageInfo.headline](/docs/sdk/node#name-alertmessageinfo.headline-1039)
+-   [alertMessageInfo.description](/docs/sdk/node#name-alertmessageinfo.description-1086)
+-   [alertMessageInfo.descriptionMimeType](/docs/sdk/node#name-alertmessageinfo.descriptionmimetype-1133)
+-   [alertMessageInfo.instruction](/docs/sdk/node#name-alertmessageinfo.instruction-1180)
+-   [alertMessageInfo.contact](/docs/sdk/node#name-alertmessageinfo.contact-1227)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

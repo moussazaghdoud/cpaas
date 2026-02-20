@@ -1,0 +1,291 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/tutorials/search"
+lastSynced: "2026-02-20T07:12:33.800Z"
+---
+# Documentation
+
+Search
+
+### Retrieve Search
+
+---
+
+### Preamble
+
+---
+
+This guide explains how to manage the Search for Rainbow contacts,conversation or Bubbles ...etc. So basically we build two component foe the search: `Search Bar Input` and the `Search Result View`.
+
+#### Search Bar input.
+
+---
+
+This will show you a search text input.
+
+#
+
+Name
+
+Notes
+
+Default
+
+Description
+
+1
+
+onSearchUpdated
+
+(value: boolean, searchQuery: string): void
+
+none
+
+handle when the search text is updated
+
+2
+
+onCancelSearch
+
+() => void
+
+none
+
+handle when canceling the search
+
+3
+
+registerBackButtonHandler
+
+(handler: [IBackButtonHandler](/docs/sdk/reactnative/api/IActions#IBackButtonHandler)) => void
+
+none
+
+used for registering the back button in the search bar
+
+We usually put the Search Bar input in the header \[as its show in the `Search Input Example`\]
+
+#### Search Result View.
+
+---
+
+This will show you the search result from the Search Bar Input. You can filter the result depending on your selected by enabling/disabling some feature as the following table:
+
+#
+
+Name
+
+Notes
+
+Default
+
+Description
+
+1
+
+search people
+
+boolean
+
+true
+
+does the Contacts wanted to be included in the search?
+
+2
+
+search conversations
+
+boolean
+
+false
+
+does the Conversation wanted to be included in the search?
+
+3
+
+search bubble
+
+boolean
+
+false
+
+does the Bubbles wanted to be included in the search?
+
+4
+
+search channels
+
+boolean
+
+false
+
+does the Channels wanted to be included in the search?
+
+5
+
+search companies
+
+boolean
+
+false
+
+does the Companies wanted to be included in the search?
+
+6
+
+onClickItem
+
+(contact:[IContact](/docs/sdk/reactnative/api/Contact))=>void
+
+none
+
+Callback function to handle when the user click on the contact search result. In the example below handle the clicking event by open the Contact info
+
+7
+
+contactActionsProvider
+
+[IActionsProvider](\(/doc/sdk/reactnative/api/IActions\))
+
+none
+
+Callback function to handle when the user click on the contact Call Button in the search result. In the example below handle the clicking event by opening a call option dialog
+
+8
+
+style
+
+[ISearchStyleProps](/docs/sdk/reactnative/api/ISearch#ISearchStyleProps)
+
+default style
+
+customer style for components style props provide by ISearchStyleProps
+
+#### Search Bar input Example.
+
+```tsx
+import React, { FunctionComponent } from 'react';
+import { SearchBarInput,IBackButtonHandler } from 'react-native-rainbow-module';
+
+
+    const handlers: IBackButtonHandler[] = [];
+
+    const registerBackButtonHandler = (handler: IBackButtonHandler) => {
+        handlers.push(handler);
+        return () => {
+            const index = handlers.indexOf(handler);
+            if (index >= 0) {
+                handlers.splice(index);
+            } else {
+                logger.error('Failed to unregistered handler; handler not found');
+            }
+        };
+    };
+    const cancelSearch = () => {
+        if (isSearchMode && Actions.currentScene === 'contactInformation') {
+            console.info('onBackButtonPressed handled by home, exit contact Card details and back to the search');
+            Actions.pop();
+            return true;
+        }
+        if (isSearchMode) {
+            logger.info('onBackButtonPressed handled by home, exit searchMode');
+            setIsSearchMode(false);
+
+            if (searchQuery) {
+                // To do clear input value on back button pressed.
+            } else {
+                setIsSearchMode(false);
+            }
+            return true;
+        }
+        return false;
+    };
+    const updateHomeSearchState = (value: boolean, searchQuery: string) => {
+        setIsSearchMode(value);
+        setSearchQuery(searchQuery);
+
+    };
+    return (
+   <React.Fragment>
+            <Header leftComponent={renderHeaderLeftIcon} centerComponent={renderHeaderCenter} containerStyle={{ paddingTop: 10, paddingBottom: 10 }} />
+            {isSearchMode && searchComponent}
+            {!isSearchMode && renderTab()}
+                ... 
+    </React.Fragment>    );
+};
+```
+
+#### Search Result View Example.
+
+```tsx
+import { View } from 'react-native';
+import React, { useState } from 'react';
+import { OpenCallDialogComponent, PbxActions } from './CallComponent';
+import {
+  createCallPbxContactAction,
+  IAction,
+  IActionsProvider,
+  IContact,
+  Search,
+} from 'react-native-rainbow-module';
+
+export const SearchComponent: React.FunctionComponent = ({navigation}) => {
+  const [showDialog, setShowDialog] = useState<boolean>(false);
+  const [contactToCall, setContactToCall] = useState<IContact>();
+
+  const openDialog = () => {
+    setShowDialog(!showDialog);
+  };
+  const actions: IAction[] = [
+    createCallPbxContactAction((contact) => {
+      setContactToCall(contact);
+      openDialog();
+    }),
+  ];
+
+  const contactActionsProvider: IActionsProvider = new (class {
+    public getActions = (contact: IContact) => {
+      return actions;
+    };
+  })();
+  const handleClickItem = (contact: IContact) => {
+        navigation.navigate('ContactInformation', {contact})
+
+  };
+  return (
+    <View>
+      <Search
+        searchPeople={true}
+        contactActionsProvider={contactActionsProvider}
+        onClickItem={handleClickItem}
+      />
+      {contactToCall && (
+        <OpenCallDialogComponent
+          contact={contactToCall}
+          showDialog={showDialog}
+          openDialog={openDialog}
+          callDialogWebRtcActions={[]}
+          callDialogPbxActions={PbxActions}
+        />
+      )}
+    </View>
+  );
+};
+```
+
+### On this page
+
+-   [Retrieve Search](/docs/sdk/reactnative/tutorials/search#name-retrieve-search-0)
+-   [Preamble](/docs/sdk/reactnative/tutorials/search#name-preamble-4)
+-   [Search Bar input.](/docs/sdk/reactnative/tutorials/search#name-search-bar-input.-11)
+-   [Search Result View.](/docs/sdk/reactnative/tutorials/search#name-search-result-view.-95)
+-   [Search Bar input Example.](/docs/sdk/reactnative/tutorials/search#name-search-bar-input-example.-261)
+-   [Search Result View Example.](/docs/sdk/reactnative/tutorials/search#name-search-result-view-example.-265)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

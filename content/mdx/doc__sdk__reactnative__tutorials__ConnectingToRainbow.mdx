@@ -1,0 +1,95 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/tutorials/ConnectingToRainbow"
+lastSynced: "2026-02-20T07:12:33.607Z"
+---
+# Documentation
+
+Connecting to Rainbow
+
+## Connecting to Rainbow & Authentication
+
+### Preamble
+
+After you initialize the SDK, you must connect to the Rainbow server. This SDK provides a headless authentication provider, giving you full control over your application's UI and navigation flow.
+
+### The `RainbowProvider` Component
+
+The `RainbowProvider` is the core component for integrating Rainbow services. It sets up the necessary Redux store, theme, and authentication context for the SDK to function. It does **not** render any UI itself.
+
+To use it, wrap your application's root component with `RainbowProvider`:
+
+```tsx
+// App.tsx
+import React from 'react';
+import { RainbowProvider } from 'react-native-rainbow-module';
+import { NavigationContainer } from '@react-navigation/native';
+import RootNavigator from './RootNavigator'; // Your app's navigator
+
+const App = () => {
+  return (
+    <RainbowProvider>
+      <NavigationContainer>
+        <RootNavigator />
+      </NavigationContainer>
+    </RainbowProvider>
+  );
+};
+
+export default App;
+```
+
+### The `useRainbowAuth` Hook
+
+To manage the authentication state in your application, the SDK provides the `useRainbowAuth` hook. This hook gives you access to the user's authentication status, loading state, and user information.
+
+The hook returns an object with the following properties:
+
+-   `isAuthenticated` (boolean): `true` if the user is logged in, otherwise `false`.
+-   `isLoading` (boolean): `true` during the initial authentication check (e.g., silent login).
+-   `user` ([IUser](/docs/sdk/reactnative/api/IUser)): The connected user's information if authenticated, otherwise `null`.
+
+### Building Your Authentication Flow
+
+With `RainbowProvider` and `useRainbowAuth`, you can create a custom authentication flow that fits your application's design. You are responsible for building all the UI components for login, registration, password reset, etc.
+
+Here is an example of a `RootNavigator` that uses the `useRainbowAuth` hook to conditionally render the authentication screens or the main application screens:
+
+```tsx
+// RootNavigator.tsx
+import React from 'react';
+import { useRainbowAuth, Spinner } from 'react-native-rainbow-module';
+import AuthNavigator from './AuthNavigator'; // Your authentication screens
+import MainAppNavigator from './MainAppNavigator'; // Your main app screens
+
+const RootNavigator = () => {
+  const { isAuthenticated, isLoading } = useRainbowAuth();
+
+  if (isLoading) {
+    // Show a loading indicator during the initial auth check
+    return <Spinner spinnerSize={40} />;
+  }
+
+  return isAuthenticated ? <MainAppNavigator /> : <AuthNavigator />;
+};
+
+export default RootNavigator;
+```
+
+> ***NOTE:*** You can find a complete implementation of this approach in the example project provided in the SDK repository [example link](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/blob/main/src/App.tsx)
+
+### On this page
+
+-   [Connecting to Rainbow & Authentication](/docs/sdk/reactnative/tutorials/ConnectingToRainbow#name-connecting-to-rainbow-and-authentication-0)
+-   [Preamble](/docs/sdk/reactnative/tutorials/ConnectingToRainbow#name-preamble-3)
+-   [The RainbowProvider Component](/docs/sdk/reactnative/tutorials/ConnectingToRainbow#name-the-component-9)
+-   [The useRainbowAuth Hook](/docs/sdk/reactnative/tutorials/ConnectingToRainbow#name-the-hook-19)
+-   [Building Your Authentication Flow](/docs/sdk/reactnative/tutorials/ConnectingToRainbow#name-building-your-authentication-flow-45)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

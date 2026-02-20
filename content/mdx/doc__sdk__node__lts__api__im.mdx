@@ -1,0 +1,1818 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/im"
+lastSynced: "2026-02-20T07:12:32.332Z"
+---
+# Documentation
+
+IM Service
+
+LTS release 2.XPublished on 2025-01-01
+
+## ImsService
+
+This module manages Instant Messages. It allows to send messages to a user or a bubble.  
+  
+  
+The main methods proposed in that module allow to:  
+\- Send a message to a user  
+\- Send a message to a bubble  
+\- Mark a message as read  
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [ImsService](#module_ImsService)
+    -   *Ims Application Messages*
+        -   [sendApplicationMessageContactJid(jid, xmlElements, p\_messagesDataStore)](#module_ImsService+sendApplicationMessageContactJid) ⇒ `Promise.<any>`
+        -   [sendApplicationMessageBubbleJid(jid, xmlElements, p\_messagesDataStore)](#module_ImsService+sendApplicationMessageBubbleJid) ⇒ `Promise.<any>`
+    -   *Ims MESSAGES*
+        -   [getMessagesFromConversation(conversation, intNbMessage)](#module_ImsService+getMessagesFromConversation) ⇒ `Promise.<Conversation, ErrorManager>`
+        -   [getMessageFromConversationById(conversation, strMessageId)](#module_ImsService+getMessageFromConversationById) ⇒ `Message`
+        -   [getMessageFromBubbleById(bubble, strMessageId)](#module_ImsService+getMessageFromBubbleById) ⇒ `Message`
+        -   [markMessageAsRead(messageReceived)](#module_ImsService+markMessageAsRead) ⇒ `Promise`
+        -   [sendMessageToConversation(conversation, message, lang, content, subject, urgency, p\_messagesDataStore)](#module_ImsService+sendMessageToConversation) ⇒ `Promise.<Message, ErrorManager>`
+        -   [sendMessageToContact(message, contact, lang, content, subject, urgency, p\_messagesDataStore)](#module_ImsService+sendMessageToContact) ⇒ `Promise.<Message, ErrorManager>`
+        -   [sendMessageToJid(message, jid, lang, content, subject, urgency, p\_messagesDataStore)](#module_ImsService+sendMessageToJid) ⇒ `Promise.<Message, ErrorManager>`
+        -   [sendMessageToJidAnswer(message, jid, lang, content, subject, answeredMsg, urgency, p\_messagesDataStore)](#module_ImsService+sendMessageToJidAnswer) ⇒ `Promise.<Message, ErrorManager>`
+        -   [sendMessageToJidAcknowledged(message, lang, ackLabel, attention, p\_messagesDataStore)](#module_ImsService+sendMessageToJidAcknowledged) ⇒ `Promise.<Message, ErrorManager>`
+        -   [sendMessageToJidIgnored(message, lang, ignLabel, p\_messagesDataStore)](#module_ImsService+sendMessageToJidIgnored) ⇒ `Promise.<Message, ErrorManager>`
+        -   [sendMessageToBubble(message, bubble, lang, content, subject, mentions, urgency, p\_messagesDataStore)](#module_ImsService+sendMessageToBubble) ⇒ `Promise.<Message, ErrorManager>`
+        -   [sendMessageToBubbleJid(message, jid, lang, content, subject, mentions, urgency, p\_messagesDataStore)](#module_ImsService+sendMessageToBubbleJid) ⇒ `Promise.<Message, ErrorManager>`
+        -   [sendMessageToBubbleJidAnswer(message, jid, lang, content, subject, answeredMsg, mentions, urgency, p\_messagesDataStore)](#module_ImsService+sendMessageToBubbleJidAnswer) ⇒ `Promise.<Message, ErrorManager>`
+        -   [retrieveXMPPMessagesByListOfMessageIds(ims)](#module_ImsService+retrieveXMPPMessagesByListOfMessageIds) ⇒ `Promise.<any>`
+    -   *Ims MESSAGES Pin list*
+        -   [addPinWithPeerId(peerId, types, body)](#module_ImsService+addPinWithPeerId) ⇒ `Promise.<any>`
+        -   [getPinWithPeerIdById(types, peerId, pinId)](#module_ImsService+getPinWithPeerIdById) ⇒ `Promise.<any>`
+        -   [getAllPinsWithPeerId(types, peerId)](#module_ImsService+getAllPinsWithPeerId) ⇒ `Promise.<any>`
+        -   [removefromWithPeerIdAndPinId(types, peerId, pinId)](#module_ImsService+removefromWithPeerIdAndPinId) ⇒ `Promise.<any>`
+        -   [updatePinWithPeerId(peerId, types, pinId, body)](#module_ImsService+updatePinWithPeerId) ⇒ `Promise.<any>`
+    -   *Ims TYPING*
+        -   [sendIsTypingStateInBubble(bubble, status, p\_messagesDataStore)](#module_ImsService+sendIsTypingStateInBubble) ⇒ `Object`
+        -   [sendIsTypingStateInConversation(conversation, status, p\_messagesDataStore)](#module_ImsService+sendIsTypingStateInConversation) ⇒
+    -   *Notifications*
+        -   [sendMessageNotification(data)](#module_ImsService+sendMessageNotification) ⇒ `Promise.<any>`
+    -   *Voicemail*
+        -   [sendVoicemailTranscriptionMessage(to, transcriptInfo, p\_messagesDataStore)](#module_ImsService+sendVoicemailTranscriptionMessage) ⇒ `Promise.<any>`
+
+---
+
+### imsService.sendApplicationMessageContactJid(jid, xmlElements, p\_messagesDataStore) ⇒ `Promise.<any>`
+
+Sends a message to a Contact Jid that is ignored in the UCaaS app's message stream (e.g., in Rainbow Web Client, Desktop, Android, or iOS). Useful for bots to communicate with other bots in the same conversation without involving other users via the default application.
+
+Note: If a peer send the same kind of message, then the SDK receive the `rainbow_onrainbowcpaasreceived` event. It is Fired when a `rainbow-cpaas` event is receveid for a private data exchange.
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Returns**: `Promise.<any>` - - that resolves on success
+
+exemple:
+
+```
+const Element = require('ltx').Element;
+ let contactEmailToSearch = "xxx@xxx.com";
+ // Retrieve a contact by its id
+ let contact = await rainbowSDK.contacts.getContactByLoginEmail(contactEmailToSearch);
+ // Retrieve the associated conversation
+ let conversation = await rainbowSDK.conversations.openConversationForContact(contact);
+ let now = new Date().getTime();
+ let xmlElements = new Element('instance', {'xmlns': 'tests:rainbownodesdk', 'id': now });
+ xmlElements.cnode(new Element('displayName').t("My displayName"));
+ xmlElements.cnode(new Element('description').t("My description"));
+ // Send message
+ let msgSent = await rainbowSDK.im.sendApplicationMessageContactJid(contact.jid, xmlElements);
+```
+
+**Category**: Ims Application Messages
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+jid
+
+The Contact Jid to which the message is sent
+
+xmlElements
+
+List of XML elements to create
+
+p\_messagesDataStore
+
+`DataStoreType`
+
+used to override the general of SDK's parameter "messagesDataStore". default value `undefined` to use the general value.  
+DataStoreType.NoStore Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide The messages are fully stored.  
+DataStoreType.UsestoreMessagesField to follow the storeMessages SDK's parameter behaviour.  
+DataStoreType.Store Offline storage and Message Archive Management (XEP-0313) \[4\] can define their own rules on what messages to store and usually only store messages that contain a body element. However a sender may want to indicate that a message is worth storing even though it might not match those rules (e.g. an encrypted message that carries the payload outside the body element). Such a message can be marked with a hint.
+
+---
+
+### imsService.sendApplicationMessageBubbleJid(jid, xmlElements, p\_messagesDataStore) ⇒ `Promise.<any>`
+
+Sends a message to a Bubble Jid that is ignored in the UCaaS app's message stream (e.g., in Rainbow Web Client, Desktop, Android, or iOS). Useful for bots to communicate with other bots in the same conversation without involving other users via the default application.
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Returns**: `Promise.<any>` - - that resolves on success
+
+**Category**: Ims Application Messages
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+jid
+
+`any`
+
+The Bubble Jid to which the message is sent
+
+xmlElements
+
+`Element`
+
+List of XML elements to create
+
+p\_messagesDataStore
+
+`DataStoreType`
+
+used to override the general of SDK's parameter "messagesDataStore". default value `undefined` to use the general value.  
+DataStoreType.NoStore Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide The messages are fully stored.  
+DataStoreType.UsestoreMessagesField to follow the storeMessages SDK's parameter behaviour.  
+DataStoreType.Store Offline storage and Message Archive Management (XEP-0313) \[4\] can define their own rules on what messages to store and usually only store messages that contain a body element. However a sender may want to indicate that a message is worth storing even though it might not match those rules (e.g. an encrypted message that carries the payload outside the body element). Such a message can be marked with a hint.
+
+---
+
+### imsService.getMessagesFromConversation(conversation, intNbMessage) ⇒ `Promise.<Conversation, ErrorManager>`
+
+**(beta)** Retrieve the list of messages from a conversation  
+Calling several times this method will load older message from the history (pagination)  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Category**: Ims MESSAGES
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Conversation, ErrorManager` Return the conversation updated with the list of messages requested or an error (reject) if there is no more messages to retrieve
+
+**Since**: 1.39
+
+Param
+
+Type
+
+Default
+
+Description
+
+conversation
+
+`Conversation`
+
+The conversation
+
+intNbMessage
+
+`number`
+
+`30`
+
+The number of messages to retrieve. Optional. Default value is 30. Maximum value is 100
+
+---
+
+### imsService.getMessageFromConversationById(conversation, strMessageId) ⇒ `Message`
+
+**(beta)** Retrieve a specific message in a conversation using its id  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Returns**: `Message` - The message if found or null
+
+**Category**: Ims MESSAGES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.39
+
+Param
+
+Type
+
+Description
+
+conversation
+
+`Conversation`
+
+The conversation where to search for the message
+
+strMessageId
+
+`string`
+
+The message id
+
+---
+
+### imsService.getMessageFromBubbleById(bubble, strMessageId) ⇒ `Message`
+
+Retrieve a specific message in a bubble using its id  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Returns**: `Message` - The message if found or null
+
+**Category**: Ims MESSAGES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.39
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`Bubble`
+
+The bubble where to search for the message
+
+strMessageId
+
+`string`
+
+The message id
+
+---
+
+### imsService.markMessageAsRead(messageReceived) ⇒ `Promise`
+
+Send a 'read' receipt to the recipient  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Category**: Ims MESSAGES
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: return nothing in case of success or an ErrorManager Object depending the result
+
+Param
+
+Type
+
+Description
+
+messageReceived
+
+`Message`
+
+The message received to mark as read
+
+---
+
+### imsService.sendMessageToConversation(conversation, message, lang, content, subject, urgency, p\_messagesDataStore) ⇒ `Promise.<Message, ErrorManager>`
+
+**(beta)** Send a instant message to a conversation  
+This method works for sending messages to a one-to-one conversation or to a bubble conversation  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Category**: Ims MESSAGES
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Message` the message sent, or null in case of error, as parameter of the resolve
+
+**Since**: 1.39
+
+Param
+
+Type
+
+Default
+
+Description
+
+conversation
+
+`Conversation`
+
+The conversation recipient
+
+message
+
+`string`
+
+The message to send
+
+lang
+
+`string`
+
+`en`
+
+The content language used
+
+content
+
+`Object`
+
+Allow to send alternative text base content
+
+content.type
+
+`string`
+
+The content message type (text/markdown)
+
+content.message
+
+`string`
+
+The content message body
+
+subject
+
+`string`
+
+The message subject
+
+urgency
+
+`UrgencyType`
+
+The urgence of the message. String value can be : 'high' Urgent message, 'middle' important message, 'low' information message, "std' or null standard message
+
+p\_messagesDataStore
+
+`DataStoreType`
+
+used to override the general of SDK's parameter "messagesDataStore". default value `undefined` to use the general value.  
+DataStoreType.NoStore Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide The messages are fully stored.  
+DataStoreType.UsestoreMessagesField to follow the storeMessages SDK's parameter behaviour.  
+DataStoreType.Store Offline storage and Message Archive Management (XEP-0313) \[4\] can define their own rules on what messages to store and usually only store messages that contain a body element. However a sender may want to indicate that a message is worth storing even though it might not match those rules (e.g. an encrypted message that carries the payload outside the body element). Such a message can be marked with a hint.
+
+---
+
+### imsService.sendMessageToContact(message, contact, lang, content, subject, urgency, p\_messagesDataStore) ⇒ `Promise.<Message, ErrorManager>`
+
+Send a one-2-one message to a contact  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Category**: Ims MESSAGES
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Message` the message sent, or null in case of error, as parameter of the resolve
+
+Param
+
+Type
+
+Default
+
+Description
+
+message
+
+`string`
+
+The message to send
+
+contact
+
+`Contact`
+
+The contact (should have at least a jid\_im property)
+
+lang
+
+`string`
+
+`en`
+
+The content language used
+
+content
+
+`Object`
+
+Allow to send alternative text base content
+
+content.type
+
+`string`
+
+The content message type (text/markdown)
+
+content.message
+
+`string`
+
+The content message body
+
+subject
+
+`string`
+
+The message subject
+
+urgency
+
+`UrgencyType`
+
+The urgence of the message. String value can be : 'high' Urgent message, 'middle' important message, 'low' information message, "std' or null standard message
+
+p\_messagesDataStore
+
+`DataStoreType`
+
+used to override the general of SDK's parameter "messagesDataStore". default value `undefined` to use the general value.  
+DataStoreType.NoStore Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide The messages are fully stored.  
+DataStoreType.UsestoreMessagesField to follow the storeMessages SDK's parameter behaviour.  
+DataStoreType.Store Offline storage and Message Archive Management (XEP-0313) \[4\] can define their own rules on what messages to store and usually only store messages that contain a body element. However a sender may want to indicate that a message is worth storing even though it might not match those rules (e.g. an encrypted message that carries the payload outside the body element). Such a message can be marked with a hint.
+
+---
+
+### imsService.sendMessageToJid(message, jid, lang, content, subject, urgency, p\_messagesDataStore) ⇒ `Promise.<Message, ErrorManager>`
+
+Send a one-2-one message to a contact identified by his Jid  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Category**: Ims MESSAGES
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Message` - the message sent, or null in case of error, as parameter of the resolve
+
+Param
+
+Type
+
+Default
+
+Description
+
+message
+
+`string`
+
+The message to send
+
+jid
+
+`string`
+
+The contact Jid
+
+lang
+
+`string`
+
+`en`
+
+The content language used
+
+content
+
+`Object`
+
+Allow to send alternative text base content
+
+content.type
+
+`string`
+
+The content message type (text/markdown)
+
+content.message
+
+`string`
+
+The content message body
+
+subject
+
+`string`
+
+The message subject
+
+urgency
+
+`UrgencyType`
+
+The urgence of the message. String value can be : 'high' Urgent message, 'middle' important message, 'low' information message, "std' or null standard message
+
+p\_messagesDataStore
+
+`DataStoreType`
+
+used to override the general of SDK's parameter "messagesDataStore". default value `undefined` to use the general value.  
+DataStoreType.NoStore Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide The messages are fully stored.  
+DataStoreType.UsestoreMessagesField to follow the storeMessages SDK's parameter behaviour.  
+DataStoreType.Store Offline storage and Message Archive Management (XEP-0313) \[4\] can define their own rules on what messages to store and usually only store messages that contain a body element. However a sender may want to indicate that a message is worth storing even though it might not match those rules (e.g. an encrypted message that carries the payload outside the body element). Such a message can be marked with a hint.
+
+---
+
+### imsService.sendMessageToJidAnswer(message, jid, lang, content, subject, answeredMsg, urgency, p\_messagesDataStore) ⇒ `Promise.<Message, ErrorManager>`
+
+Send a reply to a one-2-one message to a contact identified by his Jid  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Category**: Ims MESSAGES
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Message` - the message sent, or null in case of error, as parameter of the resolve
+
+Param
+
+Type
+
+Default
+
+Description
+
+message
+
+`string`
+
+The message to send
+
+jid
+
+`string`
+
+The contact Jid
+
+lang
+
+`string`
+
+`en`
+
+The content language used
+
+content
+
+`Object`
+
+Allow to send alternative text base content
+
+content.type
+
+`string`
+
+The content message type (text/markdown)
+
+content.message
+
+`string`
+
+The content message body
+
+subject
+
+`string`
+
+The message subject
+
+answeredMsg
+
+`Object`
+
+The message answered
+
+urgency
+
+`UrgencyType`
+
+The urgence of the message. String value can be : 'high' Urgent message, 'middle' important message, 'low' information message, "std' or null standard message
+
+p\_messagesDataStore
+
+`DataStoreType`
+
+used to override the general of SDK's parameter "messagesDataStore". default value `undefined` to use the general value.  
+DataStoreType.NoStore Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide The messages are fully stored.  
+DataStoreType.UsestoreMessagesField to follow the storeMessages SDK's parameter behaviour.  
+DataStoreType.Store Offline storage and Message Archive Management (XEP-0313) \[4\] can define their own rules on what messages to store and usually only store messages that contain a body element. However a sender may want to indicate that a message is worth storing even though it might not match those rules (e.g. an encrypted message that carries the payload outside the body element). Such a message can be marked with a hint.
+
+---
+
+### imsService.sendMessageToJidAcknowledged(message, lang, ackLabel, attention, p\_messagesDataStore) ⇒ `Promise.<Message, ErrorManager>`
+
+Send an Acknowledged reply to an urgent message (one to one, or bubble)  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Category**: Ims MESSAGES
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Message` - the message
+
+Param
+
+Type
+
+Default
+
+Description
+
+message
+
+`Message`
+
+The message to acknoledge
+
+lang
+
+`string`
+
+`EN`
+
+the lang used to acknowledged the message.
+
+ackLabel
+
+`string`
+
+`Acknowledged`
+
+the label used to acknowledged the message.
+
+attention
+
+`Array.<string>`
+
+array containing a list of JID of contact to mention or a string containing a sigle JID of the contact.
+
+p\_messagesDataStore
+
+`DataStoreType`
+
+used to override the general of SDK's parameter "messagesDataStore". default value `undefined` to use the general value.  
+DataStoreType.NoStore Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide The messages are fully stored.  
+DataStoreType.UsestoreMessagesField to follow the storeMessages SDK's parameter behaviour.  
+DataStoreType.Store Offline storage and Message Archive Management (XEP-0313) \[4\] can define their own rules on what messages to store and usually only store messages that contain a body element. However a sender may want to indicate that a message is worth storing even though it might not match those rules (e.g. an encrypted message that carries the payload outside the body element). Such a message can be marked with a hint.
+
+---
+
+### imsService.sendMessageToJidIgnored(message, lang, ignLabel, p\_messagesDataStore) ⇒ `Promise.<Message, ErrorManager>`
+
+Send an Ignored reply to an urgent message (one to one, or bubble)  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Category**: Ims MESSAGES
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Message` - the message
+
+Param
+
+Type
+
+Default
+
+Description
+
+message
+
+`Message`
+
+The message to Ignored
+
+lang
+
+`string`
+
+`EN`
+
+the lang used to ignore the message.
+
+ignLabel
+
+`string`
+
+`Ignored`
+
+the label used to ignore the message.
+
+p\_messagesDataStore
+
+`DataStoreType`
+
+used to override the general of SDK's parameter "messagesDataStore". default value `undefined` to use the general value.  
+DataStoreType.NoStore Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide The messages are fully stored.  
+DataStoreType.UsestoreMessagesField to follow the storeMessages SDK's parameter behaviour.  
+DataStoreType.Store Offline storage and Message Archive Management (XEP-0313) \[4\] can define their own rules on what messages to store and usually only store messages that contain a body element. However a sender may want to indicate that a message is worth storing even though it might not match those rules (e.g. an encrypted message that carries the payload outside the body element). Such a message can be marked with a hint.
+
+---
+
+### imsService.sendMessageToBubble(message, bubble, lang, content, subject, mentions, urgency, p\_messagesDataStore) ⇒ `Promise.<Message, ErrorManager>`
+
+Send a message to a bubble  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Category**: Ims MESSAGES
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Message` the message sent, or null in case of error, as parameter of the resolve
+
+Param
+
+Type
+
+Default
+
+Description
+
+message
+
+`string`
+
+The message to send
+
+bubble
+
+`Bubble`
+
+The bubble (should at least have a jid property)
+
+lang
+
+`string`
+
+`en`
+
+The content language used
+
+content
+
+`Object`
+
+Allow to send alternative text base content
+
+content.type
+
+`string`
+
+The content message type (text/markdown)
+
+content.message
+
+`string`
+
+The content message body
+
+subject
+
+`string`
+
+The message subject
+
+mentions
+
+`Array.<string>`
+
+array containing a list of JID of contact to mention or a string containing a single JID of the contact.
+
+urgency
+
+`UrgencyType`
+
+The urgence of the message. String value can be : 'high' Urgent message, 'middle' important message, 'low' information message, "std' or null standard message
+
+p\_messagesDataStore
+
+`DataStoreType`
+
+`urgency`
+
+used to override the general of SDK's parameter "messagesDataStore". default value `undefined` to use the general value.  
+DataStoreType.NoStore Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide The messages are fully stored.  
+DataStoreType.UsestoreMessagesField to follow the storeMessages SDK's parameter behaviour.  
+DataStoreType.Store Offline storage and Message Archive Management (XEP-0313) \[4\] can define their own rules on what messages to store and usually only store messages that contain a body element. However a sender may want to indicate that a message is worth storing even though it might not match those rules (e.g. an encrypted message that carries the payload outside the body element). Such a message can be marked with a hint.
+
+---
+
+### imsService.sendMessageToBubbleJid(message, jid, lang, content, subject, mentions, urgency, p\_messagesDataStore) ⇒ `Promise.<Message, ErrorManager>`
+
+Send a message to a bubble identified by its JID  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Category**: Ims MESSAGES
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Message` the message sent, or null in case of error, as parameter of the resolve
+
+Param
+
+Type
+
+Default
+
+Description
+
+message
+
+`string`
+
+The message to send
+
+jid
+
+`string`
+
+The bubble JID
+
+lang
+
+`string`
+
+`en`
+
+The content language used
+
+content
+
+`Object`
+
+Allow to send alternative text base content
+
+content.type
+
+`string`
+
+The content message type (text/markdown)
+
+content.message
+
+`string`
+
+The content message body
+
+subject
+
+`string`
+
+The message subject
+
+mentions
+
+`Array.<string>`
+
+array containing a list of JID of contact to mention or a string containing a sigle JID of the contact.
+
+urgency
+
+`UrgencyType`
+
+The urgence of the message. String value can be : 'high' Urgent message, 'middle' important message, 'low' information message, "std' or null standard message
+
+p\_messagesDataStore
+
+`DataStoreType`
+
+used to override the general of SDK's parameter "messagesDataStore". default value `undefined` to use the general value.  
+DataStoreType.NoStore Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide The messages are fully stored.  
+DataStoreType.UsestoreMessagesField to follow the storeMessages SDK's parameter behaviour.  
+DataStoreType.Store Offline storage and Message Archive Management (XEP-0313) \[4\] can define their own rules on what messages to store and usually only store messages that contain a body element. However a sender may want to indicate that a message is worth storing even though it might not match those rules (e.g. an encrypted message that carries the payload outside the body element). Such a message can be marked with a hint.
+
+---
+
+### imsService.sendMessageToBubbleJidAnswer(message, jid, lang, content, subject, answeredMsg, mentions, urgency, p\_messagesDataStore) ⇒ `Promise.<Message, ErrorManager>`
+
+Send a message to a bubble identified by its JID  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Category**: Ims MESSAGES
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Message` the message sent, or null in case of error, as parameter of the resolve
+
+Param
+
+Type
+
+Default
+
+Description
+
+message
+
+`string`
+
+The message to send
+
+jid
+
+`string`
+
+The bubble JID
+
+lang
+
+`string`
+
+`en`
+
+The content language used
+
+content
+
+`Object`
+
+Allow to send alternative text base content
+
+content.type
+
+`string`
+
+The content message type (text/markdown)
+
+content.message
+
+`string`
+
+The content message body
+
+subject
+
+`string`
+
+The message subject
+
+answeredMsg
+
+`Object`
+
+The message answered
+
+mentions
+
+`Array.<string>`
+
+array containing a list of JID of contact to mention or a string containing a sigle JID of the contact.
+
+urgency
+
+`UrgencyType`
+
+The urgence of the message. String value can be : 'high' Urgent message, 'middle' important message, 'low' information message, "std' or null standard message
+
+p\_messagesDataStore
+
+`DataStoreType`
+
+used to override the general of SDK's parameter "messagesDataStore". default value `undefined` to use the general value.  
+DataStoreType.NoStore Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide The messages are fully stored.  
+DataStoreType.UsestoreMessagesField to follow the storeMessages SDK's parameter behaviour.  
+DataStoreType.Store Offline storage and Message Archive Management (XEP-0313) \[4\] can define their own rules on what messages to store and usually only store messages that contain a body element. However a sender may want to indicate that a message is worth storing even though it might not match those rules (e.g. an encrypted message that carries the payload outside the body element). Such a message can be marked with a hint.
+
+---
+
+### imsService.retrieveXMPPMessagesByListOfMessageIds(ims) ⇒ `Promise.<any>`
+
+This API allow user to retrieve it's ims by list of message Ids, peer and peer type  
+If message cannot be retrieved response will return status not found.  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Returns**: `Promise.<any>` - The result
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object\[\]
+
+list of retrieved message
+
+msgId
+
+String
+
+xmpp id of the message
+
+peer
+
+String
+
+peer jid with which message has been exchanged
+
+status optionnel
+
+String
+
+request status  
+  
+\* unchanged: When XMPP server message copy has the same hash,  
+\* not\_found: When message was not found,
+
+xml optionnel
+
+String
+
+message content if message has been successfully retrieved (not present if message was status unchanged)
+
+hash optionnel
+
+String
+
+message hash if message has been successfully retrieved (not present if message was status unchanged)
+
+timestamp optionnel
+
+String
+
+message timestamp if message has been successfully retrieved (not present if message was status unchanged)
+
+**Category**: Ims MESSAGES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.21.0
+
+Param
+
+Type
+
+Description
+
+ims
+
+`Array.<any>`
+
+list of object that contains the following:  
+\[{  
+**peer** : string jid with which message has been exchanged  
+**msgId** : string xmpp message id of the message to retrieve  
+**hash** optionnel : string md5 hash of the message to retrieve If hash is specified response will return status unchanged if XMPP message copy has the same hash Client should use hash whenever possible to reduce response size  
+**type** : string Conversation type:  
+\- user: User to user,  
+\- room: User to room,  
+\- bot: User to bot  
+Possibles values : "user", "room", "bot"  
+}\]  
+
+---
+
+### imsService.addPinWithPeerId(peerId, types, body) ⇒ `Promise.<any>`
+
+This API can be used to add a pin in user's Pins list with peerId.  
+This API can only be used by user himself  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Returns**: `Promise.<any>` - The result
+
+Champ
+
+Type
+
+Description
+
+`peerId`
+
+String
+
+Id of the conversation's peer.
+
+`peerJid`
+
+String
+
+Jid of the conversation's peer.
+
+`conversationJid`
+
+String
+
+Jid of the conversation's peer.
+
+`messageId`
+
+String
+
+XMPP message Id.
+
+`messageTimestamp`
+
+Number
+
+Timestamp of the message.
+
+`text`
+
+String
+
+Pin's text.
+
+`fileInfo` *(optionnel)*
+
+Object
+
+File information.
+
+`creationDate` *(optionnel)*
+
+Number
+
+Creation date in ms since Unix epoch.
+
+id
+
+String
+
+Pin's Id
+
+**Category**: Ims MESSAGES Pin list
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.33.0
+
+Param
+
+Type
+
+Description
+
+peerId
+
+`string`
+
+peerId unique identifier  
+
+types
+
+`PEERTYPE`
+
+type of peer id Valeurs autorisées : rooms, users
+
+body
+
+`Object`
+
+Pin List Object.
+
+---
+
+### imsService.getPinWithPeerIdById(types, peerId, pinId) ⇒ `Promise.<any>`
+
+This API can be used to get a pin in user's Pins list by peerId and pinId.  
+This API can only be used by user himself  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Returns**: `Promise.<any>` - The result
+
+Champ
+
+Type
+
+Description
+
+`peerId`
+
+String
+
+Id of the conversation's peer.
+
+`peerJid`
+
+String
+
+Jid of the conversation's peer.
+
+`conversationJid`
+
+String
+
+Jid of the conversation's peer.
+
+`messageId`
+
+String
+
+XMPP message Id.
+
+`messageTimestamp`
+
+Number
+
+Timestamp of the message.
+
+`text`
+
+String
+
+Pin's text.
+
+`fileInfo` *(optionnel)*
+
+Object
+
+File information.
+
+`creationDate` *(optionnel)*
+
+Number
+
+Creation date in ms since Unix epoch.
+
+id
+
+String
+
+Pin's Id
+
+**Category**: Ims MESSAGES Pin list
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.33.0
+
+Param
+
+Type
+
+Description
+
+types
+
+`PEERTYPE`
+
+type of peer id Valeurs autorisées : rooms, users
+
+peerId
+
+`string`
+
+peerId unique identifier  
+
+pinId
+
+`string`
+
+id of Pin.
+
+---
+
+### imsService.getAllPinsWithPeerId(types, peerId) ⇒ `Promise.<any>`
+
+This API can be used to get all pin in user's Pins list by peerId.  
+This API can only be used by user himself  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Returns**: `Promise.<any>` - The result
+
+Array of pin Object :  
+
+Champ
+
+Type
+
+Description
+
+`peerId`
+
+String
+
+Id of the conversation's peer.
+
+`peerJid`
+
+String
+
+Jid of the conversation's peer.
+
+`conversationJid`
+
+String
+
+Jid of the conversation's peer.
+
+`messageId`
+
+String
+
+XMPP message Id.
+
+`messageTimestamp`
+
+Number
+
+Timestamp of the message.
+
+`text`
+
+String
+
+Pin's text.
+
+`fileInfo` *(optionnel)*
+
+Object
+
+File information.
+
+`creationDate` *(optionnel)*
+
+Number
+
+Creation date in ms since Unix epoch.
+
+id
+
+String
+
+Pin's Id
+
+**Category**: Ims MESSAGES Pin list
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.33.0
+
+Param
+
+Type
+
+Description
+
+types
+
+`PEERTYPE`
+
+type of peer id Valeurs autorisées : rooms, users
+
+peerId
+
+`string`
+
+peerId unique identifier  
+
+---
+
+### imsService.removefromWithPeerIdAndPinId(types, peerId, pinId) ⇒ `Promise.<any>`
+
+This API can be used to remove a pin in user's Pins list by peerId and pinId.  
+This API can only be used by user himself  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Returns**: `Promise.<any>` - The result
+
+Array of :  
+
+Champ
+
+Type
+
+Description
+
+status
+
+String
+
+deletion status.
+
+**Category**: Ims MESSAGES Pin list
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.33.0
+
+Param
+
+Type
+
+Description
+
+types
+
+`PEERTYPE`
+
+type of peer id Valeurs autorisées : rooms, users
+
+peerId
+
+`string`
+
+peerId unique identifier  
+
+pinId
+
+`string`
+
+id of Pin.
+
+---
+
+### imsService.updatePinWithPeerId(peerId, types, pinId, body) ⇒ `Promise.<any>`
+
+This API can be used to add a pin in user's Pins list with peerId.  
+This API can only be used by user himself  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Returns**: `Promise.<any>` - The result
+
+Champ
+
+Type
+
+Description
+
+`peerId`
+
+String
+
+Id of the conversation's peer.
+
+`peerJid`
+
+String
+
+Jid of the conversation's peer.
+
+`conversationJid`
+
+String
+
+Jid of the conversation's peer.
+
+`messageId`
+
+String
+
+XMPP message Id.
+
+`messageTimestamp`
+
+Number
+
+Timestamp of the message.
+
+`text`
+
+String
+
+Pin's text.
+
+`fileInfo` *(optionnel)*
+
+Object
+
+File information.
+
+`creationDate` *(optionnel)*
+
+Number
+
+Creation date in ms since Unix epoch.
+
+id
+
+String
+
+Pin's Id
+
+**Category**: Ims MESSAGES Pin list
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.33.0
+
+Param
+
+Type
+
+Description
+
+peerId
+
+`string`
+
+peerId unique identifier  
+
+types
+
+`PEERTYPE`
+
+type of peer id Valeurs autorisées : rooms, users
+
+pinId
+
+`string`
+
+id of Pin.
+
+body
+
+`Object`
+
+Pin List Object.
+
+---
+
+### imsService.sendIsTypingStateInBubble(bubble, status, p\_messagesDataStore) ⇒ `Object`
+
+Switch the "is typing" state in a bubble/room  
+  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Returns**: `Object` - Return a promise with no parameter when succeed.
+
+**Category**: Ims TYPING
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+bubble
+
+`Bubble`
+
+The destination bubble
+
+status
+
+`boolean`
+
+`true`
+
+The status, true for setting "is Typing", false to remove it.
+
+p\_messagesDataStore
+
+`DataStoreType`
+
+used to override the general of SDK's parameter "messagesDataStore". default value `undefined` to use the general value.  
+DataStoreType.NoStore Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide The messages are fully stored.  
+DataStoreType.UsestoreMessagesField to follow the storeMessages SDK's parameter behaviour.  
+DataStoreType.Store Offline storage and Message Archive Management (XEP-0313) \[4\] can define their own rules on what messages to store and usually only store messages that contain a body element. However a sender may want to indicate that a message is worth storing even though it might not match those rules (e.g. an encrypted message that carries the payload outside the body element). Such a message can be marked with a hint.
+
+---
+
+### imsService.sendIsTypingStateInConversation(conversation, status, p\_messagesDataStore) ⇒
+
+Switch the "is typing" state in a conversation  
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Returns**: Return a promise with no parameter when succeed
+
+**Category**: Ims TYPING
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+conversation
+
+`Conversation`
+
+The conversation recipient
+
+status
+
+`boolean`
+
+`true`
+
+The status, true for setting "is Typing", false to remove it
+
+p\_messagesDataStore
+
+`DataStoreType`
+
+used to override the general of SDK's parameter "messagesDataStore". default value `undefined` to use the general value.  
+DataStoreType.NoStore Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide The messages are fully stored.  
+DataStoreType.UsestoreMessagesField to follow the storeMessages SDK's parameter behaviour.  
+DataStoreType.Store Offline storage and Message Archive Management (XEP-0313) \[4\] can define their own rules on what messages to store and usually only store messages that contain a body element. However a sender may want to indicate that a message is worth storing even though it might not match those rules (e.g. an encrypted message that carries the payload outside the body element). Such a message can be marked with a hint.
+
+---
+
+### imsService.sendMessageNotification(data) ⇒ `Promise.<any>`
+
+Sends a notification message using REST API POST /api/rainbow/enduser/v1.0/notifications/message. Body parameters must follow the server documentation: https://api.openrainbow.org/enduser/#api-notifications\_IM-sendMessageNotification
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Returns**: `Promise.<any>` - - resolves with server response
+
+**Category**: Notifications
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+data
+
+`object`
+
+Body parameters sent to the endpoint. Summary of fields from the server doc: - to: string
+
+object - Mandatory. Recipient information. Depending on the use case, this can be: - userId: string - Rainbow user identifier - loginEmail: string - Rainbow login email - jid\_im: string - Recipient XMPP JID (IM) - bubbleId: string - Bubble identifier (for group messages, if supported by endpoint) - type: string - Message transport/type. Ex: "im" (Instant Message). Other values per server doc. - message: string - Message body text. - subject: string - Optional subject/title. - urgency: string - Optional urgency level if supported (e.g., "standard", "urgent"). - mentions: Array - Optional list of mention targets (e.g., by userId or jid\_im). - attachments: Array - Optional attachments metadata (e.g., fileId, url, name, size, mimeType) if supported. - options: object - Optional flags and options provided by server (e.g., disablePush, noStore, translate, lang, replyTo, etc.). Notes: - This is only a convenience summary. Always refer to the official API documentation linked above for the exhaustive, authoritative list of fields, constraints, and examples. - The SDK forwards the payload as-is to the REST API.
+
+---
+
+### imsService.sendVoicemailTranscriptionMessage(to, transcriptInfo, p\_messagesDataStore) ⇒ `Promise.<any>`
+
+Sends a message to a contact Jid to add a voice message in the list.
+
+**Kind**: instance method of [`ImsService`](#module_ImsService)
+
+**Returns**: `Promise.<any>` - - that resolves on success
+
+**Category**: Voicemail
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+to
+
+`string`
+
+The Jid to which the message is sent
+
+transcriptInfo
+
+`any`
+
+: { jid : string, date : string, duration : number, url : string, transcript : string} = { jid : undefined, date : new Date().toISOString(), duration : 0, url : undefined, transcript : undefined} - informations of the voice mail.
+
+p\_messagesDataStore
+
+`DataStoreType`
+
+used to override the general of SDK's parameter "messagesDataStore". default value `undefined` to use the general value.  
+DataStoreType.NoStore Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide The messages are fully stored.  
+DataStoreType.UsestoreMessagesField to follow the storeMessages SDK's parameter behaviour.  
+DataStoreType.Store Offline storage and Message Archive Management (XEP-0313) \[4\] can define their own rules on what messages to store and usually only store messages that contain a body element. However a sender may want to indicate that a message is worth storing even though it might not match those rules (e.g. an encrypted message that carries the payload outside the body element). Such a message can be marked with a hint.
+
+---
+
+### On this page
+
+-   [ImsService](/docs/sdk/node#name-imsservice-3)
+-   [imsService.sendApplicationMessageContactJid(jid, xmlElements, p\_messagesDataStore) ⇒ Promise.<any>](/docs/sdk/node#name-imsservice.sendapplicationmessagecontactjidjid-xmlelements-p_messagesdatastore--promise.any-195)
+-   [imsService.sendApplicationMessageBubbleJid(jid, xmlElements, p\_messagesDataStore) ⇒ Promise.<any>](/docs/sdk/node#name-imsservice.sendapplicationmessagebubblejidjid-xmlelements-p_messagesdatastore--promise.any-277)
+-   [imsService.getMessagesFromConversation(conversation, intNbMessage) ⇒ Promise.<Conversation, ErrorManager>](/docs/sdk/node#name-imsservice.getmessagesfromconversationconversation-intnbmessage--promise.conversation-errormanager-352)
+-   [imsService.getMessageFromConversationById(conversation, strMessageId) ⇒ Message](/docs/sdk/node#name-imsservice.getmessagefromconversationbyidconversation-strmessageid--message-425)
+-   [imsService.getMessageFromBubbleById(bubble, strMessageId) ⇒ Message](/docs/sdk/node#name-imsservice.getmessagefrombubblebyidbubble-strmessageid--message-492)
+-   [imsService.markMessageAsRead(messageReceived) ⇒ Promise](/docs/sdk/node#name-imsservice.markmessageasreadmessagereceived--promise-559)
+-   [imsService.sendMessageToConversation(conversation, message, lang, content, subject, urgency, p\_messagesDataStore) ⇒ Promise.<Message, ErrorManager>](/docs/sdk/node#name-imsservice.sendmessagetoconversationconversation-message-lang-content-subject-urgency-p_messagesdatastore--promise.message-errormanager-609)
+-   [imsService.sendMessageToContact(message, contact, lang, content, subject, urgency, p\_messagesDataStore) ⇒ Promise.<Message, ErrorManager>](/docs/sdk/node#name-imsservice.sendmessagetocontactmessage-contact-lang-content-subject-urgency-p_messagesdatastore--promise.message-errormanager-780)
+-   [imsService.sendMessageToJid(message, jid, lang, content, subject, urgency, p\_messagesDataStore) ⇒ Promise.<Message, ErrorManager>](/docs/sdk/node#name-imsservice.sendmessagetojidmessage-jid-lang-content-subject-urgency-p_messagesdatastore--promise.message-errormanager-948)
+-   [imsService.sendMessageToJidAnswer(message, jid, lang, content, subject, answeredMsg, urgency, p\_messagesDataStore) ⇒ Promise.<Message, ErrorManager>](/docs/sdk/node#name-imsservice.sendmessagetojidanswermessage-jid-lang-content-subject-answeredmsg-urgency-p_messagesdatastore--promise.message-errormanager-1116)
+-   [imsService.sendMessageToJidAcknowledged(message, lang, ackLabel, attention, p\_messagesDataStore) ⇒ Promise.<Message, ErrorManager>](/docs/sdk/node#name-imsservice.sendmessagetojidacknowledgedmessage-lang-acklabel-attention-p_messagesdatastore--promise.message-errormanager-1298)
+-   [imsService.sendMessageToJidIgnored(message, lang, ignLabel, p\_messagesDataStore) ⇒ Promise.<Message, ErrorManager>](/docs/sdk/node#name-imsservice.sendmessagetojidignoredmessage-lang-ignlabel-p_messagesdatastore--promise.message-errormanager-1410)
+-   [imsService.sendMessageToBubble(message, bubble, lang, content, subject, mentions, urgency, p\_messagesDataStore) ⇒ Promise.<Message, ErrorManager>](/docs/sdk/node#name-imsservice.sendmessagetobubblemessage-bubble-lang-content-subject-mentions-urgency-p_messagesdatastore--promise.message-errormanager-1508)
+-   [imsService.sendMessageToBubbleJid(message, jid, lang, content, subject, mentions, urgency, p\_messagesDataStore) ⇒ Promise.<Message, ErrorManager>](/docs/sdk/node#name-imsservice.sendmessagetobubblejidmessage-jid-lang-content-subject-mentions-urgency-p_messagesdatastore--promise.message-errormanager-1690)
+-   [imsService.sendMessageToBubbleJidAnswer(message, jid, lang, content, subject, answeredMsg, mentions, urgency, p\_messagesDataStore) ⇒ Promise.<Message, ErrorManager>](/docs/sdk/node#name-imsservice.sendmessagetobubblejidanswermessage-jid-lang-content-subject-answeredmsg-mentions-urgency-p_messagesdatastore--promise.message-errormanager-1872)
+-   [imsService.retrieveXMPPMessagesByListOfMessageIds(ims) ⇒ Promise.<any>](/docs/sdk/node#name-imsservice.retrievexmppmessagesbylistofmessageidsims--promise.any-2068)
+-   [imsService.addPinWithPeerId(peerId, types, body) ⇒ Promise.<any>](/docs/sdk/node#name-imsservice.addpinwithpeeridpeerid-types-body--promise.any-2218)
+-   [imsService.getPinWithPeerIdById(types, peerId, pinId) ⇒ Promise.<any>](/docs/sdk/node#name-imsservice.getpinwithpeeridbyidtypes-peerid-pinid--promise.any-2412)
+-   [imsService.getAllPinsWithPeerId(types, peerId) ⇒ Promise.<any>](/docs/sdk/node#name-imsservice.getallpinswithpeeridtypes-peerid--promise.any-2606)
+-   [imsService.removefromWithPeerIdAndPinId(types, peerId, pinId) ⇒ Promise.<any>](/docs/sdk/node#name-imsservice.removefromwithpeeridandpinidtypes-peerid-pinid--promise.any-2792)
+-   [imsService.updatePinWithPeerId(peerId, types, pinId, body) ⇒ Promise.<any>](/docs/sdk/node#name-imsservice.updatepinwithpeeridpeerid-types-pinid-body--promise.any-2901)
+-   [imsService.sendIsTypingStateInBubble(bubble, status, p\_messagesDataStore) ⇒ Object](/docs/sdk/node#name-imsservice.sendistypingstateinbubblebubble-status-p_messagesdatastore--object-3106)
+-   [imsService.sendIsTypingStateInConversation(conversation, status, p\_messagesDataStore) ⇒](/docs/sdk/node#name-imsservice.sendistypingstateinconversationconversation-status-p_messagesdatastore--3193)
+-   [imsService.sendMessageNotification(data) ⇒ Promise.<any>](/docs/sdk/node#name-imsservice.sendmessagenotificationdata--promise.any-3280)
+-   [imsService.sendVoicemailTranscriptionMessage(to, transcriptInfo, p\_messagesDataStore) ⇒ Promise.<any>](/docs/sdk/node#name-imsservice.sendvoicemailtranscriptionmessageto-transcriptinfo-p_messagesdatastore--promise.any-3336)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

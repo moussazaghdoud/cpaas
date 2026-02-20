@@ -1,0 +1,227 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/calllog"
+lastSynced: "2026-02-20T07:12:31.681Z"
+---
+# Documentation
+
+CallLog Service
+
+LTS release 2.XPublished on 2025-01-01
+
+## CallLogService
+
+This service allow to get the call log and manage it.  
+  
+The main methods and events proposed in that service allow to:  
+\- Get all calls log  
+\- Delete one or all calls log  
+\- Mark calls as read / unread  
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [CallLogService](#module_CallLogService)
+    -   *CallLog INITIALISATION*
+        -   [isInitialized()](#module_CallLogService+isInitialized) ⇒ `Boolean`
+    -   *CallLog MANAGEMENT*
+        -   [getAll()](#module_CallLogService+getAll) ⇒ `Array.<CallLog>`
+        -   [getMissedCallLogCounter()](#module_CallLogService+getMissedCallLogCounter) ⇒ `Number`
+        -   [deleteOneCallLog(id)](#module_CallLogService+deleteOneCallLog) ⇒
+        -   [deleteCallLogsForContact(jid)](#module_CallLogService+deleteCallLogsForContact) ⇒
+        -   [deleteAllCallLogs()](#module_CallLogService+deleteAllCallLogs) ⇒
+        -   [markCallLogAsRead(id)](#module_CallLogService+markCallLogAsRead) ⇒
+        -   [markAllCallsLogsAsRead()](#module_CallLogService+markAllCallsLogsAsRead) ⇒
+
+---
+
+### callLogService.isInitialized() ⇒ `Boolean`
+
+Check if the call log history has been received from Rainbow  
+A false answer means that the call logs have not yet been retrieved from the server.  
+
+**Kind**: instance method of [`CallLogService`](#module_CallLogService)
+
+**Returns**: `Boolean` - True if the call logs have been retrieved. False elsewhere.
+
+**Category**: CallLog INITIALISATION
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### callLogService.getAll() ⇒ `Array.<CallLog>`
+
+Get all calls log history for the connected user  
+
+**Kind**: instance method of [`CallLogService`](#module_CallLogService)
+
+**Returns**: `Array.<CallLog>` - An array of call log entry
+
+**Category**: CallLog MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### callLogService.getMissedCallLogCounter() ⇒ `Number`
+
+Get the number of call missed (state === "missed" && direction === "incoming")  
+
+**Kind**: instance method of [`CallLogService`](#module_CallLogService)
+
+**Returns**: `Number` - The number of call missed
+
+**Category**: CallLog MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### callLogService.deleteOneCallLog(id) ⇒
+
+Delete a call log from it's id  
+You have to listen to event `rainbow_oncalllogupdated` to know when the action is finished  
+
+**Kind**: instance method of [`CallLogService`](#module_CallLogService)
+
+**Returns**: Nothing
+
+**Category**: CallLog MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The call log id to remove
+
+---
+
+### callLogService.deleteCallLogsForContact(jid) ⇒
+
+Delete all calls log items associated to a contact's given jid  
+You have to listen to event `rainbow_oncalllogupdated` to know when the action is finished  
+
+**Kind**: instance method of [`CallLogService`](#module_CallLogService)
+
+**Returns**: Nothing
+
+**Category**: CallLog MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+jid
+
+`string`
+
+The call log id to remove
+
+---
+
+### callLogService.deleteAllCallLogs() ⇒
+
+Delete all call logs history  
+You have to listen to event `rainbow_oncalllogupdated` to know when the action is finished  
+
+**Kind**: instance method of [`CallLogService`](#module_CallLogService)
+
+**Returns**: Nothing
+
+**Category**: CallLog MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### callLogService.markCallLogAsRead(id) ⇒
+
+Mark a call log item as read  
+You have to listen to event `rainbow_oncalllogackupdated` to know when the action is finished  
+
+**Kind**: instance method of [`CallLogService`](#module_CallLogService)
+
+**Returns**: Nothing
+
+**Category**: CallLog MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The call log id
+
+---
+
+### callLogService.markAllCallsLogsAsRead() ⇒
+
+Mark all call log items as read  
+You have to listen to event `rainbow_oncalllogackupdated` to know when the action is finished  
+
+**Kind**: instance method of [`CallLogService`](#module_CallLogService)
+
+**Returns**: Nothing
+
+**Category**: CallLog MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### On this page
+
+-   [CallLogService](/docs/sdk/node#name-calllogservice-3)
+-   [callLogService.isInitialized() ⇒ Boolean](/docs/sdk/node#name-calllogservice.isinitialized--boolean-82)
+-   [callLogService.getAll() ⇒ Array.<CallLog>](/docs/sdk/node#name-calllogservice.getall--array.calllog-107)
+-   [callLogService.getMissedCallLogCounter() ⇒ Number](/docs/sdk/node#name-calllogservice.getmissedcalllogcounter--number-132)
+-   [callLogService.deleteOneCallLog(id) ⇒](/docs/sdk/node#name-calllogservice.deleteonecalllogid--157)
+-   [callLogService.deleteCallLogsForContact(jid) ⇒](/docs/sdk/node#name-calllogservice.deletecalllogsforcontactjid--210)
+-   [callLogService.deleteAllCallLogs() ⇒](/docs/sdk/node#name-calllogservice.deleteallcalllogs--263)
+-   [callLogService.markCallLogAsRead(id) ⇒](/docs/sdk/node#name-calllogservice.markcalllogasreadid--288)
+-   [callLogService.markAllCallsLogsAsRead() ⇒](/docs/sdk/node#name-calllogservice.markallcallslogsasread--341)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

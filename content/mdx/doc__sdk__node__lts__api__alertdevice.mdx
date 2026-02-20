@@ -1,0 +1,506 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/alertdevice"
+lastSynced: "2026-02-20T07:12:31.537Z"
+---
+# Documentation
+
+AlertDevice
+
+LTS release 2.XPublished on 2025-01-01
+
+## Classes
+
+[AlertDevice](#AlertDevice)
+
+[AlertDevicesData](#AlertDevicesData)
+
+## AlertDevice
+
+**Kind**: global class
+
+**Access**: public
+
+-   [AlertDevice](#AlertDevice)
+    -   [AlertDevice()](#new_AlertDevice_new)
+    -   [id](#AlertDevice+id)
+    -   [name](#AlertDevice+name)
+    -   [type](#AlertDevice+type)
+    -   [userId](#AlertDevice+userId)
+    -   [companyId](#AlertDevice+companyId)
+    -   [jid\_im](#AlertDevice+jid_im)
+    -   [jid\_resource](#AlertDevice+jid_resource)
+    -   [creationDate](#AlertDevice+creationDate)
+    -   [ipAddresses](#AlertDevice+ipAddresses)
+    -   [macAddresses](#AlertDevice+macAddresses)
+    -   [tags](#AlertDevice+tags)
+    -   [geolocation](#AlertDevice+geolocation)
+    -   [domainUsername](#AlertDevice+domainUsername)
+    -   [description](#AlertDevice+description)
+
+---
+
+### AlertDevice()
+
+This class represents an Alert device to receive the "Alert". It needs subscription to Alert license.  
+
+---
+
+### alertDevice.id
+
+**Kind**: instance property of [`AlertDevice`](#AlertDevice)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+id
+
+`string`
+
+The ID of the Device
+
+---
+
+### alertDevice.name
+
+**Kind**: instance property of [`AlertDevice`](#AlertDevice)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+name
+
+`string`
+
+The Name of the Device
+
+---
+
+### alertDevice.type
+
+**Kind**: instance property of [`AlertDevice`](#AlertDevice)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+type
+
+`string`
+
+The type of the Device (Allowed values: web, desktop, mac, android, ios)
+
+---
+
+### alertDevice.userId
+
+**Kind**: instance property of [`AlertDevice`](#AlertDevice)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+userId
+
+`string`
+
+The User ID of the Device
+
+---
+
+### alertDevice.companyId
+
+**Kind**: instance property of [`AlertDevice`](#AlertDevice)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+companyId
+
+`string`
+
+The Company to which belongs this device (user's company)
+
+---
+
+### alertDevice.jid\_im
+
+**Kind**: instance property of [`AlertDevice`](#AlertDevice)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+jid\_im
+
+`string`
+
+The User Jabber IM identifier (copied from the associated user)
+
+---
+
+### alertDevice.jid\_resource
+
+**Kind**: instance property of [`AlertDevice`](#AlertDevice)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+jid\_resource
+
+`string`
+
+The Resource part of the full jid used by the device to connect to xmpp server.
+
+---
+
+### alertDevice.creationDate
+
+**Kind**: instance property of [`AlertDevice`](#AlertDevice)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+creationDate
+
+`string`
+
+The Device creation date
+
+---
+
+### alertDevice.ipAddresses
+
+**Kind**: instance property of [`AlertDevice`](#AlertDevice)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+ipAddresses
+
+`List.<string>`
+
+The List of the IP Adresses
+
+---
+
+### alertDevice.macAddresses
+
+**Kind**: instance property of [`AlertDevice`](#AlertDevice)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+macAddresses
+
+`List.<string>`
+
+The Mac Addresses
+
+---
+
+### alertDevice.tags
+
+**Kind**: instance property of [`AlertDevice`](#AlertDevice)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+tags
+
+`List.<string>`
+
+The An Array of free tags associated to the device. (max 5 tags. Each 64 characters max)
+
+---
+
+### alertDevice.geolocation
+
+**Kind**: instance property of [`AlertDevice`](#AlertDevice)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+geolocation
+
+`string`
+
+The Geolocation of the device. (only latitude and longitude (in degrees) are used for the moment)
+
+---
+
+### alertDevice.domainUsername
+
+**Kind**: instance property of [`AlertDevice`](#AlertDevice)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+domainUsername
+
+`string`
+
+The Domain Username of the device.
+
+---
+
+### alertDevice.description
+
+**Kind**: instance property of [`AlertDevice`](#AlertDevice)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+description
+
+`string`
+
+The description of the device.
+
+---
+
+## AlertDevicesData
+
+**Kind**: global class
+
+-   [AlertDevicesData](#AlertDevicesData)
+    -   [AlertDevicesData()](#new_AlertDevicesData_new)
+    -   [total](#AlertDevicesData+total)
+    -   [limit](#AlertDevicesData+limit)
+    -   [offset](#AlertDevicesData+offset)
+
+---
+
+### AlertDevicesData()
+
+This class represents a list of retrieved "Alert Device" to receive the "Alert".  
+
+---
+
+### alertDevicesData.total
+
+**Kind**: instance property of [`AlertDevicesData`](#AlertDevicesData)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+total
+
+`number`
+
+The Total number of items available
+
+---
+
+### alertDevicesData.limit
+
+**Kind**: instance property of [`AlertDevicesData`](#AlertDevicesData)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+limit
+
+`number`
+
+The Number of items asked
+
+---
+
+### alertDevicesData.offset
+
+**Kind**: instance property of [`AlertDevicesData`](#AlertDevicesData)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+offset
+
+`number`
+
+The Offset used
+
+---
+
+### On this page
+
+-   [Classes](/docs/sdk/node#name-classes-0)
+-   [AlertDevice](/docs/sdk/node#name-alertdevice-7)
+-   [AlertDevice()](/docs/sdk/node#name-alertdevice-104)
+-   [alertDevice.id](/docs/sdk/node#name-alertdevice.id-114)
+-   [alertDevice.name](/docs/sdk/node#name-alertdevice.name-161)
+-   [alertDevice.type](/docs/sdk/node#name-alertdevice.type-208)
+-   [alertDevice.userId](/docs/sdk/node#name-alertdevice.userid-255)
+-   [alertDevice.companyId](/docs/sdk/node#name-alertdevice.companyid-302)
+-   [alertDevice.jid\_im](/docs/sdk/node#name-alertdevice.jid_im-349)
+-   [alertDevice.jid\_resource](/docs/sdk/node#name-alertdevice.jid_resource-396)
+-   [alertDevice.creationDate](/docs/sdk/node#name-alertdevice.creationdate-443)
+-   [alertDevice.ipAddresses](/docs/sdk/node#name-alertdevice.ipaddresses-490)
+-   [alertDevice.macAddresses](/docs/sdk/node#name-alertdevice.macaddresses-537)
+-   [alertDevice.tags](/docs/sdk/node#name-alertdevice.tags-584)
+-   [alertDevice.geolocation](/docs/sdk/node#name-alertdevice.geolocation-631)
+-   [alertDevice.domainUsername](/docs/sdk/node#name-alertdevice.domainusername-678)
+-   [alertDevice.description](/docs/sdk/node#name-alertdevice.description-725)
+-   [AlertDevicesData](/docs/sdk/node#name-alertdevicesdata-772)
+-   [AlertDevicesData()](/docs/sdk/node#name-alertdevicesdata-811)
+-   [alertDevicesData.total](/docs/sdk/node#name-alertdevicesdata.total-821)
+-   [alertDevicesData.limit](/docs/sdk/node#name-alertdevicesdata.limit-868)
+-   [alertDevicesData.offset](/docs/sdk/node#name-alertdevicesdata.offset-915)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

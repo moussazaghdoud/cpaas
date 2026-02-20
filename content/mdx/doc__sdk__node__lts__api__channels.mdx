@@ -1,0 +1,1674 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/channels"
+lastSynced: "2026-02-20T07:12:31.770Z"
+---
+# Documentation
+
+Channels Service
+
+LTS release 2.XPublished on 2025-01-01
+
+## ChannelsService
+
+This service manages ChannelsService. This service is in Beta.  
+  
+  
+The main methods proposed in that module allow to:  
+\- Create a new channel  
+\- Manage a channel: update, delete  
+\- Manage users in a channel  
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [ChannelsService](#module_ChannelsService)
+    -   *Channels MANAGEMENT*
+        -   [createChannel(name, channelTopic)](#module_ChannelsService+createChannel) ⇒ `Promise.<Channel>`
+        -   [createPublicChannel(name, channelTopic, category)](#module_ChannelsService+createPublicChannel) ⇒ `Promise.<Channel>`
+        -   [createClosedChannel (name, description, category)](#createClosedChannel "ex_ createPrivateChannel") ⇒ `Promise.<Channel>`
+        -   [deleteChannel(channel)](#module_ChannelsService+deleteChannel) ⇒ `Promise.<Channel>`
+        -   [findChannelsByName(name)](#module_ChannelsService+findChannelsByName) ⇒ `Promise.<Array.<Channel>>`
+        -   [findChannelsByTopic(topic)](#module_ChannelsService+findChannelsByTopic) ⇒ `Promise.<Array.<Channel>>`
+        -   [fetchChannel(id, force)](#module_ChannelsService+fetchChannel) ⇒ `Promise.<Channel>`
+        -   [fetchChannelsByFilter(filter)](#module_ChannelsService+fetchChannelsByFilter) ⇒ `Promise.<Array.<Channel>>`
+        -   [fetchMyChannels(force)](#module_ChannelsService+fetchMyChannels) ⇒ `Promise.<Array.<Channel>>`
+        -   [getAllChannels()](#module_ChannelsService+getAllChannels) ⇒ `Array.<Channel>`
+        -   [getAllOwnedChannels()](#module_ChannelsService+getAllOwnedChannels) ⇒ `Array.<Channel>`
+        -   [getAllPendingChannels()](#module_ChannelsService+getAllPendingChannels) ⇒ `Array.<Channel>`
+        -   [updateChannelTopic(channel, description)](#module_ChannelsService+updateChannelTopic) ⇒ `Promise.<Channel>`
+        -   [updateChannelDescription(channel, description)](#module_ChannelsService+updateChannelDescription) ⇒ `Promise.<Channel>`
+        -   [updateChannelName(channel, channelName)](#module_ChannelsService+updateChannelName) ⇒ `Channel`
+        -   [updateChannel(id, channelTopic, visibility, max\_items, max\_payload\_size, channelName, category)](#module_ChannelsService+updateChannel) ⇒ `Promise.<Channel>`
+        -   [updateChannelVisibility(channel, visibility)](#module_ChannelsService+updateChannelVisibility) ⇒ `Promise.<Channel>`
+        -   [updateChannelVisibilityToPublic(channel)](#module_ChannelsService+updateChannelVisibilityToPublic) ⇒ `Channel`
+        -   [updateChannelVisibilityToClosed(channel)](#module_ChannelsService+updateChannelVisibilityToClosed) ⇒ `Channel`
+        -   [updateChannelAvatar(channel, urlAvatar)](#module_ChannelsService+updateChannelAvatar) ⇒ `Channel`
+        -   [deleteChannelAvatar(channel)](#module_ChannelsService+deleteChannelAvatar) ⇒ `Channel`
+    -   *Channels MESSAGES/ITEMS*
+        -   [publishMessageToChannel(channel, message, title, url, imagesIds, type, customDatas)](#module_ChannelsService+publishMessageToChannel) ⇒ `Promise.<ErrorManager.getErrorManager().OK>`
+        -   [createItem(channel, message, title, url, imagesIds, type, customDatas)](#module_ChannelsService+createItem) ⇒ `Promise.<ErrorManager.getErrorManager().OK>`
+        -   [fetchChannelItems(channel, maxMessages, beforeDate, afterDate)](#module_ChannelsService+fetchChannelItems) ⇒ `Promise.<Array.<Object>>`
+        -   [deleteItemFromChannel(channelId, itemId)](#module_ChannelsService+deleteItemFromChannel) ⇒ `Promise.<Channel>`
+        -   [likeItem(channel, itemId, appreciation)](#module_ChannelsService+likeItem) ⇒ `Promise.<any>`
+        -   [getDetailedAppreciations(channel, itemId)](#module_ChannelsService+getDetailedAppreciations) ⇒ `Promise.<any>`
+    -   *Channels SUBSCRIPTION*
+        -   [getAllSubscribedChannels()](#module_ChannelsService+getAllSubscribedChannels) ⇒ `Array.<Channel>`
+        -   [subscribeToChannel(channel)](#module_ChannelsService+subscribeToChannel) ⇒ `Promise.<Channel>`
+        -   [subscribeToChannelById(id)](#module_ChannelsService+subscribeToChannelById) ⇒ `Object`
+        -   [unsubscribeFromChannel(channel)](#module_ChannelsService+unsubscribeFromChannel) ⇒ `Promise.<string>`
+    -   *Channels USERS*
+        -   [fetchChannelUsers(channel, options)](#module_ChannelsService+fetchChannelUsers) ⇒ `Promise.<Array.<any>>`
+        -   [deleteAllUsersFromChannel(channel)](#module_ChannelsService+deleteAllUsersFromChannel) ⇒ `Promise.<Channel>`
+        -   [updateChannelUsers(channel, users)](#module_ChannelsService+updateChannelUsers) ⇒ `Promise.<Channel>`
+        -   [updateChannelUsersByLoginEmails(channel, users)](#module_ChannelsService+updateChannelUsersByLoginEmails) ⇒ `Promise.<Channel>`
+        -   [addOwnersToChannel(channel, owners)](#module_ChannelsService+addOwnersToChannel) ⇒ `Promise.<Channel>`
+        -   [addOwnersToChannelByLoginEmails(channel, owners)](#module_ChannelsService+addOwnersToChannelByLoginEmails) ⇒ `Promise.<Channel>`
+        -   [addPublishersToChannel(channel, publishers)](#module_ChannelsService+addPublishersToChannel) ⇒ `Promise.<Channel>`
+        -   [addPublishersToChannelByLoginEmails(channel, publishers)](#module_ChannelsService+addPublishersToChannelByLoginEmails) ⇒ `Promise.<Channel>`
+        -   [addMembersToChannel(channel, members)](#module_ChannelsService+addMembersToChannel) ⇒ `Promise.<Channel>`
+        -   [addMembersToChannelByLoginEmails(channel, members)](#module_ChannelsService+addMembersToChannelByLoginEmails) ⇒ `Promise.<Channel>`
+        -   [deleteUsersFromChannel(channel, users)](#module_ChannelsService+deleteUsersFromChannel) ⇒ `Promise.<Channel>`
+        -   [deleteUsersFromChannelByLoginEmails(channel, users)](#module_ChannelsService+deleteUsersFromChannelByLoginEmails) ⇒ `Promise.<Channel>`
+
+---
+
+### channelsService.createChannel(name, channelTopic) ⇒ `Promise.<Channel>`
+
+Create a new public channel with a visibility limited to my company  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - New Channel
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+name
+
+`string`
+
+The name of the channel to create (max-length=255)
+
+channelTopic
+
+`string`
+
+The description of the channel to create (max-length=255)
+
+---
+
+### channelsService.createPublicChannel(name, channelTopic, category) ⇒ `Promise.<Channel>`
+
+Create a new public channel with a visibility limited to my company  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - New Channel
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+name
+
+`string`
+
+The name of the channel to create (max-length=255)
+
+channelTopic
+
+`string`
+
+The description of the channel to create (max-length=255)
+
+category
+
+`string`
+
+The category of the channel
+
+---
+
+### channelsService.createClosedChannel (name, description, category) ⇒ `Promise.<Channel>`
+
+(old createPrivateChannel) Create a new closed channel  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - New Channel
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+name
+
+`string`
+
+The name of the channel to create (max-length=255)
+
+description
+
+`string`
+
+The description of the channel to create (max-length=255)
+
+category
+
+`string`
+
+The category of the channel
+
+---
+
+### channelsService.deleteChannel(channel) ⇒ `Promise.<Channel>`
+
+Delete an owned channel  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - Promise object represents The channel deleted
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel to delete
+
+---
+
+### channelsService.findChannelsByName(name) ⇒ `Promise.<Array.<Channel>>`
+
+Find channels by name. Only channels with visibility equals to 'company' can be found. First 100 results are returned.  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Array.<Channel>>` - ChannelsService found
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+name
+
+`string`
+
+Search this provided substring in the channel name (case insensitive).
+
+---
+
+### channelsService.findChannelsByTopic(topic) ⇒ `Promise.<Array.<Channel>>`
+
+Find channels by topic. Only channels with visibility equals to 'company' can be found. First 100 results are returned.  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Array.<Channel>>` - ChannelsService found
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+topic
+
+`string`
+
+Search this provided substring in the channel topic (case insensitive).
+
+---
+
+### channelsService.fetchChannel(id, force) ⇒ `Promise.<Channel>`
+
+(old getChannelById) Find a channel by its id (locally if exists or by sending a request to Rainbow)  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - The channel found
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+id
+
+`string`
+
+The id of the channel)
+
+force
+
+`boolean`
+
+`false`
+
+True to force a request to the server
+
+---
+
+### channelsService.fetchChannelsByFilter(filter) ⇒ `Promise.<Array.<Channel>>`
+
+Find channels using a filter (on name, topic)  
+Result may be filtered with result limit, offet and sortField or SortOrder  
+Return a promise.  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Array.<Channel>>` - Result of the find with  
+{Array} found channels informations with an array of { id, name, topic, creatorId, visibility, users\_count }  
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.55
+
+Param
+
+Type
+
+Description
+
+filter
+
+`Object`
+
+The filter with at least \[filter.name\] or \[filter.topic\] defined  
+{string} \[filter.name\] search by channel names (case insensitive substring).  
+{string} \[filter.topic\] search by channel topics (case insensitive substring).  
+{Number} \[filter.limit=100\] allow to specify the number of channels to retrieve.  
+{Number} \[filter.offset\] allow to specify the position of first channel to retrieve (first channel if not specified). Warning: if offset > total, no results are returned.  
+{string} \[filter.sortField="name"\] sort channel list based on the given field.  
+{Number} \[filter.sortOrder="1"\] specify order ascending/descending. 1 for ascending, -1 for descending.  
+
+---
+
+### channelsService.fetchMyChannels(force) ⇒ `Promise.<Array.<Channel>>`
+
+(old getChannels) Get the channels you own, are subscribed to, are publisher  
+Return a promise.  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Array.<Channel>>` - Return Promise with a list of channels or an empty array if no channel has been found
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.38
+
+Param
+
+Type
+
+Default
+
+Description
+
+force
+
+`boolean`
+
+`false`
+
+Boolean to force the get of channels's informations from server.
+
+---
+
+### channelsService.getAllChannels() ⇒ `Array.<Channel>`
+
+Return the list of channels (owned, invited, subscribed)  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Array.<Channel>` - An array of channels (owned, invited, subscribed)
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### channelsService.getAllOwnedChannels() ⇒ `Array.<Channel>`
+
+(old getAllOwnedChannel) Return the list of owned channels only  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Array.<Channel>` - An array of channels (owned only)
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### channelsService.getAllPendingChannels() ⇒ `Array.<Channel>`
+
+Return the list of invited channels only  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Array.<Channel>` - An array of channels (invited only)
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### channelsService.updateChannelTopic(channel, description) ⇒ `Promise.<Channel>`
+
+Update the description of a channel.  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - Updated channel
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel to update
+
+description
+
+`string`
+
+The description of the channel to update (max-length=255)
+
+---
+
+### channelsService.updateChannelDescription(channel, description) ⇒ `Promise.<Channel>`
+
+Update the description of a channel.  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - Updated channel
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel to update
+
+description
+
+`string`
+
+The description of the channel to update (max-length=255)
+
+---
+
+### channelsService.updateChannelName(channel, channelName) ⇒ `Channel`
+
+Update a channel name  
+Return a promise.  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Channel` - Return the channel updated or an error
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.46
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel to update
+
+channelName
+
+`string`
+
+The name of the channel
+
+---
+
+### channelsService.updateChannel(id, channelTopic, visibility, max\_items, max\_payload\_size, channelName, category) ⇒ `Promise.<Channel>`
+
+Update a channel  
+May be updated: name, topic, visibility, max\_items and max\_payload  
+Please put null to not update a property.  
+Return a promise.  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - Return the channel created or an error
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.38
+
+Param
+
+Type
+
+Default
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+channelTopic
+
+`string`
+
+The topic of the channel
+
+visibility
+
+`string`
+
+`public`
+
+public/company/closed group visibility for search
+
+max\_items
+
+`Number`
+
+`30`
+
+max # of items to persist in the channel
+
+max\_payload\_size
+
+`Number`
+
+`60000`
+
+max # of items to persist in the channel
+
+channelName
+
+`string`
+
+The name of the channel
+
+category
+
+`string`
+
+The category of the channel
+
+---
+
+### channelsService.updateChannelVisibility(channel, visibility) ⇒ `Promise.<Channel>`
+
+Update a channel visibility  
+Return a promise.  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - Return the channel updated or an error
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.55
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel to update
+
+visibility
+
+`string`
+
+The new channel visibility (closed or company)
+
+---
+
+### channelsService.updateChannelVisibilityToPublic(channel) ⇒ `Channel`
+
+Set the channel visibility to company (visible for users in that company)  
+Return a promise.  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Channel` - Return the channel updated or an error
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.55
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel to update
+
+---
+
+### channelsService.updateChannelVisibilityToClosed(channel) ⇒ `Channel`
+
+Set the channel visibility to closed (not visible by users)  
+Return a promise.  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Channel` - Return the channel updated or an error
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.55
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel to update
+
+---
+
+### channelsService.updateChannelAvatar(channel, urlAvatar) ⇒ `Channel`
+
+Update a channel avatar  
+Return a promise.  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Channel` - Return the channel updated or an error
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.43
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The Channel to update
+
+urlAvatar
+
+`string`
+
+The avatar Url. It must be resized to 512 pixels before calling this API.
+
+---
+
+### channelsService.deleteChannelAvatar(channel) ⇒ `Channel`
+
+Delete a channel avatar  
+Return a promise.  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Channel` - Return the channel updated or an error
+
+**Category**: Channels MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.43
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel to update
+
+---
+
+### channelsService.publishMessageToChannel(channel, message, title, url, imagesIds, type, customDatas) ⇒ `Promise.<ErrorManager.getErrorManager().OK>`
+
+Publish to a channel  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<ErrorManager.getErrorManager().OK>` - OK if successfull
+
+**Category**: Channels MESSAGES/ITEMS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+channel
+
+`Channel`
+
+The channel where to publish the message
+
+message
+
+`string`
+
+Message content
+
+title
+
+`string`
+
+Message title, limit=256.
+
+url
+
+`string`
+
+An URL
+
+imagesIds
+
+`any`
+
+An Array of ids of the files stored in Rainbow
+
+type
+
+`string`
+
+`basic`
+
+An optional message content type (could be basic, markdown, html or data)
+
+customDatas
+
+`Object`
+
+`{}`
+
+A JSON object with custom datas merged to the payload send to server.
+
+---
+
+### channelsService.createItem(channel, message, title, url, imagesIds, type, customDatas) ⇒ `Promise.<ErrorManager.getErrorManager().OK>`
+
+Publish to a channel  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<ErrorManager.getErrorManager().OK>` - OK if successfull
+
+**Category**: Channels MESSAGES/ITEMS
+
+**Access**: public
+
+Param
+
+Type
+
+Default
+
+Description
+
+channel
+
+`Channel`
+
+The channel where to publish the message
+
+message
+
+`string`
+
+Message content
+
+title
+
+`string`
+
+Message title, limit=256.
+
+url
+
+`string`
+
+An URL
+
+imagesIds
+
+`any`
+
+An Array of ids of the files stored in Rainbow
+
+type
+
+`string`
+
+`basic`
+
+An optional message content type (could be basic, markdown, html or data)
+
+customDatas
+
+`Object`
+
+`{}`
+
+A JSON object with custom datas merged to the payload send to server.
+
+---
+
+### channelsService.fetchChannelItems(channel, maxMessages, beforeDate, afterDate) ⇒ `Promise.<Array.<Object>>`
+
+(old getChannels) Retrieve the last maxMessages messages from a channel  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Array.<Object>>` - The list of messages received
+
+**Category**: Channels MESSAGES/ITEMS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+channel
+
+`Channel`
+
+The channel
+
+maxMessages
+
+`number`
+
+`100`
+
+\[optional\] number of messages to get, 100 by default
+
+beforeDate
+
+`Date`
+
+\[optional\] - show items before a specific timestamp (ISO 8601 format)
+
+afterDate
+
+`Date`
+
+\[optional\] - show items after a specific timestamp (ISO 8601 format)
+
+---
+
+### channelsService.deleteItemFromChannel(channelId, itemId) ⇒ `Promise.<Channel>`
+
+(old deleteMessageFromChannel) Delete a message from a channel  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - The channel updated
+
+**Category**: Channels MESSAGES/ITEMS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+channelId
+
+`string`
+
+The Id of the channel
+
+itemId
+
+`string`
+
+The Id of the item
+
+---
+
+### channelsService.likeItem(channel, itemId, appreciation) ⇒ `Promise.<any>`
+
+To like a Channel Item with the specified appreciation  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Category**: Channels MESSAGES/ITEMS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel where the item must be liked.
+
+itemId
+
+`string`
+
+The Id of the item
+
+appreciation
+
+`Appreciation`
+
+Appreciation value - must be one of the value specified in Appreciation object.
+
+---
+
+### channelsService.getDetailedAppreciations(channel, itemId) ⇒ `Promise.<any>`
+
+To know in details apprecations given on a channel item (by userId the apprecation given)  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Category**: Channels MESSAGES/ITEMS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel where the item appreciations must be retrieved.
+
+itemId
+
+`string`
+
+The Id of the item
+
+---
+
+### channelsService.getAllSubscribedChannels() ⇒ `Array.<Channel>`
+
+(old getAllSubscribedChannel) Return the list of subscribed channels only  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Array.<Channel>` - An array of channels (subscribed only)
+
+**Category**: Channels SUBSCRIPTION
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### channelsService.subscribeToChannel(channel) ⇒ `Promise.<Channel>`
+
+Subscribe to a public channel  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - The channel updated with the new subscription
+
+**Category**: Channels SUBSCRIPTION
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel to subscribe
+
+---
+
+### channelsService.subscribeToChannelById(id) ⇒ `Object`
+
+Subscribe to a channel using its id  
+Return a promise.  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Object` - Nothing or an error object depending on the result
+
+**Category**: Channels SUBSCRIPTION
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.47
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The id of the channel
+
+---
+
+### channelsService.unsubscribeFromChannel(channel) ⇒ `Promise.<string>`
+
+Unsubscribe from a public channel  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<string>` - The status of the unsubscribe.
+
+**Category**: Channels SUBSCRIPTION
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel to unsubscribe
+
+---
+
+### channelsService.fetchChannelUsers(channel, options) ⇒ `Promise.<Array.<any>>`
+
+(old getUsersFromChannel) Get a pagined list of users who belongs to a channel  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Array.<any>>` - An array of users who belong to this channel
+
+**Category**: Channels USERS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+channel
+
+`Channel`
+
+The channel
+
+options
+
+`Object`
+
+A filter parameter
+
+options.page
+
+`Number`
+
+`0`
+
+Display a specific page of results
+
+options.limit
+
+`Number`
+
+`100`
+
+Number of results per page (max 1000)
+
+options.onlyPublishers
+
+`Boolean`
+
+`false`
+
+Filter to publishers only
+
+options.onlyOwners
+
+`Boolean`
+
+`false`
+
+Filter to owners only
+
+---
+
+### channelsService.deleteAllUsersFromChannel(channel) ⇒ `Promise.<Channel>`
+
+(old removeAllUsersFromChannel) Remove all users from a channel  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - The channel updated
+
+**Category**: Channels USERS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel
+
+---
+
+### channelsService.updateChannelUsers(channel, users) ⇒ `Promise.<Channel>`
+
+Update a collection of channel users
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - Update Channel Users status
+
+**Category**: Channels USERS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel
+
+users
+
+`Array.<any>`
+
+The users of the channel. collection of users to update \[ { id : string, // Rainbow user Id type : string // user channel affiliation. Possibles values : none, owner, publisher, member } \]
+
+---
+
+### channelsService.updateChannelUsersByLoginEmails(channel, users) ⇒ `Promise.<Channel>`
+
+Update a collection of channel users by loginEmail
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - Update Channel Users status
+
+**Category**: Channels USERS
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.23.0
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel
+
+users
+
+`Array.<any>`
+
+Array of users loginEmail of the channel. collection of users to update \[ { loginEmail : string, // Rainbow user loginEmail. type : string // user channel affiliation. Possibles values : none, owner, publisher, member } \]
+
+---
+
+### channelsService.addOwnersToChannel(channel, owners) ⇒ `Promise.<Channel>`
+
+Add a list of owners to the channel  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - The updated channel
+
+**Category**: Channels USERS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel
+
+owners
+
+`Array.<any>`
+
+Array of owners to add.
+
+---
+
+### channelsService.addOwnersToChannelByLoginEmails(channel, owners) ⇒ `Promise.<Channel>`
+
+Add a list of owners to the channel by loginEmail  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - The updated channel
+
+**Category**: Channels USERS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel
+
+owners
+
+`Array.<any>`
+
+Array of loginEmail of owners. collection of owners loginEmails \[ { loginEmail : string, // Rainbow user loginEmail. } \]
+
+---
+
+### channelsService.addPublishersToChannel(channel, publishers) ⇒ `Promise.<Channel>`
+
+Add a list of publishers to the channel  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - The updated channel
+
+**Category**: Channels USERS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel
+
+publishers
+
+`Array.<Contact>`
+
+The list of Contacts to add as publisher to channel.
+
+---
+
+### channelsService.addPublishersToChannelByLoginEmails(channel, publishers) ⇒ `Promise.<Channel>`
+
+Add a list of publishers to the channel by loginEmail  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - The updated channel
+
+**Category**: Channels USERS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel
+
+publishers
+
+`Array.<any>`
+
+The list of Contacts loginEmails to add as publisher to channel. collection of owners loginEmails \[ { loginEmail : string, // Rainbow user loginEmail. } \]
+
+---
+
+### channelsService.addMembersToChannel(channel, members) ⇒ `Promise.<Channel>`
+
+Add a list of members to the channel by loginEmail  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - The updated channel
+
+**Category**: Channels USERS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel
+
+members
+
+`Array.<Contact>`
+
+array of users to add
+
+---
+
+### channelsService.addMembersToChannelByLoginEmails(channel, members) ⇒ `Promise.<Channel>`
+
+Add a list of members to the channel by loginEmail  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - The updated channel
+
+**Category**: Channels USERS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel
+
+members
+
+`Array.<any>`
+
+array of users loginEmail to add collection of owners loginEmails \[ { loginEmail : string, // Rainbow user loginEmail. } \]
+
+---
+
+### channelsService.deleteUsersFromChannel(channel, users) ⇒ `Promise.<Channel>`
+
+(old removeUsersFromChannel1) Remove a list of users from a channel  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - The updated channel
+
+**Category**: Channels USERS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel
+
+users
+
+`Array.<Contact>`
+
+An array of users to remove
+
+---
+
+### channelsService.deleteUsersFromChannelByLoginEmails(channel, users) ⇒ `Promise.<Channel>`
+
+(old removeUsersFromChannel1) Remove a list of users from a channel by loginEmail  
+
+**Kind**: instance method of [`ChannelsService`](#module_ChannelsService)
+
+**Returns**: `Promise.<Channel>` - The updated channel
+
+**Category**: Channels USERS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+channel
+
+`Channel`
+
+The channel
+
+users
+
+`Array.<any>`
+
+An array of loginEmail of users to remove collection of owners loginEmails \[ { loginEmail : string, // Rainbow user loginEmail. } \]
+
+---
+
+### On this page
+
+-   [ChannelsService](/docs/sdk/node#name-channelsservice-3)
+-   [channelsService.createChannel(name, channelTopic) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.createchannelname-channeltopic--promise.channel-271)
+-   [channelsService.createPublicChannel(name, channelTopic, category) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.createpublicchannelname-channeltopic-category--promise.channel-335)
+-   [channelsService.createClosedChannel (name, description, category) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.createclosedchannel-name-description-category--promise.channel-422)
+-   [channelsService.deleteChannel(channel) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.deletechannelchannel--promise.channel-509)
+-   [channelsService.findChannelsByName(name) ⇒ Promise.<Array.<Channel>>](/docs/sdk/node#name-channelsservice.findchannelsbynamename--promise.array.channel-562)
+-   [channelsService.findChannelsByTopic(topic) ⇒ Promise.<Array.<Channel>>](/docs/sdk/node#name-channelsservice.findchannelsbytopictopic--promise.array.channel-615)
+-   [channelsService.fetchChannel(id, force) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.fetchchannelid-force--promise.channel-668)
+-   [channelsService.fetchChannelsByFilter(filter) ⇒ Promise.<Array.<Channel>>](/docs/sdk/node#name-channelsservice.fetchchannelsbyfilterfilter--promise.array.channel-741)
+-   [channelsService.fetchMyChannels(force) ⇒ Promise.<Array.<Channel>>](/docs/sdk/node#name-channelsservice.fetchmychannelsforce--promise.array.channel-797)
+-   [channelsService.getAllChannels() ⇒ Array.<Channel>](/docs/sdk/node#name-channelsservice.getallchannels--array.channel-859)
+-   [channelsService.getAllOwnedChannels() ⇒ Array.<Channel>](/docs/sdk/node#name-channelsservice.getallownedchannels--array.channel-884)
+-   [channelsService.getAllPendingChannels() ⇒ Array.<Channel>](/docs/sdk/node#name-channelsservice.getallpendingchannels--array.channel-909)
+-   [channelsService.updateChannelTopic(channel, description) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.updatechanneltopicchannel-description--promise.channel-934)
+-   [channelsService.updateChannelDescription(channel, description) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.updatechanneldescriptionchannel-description--promise.channel-998)
+-   [channelsService.updateChannelName(channel, channelName) ⇒ Channel](/docs/sdk/node#name-channelsservice.updatechannelnamechannel-channelname--channel-1062)
+-   [channelsService.updateChannel(id, channelTopic, visibility, max\_items, max\_payload\_size, channelName, category) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.updatechannelid-channeltopic-visibility-max_items-max_payload_size-channelname-category--promise.channel-1129)
+-   [channelsService.updateChannelVisibility(channel, visibility) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.updatechannelvisibilitychannel-visibility--promise.channel-1275)
+-   [channelsService.updateChannelVisibilityToPublic(channel) ⇒ Channel](/docs/sdk/node#name-channelsservice.updatechannelvisibilitytopublicchannel--channel-1342)
+-   [channelsService.updateChannelVisibilityToClosed(channel) ⇒ Channel](/docs/sdk/node#name-channelsservice.updatechannelvisibilitytoclosedchannel--channel-1398)
+-   [channelsService.updateChannelAvatar(channel, urlAvatar) ⇒ Channel](/docs/sdk/node#name-channelsservice.updatechannelavatarchannel-urlavatar--channel-1454)
+-   [channelsService.deleteChannelAvatar(channel) ⇒ Channel](/docs/sdk/node#name-channelsservice.deletechannelavatarchannel--channel-1521)
+-   [channelsService.publishMessageToChannel(channel, message, title, url, imagesIds, type, customDatas) ⇒ Promise.<ErrorManager.getErrorManager().OK>](/docs/sdk/node#name-channelsservice.publishmessagetochannelchannel-message-title-url-imagesids-type-customdatas--promise.errormanager.geterrormanager.ok-1577)
+-   [channelsService.createItem(channel, message, title, url, imagesIds, type, customDatas) ⇒ Promise.<ErrorManager.getErrorManager().OK>](/docs/sdk/node#name-channelsservice.createitemchannel-message-title-url-imagesids-type-customdatas--promise.errormanager.geterrormanager.ok-1720)
+-   [channelsService.fetchChannelItems(channel, maxMessages, beforeDate, afterDate) ⇒ Promise.<Array.<Object>>](/docs/sdk/node#name-channelsservice.fetchchannelitemschannel-maxmessages-beforedate-afterdate--promise.array.object-1860)
+-   [channelsService.deleteItemFromChannel(channelId, itemId) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.deleteitemfromchannelchannelid-itemid--promise.channel-1961)
+-   [channelsService.likeItem(channel, itemId, appreciation) ⇒ Promise.<any>](/docs/sdk/node#name-channelsservice.likeitemchannel-itemid-appreciation--promise.any-2025)
+-   [channelsService.getDetailedAppreciations(channel, itemId) ⇒ Promise.<any>](/docs/sdk/node#name-channelsservice.getdetailedappreciationschannel-itemid--promise.any-2097)
+-   [channelsService.getAllSubscribedChannels() ⇒ Array.<Channel>](/docs/sdk/node#name-channelsservice.getallsubscribedchannels--array.channel-2158)
+-   [channelsService.subscribeToChannel(channel) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.subscribetochannelchannel--promise.channel-2183)
+-   [channelsService.subscribeToChannelById(id) ⇒ Object](/docs/sdk/node#name-channelsservice.subscribetochannelbyidid--object-2236)
+-   [channelsService.unsubscribeFromChannel(channel) ⇒ Promise.<string>](/docs/sdk/node#name-channelsservice.unsubscribefromchannelchannel--promise.string-2292)
+-   [channelsService.fetchChannelUsers(channel, options) ⇒ Promise.<Array.<any>>](/docs/sdk/node#name-channelsservice.fetchchanneluserschannel-options--promise.array.any-2345)
+-   [channelsService.deleteAllUsersFromChannel(channel) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.deleteallusersfromchannelchannel--promise.channel-2474)
+-   [channelsService.updateChannelUsers(channel, users) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.updatechanneluserschannel-users--promise.channel-2527)
+-   [channelsService.updateChannelUsersByLoginEmails(channel, users) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.updatechannelusersbyloginemailschannel-users--promise.channel-2591)
+-   [channelsService.addOwnersToChannel(channel, owners) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.addownerstochannelchannel-owners--promise.channel-2658)
+-   [channelsService.addOwnersToChannelByLoginEmails(channel, owners) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.addownerstochannelbyloginemailschannel-owners--promise.channel-2722)
+-   [channelsService.addPublishersToChannel(channel, publishers) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.addpublisherstochannelchannel-publishers--promise.channel-2786)
+-   [channelsService.addPublishersToChannelByLoginEmails(channel, publishers) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.addpublisherstochannelbyloginemailschannel-publishers--promise.channel-2850)
+-   [channelsService.addMembersToChannel(channel, members) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.addmemberstochannelchannel-members--promise.channel-2914)
+-   [channelsService.addMembersToChannelByLoginEmails(channel, members) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.addmemberstochannelbyloginemailschannel-members--promise.channel-2978)
+-   [channelsService.deleteUsersFromChannel(channel, users) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.deleteusersfromchannelchannel-users--promise.channel-3042)
+-   [channelsService.deleteUsersFromChannelByLoginEmails(channel, users) ⇒ Promise.<Channel>](/docs/sdk/node#name-channelsservice.deleteusersfromchannelbyloginemailschannel-users--promise.channel-3106)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

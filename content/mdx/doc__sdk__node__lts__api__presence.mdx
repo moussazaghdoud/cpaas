@@ -1,0 +1,879 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/presence"
+lastSynced: "2026-02-20T07:12:32.457Z"
+---
+# Documentation
+
+Presence Service
+
+LTS release 2.XPublished on 2025-01-01
+
+## PresenceService
+
+This module manages the presence of the connected user.  
+  
+  
+The main methods proposed in that module allow to:  
+\- Change the connected user presence  
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [PresenceService](#module_PresenceService)
+    -   *Manage Presence MSTeams*
+        -   [controlMsteamsPresence(disable, ignore)](#module_PresenceService+controlMsteamsPresence) ⇒ `Promise.<any>`
+        -   [getMsteamsPresenceState(userId)](#module_PresenceService+getMsteamsPresenceState) ⇒ `Promise.<any>`
+        -   [getMsteamsPresenceStates(users)](#module_PresenceService+getMsteamsPresenceStates) ⇒ `Promise.<any>`
+        -   [registerMsteamsPresenceSharing(redirect, callback)](#module_PresenceService+registerMsteamsPresenceSharing) ⇒ `Promise.<any>`
+        -   [unregisterMsteamsPresenceSharing()](#module_PresenceService+unregisterMsteamsPresenceSharing) ⇒ `Promise.<any>`
+        -   [activateMsteamsPresence()](#module_PresenceService+activateMsteamsPresence) ⇒ `Promise.<any>`
+        -   [deactivateMsteamsPresence()](#module_PresenceService+deactivateMsteamsPresence) ⇒ `Promise.<any>`
+    -   *Presence CALENDAR*
+        -   [getCalendarState()](#module_PresenceService+getCalendarState) ⇒ `Promise.<{busy: boolean, status: string, subject: string, since: string, until: string}, ErrorManager>`
+        -   [getCalendarStates(users)](#module_PresenceService+getCalendarStates) ⇒ `Promise.<{busy: boolean, status: string, subject: string, since: string, until: string}, ErrorManager>`
+        -   [setCalendarRegister(type, redirect, callback)](#module_PresenceService+setCalendarRegister) ⇒ `Promise.<{url: string}, ErrorManager>`
+        -   [getCalendarAutomaticReplyStatus(userId)](#module_PresenceService+getCalendarAutomaticReplyStatus) ⇒ `Promise.<{enabled: string, status: string, start: string, end: string, message_text: string, message_thtml: string}, ErrorManager>`
+        -   [controlCalendarOrIgnoreAnEntry(disable, ignore)](#module_PresenceService+controlCalendarOrIgnoreAnEntry) ⇒ `Promise.<{Status: string}, ErrorManager>`
+        -   [unregisterCalendar()](#module_PresenceService+unregisterCalendar) ⇒ `Promise.<{Status: string}, ErrorManager>`
+    -   *Presence CONNECTED USER*
+        -   [setPresenceTo(presence)](#module_PresenceService+setPresenceTo) ⇒ `Promise.<any, ErrorManager>`
+        -   [getUserConnectedPresence()](#module_PresenceService+getUserConnectedPresence)
+        -   [getMyPresenceInformation()](#module_PresenceService+getMyPresenceInformation)
+        -   [setApplyMsTeamsPresenceSettings(connectTeams)](#module_PresenceService+setApplyMsTeamsPresenceSettings) ⇒ `Promise.<any>`
+    -   *Presence Contact*
+        -   [notifyCalendarProvider(ids, headers, forceNotify)](#module_PresenceService+notifyCalendarProvider) ⇒ `Promise.<any, ErrorManager>`
+        -   [sendResultCalendarEvents(calendarManager)](#module_PresenceService+sendResultCalendarEvents) ⇒ `Promise.<any, ErrorManager>`
+        -   [sendAutoReplyEvents(autoReplyManager)](#module_PresenceService+sendAutoReplyEvents) ⇒ `Promise.<any, ErrorManager>`
+
+---
+
+### presenceService.controlMsteamsPresence(disable, ignore) ⇒ `Promise.<any>`
+
+Enable/disable a presence sharing or ignore rainbow presence sharing.  
+When disabled or enabled, a message stanza is sent to the user for multi-devices constraints.  
+
+**Kind**: instance method of [`PresenceService`](#module_PresenceService)
+
+**Category**: Manage Presence MSTeams
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.20.0
+
+Param
+
+Type
+
+Description
+
+disable
+
+`boolean`
+
+disable presence, true to re-enable
+
+ignore
+
+`string`
+
+ignore the current rainbow presence sharing
+
+---
+
+### presenceService.getMsteamsPresenceState(userId) ⇒ `Promise.<any>`
+
+Get a MS-teams presence state  
+
+**Kind**: instance method of [`PresenceService`](#module_PresenceService)
+
+**Returns**: `Promise.<any>` -  
+  
+
+## enabled
+
+Champ
+
+Type
+
+Description
+
+busy
+
+Boolean
+
+presence busy flag.
+
+status
+
+String
+
+presence status (one of "chat", "busy" or "dnd")
+
+## disabled
+
+Champ
+
+Type
+
+Description
+
+status
+
+String
+
+presence sharing is disabled (status = 'disabled')
+
+## subscription\_error
+
+Champ
+
+Type
+
+Description
+
+status
+
+String
+
+presence sharing with a expired subscription
+
+## none
+
+Champ
+
+Type
+
+Description
+
+status
+
+String
+
+presence sharing is not defined (status = 'none')
+
+**Category**: Manage Presence MSTeams
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.20.0
+
+Param
+
+Type
+
+Description
+
+userId
+
+`string`
+
+The Rainbow user id, his jid or the email of his attached Microsoft teams presence. Default value is the current connected user's id
+
+---
+
+### presenceService.getMsteamsPresenceStates(users) ⇒ `Promise.<any>`
+
+Get a MS-teams presence states of several users  
+
+**Kind**: instance method of [`PresenceService`](#module_PresenceService)
+
+**Returns**: `Promise.<any>` -  
+  
+
+## enabled
+
+Champ
+
+Type
+
+Description
+
+users
+
+Object\[\]
+
+list of presence user states.
+
+busy
+
+Boolean
+
+presence busy flag.
+
+status
+
+String
+
+presence status (one of "chat", "busy" or "dnd").
+
+## others
+
+Champ
+
+Type
+
+Description
+
+users
+
+Object\[\]
+
+list of presence user states.
+
+status
+
+String
+
+presence status (one of "disabled", "subscription\_error", "none").
+
+**Category**: Manage Presence MSTeams
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.20.0
+
+Param
+
+Type
+
+Description
+
+users
+
+`Array.<string>`
+
+The Rainbow user references (can be email or id). Default value is an Array with the current connected user's id.
+
+---
+
+### presenceService.registerMsteamsPresenceSharing(redirect, callback) ⇒ `Promise.<any>`
+
+The requesting client get a redirection URL or could be redirected immediately to the provider login page to gather user consent.  
+
+**Kind**: instance method of [`PresenceService`](#module_PresenceService)
+
+**Returns**: `Promise.<any>` -  
+  
+
+Champ
+
+Type
+
+Description
+
+url
+
+String
+
+Microsoft Teams Presence OAuth URL
+
+**Category**: Manage Presence MSTeams
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.20.0
+
+Param
+
+Type
+
+Description
+
+redirect
+
+`boolean`
+
+Immediately redirect to login page (OAuth2) or generate an HTML page.
+
+callback
+
+`string`
+
+Redirect URL to the requesting client.
+
+---
+
+### presenceService.unregisterMsteamsPresenceSharing() ⇒ `Promise.<any>`
+
+Delete a MS Teams presence sharing.  
+A message stanza is sent to the user for multi-devices constraints.  
+
+**Kind**: instance method of [`PresenceService`](#module_PresenceService)
+
+**Returns**: `Promise.<any>` -  
+  
+
+Champ
+
+Type
+
+Description
+
+Status
+
+String
+
+Operation status
+
+**Category**: Manage Presence MSTeams
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.20.0
+
+---
+
+### presenceService.activateMsteamsPresence() ⇒ `Promise.<any>`
+
+activate a MS Teams presence sharing.  
+A message stanza is sent to the user for multi-devices constraints.  
+
+**Kind**: instance method of [`PresenceService`](#module_PresenceService)
+
+**Returns**: `Promise.<any>` -  
+  
+
+Champ
+
+Type
+
+Description
+
+Status
+
+String
+
+Operation status
+
+**Category**: Manage Presence MSTeams
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.20.0
+
+---
+
+### presenceService.deactivateMsteamsPresence() ⇒ `Promise.<any>`
+
+desactivate a MS Teams presence sharing.  
+A message stanza is sent to the user for multi-devices constraints.  
+
+**Kind**: instance method of [`PresenceService`](#module_PresenceService)
+
+**Returns**: `Promise.<any>` -  
+  
+
+Champ
+
+Type
+
+Description
+
+Status
+
+String
+
+Operation status
+
+**Category**: Manage Presence MSTeams
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.20.0
+
+---
+
+### presenceService.getCalendarState() ⇒ `Promise.<{busy: boolean, status: string, subject: string, since: string, until: string}, ErrorManager>`
+
+Allow to get the calendar presence of the connected user  
+return promise with {  
+busy: boolean, // Does the connected user is busy ?  
+status: string, // The status of the connected user (one of "free", "busy" or "out\_of\_office")  
+subject: string, // The meeting subject.  
+since: string, // The meeting since date.  
+until: string // Date until the current presence is valid  
+}  
+  
+Note : "applyCalendarPresence" boolean is not return by this api, so you can not know if the presence should be used in general calculated presence.  
+
+**Kind**: instance method of [`PresenceService`](#module_PresenceService)
+
+**Category**: Presence CALENDAR
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `ErrorManager` - ErrorManager object depending on the result.
+
+---
+
+### presenceService.getCalendarStates(users) ⇒ `Promise.<{busy: boolean, status: string, subject: string, since: string, until: string}, ErrorManager>`
+
+Allow to get the calendar presence of severals users  
+return promise with { usersIdentifier : { // List of calendar user states.  
+busy: boolean, // Does the connected user is busy ?  
+status: string, // The status of the connected user (one of "free", "busy" or "out\_of\_office")  
+subject: string, // The meeting subject.  
+since: string, // The meeting since date.  
+until: string // Date until the current presence is valid  
+}  
+  
+Note : "applyCalendarPresence" boolean is not return by this api, so you can not know if the presence should be used in general calculated presence.  
+
+**Kind**: instance method of [`PresenceService`](#module_PresenceService)
+
+**Category**: Presence CALENDAR
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `ErrorManager` - ErrorManager object depending on the result.
+
+Param
+
+Type
+
+Description
+
+users
+
+`Array.<string>`
+
+The list of the Rainbow user's references - id or logins (Contact::loginEmail) - to retrieve the calendar presence.
+
+---
+
+### presenceService.setCalendarRegister(type, redirect, callback) ⇒ `Promise.<{url: string}, ErrorManager>`
+
+Register a new calendar.  
+return promise with { "url" : string // Calendar provider's OAuth URL  
+}  
+
+**Kind**: instance method of [`PresenceService`](#module_PresenceService)
+
+**Category**: Presence CALENDAR
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `ErrorManager` - ErrorManager object depending on the result.
+
+Param
+
+Type
+
+Description
+
+type
+
+`string`
+
+Calendar type. Default : office365, Authorized values : office365, google
+
+redirect
+
+`boolean`
+
+Immediately redirect to login page (OAuth2) or generate an HTML page. Default : false.
+
+callback
+
+`string`
+
+Redirect URL to the requesting client.
+
+---
+
+### presenceService.getCalendarAutomaticReplyStatus(userId) ⇒ `Promise.<{enabled: string, status: string, start: string, end: string, message_text: string, message_thtml: string}, ErrorManager>`
+
+Allow to retrieve the calendar automatic reply status  
+return promise with {  
+enabled : string, // its status  
+start : string, // its start date  
+end : string, // its end date  
+message\_text : string, // its message as plain text  
+message\_thtml : string // its message as html  
+}  
+  
+
+**Kind**: instance method of [`PresenceService`](#module_PresenceService)
+
+**Category**: Presence CALENDAR
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `ErrorManager` - ErrorManager object depending on the result.
+
+Param
+
+Type
+
+Description
+
+userId
+
+`string`
+
+The id of user to retrieve the calendar automatic reply status.
+
+---
+
+### presenceService.controlCalendarOrIgnoreAnEntry(disable, ignore) ⇒ `Promise.<{Status: string}, ErrorManager>`
+
+Enable/disable a calendar sharing or ignore a calendar entry.  
+return promise with {  
+Status : string // Operation status ("enabled" or "disabled")  
+}  
+  
+
+**Kind**: instance method of [`PresenceService`](#module_PresenceService)
+
+**Category**: Presence CALENDAR
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `ErrorManager` - ErrorManager object depending on the result.
+
+Param
+
+Type
+
+Description
+
+disable
+
+`boolean`
+
+disable calendar, true to re-enable
+
+ignore
+
+`string`
+
+ignore the current calendar entry, false resumes the entry. Possible values : current, false
+
+---
+
+### presenceService.unregisterCalendar() ⇒ `Promise.<{Status: string}, ErrorManager>`
+
+Delete a calendar sharing.  
+return promise with {  
+Status : string // Operation status ("deleted")  
+}  
+  
+
+**Kind**: instance method of [`PresenceService`](#module_PresenceService)
+
+**Category**: Presence CALENDAR
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `ErrorManager` - ErrorManager object depending on the result.
+
+---
+
+### presenceService.setPresenceTo(presence) ⇒ `Promise.<any, ErrorManager>`
+
+Allow to change the presence of the connected user  
+Only the following values are authorized: 'dnd', 'away', 'invisible' or 'online'  
+
+**Kind**: instance method of [`PresenceService`](#module_PresenceService)
+
+**Category**: Presence CONNECTED USER
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `ErrorManager` - ErrorManager object depending on the result (ErrorManager.getErrorManager().OK in case of success)
+
+Param
+
+Type
+
+Description
+
+presence
+
+`String`
+
+The presence value to set i.e: 'dnd', 'away', 'invisible' ('xa' on server side) or 'online'
+
+---
+
+### presenceService.getUserConnectedPresence()
+
+Get user presence status calculated from events.  
+
+**Kind**: instance method of [`PresenceService`](#module_PresenceService)
+
+**Category**: Presence CONNECTED USER
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### presenceService.getMyPresenceInformation()
+
+Get user's resources presences information from server.  
+
+**Kind**: instance method of [`PresenceService`](#module_PresenceService)
+
+**Category**: Presence CONNECTED USER
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.16.0
+
+---
+
+### presenceService.setApplyMsTeamsPresenceSettings(connectTeams) ⇒ `Promise.<any>`
+
+Allow to activate the exchange of presence of the connected user between rainbow and MS Teams on UI side.  
+
+**Kind**: instance method of [`PresenceService`](#module_PresenceService)
+
+**Category**: Presence CONNECTED USER
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+connectTeams
+
+`boolean`
+
+`false`
+
+The boolean to activate or not the feature.
+
+---
+
+### presenceService.notifyCalendarProvider(ids, headers, forceNotify) ⇒ `Promise.<any, ErrorManager>`
+
+Allows to subscribe users to EWS using a webhook in Rainbow.  
+EWS cnx opens an event session for each subscribed user.  
+EWS cnx notify to Rainbow each new appointment changes.  
+
+For each event, a IQ GetEvent request will be sent to retrieve a potential event that will occur in current time frame window.
+
+**Kind**: instance method of [`PresenceService`](#module_PresenceService)
+
+**Category**: Presence Contact
+
+**Access**: public
+
+**Fulfil**: `ErrorManager` - ErrorManager object depending on the result.
+
+Param
+
+Type
+
+Description
+
+ids
+
+`Array.<string>`
+
+The ids specified in field value of body request are the Rainbow user id for which a new calendar event has been created.
+
+headers
+
+`Object`
+
+Allow to define specifics headers to the request.
+
+forceNotify
+
+`boolean`
+
+Allow to to force the refresh of xmpp status as a comparaison is done between old and new presence status.
+
+---
+
+### presenceService.sendResultCalendarEvents(calendarManager) ⇒ `Promise.<any, ErrorManager>`
+
+Allows to send result of a get events iq request from Rainbow.  
+
+Note: To be used when a "rainbow\_onEWSgetevents" event is received to send events response.
+
+**Kind**: instance method of [`PresenceService`](#module_PresenceService)
+
+**Category**: Presence Contact
+
+**Access**: public
+
+**Fulfil**: `ErrorManager` - ErrorManager object depending on the result.
+
+Param
+
+Type
+
+Description
+
+calendarManager
+
+`CalendarManager`
+
+Allow to define the result of a get events iq request from Rainbow.
+
+**Example**
+
+```js
+rainbowSDK.events.on("rainbow_onEWSgetevents", (data) => {
+        _logger.log("debug", "MAIN - (rainbow_onEWSgetevents) - rainbow event received.", data);
+        let calendarManager = new RainbowSDK.CalendarManager(data.id, data.from, data.email);
+        calendarManager.addEvent(
+            {
+                "id": "evt-001",
+                "subject": "Réunion projet",
+                "type": "singleInstance",
+                "showAs": "busy",
+                startDate: {
+                    "value": "2025-08-14T09:00:00Z",
+                    "timezone": "Europe/Paris"
+                },
+                "endDate": {
+                    "value": "2025-08-14T10:30:00Z",
+                    timezone: "Europe/Paris"
+                }
+            });
+        calendarManager.addEvent(
+            {
+                "id": "evt-002",
+                "subject": "Pause café",
+                "type": "occurrence",
+                "showAs": "free",
+                "startDate": {
+                    "value": "2025-08-14T10:30:00Z"
+                },
+                "endDate": {
+                    "value": "2025-08-14T10:45:00Z"
+                }
+            });
+
+        rainbowSDK.presence.sendResultCalendarEvents(calendarManager);
+    });
+```
+
+---
+
+### presenceService.sendAutoReplyEvents(autoReplyManager) ⇒ `Promise.<any, ErrorManager>`
+
+Allows to send result of a get auto reply events iq request from Rainbow.  
+
+Note: To be used when a "rainbow\_onEWSgetevents" event is received to send events response.
+
+**Kind**: instance method of [`PresenceService`](#module_PresenceService)
+
+**Category**: Presence Contact
+
+**Access**: public
+
+**Fulfil**: `ErrorManager` - ErrorManager object depending on the result.
+
+Param
+
+Type
+
+Description
+
+autoReplyManager
+
+`AutoReplyManager`
+
+Allow to define get auto reply events iq.
+
+**Example**
+
+```js
+rainbowSDK.events.on("rainbow_onEWSgetautoreply", (data) => {
+        _logger.log("debug", "MAIN - (rainbow_onEWSgetautoreply) - rainbow event received.", data);
+
+        let autoReplyManager = new RainbowSDK.AutoReplyManager({
+            id: data.id,
+            to: data.from,
+            state: "scheduled",
+            email: data.email,
+            startDate: { value: "2025-08-20T09:00:00Z", timezone: "Europe/Paris" },
+            endDate: { value: "2025-08-25T18:00:00Z", timezone: "Europe/Paris" },
+            internalReplyMessage: "Je suis absent du bureau, merci de contacter mon collègue.",
+            externalReplyMessage: {
+                value: "Je suis actuellement en congés.",
+                audience: "known"
+            }
+        });
+
+        rainbowSDK.presence.sendAutoReplyEvents(autoReplyManager);
+    });
+```
+
+---
+
+### On this page
+
+-   [PresenceService](/docs/sdk/node#name-presenceservice-3)
+-   [presenceService.controlMsteamsPresence(disable, ignore) ⇒ Promise.<any>](/docs/sdk/node#name-presenceservice.controlmsteamspresencedisable-ignore--promise.any-156)
+-   [presenceService.getMsteamsPresenceState(userId) ⇒ Promise.<any>](/docs/sdk/node#name-presenceservice.getmsteamspresencestateuserid--promise.any-220)
+-   [enabled](/docs/sdk/node#name-enabled-232)
+-   [disabled](/docs/sdk/node#name-disabled-274)
+-   [subscription\_error](/docs/sdk/node#name-subscription_error-305)
+-   [none](/docs/sdk/node#name-none-336)
+-   [presenceService.getMsteamsPresenceStates(users) ⇒ Promise.<any>](/docs/sdk/node#name-presenceservice.getmsteamspresencestatesusers--promise.any-411)
+-   [enabled](/docs/sdk/node#name-enabled-423)
+-   [others](/docs/sdk/node#name-others-476)
+-   [presenceService.registerMsteamsPresenceSharing(redirect, callback) ⇒ Promise.<any>](/docs/sdk/node#name-presenceservice.registermsteamspresencesharingredirect-callback--promise.any-562)
+-   [presenceService.unregisterMsteamsPresenceSharing() ⇒ Promise.<any>](/docs/sdk/node#name-presenceservice.unregistermsteamspresencesharing--promise.any-657)
+-   [presenceService.activateMsteamsPresence() ⇒ Promise.<any>](/docs/sdk/node#name-presenceservice.activatemsteamspresence--promise.any-713)
+-   [presenceService.deactivateMsteamsPresence() ⇒ Promise.<any>](/docs/sdk/node#name-presenceservice.deactivatemsteamspresence--promise.any-769)
+-   [presenceService.getCalendarState() ⇒ Promise.<{busy: boolean, status: string, subject: string, since: string, until: string}, ErrorManager>](/docs/sdk/node#name-presenceservice.getcalendarstate--promise.busy:-boolean-status:-string-subject:-string-since:-string-until:-string-errormanager-825)
+-   [presenceService.getCalendarStates(users) ⇒ Promise.<{busy: boolean, status: string, subject: string, since: string, until: string}, ErrorManager>](/docs/sdk/node#name-presenceservice.getcalendarstatesusers--promise.busy:-boolean-status:-string-subject:-string-since:-string-until:-string-errormanager-847)
+-   [presenceService.setCalendarRegister(type, redirect, callback) ⇒ Promise.<{url: string}, ErrorManager>](/docs/sdk/node#name-presenceservice.setcalendarregistertype-redirect-callback--promise.url:-string-errormanager-897)
+-   [presenceService.getCalendarAutomaticReplyStatus(userId) ⇒ Promise.<{enabled: string, status: string, start: string, end: string, message\_text: string, message\_thtml: string}, ErrorManager>](/docs/sdk/node#name-presenceservice.getcalendarautomaticreplystatususerid--promise.enabled:-string-status:-string-start:-string-end:-string-message_text:-string-message_thtml:-string-errormanager-969)
+-   [presenceService.controlCalendarOrIgnoreAnEntry(disable, ignore) ⇒ Promise.<{Status: string}, ErrorManager>](/docs/sdk/node#name-presenceservice.controlcalendarorignoreanentrydisable-ignore--promise.status:-string-errormanager-1019)
+-   [presenceService.unregisterCalendar() ⇒ Promise.<{Status: string}, ErrorManager>](/docs/sdk/node#name-presenceservice.unregistercalendar--promise.status:-string-errormanager-1080)
+-   [presenceService.setPresenceTo(presence) ⇒ Promise.<any, ErrorManager>](/docs/sdk/node#name-presenceservice.setpresencetopresence--promise.any-errormanager-1102)
+-   [presenceService.getUserConnectedPresence()](/docs/sdk/node#name-presenceservice.getuserconnectedpresence-1152)
+-   [presenceService.getMyPresenceInformation()](/docs/sdk/node#name-presenceservice.getmypresenceinformation-1174)
+-   [presenceService.setApplyMsTeamsPresenceSettings(connectTeams) ⇒ Promise.<any>](/docs/sdk/node#name-presenceservice.setapplymsteamspresencesettingsconnectteams--promise.any-1199)
+-   [presenceService.notifyCalendarProvider(ids, headers, forceNotify) ⇒ Promise.<any, ErrorManager>](/docs/sdk/node#name-presenceservice.notifycalendarproviderids-headers-forcenotify--promise.any-errormanager-1255)
+-   [presenceService.sendResultCalendarEvents(calendarManager) ⇒ Promise.<any, ErrorManager>](/docs/sdk/node#name-presenceservice.sendresultcalendareventscalendarmanager--promise.any-errormanager-1330)
+-   [presenceService.sendAutoReplyEvents(autoReplyManager) ⇒ Promise.<any, ErrorManager>](/docs/sdk/node#name-presenceservice.sendautoreplyeventsautoreplymanager--promise.any-errormanager-1387)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

@@ -1,0 +1,207 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/CallLogsService"
+lastSynced: "2026-02-20T07:12:33.313Z"
+---
+# Documentation
+
+CallLogs Service
+
+### Call Logs Service
+
+---
+
+### Preamble
+
+---
+
+The Call Logs Service provides methods for managing call history, including retrieving call logs, missed calls, and voicemail information. It allows applications to access and manage call history data.
+
+## Methods
+
+### getCallLogs()
+
+---
+
+Retrieves all call logs.
+
+-   Returns: `void`
+-   Example:
+
+```typescript
+import { callLogsService } from 'react-native-rainbow-module'
+...
+const fetchCallLogs = () => {
+  callLogsService.getCallLogs();
+}
+// listen for call logs update
+eventEmitter.addListener(
+  EventType.CallLogsUpdated,
+  (eventData: ICallLog[]) => {
+    // handle call logs list
+    console.log('Call logs updated:', eventData);
+  }
+);
+```
+
+-   Note: This method triggers the `EventType.CallLogsUpdated` event.
+
+### getMissedCalls()
+
+Retrieves all missed calls.
+
+-   Returns: `void`
+-   Example:
+
+```typescript
+import { callLogsService } from 'react-native-rainbow-module'
+...
+const fetchMissedCalls = () => {
+  callLogsService.getMissedCalls();
+}
+// listen for missed calls update
+eventEmitter.addListener(
+  EventType.MissedCallLogsUpdated,
+  (eventData: ICallLog[]) => {
+    // handle missed calls list
+    console.log('Missed calls updated:', eventData);
+  }
+);
+```
+
+-   Note: This method triggers the `EventType.MissedCallLogsUpdated` event.
+
+### markAllMissedCallsAsRead()
+
+Marks all missed calls as read.
+
+-   Returns: `void`
+-   Example:
+
+```typescript
+import { callLogsService } from 'react-native-rainbow-module'
+...
+const markMissedCallsAsRead = () => {
+  callLogsService.markAllMissedCallsAsRead();
+}
+```
+
+### getVoiceMailCounter()
+
+Retrieves the current voicemail counter.
+
+-   Returns: `void`
+-   Example:
+
+```typescript
+import { callLogsService } from 'react-native-rainbow-module'
+...
+const getVoicemailCount = () => {
+  callLogsService.getVoiceMailCounter();
+}
+// listen for voicemail counter updates
+eventEmitter.addListener(
+  EventType.VoiceMailsCounterUpdated,
+  (counter: number) => {
+    console.log('Voicemail counter updated:', counter);
+  }
+);
+```
+
+-   Note: This method triggers the `EventType.VoiceMailsCounterUpdated` event.
+
+### getVoiceMailCapabilities()
+
+Retrieves voicemail capabilities for the current user.
+
+-   Returns: `void`
+-   Example:
+
+```typescript
+import { callLogsService } from 'react-native-rainbow-module'
+...
+const checkVoicemailCapabilities = () => {
+  callLogsService.getVoiceMailCapabilities();
+}
+// listen for voicemail capabilities update
+eventEmitter.addListener(
+  EventType.VoiceMailCapabilitiesUpdated,
+  (capabilities: IVoiceMailCapabilities) => {
+    console.log('Voicemail capabilities:', capabilities);
+  }
+);
+```
+
+-   Note: This method triggers the `EventType.VoiceMailCapabilitiesUpdated` event.
+
+## Events
+
+The Call Logs Service triggers the following events:
+
+-   `EventType.CallLogsUpdated`: Triggered when the call logs are updated.
+-   `EventType.MissedCallLogsUpdated`: Triggered when the missed calls list is updated.
+-   `EventType.MissedCallUnreadCounterUpdated`: Triggered when the unread missed calls counter is updated.
+-   `EventType.VoiceMailsCounterUpdated`: Triggered when the voicemail counter is updated.
+-   `EventType.VoiceMailCapabilitiesUpdated`: Triggered when voicemail capabilities are updated.
+
+## Types
+
+### ICallLog
+
+Represents a call log entry.
+
+```typescript
+interface ICallLog {
+  contact: IContact;          // Contact information
+  lastCall: ICallLogInfo;     // Information about the last call
+  callsList: ICallLogInfo[];  // List of all calls with this contact
+}
+
+interface ICallLogInfo {
+  date: number;              // Timestamp of the call
+  duration: string;          // Duration of the call
+  state: CallLogState;       // State of the call (missed, answered, etc.)
+  outgoing: boolean;         // Whether the call was outgoing
+  isConference: boolean;     // Whether the call was a conference call
+}
+
+enum CallLogState {
+  MISSED = 'missed',
+  ANSWERED = 'answered',
+  // Add other possible states as needed
+}
+```
+
+### IVoiceMailCapabilities
+
+Represents voicemail capabilities.
+
+```typescript
+interface IVoiceMailCapabilities {
+  isAllowed: boolean;        // Whether voicemail is allowed
+  voicemailNumber?: string;  // Voicemail number (if available)
+}
+```
+
+### On this page
+
+-   [Call Logs Service](/docs/sdk/reactnative/api/CallLogsService#name-call-logs-service-0)
+-   [Preamble](/docs/sdk/reactnative/api/CallLogsService#name-preamble-4)
+-   [Methods](/docs/sdk/reactnative/api/CallLogsService#name-methods-11)
+-   [getCallLogs()](/docs/sdk/reactnative/api/CallLogsService#name-getcalllogs-14)
+-   [getMissedCalls()](/docs/sdk/reactnative/api/CallLogsService#name-getmissedcalls-41)
+-   [markAllMissedCallsAsRead()](/docs/sdk/reactnative/api/CallLogsService#name-markallmissedcallsasread-67)
+-   [getVoiceMailCounter()](/docs/sdk/reactnative/api/CallLogsService#name-getvoicemailcounter-86)
+-   [getVoiceMailCapabilities()](/docs/sdk/reactnative/api/CallLogsService#name-getvoicemailcapabilities-112)
+-   [Events](/docs/sdk/reactnative/api/CallLogsService#name-events-138)
+-   [Types](/docs/sdk/reactnative/api/CallLogsService#name-types-171)
+-   [ICallLog](/docs/sdk/reactnative/api/CallLogsService#name-icalllog-174)
+-   [IVoiceMailCapabilities](/docs/sdk/reactnative/api/CallLogsService#name-ivoicemailcapabilities-181)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

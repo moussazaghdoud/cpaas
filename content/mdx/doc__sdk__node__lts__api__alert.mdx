@@ -1,0 +1,376 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/alert"
+lastSynced: "2026-02-20T07:12:31.509Z"
+---
+# Documentation
+
+Alert
+
+LTS release 2.XPublished on 2025-01-01
+
+## Classes
+
+[Alert](#Alert)
+
+[AlertsData](#AlertsData)
+
+## Alert
+
+**Kind**: global class
+
+**Access**: public
+
+-   [Alert](#Alert)
+    -   [Alert()](#new_Alert_new)
+    -   [id](#Alert+id)
+    -   [name](#Alert+name)
+    -   [description](#Alert+description)
+    -   [status](#Alert+status)
+    -   [templateId](#Alert+templateId)
+    -   [filterId](#Alert+filterId)
+    -   [companyId](#Alert+companyId)
+    -   [startDate](#Alert+startDate)
+    -   [expirationDate](#Alert+expirationDate)
+
+---
+
+### Alert()
+
+This class represents an Alert to send to the Users with the "Alert" subscription and the an AlertDevice created.  
+
+---
+
+### alert.id
+
+**Kind**: instance property of [`Alert`](#Alert)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+id
+
+`string`
+
+The ID of the Alert
+
+---
+
+### alert.name
+
+**Kind**: instance property of [`Alert`](#Alert)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+name
+
+`string`
+
+The name of the Alert
+
+---
+
+### alert.description
+
+**Kind**: instance property of [`Alert`](#Alert)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+description
+
+`string`
+
+The description of the Alert
+
+---
+
+### alert.status
+
+**Kind**: instance property of [`Alert`](#Alert)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+status
+
+`string`
+
+State of the Alert ('active', 'failed', 'completed', 'expired', 'canceled')
+
+---
+
+### alert.templateId
+
+**Kind**: instance property of [`Alert`](#Alert)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+templateId
+
+`string`
+
+The ITemplate unique identifier orresponding to the message content sent to the devices.
+
+---
+
+### alert.filterId
+
+**Kind**: instance property of [`Alert`](#Alert)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+filterId
+
+`string`
+
+The Alert filter unique identifier. Optional filter allowing to only notify company devices that match the criterion defined in the associated alert filter.
+
+---
+
+### alert.companyId
+
+**Kind**: instance property of [`Alert`](#Alert)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+companyId
+
+`string`
+
+The Unique identifier of the company to which belongs the alert (Optional). If not provided, it is set to logged in user's companyId.
+
+---
+
+### alert.startDate
+
+**Kind**: instance property of [`Alert`](#Alert)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+startDate
+
+`string`
+
+The Start Date of the Alert
+
+---
+
+### alert.expirationDate
+
+**Kind**: instance property of [`Alert`](#Alert)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+expirationDate
+
+`string`
+
+The End Date of the Alert
+
+---
+
+## AlertsData
+
+**Kind**: global class
+
+-   [AlertsData](#AlertsData)
+    -   [AlertsData()](#new_AlertsData_new)
+    -   [total](#AlertsData+total)
+    -   [limit](#AlertsData+limit)
+    -   [offset](#AlertsData+offset)
+
+---
+
+### AlertsData()
+
+Structure used when retrieving severals Alerts from server.  
+
+---
+
+### alertsData.total
+
+**Kind**: instance property of [`AlertsData`](#AlertsData)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+total
+
+`number`
+
+The Total number of items available
+
+---
+
+### alertsData.limit
+
+**Kind**: instance property of [`AlertsData`](#AlertsData)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+limit
+
+`number`
+
+The Number of items asked
+
+---
+
+### alertsData.offset
+
+**Kind**: instance property of [`AlertsData`](#AlertsData)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+offset
+
+`number`
+
+The Offset used
+
+---
+
+### On this page
+
+-   [Classes](/docs/sdk/node#name-classes-0)
+-   [Alert](/docs/sdk/node#name-alert-7)
+-   [Alert()](/docs/sdk/node#name-alert-79)
+-   [alert.id](/docs/sdk/node#name-alert.id-89)
+-   [alert.name](/docs/sdk/node#name-alert.name-136)
+-   [alert.description](/docs/sdk/node#name-alert.description-183)
+-   [alert.status](/docs/sdk/node#name-alert.status-230)
+-   [alert.templateId](/docs/sdk/node#name-alert.templateid-277)
+-   [alert.filterId](/docs/sdk/node#name-alert.filterid-324)
+-   [alert.companyId](/docs/sdk/node#name-alert.companyid-371)
+-   [alert.startDate](/docs/sdk/node#name-alert.startdate-418)
+-   [alert.expirationDate](/docs/sdk/node#name-alert.expirationdate-465)
+-   [AlertsData](/docs/sdk/node#name-alertsdata-512)
+-   [AlertsData()](/docs/sdk/node#name-alertsdata-551)
+-   [alertsData.total](/docs/sdk/node#name-alertsdata.total-561)
+-   [alertsData.limit](/docs/sdk/node#name-alertsdata.limit-608)
+-   [alertsData.offset](/docs/sdk/node#name-alertsdata.offset-655)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

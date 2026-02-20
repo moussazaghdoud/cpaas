@@ -1,0 +1,99 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Using_ArrayItemList"
+lastSynced: "2026-02-20T07:12:28.788Z"
+---
+# Documentation
+
+Using Class ArrayItemList
+
+LTS release 2.61.0Published on 202-04-06
+
+## Using Class ArrayItemList
+
+---
+
+### Preamble
+
+---
+
+The Rainbow SDK offers the `ArrayItemList` implementation which allows to easily detect when data of a list are modified.
+
+The modification is detected when:
+
+-   The list is cleared,
+    
+-   An item has been added, updated or deleted,
+    
+-   Or all items are replaced.
+    
+
+However, when a property of an object in the list changes, the modification is not detected.
+
+For example, if you are listening to the conversations list, if a contact is updated, you are not triggered.
+
+Besides, you don't have the information of the modification but most of the time in Android, you don't need it to update an adapter.
+
+Basically, you just have to detect the modification, replace all items and then update with `notifyDataSetChanged`
+
+### Example: manage conversations list changes
+
+---
+
+You have to create an `IItemListChangeListener` object with a single overrided method like in the following code
+
+```java
+IItemListChangeListener m_changeListener = new IItemListChangeListener() {
+    @Override
+    public void dataChanged() {
+        m_activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                m_adapter.updateConversations();
+            }
+        });
+
+    }
+}
+```
+
+Then to register to the list changes:
+
+```java
+RainbowSdk.instance().im().getAllConversations().registerChangeListener(m_changeListener);
+```
+
+Don't forget to unregister:
+
+```java
+RainbowSdk.instance().im().getAllConversations().unregisterChangeListener(m_changeListener);
+```
+
+And then, in the adapter:
+
+```java
+public void updateConversations() {
+    m_conversations = RainbowSdk.instance().im().getAllConversations();
+    m_adapter.notifyDataSetChanged(); // Update GUI
+}
+```
+
+NB: If you need to work on the list, prefer doing it on a copy with the method `getCopyOfDataList()`
+
+---
+
+*Last updated August, 18th 2017*
+
+### On this page
+
+-   [Using Class ArrayItemList](/docs/sdk/android#name-using-class-arrayitemlist-0)
+-   [Preamble](/docs/sdk/android#name-preamble-4)
+-   [Example: manage conversations list changes](/docs/sdk/android#name-example:-manage-conversations-list-changes-43)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

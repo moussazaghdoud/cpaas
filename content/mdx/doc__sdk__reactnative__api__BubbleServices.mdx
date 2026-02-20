@@ -1,0 +1,305 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/BubbleServices"
+lastSynced: "2026-02-20T07:12:33.298Z"
+---
+# Documentation
+
+Bubble Service
+
+### Bubble Services
+
+---
+
+### Preamble
+
+---
+
+The bubble services module `bubblesService` have all the methods that supported by this library.
+
+### Listen to bubbles list updates
+
+---
+
+You can listen when there is any bubble list updated by using `eventEmitter.addListener` with the event name `EventType.BubblesListUpdated` and it will get to you the updated bubble list as array of bubbles objects (`IBubble[]`):
+
+```ts
+...
+eventEmitter.addListener(
+      EventType.BubblesListUpdated,
+      (eventData: IBubble[]) => {
+        // handle the new updated bubble list
+      }
+    );
+...
+```
+
+### Listen to one bubble updates
+
+---
+
+You can listen when there is any changes to a bubble updated by using `eventEmitter.addListener` with the event name `EventType.OnBubbleUpdated` and it will get to you the updated bubble Object as its shown in the following:
+
+```ts
+...
+eventEmitter.addListener(
+      EventType.OnBubbleUpdated,
+      (updatedObject: IBubble) => {
+        // handle the new updated bubble object
+      }
+    );
+...
+```
+
+### Get All Bubbles
+
+---
+
+To get all the bubbles object that the connected user is a had joined it or created you can call `bubblesService.getBubbles` and this method will trigger the `EventType.BubblesListUpdated` event
+
+```ts
+import {bubblesService } from 'react-native-rainbow-module'
+...
+const getAllBubbles = () => {
+bubblesService.getBubbles();
+}
+// listen the Bubbles list from the event
+eventEmitter.addListener(
+      EventType.BubblesListUpdated,
+      (eventData: IBubble[]) => {
+        // handle the new updated bubble list
+      }
+    );
+```
+
+### Get the Invited Bubbles
+
+---
+
+To get all the pending invited bubbles, you can call `bubblesService.getInvitedBubbles`, you can get the invited bubble by calling `EventType.GetInvitedBubbles` through `eventEmitter.addListener`
+
+```ts
+import {bubblesService } from 'react-native-rainbow-module'
+...
+const getPendingInvitedBubbles = () => {
+bubblesService.getInvitedBubbles();
+}
+// listen the Pending Invited Bubbles result
+ eventEmitter.addListener(
+            EventType.GetInvitedBubbles,
+            (bubble: IBubble[]) => {
+                // handle the pending invited bubble
+            }
+        );
+```
+
+### Accept/Decline the Invited Bubbles
+
+---
+
+To accept the pending invited bubbles, you can call `bubblesService.acceptBubbleInvitation(bubbleId: string)`, and to decline the bubble invitation you can use `bubblesService.declineBubbleInvitation(bubbleId: string)`, where the `bubbleId` is the bubble jid. You can listen to bubble invitation result when ever its accepted or declined by using listening to `EventType.InvitedBubblesResult`
+
+```ts
+import {bubblesService } from 'react-native-rainbow-module'
+...
+const acceptInvitation = (bubbleId: string) => {
+bubblesService.acceptBubbleInvitation(bubbleId);
+}
+
+const declineInvitation = (bubbleId: string) => {
+bubblesService.declineBubbleInvitation(bubbleId);
+}
+
+// Listen to invitation result
+eventEmitter.addListener(
+            EventType.InvitedBubblesResult,
+            (result: string) => {
+              // the result is either equal to "success" or "failure"
+            }
+        );
+```
+
+### Create Bubble
+
+---
+
+To create bubble, you can call `bubblesService.createBubble(name: string, topic: string)`, where the `name` is the bubble title and the `topic` is the bubble description. You can get to the bubble creation result by listening to `EventType.CreateBubbleResult` event.
+
+```ts
+import {bubblesService } from 'react-native-rainbow-module'
+...
+const createBubble = (name: string, topic: string) => {
+bubblesService.createBubble(name, topic);
+}
+// Listen to bubble creation result
+eventEmitter.addListener(
+      EventType.CreateBubbleResult,
+      (creationResult: BubbleErrorCode) => {
+        // handle creation result
+      }
+    );
+```
+
+You can check for more detail about `BubbleErrorCode` type through this [IBubble](/docs/sdk/reactnative/api/IBubble).
+
+### Create Bubble With Participant
+
+---
+
+To initiate bubble with participant, you can call `bubblesService.createBubbleWithParticipants(name: string, topic: string, participantsId: string[])`, where the `name` is the bubble title and the `topic` is the bubble description and `participantsId` is an array of the contacts jid. You can get to the bubble creation result by listening to `EventType.CreateBubbleResult` event.
+
+```ts
+import {bubblesService } from 'react-native-rainbow-module'
+...
+const initiateBubbleWithParticipants = (name: string, topic: string, participantsId: string[]) => {
+bubblesService.createBubbleWithParticipants(name, topic,participantsId);
+}
+// Listen to bubble creation result
+eventEmitter.addListener(
+      EventType.CreateBubbleResult,
+      (creationResult: BubbleErrorCode) => {
+        // handle creation result
+      }
+    );
+```
+
+You can check for more detail about `BubbleErrorCode` type through this [IBubble](/docs/sdk/reactnative/api/IBubble).
+
+### Create Auto Accepted Bubble
+
+---
+
+To create auto accepted bubble where `auto accept` mean that all invitations to add a new participant in this room will be auto accepted. The user won't receive any notification to accept or decline. By calling `bubblesService.createAutoAcceptedBubble(name: string, topic: string)`, where the and`name` is the bubble title and the `topic` is the bubble description. You can get to the bubble creation result by listening to `EventType.CreateBubbleResult` event.
+
+```ts
+import {bubblesService } from 'react-native-rainbow-module'
+...
+const createAutoAcceptedBubble = (name: string, topic: string) => {
+bubblesService.createAutoAcceptedBubble(name, topic);
+}
+// Listen to bubble creation result
+eventEmitter.addListener(
+      EventType.CreateBubbleResult,
+      (creationResult: BubbleErrorCode) => {
+        // handle creation result
+      }
+    );
+```
+
+You can check for more detail about `BubbleErrorCode` type through this [IBubble](/docs/sdk/reactnative/api/IBubble).
+
+### Leave Bubble
+
+---
+
+To leave the bubble you can use `bubblesService.leaveBubble(bubbleId: string)`, where the `bubbleId` is the bubble jid for the bubble you wanna leave. You can get to the bubble leaving result by listening to `EventType.LeaveBubbleResult` event.
+
+```ts
+import {bubblesService } from 'react-native-rainbow-module'
+...
+const leaveFromBubble = (bubbleId: string) => {
+bubblesService.leaveBubble(bubbleId);
+}
+// Listen to bubble leaving result
+eventEmitter.addListener(EventType.LeaveBubbleResult,
+(result: string) => {
+     // the result is either equal to "success" or "failure"
+    }
+  );
+```
+
+### Archive Bubble
+
+---
+
+To archive the bubble you can use `bubblesService.archiveBubble(bubbleId: string)`, where the `bubbleId` is the bubble jid for the bubble you wanna archive. For the archiving action, you have the following two cases:
+
+1.  If you are the owner, all participants are archived.
+2.  If you are NOT the owner, you just leave the bubble.
+
+You can get to the bubble archiving result by listening to `EventType.ArchiveBubbleResult` event.
+
+```ts
+import {bubblesService } from 'react-native-rainbow-module'
+...
+const archivingBubble = (bubbleId: string) => {
+bubblesService.archiveBubble(bubbleId);
+}
+// Listen to bubble archiving result
+eventEmitter.addListener(EventType.ArchiveBubbleResult,
+(result: string) => {
+      // the result is either equal to "success" or "failure"
+    }
+  );
+```
+
+### Delete Bubble
+
+---
+
+To delete the bubble you can use `bubblesService.deleteBubble(bubbleId: string)`, where the `bubbleId` is the bubble jid for the bubble you wanna delete. You can get to the bubble deleting result by listening to `EventType.DeleteBubbleResult` event.
+
+```ts
+import {bubblesService } from 'react-native-rainbow-module'
+...
+const deleteTheBubble = (bubbleId: string) => {
+bubblesService.deleteBubble(bubbleId);
+}
+// Listen to bubble deleting result
+eventEmitter.addListener(EventType.DeleteBubbleResult,
+(result: string) => {
+      // the result is either equal to "success" or "failure"
+    }
+  );
+```
+
+### Get Bubble By Id
+
+---
+
+To get the bubble by its id you can use `bubblesService.getBubbleById(bubbleId: string)`, where the `bubbleId` is the bubble jid for the bubble you wanna get. You can get to the requested bubble result by listening to `EventType.GetBubbleByIdResult` event.
+
+```ts
+import {bubblesService } from 'react-native-rainbow-module'
+...
+const getBubbleByItsId = (bubbleId: string) => {
+bubblesService.getBubbleById(bubbleId);
+}
+// Listen to bubble deleting result
+eventEmitter.addListener(EventType.GetBubbleByIdResult,
+(result? : IBubble) => {
+      // the result is optional, which mean if the bubble is not found the result will be null
+      if(result){
+        // handle the
+      }
+      else {
+        // The requested bubble NOT found
+      }
+    }
+  );
+```
+
+### On this page
+
+-   [Bubble Services](/docs/sdk/reactnative/api/BubbleServices#name-bubble-services-0)
+-   [Preamble](/docs/sdk/reactnative/api/BubbleServices#name-preamble-4)
+-   [Listen to bubbles list updates](/docs/sdk/reactnative/api/BubbleServices#name-listen-to-bubbles-list-updates-11)
+-   [Listen to one bubble updates](/docs/sdk/reactnative/api/BubbleServices#name-listen-to-one-bubble-updates-19)
+-   [Get All Bubbles](/docs/sdk/reactnative/api/BubbleServices#name-get-all-bubbles-27)
+-   [Get the Invited Bubbles](/docs/sdk/reactnative/api/BubbleServices#name-get-the-invited-bubbles-35)
+-   [Accept/Decline the Invited Bubbles](/docs/sdk/reactnative/api/BubbleServices#name-acceptdecline-the-invited-bubbles-43)
+-   [Create Bubble](/docs/sdk/reactnative/api/BubbleServices#name-create-bubble-51)
+-   [Create Bubble With Participant](/docs/sdk/reactnative/api/BubbleServices#name-create-bubble-with-participant-62)
+-   [Create Auto Accepted Bubble](/docs/sdk/reactnative/api/BubbleServices#name-create-auto-accepted-bubble-73)
+-   [Leave Bubble](/docs/sdk/reactnative/api/BubbleServices#name-leave-bubble-84)
+-   [Archive Bubble](/docs/sdk/reactnative/api/BubbleServices#name-archive-bubble-92)
+-   [Delete Bubble](/docs/sdk/reactnative/api/BubbleServices#name-delete-bubble-115)
+-   [Get Bubble By Id](/docs/sdk/reactnative/api/BubbleServices#name-get-bubble-by-id-123)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

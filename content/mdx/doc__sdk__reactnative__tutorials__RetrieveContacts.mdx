@@ -1,0 +1,104 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/tutorials/RetrieveContacts"
+lastSynced: "2026-02-20T07:12:33.780Z"
+---
+# Documentation
+
+Manage contacts
+
+# Managing Contacts
+
+---
+
+### Overview
+
+The Contacts feature allows you to manage and interact with the user's contact list. This guide shows how to retrieve, display, and interact with contacts in your application.
+
+## Features
+
+-   Retrieve the complete contact list
+-   Get real-time updates when contacts change
+-   Access detailed contact information
+-   Handle contact presence updates
+-   Removing contacts they no longer wish to be connected with.
+
+### How It Works
+
+The contact management system is asynchronous. You will typically call a method from the `contactsService` to initiate an action (like fetching contacts), and then listen for a specific event to receive the result. This event-driven architecture ensures that your application's UI remains responsive while data is being fetched over the network.
+
+## Basic Usage
+
+### Retrieving Contacts
+
+```tsx
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList } from 'react-native';
+import { eventEmitter, EventType, IContact, startUpService } from 'react-native-rainbow-module';
+
+
+interface ContactItemProps {
+  contact: IContact;
+}
+
+export const ContactsComponent: React.FC = () => {
+  const [contacts, setContacts] = useState<IContact[]>([]);
+
+  useEffect(() => {
+    // Initial fetch of contacts
+    startUpService.getRosterContacts();
+
+    // Subscribe to contact updates
+    const contactsUpdated = eventEmitter.addListener(
+      EventType.ContactsUpdated,
+      (updatedContacts: IContact[]) => {
+        setContacts(updatedContacts);
+      }
+    );
+
+    // Cleanup listener on component unmount
+    return () => {
+      contactsUpdated.remove();
+    };
+  }, []);
+
+const renderItems = (item: IContact) => {
+  return <ContactCardView contact={item} rightItem={contactCardRightComponent(item)} />;
+}
+
+  const renderEmptyList = () => (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>No contacts found</Text>
+    </View>
+  );
+
+  return(
+    <Contacts
+      contacts={contacts}
+      renderItems={renderItems}
+      renderEmptyList={renderEmptyList}
+    />
+  )
+};
+```
+
+### Next Steps
+
+To see how to implement these features in your application, please refer to the detailed **[Contact Services API Reference](/docs/sdk/reactnative/api/ContactServices).**.
+
+### On this page
+
+-   [Overview](/docs/sdk/reactnative/tutorials/RetrieveContacts#name-overview-4)
+-   [Features](/docs/sdk/reactnative/tutorials/RetrieveContacts#name-features-10)
+-   [How It Works](/docs/sdk/reactnative/tutorials/RetrieveContacts#name-how-it-works-40)
+-   [Basic Usage](/docs/sdk/reactnative/tutorials/RetrieveContacts#name-basic-usage-46)
+-   [Retrieving Contacts](/docs/sdk/reactnative/tutorials/RetrieveContacts#name-retrieving-contacts-49)
+-   [Next Steps](/docs/sdk/reactnative/tutorials/RetrieveContacts#name-next-steps-53)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

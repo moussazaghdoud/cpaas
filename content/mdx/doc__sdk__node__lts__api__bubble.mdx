@@ -1,0 +1,943 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/bubble"
+lastSynced: "2026-02-20T07:12:31.635Z"
+---
+# Documentation
+
+Bubble
+
+LTS release 2.XPublished on 2025-01-01
+
+## Classes
+
+[Bubble](#Bubble)
+
+## Functions
+
+[BubbleFactory()](#BubbleFactory)
+
+This class is used to create a bubble from data object
+
+## Bubble
+
+**Kind**: global class
+
+**Access**: public
+
+-   [Bubble](#Bubble)
+    -   [Bubble()](#new_Bubble_new)
+    -   *API*
+        -   [id](#Bubble+id)
+        -   [name](#Bubble+name)
+        -   [topic](#Bubble+topic)
+        -   [jid](#Bubble+jid)
+        -   [creator](#Bubble+creator)
+        -   [history](#Bubble+history)
+        -   [users](#Bubble+users)
+        -   [organizers](#Bubble+organizers)
+        -   [members](#Bubble+members)
+        -   [creationDate](#Bubble+creationDate)
+        -   [visibility](#Bubble+visibility)
+        -   [customData](#Bubble+customData)
+        -   [isActive](#Bubble+isActive)
+        -   [lastActivityDate](#Bubble+lastActivityDate)
+        -   [conference](#Bubble+conference)
+        -   [disableNotifications](#Bubble+disableNotifications)
+        -   [lastAvatarUpdateDate](#Bubble+lastAvatarUpdateDate)
+        -   [guestEmails](#Bubble+guestEmails)
+        -   [activeUsersCounter](#Bubble+activeUsersCounter)
+        -   [avatar](#Bubble+avatar)
+        -   [autoRegister](#Bubble+autoRegister)
+        -   [owner](#Bubble+owner)
+        -   [autoAcceptInvitation](#Bubble+autoAcceptInvitation)
+        -   [tags](#Bubble+tags)
+        -   [containerId](#Bubble+containerId)
+        -   [containerName](#Bubble+containerName)
+        -   [status](#Bubble+status)
+        -   [\_initialPresence](#Bubble+_initialPresence)
+        -   [allNames](#Bubble+allNames)
+        -   [participantNames](#Bubble+participantNames)
+    -   *API*
+        -   [Privilege](#Bubble.Privilege) : `enum`
+        -   [History](#Bubble.History) : `enum`
+
+---
+
+### Bubble()
+
+This class represents a Bubble.  
+A bubble is an interaction between several participants based on IM media. A bubble is described by a name and a description.  
+Like for one-to-one conversation, A conversation within a bubble never ends and all interactions done can be retrieved.  
+
+---
+
+### bubble.id
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+id
+
+`string`
+
+The ID of the Bubble
+
+---
+
+### bubble.name
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+name
+
+`string`
+
+The name of the Bubble
+
+---
+
+### bubble.topic
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+topic
+
+`string`
+
+The topic of the Bubble
+
+---
+
+### bubble.jid
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+jid
+
+`string`
+
+The JID of the Bubble
+
+---
+
+### bubble.creator
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+creator
+
+`string`
+
+The ID of the creator of the Bubble
+
+---
+
+### bubble.history
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+history
+
+`string`
+
+The type of history the bubble supports. Can be 'none' (no history) or 'full' (Full bubble history is accessible for newcomers)
+
+---
+
+### bubble.users
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+users
+
+`Array.<Contact>`
+
+The list of users of that Bubble with their status and privilege. Note : Only 100 users are return by the server. So if there are more than this limit, you have to retrieve them with the method BubblesService::getUsersFromBubble
+
+---
+
+### bubble.organizers
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+organizers
+
+`Array.<string>`
+
+of the bubble, built from users property. It is affected by the limit of 100 (splitted between organizers and members).
+
+---
+
+### bubble.members
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+members
+
+`Array.<string>`
+
+of the bubble, built from users property. It is affected by the limit of 100 (splitted between organizers and members).
+
+---
+
+### bubble.creationDate
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+creationDate
+
+`string`
+
+The creation date of the Bubble
+
+---
+
+### bubble.visibility
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+visibility
+
+`string`
+
+The visibility of the Bubble. Can be private (only visible for members) or public
+
+---
+
+### bubble.customData
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+customData
+
+`Object`
+
+The custom data attached to that Bubble. List of pairs (key/value).
+
+---
+
+### bubble.isActive
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isActive
+
+`string`
+
+When set to true all room users are invited to share their presence. Else they have to wait an event from XMPP server. This flag is reset when the room is inactive for a while (basically 60 days), and set when the first user share his presence. This flag is read-only.
+
+---
+
+### bubble.lastActivityDate
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+lastActivityDate
+
+`string`
+
+The date of the last activity in this bubble
+
+---
+
+### bubble.conference
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+conference
+
+`any`
+
+The conference of the bubble.
+
+---
+
+### bubble.disableNotifications
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+disableNotifications
+
+`boolean`
+
+The enablement notification of the bubble.
+
+---
+
+### bubble.lastAvatarUpdateDate
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+lastAvatarUpdateDate
+
+`string`
+
+The date of the last modification of the avatar of the bubble.
+
+---
+
+### bubble.guestEmails
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+guestEmails
+
+`Array.<string>`
+
+The list of the guests user's emails in the bubble.
+
+---
+
+### bubble.activeUsersCounter
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+activeUsersCounter
+
+`number`
+
+The count of active users in the bubble.
+
+---
+
+### bubble.avatar
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+avatar
+
+`string`
+
+This is the URL to download the avatar of the bubble. Note that it is an unavailable url if no avatar has been setted.
+
+---
+
+### bubble.autoRegister
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+autoRegister
+
+`String`
+
+A user can create a room and not have to register users. He can share instead a public link also called 'public URL'([users public link](#api-users_rooms_public_link)).  
+According with autoRegister value, if another person uses the link to join the room:
+
+-   autoRegister = 'unlock':  
+    If this user is not yet registered inside this room, he is automatically included with the status 'accepted' and join the room.
+-   autoRegister = 'lock':  
+    If this user is not yet registered inside this room, he can't access to the room. So that he can't join the room.
+-   autoRegister = 'unlock\_ack':  
+    If this user is not yet registered inside this room, he can't access to the room waiting for the room's owner acknowledgment.
+
+---
+
+### bubble.owner
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+owner
+
+`boolean`
+
+Is the connected user is the owner of the bubble.
+
+---
+
+### bubble.autoAcceptInvitation
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+auto
+
+`boolean`
+
+acceptation of the bubble.
+
+---
+
+### bubble.tags
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+tags
+
+`Array.<string>`
+
+Tags Array about the bubble.
+
+---
+
+### bubble.containerId
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+containerId
+
+`string`
+
+The id of the container in this bubble
+
+---
+
+### bubble.containerName
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+containerName
+
+`string`
+
+The name of the container in this bubble
+
+---
+
+### bubble.status
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+status
+
+`string`
+
+The status of the connected user in the bubble ('invited', 'accepted', 'unsubscribed', 'rejected' or 'deleted')
+
+---
+
+### bubble.\_initialPresence
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+initialPresence
+
+`InitialPresence`
+
+The management of sent initial presence in the bubble of the connected user.
+
+---
+
+### bubble.allNames
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+allNames
+
+`Array.<string>`
+
+The name of contacts in the bubble.
+
+---
+
+### bubble.participantNames
+
+**Kind**: instance property of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+participantNames
+
+`Array.<string>`
+
+The name of contacts in the bubble.
+
+---
+
+### Bubble.Privilege : `enum`
+
+The privilege of the Contact in the Bubble.
+
+**Kind**: static enum of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+USER
+
+`String`
+
+`user`
+
+User level
+
+MODERATOR
+
+`String`
+
+`moderator`
+
+Moderator level
+
+GUEST
+
+`String`
+
+`guest`
+
+Guest level
+
+---
+
+### Bubble.History : `enum`
+
+Behaviour of the Bubble's History
+
+**Kind**: static enum of [`Bubble`](#Bubble)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+ALL
+
+`String`
+
+`all`
+
+Full bubble history is accessible for newcomers
+
+NONE
+
+`String`
+
+`none`
+
+No history is accessible for newcomers, only new messages posted
+
+---
+
+## BubbleFactory()
+
+This class is used to create a bubble from data object
+
+**Kind**: global function
+
+**Access**: public
+
+---
+
+### On this page
+
+-   [Classes](/docs/sdk/node#name-classes-0)
+-   [Functions](/docs/sdk/node#name-functions-4)
+-   [Bubble](/docs/sdk/node#name-bubble-11)
+-   [Bubble()](/docs/sdk/node#name-bubble-212)
+-   [bubble.id](/docs/sdk/node#name-bubble.id-222)
+-   [bubble.name](/docs/sdk/node#name-bubble.name-269)
+-   [bubble.topic](/docs/sdk/node#name-bubble.topic-316)
+-   [bubble.jid](/docs/sdk/node#name-bubble.jid-363)
+-   [bubble.creator](/docs/sdk/node#name-bubble.creator-410)
+-   [bubble.history](/docs/sdk/node#name-bubble.history-457)
+-   [bubble.users](/docs/sdk/node#name-bubble.users-504)
+-   [bubble.organizers](/docs/sdk/node#name-bubble.organizers-551)
+-   [bubble.members](/docs/sdk/node#name-bubble.members-598)
+-   [bubble.creationDate](/docs/sdk/node#name-bubble.creationdate-645)
+-   [bubble.visibility](/docs/sdk/node#name-bubble.visibility-692)
+-   [bubble.customData](/docs/sdk/node#name-bubble.customdata-739)
+-   [bubble.isActive](/docs/sdk/node#name-bubble.isactive-786)
+-   [bubble.lastActivityDate](/docs/sdk/node#name-bubble.lastactivitydate-833)
+-   [bubble.conference](/docs/sdk/node#name-bubble.conference-880)
+-   [bubble.disableNotifications](/docs/sdk/node#name-bubble.disablenotifications-927)
+-   [bubble.lastAvatarUpdateDate](/docs/sdk/node#name-bubble.lastavatarupdatedate-974)
+-   [bubble.guestEmails](/docs/sdk/node#name-bubble.guestemails-1021)
+-   [bubble.activeUsersCounter](/docs/sdk/node#name-bubble.activeuserscounter-1068)
+-   [bubble.avatar](/docs/sdk/node#name-bubble.avatar-1115)
+-   [bubble.autoRegister](/docs/sdk/node#name-bubble.autoregister-1162)
+-   [bubble.owner](/docs/sdk/node#name-bubble.owner-1209)
+-   [bubble.autoAcceptInvitation](/docs/sdk/node#name-bubble.autoacceptinvitation-1256)
+-   [bubble.tags](/docs/sdk/node#name-bubble.tags-1303)
+-   [bubble.containerId](/docs/sdk/node#name-bubble.containerid-1350)
+-   [bubble.containerName](/docs/sdk/node#name-bubble.containername-1397)
+-   [bubble.status](/docs/sdk/node#name-bubble.status-1444)
+-   [bubble.\_initialPresence](/docs/sdk/node#name-bubble._initialpresence-1491)
+-   [bubble.allNames](/docs/sdk/node#name-bubble.allnames-1538)
+-   [bubble.participantNames](/docs/sdk/node#name-bubble.participantnames-1585)
+-   [Bubble.Privilege : enum](/docs/sdk/node#name-bubble.privilege-:-enum-1632)
+-   [Bubble.History : enum](/docs/sdk/node#name-bubble.history-:-enum-1716)
+-   [BubbleFactory()](/docs/sdk/node#name-bubblefactory-1786)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

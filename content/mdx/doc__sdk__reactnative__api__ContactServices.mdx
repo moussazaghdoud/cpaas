@@ -1,0 +1,119 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/ContactServices"
+lastSynced: "2026-02-20T07:12:33.355Z"
+---
+# Documentation
+
+Contact Service
+
+# Contact Services API Reference
+
+---
+
+This document provides a detailed API reference for the `contactsService`.
+
+## Get Roster Contacts
+
+Retrieves the user's entire list of Rainbow contacts (their "roster").
+
+**Method:**
+
+```typescript
+import { contactsService } from 'react-native-rainbow-module';
+
+contactsService.getRosterContacts();
+```
+
+**Event Listener:**
+
+```typescript
+import { eventEmitter, EventType, IContact } from 'react-native-rainbow-module';
+
+eventEmitter.addListener(
+  EventType.ContactsUpdated,
+  (contacts: IContact[]) => {
+    console.log('Roster contacts updated:', contacts);
+  }
+);
+```
+
+---
+
+## Invite Contact
+
+---
+
+To invite a contact to your list, you can call `contactsService.addContactToRoster(contactId: string)`, where you can get the list by listening to `EventType.AddContactToRoster` **Method:**
+
+```typescript
+import { contactsService } from 'react-native-rainbow-module';
+
+const inviteContact = (contactId: string) => {
+contactsService.addContactToRoster(contactId)
+}
+```
+
+**Event Listener:**
+
+```typescript
+import { eventEmitter, EventType, IContact } from 'react-native-rainbow-module';
+
+eventEmitter.addListener(
+      EventType.AddContactToRoster,
+      (eventData: string) => {
+        // handle contact list
+         if (eventData === 'success') {
+           // handle on success
+         }
+         else {
+           //handle on filed
+         }
+      }
+    );
+```
+
+---
+
+## Add Contact to Roster
+
+Adds a new contact to the user's roster using the contact's ID.
+
+**Method:**
+
+```typescript
+import { contactsService } from 'react-native-rainbow-module';
+
+const contactId = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+contactsService.addContactToRoster(contactId);
+```
+
+---
+
+## Remove Contact from Roster
+
+Removes a contact from the user's roster using the contact's JID.
+
+**Method:**
+
+```typescript
+import { contactsService } from 'react-native-rainbow-module';
+
+const contactJid = 'xxxxx@openrainbow.com';
+contactsService.removeContact(contactJid);
+```
+
+### On this page
+
+-   [Get Roster Contacts](/docs/sdk/reactnative/api/ContactServices#name-get-roster-contacts-7)
+-   [Invite Contact](/docs/sdk/reactnative/api/ContactServices#name-invite-contact-22)
+-   [Add Contact to Roster](/docs/sdk/reactnative/api/ContactServices#name-add-contact-to-roster-35)
+-   [Remove Contact from Roster](/docs/sdk/reactnative/api/ContactServices#name-remove-contact-from-roster-46)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

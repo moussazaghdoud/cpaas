@@ -1,0 +1,200 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/IFile"
+lastSynced: "2026-02-20T07:12:33.448Z"
+---
+# Documentation
+
+IFile
+
+## Typedefs
+
+[IFile](#IFile) : `Interface`
+
+File interface
+
+[FileType](#FileType) : `Enum`
+
+File Types Enum.
+
+## IFile : `Interface`
+
+File interface, its a type for declaring the shared files between the Conversations or the Bubbles
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+id
+
+`string`
+
+the descriptor id of the file
+
+name
+
+`string`
+
+the file name
+
+type
+
+`[FileType](#FileType)`
+
+the file type
+
+url
+
+`string`
+
+the server URL of the file
+
+size
+
+`number`
+
+file size in bytes
+
+owner
+
+`[IContact](/docs/sdk/reactnative/api/IContact)`
+
+The contact who shared this file
+
+date
+
+`string`
+
+the date where the file was shared
+
+ImagePreview
+
+`string`
+
+\[optional\] string base64 for the image thumbnail of this file
+
+viewers
+
+`IPeer[]`
+
+The array of the Peer( contact , bubble or channels) you shared you files with
+
+## FileType : `Enum`
+
+Files type Enum.
+
+**Kind**: global enum **Access**: public **Read only**: true **Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+FileTypeImage
+
+`string`
+
+`Image`
+
+Image file type .
+
+FileTypePDF
+
+`string`
+
+`PDF`
+
+PDF file type.
+
+FileTypeDoc
+
+`string`
+
+`Dc`
+
+DOC file type .
+
+FileTypePPT
+
+`string`
+
+`PPT`
+
+PPT file type .
+
+FileTypeXLS
+
+`string`
+
+`XLS`
+
+XLS file type .
+
+FileTypeAudio
+
+`string`
+
+`Audio`
+
+Audio file type .
+
+FileTypeVideo
+
+`string`
+
+`Video`
+
+Video file type.
+
+FileTypeArchive
+
+`string`
+
+`Archive`
+
+Archive file type.
+
+FileTypeCode
+
+`string`
+
+`Code`
+
+Code file type.
+
+FileTypeText
+
+`string`
+
+`txt`
+
+Text file type.
+
+FileTypeOther
+
+`string`
+
+`Other`
+
+other file type .
+
+### On this page
+
+-   [Typedefs](/docs/sdk/reactnative/api/IFile#name-typedefs-0)
+-   [IFile : Interface](/docs/sdk/reactnative/api/IFile#name-ifile-:-interface-7)
+-   [FileType : Enum](/docs/sdk/reactnative/api/IFile#name-filetype-:-enum-135)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

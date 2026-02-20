@@ -1,0 +1,785 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/tutorials/MakeImConversation"
+lastSynced: "2026-02-20T07:12:33.677Z"
+---
+# Documentation
+
+Make IM conversation
+
+### Make an IM Conversation
+
+---
+
+This guide explains how to retrieve messages from a conversation (P2P or Bubble) and how to send new ones using `<Messages />` component.
+
+### Preamble
+
+---
+
+This is the same mechanism for Peer to Peer messages and messages bubbles.
+
+All you need to do is import the `<Messages />` from the Rainbow RN library as below , Then you will be able to make use of the Following chat feature:
+
+-   Send Message: you can send a new message to another peer to peer or a bubble chat.
+-   Load more messages.
+-   Reply to a Message: you can reply to a specific message in the chat.
+-   listen to the message changes including: [EventType.MessagesUpdated](#EventType.MessagesUpdated), [EventType.IsTyping](#EventType.IsTyping), [EventType.FileAttachFinished](#EventType.FileAttachFinished), [EventType.FileDownloadFinished](#EventType.FileDownloadFinished).
+-   incase you wanna handle more feature than the default, we already support all the [message services](/docs/sdk/reactnative/api/MessageServices) that you need, with the customized message props as the following table.
+
+**Available props**
+
+#
+
+Name
+
+Type
+
+Description
+
+1
+
+conversation
+
+[IPeer](/docs/sdk/reactnative/api/IPeer)
+
+the peer object its could be a conversation type \[P2P\] or bubble type
+
+2
+
+messages
+
+[IMessage\[\]](/doc/sdk/reactnative/api/IMessage)
+
+the message list for the the selected peer
+
+3
+
+style
+
+ViewStyle
+
+the container style of the message component
+
+4
+
+[onMessageLongPressed](#onMessageLongPressed)
+
+(context: any, message: [IMessage](/docs/sdk/reactnative/api/IMessage)) => void
+
+\[optional\] callback method when long pressed accuses on a message
+
+5
+
+[renderSendingExtraView](#renderSendingExtraView)
+
+() => React.ReactNode
+
+\[optional\] the extra view above the sending view
+
+6
+
+[renderChatActions](#renderChatActions)
+
+() => React.ReactNode
+
+\[optional\] the customized action you wanna add beside the sending action
+
+7
+
+[renderMessageCustomView](#renderMessageCustomView)
+
+(currentMessage: [IMessage](/docs/sdk/reactnative/api/IMessage)) => React.ReactNode
+
+\[optional\] Custom view inside the message bubble
+
+8
+
+[renderSystemMessage](#renderSystemMessage)
+
+(currentMessage: IMessage) => React.ReactNode
+
+\[optional\] the message comes from the system, for example 'Call Ended' ...etc
+
+9
+
+[onSend](#onSend)
+
+(message: IMessage) => void
+
+\[optional\] A callback method when the send button is pressed
+
+10
+
+alwaysShowSend
+
+boolean
+
+\[optional\] showing the sending button or not? where it's set by default to `true`
+
+11
+
+renderMessageImage
+
+(currentMessage: IMessage) => void
+
+\[optional\] customized message image
+
+12
+
+renderAvatar
+
+(currentMessage: IMessage) => React.ReactNode
+
+\[optional\] customized user avatar inside the messages view
+
+13
+
+onInputTextChanged
+
+(text: string) => void
+
+\[optional\] callback in case there is changes occurs in the sending text input
+
+13
+
+renderSendButton
+
+(sendProps: SendProps) => React.ReactNode
+
+\[optional\] function to customize the "Send" text button with an icon or any react element to send messages.
+
+---
+
+**How To Use:**
+
+```tsx
+import React, { Component } from 'react';
+import {
+  eventEmitter,
+  EventType,
+  Messages,
+  IPeer,
+  IMessage,
+  messagesService,
+} from 'react-native-rainbow-module';
+
+interface IMessageComponentProps {
+  peer: IPeer,
+}
+
+export const MessageComponent: React.FunctionComponent<IMessageComponentProps> = (props: IMessageComponentProps) => {
+  const [messages, setMessages] = useState<IMessage[]>([]);
+  useEffect(() => {
+      // Listen for the message changes for this peer
+    const onMessagesUpdatedEvent = eventEmitter.addListener(
+      EventType.MessagesUpdated,
+      (eventData: IMessage[]) => {
+        setMessages(eventData);
+        // mark as read for any new incoming msg
+        messagesService.messagesMarkedASReadInActiveConversation(props.peer.jId);
+      }
+    );
+
+    return () => {
+      onMessagesUpdatedEvent.remove();
+    }
+  }, [props.peer.jId]);
+
+  return(
+    <Messages
+      conversation={props.peer}
+      messages={messages}
+    />
+  );
+}
+```
+
+**`You can check this` [example](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/tree/main/src/Messages/MessageComponent.tsx) `for more detail about how to use the customize UI props.`**
+
+### Customized Message Props:
+
+---
+
+### On Message Long Pressed
+
+A callback function that called after the user pressed long on any certain message. you can overwrite the `onMessageLongPressed` by your own customization.
+
+```tsx
+import React, { Component } from 'react';
+import {
+  eventEmitter,
+  EventType,
+  Messages,
+  IPeer,
+  IMessage,
+  messagesService,
+} from 'react-native-rainbow-module';
+
+interface IMessageComponentProps {
+  peer: IPeer,
+}
+
+export const MessageComponent: React.FunctionComponent<IMessageComponentProps> = (props: IMessageComponentProps) => {
+  const [messages, setMessages] = useState<IMessage[]>([]);
+  useEffect(() => {
+      // Listen for the message changes for this peer
+    const onMessagesUpdatedEvent = eventEmitter.addListener(
+      EventType.MessagesUpdated,
+      (eventData: IMessage[]) => {
+        setMessages(eventData);
+        // mark as read for any new incoming msg
+        messagesService.messagesMarkedASReadInActiveConversation(props.peer.jId);
+      }
+    );
+
+    return () => {
+      onMessagesUpdatedEvent.remove();
+    }
+  }, [props.peer.jId]);
+
+const onLongPress = (context: any, message: IMessage) => {
+    const options = ["Reply", "Forward", "Copy"];
+    if (message.isSent) {
+      // Show delete option only for the sent msg
+      options.push("Delete");
+    }
+    // Make the cancel option the last one
+    options.push(IMessageOption.Cancel);
+    const cancelButtonIndex = options.length - 1;
+    context.actionSheet().showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+      },
+      (buttonIndex: number) => {
+        switch (options[buttonIndex]) {
+          case "Copy":
+            Clipboard.setString(message.text);
+            break;
+          case "Forward":
+            // handle Forward
+            messagesService.forwardMessage([props.peer.jId], message._id);
+            break;
+          case "Reply":
+           // handle reply, by setting the `associatedMsgId` with the selected message to reply and the replied text
+           message.associatedMsgId = message._id;
+           message.text = 'Replied Message Text'
+           messagesService.replyMessage(message);
+            break;
+          case "Delete":
+            // handle delete
+            messagesService.deleteMessage(message._id);
+            break;
+          default:
+            break;
+        }
+      }
+    );
+  }
+
+  return(
+    <Messages
+      conversation={props.peer}
+      messages={messages}
+      onMessageLongPressed={onLongPress}
+    />
+  );
+}
+```
+
+### Render Sending Extra View
+
+To make your customized sending extra view \[the extra view above the sending view\], you can override the `renderSendingExtraView`, the following example show to you how to add the sending Message type View.
+
+![drawing](doc/sdk/reactnative/screenShots/renderSendingExtraView1.png)
+
+```tsx
+import React, { Component } from 'react';
+import {
+  eventEmitter,
+  EventType,
+  Messages,
+  IPeer,
+  IMessage,
+  messagesService,
+} from 'react-native-rainbow-module';
+
+interface IMessageComponentProps {
+  peer: IPeer,
+}
+
+export const MessageComponent: React.FunctionComponent<IMessageComponentProps> = (props: IMessageComponentProps) => {
+  const [messages, setMessages] = useState<IMessage[]>([]);
+
+  useEffect(() => {
+      // Listen for the message changes for this peer
+    const onMessagesUpdatedEvent = eventEmitter.addListener(
+      EventType.MessagesUpdated,
+      (eventData: IMessage[]) => {
+        setMessages(eventData);
+        // mark as read for any new incoming msg
+        messagesService.messagesMarkedASReadInActiveConversation(props.peer.jId);
+      }
+    );
+
+    return () => {
+      onMessagesUpdatedEvent.remove();
+    }
+  }, [props.peer.jId]);
+
+const renderSendingExtraView = () => {
+    // show a custom view for the selected message type to Send
+    if (selectedMessage) {
+      switch (selectedMessage.msgType) {
+        case "Replied":
+          return sendingExtraView(selectedMessage.user.name, resetToDefault, repliedViewStyle, selectedMessage.text,);
+        case "Information":
+          return sendingExtraView('Send Information...', resetToDefault, infoMsgViewStyle);
+        case "Important":
+          return sendingExtraView('Send Important...', resetToDefault, importantMsgViewStyle);
+      }
+    }
+    return;
+  }
+
+  return(
+    <Messages
+      conversation={props.peer}
+      messages={messages}
+      renderSendingExtraView={renderSendingExtraView}
+    />
+  );
+}
+```
+
+### Render Chat Actions
+
+To customize the chat actions you can override the `renderChatActions`, so you can customize your message action options.
+
+![drawing](doc/sdk/reactnative/screenShots/renderChatActions.png)
+
+```tsx
+import React, { Component } from 'react';
+import {
+  eventEmitter,
+  EventType,
+  Messages,
+  IPeer,
+  IMessage,
+  messagesService,
+  ChatActions
+} from 'react-native-rainbow-module';
+
+interface IMessageComponentProps {
+  peer: IPeer,
+}
+
+export const MessageComponent: React.FunctionComponent<IMessageComponentProps> = (props: IMessageComponentProps) => {
+  const [messages, setMessages] = useState<IMessage[]>([]);
+
+  useEffect(() => {
+      // Listen for the message changes for this peer
+    const onMessagesUpdatedEvent = eventEmitter.addListener(
+      EventType.MessagesUpdated,
+      (eventData: IMessage[]) => {
+        setMessages(eventData);
+        // mark as read for any new incoming msg
+        messagesService.messagesMarkedASReadInActiveConversation(props.peer.jId);
+      }
+    );
+
+    return () => {
+      onMessagesUpdatedEvent.remove();
+    }
+  }, [props.peer.jId]);
+
+const renderChatActions = () => {
+    return <React.Fragment>
+      <ChatActions
+        containerStyle={defaultStyle.msgTypeActionContainerStyle}
+        icon={sendingMsgTypesIcon}
+        options={{
+          'Important msg': () => {
+            //handle when user select Important msg
+          },
+          'Information msg': () => {
+            //handle when user select Important msg
+          },
+          Cancel: () => {
+            console.log('Cancel');
+          },
+        }}
+      />
+    </React.Fragment>
+  };
+
+
+  return(
+    <Messages
+      conversation={props.peer}
+      messages={messages}
+      renderChatActions={renderChatActions}
+    />
+  );
+}
+```
+
+### Render Message CustomView
+
+To add customizable view the message bubble, you can use `renderMessageCustomView`, the following example show you to customize the message if the message is Forward,info,important type.
+
+![drawing](doc/sdk/reactnative/screenShots/renderMessageView.png)
+
+```tsx
+import React, { Component } from 'react';
+import {
+  eventEmitter,
+  EventType,
+  Messages,
+  IPeer,
+  IMessage,
+  IMessageType,
+  messagesService,
+  ChatActions
+} from 'react-native-rainbow-module';
+
+interface IMessageComponentProps {
+  peer: IPeer,
+}
+
+export const MessageComponent: React.FunctionComponent<IMessageComponentProps> = (props: IMessageComponentProps) => {
+  const [messages, setMessages] = useState<IMessage[]>([]);
+
+  useEffect(() => {
+      // Listen for the message changes for this peer
+    const onMessagesUpdatedEvent = eventEmitter.addListener(
+      EventType.MessagesUpdated,
+      (eventData: IMessage[]) => {
+        setMessages(eventData);
+        // mark as read for any new incoming msg
+        messagesService.messagesMarkedASReadInActiveConversation(props.peer.jId);
+      }
+    );
+
+    return () => {
+      onMessagesUpdatedEvent.remove();
+    }
+  }, [props.peer.jId]);
+
+const renderMessageCustomView = (currentMessage: IMessage) => {
+    switch (currentMessage.msgType) {
+      case IMessageType.Important:
+        return messageHeaderView('warning', importantHeaderViewStyle, Strings.Important);
+
+      case IMessageType.Information:
+        return messageHeaderView('ios-information-circle-outline', infoHeaderViewStyle, Strings.Information);
+
+      case IMessageType.Forwarded:
+        return messageHeaderView('ios-arrow-forward-circle-outline', forwardHeaderViewStyle, Strings.Strings);
+    }
+    return null;
+  }
+
+
+  return(
+    <Messages
+      conversation={props.peer}
+      messages={messages}
+      renderMessageCustomView={renderMessageCustomView}
+    />
+  );
+}
+```
+
+### Render System Message
+
+To customize the system message view, you can use `renderSystemMessage`, where the system message is the message that come from the system, for example `started call`, `end call` ...etc.
+
+![drawing](doc/sdk/reactnative/screenShots/renderSystemMessage.png)
+
+```tsx
+import React, { Component } from 'react';
+import {
+  eventEmitter,
+  EventType,
+  Messages,
+  IPeer,
+  IMessage,
+  IMessageType,
+  messagesService,
+  ChatActions
+} from 'react-native-rainbow-module';
+
+interface IMessageComponentProps {
+  peer: IPeer,
+}
+
+export const MessageComponent: React.FunctionComponent<IMessageComponentProps> = (props: IMessageComponentProps) => {
+  const [messages, setMessages] = useState<IMessage[]>([]);
+
+  useEffect(() => {
+      // Listen for the message changes for this peer
+    const onMessagesUpdatedEvent = eventEmitter.addListener(
+      EventType.MessagesUpdated,
+      (eventData: IMessage[]) => {
+        setMessages(eventData);
+        // mark as read for any new incoming msg
+        messagesService.messagesMarkedASReadInActiveConversation(props.peer.jId);
+      }
+    );
+
+    return () => {
+      onMessagesUpdatedEvent.remove();
+    }
+  }, [props.peer.jId]);
+
+const renderSystemMessage = (currentMessage: IMessage) => {
+  // if the current message have a call, conference, roomEvent obj this mean the message is from the system,
+    const conference = currentMessage.conference;
+    const call: ICallEvent = currentMessage.call;
+    const roomEvent: IRoomEvent = currentMessage.roomEvent;
+    if (conference) {
+      return systemMessageView(conference.msgContent);
+    }
+    else if (call) {
+      return systemMessageView(call.msgContent);
+    }
+    else if (roomEvent) {
+      return systemMessageView(roomEvent.msgContent);
+    }
+    else {
+      return;
+    }
+  }
+
+
+  return(
+    <Messages
+      conversation={props.peer}
+      messages={messages}
+      renderSystemMessage={renderSystemMessage}
+    />
+  );
+}
+```
+
+### On Send
+
+To customize the on send, you can use `onSend`,
+
+```tsx
+import React, { Component } from 'react';
+import {
+  eventEmitter,
+  EventType,
+  Messages,
+  IPeer,
+  IMessage,
+  IMessageType,
+  messagesService,
+  ChatActions
+} from 'react-native-rainbow-module';
+
+interface IMessageComponentProps {
+  peer: IPeer,
+}
+
+export const MessageComponent: React.FunctionComponent<IMessageComponentProps> = (props: IMessageComponentProps) => {
+  const [messages, setMessages] = useState<IMessage[]>([]);
+
+  useEffect(() => {
+      // Listen for the message changes for this peer
+    const onMessagesUpdatedEvent = eventEmitter.addListener(
+      EventType.MessagesUpdated,
+      (eventData: IMessage[]) => {
+        setMessages(eventData);
+        // mark as read for any new incoming msg
+        messagesService.messagesMarkedASReadInActiveConversation(props.peer.jId);
+      }
+    );
+
+    return () => {
+      onMessagesUpdatedEvent.remove();
+    }
+  }, [props.peer.jId]);
+
+const onSend = (message: IMessage) => {
+  // make your customization for the message before send
+    messagesService.sendMessage(message);
+  }
+
+
+  return(
+    <Messages
+      conversation={props.peer}
+      messages={messages}
+      onSend={onSend}
+    />
+  );
+}
+```
+
+### Message Events:
+
+---
+
+### Messages Updated:
+
+you can listen to the message updated by listening to `EventType.MessagesUpdated` as its shown in this [Sample Code](#EventType.MessagesUpdated)
+
+### Is Typing:
+
+you can listen to the who is typing in the conversation message by listening to `EventType.IsTyping`, where the event response will be array of [ITyping](/docs/sdk/reactnative/api/IMessage#ITyping) object, please take a look at the following sample code:
+
+```tsx
+import React, { Component } from 'react';
+import {
+  eventEmitter,
+  EventType,
+  Messages
+} from 'react-native-rainbow-module';
+
+interface IMessageComponentProps {
+  peer: IPeer,
+}
+
+export const MessageComponent: React.FunctionComponent<IMessageComponentProps> = (props: IMessageComponentProps) => {
+  ...
+  const [onTypingList, setOnTypingList] = useState<ITyping[]>([]);
+
+  useEffect(() => {
+      ...
+    const onIsTyping = eventEmitter.addListener(EventType.IsTyping, (eventData: ITyping[]) => {
+      // set who is typing array, in P2P conversation it will have only one, but in Bubble conversation it may have multi
+      setOnTypingList(eventData);
+    });
+
+     ...
+
+  });
+
+  const renderSendingExtraView = () => {
+    ...
+    // show all the contacts whose is Typing in conversation
+    if (onTypingList.length > 0) {
+      return <Text>{`There is ${onTypingList.length} contact typing`}</Text> ;
+    }
+    ...
+  }
+
+  return(
+    <Messages
+      conversation={props.peer}
+      messages={messages}
+      renderSendingExtraView={renderSendingExtraView}
+    />
+  );
+}
+```
+
+### File Attach Finished:
+
+you can get when the attaching file finished by listening to `EventType.FileAttachFinished`, where the event response will be as the following format: `{ isSuccess: boolean, uri: string, errorMsg?: string }` , where the `uri` is the file local path string, please take a look at the following sample code:
+
+```tsx
+import React, { Component } from 'react';
+import {
+  eventEmitter,
+  EventType,
+  Messages
+} from 'react-native-rainbow-module';
+
+interface IMessageComponentProps {
+  peer: IPeer,
+}
+
+export const MessageComponent: React.FunctionComponent<IMessageComponentProps> = (props: IMessageComponentProps) => {
+  ...
+
+  useEffect(() => {
+      ...
+    const uploadFilesResult = eventEmitter.addListener(
+      EventType.FileAttachFinished,
+      (eventData: { isSuccess: boolean, uri: string, errorMsg?: string }) => {
+       // handle when the file attached finished
+      }
+    );
+
+     ...
+
+  });
+
+  return(
+    <Messages
+      conversation={props.peer}
+      messages={messages}
+    />
+  );
+}
+```
+
+### File Download Finished:
+
+you can get when the downloading file finished by listening to `EventType.FileDownloadFinished`, where the event response will be as the following format: `{ isSuccess: boolean, fileId: string, errorMsg?: string }` , please take a look at the following sample code:
+
+```tsx
+import React, { Component } from 'react';
+import {
+  eventEmitter,
+  EventType,
+  Messages
+} from 'react-native-rainbow-module';
+
+interface IMessageComponentProps {
+  peer: IPeer,
+}
+
+export const MessageComponent: React.FunctionComponent<IMessageComponentProps> = (props: IMessageComponentProps) => {
+  ...
+
+  useEffect(() => {
+      ...
+   const downloadResult = eventEmitter.addListener(
+      EventType.FileDownloadFinished,
+      (eventData: { isSuccess: boolean, fileId: string, errorMsg?: string }) => {
+        // handle when the file downloading finished
+      }
+    );
+     ...
+
+  });
+
+  return(
+    <Messages
+      conversation={props.peer}
+      messages={messages}
+    />
+  );
+}
+```
+
+### On this page
+
+-   [Make an IM Conversation](/docs/sdk/reactnative/tutorials/MakeImConversation#name-make-an-im-conversation-0)
+-   [Preamble](/docs/sdk/reactnative/tutorials/MakeImConversation#name-preamble-7)
+-   [Customized Message Props:](/docs/sdk/reactnative/tutorials/MakeImConversation#name-customized-message-props:-274)
+-   [On Message Long Pressed](/docs/sdk/reactnative/tutorials/MakeImConversation#name-on-message-long-pressed-278)
+-   [Render Sending Extra View](/docs/sdk/reactnative/tutorials/MakeImConversation#name-render-sending-extra-view-285)
+-   [Render Chat Actions](/docs/sdk/reactnative/tutorials/MakeImConversation#name-render-chat-actions-295)
+-   [Render Message CustomView](/docs/sdk/reactnative/tutorials/MakeImConversation#name-render-message-customview-305)
+-   [Render System Message](/docs/sdk/reactnative/tutorials/MakeImConversation#name-render-system-message-315)
+-   [On Send](/docs/sdk/reactnative/tutorials/MakeImConversation#name-on-send-325)
+-   [Message Events:](/docs/sdk/reactnative/tutorials/MakeImConversation#name-message-events:-332)
+-   [Messages Updated:](/docs/sdk/reactnative/tutorials/MakeImConversation#name-messages-updated:-336)
+-   [Is Typing:](/docs/sdk/reactnative/tutorials/MakeImConversation#name-is-typing:-345)
+-   [File Attach Finished:](/docs/sdk/reactnative/tutorials/MakeImConversation#name-file-attach-finished:-355)
+-   [File Download Finished:](/docs/sdk/reactnative/tutorials/MakeImConversation#name-file-download-finished:-365)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

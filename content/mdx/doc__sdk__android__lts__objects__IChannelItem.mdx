@@ -1,0 +1,145 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/objects/IChannelItem"
+lastSynced: "2026-02-20T07:12:28.835Z"
+---
+# Documentation
+
+Object IChannelItem
+
+LTS release 2.61.0Published on 202-04-06
+
+## object IChannelItem
+
+### val id: String?
+
+Get the item id
+
+-   **Returns:** the channel item id as String
+
+### val channelId: String?
+
+Get the channel id
+
+-   **Returns:** the channel id as a String
+
+### val contactJid: String?
+
+Get the contact jid who creates the channel item
+
+-   **Returns:** the contact jid as a String
+
+### val contact: IRainbowContact?
+
+Get the contact who creates the channel item
+
+-   **Returns:** the contact as \[IRainbowContact\]
+
+### val type: ChannelItemType?
+
+Get the channel item type
+
+It's a enumeration with the following values : \[ChannelItemType.BASIC\], \[ChannelItemType.HTML\], \[ChannelItemType.MARKDOWN\], \[ChannelItemType.DATA\]
+
+-   **Returns:** the \[ChannelItemType\] of the item, depending of the content.
+
+### val creationDate: Date?
+
+Get the channel item creation date
+
+-   **Returns:** the channel item creation date as \[Date\] or null
+
+### val updateDate: Date?
+
+Get the channel item update date
+
+-   **Returns:** the channel item update date as \[Date\] or null
+
+### val title: String?
+
+Get the channel item title
+
+-   **Returns:** the channel item title as a String
+
+### val message: String?
+
+Get the channel item message
+
+-   **Returns:** the channel item message as a String
+
+### val url: String?
+
+Get the channel item url
+
+-   **Returns:** the channel item url as a String
+
+### val youtubeId: String?
+
+Get the youtube video id if a youtube video has been posted in this item
+
+-   **Returns:** the video id as a String
+
+### val youtubeInformation: YouTubeInformation?
+
+Get the youtube information if a youtube video has been posted in this item
+
+-   **Returns:** the video information as a \[YouTubeInformation\] object
+
+### val attachedFileList: List
+
+Get the list of attached files to this channel item
+
+-   **Returns:** List<\[RainbowFileDescriptor\]> or an empty list.
+
+### val attachedImageList: List
+
+Get the list of attached images to this channel item
+
+-   **Returns:** List<\[RainbowFileDescriptor\]> or an empty list.
+
+### val userReaction: ReactionType
+
+Get the user reaction type on this channel item
+
+-   **Returns:** \[ReactionType\] name of the user reaction or null otherwise
+
+### val reactions: Map<ReactionType, Int>
+
+Get all reactions added on this channel item as key/value pair
+
+-   **Returns:** Map<\[ReactionType\], Integer> reactions added on this channel item as key/value pair
+
+### val reactionsCount: Int }
+
+Get total number of reaction on this channel item
+
+-   **Returns:** int total number of reaction
+
+### On this page
+
+-   [object IChannelItem](/docs/sdk/android#name-object-ichannelitem-0)
+-   [val id: String?](/docs/sdk/android#name-val-id:-string-3)
+-   [val channelId: String?](/docs/sdk/android#name-val-channelid:-string-16)
+-   [val contactJid: String?](/docs/sdk/android#name-val-contactjid:-string-29)
+-   [val contact: IRainbowContact?](/docs/sdk/android#name-val-contact:-irainbowcontact-42)
+-   [val type: ChannelItemType?](/docs/sdk/android#name-val-type:-channelitemtype-55)
+-   [val creationDate: Date?](/docs/sdk/android#name-val-creationdate:-date-71)
+-   [val updateDate: Date?](/docs/sdk/android#name-val-updatedate:-date-84)
+-   [val title: String?](/docs/sdk/android#name-val-title:-string-97)
+-   [val message: String?](/docs/sdk/android#name-val-message:-string-110)
+-   [val url: String?](/docs/sdk/android#name-val-url:-string-123)
+-   [val youtubeId: String?](/docs/sdk/android#name-val-youtubeid:-string-136)
+-   [val youtubeInformation: YouTubeInformation?](/docs/sdk/android#name-val-youtubeinformation:-youtubeinformation-149)
+-   [val attachedFileList: List](/docs/sdk/android#name-val-attachedfilelist:-list-162)
+-   [val attachedImageList: List](/docs/sdk/android#name-val-attachedimagelist:-list-175)
+-   [val userReaction: ReactionType](/docs/sdk/android#name-val-userreaction:-reactiontype-188)
+-   [val reactions: Map<ReactionType, Int>](/docs/sdk/android#name-val-reactions:-mapreactiontype-int-201)
+-   [val reactionsCount: Int }](/docs/sdk/android#name-val-reactionscount:-int--214)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

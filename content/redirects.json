@@ -45,11 +45,6 @@
     "permanent": true
   },
   {
-    "source": "/doc/hub/getting-started",
-    "destination": "/docs/hub/getting-started",
-    "permanent": true
-  },
-  {
     "source": "/doc/hub/glossary",
     "destination": "/docs/hub/glossary",
     "permanent": true
@@ -57,11 +52,6 @@
   {
     "source": "/doc/hub/lts-support-sdk-version",
     "destination": "/docs/hub/lts-support-sdk-version",
-    "permanent": true
-  },
-  {
-    "source": "/doc/hub/prerequisites",
-    "destination": "/docs/hub/prerequisites",
     "permanent": true
   },
   {
@@ -385,77 +375,7 @@
     "permanent": true
   },
   {
-    "source": "/doc/sdk/csharpprevious/core/lts/guides/032_autoreconnection",
-    "destination": "/docs/sdk/csharp",
-    "permanent": true
-  },
-  {
     "source": "/doc/sdk/csharpprevious/core/lts/guides/035_events_mode",
-    "destination": "/docs/sdk/csharp",
-    "permanent": true
-  },
-  {
-    "source": "/doc/sdk/csharpprevious/core/lts/guides/038_restriction_of_use",
-    "destination": "/docs/sdk/csharp",
-    "permanent": true
-  },
-  {
-    "source": "/doc/sdk/csharpprevious/core/lts/guides/040_managing_personal_profile",
-    "destination": "/docs/sdk/csharp",
-    "permanent": true
-  },
-  {
-    "source": "/doc/sdk/csharpprevious/core/lts/guides/050_retrieve_conversations_and_contacts",
-    "destination": "/docs/sdk/csharp",
-    "permanent": true
-  },
-  {
-    "source": "/doc/sdk/csharpprevious/core/lts/guides/060_make_an_IM_conversation",
-    "destination": "/docs/sdk/csharp",
-    "permanent": true
-  },
-  {
-    "source": "/doc/sdk/csharpprevious/core/lts/guides/070_managing_presence",
-    "destination": "/docs/sdk/csharp",
-    "permanent": true
-  },
-  {
-    "source": "/doc/sdk/csharpprevious/core/lts/guides/080_managing_bubbles",
-    "destination": "/docs/sdk/csharp",
-    "permanent": true
-  },
-  {
-    "source": "/doc/sdk/csharpprevious/core/lts/guides/090_managing_files",
-    "destination": "/docs/sdk/csharp",
-    "permanent": true
-  },
-  {
-    "source": "/doc/sdk/csharpprevious/core/lts/guides/100_managing_conferences",
-    "destination": "/docs/sdk/csharp",
-    "permanent": true
-  },
-  {
-    "source": "/doc/sdk/csharpprevious/core/lts/guides/110_managing_telephony_calls",
-    "destination": "/docs/sdk/csharp",
-    "permanent": true
-  },
-  {
-    "source": "/doc/sdk/csharpprevious/core/lts/guides/120_installation_for_mac",
-    "destination": "/docs/sdk/csharp",
-    "permanent": true
-  },
-  {
-    "source": "/doc/sdk/csharpprevious/core/lts/guides/130_application_logging",
-    "destination": "/docs/sdk/csharp",
-    "permanent": true
-  },
-  {
-    "source": "/doc/sdk/csharpprevious/core/lts/guides/135_json_parser",
-    "destination": "/docs/sdk/csharp",
-    "permanent": true
-  },
-  {
-    "source": "/doc/sdk/csharpprevious/core/lts/guides/140_development_kit",
     "destination": "/docs/sdk/csharp",
     "permanent": true
   },
@@ -471,11 +391,6 @@
   },
   {
     "source": "/doc/sdk/csharpprevious/core/lts/guides/CHANGELOG",
-    "destination": "/docs/sdk/csharp",
-    "permanent": true
-  },
-  {
-    "source": "/doc/sdk/csharpprevious/core/lts/guides/data_in_cache_and_reconnection",
     "destination": "/docs/sdk/csharp",
     "permanent": true
   },
@@ -570,11 +485,6 @@
     "permanent": true
   },
   {
-    "source": "/doc/sdk/web/lts/api/callLog",
-    "destination": "/docs/sdk/web",
-    "permanent": true
-  },
-  {
     "source": "/doc/sdk/web/lts/api/callslog",
     "destination": "/docs/sdk/web",
     "permanent": true
@@ -646,11 +556,6 @@
   },
   {
     "source": "/doc/sdk/web/lts/api/favorites",
-    "destination": "/docs/sdk/web",
-    "permanent": true
-  },
-  {
-    "source": "/doc/sdk/web/lts/api/fileStorage",
     "destination": "/docs/sdk/web",
     "permanent": true
   },
@@ -785,11 +690,6 @@
     "permanent": true
   },
   {
-    "source": "/doc/sdk/web/lts/guides/Handling_events",
-    "destination": "/docs/sdk/web",
-    "permanent": true
-  },
-  {
     "source": "/doc/sdk/web/lts/guides/Hello_world_ESM",
     "destination": "/docs/sdk/web",
     "permanent": true
@@ -826,11 +726,6 @@
   },
   {
     "source": "/doc/sdk/web/lts/guides/Loading_Angular_1x_applications",
-    "destination": "/docs/sdk/web",
-    "permanent": true
-  },
-  {
-    "source": "/doc/sdk/web/lts/guides/Managing_Channels",
     "destination": "/docs/sdk/web",
     "permanent": true
   },
@@ -1005,11 +900,6 @@
     "permanent": true
   },
   {
-    "source": "/doc/sdk/webv2/lts/api/Calls/index",
-    "destination": "/docs/sdk/web",
-    "permanent": true
-  },
-  {
     "source": "/doc/sdk/webv2/lts/api/Calls/interfaces/Call",
     "destination": "/docs/sdk/web",
     "permanent": true
@@ -1025,16 +915,6 @@
     "permanent": true
   },
   {
-    "source": "/doc/sdk/webv2/lts/api/Calls/interfaces/CalledParty",
-    "destination": "/docs/sdk/web",
-    "permanent": true
-  },
-  {
-    "source": "/doc/sdk/webv2/lts/api/Calls/interfaces/CallMediaStreams",
-    "destination": "/docs/sdk/web",
-    "permanent": true
-  },
-  {
     "source": "/doc/sdk/webv2/lts/api/Calls/interfaces/CallService",
     "destination": "/docs/sdk/web",
     "permanent": true
@@ -1046,16 +926,6 @@
   },
   {
     "source": "/doc/sdk/webv2/lts/api/Connection/classes/ConnectionProgress",
-    "destination": "/docs/sdk/web",
-    "permanent": true
-  },
-  {
-    "source": "/doc/sdk/webv2/lts/api/Connection/classes/ConnectionState",
-    "destination": "/docs/sdk/web",
-    "permanent": true
-  },
-  {
-    "source": "/doc/sdk/webv2/lts/api/Connection/enumerations/ConnectionServiceEvents",
     "destination": "/docs/sdk/web",
     "permanent": true
   },
@@ -1446,6 +1316,976 @@
   },
   {
     "source": "/doc/sdk/webv2/lts/guides/users/usersNetwork",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/apis/home",
+    "destination": "/docs/apis/home",
+    "permanent": true
+  },
+  {
+    "source": "/doc/rest/changelog",
+    "destination": "/docs/rest/changelog",
+    "permanent": true
+  },
+  {
+    "source": "/doc/rest/Connecting_to_Rainbow",
+    "destination": "/docs/rest/Connecting_to_Rainbow",
+    "permanent": true
+  },
+  {
+    "source": "/doc/rest/Getting_Started",
+    "destination": "/docs/rest/Getting_Started",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/CHANGELOG",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Conference",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Development_Kit",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Enable_push_notifications",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Getting_Started",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Legals",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Make_an_IM_conversation",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Make_audio_and_video_call_using_web_rtc",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Make_audio_call_using_PBX",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Manage_call_logs",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Manage_favorites",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Manage_notifications",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Manage_tasks_and_pin_messages",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Managing_alerts",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Managing_alerts_and_devices",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Managing_bubbles",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Managing_calllogs",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Managing_channels",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Managing_favorites",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Managing_groups",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Organize_your_rooms",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Retrieve_conversations_and_contacts",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Share_file_with_users",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Use_echo_test_to_evaluate_call_quality",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/guides/Using_ArrayItemList",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/modules/-rainbow%20-android%20-s-d-k/com.ale.rainbowsdk/index.html",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/modules/RBLog",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/objects/ArrayItemList",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/objects/Channel",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/objects/Group",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/objects/IChannelItem",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/objects/IMMessage",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/objects/IRainbowContact",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/objects/IRainbowConversation",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/objects/IRainbowFavorite",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/objects/ISession",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/objects/RainbowPresence",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/android/lts/objects/Room",
+    "destination": "/docs/sdk/android",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/cli/Getting_Started",
+    "destination": "/docs/sdk/cli/Getting_Started",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/cli/tutorials/Getting_started",
+    "destination": "/docs/sdk/cli/tutorials/Getting_started",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/cli/tutorials/Legals",
+    "destination": "/docs/sdk/cli/tutorials/Legals",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/cli/tutorials/Managing_applications",
+    "destination": "/docs/sdk/cli/tutorials/Managing_applications",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/cli/tutorials/Managing_tests_accounts",
+    "destination": "/docs/sdk/cli/tutorials/Managing_tests_accounts",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/cli/tutorials/Mass_provisioning",
+    "destination": "/docs/sdk/cli/tutorials/Mass_provisioning",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/cli/tutorials/What_is_new",
+    "destination": "/docs/sdk/cli/tutorials/What_is_new",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/csharp/core/lts/guides/Getting_Started",
+    "destination": "/docs/sdk/csharp",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/home",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/CHANGELOG",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/Connecting_to_Rainbow",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/Development_Kit",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/Events",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/Features",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/File_Sharing",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/Getting_Started",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/Hello_World",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/Instant_Messaging",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/Legals",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/Managing_Alerts",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/Managing_Call_Logs",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/Managing_Channels",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/Managing_Conferences",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/Managing_Contact_Lists",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/Managing_Contacts",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/Managing_Favorites",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/Managing_personal_profile",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/Managing_Rooms",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/Managing_voice_video_calls",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/Push_notifications_setup",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/ios/lts/guides/Serviceability",
+    "destination": "/docs/sdk/ios",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/home",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/admin",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/alert",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/alertdevice",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/alertfilter",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/alertmessage",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/alerts",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/alerttemplate",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/bubble",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/call",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/calllog",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/calllogType",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/channel",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/channels",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/contact",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/contacts",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/conversation",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/conversations",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/errormanager",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/events",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/favorite",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/favorites",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/filedescriptor",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/filestorage",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/fileviewer",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/geoloc",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/groups",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/httpoverxmpp",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/im",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/invitation",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/invitations",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/message",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/presence",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/presencerainbow",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/profiles",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/rainbowvoicecloudpbx",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/rbvoice",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/rpcoverxmpp",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/s2s",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/sdk",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/settings",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/settingssvc",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/task",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/tasks",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/telephony",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/api/webinars",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/Answering_chat_message",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/CHANGELOG",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/Connecting_to_Rainbow_S2S_Mode",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/Connecting_to_Rainbow_XMPP_Mode",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/Debugging",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/Development_Kit",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/Getting_Started",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/Legals",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/Managing_bubbles",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/Managing_channels",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/Managing_conferences",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/Managing_contacts",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/Managing_Favorites",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/Managing_groups",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/Managing_RPCoverXMPP",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/Managing_users",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/Proxy",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/RainbowNodeSDKNews",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/Retrieving_calls_history",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/Share_file_with_users",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/node/lts/guides/Telephony_calls",
+    "destination": "/docs/sdk/node",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/AuthService",
+    "destination": "/docs/sdk/reactnative/api/AuthService",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/BubbleServices",
+    "destination": "/docs/sdk/reactnative/api/BubbleServices",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/CallLogsService",
+    "destination": "/docs/sdk/reactnative/api/CallLogsService",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/CallTypes",
+    "destination": "/docs/sdk/reactnative/api/CallTypes",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/ConferenceServices",
+    "destination": "/docs/sdk/reactnative/api/ConferenceServices",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/ContactServices",
+    "destination": "/docs/sdk/reactnative/api/ContactServices",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/ConversationServices",
+    "destination": "/docs/sdk/reactnative/api/ConversationServices",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/Events",
+    "destination": "/docs/sdk/reactnative/api/Events",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/IActions",
+    "destination": "/docs/sdk/reactnative/api/IActions",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/IBubble",
+    "destination": "/docs/sdk/reactnative/api/IBubble",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/ICallLog",
+    "destination": "/docs/sdk/reactnative/api/ICallLog",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/IContact",
+    "destination": "/docs/sdk/reactnative/api/IContact",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/IConversation",
+    "destination": "/docs/sdk/reactnative/api/IConversation",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/IFile",
+    "destination": "/docs/sdk/reactnative/api/IFile",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/IMessage",
+    "destination": "/docs/sdk/reactnative/api/IMessage",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/InvitationServices",
+    "destination": "/docs/sdk/reactnative/api/InvitationServices",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/IPeer",
+    "destination": "/docs/sdk/reactnative/api/IPeer",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/ISearch",
+    "destination": "/docs/sdk/reactnative/api/ISearch",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/IUser",
+    "destination": "/docs/sdk/reactnative/api/IUser",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/MessageServices",
+    "destination": "/docs/sdk/reactnative/api/MessageServices",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/P2PCallService",
+    "destination": "/docs/sdk/reactnative/api/P2PCallService",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/SharedFilesService",
+    "destination": "/docs/sdk/reactnative/api/SharedFilesService",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/useRainbowAuth",
+    "destination": "/docs/sdk/reactnative/api/useRainbowAuth",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/api/UserProfileService",
+    "destination": "/docs/sdk/reactnative/api/UserProfileService",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/home",
+    "destination": "/docs/sdk/reactnative/home",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/lts/guides/CHANGELOG",
+    "destination": "/docs/sdk/reactnative/lts/guides/CHANGELOG",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/lts/guides/Getting_Started",
+    "destination": "/docs/sdk/reactnative/lts/guides/Getting_Started",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/Changelog",
+    "destination": "/docs/sdk/reactnative/tutorials/Changelog",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/ConnectingToRainbow",
+    "destination": "/docs/sdk/reactnative/tutorials/ConnectingToRainbow",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/EnablePushNotifications",
+    "destination": "/docs/sdk/reactnative/tutorials/EnablePushNotifications",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/GettingStarted",
+    "destination": "/docs/sdk/reactnative/tutorials/GettingStarted",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/ListenForEvents",
+    "destination": "/docs/sdk/reactnative/tutorials/ListenForEvents",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/MakeImConversation",
+    "destination": "/docs/sdk/reactnative/tutorials/MakeImConversation",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/ManageBubbles",
+    "destination": "/docs/sdk/reactnative/tutorials/ManageBubbles",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/ManageCallLogs",
+    "destination": "/docs/sdk/reactnative/tutorials/ManageCallLogs",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/ManageInvitations",
+    "destination": "/docs/sdk/reactnative/tutorials/ManageInvitations",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/ManagingConferences",
+    "destination": "/docs/sdk/reactnative/tutorials/ManagingConferences",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/ManagingPersonalProfile",
+    "destination": "/docs/sdk/reactnative/tutorials/ManagingPersonalProfile",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/ManagingWebrtcCalls",
+    "destination": "/docs/sdk/reactnative/tutorials/ManagingWebrtcCalls",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/RetrieveCalls",
+    "destination": "/docs/sdk/reactnative/tutorials/RetrieveCalls",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/RetrieveContacts",
+    "destination": "/docs/sdk/reactnative/tutorials/RetrieveContacts",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/RetrieveConversations",
+    "destination": "/docs/sdk/reactnative/tutorials/RetrieveConversations",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/search",
+    "destination": "/docs/sdk/reactnative/tutorials/search",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/ShowSharedFiles",
+    "destination": "/docs/sdk/reactnative/tutorials/ShowSharedFiles",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/s2s-starterkit-nodejs/guides/Connecting_to_Rainbow",
+    "destination": "/docs/sdk/s2s-starterkit-nodejs/guides/Connecting_to_Rainbow",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/s2s-starterkit-nodejs/guides/Development_Kit",
+    "destination": "/docs/sdk/s2s-starterkit-nodejs/guides/Development_Kit",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/s2s-starterkit-nodejs/guides/Generated_API_Data_Models",
+    "destination": "/docs/sdk/s2s-starterkit-nodejs/guides/Generated_API_Data_Models",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/s2s-starterkit-nodejs/guides/Getting_Started",
+    "destination": "/docs/sdk/s2s-starterkit-nodejs/guides/Getting_Started",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/s2s-starterkit-nodejs/guides/Legals",
+    "destination": "/docs/sdk/s2s-starterkit-nodejs/guides/Legals",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/s2s-starterkit-nodejs/guides/What_is_new",
+    "destination": "/docs/sdk/s2s-starterkit-nodejs/guides/What_is_new",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/s2s-starterkit-nodejs/services/BotsService",
+    "destination": "/docs/sdk/s2s-starterkit-nodejs/services/BotsService",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/s2s-starterkit-nodejs/services/ImService",
+    "destination": "/docs/sdk/s2s-starterkit-nodejs/services/ImService",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/s2s-starterkit-nodejs/services/PresenceService",
+    "destination": "/docs/sdk/s2s-starterkit-nodejs/services/PresenceService",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/CHANGELOG",
     "destination": "/docs/sdk/web",
     "permanent": true
   }

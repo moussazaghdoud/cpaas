@@ -1,0 +1,449 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/ios/lts/guides/Hello_World"
+lastSynced: "2026-02-20T07:12:29.178Z"
+---
+# Documentation
+
+Hello World
+
+LTS release 2.12.0Published on 2024-07-23
+
+## Hello World!
+
+---
+
+This [Hello World](https://github.com/Rainbow-CPaaS/Rainbow-iOS-SDK-Samples/tree/master/Hello%20World) tutorial will help you walking through the basic steps to launch your first application that uses the Rainbow SDK for iOS.
+
+If you wonder how to set up the development environment and basic application structure, you are in the right place. If you have already built an app, this article will reiterate through the fundamental app structure in case you got lost on the way.
+
+At the end of this tutorial you will have a working application that could be considered as a starting point for developing an app using the Rainbow SDK for iOS. You will also get the basic notion of the key Rainbow SDK for iOS concepts.
+
+The goal is to keep it simple, therefore we will show you how to do using Objective-C and Swift languages when needed.
+
+### Set up your development environement
+
+---
+
+Before you start using Rainbow SDK for iOS, you need to make sure you have installed the required software tools.
+
+#### Apple Xcode
+
+---
+
+Make sure to have installed the current **Apple Xcode** development environment on your Mac.
+
+An Apple developer ID and certificate will be mandatory later for deploying your application on the Apple Store, but this part is outside of our guides. Please read the [Apple Developer documentation](https://developer.apple.com) if needed.
+
+#### Carthage
+
+---
+
+[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager, flexible and pretty easy to use. The minimum Carthage version required is 0.38.0.
+
+You can install Carthage in two different ways :
+
+-   Download and install the latest .pkg installer [here](https://github.com/Carthage/Carthage/releases)
+    
+-   With [Homebrew](http://brew.sh/) using the following command :
+    
+
+```bash
+$ brew update
+$ brew install carthage
+```
+
+#### Cocoapods
+
+---
+
+[Cocoapods](https://cocoapods.org/) is a dependency manager for Swift and Objective-C Cocoa projects. The minimum Cocoapods version required is 1.10.0.
+
+You also can install Cocoapods in two different ways :
+
+-   Using a Ruby gem as described [here](https://guides.cocoapods.org/using/getting-started.html#getting-started)
+    
+-   With [Homebrew](http://brew.sh/) using the following command :
+    
+
+```bash
+$ brew update
+$ brew install cocoapods
+```
+
+### Create your iOS application
+
+---
+
+Launch Xcode and then click on **Create a new Xcode project**
+
+The first thing to do is to choose a template for your application. As mentioned before, the project is goind to use a basic structure and will be very simple. Select the **iOS** tab panel, select the **App** and then click on the **Next** button.
+
+Enter the name **Hello World** for your application in the **Product Name** field and then select the Language you want to use in your application. Select **Swift** for a writing your application using the Swift language or **Objective-C**. Then click on the **Next** button.
+
+Finally, select a directory where the source code of your application will be located and click on the **Create** button.
+
+As your application is now created, the next step is to import the Rainbow SDK for iOS.
+
+### Import the Rainbow SDK for iOS
+
+---
+
+The Rainbow SDK for iOS is composed of two libraries:
+
+-   **Rainbow.xcframework**: The Rainbow SDK itself containing all the methods and logics to connect to Rainbow and invoke Rainbow services
+    
+-   **WebRTC.xcframework** : The Google WebRTC stack needed for managing Voice and Video calls and conferences
+    
+
+You have 4 options for adding the Rainbow SDK for iOS to your project: using Swift Package Manager, Carthage, Cocoapods or manually.
+
+#### Using Swift Package Manager (SPM)
+
+Open "Package Dependencies" in your Xcode project and add the following dependencies :
+
+```
+"https://github.com/Rainbow-CPaaS/Rainbow-iOS-SDK.git"
+"https://github.com/Rainbow-CPaaS/Rainbow-iOS-WebRTC.git"
+"https://github.com/Alamofire/Alamofire.git"
+"https://github.com/krzyzanowskim/CryptoSwift.git"
+```
+
+#### Using Carthage
+
+---
+
+When using **Carthage**, the first thing to do is to create a **Cartfile** file into your project
+
+```bash
+$ cd ~/Hello\ World/Hello\ World
+$ touch Cartfile
+```
+
+*Note*: You have to be in the `Hello World` sub directory
+
+Open the `Cartfile` with your favorite text editor and add the following lines
+
+```
+# Rainbow SDK binary framework
+binary "https://sdk.openrainbow.io/ios/carthage/RainbowSDK.json" == 2.13.0
+```
+
+*Note*: Please notice the Rainbow SDK for iOS version number at the end. Please have a look to your [Changelog guide](/docs/sdk/ios) to see the changes for each version of the SDK.
+
+Then you need to download both prebuild frameworks into your Xcode project by launching the Carthage `update` command :
+
+```
+$ carthage update --use-xcframeworks
+```
+
+Once downloaded, the Rainbow SDK XCFrameworks will be located at the root of `Build` folder.
+
+The next step is to add the 2 libraries downloaded into your **embedded binaries** :
+
+Open your application **Targets** and go to **General** settings, in the **Frameworks, Libraries, and Embedded Content** section, click the **+** button then the **Add other** button and select each framework from the `~/Hello World/Hello World/Carthage/Build/iOS/` like in the following video and click on **Select**. Finally select the **Create groups** option and click on **Finish**.
+
+![](https://sdk.openrainbow.io/ios/docs/assets/add-frameworks.gif)
+
+#### Using Cocoapods
+
+---
+
+If you are using Cocoapods, navigate to your project root directory and type the command below to create your Podfile :
+
+```bash
+$ pod init
+```
+
+Open the Podfile and add the RainbowSDK pod :
+
+```
+platform :ios, '11.0'
+use_frameworks!
+
+target 'MyApp' do
+    pod 'RainbowSDK'
+end
+```
+
+Save the Podfile and install RainbowSDK with the following command :
+
+```bash
+$ pod install
+```
+
+Close your Xcode project if it is open and open the Xcode workspace instead :
+
+```bash
+$ open MyApp.xcworkspace
+```
+
+#### Adding manually the Rainbow SDK for iOS
+
+---
+
+Here is the complete procedure to download and add the Rainbow SDK for iOS manually
+
+1.  Download the Rainbow SDK. For exemple click here to download the [Rainbow SDK for iOS v2.13.0](https://sdk.openrainbow.io/ios/sdk/SDK_2_13_0.zip). Please adapt the link depending on the version you want to get.
+    
+2.  Unzip and see next steps for which frameworks to include in to your project.
+    
+3.  Drag-n-drop RainbowSDK.xcframework into your xcode project.
+    
+4.  Drag-n-drop WebRTC.xcframework into your xcode project.
+    
+5.  Select your project, select your Target, select General, drag-n-drop RainbowSDK.xcframework and WebRTC.xcframework from Navigator to the **Frameworks, Libraries, and Embedded Content** section.
+    
+6.  Set embed setting for RainbowSDK.xcframework and WebRTC.xcframework to **"Embed & Sign"**
+    
+
+#### Required dependencies to add in your project
+
+---
+
+###### ⓘ Note
+
+**The Rainbow SDK for iOS requires following dependencies :**
+
+-   [Alamofire](https://github.com/Alamofire/Alamofire) : make the API requests to server
+-   [CryptoSwift](https://github.com/krzyzanowskim/CryptoSwift) : encryption of the IM messages
+
+The dependencies must be added in your application by using either **Swift Package Manager** or **Carthage**.
+
+#### Swift Package Manager
+
+```
+.package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", .upToNextMajor(from: "1.8.1"))
+.package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.9.0"))
+```
+
+#### Carthage
+
+```
+github "krzyzanowskim/CryptoSwift" ~> 1.8.1
+github "Alamofire/Alamofire" ~> 5.9.0
+```
+
+And add the .xcframeworks to your project
+
+Import Rainbow and you are ready to develop !
+
+-   [swift](#codegroupTab-hashTag1)
+-   [objective C](#codegroupTab-hashTag2)
+
+```swift
+import Rainbow
+```
+
+```objectivec
+#import <Rainbow/Rainbow.h>
+```
+
+#### Checking the Rainbow SDK for iOS
+
+---
+
+Once that step is done, you can try to build your project using `⌘ B` (Command-B). You should obtain a **Build succeeded**!.
+
+### Configuration
+
+---
+
+Once you succeeded building your project, you need to add some configuration information to your property list file `info.plist`.
+
+Add in your `info.plist` file the following entries :
+
+```js
+- `UIBackgroundModes` (type Array)
+    - `audio` (type String)
+- `NSCameraUsageDescription` (type String)
+    - `a text explaining that you want access to camera`
+- `NSMicrophoneUsageDescription` (type String)
+    - `a text explaining that you want access to microphone`
+- `NSAppTransportSecurity` (type Dictionary)
+    - `NSAllowsArbitraryLoads` (type Boolean) YES
+- `NSContactsUsageDescription` (type String)
+    - `a text explaining that you want access to contacts`
+- `NSPhotoLibraryUsageDescription` (type String)
+    - `a text explaining that you want access to photo library`
+- `NSUserActivityTypes` (type Array)
+    - `Item 0` (type String)
+        - `INStartCallIntent`
+```
+
+### Usage
+
+---
+
+You are now ready to use the Rainbow SDK for iOS in your `Hello World` project. Let use it!
+
+#### Initializing the Rainbow SDK for iOS
+
+---
+
+In order to use the Rainbow SDK for iOS, you need to import and initialize the library. The best place to do it is in your `AppDelegate` file.
+
+Open this file and import the SDK:
+
+-   [swift](#codegroupTab-hashTag3)
+-   [objective C](#codegroupTab-hashTag4)
+
+```swift
+// In your AppDelegate.swift file
+import Rainbow
+```
+
+```objectivec
+// In your AppDelegate.m file
+#import <Rainbow/Rainbow.h>
+```
+
+Then, you need to initialize it using your Rainbow **application id** and **secret key**.
+
+-   [swift](#codegroupTab-hashTag5)
+-   [objective C](#codegroupTab-hashTag6)
+
+```swift
+// In your AppDelegate.swift
+
+let appId = "appId"          // Fill with your application id
+let appSecret = "appSecret"  // Fill with your secret key
+
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+    // Override point for customization after application launch.
+    ServicesManager.sharedInstance().setAppID(appId, secretKey: appSecret)
+
+    return true
+}
+```
+
+```objectivec
+// In your AppDelegate.m file
+
+#define appId @"appId"          // Fill with your application id
+#define appSecret @"appSecret"  // Fill with your secret key
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+    // Override point for customization after application launch.
+    [[ServicesManager sharedInstance] setAppID:appId secretKey:appSecret];
+
+    return YES;
+}
+```
+
+*Note*: Open your [Rainbow for developers](/) to create and get your application id and secret key.
+
+The Rainbow SDK for iOS is now initialized and can be used.
+
+#### Access to SDK methods and properties
+
+---
+
+You can access to the Rainbow SDK for iOS by using the object `ServicesManager`. As it is a singleton, you can access to Rainbow methods using the following:
+
+-   [swift](#codegroupTab-hashTag7)
+-   [objective C](#codegroupTab-hashTag8)
+
+```swift
+ServicesManager.sharedInstance().<serviceName><methodName>
+```
+
+```objectivec
+[[ServicesManager sharedInstance].<servicesName> <methodName> ]
+```
+
+Just replace `<serviceName>` and `<methodName>` by an existing service and method.
+
+To finalize this Hello-World application, you can just try another method for checking if the application is currently connected to Rainbow or not. For that, just use the getter `isConnected` from the `loginManager` like in the following:
+
+-   [swift](#codegroupTab-hashTag9)
+-   [objective C](#codegroupTab-hashTag10)
+
+```swift
+// In your AppDelegate.swift
+
+let appId:String = "appId"          // Fill with your application id
+let appSecret:String = "appSecret"  // Fill with your secret key
+
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+    // Override point for customization after application launch.
+    
+    NSLog("Rainbow SDK version: \(RainbowVersionNumber)")
+    
+    ServicesManager.sharedInstance().setAppID(appId, secretKey: appSecret)
+
+    let isConnected:Bool = ServicesManager.sharedInstance().loginManager.isConnected ?? false
+    NSLog("IsConnected: %@", isConnected ? "true" : "false")
+
+    return true
+}
+```
+
+```objectivec
+// In your AppDelegate.m
+#define appId @"appId"          // Fill with your application id
+#define appSecret @"appSecret"  // Fill with your secret key
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+    // Override point for customization after application launch.
+    
+    NSLog(@"Rainbow SDK version: %.1f", RainbowVersionNumber);
+    
+    [[ServicesManager sharedInstance] setAppID:appId secretKey:appSecret];
+
+    BOOL isConnected = [[ServicesManager sharedInstance].loginManager isConnected];
+    NSLog(@"isConnected %s", isConnected ? "true" : "false");
+
+    return YES;
+}
+```
+
+Compile your project in order to check that everything is ok.
+
+You have now a Rainbow working project. The next step will be to connect to Rainbow. This step is describe in the tutorial [Connecting to Rainbow](/docs/sdk/ios).
+
+### See also
+
+---
+
+-   [Getting Started](/docs/sdk/ios)
+    
+-   [Connecting to Rainbow](/docs/sdk/ios)
+    
+
+---
+
+### On this page
+
+-   [Hello World!](/docs/sdk/ios#name-hello-world-0)
+-   [Set up your development environement](/docs/sdk/ios#name-set-up-your-development-environement-16)
+-   [Apple Xcode](/docs/sdk/ios#name-apple-xcode-23)
+-   [Carthage](/docs/sdk/ios#name-carthage-33)
+-   [Cocoapods](/docs/sdk/ios#name-cocoapods-56)
+-   [Create your iOS application](/docs/sdk/ios#name-create-your-ios-application-79)
+-   [Import the Rainbow SDK for iOS](/docs/sdk/ios#name-import-the-rainbow-sdk-for-ios-98)
+-   [Using Swift Package Manager (SPM)](/docs/sdk/ios#name-using-swift-package-manager-spm-120)
+-   [Using Carthage](/docs/sdk/ios#name-using-carthage-127)
+-   [Using Cocoapods](/docs/sdk/ios#name-using-cocoapods-161)
+-   [Adding manually the Rainbow SDK for iOS](/docs/sdk/ios#name-adding-manually-the-rainbow-sdk-for-ios-181)
+-   [Required dependencies to add in your project](/docs/sdk/ios#name-required-dependencies-to-add-in-your-project-220)
+-   [Swift Package Manager](/docs/sdk/ios#name-swift-package-manager-245)
+-   [Carthage](/docs/sdk/ios#name-carthage-249)
+-   [Checking the Rainbow SDK for iOS](/docs/sdk/ios#name-checking-the-rainbow-sdk-for-ios-260)
+-   [Configuration](/docs/sdk/ios#name-configuration-267)
+-   [Usage](/docs/sdk/ios#name-usage-278)
+-   [Initializing the Rainbow SDK for iOS](/docs/sdk/ios#name-initializing-the-rainbow-sdk-for-ios-285)
+-   [Access to SDK methods and properties](/docs/sdk/ios#name-access-to-sdk-methods-and-properties-306)
+-   [See also](/docs/sdk/ios#name-see-also-327)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

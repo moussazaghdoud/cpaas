@@ -1,0 +1,135 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/IActions"
+lastSynced: "2026-02-20T07:12:33.391Z"
+---
+# Documentation
+
+IActions
+
+[IActionsProvider](#IActionsProvider) : `Interface`
+
+IActionsProvider interface
+
+[IAction](#IAction) : `Interface`
+
+IAction interface
+
+[IBackButtonHandler](#IBackButtonHandler) : `Interface`
+
+IBackButtonHandler interface
+
+[IBackButtonHandlerProps](#IBackButtonHandlerProps) : `Interface`
+
+IBackButtonHandlerProps interface
+
+## IActionsProvider : `Interface`
+
+IActionsProvider interface
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+getActions
+
+`(item: any) => [IAction](#IAction)[]`
+
+The action provider the you want to implement
+
+## IAction : `Interface`
+
+IAction interface
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+onBackButtonPressed
+
+`string`
+
+action name
+
+imageSource
+
+`ImageSourcePropType`
+
+if you wanna add image source
+
+attachedInfo
+
+`any`
+
+if you wanna add any attached info
+
+run
+
+`(item: any) => void`
+
+run action method
+
+style
+
+`ViewStyle,ImageStyle`
+
+\-
+
+## IBackButtonHandler : `Interface`
+
+IBackButtonHandler interface
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+onBackButtonPressed
+
+`() => boolean`
+
+Callback when the back button had been pressed
+
+## IBackButtonHandlerProps : `Interface`
+
+IBackButtonHandlerProps interface
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+registerBackButtonHandler
+
+`(handler: [IBackButtonHandler](#IBackButtonHandler)) => void`
+
+Register the BackButton action, so you can use your implementation later in another component
+
+### On this page
+
+-   [IActionsProvider : Interface](/docs/sdk/reactnative/api/IActions#name-iactionsprovider-:-interface-8)
+-   [IAction : Interface](/docs/sdk/reactnative/api/IActions#name-iaction-:-interface-48)
+-   [IBackButtonHandler : Interface](/docs/sdk/reactnative/api/IActions#name-ibackbuttonhandler-:-interface-132)
+-   [IBackButtonHandlerProps : Interface](/docs/sdk/reactnative/api/IActions#name-ibackbuttonhandlerprops-:-interface-172)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

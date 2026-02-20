@@ -1,0 +1,3761 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/contact"
+lastSynced: "2026-02-20T07:12:31.864Z"
+---
+# Documentation
+
+Contact
+
+LTS release 2.XPublished on 2025-01-01
+
+## Classes
+
+[Contact](#Contact)
+
+## Contact
+
+**Kind**: global class
+
+**Access**: public
+
+-   [Contact](#Contact)
+    -   [Contact()](#new_Contact_new)
+    -   [id](#Contact+id)
+    -   [name](#Contact+name)
+    -   [companyName](#Contact+companyName)
+    -   [loginEmail](#Contact+loginEmail)
+    -   [nickName](#Contact+nickName)
+    -   [title](#Contact+title)
+    -   [jobTitle](#Contact+jobTitle)
+    -   [country](#Contact+country)
+    -   [timezone](#Contact+timezone)
+    -   [organisationId](#Contact+organisationId)
+    -   [siteId](#Contact+siteId)
+    -   [companyId](#Contact+companyId)
+    -   [jid\_im](#Contact+jid_im)
+    -   [jid](#Contact+jid)
+    -   [jid\_tel](#Contact+jid_tel)
+    -   [jidtel](#Contact+jidtel)
+    -   [avatar](#Contact+avatar)
+    -   [lastAvatarUpdateDate](#Contact+lastAvatarUpdateDate)
+    -   [lastUpdateDate](#Contact+lastUpdateDate)
+    -   [adminType](#Contact+adminType)
+    -   [roles](#Contact+roles)
+    -   [phoneNumbers](#Contact+phoneNumbers)
+    -   [phonePro](#Contact+phonePro)
+    -   [phoneProCan](#Contact+phoneProCan)
+    -   [phonePbx](#Contact+phonePbx)
+    -   [phoneInternalNumber](#Contact+phoneInternalNumber)
+    -   [pbxId](#Contact+pbxId)
+    -   [mobilePro](#Contact+mobilePro)
+    -   [mobileProCan](#Contact+mobileProCan)
+    -   [phonePerso](#Contact+phonePerso)
+    -   [phonePersoCan](#Contact+phonePersoCan)
+    -   [mobilePerso](#Contact+mobilePerso)
+    -   [mobilePersoCan](#Contact+mobilePersoCan)
+    -   [voicemailNumber](#Contact+voicemailNumber)
+    -   [emails](#Contact+emails)
+    -   [emailPro](#Contact+emailPro)
+    -   [emailPerso](#Contact+emailPerso)
+    -   [lastName](#Contact+lastName)
+    -   [firstName](#Contact+firstName)
+    -   [isTerminated](#Contact+isTerminated)
+    -   [language](#Contact+language)
+    -   [presence](#Contact+presence)
+    -   [status](#Contact+status)
+    -   [resources](#Contact+resources)
+    -   [nameUpdatePrio](#Contact+nameUpdatePrio)
+    -   [initials](#Contact+initials)
+    -   [nickname](#Contact+nickname)
+    -   [roster](#Contact+roster)
+    -   [guestMode](#Contact+guestMode)
+    -   [openInviteId](#Contact+openInviteId)
+    -   [ask](#Contact+ask)
+    -   [subscription](#Contact+subscription)
+    -   [temp](#Contact+temp)
+    -   [userInfo1](#Contact+userInfo1)
+    -   [userInfo2](#Contact+userInfo2)
+    -   [customData](#Contact+customData)
+    -   [selectedTheme](#Contact+selectedTheme)
+    -   [tags](#Contact+tags)
+    -   [isActive](#Contact+isActive)
+    -   [accountType](#Contact+accountType)
+    -   [systemId](#Contact+systemId)
+    -   [isInitialized](#Contact+isInitialized)
+    -   [initializationDate](#Contact+initializationDate)
+    -   [createdBySelfRegister](#Contact+createdBySelfRegister)
+    -   [createdByAdmin](#Contact+createdByAdmin)
+    -   [firstLoginDate](#Contact+firstLoginDate)
+    -   [lastLoginDate](#Contact+lastLoginDate)
+    -   [loggedSince](#Contact+loggedSince)
+    -   [timeToLive](#Contact+timeToLive)
+    -   [fileSharingCustomisation](#Contact+fileSharingCustomisation)
+    -   [userTitleNameCustomisation](#Contact+userTitleNameCustomisation)
+    -   [softphoneOnlyCustomisation](#Contact+softphoneOnlyCustomisation)
+    -   [useRoomCustomisation](#Contact+useRoomCustomisation)
+    -   [phoneMeetingCustomisation](#Contact+phoneMeetingCustomisation)
+    -   [useChannelCustomisation](#Contact+useChannelCustomisation)
+    -   [useScreenSharingCustomisation](#Contact+useScreenSharingCustomisation)
+    -   [useWebRTCAudioCustomisation](#Contact+useWebRTCAudioCustomisation)
+    -   [useWebRTCVideoCustomisation](#Contact+useWebRTCVideoCustomisation)
+    -   [instantMessagesCustomisation](#Contact+instantMessagesCustomisation)
+    -   [userProfileCustomisation](#Contact+userProfileCustomisation)
+    -   [fileStorageCustomisation](#Contact+fileStorageCustomisation)
+    -   [overridePresenceCustomisation](#Contact+overridePresenceCustomisation)
+    -   [changeTelephonyCustomisation](#Contact+changeTelephonyCustomisation)
+    -   [changeSettingsCustomisation](#Contact+changeSettingsCustomisation)
+    -   [recordingConversationCustomisation](#Contact+recordingConversationCustomisation)
+    -   [useGifCustomisation](#Contact+useGifCustomisation)
+    -   [useDialOutCustomisation](#Contact+useDialOutCustomisation)
+    -   [fileCopyCustomisation](#Contact+fileCopyCustomisation)
+    -   [fileTransferCustomisation](#Contact+fileTransferCustomisation)
+    -   [forbidFileOwnerChangeCustomisation](#Contact+forbidFileOwnerChangeCustomisation)
+    -   [readReceiptsCustomisation](#Contact+readReceiptsCustomisation)
+    -   [useSpeakingTimeStatistics](#Contact+useSpeakingTimeStatistics)
+    -   [selectedAppCustomisationTemplate](#Contact+selectedAppCustomisationTemplate)
+    -   [alertNotificationReception](#Contact+alertNotificationReception)
+    -   [visibility](#Contact+visibility)
+    -   [jid\_password](#Contact+jid_password)
+    -   [creationDate](#Contact+creationDate)
+    -   [profiles](#Contact+profiles)
+    -   [activationDate](#Contact+activationDate)
+    -   [lastOfflineMailReceivedDate](#Contact+lastOfflineMailReceivedDate)
+    -   [state](#Contact+state)
+    -   [authenticationType](#Contact+authenticationType)
+    -   [department](#Contact+department)
+    -   [isADSearchAvailable](#Contact+isADSearchAvailable)
+    -   [isTv](#Contact+isTv)
+    -   [calendars](#Contact+calendars)
+    -   [isAlertNotificationEnabled](#Contact+isAlertNotificationEnabled)
+    -   [outOfOffice](#Contact+outOfOffice)
+    -   [lastSeenDate](#Contact+lastSeenDate)
+    -   [eLearningCustomisation](#Contact+eLearningCustomisation)
+    -   [eLearningGamificationCustomisation](#Contact+eLearningGamificationCustomisation)
+    -   [useRoomAsRBVoiceUser](#Contact+useRoomAsRBVoiceUser)
+    -   [useWebRTCAudioAsRBVoiceUser](#Contact+useWebRTCAudioAsRBVoiceUser)
+    -   [msTeamsPresence](#Contact+msTeamsPresence)
+    -   [useWebRTCOnlyIfMobileLoggedCustomisation](#Contact+useWebRTCOnlyIfMobileLoggedCustomisation)
+    -   [meetingRecordingCustomisation](#Contact+meetingRecordingCustomisation)
+    -   [useOtherPhoneMode](#Contact+useOtherPhoneMode)
+    -   [useComputerMode](#Contact+useComputerMode)
+    -   [useSoftPhoneMode](#Contact+useSoftPhoneMode)
+    -   [imPopupDuration](#Contact+imPopupDuration)
+    -   [canAccessWhatsNew](#Contact+canAccessWhatsNew)
+    -   [canAccessFaqCustomisation](#Contact+canAccessFaqCustomisation)
+    -   [canAccessHelpCenterCustomisation](#Contact+canAccessHelpCenterCustomisation)
+    -   [canAccessStoreCustomisation](#Contact+canAccessStoreCustomisation)
+    -   [canDownloadAppCustomisation](#Contact+canDownloadAppCustomisation)
+    -   [canCallParticipantPbxNumberCustomisation](#Contact+canCallParticipantPbxNumberCustomisation)
+    -   [useExternalStorage](#Contact+useExternalStorage)
+    -   [useRainbowStorage](#Contact+useRainbowStorage)
+    -   [mainStorage](#Contact+mainStorage)
+    -   [companyNameOfGuest](#Contact+companyNameOfGuest)
+    -   [displayName](#Contact+displayName)
+
+---
+
+### Contact()
+
+This class is used to represent a contact or the connected user  
+A contact is defined by a set of public information (name, firstName, avatar...) and a set of private information that are only shared with contacts that are in the user's network or in the same company (email, phone numbers...)
+
+---
+
+### contact.id
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+id
+
+`string`
+
+The ID of the Contact
+
+---
+
+### contact.name
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+name
+
+`Object`
+
+The display name of the contact
+
+---
+
+### contact.companyName
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+companyName
+
+`string`
+
+The company name of the Contact
+
+---
+
+### contact.loginEmail
+
+This field will soon become unavailable if the user is not allowed to view it, to follow the GPRD law.
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+loginEmail
+
+`string`
+
+The login email of the Contact
+
+---
+
+### contact.nickName
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+nickName
+
+`string`
+
+The nickname of the Contact
+
+---
+
+### contact.title
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+title
+
+`string`
+
+The title of the Contact
+
+---
+
+### contact.jobTitle
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+jobTitle
+
+`string`
+
+The job title of the Contact
+
+---
+
+### contact.country
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+country
+
+`string`
+
+The country of the Contact
+
+---
+
+### contact.timezone
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+timezone
+
+`string`
+
+The timezone of the Contact
+
+---
+
+### contact.organisationId
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+organisationId
+
+`string`
+
+The organisation ID of the Contact
+
+---
+
+### contact.siteId
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+siteId
+
+`string`
+
+The site ID of the Contact
+
+---
+
+### contact.companyId
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+companyId
+
+`string`
+
+The company ID of the Contact
+
+---
+
+### contact.jid\_im
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+jid\_im
+
+`string`
+
+The JID of the Contact
+
+---
+
+### contact.jid
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+jid
+
+`string`
+
+The JID of the Contact (same as jid\_im, for compatibility)
+
+---
+
+### contact.jid\_tel
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+jid\_tel
+
+`string`
+
+The JID\_TEL of the Contact
+
+---
+
+### contact.jidtel
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+jidtel
+
+`string`
+
+The JID\_TEL of the Contact (same as jidtel, for compatibility)
+
+---
+
+### contact.avatar
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+avatar
+
+`string`
+
+The Contact avatar, if an avatar exist will return an Url, either a local file.
+
+---
+
+### contact.lastAvatarUpdateDate
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+lastAvatarUpdateDate
+
+`string`
+
+The date of the last avatar update
+
+---
+
+### contact.lastUpdateDate
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+lastUpdateDate
+
+`string`
+
+The date of the last time information about the contact changed
+
+---
+
+### contact.adminType
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+adminType
+
+`string`
+
+The type of admin role. Can be `organization_admin`, `company_admin`, `site_admin`
+
+---
+
+### contact.roles
+
+This field will soon become unavailable if the user is not allowed to view it, to follow the GPRD law.
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+roles
+
+`Array.<string>`
+
+(For the connected user only). The associated roles of the connected user. Can be `guest`, `user`, `admin`
+
+---
+
+### contact.phoneNumbers
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+phoneNumbers
+
+`Array.<Object>`
+
+The list of phone numbers associated to the Contact
+
+---
+
+### contact.phonePro
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+phonePro
+
+`string`
+
+The professional phone number of the contact
+
+---
+
+### contact.phoneProCan
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+phoneProCan
+
+`string`
+
+The professional phone number of the contact (canonical format)
+
+---
+
+### contact.phonePbx
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+phonePbx
+
+`string`
+
+The phone number if exists associated to the user and monitored by Rainbow
+
+---
+
+### contact.phoneInternalNumber
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+phoneInternalNumber
+
+`string`
+
+The internal number if exists associated to the user and monitored by Rainbow
+
+---
+
+### contact.pbxId
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+pbxId
+
+`string`
+
+The ID of the PBX monitored by Rainbow where the user's phone is associated
+
+---
+
+### contact.mobilePro
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+mobilePro
+
+`string`
+
+The professional mobile phone of the contact
+
+---
+
+### contact.mobileProCan
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+mobileProCan
+
+`string`
+
+The professional mobile phone of the contact (canonical format)
+
+---
+
+### contact.phonePerso
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+phonePerso
+
+`string`
+
+The personal phone of the contact
+
+---
+
+### contact.phonePersoCan
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+phonePersoCan
+
+`string`
+
+The personal phone of the contact (canonical format)
+
+---
+
+### contact.mobilePerso
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+mobilePerso
+
+`string`
+
+The personal mobile phone of the contact
+
+---
+
+### contact.mobilePersoCan
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+mobilePersoCan
+
+`string`
+
+The personal mobile phone of the contact (canonical format)
+
+---
+
+### contact.voicemailNumber
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+voicemailNumber
+
+`String`
+
+The number of the voicemail associated to the Contact
+
+---
+
+### contact.emails
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+emails
+
+`Array.<Object>`
+
+The list of email addresses associated to the Contact
+
+---
+
+### contact.emailPro
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+emailPro
+
+`string`
+
+The professional email of the contact
+
+---
+
+### contact.emailPerso
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+emailPerso
+
+`string`
+
+The personal email of the contact
+
+---
+
+### contact.lastName
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+lastName
+
+`string`
+
+The lastname of the Contact
+
+---
+
+### contact.firstName
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+firstName
+
+`string`
+
+The firstname of the Contact
+
+---
+
+### contact.isTerminated
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isTerminated
+
+`Boolean`
+
+True if the Contact has been removed
+
+---
+
+### contact.language
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+language
+
+`string`
+
+The language of the Contact
+
+---
+
+### contact.presence
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+presence
+
+`string`
+
+The presence of the contact. Can be `offline`, `busy`, `away`, `online`, `unknown`
+
+---
+
+### contact.status
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+status
+
+`string`
+
+An additional status information for the presence. Can be `phone`, `presentation`, `mobile` or \`\`
+
+---
+
+### contact.resources
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+resources
+
+`Object`
+
+The list of resources of the Contact
+
+---
+
+### contact.nameUpdatePrio
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+nameUpdatePrio
+
+`number`
+
+Prio of the service having made an update
+
+---
+
+### contact.initials
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+initials
+
+`string`
+
+The initials of the contact
+
+---
+
+### contact.nickname
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+nickname
+
+`string`
+
+The nickname of the contact
+
+---
+
+### contact.roster
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+roster
+
+`boolean`
+
+True if the contact is part of the favorized contact's list of the connected user
+
+---
+
+### contact.guestMode
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+guestMode
+
+`boolean`
+
+Indicated a user embedded in a chat or conference room, as guest, with limited rights until he finalizes his registration.
+
+---
+
+### contact.openInviteId
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+id
+
+`string`
+
+The open invite ID of the user
+
+---
+
+### contact.ask
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+ask
+
+`string`
+
+(Contact Only) The subscription progress
+
+---
+
+### contact.subscription
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+subscription
+
+`string`
+
+(Contact only) The subscription state for this contact (none or both)
+
+---
+
+### contact.temp
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+---
+
+### contact.userInfo1
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+userInfo1
+
+`string`
+
+Free field that admin can use to link their users to their IS/IT tools / to perform analytics (this field is output in the CDR file)
+
+---
+
+### contact.userInfo2
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+userInfo2
+
+`string`
+
+2nd Free field that admin can use to link their users to their IS/IT tools / to perform analytics (this field is output in the CDR file)
+
+---
+
+### contact.customData
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+customData
+
+`Object`
+
+User's custom data. Object with free keys/values.  
+It is up to the client to manage the user's customData (new customData provided overwrite the existing one).  
+Restrictions on customData Object:  
+\* max 20 keys,  
+\* max key length: 64 characters,  
+\* max value length: 4096 characters.
+
+---
+
+### contact.selectedTheme
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+selectedTheme
+
+`string`
+
+Theme to be used by the user.  
+If the user is allowed to (company has 'allowUserSelectTheme' set to true), he can choose his preferred theme among the list of supported themes (see https://openrainbow.com/api/rainbow/enduser/v1.0/themes).
+
+---
+
+### contact.tags
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+tags
+
+`Array.<string>`
+
+An Array of free tags associated to the user.  
+A maximum of 5 tags is allowed, each tag can have a maximum length of 64 characters.  
+tags can only be set by users who have administrator rights on the user. The user can't modify the tags.  
+The tags are visible by the user and all users belonging to his organisation/company, and can be used with the search API to search the user based on his tags.
+
+---
+
+### contact.isActive
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isActive
+
+`boolean`
+
+Is user active
+
+---
+
+### contact.accountType
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+accountType
+
+`string`
+
+---
+
+### contact.systemId
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+systemId
+
+`string`
+
+If phone is linked to a system (pbx), unique identifier of that system in Rainbow database. \[Only for phone numbers linked to a system (pbx)\]
+
+---
+
+### contact.isInitialized
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isInitialized
+
+`boolean`
+
+Is user initialized
+
+---
+
+### contact.initializationDate
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+initializationDate
+
+`string`
+
+User initialization date
+
+---
+
+### contact.createdBySelfRegister
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+createdBySelfRegister
+
+`boolean`
+
+true if user has been created using self register
+
+---
+
+### contact.createdByAdmin
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+createdByAdmin
+
+`Object`
+
+If user has been created by an admin or superadmin, contain userId and loginEmail of the admin who created this user
+
+---
+
+### contact.firstLoginDate
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+firstLoginDate
+
+`string`
+
+Date of first user login (only set the first time user logs in, null if user never logged in)
+
+---
+
+### contact.lastLoginDate
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+lastLoginDate
+
+`string`
+
+Date of last user login (defined even if user is logged out)
+
+---
+
+### contact.loggedSince
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+loggedSince
+
+`string`
+
+Date of last user login (null if user is logged out)
+
+---
+
+### contact.timeToLive
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+timeToLive
+
+`number`
+
+Duration in second to wait before automatically starting a user deletion from the creation date.  
+Once the timeToLive has been reached, the user won't be usable to use APIs anymore (error 401523). His account may then be deleted from the database at any moment.  
+Value -1 means timeToLive is disable (i.e. user account will not expire).
+
+---
+
+### contact.fileSharingCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+fileSharingCustomisation
+
+`string`
+
+Activate/Deactivate file sharing capability per user  
+Define if the user can use the file sharing service then, allowed to download and share file.  
+FileSharingCustomisation can be:  
+  
+\* same\_than\_company: The same fileSharingCustomisation setting than the user's company's is applied to the user. if the fileSharingCustomisation of the company is changed the user's fileSharingCustomisation will use this company new setting.  
+\* enabled: Whatever the fileSharingCustomisation of the company setting, the user can use the file sharing service.  
+\* disabled: Whatever the fileSharingCustomisation of the company setting, the user can't use the file sharing service.  
+
+---
+
+### contact.userTitleNameCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+userTitleNameCustomisation
+
+`string`
+
+Activate/Deactivate the capability for a user to modify his profile (title, firstName, lastName)  
+Define if the user can change some profile data.  
+userTitleNameCustomisation can be:  
+\* same\_than\_company: The same userTitleNameCustomisation setting than the user's company's is applied to the user. if the userTitleNameCustomisation of the company is changed the user's userTitleNameCustomisation will use this company new setting.  
+\* enabled: Whatever the userTitleNameCustomisation of the company setting, the user can change some profile data.  
+\* disabled: Whatever the userTitleNameCustomisation of the company setting, the user can't change some profile data.  
+
+---
+
+### contact.softphoneOnlyCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+softphoneOnlyCustomisation
+
+`string`
+
+Activate/Deactivate the capability for an UCaas application not to offer all Rainbow services but to focus to telephony services  
+Define if UCaas apps used by a user of this company must provide Softphone functions, i.e. no chat, no bubbles, no meetings, no channels, and so on.  
+softphoneOnlyCustomisation can be:  
+\* same\_than\_company: The same softphoneOnlyCustomisation setting than the user's company's is applied to the user. if the softphoneOnlyCustomisation of the company is changed the user's softphoneOnlyCustomisation will use this company new setting.  
+\* enabled: The user switch to a softphone mode only.  
+\* disabled: The user can use telephony services, chat, bubbles, channels meeting services and so on.  
+
+---
+
+### contact.useRoomCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+useRoomCustomisation
+
+`string`
+
+Activate/Deactivate the capability for a user to use bubbles.  
+Define if a user can create bubbles or participate in bubbles (chat and web conference).  
+useRoomCustomisation can be:  
+\* same\_than\_company: The same useRoomCustomisation setting than the user's company's is applied to the user. if the useRoomCustomisation of the company is changed the user's useRoomCustomisation will use this company new setting.  
+\* enabled: The user can use bubbles.  
+\* disabled: The user can't use bubbles.  
+
+---
+
+### contact.phoneMeetingCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+phoneMeetingCustomisation
+
+`string`
+
+Activate/Deactivate the capability for a user to use phone meetings (PSTN conference).  
+Define if a user has the right to join phone meetings.  
+phoneMeetingCustomisation can be:  
+\* same\_than\_company: The same phoneMeetingCustomisation setting than the user's company's is applied to the user. if the phoneMeetingCustomisation of the company is changed the user's phoneMeetingCustomisation will use this company new setting.  
+\* enabled: The user can join phone meetings.  
+\* disabled: The user can't join phone meetings.  
+
+---
+
+### contact.useChannelCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+useChannelCustomisation
+
+`string`
+
+Activate/Deactivate the capability for a user to use a channel.  
+Define if a user has the right to create channels or be a member of channels.  
+useChannelCustomisation can be:  
+\* same\_than\_company: The same useChannelCustomisation setting than the user's company's is applied to the user. if the useChannelCustomisation of the company is changed the user's useChannelCustomisation will use this company new setting.  
+\* enabled: The user can use some channels.  
+\* disabled: The user can't use some channel.  
+
+---
+
+### contact.useScreenSharingCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+useScreenSharingCustomisation
+
+`string`
+
+Activate/Deactivate the capability for a user to share a screen.  
+Define if a user has the right to share his screen.  
+useScreenSharingCustomisation can be:  
+\* same\_than\_company: The same useScreenSharingCustomisation setting than the user's company's is applied to the user. if the useScreenSharingCustomisation of the company is changed the user's useScreenSharingCustomisation will use this company new setting.  
+\* enabled: Each user of the company can share his screen.  
+\* disabled: No user of the company can share his screen.  
+
+---
+
+### contact.useWebRTCAudioCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+useWebRTCAudioCustomisation
+
+`string`
+
+Activate/Deactivate the capability for a user to switch to a Web RTC audio conversation.  
+Define if a user has the right to be joined via audio (WebRTC) and to use Rainbow audio (WebRTC) (start a P2P audio call, start a web conference call).  
+useWebRTCAudioCustomisation can be:  
+\* same\_than\_company: The same useWebRTCAudioCustomisation setting than the user's company's is applied to the user. if the useWebRTCAudioCustomisation of the company is changed the user's useWebRTCAudioCustomisation will use this company new setting.  
+\* enabled: The user can switch to a Web RTC audio conversation.  
+\* disabled: The user can't switch to a Web RTC audio conversation.  
+
+---
+
+### contact.useWebRTCVideoCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+useWebRTCVideoCustomisation
+
+`string`
+
+Activate/Deactivate the capability for a user to switch to a Web RTC video conversation.  
+Define if a user has the right to be joined via video and to use video (start a P2P video call, add video in a P2P call, add video in a web conference call).  
+useWebRTCVideoCustomisation can be:  
+\* same\_than\_company: The same useWebRTCVideoCustomisation setting than the user's company's is applied to the user. if the useWebRTCVideoCustomisation of the company is changed the user's useWebRTCVideoCustomisation will use this company new setting.  
+\* enabled: The user can switch to a Web RTC video conversation.  
+\* disabled: The user can't switch to a Web RTC video conversation.  
+
+---
+
+### contact.instantMessagesCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+instantMessagesCustomisation
+
+`string`
+
+Activate/Deactivate the capability for a user to use instant messages.  
+Define if a user has the right to use IM, then to start a chat (P2P ou group chat) or receive chat messages and chat notifications.  
+instantMessagesCustomisation can be:  
+\* same\_than\_company: The same instantMessagesCustomisation setting than the user's company's is applied to the user. if the instantMessagesCustomisation of the company is changed the user's instantMessagesCustomisation will use this company new setting.  
+\* enabled: The user can use instant messages.  
+\* disabled: The user can't use instant messages.  
+
+---
+
+### contact.userProfileCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+userProfileCustomisation
+
+`string`
+
+Activate/Deactivate the capability for a user to modify his profile.  
+Define if a user has the right to modify the globality of his profile and not only (title, firstName, lastName).  
+userProfileCustomisation can be:  
+\* same\_than\_company: The same userProfileCustomisation setting than the user's company's is applied to the user. if the userProfileCustomisation of the company is changed the user's userProfileCustomisation will use this company new setting.  
+\* enabled: The user can modify his profile.  
+\* disabled: The user can't modify his profile.  
+
+---
+
+### contact.fileStorageCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+fileStorageCustomisation
+
+`string`
+
+Activate/Deactivate the capability for a user to access to Rainbow file storage.  
+Define if a user has the right to upload/download/copy or share documents.  
+fileStorageCustomisation can be:  
+\* same\_than\_company: The same fileStorageCustomisation setting than the user's company's is applied to the user. if the fileStorageCustomisation of the company is changed the user's fileStorageCustomisation will use this company new setting.  
+\* enabled: The user can manage and share files.  
+\* disabled: The user can't manage and share files.  
+
+---
+
+### contact.overridePresenceCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+overridePresenceCustomisation
+
+`string`
+
+Activate/Deactivate the capability for a user to use instant messages.  
+Define if a user has the right to change his presence manually or only use automatic states.  
+overridePresenceCustomisation can be:  
+\* same\_than\_company: The same overridePresenceCustomisation setting than the user's company's is applied to the user. if the overridePresenceCustomisation of the company is changed the user's overridePresenceCustomisation will use this company new setting.  
+\* enabled: The user can change his presence.  
+\* disabled: The user can't change his presence.  
+
+---
+
+### contact.changeTelephonyCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+changeTelephonyCustomisation
+
+`string`
+
+Activate/Deactivate the ability for a user to modify telephony settings.  
+Define if a user has the right to modify some telephony settigs like forward activation...  
+changeTelephonyCustomisation can be:  
+\* same\_than\_company: The same changeTelephonyCustomisation setting than the user's company's is applied to the user. if the changeTelephonyCustomisation of the company is changed the user's changeTelephonyCustomisation will use this company new setting.  
+\* enabled: The user can modify telephony settings.  
+\* disabled: The user can't modify telephony settings.  
+
+---
+
+### contact.changeSettingsCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+changeSettingsCustomisation
+
+`string`
+
+Activate/Deactivate the ability for a user to change all client general settings.  
+changeSettingsCustomisation can be:  
+\* same\_than\_company: The same changeSettingsCustomisation setting than the user's company's is applied to the user. if the changeSettingsCustomisation of the company is changed the user's changeSettingsCustomisation will use this company new setting.  
+\* enabled: The user can change all client general settings.  
+\* disabled: The user can't change any client general setting.  
+
+---
+
+### contact.recordingConversationCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+recordingConversationCustomisation
+
+`string`
+
+Activate/Deactivate the capability for a user to record a conversation.  
+Define if a user has the right to record a conversation (for P2P and multi-party calls).  
+recordingConversationCustomisation can be:  
+\* same\_than\_company: The same recordingConversationCustomisation setting than the user's company's is applied to the user. if the recordingConversationCustomisation of the company is changed the user's recordingConversationCustomisation will use this company new setting.  
+\* enabled: The user can record a peer to peer or a multi-party call.  
+\* disabled: The user can't record a peer to peer or a multi-party call.  
+
+---
+
+### contact.useGifCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+useGifCustomisation
+
+`string`
+
+Activate/Deactivate the ability for a user to Use GIFs in conversations.  
+Define if a user has the is allowed to send animated GIFs in conversations  
+useGifCustomisation can be:  
+\* same\_than\_company: The same useGifCustomisation setting than the user's company's is applied to the user. if the useGifCustomisation of the company is changed the user's useGifCustomisation will use this company new setting.  
+\* enabled: The user can send animated GIFs in conversations.  
+\* disabled: The user can't send animated GIFs in conversations.  
+
+---
+
+### contact.useDialOutCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+useDialOutCustomisation
+
+`string`
+
+Activate/Deactivate the capability for a user to use dial out in phone meetings.  
+Define if a user is allowed to be called by the Rainbow conference bridge.  
+useDialOutCustomisation can be:  
+\* same\_than\_company: The same useDialOutCustomisation setting than the user's company's is applied to the user. if the useDialOutCustomisation of the company is changed the user's useDialOutCustomisation will use this company new setting.  
+\* enabled: The user can be called by the Rainbow conference bridge.  
+\* disabled: The user can't be called by the Rainbow conference bridge.  
+
+---
+
+### contact.fileCopyCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+fileCopyCustomisation
+
+`string`
+
+Activate/Deactivate the capability for one user to copy any file he receives in his personal cloud space  
+fileCopyCustomisation can be:  
+\* same\_than\_company: The same fileCopyCustomisation setting than the user's company's is applied to the user. if the fileCopyCustomisation of the company is changed the user's fileCopyCustomisation will use this company new setting.  
+\* enabled: The user can make a copy of a file to his personal cloud space.  
+\* disabled: The user can't make a copy of a file to his personal cloud space.  
+
+---
+
+### contact.fileTransferCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+fileTransferCustomisation
+
+`string`
+
+Activate/Deactivate the capability for a user to copy a file from a conversation then share it inside another conversation.  
+The file cannot be re-shared.  
+fileTransferCustomisation can be:  
+\* same\_than\_company: The same fileTransferCustomisation setting than the user's company's is applied to the user. if the fileTransferCustomisation of the company is changed the user's fileTransferCustomisation will use this company new setting.  
+\* enabled: The user can transfer a file doesn't belong to him.  
+\* disabled: The user can't transfer a file doesn't belong to him.  
+
+---
+
+### contact.forbidFileOwnerChangeCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+forbidFileOwnerChangeCustomisation
+
+`string`
+
+Activate/Deactivate the capability for a user to loose the ownership on one file.  
+One user can drop the ownership to another Rainbow user of the same company.  
+forbidFileOwnerChangeCustomisation can be:  
+\* same\_than\_company: The same forbidFileOwnerChangeCustomisation setting than the user's company's is applied to the user. if the forbidFileOwnerChangeCustomisation of the company is changed the user's forbidFileOwnerChangeCustomisation will use this company new setting.  
+\* enabled: The user can't give the ownership of his file.  
+\* disabled: The user can give the ownership of his file.  
+
+---
+
+### contact.readReceiptsCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+readReceiptsCustomisation
+
+`string`
+
+Activate/Deactivate the capability for a user to allow a sender to check if a chat message is read.  
+Defines whether a peer user in a conversation allows the sender of a chat message to see if this IM is acknowledged by the peer.  
+This right is used by Ucaas or Cpaas application to show either or not a message is acknowledged. No check is done on backend side.  
+readReceiptsCustomisation can be:  
+\* same\_than\_company: The same readReceiptsCustomisation setting than the user's company's is applied to the user. if the readReceiptsCustomisation of the company is changed the user's readReceiptsCustomisation will use this company new setting.  
+\* enabled: The user allows the sender to check if an IM is read.  
+\* disabled: The user doesn't allow the sender to check if an IM is read.  
+
+---
+
+### contact.useSpeakingTimeStatistics
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+useSpeakingTimeStatistics
+
+`string`
+
+Activate/Deactivate the capability for a user to see speaking time statistics.  
+Defines whether a user has the right to see for a given meeting the speaking time for each attendee of this meeting.  
+useSpeakingTimeStatistics can be:  
+\* same\_than\_company: The same useSpeakingTimeStatistics setting than the user's company's is applied to the user. if the useSpeakingTimeStatistics of the company is changed the user's useSpeakingTimeStatistics will use this company new setting.  
+\* enabled: The user can use meeting speaking time statistics.  
+\* disabled: The user can't use meeting speaking time statistics.  
+
+---
+
+### contact.selectedAppCustomisationTemplate
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+selectedAppCustomisationTemplate
+
+`string`
+
+To log the last template applied to the user.
+
+---
+
+### contact.alertNotificationReception
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+alertNotificationReception
+
+`string`
+
+Activate/Deactivate the capability for a user to receive alert notification.  
+Define if a user has the right to receive alert notification  
+alertNotificationReception can be:  
+enabled: Each user of the company can receive alert notification.  
+disabled: No user of the company can receive alert notification.  
+
+---
+
+### contact.visibility
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+visibility
+
+`string`
+
+Company visibility (define if users being in this company can be searched by users being in other companies and if the user can search users being in other companies).  
+  
+\* public: User can be searched by external users / can search external users. User can invite external users / can be invited by external users  
+\* private: User can't be searched by external users (even within his organisation) / can search external users. User can invite external users / can be invited by external users  
+\* organisation: User can't be searched by external users / can search external users. User can invite external users / can be invited by external users  
+\* closed: User can't be searched by external users / can't search external users. User can invite external users / can be invited by external users  
+\* isolated: User can't be searched by external users / can't search external users. User can't invite external users / can't be invited by external users  
+\* none: Default value reserved for guest. User can't be searched by any users (even within the same company) / can search external users. User can invite external users / can be invited by external users  
+  
+External users mean public user not being in user's company nor user's organisation nor a company visible by user's company.  
+  
+Note related to organisation visibility:  
+  
+\* Under the same organisation, a company can choose the visibility=organisation. That means users belonging to this company are visible for users of foreign companies inside the same organisation.  
+\* The visibility=organisation is same as visibility=private outside the organisation. That is to say users can't be searched outside the organisation's companies.  
+  
+Default value : private. Possible values : public, private, organisation, closed, isolated  
+
+---
+
+### contact.jid\_password
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+jid\_password
+
+`string`
+
+User Jabber IM and TEL password
+
+---
+
+### contact.creationDate
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+creationDate
+
+`string`
+
+Date when the theme has been created.
+
+---
+
+### contact.profiles
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+profiles
+
+`Array.<Object>`
+
+User profile Objects.
+
+---
+
+### contact.activationDate
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+activationDate
+
+`string`
+
+User activation date
+
+---
+
+### contact.lastOfflineMailReceivedDate
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+lastOfflineMailReceivedDate
+
+`string`
+
+The last time the user has received a message to connect to Rainbow from the logged in user
+
+---
+
+### contact.state
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+state
+
+`string`
+
+When country is 'USA' or 'CAN', a state can be defined. Else it is not managed (null).
+
+---
+
+### contact.authenticationType
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+authenticationType
+
+`string`
+
+User authentication type (if not set company default authentication will be used). Possible values : DEFAULT, RAINBOW, SAML, OIDC
+
+---
+
+### contact.department
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+department
+
+`string`
+
+User department
+
+---
+
+### contact.isADSearchAvailable
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isADSearchAvailable
+
+`boolean`
+
+Is ActiveDirectory (Office365) search available for this user
+
+---
+
+### contact.isTv
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isTv
+
+`boolean`
+
+Indicates if the user corresponds to a TV or not
+
+---
+
+### contact.calendars
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+calendars
+
+`Array.<Object>`
+
+List of associated calendars from external providers configured by the user (office365, google calendar, ...)  
+Only returned if the requested user is the logged in user.
+
+---
+
+### contact.isAlertNotificationEnabled
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isAlertNotificationEnabled
+
+`boolean`
+
+Is user subscribed to Rainbow Alert Offer
+
+---
+
+### contact.outOfOffice
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+outOfOffice
+
+`Object`
+
+Out of office user's informations.
+
+---
+
+### contact.lastSeenDate
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+lastSeenDate
+
+`string`
+
+Approximate date when the user has been seen on Rainbow (null if user never logged in)  
+This date is updated:  
+When the user logs in (either from login API, SAML/OIDC SSO, OAuth)  
+When the token of the user is refreshed.  
+When the user logs out  
+
+---
+
+### contact.eLearningCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+eLearningCustomisation
+
+`boolean`
+
+Activate/Deactivate the capability for a user to participate on a Elearning training.  
+Defines if a user can particapate on an Elearning training.  
+eLearningCustomisation can be:  
+\* true: The user can participate on an Elearning training.  
+\* false: The user can't participate on an Elearning training.  
+
+---
+
+### contact.eLearningGamificationCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+eLearningGamificationCustomisation
+
+`string`
+
+Activate/Deactivate the capability for a user to earn badges for Elearning progress.  
+Defines if a user can earn badges for Elearning progress.  
+eLearningGamificationCustomisation can be:  
+\* true: The user can earn badges for Elearning progress.  
+\* false: The user can't earn badges for Elearning progress.  
+
+---
+
+### contact.useRoomAsRBVoiceUser
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+useRoomAsRBVoiceUser
+
+`boolean`
+
+Technical flag for Rainbow voice users. Whatever the customisation template applied for the user, if he has a Rainbow Voice licence useRoomAsRBVoiceUser is enabled else it is disabled.
+
+---
+
+### contact.useWebRTCAudioAsRBVoiceUser
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+useWebRTCAudioAsRBVoiceUser
+
+`boolean`
+
+Technical flag for Rainbow voice users. Whatever the customisation template applied for the user, if he has a Rainbow Voice licence useWebRTCAudioAsRBVoiceUser is enabled else it is disabled.
+
+---
+
+### contact.msTeamsPresence
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+msTeamsPresence
+
+`Object`
+
+List of associated Microsoft Teams Presence configured by the user.
+
+---
+
+### contact.useWebRTCOnlyIfMobileLoggedCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+useWebRTCOnlyIfMobileLoggedCustomisation
+
+`boolean`
+
+Activate/Deactivate the capability for a user to receive web RTC call if mobile app is signed in.  
+Define if a user has the right to be joined via audio (WebRTC) if he has a mobile application signed in.  
+can be:  
+\* true: The user of the company can receive a web RTC call if mobile app is signed in.  
+\* false: The user can't receive a web RTC call if mobile app is signed in.  
+
+---
+
+### contact.meetingRecordingCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+meetingRecordingCustomisation
+
+`boolean`
+
+Activate/Deactivate the capability for a user to record a meeting.  
+Defines if a user can record a meeting.  
+can be:  
+\* true: The user can record a meeting.  
+\* false: The user can't record a meeting.  
+
+---
+
+### contact.useOtherPhoneMode
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+useOtherPhoneMode
+
+`boolean`
+
+Activate/Deactivate the capability for a user to use the other phone mode.  
+Defines if a user can use the other phone mode.  
+can be:  
+\* true: The user can use the other phone mode.  
+\* false: The user can't use the other phone mode.  
+
+---
+
+### contact.useComputerMode
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+useComputerMode
+
+`boolean`
+
+Activate/Deactivate the capability for a user to use the computer mode.  
+Defines if a user can use the computer mode.  
+can be:  
+\* true: The user can use the computer mode.  
+\* false: The user can't use the computer mode.  
+
+---
+
+### contact.useSoftPhoneMode
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+useSoftPhoneMode
+
+`boolean`
+
+Activate/Deactivate the capability for a user to use the softphone mode.  
+Defines if a user can use the softphone mode.  
+can be:  
+\* true: The user can use the softphone mode.  
+\* false: The user can't use the softphone mode.  
+
+---
+
+### contact.imPopupDuration
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+imPopupDurationDefines
+
+`boolean`
+
+the IM popup duration.  
+\* If the imPopupDuration is not defined or null, the same imPopupDuration setting than the user's company's is applied to the user.  
+\* Otherwise, a new imPopupDuration is set for the user.  
+
+---
+
+### contact.canAccessWhatsNew
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+canAccessWhatsNew
+
+`boolean`
+
+Activate/Deactivate the capability for a user to access to what's new.  
+Defines if a user can access to what's new.  
+can be:  
+\* true: The user can access to what's new.  
+\* false: The user can't access to what's new.  
+
+---
+
+### contact.canAccessFaqCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+canAccessFaqCustomisation
+
+`boolean`
+
+Activate/Deactivate the capability for a user to access to the FAQ.  
+Defines if a user can access to the FAQ.  
+can be:  
+\* true: The user can access to the FAQ.  
+\* false: The user can't access to the FAQ.  
+
+---
+
+### contact.canAccessHelpCenterCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+canAccessHelpCenterCustomisation
+
+`boolean`
+
+Activate/Deactivate the capability for a user to access to Rainbow help center.  
+Defines if a user can access to Rainbow help center.  
+can be:  
+\* true: The user can access to Rainbow help center.  
+\* false: The user can't access to Rainbow help center.  
+
+---
+
+### contact.canAccessStoreCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+canAccessStoreCustomisation
+
+`boolean`
+
+Activate/Deactivate the capability for a user to access to Rainbow store.  
+Defines if a user can access to Rainbow store.  
+can be:  
+\* true: The user can access to Rainbow store.  
+\* false: The user can't access to Rainbow store.  
+
+---
+
+### contact.canDownloadAppCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+canDownloadAppCustomisation
+
+`boolean`
+
+Activate/Deactivate the capability for a user to download Rainbow application.  
+Defines if a user can download Rainbow application.  
+can be:  
+\* true: The user can download Rainbow application.  
+\* false: The user can't download Rainbow application.  
+
+---
+
+### contact.canCallParticipantPbxNumberCustomisation
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+canCallParticipantPbxNumberCustomisation
+
+`string`
+
+Select the capability for a user to call participant via a PBX number.  
+Defines if a user can call participant via a PBX number.  
+can be:  
+\* enabled: The user can call participant with all number.  
+\* disabled: The user can't call participant.  
+\* internal: The user can call participant only with internal number.  
+\* national: The user can call participant with national number.  
+
+---
+
+### contact.useExternalStorage
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+useExternalStorage
+
+`boolean`
+
+In an environment where a company uses the Rainbow file server and an External file server at the same time, 'useExternalStorage' allows a user to be assigned to a file server.  
+\* true: Assign all users to the External File Storage.  
+\* false: Unassign all users from the External File Storage.  
+
+---
+
+### contact.useRainbowStorage
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+useRainbowStorage
+
+`boolean`
+
+In an environment where a company uses the Rainbow file server and an External file server at the same time, 'useRainbowStorage' allows a user to be assigned to a file server.  
+\* true: Assign all users to the default Rainbow File Storage.  
+\* false: Unassign all users from the default Rainbow File Storage.  
+
+---
+
+### contact.mainStorage
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+mainStorage
+
+`string`
+
+an environment where a company uses the Rainbow file server and an External file server at the same time, 'mainStorage' allows to decide which file server must be used when a user is assigned to both file servers.  
+\* Rainbow Storage: Assigment to the Rainbow file server.  
+\* External Storage: Assigment to the External file server.  
+
+---
+
+### contact.companyNameOfGuest
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+companyNameOfGuest
+
+`string`
+
+Company Name of Guest (if provided). Available only if "guestMode" is true.  
+
+---
+
+### contact.displayName
+
+**Kind**: instance property of [`Contact`](#Contact)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+displayName
+
+`string`
+
+The display name of the Contact
+
+---
+
+## AdminType : `enum`
+
+Type of Admin.
+
+**Kind**: global enum
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+ORGANIZATION\_ADMIN
+
+`string`
+
+`organization_admin`
+
+Organization administrator
+
+COMPANY\_ADMIN
+
+`string`
+
+`company_admin`
+
+Company administrator
+
+SITE\_ADMIN
+
+`string`
+
+`site_admin`
+
+Site administrator
+
+UNDEFINED
+
+`string`
+
+`undefined`
+
+No administrator right
+
+---
+
+## NameUpdatePrio : `enum`
+
+NameUpdatePrio
+
+**Kind**: global enum
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+NO\_UPDATE\_PRIO
+
+`number`
+
+`0`
+
+no update prio then could be updated
+
+OUTLOOK\_UPDATE\_PRIO
+
+`number`
+
+`1`
+
+prio associated to outlook name resolution update
+
+SERVER\_UPDATE\_PRIO
+
+`number`
+
+`2`
+
+prio associated to server name resolution (phonebook or office365AD ...) update
+
+MAX\_UPDATE\_PRIO
+
+`number`
+
+`99`
+
+max prio : no update could overwrite
+
+---
+
+### On this page
+
+-   [Classes](/docs/sdk/node#name-classes-0)
+-   [Contact](/docs/sdk/node#name-contact-7)
+-   [Contact()](/docs/sdk/node#name-contact-689)
+-   [contact.id](/docs/sdk/node#name-contact.id-699)
+-   [contact.name](/docs/sdk/node#name-contact.name-746)
+-   [contact.companyName](/docs/sdk/node#name-contact.companyname-793)
+-   [contact.loginEmail](/docs/sdk/node#name-contact.loginemail-840)
+-   [contact.nickName](/docs/sdk/node#name-contact.nickname-890)
+-   [contact.title](/docs/sdk/node#name-contact.title-937)
+-   [contact.jobTitle](/docs/sdk/node#name-contact.jobtitle-984)
+-   [contact.country](/docs/sdk/node#name-contact.country-1031)
+-   [contact.timezone](/docs/sdk/node#name-contact.timezone-1078)
+-   [contact.organisationId](/docs/sdk/node#name-contact.organisationid-1125)
+-   [contact.siteId](/docs/sdk/node#name-contact.siteid-1172)
+-   [contact.companyId](/docs/sdk/node#name-contact.companyid-1219)
+-   [contact.jid\_im](/docs/sdk/node#name-contact.jid_im-1266)
+-   [contact.jid](/docs/sdk/node#name-contact.jid-1313)
+-   [contact.jid\_tel](/docs/sdk/node#name-contact.jid_tel-1360)
+-   [contact.jidtel](/docs/sdk/node#name-contact.jidtel-1407)
+-   [contact.avatar](/docs/sdk/node#name-contact.avatar-1454)
+-   [contact.lastAvatarUpdateDate](/docs/sdk/node#name-contact.lastavatarupdatedate-1501)
+-   [contact.lastUpdateDate](/docs/sdk/node#name-contact.lastupdatedate-1548)
+-   [contact.adminType](/docs/sdk/node#name-contact.admintype-1595)
+-   [contact.roles](/docs/sdk/node#name-contact.roles-1642)
+-   [contact.phoneNumbers](/docs/sdk/node#name-contact.phonenumbers-1692)
+-   [contact.phonePro](/docs/sdk/node#name-contact.phonepro-1739)
+-   [contact.phoneProCan](/docs/sdk/node#name-contact.phoneprocan-1786)
+-   [contact.phonePbx](/docs/sdk/node#name-contact.phonepbx-1833)
+-   [contact.phoneInternalNumber](/docs/sdk/node#name-contact.phoneinternalnumber-1880)
+-   [contact.pbxId](/docs/sdk/node#name-contact.pbxid-1927)
+-   [contact.mobilePro](/docs/sdk/node#name-contact.mobilepro-1974)
+-   [contact.mobileProCan](/docs/sdk/node#name-contact.mobileprocan-2021)
+-   [contact.phonePerso](/docs/sdk/node#name-contact.phoneperso-2068)
+-   [contact.phonePersoCan](/docs/sdk/node#name-contact.phonepersocan-2115)
+-   [contact.mobilePerso](/docs/sdk/node#name-contact.mobileperso-2162)
+-   [contact.mobilePersoCan](/docs/sdk/node#name-contact.mobilepersocan-2209)
+-   [contact.voicemailNumber](/docs/sdk/node#name-contact.voicemailnumber-2256)
+-   [contact.emails](/docs/sdk/node#name-contact.emails-2303)
+-   [contact.emailPro](/docs/sdk/node#name-contact.emailpro-2350)
+-   [contact.emailPerso](/docs/sdk/node#name-contact.emailperso-2397)
+-   [contact.lastName](/docs/sdk/node#name-contact.lastname-2444)
+-   [contact.firstName](/docs/sdk/node#name-contact.firstname-2491)
+-   [contact.isTerminated](/docs/sdk/node#name-contact.isterminated-2538)
+-   [contact.language](/docs/sdk/node#name-contact.language-2585)
+-   [contact.presence](/docs/sdk/node#name-contact.presence-2632)
+-   [contact.status](/docs/sdk/node#name-contact.status-2679)
+-   [contact.resources](/docs/sdk/node#name-contact.resources-2726)
+-   [contact.nameUpdatePrio](/docs/sdk/node#name-contact.nameupdateprio-2773)
+-   [contact.initials](/docs/sdk/node#name-contact.initials-2820)
+-   [contact.nickname](/docs/sdk/node#name-contact.nickname-2867)
+-   [contact.roster](/docs/sdk/node#name-contact.roster-2914)
+-   [contact.guestMode](/docs/sdk/node#name-contact.guestmode-2961)
+-   [contact.openInviteId](/docs/sdk/node#name-contact.openinviteid-3008)
+-   [contact.ask](/docs/sdk/node#name-contact.ask-3055)
+-   [contact.subscription](/docs/sdk/node#name-contact.subscription-3102)
+-   [contact.temp](/docs/sdk/node#name-contact.temp-3149)
+-   [contact.userInfo1](/docs/sdk/node#name-contact.userinfo1-3165)
+-   [contact.userInfo2](/docs/sdk/node#name-contact.userinfo2-3212)
+-   [contact.customData](/docs/sdk/node#name-contact.customdata-3259)
+-   [contact.selectedTheme](/docs/sdk/node#name-contact.selectedtheme-3306)
+-   [contact.tags](/docs/sdk/node#name-contact.tags-3353)
+-   [contact.isActive](/docs/sdk/node#name-contact.isactive-3400)
+-   [contact.accountType](/docs/sdk/node#name-contact.accounttype-3447)
+-   [contact.systemId](/docs/sdk/node#name-contact.systemid-3488)
+-   [contact.isInitialized](/docs/sdk/node#name-contact.isinitialized-3535)
+-   [contact.initializationDate](/docs/sdk/node#name-contact.initializationdate-3582)
+-   [contact.createdBySelfRegister](/docs/sdk/node#name-contact.createdbyselfregister-3629)
+-   [contact.createdByAdmin](/docs/sdk/node#name-contact.createdbyadmin-3676)
+-   [contact.firstLoginDate](/docs/sdk/node#name-contact.firstlogindate-3723)
+-   [contact.lastLoginDate](/docs/sdk/node#name-contact.lastlogindate-3770)
+-   [contact.loggedSince](/docs/sdk/node#name-contact.loggedsince-3817)
+-   [contact.timeToLive](/docs/sdk/node#name-contact.timetolive-3864)
+-   [contact.fileSharingCustomisation](/docs/sdk/node#name-contact.filesharingcustomisation-3911)
+-   [contact.userTitleNameCustomisation](/docs/sdk/node#name-contact.usertitlenamecustomisation-3958)
+-   [contact.softphoneOnlyCustomisation](/docs/sdk/node#name-contact.softphoneonlycustomisation-4005)
+-   [contact.useRoomCustomisation](/docs/sdk/node#name-contact.useroomcustomisation-4052)
+-   [contact.phoneMeetingCustomisation](/docs/sdk/node#name-contact.phonemeetingcustomisation-4099)
+-   [contact.useChannelCustomisation](/docs/sdk/node#name-contact.usechannelcustomisation-4146)
+-   [contact.useScreenSharingCustomisation](/docs/sdk/node#name-contact.usescreensharingcustomisation-4193)
+-   [contact.useWebRTCAudioCustomisation](/docs/sdk/node#name-contact.usewebrtcaudiocustomisation-4240)
+-   [contact.useWebRTCVideoCustomisation](/docs/sdk/node#name-contact.usewebrtcvideocustomisation-4287)
+-   [contact.instantMessagesCustomisation](/docs/sdk/node#name-contact.instantmessagescustomisation-4334)
+-   [contact.userProfileCustomisation](/docs/sdk/node#name-contact.userprofilecustomisation-4381)
+-   [contact.fileStorageCustomisation](/docs/sdk/node#name-contact.filestoragecustomisation-4428)
+-   [contact.overridePresenceCustomisation](/docs/sdk/node#name-contact.overridepresencecustomisation-4475)
+-   [contact.changeTelephonyCustomisation](/docs/sdk/node#name-contact.changetelephonycustomisation-4522)
+-   [contact.changeSettingsCustomisation](/docs/sdk/node#name-contact.changesettingscustomisation-4569)
+-   [contact.recordingConversationCustomisation](/docs/sdk/node#name-contact.recordingconversationcustomisation-4616)
+-   [contact.useGifCustomisation](/docs/sdk/node#name-contact.usegifcustomisation-4663)
+-   [contact.useDialOutCustomisation](/docs/sdk/node#name-contact.usedialoutcustomisation-4710)
+-   [contact.fileCopyCustomisation](/docs/sdk/node#name-contact.filecopycustomisation-4757)
+-   [contact.fileTransferCustomisation](/docs/sdk/node#name-contact.filetransfercustomisation-4804)
+-   [contact.forbidFileOwnerChangeCustomisation](/docs/sdk/node#name-contact.forbidfileownerchangecustomisation-4851)
+-   [contact.readReceiptsCustomisation](/docs/sdk/node#name-contact.readreceiptscustomisation-4898)
+-   [contact.useSpeakingTimeStatistics](/docs/sdk/node#name-contact.usespeakingtimestatistics-4945)
+-   [contact.selectedAppCustomisationTemplate](/docs/sdk/node#name-contact.selectedappcustomisationtemplate-4992)
+-   [contact.alertNotificationReception](/docs/sdk/node#name-contact.alertnotificationreception-5039)
+-   [contact.visibility](/docs/sdk/node#name-contact.visibility-5086)
+-   [contact.jid\_password](/docs/sdk/node#name-contact.jid_password-5133)
+-   [contact.creationDate](/docs/sdk/node#name-contact.creationdate-5180)
+-   [contact.profiles](/docs/sdk/node#name-contact.profiles-5227)
+-   [contact.activationDate](/docs/sdk/node#name-contact.activationdate-5274)
+-   [contact.lastOfflineMailReceivedDate](/docs/sdk/node#name-contact.lastofflinemailreceiveddate-5321)
+-   [contact.state](/docs/sdk/node#name-contact.state-5368)
+-   [contact.authenticationType](/docs/sdk/node#name-contact.authenticationtype-5415)
+-   [contact.department](/docs/sdk/node#name-contact.department-5462)
+-   [contact.isADSearchAvailable](/docs/sdk/node#name-contact.isadsearchavailable-5509)
+-   [contact.isTv](/docs/sdk/node#name-contact.istv-5556)
+-   [contact.calendars](/docs/sdk/node#name-contact.calendars-5603)
+-   [contact.isAlertNotificationEnabled](/docs/sdk/node#name-contact.isalertnotificationenabled-5650)
+-   [contact.outOfOffice](/docs/sdk/node#name-contact.outofoffice-5697)
+-   [contact.lastSeenDate](/docs/sdk/node#name-contact.lastseendate-5744)
+-   [contact.eLearningCustomisation](/docs/sdk/node#name-contact.elearningcustomisation-5791)
+-   [contact.eLearningGamificationCustomisation](/docs/sdk/node#name-contact.elearninggamificationcustomisation-5838)
+-   [contact.useRoomAsRBVoiceUser](/docs/sdk/node#name-contact.useroomasrbvoiceuser-5885)
+-   [contact.useWebRTCAudioAsRBVoiceUser](/docs/sdk/node#name-contact.usewebrtcaudioasrbvoiceuser-5932)
+-   [contact.msTeamsPresence](/docs/sdk/node#name-contact.msteamspresence-5979)
+-   [contact.useWebRTCOnlyIfMobileLoggedCustomisation](/docs/sdk/node#name-contact.usewebrtconlyifmobileloggedcustomisation-6026)
+-   [contact.meetingRecordingCustomisation](/docs/sdk/node#name-contact.meetingrecordingcustomisation-6073)
+-   [contact.useOtherPhoneMode](/docs/sdk/node#name-contact.useotherphonemode-6120)
+-   [contact.useComputerMode](/docs/sdk/node#name-contact.usecomputermode-6167)
+-   [contact.useSoftPhoneMode](/docs/sdk/node#name-contact.usesoftphonemode-6214)
+-   [contact.imPopupDuration](/docs/sdk/node#name-contact.impopupduration-6261)
+-   [contact.canAccessWhatsNew](/docs/sdk/node#name-contact.canaccesswhatsnew-6308)
+-   [contact.canAccessFaqCustomisation](/docs/sdk/node#name-contact.canaccessfaqcustomisation-6355)
+-   [contact.canAccessHelpCenterCustomisation](/docs/sdk/node#name-contact.canaccesshelpcentercustomisation-6402)
+-   [contact.canAccessStoreCustomisation](/docs/sdk/node#name-contact.canaccessstorecustomisation-6449)
+-   [contact.canDownloadAppCustomisation](/docs/sdk/node#name-contact.candownloadappcustomisation-6496)
+-   [contact.canCallParticipantPbxNumberCustomisation](/docs/sdk/node#name-contact.cancallparticipantpbxnumbercustomisation-6543)
+-   [contact.useExternalStorage](/docs/sdk/node#name-contact.useexternalstorage-6590)
+-   [contact.useRainbowStorage](/docs/sdk/node#name-contact.userainbowstorage-6637)
+-   [contact.mainStorage](/docs/sdk/node#name-contact.mainstorage-6684)
+-   [contact.companyNameOfGuest](/docs/sdk/node#name-contact.companynameofguest-6731)
+-   [contact.displayName](/docs/sdk/node#name-contact.displayname-6778)
+-   [AdminType : enum](/docs/sdk/node#name-admintype-:-enum-6825)
+-   [NameUpdatePrio : enum](/docs/sdk/node#name-nameupdateprio-:-enum-6923)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

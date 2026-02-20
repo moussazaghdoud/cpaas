@@ -4,8 +4,8 @@ node_modules/
 .env
 .env.local
 
-# Crawled raw HTML (large, regenerable)
-content/raw/*.html
+# Crawled raw content (large, regenerable)
+content/raw/
 
 # Raw OpenAPI specs (large, regenerable — keep api-summary.json)
 content/openapi/authentication.json

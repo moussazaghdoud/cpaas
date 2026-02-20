@@ -1,0 +1,3172 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/events"
+lastSynced: "2026-02-20T07:12:32.148Z"
+---
+# Documentation
+
+Events Handler
+
+LTS release 2.XPublished on 2025-01-01
+
+## Events
+
+**Kind**: global class
+
+**Emits**: [`rainbow_onxmmpeventreceived`](#Events+event_rainbow_onxmmpeventreceived), [`rainbow_onxmmprequestsent`](#Events+event_rainbow_onxmmprequestsent), [`rainbow_onrainbowversionwarning`](#Events+event_rainbow_onrainbowversionwarning), [`rainbow_onmessageserverreceiptreceived`](#Events+event_rainbow_onmessageserverreceiptreceived), [`rainbow_onmessagereceiptreceived`](#Events+event_rainbow_onmessagereceiptreceived), [`rainbow_onmessagereceiptreadreceived`](#Events+event_rainbow_onmessagereceiptreadreceived), [`rainbow_onmessagereceived`](#Events+event_rainbow_onmessagereceived), [`rainbow_onsendmessagefailed`](#Events+event_rainbow_onsendmessagefailed), [`rainbow_oncontactpresencechanged`](#Events+event_rainbow_oncontactpresencechanged), [`rainbow_onpresencechanged`](#Events+event_rainbow_onpresencechanged), [`rainbow_onconversationremoved`](#Events+event_rainbow_onconversationremoved), [`rainbow_onconversationchanged`](#Events+event_rainbow_onconversationchanged), [`rainbow_onloadConversationHistoryCompleted`](#Events+event_rainbow_onloadConversationHistoryCompleted), [`rainbow_onallmessagedremovedfromconversationreceived`](#Events+event_rainbow_onallmessagedremovedfromconversationreceived), [`rainbow_onchatstate`](#Events+event_rainbow_onchatstate), [`rainbow_oncontactinformationchanged`](#Events+event_rainbow_oncontactinformationchanged), [`rainbow_onuserinformationchanged`](#Events+event_rainbow_onuserinformationchanged), [`rainbow_onuserpasswordconfig`](#Events+event_rainbow_onuserpasswordconfig), [`rainbow_onuserinvitereceived`](#Events+event_rainbow_onuserinvitereceived), [`rainbow_onuserinviteaccepted`](#Events+event_rainbow_onuserinviteaccepted), [`rainbow_onuserinvitecanceled`](#Events+event_rainbow_onuserinvitecanceled), [`rainbow_oncontactremovedfromnetwork`](#Events+event_rainbow_oncontactremovedfromnetwork), [`rainbow_onbubbleaffiliationchanged`](#Events+event_rainbow_onbubbleaffiliationchanged), [`rainbow_onbubblepresencechanged`](#Events+event_rainbow_onbubblepresencechanged), [`rainbow_onbubbleownaffiliationchanged`](#Events+event_rainbow_onbubbleownaffiliationchanged), [`rainbow_onbubbledeleted`](#Events+event_rainbow_onbubbledeleted), [`rainbow_onbubbleinvitationreceived`](#Events+event_rainbow_onbubbleinvitationreceived), [`rainbow_onbubblecontactinvitationreceived`](#Events+event_rainbow_onbubblecontactinvitationreceived), [`rainbow_onbubbleconferencestartedreceived`](#Events+event_rainbow_onbubbleconferencestartedreceived), [`rainbow_onbubbleconferencestoppedreceived`](#Events+event_rainbow_onbubbleconferencestoppedreceived), [`rainbow_onbubbleconferencedelegatereceived`](#Events+event_rainbow_onbubbleconferencedelegatereceived), [`rainbow_onbubbleconferenceupdated`](#Events+event_rainbow_onbubbleconferenceupdated), [`rainbow_onbubblecustomdatachanged`](#Events+event_rainbow_onbubblecustomdatachanged), [`rainbow_onbubblecontactchanged`](#Events+event_rainbow_onbubblecontactchanged), [`rainbow_onbubbletopicchanged`](#Events+event_rainbow_onbubbletopicchanged), [`rainbow_onbubbleprivilegechanged`](#Events+event_rainbow_onbubbleprivilegechanged), [`rainbow_onbubbleavatarchanged`](#Events+event_rainbow_onbubbleavatarchanged), [`rainbow_onbubblenamechanged`](#Events+event_rainbow_onbubblenamechanged), [`rainbow_onopeninvitationupdate`](#Events+event_rainbow_onopeninvitationupdate), [`rainbow_ongroupcreated`](#Events+event_rainbow_ongroupcreated), [`rainbow_ongroupdeleted`](#Events+event_rainbow_ongroupdeleted), [`rainbow_ongroupupdated`](#Events+event_rainbow_ongroupupdated), [`rainbow_onuseraddedingroup`](#Events+event_rainbow_onuseraddedingroup), [`rainbow_onuserremovedfromgroup`](#Events+event_rainbow_onuserremovedfromgroup), [`rainbow_onstarted`](#Events+event_rainbow_onstarted), [`rainbow_onstopped`](#Events+event_rainbow_onstopped), [`rainbow_onready`](#Events+event_rainbow_onready), [`rainbow_onerror`](#Events+event_rainbow_onerror), [`rainbow_onconnected`](#Events+event_rainbow_onconnected), [`rainbow_onconnectionerror`](#Events+event_rainbow_onconnectionerror), [`rainbow_ondisconnected`](#Events+event_rainbow_ondisconnected), [`rainbow_onreconnecting`](#Events+event_rainbow_onreconnecting), [`rainbow_onfailed`](#Events+event_rainbow_onfailed), [`rainbow_oncallupdated`](#Events+event_rainbow_oncallupdated), [`rainbow_onconferenced`](#Events+event_rainbow_onconferenced), [`rainbow_ontelephonystatuschanged`](#Events+event_rainbow_ontelephonystatuschanged), [`rainbow_onnomadicstatusevent`](#Events+event_rainbow_onnomadicstatusevent), [`rainbow_onvoicemessageupdated`](#Events+event_rainbow_onvoicemessageupdated), [`rainbow_onvoicemessagesinfo`](#Events+event_rainbow_onvoicemessagesinfo), [`rainbow_oncallforwarded`](#Events+event_rainbow_oncallforwarded), [`rainbow_onchannelmessagereceived`](#Events+event_rainbow_onchannelmessagereceived), [`rainbow_onchannelmyappreciationreceived`](#Events+event_rainbow_onchannelmyappreciationreceived), [`rainbow_onchannelmessagedeletedreceived`](#Events+event_rainbow_onchannelmessagedeletedreceived), [`rainbow_onprofilefeatureupdated`](#Events+event_rainbow_onprofilefeatureupdated), [`rainbow_onfilecreated`](#Events+event_rainbow_onfilecreated), [`rainbow_onfileupdated`](#Events+event_rainbow_onfileupdated), [`rainbow_onfiledeleted`](#Events+event_rainbow_onfiledeleted), [`rainbow_onthumbnailcreated`](#Events+event_rainbow_onthumbnailcreated), [`rainbow_onwebinarupdated`](#Events+event_rainbow_onwebinarupdated), [`rainbow_onchannelupdated`](#Events+event_rainbow_onchannelupdated), [`rainbow_onchannelusersubscription`](#Events+event_rainbow_onchannelusersubscription), [`rainbow_onmediapropose`](#Events+event_rainbow_onmediapropose), [`rainbow_onmediaretract`](#Events+event_rainbow_onmediaretract), [`rainbow_oncalllogupdated`](#Events+event_rainbow_oncalllogupdated), [`rainbow_oncalllogackupdated`](#Events+event_rainbow_oncalllogackupdated), [`rainbow_onfavoritecreated`](#Events+event_rainbow_onfavoritecreated), [`rainbow_onfavoriteupdated`](#Events+event_rainbow_onfavoriteupdated), [`rainbow_onfavoritedeleted`](#Events+event_rainbow_onfavoritedeleted), [`rainbow_onxmpperror`](#Events+event_rainbow_onxmpperror), [`rainbow_onalertmessagereceived`](#Events+event_rainbow_onalertmessagereceived), [`rainbow_onbubblescontainercreated`](#Events+event_rainbow_onbubblescontainercreated), [`rainbow_onbubblescontainerupdated`](#Events+event_rainbow_onbubblescontainerupdated), [`rainbow_onbubblescontainerdeleted`](#Events+event_rainbow_onbubblescontainerdeleted), [`rainbow_onusertokenrenewfailed`](#Events+event_rainbow_onusertokenrenewfailed), [`rainbow_onusertokenwillexpire`](#Events+event_rainbow_onusertokenwillexpire), [`rainbow_onbubblepollcreated`](#Events+event_rainbow_onbubblepollcreated), [`rainbow_onbubblepolldeleted`](#Events+event_rainbow_onbubblepolldeleted), [`rainbow_onbubblepollpublished`](#Events+event_rainbow_onbubblepollpublished), [`rainbow_onbubblepollunpublished`](#Events+event_rainbow_onbubblepollunpublished), [`rainbow_onbubblepollterminated`](#Events+event_rainbow_onbubblepollterminated), [`rainbow_onbubblepollupdated`](#Events+event_rainbow_onbubblepollupdated), [`rainbow_onbubblepollvoted`](#Events+event_rainbow_onbubblepollvoted), [`rainbow_onconnectorcommand`](#Events+event_rainbow_onconnectorcommand), [`rainbow_onconnectorconfig`](#Events+event_rainbow_onconnectorconfig), [`rainbow_onconnectorcommandended`](#Events+event_rainbow_onconnectorcommandended), [`rainbow_onconnectorimportstatus`](#Events+event_rainbow_onconnectorimportstatus), [`rainbow_onEWSgetevents`](#Events+event_rainbow_onEWSgetevents), [`rainbow_onEWSgetautoreply`](#Events+event_rainbow_onEWSgetautoreply), [`rainbow_onrbvoicerawevent`](#Events+event_rainbow_onrbvoicerawevent), [`rainbow_onjoincompanyinvitereceived`](#Events+event_rainbow_onjoincompanyinvitereceived), [`rainbow_onjoincompanyrequestreceived`](#Events+event_rainbow_onjoincompanyrequestreceived), [`rainbow_onlogsconfig`](#Events+event_rainbow_onlogsconfig), [`rainbow_ontaskcreated`](#Events+event_rainbow_ontaskcreated), [`rainbow_ontaskupdated`](#Events+event_rainbow_ontaskupdated), [`rainbow_ontaskdeleted`](#Events+event_rainbow_ontaskdeleted), [`rainbow_on429BackoffError`](#Events+event_rainbow_on429BackoffError), [`rainbow_onrainbowcpaasreceived`](#Events+event_rainbow_onrainbowcpaasreceived), [`rainbow_ontelephonyrvcp`](#Events+event_rainbow_ontelephonyrvcp), [`rainbow_ontelephonyrvcppresence`](#Events+event_rainbow_ontelephonyrvcppresence), [`rainbow_ontelephonypcg`](#Events+event_rainbow_ontelephonypcg), [`rainbow_ontelephonypcgpresence`](#Events+event_rainbow_ontelephonypcgpresence), [`rainbow_onconference`](#Events+event_rainbow_onconference), [`rainbow_onpinmanagement`](#Events+event_rainbow_onpinmanagement), [`rainbow_onvoicemailreceived`](#Events+event_rainbow_onvoicemailreceived)
+
+-   [Events](#Events)
+    -   [Events()](#new_Events_new)
+    -   [onLog(event, callback)](#Events+onLog) ⇒ `Object`
+    -   [removeLogListener(event, callback)](#Events+removeLogListener) ⇒ `Object`
+    -   [on(event, callback)](#Events+on) ⇒ `Object`
+    -   [removeListener(eventName, listener)](#Events+removeListener) ⇒ `Object`
+    -   [once(event, callback)](#Events+once) ⇒ `Object`
+    -   ["rainbow\_onmessageserverreceiptreceived" (receipt)](#Events+event_rainbow_onmessageserverreceiptreceived)
+    -   ["rainbow\_onmessagereceiptreceived" (receipt)](#Events+event_rainbow_onmessagereceiptreceived)
+    -   ["rainbow\_onmessagereceiptreadreceived" (receipt)](#Events+event_rainbow_onmessagereceiptreadreceived)
+    -   ["rainbow\_onxmmpeventreceived"](#Events+event_rainbow_onxmmpeventreceived)
+    -   ["rainbow\_onxmmprequestsent"](#Events+event_rainbow_onxmmprequestsent)
+    -   ["rainbow\_onserviceinitialized"](#Events+event_rainbow_onserviceinitialized)
+    -   ["rainbow\_onmessagereceived" (message)](#Events+event_rainbow_onmessagereceived)
+    -   ["rainbow\_onsendmessagefailed" (message)](#Events+event_rainbow_onsendmessagefailed)
+    -   ["rainbow\_onrainbowversionwarning" (data)](#Events+event_rainbow_onrainbowversionwarning)
+    -   ["rainbow\_oncontactpresencechanged" (contact)](#Events+event_rainbow_oncontactpresencechanged)
+    -   ["rainbow\_onpresencechanged" (presence)](#Events+event_rainbow_onpresencechanged)
+    -   ["rainbow\_onconversationremoved" (conversation)](#Events+event_rainbow_onconversationremoved)
+    -   ["rainbow\_onconversationchanged" (conversation)](#Events+event_rainbow_onconversationchanged)
+    -   ["rainbow\_onloadConversationHistoryCompleted" (conversation)](#Events+event_rainbow_onloadConversationHistoryCompleted)
+    -   ["rainbow\_onallmessagedremovedfromconversationreceived" (conversation)](#Events+event_rainbow_onallmessagedremovedfromconversationreceived)
+    -   ["rainbow\_onchatstate" (chatstate)](#Events+event_rainbow_onchatstate)
+    -   ["rainbow\_oncontactinformationchanged" (contact)](#Events+event_rainbow_oncontactinformationchanged)
+    -   ["rainbow\_onuserinformationchanged" (contact)](#Events+event_rainbow_onuserinformationchanged)
+    -   ["rainbow\_onuserpasswordconfig" ({action:)](#Events+event_rainbow_onuserpasswordconfig)
+    -   ["rainbow\_onuserinvitereceived" (invitation)](#Events+event_rainbow_onuserinvitereceived)
+    -   ["rainbow\_onuserinviteaccepted" (invitation)](#Events+event_rainbow_onuserinviteaccepted)
+    -   ["rainbow\_onuserinvitecanceled" (invitation)](#Events+event_rainbow_onuserinvitecanceled)
+    -   ["rainbow\_oncontactremovedfromnetwork" (contact)](#Events+event_rainbow_oncontactremovedfromnetwork)
+    -   ["rainbow\_onbubbleaffiliationchanged" (bubble)](#Events+event_rainbow_onbubbleaffiliationchanged)
+    -   ["rainbow\_onallbubbleinitialaffiliationchanged" (bubble)](#Events+event_rainbow_onallbubbleinitialaffiliationchanged)
+    -   ["rainbow\_onbubblepresencechanged" (bubble)](#Events+event_rainbow_onbubblepresencechanged)
+    -   ["rainbow\_onbubbleownaffiliationchanged" (bubble)](#Events+event_rainbow_onbubbleownaffiliationchanged)
+    -   ["rainbow\_onbubbledeleted" (bubble)](#Events+event_rainbow_onbubbledeleted)
+    -   ["rainbow\_onbubbleinvitationreceived" (bubble)](#Events+event_rainbow_onbubbleinvitationreceived)
+    -   ["rainbow\_onbubblecontactinvitationreceived" (invitation)](#Events+event_rainbow_onbubblecontactinvitationreceived)
+    -   ["rainbow\_onbubbleconferencestartedreceived" (bubble)](#Events+event_rainbow_onbubbleconferencestartedreceived)
+    -   ["rainbow\_onbubbleconferencestoppedreceived" (bubble)](#Events+event_rainbow_onbubbleconferencestoppedreceived)
+    -   ["rainbow\_onbubbleconferencedelegatereceived" (bubble, userIdEvent)](#Events+event_rainbow_onbubbleconferencedelegatereceived)
+    -   ["rainbow\_onbubbleconferenceupdated" (conference)](#Events+event_rainbow_onbubbleconferenceupdated)
+    -   ["rainbow\_onbubblecustomdatachanged" (bubble)](#Events+event_rainbow_onbubblecustomdatachanged)
+    -   ["rainbow\_onbubblecontactchanged" (bubble)](#Events+event_rainbow_onbubblecontactchanged)
+    -   ["rainbow\_onbubbletopicchanged" (bubble)](#Events+event_rainbow_onbubbletopicchanged)
+    -   ["rainbow\_onbubbleprivilegechanged" (bubble)](#Events+event_rainbow_onbubbleprivilegechanged)
+    -   ["rainbow\_onbubbleavatarchanged" (bubble)](#Events+event_rainbow_onbubbleavatarchanged)
+    -   ["rainbow\_onbubblenamechanged" (bubble)](#Events+event_rainbow_onbubblenamechanged)
+    -   ["rainbow\_onopeninvitationupdate" (openInvite)](#Events+event_rainbow_onopeninvitationupdate)
+    -   ["rainbow\_ongroupcreated" (group)](#Events+event_rainbow_ongroupcreated)
+    -   ["rainbow\_ongroupdeleted" (group)](#Events+event_rainbow_ongroupdeleted)
+    -   ["rainbow\_ongroupupdated" (group)](#Events+event_rainbow_ongroupupdated)
+    -   ["rainbow\_onuseraddedingroup" (group, contact)](#Events+event_rainbow_onuseraddedingroup)
+    -   ["rainbow\_onuserremovedfromgroup" (group, contact)](#Events+event_rainbow_onuserremovedfromgroup)
+    -   ["rainbow\_onchannelmessagereceived" (message)](#Events+event_rainbow_onchannelmessagereceived)
+    -   ["rainbow\_onchannelmyappreciationreceived" (appreciation)](#Events+event_rainbow_onchannelmyappreciationreceived)
+    -   ["rainbow\_onchannelmessagedeletedreceived" (message)](#Events+event_rainbow_onchannelmessagedeletedreceived)
+    -   ["rainbow\_onprofilefeatureupdated"](#Events+event_rainbow_onprofilefeatureupdated)
+    -   ["rainbow\_oncallupdated"](#Events+event_rainbow_oncallupdated)
+    -   ["rainbow\_onconferenced"](#Events+event_rainbow_onconferenced)
+    -   ["rainbow\_ontelephonystatuschanged"](#Events+event_rainbow_ontelephonystatuschanged)
+    -   ["rainbow\_onnomadicstatusevent"](#Events+event_rainbow_onnomadicstatusevent)
+    -   ["rainbow\_onvoicemessageupdated"](#Events+event_rainbow_onvoicemessageupdated)
+    -   ["rainbow\_onvoicemessagesinfo"](#Events+event_rainbow_onvoicemessagesinfo)
+    -   ["rainbow\_oncallforwarded"](#Events+event_rainbow_oncallforwarded)
+    -   ["rainbow\_onfilecreated"](#Events+event_rainbow_onfilecreated)
+    -   ["rainbow\_onfileupdated"](#Events+event_rainbow_onfileupdated)
+    -   ["rainbow\_onfiledeleted"](#Events+event_rainbow_onfiledeleted)
+    -   ["rainbow\_onthumbnailcreated"](#Events+event_rainbow_onthumbnailcreated)
+    -   ["rainbow\_onwebinarupdated" (id, kind)](#Events+event_rainbow_onwebinarupdated)
+    -   ["rainbow\_onchannelupdated" (id, kind)](#Events+event_rainbow_onchannelupdated)
+    -   ["rainbow\_onchannelusersubscription" (id, userId, kind)](#Events+event_rainbow_onchannelusersubscription)
+    -   ["rainbow\_onmediapropose" (data)](#Events+event_rainbow_onmediapropose)
+    -   ["rainbow\_onmediaretract" (data)](#Events+event_rainbow_onmediaretract)
+    -   ["rainbow\_onmediaaccept" (data)](#Events+event_rainbow_onmediaaccept)
+    -   ["rainbow\_oncalllogupdated" (calllogs)](#Events+event_rainbow_oncalllogupdated)
+    -   ["rainbow\_oncalllogackupdated" (id)](#Events+event_rainbow_oncalllogackupdated)
+    -   ["rainbow\_onfavoritecreated" (favorite)](#Events+event_rainbow_onfavoritecreated)
+    -   ["rainbow\_onfavoriteupdated" (favorite)](#Events+event_rainbow_onfavoriteupdated)
+    -   ["rainbow\_onfavoritedeleted" (favorite)](#Events+event_rainbow_onfavoritedeleted)
+    -   ["rainbow\_onxmpperror" (error)](#Events+event_rainbow_onxmpperror)
+    -   ["rainbow\_onalertmessagereceived" (Alert)](#Events+event_rainbow_onalertmessagereceived)
+    -   ["rainbow\_onbubblescontainercreated" (data)](#Events+event_rainbow_onbubblescontainercreated)
+    -   ["rainbow\_onbubblescontainerupdated" (data)](#Events+event_rainbow_onbubblescontainerupdated)
+    -   ["rainbow\_onbubblescontainerdeleted" (data)](#Events+event_rainbow_onbubblescontainerdeleted)
+    -   ["rainbow\_onusertokenrenewfailed" (data)](#Events+event_rainbow_onusertokenrenewfailed)
+    -   ["rainbow\_onusertokenwillexpire" (data)](#Events+event_rainbow_onusertokenwillexpire)
+    -   ["rainbow\_onbubblepollcreated" (data)](#Events+event_rainbow_onbubblepollcreated)
+    -   ["rainbow\_onbubblepollpublished" (data)](#Events+event_rainbow_onbubblepollpublished)
+    -   ["rainbow\_onbubblepollunpublished" (data)](#Events+event_rainbow_onbubblepollunpublished)
+    -   ["rainbow\_onbubblepollterminated" (data)](#Events+event_rainbow_onbubblepollterminated)
+    -   ["rainbow\_onbubblepolldeleted" (data)](#Events+event_rainbow_onbubblepolldeleted)
+    -   ["rainbow\_onbubblepollupdated" (data)](#Events+event_rainbow_onbubblepollupdated)
+    -   ["rainbow\_onbubblepollvoted" (data)](#Events+event_rainbow_onbubblepollvoted)
+    -   ["rainbow\_onconnectorcommand" (data)](#Events+event_rainbow_onconnectorcommand)
+    -   ["rainbow\_onconnectorconfig" (data)](#Events+event_rainbow_onconnectorconfig)
+    -   ["rainbow\_onconnectorcommandended" (data)](#Events+event_rainbow_onconnectorcommandended)
+    -   ["rainbow\_onconnectorimportstatus" (data)](#Events+event_rainbow_onconnectorimportstatus)
+    -   ["rainbow\_onEWSgetevents" (data)](#Events+event_rainbow_onEWSgetevents)
+    -   ["rainbow\_onEWSgetautoreply" (data)](#Events+event_rainbow_onEWSgetautoreply)
+    -   ["rainbow\_onrbvoicerawevent" (data)](#Events+event_rainbow_onrbvoicerawevent)
+    -   ["rainbow\_onjoincompanyinvitereceived" (data)](#Events+event_rainbow_onjoincompanyinvitereceived)
+    -   ["rainbow\_onjoincompanyrequestreceived" (data)](#Events+event_rainbow_onjoincompanyrequestreceived)
+    -   ["rainbow\_onlogsconfig" (data)](#Events+event_rainbow_onlogsconfig)
+    -   ["rainbow\_ontaskcreated" (task)](#Events+event_rainbow_ontaskcreated)
+    -   ["rainbow\_ontaskupdated" (task)](#Events+event_rainbow_ontaskupdated)
+    -   ["rainbow\_ontaskdeleted" (task)](#Events+event_rainbow_ontaskdeleted)
+    -   ["rainbow\_on429BackoffError" (data)](#Events+event_rainbow_on429BackoffError)
+    -   ["rainbow\_onrainbowcpaasreceived" (data)](#Events+event_rainbow_onrainbowcpaasreceived)
+    -   ["rainbow\_ontelephonyrvcp" (data)](#Events+event_rainbow_ontelephonyrvcp)
+    -   ["rainbow\_ontelephonyrvcppresence" (data)](#Events+event_rainbow_ontelephonyrvcppresence)
+    -   ["rainbow\_ontelephonypcg" (data)](#Events+event_rainbow_ontelephonypcg)
+    -   ["rainbow\_ontelephonypcgpresence" (data)](#Events+event_rainbow_ontelephonypcgpresence)
+    -   ["rainbow\_onconference" (data)](#Events+event_rainbow_onconference)
+    -   ["rainbow\_onpinmanagement" (data)](#Events+event_rainbow_onpinmanagement)
+    -   ["rainbow\_onvoicemailreceived" (data)](#Events+event_rainbow_onvoicemailreceived)
+    -   ["rainbow\_onstarted" (status)](#Events+event_rainbow_onstarted)
+    -   ["rainbow\_onstopped" (status)](#Events+event_rainbow_onstopped)
+    -   ["rainbow\_onconnected" (status)](#Events+event_rainbow_onconnected)
+    -   ["rainbow\_onconnectionerror" (status)](#Events+event_rainbow_onconnectionerror)
+    -   ["rainbow\_ondisconnected" (status)](#Events+event_rainbow_ondisconnected)
+    -   ["rainbow\_onreconnecting" (status)](#Events+event_rainbow_onreconnecting)
+    -   ["rainbow\_onfailed" (status)](#Events+event_rainbow_onfailed)
+    -   ["rainbow\_onerror" (error)](#Events+event_rainbow_onerror)
+    -   ["rainbow\_onready" (status)](#Events+event_rainbow_onready)
+
+---
+
+### Events()
+
+This module fires every events that come from Rainbow.  
+To receive them, you need to subscribe individually to each of the following events  
+
+---
+
+### events.onLog(event, callback) ⇒ `Object`
+
+Subscribe to an event raised when a log is done.
+
+**Kind**: instance method of [`Events`](#Events)
+
+**Returns**: `Object` - The events instance to be able to chain subscriptions
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+event
+
+`string`
+
+The event name to subscribe
+
+callback
+
+`function`
+
+The function called when the even is fired
+
+---
+
+### events.removeLogListener(event, callback) ⇒ `Object`
+
+Unsubscribe to an event raised when a log is done.
+
+**Kind**: instance method of [`Events`](#Events)
+
+**Returns**: `Object` - The events instance to be able to chain subscriptions
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+event
+
+`string`
+
+The event name to unsubscribe
+
+callback
+
+`function`
+
+The function called when the even is fired
+
+---
+
+### events.on(event, callback) ⇒ `Object`
+
+Subscribe to an event
+
+**Kind**: instance method of [`Events`](#Events)
+
+**Returns**: `Object` - The events instance to be able to chain subscriptions
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+event
+
+`string`
+
+The event name to subscribe
+
+callback
+
+`function`
+
+The function called when the even is fired
+
+---
+
+### events.removeListener(eventName, listener) ⇒ `Object`
+
+Unsubscribe to an event
+
+**Kind**: instance method of [`Events`](#Events)
+
+**Returns**: `Object` - The events instance to be able to remove a subscription from chain.
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+eventName
+
+`string`
+
+The event name to unsubscribe
+
+listener
+
+`function`
+
+The listener called when the even is fired
+
+---
+
+### events.once(event, callback) ⇒ `Object`
+
+Subscribe to an event only one time (fired only the first time)
+
+**Kind**: instance method of [`Events`](#Events)
+
+**Returns**: `Object` - The events instance to be able to chain subscriptions
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+event
+
+`string`
+
+The event name to subscribe
+
+callback
+
+`function`
+
+The function called when the even is fired
+
+---
+
+### "rainbow\_onmessageserverreceiptreceived" (receipt)
+
+Fired when the message has been received by the server
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+receipt
+
+`Object`
+
+The receipt received by the server
+
+receipt.event
+
+`string`
+
+The type of receipt. Can be `read` or `received`. Should be `received` in that case
+
+receipt.entity
+
+`string`
+
+The entity who sent the receipt. Can be `server` or `client`. Should be `server` in that case
+
+receipt.type
+
+`string`
+
+The type of the message. Can be `chat` or `groupchat`.
+
+receipt.id
+
+`string`
+
+The id of the message sent (linked to that receipt)
+
+---
+
+### "rainbow\_onmessagereceiptreceived" (receipt)
+
+Fired when the message has been received by the recipient
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+receipt
+
+`Object`
+
+The receipt received by the server
+
+receipt.event
+
+`string`
+
+The type of receipt. Can be `read` or `received`. Should be `received` in that case
+
+receipt.entity
+
+`string`
+
+The entity who sent the receipt. Can be `server` or `client`. Should be `client` in that case
+
+receipt.type
+
+`string`
+
+The type of the message. Can be `chat` or `groupchat`
+
+receipt.id
+
+`string`
+
+The id of the message sent (linked to that receipt)
+
+receipt.fromJid
+
+`string`
+
+The Bare JID of the recipient who sent this receipt,
+
+receipt.resource
+
+`string`
+
+The resource JID of the recipient who sent this receipt
+
+---
+
+### "rainbow\_onmessagereceiptreadreceived" (receipt)
+
+Fired when the message has been read by the recipient
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+receipt
+
+`Object`
+
+The receipt received by the server
+
+receipt.event
+
+`string`
+
+The type of receipt. Can be `read` or `received`. Should be `read` in that case
+
+receipt.entity
+
+`string`
+
+The entity who sent the receipt. Can be `server` or `client`. Should be `client` in that case
+
+receipt.type
+
+`string`
+
+The type of the message. Can be `chat` or `groupchat`
+
+receipt.id
+
+`string`
+
+The id of the message sent (linked to that receipt)
+
+receipt.fromJid
+
+`string`
+
+The Bare JID of the recipient who sent this receipt,
+
+receipt.resource
+
+`string`
+
+The resource JID of the recipient who sent this receipt
+
+---
+
+### "rainbow\_onxmmpeventreceived"
+
+Fired when a xmpp message is received.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+---
+
+### "rainbow\_onxmmprequestsent"
+
+Fired when an xmpp request is sent.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+---
+
+### "rainbow\_onserviceinitialized"
+
+Fired when a service is initialized, so it is ready to be used.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+---
+
+### "rainbow\_onmessagereceived" (message)
+
+Fired when a chat message is received (in a one-to-one conversation or in a Bubble conversation)
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+message
+
+`Message`
+
+The message received
+
+---
+
+### "rainbow\_onsendmessagefailed" (message)
+
+Fired when a chat message with no-store attribut sent has failed.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+message
+
+`Message`
+
+The message which failed to be sent.
+
+---
+
+### "rainbow\_onrainbowversionwarning" (data)
+
+Fired when a chat message with no-store attribut sent has failed.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+The warning object about the curent SDK version which is not the latest one provided on npmjs.com.
+
+data.label
+
+`string`
+
+The label warning.
+
+data.currentPackage
+
+`string`
+
+The curent SDK version used.
+
+data.latestPublishedPackage
+
+`string`
+
+The latest one provided on npmjs.com.
+
+---
+
+### "rainbow\_oncontactpresencechanged" (contact)
+
+Fired when the presence of a contact changes
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contact
+
+`Contact`
+
+The contact
+
+---
+
+### "rainbow\_onpresencechanged" (presence)
+
+This event is fired when the presence of the connected user changes  
+presence may be  
+\+ "unknow",  
+\+ "online" (with status "" | "mode=auto"),  
+\+ "away" (with status "" | "away"),  
+\+ "offline" (with status ""),  
+\+ "invisible" (with status ""),  
+\+ "dnd" (with status "" | "audio" | "video" | "sharing" | "presentation")  
+This event is also a confirmation from the server that the new presence value has been set
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+presence
+
+`Object`
+
+The presence object updated (jid, status, message, stamp)
+
+---
+
+### "rainbow\_onconversationremoved" (conversation)
+
+This event is fired when a conversation has been removed
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversation
+
+`Object`
+
+The conversation object
+
+conversation.conversationId
+
+`String`
+
+Conversation identifier
+
+---
+
+### "rainbow\_onconversationchanged" (conversation)
+
+This event is fired when a conversation has changed
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversation
+
+`Conversation`
+
+The conversation
+
+---
+
+### "rainbow\_onloadConversationHistoryCompleted" (conversation)
+
+This event is fired when a conversation history has finished to charge.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversation
+
+`Conversation`
+
+The conversation
+
+---
+
+### "rainbow\_onallmessagedremovedfromconversationreceived" (conversation)
+
+This event is fired when a conversation has changed
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conversation
+
+`Conversation`
+
+The conversation where the messages as all been removed.
+
+---
+
+### "rainbow\_onchatstate" (chatstate)
+
+This event is fired when a chatstate event occurs
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+chatstate
+
+`Object`
+
+The chatstate
+
+---
+
+### "rainbow\_oncontactinformationchanged" (contact)
+
+This event is fired when a conversation has been removed
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contact
+
+`Contact`
+
+The contact
+
+---
+
+### "rainbow\_onuserinformationchanged" (contact)
+
+This event is fired when informations about the connected user changed.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contact
+
+`Contact`
+
+The connected user
+
+---
+
+### "rainbow\_onuserpasswordconfig" ({action:)
+
+This event is fired when password about the connected user is managed.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+{action:
+
+`Object`
+
+string, contextid: string} The action on password.
+
+---
+
+### "rainbow\_onuserinvitereceived" (invitation)
+
+Fired when an user invitation is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+invitation
+
+`Invitation`
+
+The invitation received
+
+---
+
+### "rainbow\_onuserinviteaccepted" (invitation)
+
+Fired when an user invitation is accepted Note : A contact is added to connected user's network when this contact accepts the invitation, so the event raised is `rainbow_onuserinviteaccepted` instead of a `rainbow_contactaddedtonetwork`
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+invitation
+
+`Invitation`
+
+The invitation accepted
+
+---
+
+### "rainbow\_onuserinvitecanceled" (invitation)
+
+Fired when an user invitation is canceled
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+invitation
+
+`Invitation`
+
+The invitation canceled
+
+---
+
+### "rainbow\_oncontactremovedfromnetwork" (contact)
+
+Fired when a contact is removed from connected user's network. Note : A contact is added to connected user's network when this contact accepts the invitation, so the event raised is `rainbow_onuserinviteaccepted` instead of a `rainbow_contactaddedtonetwork`
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+contact
+
+`Object`
+
+{ jid , subscription, ask } The information of the subscrition of the contact removed from network.
+
+---
+
+### "rainbow\_onbubbleaffiliationchanged" (bubble)
+
+Fired when a user changes his affiliation with a bubble
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`Bubble`
+
+The bubble updated
+
+---
+
+### "rainbow\_onallbubbleinitialaffiliationchanged" (bubble)
+
+Fired when all buble's presence of the connected user hes been successfully sent.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`Bubble`
+
+The bubble updated
+
+---
+
+### "rainbow\_onbubblepresencechanged" (bubble)
+
+Fired when a presence changes is a user connected bubble
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`Bubble`
+
+The bubble updated
+
+---
+
+### "rainbow\_onbubbleownaffiliationchanged" (bubble)
+
+Fired when a user changes the user connected affiliation with a bubble
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`Bubble`
+
+The bubble updated
+
+---
+
+### "rainbow\_onbubbledeleted" (bubble)
+
+Fired when a user deletes a bubble the user is affiliated to
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`Bubble`
+
+The bubble deleted
+
+---
+
+### "rainbow\_onbubbleinvitationreceived" (bubble)
+
+Fired when an invitation to join a bubble is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`Bubble`
+
+The invitation bubble
+
+---
+
+### "rainbow\_onbubblecontactinvitationreceived" (invitation)
+
+Fired when an invitation to join a bubble is received for a contact.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+invitation
+
+`any`
+
+The invitation bubble {contact: Contact, bubble: Bubble, content: string, subject:string}
+
+---
+
+### "rainbow\_onbubbleconferencestartedreceived" (bubble)
+
+Fired when an event conference start in a bubble is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`Bubble`
+
+The bubble of the conference started.
+
+---
+
+### "rainbow\_onbubbleconferencestoppedreceived" (bubble)
+
+Fired when an event conference stop in a bubble is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`Bubble`
+
+The bubble of the conference stopped.
+
+---
+
+### "rainbow\_onbubbleconferencedelegatereceived" (bubble, userIdEvent)
+
+Fired when an event conference delegate in a bubble is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`Bubble`
+
+The bubble of the conference stopped.
+
+userIdEvent
+
+`Bubble`
+
+The id of the user getting the delegation of conference.
+
+---
+
+### "rainbow\_onbubbleconferenceupdated" (conference)
+
+Fired when an event conference is updated.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+conference
+
+`Object`
+
+The conference is updated.
+
+---
+
+### "rainbow\_onbubblecustomdatachanged" (bubble)
+
+Fired when the custom data of a bubble has changed
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`Bubble`
+
+The bubble updated with the new custom data set
+
+---
+
+### "rainbow\_onbubblecontactchanged" (bubble)
+
+Fired when the contact data of a bubble has changed
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`Object`
+
+The contact updated in the bubble.
+
+---
+
+### "rainbow\_onbubbletopicchanged" (bubble)
+
+Fired when the topic of a bubble has changed
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`Bubble`
+
+The bubble updated with the new topic set
+
+---
+
+### "rainbow\_onbubbleprivilegechanged" (bubble)
+
+Fired when the privilage of a bubble has changed
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`Object`
+
+The bubble updated with the new privilege set privilege The privilege updated (Can be moderator, user, owner)
+
+---
+
+### "rainbow\_onbubbleavatarchanged" (bubble)
+
+Fired when the avatar of a bubble has changed
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`Bubble`
+
+The bubble updated with a new avatar
+
+---
+
+### "rainbow\_onbubblenamechanged" (bubble)
+
+Fired when the name of a bubble has changed
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`Bubble`
+
+The bubble updated with the new name set
+
+---
+
+### "rainbow\_onopeninvitationupdate" (openInvite)
+
+Fired when a management event on a public URL share of a bubble has changed
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+openInvite
+
+`Object`
+
+The informations about the a management event on a public URL share of a bubble.
+
+---
+
+### "rainbow\_ongroupcreated" (group)
+
+Fired when a group is created
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+group
+
+`Group`
+
+The created group
+
+---
+
+### "rainbow\_ongroupdeleted" (group)
+
+Fired when a group is deleted
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+group
+
+`Group`
+
+The deleted group
+
+---
+
+### "rainbow\_ongroupupdated" (group)
+
+Fired when a group is updated
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+group
+
+`Group`
+
+The updated group
+
+---
+
+### "rainbow\_onuseraddedingroup" (group, contact)
+
+Fired when a user is added in a group
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+group
+
+`Group`
+
+The group where the user is added
+
+contact
+
+`Contact`
+
+The user added
+
+---
+
+### "rainbow\_onuserremovedfromgroup" (group, contact)
+
+Fired when a user is removed from a group
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+group
+
+`Group`
+
+The group where the user is removed
+
+contact
+
+`Contact`
+
+The user removed
+
+---
+
+### "rainbow\_onchannelmessagereceived" (message)
+
+Fired when a message is received from a channel
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+message
+
+`ChannelMessage`
+
+The message received
+
+---
+
+### "rainbow\_onchannelmyappreciationreceived" (appreciation)
+
+Fired when a message is received from a channel
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+appreciation
+
+`Object`
+
+The appreciation received
+
+---
+
+### "rainbow\_onchannelmessagedeletedreceived" (message)
+
+Fired when a message is received from a channel
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+message
+
+`messageId`
+
+The id of the deleted message received
+
+---
+
+### "rainbow\_onprofilefeatureupdated"
+
+Fired when a profile feature updated event is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+| | | |
+
+---
+
+### "rainbow\_oncallupdated"
+
+Fired when a call event is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Type
+
+`data`
+
+---
+
+### "rainbow\_onconferenced"
+
+Fired when a conference event is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Type
+
+`data`
+
+---
+
+### "rainbow\_ontelephonystatuschanged"
+
+Fired when status of the telephony service event is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Type
+
+`data`
+
+---
+
+### "rainbow\_onnomadicstatusevent"
+
+Fired for nomadic of the telephony event
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Type
+
+`data`
+
+---
+
+### "rainbow\_onvoicemessageupdated"
+
+Fired when a voice message updated event is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Type
+
+`data`
+
+---
+
+### "rainbow\_onvoicemessagesinfo"
+
+Fired when voice messages infos updated event is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Type
+
+`data`
+
+---
+
+### "rainbow\_oncallforwarded"
+
+Fired when a call forwarded event is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Type
+
+`data`
+
+---
+
+### "rainbow\_onfilecreated"
+
+Fired when a file created event is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Type
+
+`data`
+
+---
+
+### "rainbow\_onfileupdated"
+
+Fired when a file updated event is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Type
+
+`data`
+
+---
+
+### "rainbow\_onfiledeleted"
+
+Fired when a file deleted event is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Type
+
+`data`
+
+---
+
+### "rainbow\_onthumbnailcreated"
+
+Fired when a thumbnail created event is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Type
+
+`data`
+
+---
+
+### "rainbow\_onwebinarupdated" (id, kind)
+
+Fired when a webinar update event is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`String`
+
+The id of the channel
+
+kind
+
+`Number`
+
+The kind of change (ADD: 0, REMOVE: 2)
+
+---
+
+### "rainbow\_onchannelupdated" (id, kind)
+
+Fired when a channel update event is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`String`
+
+The id of the channel
+
+kind
+
+`Number`
+
+The kind of change (ADD: 0, UPDATE: 1, REMOVE: 2, SUBSCRIBE: 4, UNSUBSCRIBE: 5)
+
+---
+
+### "rainbow\_onchannelusersubscription" (id, userId, kind)
+
+Fired when a user channel subscription event is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`String`
+
+The id of the channel
+
+userId
+
+`String`
+
+The id of the user
+
+kind
+
+`Number`
+
+The kind of change (SUBSCRIBE: 4, UNSUBSCRIBE: 5)
+
+---
+
+### "rainbow\_onmediapropose" (data)
+
+Fired when received an event of propose for media.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+infos about the proposed for media :  
+{ Contact } data.contact infos about the contact who proposed for media  
+{ string } data.xmlns namespace of the propose action  
+{ string } data.resource resource the resource that has sent the proposed event.  
+{ Object } data.description { media : string, xmlns :string } infos about media for the proposed event.  
+{ Object } data.unifiedplan { xmlns : string } information about the version stack proposed.  
+{ string } data.id id of the propose action, can be used to follow the call if retractected.  
+
+---
+
+### "rainbow\_onmediaretract" (data)
+
+Fired when received an event of propose for media.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+infos about the proposed for media :  
+{ Contact } data.contact infos about the contact who proposed for media  
+{ resource } data.resource the resource that has sent the proposed event.  
+{ string } data.xmlns namespace of the propose action  
+{ string } data.id id of the retract action, it is the call propose id received before.  
+
+---
+
+### "rainbow\_onmediaaccept" (data)
+
+Fired when received an event of accept for media.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+infos about the accept Webrtc call :  
+{ Contact } data.contact infos about the contact who accept for media  
+{ resource } data.resource the resource that has sent the accept event.  
+{ string } data.xmlns namespace of the accept action  
+{ string } data.id id of the accept action, it is the call propose id received before.  
+
+---
+
+### "rainbow\_oncalllogupdated" (calllogs)
+
+Fired when the calllog is updated
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+calllogs
+
+`Object`
+
+The callogs of the user
+
+---
+
+### "rainbow\_oncalllogackupdated" (id)
+
+Fired when the number of ack of calllog changes
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+id
+
+`Object`
+
+The calllog of the user
+
+---
+
+### "rainbow\_onfavoritecreated" (favorite)
+
+Fired when a favorite is added to the loggued in user.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+favorite
+
+`Favorite`
+
+The favorite created
+
+---
+
+### "rainbow\_onfavoriteupdated" (favorite)
+
+Fired when a favorite is updated to the loggued in user.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+favorite
+
+`Favorite`
+
+The favorite updated
+
+---
+
+### "rainbow\_onfavoritedeleted" (favorite)
+
+Fired when a favorite is suppressed to the loggued in user.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+favorite
+
+`Favorite`
+
+The favorite deleted
+
+---
+
+### "rainbow\_onxmpperror" (error)
+
+Fired when an XMPP Error events happens.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+error
+
+`Object`
+
+xmpp received.
+
+---
+
+### "rainbow\_onalertmessagereceived" (Alert)
+
+Fired when an Alert events happens.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+Alert
+
+`AlertMessage`
+
+received.
+
+---
+
+### "rainbow\_onbubblescontainercreated" (data)
+
+Fired when a container of bubbles created event is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about container and bubbles linked containerName: string The name of the container. containerId: string The id of the container. containerDescription: string The description of the container. bubblesAdded: Array list of bubbles added bubblesRemoved: Array list of bubbles removed
+
+---
+
+### "rainbow\_onbubblescontainerupdated" (data)
+
+Fired when a container of bubbles updated event is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about container and bubbles linked containerName: string, The name of the container. containerId: string, The id of the container. containerDescription: string The description of the container. bubblesAdded: Array list of bubbles added bubblesRemoved: Array list of bubbles removed
+
+---
+
+### "rainbow\_onbubblescontainerdeleted" (data)
+
+Fired when a container of bubbles deleted event is received
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about container and bubbles linked containerName: string, The name of the container. containerId: string, The id of the container. containerDescription: string The description of the container. bubblesAdded: Array list of bubbles added bubblesRemoved: Array list of bubbles removed
+
+---
+
+### "rainbow\_onusertokenrenewfailed" (data)
+
+Fired when an oauth token is expired event is received. Application must refresh the token and send it back to SDK with `setRenewedToken` API.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about token expired
+
+---
+
+### "rainbow\_onusertokenwillexpire" (data)
+
+This event is fired when the duration of the current user token reaches half of the maximum time. For instance, if the token is valid for 1 hour, this event will arrive at 30 minutes. Application must refresh the token and send it back to SDK with `setRenewedToken` API. It is recommended to renew the token upon the arrival of this event.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about token expired
+
+---
+
+### "rainbow\_onbubblepollcreated" (data)
+
+This event is fired when a poll is created in bubble.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about poll
+
+---
+
+### "rainbow\_onbubblepollpublished" (data)
+
+This event is fired when a poll is Published in bubble.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about poll
+
+---
+
+### "rainbow\_onbubblepollunpublished" (data)
+
+This event is fired when a poll is unpublished in bubble.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about poll
+
+---
+
+### "rainbow\_onbubblepollterminated" (data)
+
+This event is fired when a poll is terminated in bubble.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about poll
+
+---
+
+### "rainbow\_onbubblepolldeleted" (data)
+
+This event is fired when a poll is deleted in bubble.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about poll
+
+---
+
+### "rainbow\_onbubblepollupdated" (data)
+
+This event is fired when a poll is updated in bubble.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about poll
+
+---
+
+### "rainbow\_onbubblepollvoted" (data)
+
+This event is fired when a poll is voted in bubble.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about poll
+
+---
+
+### "rainbow\_onconnectorcommand" (data)
+
+This event is fired when a command is sent to connector's jid\_im.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about connector command
+
+---
+
+### "rainbow\_onconnectorconfig" (data)
+
+This event is fired when a config is sent to connector's jid\_im.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about connector config
+
+---
+
+### "rainbow\_onconnectorcommandended" (data)
+
+This event is fired in case a query parameter commandId is added to the AdminService::checkCSVdataForSynchronizeDirectory method.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about connector command
+
+---
+
+### "rainbow\_onconnectorimportstatus" (data)
+
+This event is fired in case an import is requested.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about connector import status
+
+---
+
+### "rainbow\_onEWSgetevents" (data)
+
+This event is fired in case an EWS get events request is received.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+**Remarks**:  
+See presenceService.sendResultCalendarEvents [#/documentation/doc/sdk/node/lts/api/presence#module\_PresenceService+sendResultCalendarEvents](#/documentation/doc/sdk/node/lts/api/presence#module_PresenceService+sendResultCalendarEvents) for reply to event.
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about EWS get events
+
+---
+
+### "rainbow\_onEWSgetautoreply" (data)
+
+This event is fired in case an EWS get events Autoreply request is received.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+**Remarks**:  
+See presenceService.sendAutoReplyEvents [#/documentation/doc/sdk/node/lts/api/presence#module\_PresenceService+sendAutoReplyEvents](#/documentation/doc/sdk/node/lts/api/presence#module_PresenceService+sendAutoReplyEvents) for reply to event.
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about EWS get Autoreply
+
+---
+
+### "rainbow\_onrbvoicerawevent" (data)
+
+This event is fired in case a of rainbow voice event.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about rainbow voice events
+
+---
+
+### "rainbow\_onjoincompanyinvitereceived" (data)
+
+This event is fired in case a of rainbow join company invite event.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about rainbow join company invite events
+
+---
+
+### "rainbow\_onjoincompanyrequestreceived" (data)
+
+This event is fired in case a of rainbow join company request event.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about rainbow join company request events
+
+---
+
+### "rainbow\_onlogsconfig" (data)
+
+This event is fired when a logs config is received.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`Object`
+
+informations about logs config
+
+---
+
+### "rainbow\_ontaskcreated" (task)
+
+Fired when a task is added to the loggued in user.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+task
+
+`Favorite`
+
+The task created
+
+---
+
+### "rainbow\_ontaskupdated" (task)
+
+Fired when a task is updated to the loggued in user.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+task
+
+`Favorite`
+
+The task updated
+
+---
+
+### "rainbow\_ontaskdeleted" (task)
+
+Fired when a task is suppressed to the loggued in user.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+task
+
+`Favorite`
+
+The task deleted
+
+---
+
+### "rainbow\_on429BackoffError" (data)
+
+Fired when a request initialy failed and is trying to be retreated by backoff process.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`request` \\
+
+`error`
+
+The request and the error raised by backoff
+
+---
+
+### "rainbow\_onrainbowcpaasreceived" (data)
+
+Fired when a `rainbow-cpaas` event is receveid for a private data exchange.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`any` \\
+
+`error`
+
+The data of the event.
+
+---
+
+### "rainbow\_ontelephonyrvcp" (data)
+
+Fired when a `telephonyrvcp` event is receveid from S2S server.  
+{  
+event : object  
+  
+
+ts
+
+integer
+
+unix timestamp in milliseconds since January 1970
+
+seqNum
+
+integer
+
+incremented each time that a telephony/event is sent for the user (can be used for synchronisation)
+
+cause
+
+string
+
+specifies the reason for the event (same as the CSTA event cause)
+
+calls
+
+Array of objects
+
+provides changes on the Calls (note: in case of transfer 2 different Call may be provided)
+
+endpoints
+
+Array of objects
+
+provides changes on the involved Endpoints (callId is provided in order to correlate the Endpoint with a Call)
+
+legs
+
+Array of objects
+
+provides changes on the involved Legs (callId is provided in order to correlate the Leg with a Call)
+
+devices
+
+Array of objects
+
+provides changes on the user devices : out of service / in service
+
+  
+}  
+  
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`any` \\
+
+`error`
+
+The data of the event.
+
+---
+
+### "rainbow\_ontelephonyrvcppresence" (data)
+
+Fired when a `telephonyrvcppresence` event is receveid from S2S server.  
+{  
+//user's id  
+from : string,  
+// user's telephony state  
+state : string // Enum: "busy" "free" "out\_of\_service"  
+}  
+  
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`any` \\
+
+`error`
+
+The data of the event.
+
+---
+
+### "rainbow\_ontelephonypcg" (data)
+
+Fired when a `telephonypcg` event is receveid from S2S server.  
+{  
+//telephony event name  
+event : string, // Enum: "connectionCleared" "conferenced" "delivered" "diverted" "established" "failed" "forwarded" "initiated" "originated" "queued" "updated" "updateCall" "callSubject"  
+data : object  
+}  
+  
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`any` \\
+
+`error`
+
+The data of the event.
+
+---
+
+### "rainbow\_ontelephonypcgpresence" (data)
+
+Fired when a `telephonypcgpresence` event is receveid from S2S server.  
+{  
+// user's id  
+from : string,  
+// user's telephony state  
+state : string // Enum: "busy" "free" "out\_of\_service"  
+}  
+  
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`any` \\
+
+`error`
+
+The data of the event.
+
+---
+
+### "rainbow\_onconference" (data)
+
+Fired when a `conference` event is receveid from S2S server.  
+{  
+event : object  
+}  
+  
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`any` \\
+
+`error`
+
+The data of the event.
+
+---
+
+### "rainbow\_onpinmanagement" (data)
+
+Fired when a `pined message` event is received from server.  
+{  
+pinId: string, // Id of the pin  
+action: string, // Management action  
+peerId: string, // peerId  
+content: string // Content of the pined  
+}  
+  
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`any` \\
+
+`error`
+
+The data of the pin.
+
+---
+
+### "rainbow\_onvoicemailreceived" (data)
+
+Fired when a `voiceMail item` event is received from server.  
+{  
+jid: voiceMailJson\['$attrs'\].jid,  
+date: voiceMailJson\['$attrs'\].date,  
+duration: voiceMailJson\['$attrs'\].duration,  
+fileDescId: voiceMailJson\['$attrs'\].fileDescId,  
+fromNumber: voiceMailJson\['$attrs'\].fromNumber,  
+transcript: pinJvoiceMailJsonson\['$attrs'\].transcript,  
+}  
+  
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+data
+
+`any` \\
+
+`error`
+
+The data of a received voiceMail item.
+
+---
+
+### "rainbow\_onstarted" (status)
+
+Fired when the SDK has successfully started (the object is contructed, but the bot is not yet signed in, and the SDK's APIs are not ready to be used.)
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+status
+
+`Object`
+
+The event status
+
+---
+
+### "rainbow\_onstopped" (status)
+
+Fired when the SDK has been successfully stopped (all services have been stopped)
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+status
+
+`Object`
+
+The event status
+
+---
+
+### "rainbow\_onconnected" (status)
+
+Fired when the connection is successfull with Rainbow XMPP server (signin complete, but data for initialisation not yet retrieved)
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+status
+
+`Object`
+
+The event status
+
+---
+
+### "rainbow\_onconnectionerror" (status)
+
+Fired when the connection can't be done with Rainbow (ie. issue on sign-in)
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+status
+
+`Object`
+
+The event status
+
+---
+
+### "rainbow\_ondisconnected" (status)
+
+Fired when the SDK lost the connection with Rainbow
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+status
+
+`Object`
+
+The event status
+
+---
+
+### "rainbow\_onreconnecting" (status)
+
+Fired when the SDK tries to reconnect
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+status
+
+`Object`
+
+The event status
+
+---
+
+### "rainbow\_onfailed" (status)
+
+Fired when the SDK didn't succeed to reconnect and stop trying
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+status
+
+`Object`
+
+The event status
+
+---
+
+### "rainbow\_onerror" (error)
+
+Fired when something goes fatal on Xmpp server (ie: bad 'configurations' parameter...). Used by application to start the sdk again.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+error
+
+`Object`
+
+The error received
+
+---
+
+### "rainbow\_onready" (status)
+
+Fired when the SDK is connected to Rainbow and ready to be used. It is this event which allows application to start the use of SDK's APIs.
+
+**Kind**: event emitted by [`Events`](#Events)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+status
+
+`Object`
+
+The event status
+
+---
+
+### On this page
+
+-   [Events](/docs/sdk/node#name-events-3)
+-   [Events()](/docs/sdk/node#name-events-640)
+-   [events.onLog(event, callback) ⇒ Object](/docs/sdk/node#name-events.onlogevent-callback--object-650)
+-   [events.removeLogListener(event, callback) ⇒ Object](/docs/sdk/node#name-events.removeloglistenerevent-callback--object-708)
+-   [events.on(event, callback) ⇒ Object](/docs/sdk/node#name-events.onevent-callback--object-766)
+-   [events.removeListener(eventName, listener) ⇒ Object](/docs/sdk/node#name-events.removelistenereventname-listener--object-824)
+-   [events.once(event, callback) ⇒ Object](/docs/sdk/node#name-events.onceevent-callback--object-882)
+-   ["rainbow\_onmessageserverreceiptreceived" (receipt)](/docs/sdk/node#name-rainbow_onmessageserverreceiptreceived-receipt-940)
+-   ["rainbow\_onmessagereceiptreceived" (receipt)](/docs/sdk/node#name-rainbow_onmessagereceiptreceived-receipt-1028)
+-   ["rainbow\_onmessagereceiptreadreceived" (receipt)](/docs/sdk/node#name-rainbow_onmessagereceiptreadreceived-receipt-1138)
+-   ["rainbow\_onxmmpeventreceived"](/docs/sdk/node#name-rainbow_onxmmpeventreceived-1248)
+-   ["rainbow\_onxmmprequestsent"](/docs/sdk/node#name-rainbow_onxmmprequestsent-1264)
+-   ["rainbow\_onserviceinitialized"](/docs/sdk/node#name-rainbow_onserviceinitialized-1280)
+-   ["rainbow\_onmessagereceived" (message)](/docs/sdk/node#name-rainbow_onmessagereceived-message-1296)
+-   ["rainbow\_onsendmessagefailed" (message)](/docs/sdk/node#name-rainbow_onsendmessagefailed-message-1340)
+-   ["rainbow\_onrainbowversionwarning" (data)](/docs/sdk/node#name-rainbow_onrainbowversionwarning-data-1384)
+-   ["rainbow\_oncontactpresencechanged" (contact)](/docs/sdk/node#name-rainbow_oncontactpresencechanged-contact-1461)
+-   ["rainbow\_onpresencechanged" (presence)](/docs/sdk/node#name-rainbow_onpresencechanged-presence-1505)
+-   ["rainbow\_onconversationremoved" (conversation)](/docs/sdk/node#name-rainbow_onconversationremoved-conversation-1549)
+-   ["rainbow\_onconversationchanged" (conversation)](/docs/sdk/node#name-rainbow_onconversationchanged-conversation-1604)
+-   ["rainbow\_onloadConversationHistoryCompleted" (conversation)](/docs/sdk/node#name-rainbow_onloadconversationhistorycompleted-conversation-1648)
+-   ["rainbow\_onallmessagedremovedfromconversationreceived" (conversation)](/docs/sdk/node#name-rainbow_onallmessagedremovedfromconversationreceived-conversation-1692)
+-   ["rainbow\_onchatstate" (chatstate)](/docs/sdk/node#name-rainbow_onchatstate-chatstate-1736)
+-   ["rainbow\_oncontactinformationchanged" (contact)](/docs/sdk/node#name-rainbow_oncontactinformationchanged-contact-1780)
+-   ["rainbow\_onuserinformationchanged" (contact)](/docs/sdk/node#name-rainbow_onuserinformationchanged-contact-1824)
+-   ["rainbow\_onuserpasswordconfig" ({action:)](/docs/sdk/node#name-rainbow_onuserpasswordconfig-action:-1868)
+-   ["rainbow\_onuserinvitereceived" (invitation)](/docs/sdk/node#name-rainbow_onuserinvitereceived-invitation-1912)
+-   ["rainbow\_onuserinviteaccepted" (invitation)](/docs/sdk/node#name-rainbow_onuserinviteaccepted-invitation-1956)
+-   ["rainbow\_onuserinvitecanceled" (invitation)](/docs/sdk/node#name-rainbow_onuserinvitecanceled-invitation-2000)
+-   ["rainbow\_oncontactremovedfromnetwork" (contact)](/docs/sdk/node#name-rainbow_oncontactremovedfromnetwork-contact-2044)
+-   ["rainbow\_onbubbleaffiliationchanged" (bubble)](/docs/sdk/node#name-rainbow_onbubbleaffiliationchanged-bubble-2088)
+-   ["rainbow\_onallbubbleinitialaffiliationchanged" (bubble)](/docs/sdk/node#name-rainbow_onallbubbleinitialaffiliationchanged-bubble-2132)
+-   ["rainbow\_onbubblepresencechanged" (bubble)](/docs/sdk/node#name-rainbow_onbubblepresencechanged-bubble-2176)
+-   ["rainbow\_onbubbleownaffiliationchanged" (bubble)](/docs/sdk/node#name-rainbow_onbubbleownaffiliationchanged-bubble-2220)
+-   ["rainbow\_onbubbledeleted" (bubble)](/docs/sdk/node#name-rainbow_onbubbledeleted-bubble-2264)
+-   ["rainbow\_onbubbleinvitationreceived" (bubble)](/docs/sdk/node#name-rainbow_onbubbleinvitationreceived-bubble-2308)
+-   ["rainbow\_onbubblecontactinvitationreceived" (invitation)](/docs/sdk/node#name-rainbow_onbubblecontactinvitationreceived-invitation-2352)
+-   ["rainbow\_onbubbleconferencestartedreceived" (bubble)](/docs/sdk/node#name-rainbow_onbubbleconferencestartedreceived-bubble-2396)
+-   ["rainbow\_onbubbleconferencestoppedreceived" (bubble)](/docs/sdk/node#name-rainbow_onbubbleconferencestoppedreceived-bubble-2440)
+-   ["rainbow\_onbubbleconferencedelegatereceived" (bubble, userIdEvent)](/docs/sdk/node#name-rainbow_onbubbleconferencedelegatereceived-bubble-useridevent-2484)
+-   ["rainbow\_onbubbleconferenceupdated" (conference)](/docs/sdk/node#name-rainbow_onbubbleconferenceupdated-conference-2539)
+-   ["rainbow\_onbubblecustomdatachanged" (bubble)](/docs/sdk/node#name-rainbow_onbubblecustomdatachanged-bubble-2583)
+-   ["rainbow\_onbubblecontactchanged" (bubble)](/docs/sdk/node#name-rainbow_onbubblecontactchanged-bubble-2627)
+-   ["rainbow\_onbubbletopicchanged" (bubble)](/docs/sdk/node#name-rainbow_onbubbletopicchanged-bubble-2671)
+-   ["rainbow\_onbubbleprivilegechanged" (bubble)](/docs/sdk/node#name-rainbow_onbubbleprivilegechanged-bubble-2715)
+-   ["rainbow\_onbubbleavatarchanged" (bubble)](/docs/sdk/node#name-rainbow_onbubbleavatarchanged-bubble-2759)
+-   ["rainbow\_onbubblenamechanged" (bubble)](/docs/sdk/node#name-rainbow_onbubblenamechanged-bubble-2803)
+-   ["rainbow\_onopeninvitationupdate" (openInvite)](/docs/sdk/node#name-rainbow_onopeninvitationupdate-openinvite-2847)
+-   ["rainbow\_ongroupcreated" (group)](/docs/sdk/node#name-rainbow_ongroupcreated-group-2891)
+-   ["rainbow\_ongroupdeleted" (group)](/docs/sdk/node#name-rainbow_ongroupdeleted-group-2935)
+-   ["rainbow\_ongroupupdated" (group)](/docs/sdk/node#name-rainbow_ongroupupdated-group-2979)
+-   ["rainbow\_onuseraddedingroup" (group, contact)](/docs/sdk/node#name-rainbow_onuseraddedingroup-group-contact-3023)
+-   ["rainbow\_onuserremovedfromgroup" (group, contact)](/docs/sdk/node#name-rainbow_onuserremovedfromgroup-group-contact-3078)
+-   ["rainbow\_onchannelmessagereceived" (message)](/docs/sdk/node#name-rainbow_onchannelmessagereceived-message-3133)
+-   ["rainbow\_onchannelmyappreciationreceived" (appreciation)](/docs/sdk/node#name-rainbow_onchannelmyappreciationreceived-appreciation-3177)
+-   ["rainbow\_onchannelmessagedeletedreceived" (message)](/docs/sdk/node#name-rainbow_onchannelmessagedeletedreceived-message-3221)
+-   ["rainbow\_onprofilefeatureupdated"](/docs/sdk/node#name-rainbow_onprofilefeatureupdated-3265)
+-   ["rainbow\_oncallupdated"](/docs/sdk/node#name-rainbow_oncallupdated-3284)
+-   ["rainbow\_onconferenced"](/docs/sdk/node#name-rainbow_onconferenced-3316)
+-   ["rainbow\_ontelephonystatuschanged"](/docs/sdk/node#name-rainbow_ontelephonystatuschanged-3348)
+-   ["rainbow\_onnomadicstatusevent"](/docs/sdk/node#name-rainbow_onnomadicstatusevent-3380)
+-   ["rainbow\_onvoicemessageupdated"](/docs/sdk/node#name-rainbow_onvoicemessageupdated-3412)
+-   ["rainbow\_onvoicemessagesinfo"](/docs/sdk/node#name-rainbow_onvoicemessagesinfo-3444)
+-   ["rainbow\_oncallforwarded"](/docs/sdk/node#name-rainbow_oncallforwarded-3476)
+-   ["rainbow\_onfilecreated"](/docs/sdk/node#name-rainbow_onfilecreated-3508)
+-   ["rainbow\_onfileupdated"](/docs/sdk/node#name-rainbow_onfileupdated-3540)
+-   ["rainbow\_onfiledeleted"](/docs/sdk/node#name-rainbow_onfiledeleted-3572)
+-   ["rainbow\_onthumbnailcreated"](/docs/sdk/node#name-rainbow_onthumbnailcreated-3604)
+-   ["rainbow\_onwebinarupdated" (id, kind)](/docs/sdk/node#name-rainbow_onwebinarupdated-id-kind-3636)
+-   ["rainbow\_onchannelupdated" (id, kind)](/docs/sdk/node#name-rainbow_onchannelupdated-id-kind-3691)
+-   ["rainbow\_onchannelusersubscription" (id, userId, kind)](/docs/sdk/node#name-rainbow_onchannelusersubscription-id-userid-kind-3746)
+-   ["rainbow\_onmediapropose" (data)](/docs/sdk/node#name-rainbow_onmediapropose-data-3812)
+-   ["rainbow\_onmediaretract" (data)](/docs/sdk/node#name-rainbow_onmediaretract-data-3856)
+-   ["rainbow\_onmediaaccept" (data)](/docs/sdk/node#name-rainbow_onmediaaccept-data-3900)
+-   ["rainbow\_oncalllogupdated" (calllogs)](/docs/sdk/node#name-rainbow_oncalllogupdated-calllogs-3944)
+-   ["rainbow\_oncalllogackupdated" (id)](/docs/sdk/node#name-rainbow_oncalllogackupdated-id-3988)
+-   ["rainbow\_onfavoritecreated" (favorite)](/docs/sdk/node#name-rainbow_onfavoritecreated-favorite-4032)
+-   ["rainbow\_onfavoriteupdated" (favorite)](/docs/sdk/node#name-rainbow_onfavoriteupdated-favorite-4076)
+-   ["rainbow\_onfavoritedeleted" (favorite)](/docs/sdk/node#name-rainbow_onfavoritedeleted-favorite-4120)
+-   ["rainbow\_onxmpperror" (error)](/docs/sdk/node#name-rainbow_onxmpperror-error-4164)
+-   ["rainbow\_onalertmessagereceived" (Alert)](/docs/sdk/node#name-rainbow_onalertmessagereceived-alert-4208)
+-   ["rainbow\_onbubblescontainercreated" (data)](/docs/sdk/node#name-rainbow_onbubblescontainercreated-data-4252)
+-   ["rainbow\_onbubblescontainerupdated" (data)](/docs/sdk/node#name-rainbow_onbubblescontainerupdated-data-4296)
+-   ["rainbow\_onbubblescontainerdeleted" (data)](/docs/sdk/node#name-rainbow_onbubblescontainerdeleted-data-4340)
+-   ["rainbow\_onusertokenrenewfailed" (data)](/docs/sdk/node#name-rainbow_onusertokenrenewfailed-data-4384)
+-   ["rainbow\_onusertokenwillexpire" (data)](/docs/sdk/node#name-rainbow_onusertokenwillexpire-data-4428)
+-   ["rainbow\_onbubblepollcreated" (data)](/docs/sdk/node#name-rainbow_onbubblepollcreated-data-4472)
+-   ["rainbow\_onbubblepollpublished" (data)](/docs/sdk/node#name-rainbow_onbubblepollpublished-data-4516)
+-   ["rainbow\_onbubblepollunpublished" (data)](/docs/sdk/node#name-rainbow_onbubblepollunpublished-data-4560)
+-   ["rainbow\_onbubblepollterminated" (data)](/docs/sdk/node#name-rainbow_onbubblepollterminated-data-4604)
+-   ["rainbow\_onbubblepolldeleted" (data)](/docs/sdk/node#name-rainbow_onbubblepolldeleted-data-4648)
+-   ["rainbow\_onbubblepollupdated" (data)](/docs/sdk/node#name-rainbow_onbubblepollupdated-data-4692)
+-   ["rainbow\_onbubblepollvoted" (data)](/docs/sdk/node#name-rainbow_onbubblepollvoted-data-4736)
+-   ["rainbow\_onconnectorcommand" (data)](/docs/sdk/node#name-rainbow_onconnectorcommand-data-4780)
+-   ["rainbow\_onconnectorconfig" (data)](/docs/sdk/node#name-rainbow_onconnectorconfig-data-4824)
+-   ["rainbow\_onconnectorcommandended" (data)](/docs/sdk/node#name-rainbow_onconnectorcommandended-data-4868)
+-   ["rainbow\_onconnectorimportstatus" (data)](/docs/sdk/node#name-rainbow_onconnectorimportstatus-data-4912)
+-   ["rainbow\_onEWSgetevents" (data)](/docs/sdk/node#name-rainbow_onewsgetevents-data-4956)
+-   ["rainbow\_onEWSgetautoreply" (data)](/docs/sdk/node#name-rainbow_onewsgetautoreply-data-5003)
+-   ["rainbow\_onrbvoicerawevent" (data)](/docs/sdk/node#name-rainbow_onrbvoicerawevent-data-5050)
+-   ["rainbow\_onjoincompanyinvitereceived" (data)](/docs/sdk/node#name-rainbow_onjoincompanyinvitereceived-data-5094)
+-   ["rainbow\_onjoincompanyrequestreceived" (data)](/docs/sdk/node#name-rainbow_onjoincompanyrequestreceived-data-5138)
+-   ["rainbow\_onlogsconfig" (data)](/docs/sdk/node#name-rainbow_onlogsconfig-data-5182)
+-   ["rainbow\_ontaskcreated" (task)](/docs/sdk/node#name-rainbow_ontaskcreated-task-5226)
+-   ["rainbow\_ontaskupdated" (task)](/docs/sdk/node#name-rainbow_ontaskupdated-task-5270)
+-   ["rainbow\_ontaskdeleted" (task)](/docs/sdk/node#name-rainbow_ontaskdeleted-task-5314)
+-   ["rainbow\_on429BackoffError" (data)](/docs/sdk/node#name-rainbow_on429backofferror-data-5358)
+-   ["rainbow\_onrainbowcpaasreceived" (data)](/docs/sdk/node#name-rainbow_onrainbowcpaasreceived-data-5405)
+-   ["rainbow\_ontelephonyrvcp" (data)](/docs/sdk/node#name-rainbow_ontelephonyrvcp-data-5452)
+-   ["rainbow\_ontelephonyrvcppresence" (data)](/docs/sdk/node#name-rainbow_ontelephonyrvcppresence-data-5596)
+-   ["rainbow\_ontelephonypcg" (data)](/docs/sdk/node#name-rainbow_ontelephonypcg-data-5643)
+-   ["rainbow\_ontelephonypcgpresence" (data)](/docs/sdk/node#name-rainbow_ontelephonypcgpresence-data-5690)
+-   ["rainbow\_onconference" (data)](/docs/sdk/node#name-rainbow_onconference-data-5737)
+-   ["rainbow\_onpinmanagement" (data)](/docs/sdk/node#name-rainbow_onpinmanagement-data-5784)
+-   ["rainbow\_onvoicemailreceived" (data)](/docs/sdk/node#name-rainbow_onvoicemailreceived-data-5831)
+-   ["rainbow\_onstarted" (status)](/docs/sdk/node#name-rainbow_onstarted-status-5878)
+-   ["rainbow\_onstopped" (status)](/docs/sdk/node#name-rainbow_onstopped-status-5922)
+-   ["rainbow\_onconnected" (status)](/docs/sdk/node#name-rainbow_onconnected-status-5966)
+-   ["rainbow\_onconnectionerror" (status)](/docs/sdk/node#name-rainbow_onconnectionerror-status-6010)
+-   ["rainbow\_ondisconnected" (status)](/docs/sdk/node#name-rainbow_ondisconnected-status-6054)
+-   ["rainbow\_onreconnecting" (status)](/docs/sdk/node#name-rainbow_onreconnecting-status-6098)
+-   ["rainbow\_onfailed" (status)](/docs/sdk/node#name-rainbow_onfailed-status-6142)
+-   ["rainbow\_onerror" (error)](/docs/sdk/node#name-rainbow_onerror-error-6186)
+-   ["rainbow\_onready" (status)](/docs/sdk/node#name-rainbow_onready-status-6230)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

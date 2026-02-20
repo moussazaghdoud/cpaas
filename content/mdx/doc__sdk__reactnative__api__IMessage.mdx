@@ -1,0 +1,452 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/IMessage"
+lastSynced: "2026-02-20T07:12:33.460Z"
+---
+# Documentation
+
+IMessage
+
+## Typedefs
+
+[IMessage](#IMessage) : `Interface`
+
+Message interface
+
+[IMessageType](#IMessageType) : `Enum`
+
+message Types Enum.
+
+[ISender](#ISender) : `Interface`
+
+message sender interface.
+
+[ITyping](#ITyping) : `Interface`
+
+isTyping status interface.
+
+[IUrgencyType](#IUrgencyType) : `Interface`
+
+IUrgencyType status interface.
+
+[IAlternativeContent](#IAlternativeContent) : `Interface`
+
+IAlternativeContent status interface.
+
+[ICallEvent](#ICallEvent) : `Interface`
+
+represents Call data if the message is a webRTC/pbx event type..
+
+[IMessageOption](#IMessageOption) : `Enum`
+
+shows actions to the selected message
+
+[IConferenceEvent](#IConferenceEvent) : `Interface`
+
+show if message contain a webrtc conference event
+
+[IRoomEvent](#IRoomEvent) : `Interface`
+
+show if message contain a room event
+
+## IMessage : `Interface`
+
+Message interface
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+\_id
+
+`string`
+
+message id.
+
+text
+
+`string`
+
+the message contents.
+
+createdAt
+
+`Date`
+
+the message date as a Date object.
+
+isSent
+
+`boolean`
+
+to indicate if message sent successfully .
+
+msgDeliveryStatus
+
+`string`
+
+represent the message status.
+
+user
+
+[`ISender`](#ISender)
+
+message owner object.
+
+call
+
+[`ICallEvent`](#ICallEvent)
+
+message call object that contain the message call information.
+
+conference
+
+[`IConferenceEvent`](#IConferenceEvent)
+
+represents the message content when there is a webrtc conference room event (added and removed conference)
+
+roomEvent
+
+[`IRoomEvent`](#IRoomEvent)
+
+represents the message content when there is a room event (new invitation, leave and join bubble)
+
+image
+
+`string`
+
+the file image preview
+
+fileDescriptorId
+
+`string`
+
+file descriptor id if the message contain a file.
+
+msgType
+
+[`IMessageType`](#IMessageType)
+
+to show different messages types
+
+associatedMsgId
+
+`string`
+
+To get the percentage data for the file you want to download.
+
+urgency
+
+[`IUrgencyType`](#IUrgencyType)
+
+message urgency priority: \[Normal, Information, Important, Emergency\]
+
+isDeleted
+
+`boolean`
+
+is this message had been deleted
+
+isForwarded
+
+`boolean`
+
+is this message had been forwarded
+
+isReplied
+
+`boolean`
+
+is this message had been replied
+
+alternativeContent
+
+[`IAlternativeContent[]`](#IAlternativeContent)
+
+additional data that you can associated with the message object
+
+attachedFile
+
+[`IFile[]`](https://developers.openrainbow.com/doc/sdk/reactnative/api/IFile)
+
+message urgency priority: \[Normal, Information, Important, Emergency\]
+
+fileType
+
+[`FileType`](/docs/sdk/reactnative/api/IFile)
+
+The message file type
+
+## IMessageType : `Enum`
+
+message types Enum.
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Chat
+
+`string`
+
+File
+
+`string`
+
+FileSharing
+
+`string`
+
+WebRTC\_CAll
+
+`string`
+
+Recording
+
+`string`
+
+FORM
+
+`string`
+
+FORWARD
+
+`string`
+
+## IMessageOption : `Enum`
+
+Message options Enum.
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Copy
+
+`string`
+
+Forward
+
+`string`
+
+Reply
+
+`string`
+
+Delete
+
+`string`
+
+Download
+
+`string`
+
+Cancel
+
+`string`
+
+## ISender : `Interface`
+
+message sender interface.
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+\_id
+
+`string`
+
+message sender id .
+
+name
+
+`string`
+
+message sender name.
+
+avatar
+
+`Date`
+
+message sender profile picture.
+
+## IUrgencyType : `Enum`
+
+message urgency priority types Enum.
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+HIGH
+
+`string`
+
+set for Emergency message
+
+MEDIUM
+
+`string`
+
+set for Important message
+
+LOW
+
+`string`
+
+set for Information message
+
+NONE
+
+`string`
+
+set for Normal message
+
+## IAlternativeContent : `Enum`
+
+IAlternativeContent types Enum.
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+contentType
+
+`string`
+
+the message additional content type, it could be: `text/markdown`, `form/json`, `rainbow/json`, `voicemail/json`
+
+contentBody
+
+`string`
+
+the message additional content body
+
+## ITyping : `Interface`
+
+isTyping status interface.
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+contact
+
+`[IContact](/docs/sdk/reactnative/api/IContact#IContact)`
+
+The contact who's typing a message
+
+## ICallEvent : `Interface`
+
+represents Call data if the message is a webRTC/pbx event type..
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+callerName
+
+`string`
+
+caller name.
+
+calleeName
+
+`string`
+
+callee name.
+
+callState
+
+`string`
+
+call state incoming, outgoing or missed .
+
+callDuration
+
+`string`
+
+call duration.
+
+## IConferenceEvent : `Interface`
+
+represents the message content when there is a webrtc conference room event (added and removed conference)
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+msgContent
+
+`string`
+
+text content for the message return when some one add/remove a webrtc conference call
+
+## IRoomEvent : `Interface`
+
+represents the message content when there is a room event (new invitation, leave and join bubble)
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+msgContent
+
+`string`
+
+text content for the message return when some one join/leave the bubble
+
+### On this page
+
+-   [Typedefs](/docs/sdk/reactnative/api/IMessage#name-typedefs-0)
+-   [IMessage : Interface](/docs/sdk/reactnative/api/IMessage#name-imessage-:-interface-7)
+-   [IMessageType : Enum](/docs/sdk/reactnative/api/IMessage#name-imessagetype-:-enum-256)
+-   [IMessageOption : Enum](/docs/sdk/reactnative/api/IMessage#name-imessageoption-:-enum-338)
+-   [ISender : Interface](/docs/sdk/reactnative/api/IMessage#name-isender-:-interface-412)
+-   [IUrgencyType : Enum](/docs/sdk/reactnative/api/IMessage#name-iurgencytype-:-enum-474)
+-   [IAlternativeContent : Enum](/docs/sdk/reactnative/api/IMessage#name-ialternativecontent-:-enum-544)
+-   [ITyping : Interface](/docs/sdk/reactnative/api/IMessage#name-ityping-:-interface-592)
+-   [ICallEvent : Interface](/docs/sdk/reactnative/api/IMessage#name-icallevent-:-interface-632)
+-   [IConferenceEvent : Interface](/docs/sdk/reactnative/api/IMessage#name-iconferenceevent-:-interface-705)
+-   [IRoomEvent : Interface](/docs/sdk/reactnative/api/IMessage#name-iroomevent-:-interface-745)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

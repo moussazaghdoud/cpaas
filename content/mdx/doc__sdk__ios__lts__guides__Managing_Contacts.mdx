@@ -1,0 +1,576 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/ios/lts/guides/Managing_Contacts"
+lastSynced: "2026-02-20T07:12:29.359Z"
+---
+# Documentation
+
+Managing contacts
+
+LTS release 2.13.0Published on 2025-03-07
+
+## Contacts
+
+---
+
+Contacts in Rainbow are the master piece of your application. Understanding how contacts are managed is the key to build a great application. In this tutorial, you will learn all the methods and events for inviting and interacting with your contacts as well as for accessing to their vcard or profile.
+
+By reading this tutorial, you will be able
+
+-   To retrieve your network
+    
+-   To retrieve vcard information of a contact
+    
+-   To invite new contacts to your network
+    
+-   To interact with a contact
+    
+
+### Rainbow knowledge
+
+---
+
+Here are some important definitions.
+
+**Rainbow concept**
+
+**Details**
+
+**A Rainbow user**
+
+A Rainbow user is a user who has a Rainbow account and who can connect to Rainbow.  
+Depending on his visibility, you can find him and so interact with him. When interacting with a Rainbow user, you only have access to his public profile.
+
+**An invitation**
+
+A invitation is a request sent to a Rainbow user (or received from a Rainbow user) in order to share with him the availability of each (ie: available, busy on the phone, away, not connected...).  
+Invitations are auto-accepted when your recipient is in the same company as you.
+
+**My network**
+
+This is the list of contacts who have accepted your invitations and those you have accepted their invitations. With these contacts, you are sharing mutually your availability (aka presence): They see your availability, you see their availability.  
+You need to invite a Rainbow user to be part of your network. We say that these contacts are in your network.
+
+**A contact**
+
+A contact is a Rainbow user who is part of your network
+
+This is important to understand that inviting Rainbow users to your network will give you not only more information about these users but more information on how to interact with them too. Knowing the availability of a user (presence), knowing how he is connected (mobile, desktop) will let you build a more smoothly application.
+
+*Note*: More Rainbow REST APIs exist that can be used to automatically add some Rainbow users to the network of an other users, such as for example giving to a user a pre-defined list of people he can call if needed. So once connected, this list of users will appears in his application. These APIs are document in the [Rainbow for developers: Admin APIs](/api/admin/index.html) and need a Rainbow admin account to be used.
+
+### Coding using Swift
+
+---
+
+This tutorial uses the **Swift** language. Objective-C code will not be provided, if needed please ask for having it in our [Rainbow for developers Forum](https://support.openrainbow.com/hc/en-us/community/topics/115000150070-Hub-Support-Community)
+
+### Retrieving your network
+
+---
+
+So, when starting your application, the first thing you would perhaps do is to display the list of contacts of your network. Assuming that you want to do that, you need to wait for the event `kContactsManagerServiceDidEndPopulatingMyNetwork` before being able to display these contacts.
+
+The following code will show you how to retrieve your network's contacts.
+
+```swift
+// somewhere in your code
+var _network = Array<Contact>
+
+// Handle the notification
+NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNetworkContacts(notification:)), name: NSNotification.Name(kContactsManagerServiceDidEndPopulatingMyNetwork), object: nil)
+
+// Delegate
+@objc private func didReceiveNetworkContacts(notification: NSNotification) {
+    if !Thread.isMainThread {
+        DispatchQueue.main.async {
+            self.didReceiveNetworkContacts(notification: notification)
+        }
+        return
+    }
+
+    _network = filter(contacts: ServicesManager.sharedInstance()?.contactsManagerService.myNetworkContacts ?? [])
+}
+
+func filter(contacts: Array<Contact>) -> Array<Contact> {
+
+    return contacts.filter { (contact) -> Bool in
+        return isContactPartOfTheNetwork(contact: contact)
+    }
+}
+
+func isContactPartOfTheNetwork(contact:Contact) -> Bool {
+
+    guard let _:String = contact.rainbowID else {
+        // Check that contact object is well formed
+        return false
+    }
+
+    if contact.rainbowID == ServicesManager.sharedInstance()?.myUser.contact.rainbowID {
+        // Check that this is not the connected user
+        return false
+    }
+
+    if(contact.isBot) {
+        // Put to true if you want to keep bots
+        return false
+    }
+
+    // Check that the user is really in the roster
+    return contact.isInRoster
+}
+```
+
+*Note*: You can notice that if you just call the property `contactsManagerService.myNetworkContacts` you could have more contacts than expected. So a best practice is to filter that list to be sure to keep only the contacts you need. For example, when an invitation has been seen to a contact, this contact is part of that list, but the property `isInRoster` is still equal to `false`.
+
+### Searching for users
+
+---
+
+If you want to interact with Rainbow users who are not part of your network, you need to initiate a search request. For that, you have to call the method `searchRemoteContacts` such as in the following code
+
+```swift
+func search(pattern: String) {
+    ServicesManager.sharedInstance()?.contactsManagerService!.searchRemoteContacts(withPattern: pattern, advancedMode: true, limitPerCategory: 20, rainbowUsersOnly: true, search: SearchRemoteContactsMode.all, withCompletionHandler: { (text, contacts) in
+
+        // Do something with the contacts found
+        ...
+    })
+}
+```
+
+This method requires some parameters to work. The parameter `withPattern` is the content to search for. It could be a name, a firstname or part of a name or a firstname. If the parameter`advancedMode` is set to true, Rainbow will extend the search to take into account, the tags, the company name and the job title and check if these properties match the pattern searched. For choosing how many results should be returned, you nedd to fill the parameter `limitPerCategory`. The two remaining parameters allow to filter or not the result obtained depending on the different types of contacts. Finally, you need to add a completion handler that will be called back on the results will be received from Rainbow.
+
+Only minimal information will be returned when searching Rainbow users. If you want more information, which means being able to display a more complete **vcard**, you need to call two additional methods which are `fetchRemoteContactsDetail()` and `populateAvatar()`
+
+When calling these methods, you need to listen to event `kContactsManagerServiceDidUpdateContact` in order to be notified of the availability of these information.
+
+Please have a look to the next paragraph to know how to deal with that event.
+
+### Display user VCard
+
+---
+
+Displaying a user VCard became a very common usage in collaboration applications. But from a developers stand point, you have 2 major points to take into account if we don't speak about the UX/UI point:
+
+-   **Display the current VCard information**: What information to display ?
+    
+-   **React to changes**: How to update the user inerface with the latest changes on user information ?
+    
+
+#### Display information
+
+---
+
+The first thing to do is to get the Rainbow `Contact` object. With that object, you have access to the user profile (aka VCard).
+
+**Rainbow properties**
+
+Description
+
+`firstName`, `lastName`
+
+User identification.  
+Additionnal property `displayName` or `fullName` can be used
+
+`photoData`
+
+The user photo
+
+`companyName`
+
+The user company
+
+`jobTitle`
+
+The user job title
+
+`presence`, `calendarPresence`
+
+The user presence
+
+`phoneNumbers`
+
+The user phone numbers
+
+`sentInvitation`
+
+If not `nil` an invitation has been sent to the user
+
+`requestedInvitation`
+
+If not `nil` an invitation has been received from that user
+
+Additionally to these information, others exists and can be used.
+
+Note: In order to know if VCard has been retrieved, you need to check the property `vcardPopulated`. If false, you need to call the methods `fetchRemoteContactsDetail()` and `populateAvatar()` to get the informartion.
+
+#### Requesting high quality photo
+
+---
+
+When receiving the user photo (`photoData`), the resolution is low. You can request a better resolution photo by calling the method `loadHiResAvatar()` such as in the following sample:
+
+```swift
+func displaySelectedContactAvatar(contact: Contact) {
+
+    if !Thread.isMainThread {
+        DispatchQueue.main.async {
+            self.displaySelectedContactAvatar()
+        }
+        return
+    }
+
+    if contact.photoData != nil {
+
+        // Display low quality image
+        selectedContactAvatar.image = UIImage(data: contact.photoData!)
+
+        // save locally current contact displayed to avoid updating UI if selected contact changed
+        let selectedContactId = contact.rainbowID
+
+        ServicesManager.sharedInstance()?.contactsManagerService.loadHiResAvatar(for: contact, withCompletionBlock: { (hiResData, error) in
+
+            if(selectedContactId == contact.rainbowID) {
+
+                guard let imageData = hiResData else {
+                    //Don't update if no image
+                    return
+                }
+                DispatchQueue.main.async {
+                    // Update image
+                    self.selectedContactAvatar.image = UIImage(data: imageData)
+                }
+            }
+
+        })
+    } else {
+        // No user photo - Display default avatar
+        selectedContactAvatar.image = UIImage(named: "default_avatar")
+    }
+}
+```
+
+#### Listening to users information changes
+
+---
+
+Each time the SDK received new information about a Rainbow contact (aka Rainbow user who is in your network), the event `kContactsManagerServiceDidUpdateContact` is fired and can be handled by your application.
+
+This event is fired when
+
+-   Your application requests more information about a contact by calling methods `fetchRemoteContactsDetail()` or `populateAvatar()`
+    
+-   A Rainbow contact (Rainbow user part of your network) changed his profile or his availability
+    
+-   The SDK received an invitation from a Rainbow user or a Rainbow user has accepted an invitation
+    
+
+The following code is an example of how your application can handle the event `kContactsManagerServiceDidUpdateContact`:
+
+```swift
+// Somewhere in your application
+NotificationCenter.default.addObserver(self, selector: #selector(didUpdateContactInformation(notification:)), name: NSNotification.Name(kContactsManagerServiceDidUpdateContact), object: nil)
+
+// helper functions
+func isAContact(contact:Contact) -> Bool {
+
+    guard let _:String = contact.rainbowID else {
+        return false
+    }
+
+    if contact.rainbowID == ServicesManager.sharedInstance()?.myUser.contact.rainbowID {
+        return false
+    }
+
+    return !contact.isBot
+}
+
+func hasNetworkAffiliationChanged(attrs:NSArray) -> Bool {
+    return attrs.contains("isInRoster")
+}
+
+func hasPresenceChanged(attrs: NSArray) -> Bool {
+    return attrs.contains("presence") || attrs.contains("isConnectedWithMobile")
+}
+
+func hasSentInvitationChanged(attrs: NSArray) -> Bool {
+    return attrs.contains("sentInvitation")
+}
+
+func hasReceivedInvitationChanged(attrs: NSArray) -> Bool {
+    return attrs.contains("requestedInvitation")
+}
+
+func hasNameOrAvatarChanged(attrs: NSArray) -> Bool {
+    return attrs.contains("photoData") || attrs.contains("firstName") || attrs.contains("lastName")
+}
+
+// handler
+@objc private func didUpdateContactInformation(notification: NSNotification) {
+
+    guard let data:NSDictionary = notification.object as? NSDictionary else {
+        return
+    }
+
+    guard let contact:Contact = data.object(forKey: "contact") as? Contact else {
+        // Only deal with Rainbow contact
+        return
+    }
+
+    if (!isAContact(contact: contact)) {
+        // Check that Rainbow user is well formed
+        return
+    }
+
+    guard let attrs:NSArray = data.object(forKey: "attributes") as? NSArray else {
+        // Check that attributes changed array is well formed
+        return
+
+
+    if ((hasPresenceChanged(attrs: attrs) || hasNameOrAvatarChanged(attrs: attrs))) {
+        // Do something when the availability of one of the vcard information has changed
+        ...
+    }
+
+    if (hasNetworkAffiliationChanged(attrs:attrs)) {
+        if contact.isInRoster {
+            // Do something when a Rainbow user has been added to the network
+            ...
+        } else {
+            // Do something when a Rainbow contact has been removed from the network
+            ...
+        }
+    }
+
+    if (hasSentInvitationChanged(attrs: attrs)) {
+        // Do something when an invitation has been sent to a Rainbow user
+        ...
+    }
+
+    if (hasReceivedInvitationChanged(attrs: attrs)) {
+        /// Do something when an invitation has been received from a Rainbow user
+    }
+}
+```
+
+*Note*: You only receive update on Rainbow contacts from your network.
+
+### Invite a Rainbow user
+
+---
+
+#### Inviting a Rainbow user from an other company
+
+---
+
+Once you have found a Rainbow user with whom you want to have access to his presence, you need to ask him. For that, you need to send him an invitation by using the method `inviteContact()` such as the following sample:
+
+```swift
+func invite(contact: Contact) {
+    ServicesManager.sharedInstance()?.contactsManagerService.inviteContact(contact)
+}
+```
+
+A request will be sent to the Rainbow user. In addition to listen to the event `kContactsManagerServiceDidUpdateContact` to be informed when the `sentInvitation` property has changed, you can listen to events `kContactsManagerServiceDidInviteContact` and `kContactsManagerServiceDidFailedToInviteContact`. This can be important because sending an invitation can failed if you send it several times quickly. Only one invitation can be sent to a Rainbow user by hour if the invitation has not been declined by your recipient or canceled by you.
+
+As the Rainbow user is not in the same company as you, the invitation need to be accepted by the recipient before having the right to access to his presence.
+
+*Note*: In order to interact with the user, you don't need to add him to your network. Inviting a Rainbow user is only when you need to access to his presence.
+
+#### Inviting user from the same company
+
+---
+
+Inviting a user from the same company is done the same way as from an other company. You need to call the method `inviteContact()`. But in that case, the invitation is automatically accepted by Rainbow and the Rainbow users are automatically added to the network of the other.
+
+#### Canceling an invitation sent
+
+---
+
+At any time, you can cancel an invitation by calling the method `cancel()` such as in the following code sample:
+
+```swift
+func cancelInvitation(forContact: Contact) {
+
+    guard let invitationSent = forContact.sentInvitation else {
+        // No invitation sent to cancel
+        return
+    }
+
+    ServicesManager.sharedInstance()?.contactsManagerService.cancel(invitationSent)
+}
+```
+
+*Note*: Listening to the event `kContactsManagerServiceDidUpdateContact` will trigger a change regarding the property `sentInvitation` once the invitation has been canceled.
+
+### Accepting or decline an invitation
+
+---
+
+When llistening to the event `kContactsManagerServiceDidUpdateContact`, you can receive a change regarding the property `requestedInvitation`. This means that a Rainbow user has sent to you an invitation and is expected an answer.
+
+If you want to accept the invitation and so to have this user in your network and respectively to be in the netork of this user, you need to use the method `accept()`. If not, you need to decline by using the method `declineInvitation()`.
+
+The following code sample shows how to use these methods:
+
+```swift
+func acceptInvitation(forContact: Contact) {
+    guard let invitationRequested = forContact.requestedInvitation else {
+        //No invitation to accept
+        return
+    }
+
+    ServicesManager.sharedInstance()?.contactsManagerService.accept(invitationRequested)
+}
+
+func declineInvitation(forContact: Contact) {
+    guard let invitationRequested = forContact.requestedInvitation else {
+        // No invitation received to decline
+        return
+    }
+
+    ServicesManager.sharedInstance()?.contactsManagerService.declineInvitation(invitationRequested)
+}
+```
+
+*Note*: Listening to the event `kContactsManagerServiceDidUpdateContact` will trigger a change regarding the property `requestedInvitation` once the invitation has been declined or accepted. Other changes will be triggered too regarding properties `presence`, `isInRoster`.
+
+### Interacting with a Rainbow user
+
+---
+
+Once you have found a Rainbow user, you can interact with him. By interacting it means:
+
+-   Sending him a message, a file, a voice message
+    
+-   Adding him to a bubble or a channel
+    
+-   Calling him
+    
+
+### Remove a contact from your network
+
+---
+
+At any time, you can remove a contact from your network by calling the method `removeContact()` such as in the following code sample:
+
+```swift
+func remove(contact: Contact) {
+    ServicesManager.sharedInstance()?.contactsManagerService.removeContact(fromMyNetwork: contact)
+}
+```
+
+*Note*: Listening to the event `kContactsManagerServiceDidUpdateContact` will trigger a change regarding the property `presence` and `isInRoster` once the Rainbow user will be removed from your network.
+
+### Appendix: Presence
+
+---
+
+The presence and status of a Rainbow user can take several values as described in the following table:
+
+Presence
+
+Status
+
+Meaning
+
+**`ContactPresenceAvailable`**
+
+The contact is connected to Rainbow through a desktop application and is available
+
+**`ContactPresenceAvailable`**
+
+**mobile**
+
+The contact is connected to Rainbow through a mobile application and is available
+
+**`ContactPresenceAway`**
+
+The contact is connected to Rainbow but hasn't have any activity for several minutes
+
+**`ContactPresenceDoNotDisturb`**
+
+The contact is connected to Rainbow and doesn't want to be disturbed at this time
+
+**`ContactPresenceBusy`**
+
+**presentation**
+
+The contact is connected to Rainbow and uses an application in full screen (presentation mode)
+
+**`ContactPresenceBusy`**
+
+**phone**
+
+The contact is connected to Rainbow and currently engaged in an audio call (PBX)
+
+**`ContactPresenceBusy`**
+
+**audio**
+
+The contact is connected to Rainbow and currently engaged in an audio call (WebRTC)
+
+**`ContactPresenceBusy`**
+
+**video**
+
+The contact is connected to Rainbow and currently engaged in a video call (WebRTC)
+
+**`ContactPresenceBusy`**
+
+**sharing**
+
+The contact is connected to Rainbow and currently engaged in a screen sharing presentation (WebRTC)
+
+**`ContactPresenceInvisible`**
+
+The contact is not connected to Rainbow
+
+**`ContactPresenceUnavailable`**
+
+The presence of the Rainbow user is not known (not shared with the connected user)
+
+*Note*: With this SDK version, if the contact uses several devices at the same time, only the latest presence information is taken into account.
+
+### See also
+
+---
+
+-   [Connecting to Rainbow](/docs/sdk/ios)
+    
+-   [Managing voice and video calls](/docs/sdk/ios)
+    
+-   [Instant messaging](/docs/sdk/ios)
+    
+
+---
+
+### On this page
+
+-   [Contacts](/docs/sdk/ios#name-contacts-0)
+-   [Rainbow knowledge](/docs/sdk/ios#name-rainbow-knowledge-32)
+-   [Coding using Swift](/docs/sdk/ios#name-coding-using-swift-91)
+-   [Retrieving your network](/docs/sdk/ios#name-retrieving-your-network-98)
+-   [Searching for users](/docs/sdk/ios#name-searching-for-users-112)
+-   [Display user VCard](/docs/sdk/ios#name-display-user-vcard-132)
+-   [Display information](/docs/sdk/ios#name-display-information-151)
+-   [Requesting high quality photo](/docs/sdk/ios#name-requesting-high-quality-photo-242)
+-   [Listening to users information changes](/docs/sdk/ios#name-listening-to-users-information-changes-250)
+-   [Invite a Rainbow user](/docs/sdk/ios#name-invite-a-rainbow-user-284)
+-   [Inviting a Rainbow user from an other company](/docs/sdk/ios#name-inviting-a-rainbow-user-from-an-other-company-288)
+-   [Inviting user from the same company](/docs/sdk/ios#name-inviting-user-from-the-same-company-305)
+-   [Canceling an invitation sent](/docs/sdk/ios#name-canceling-an-invitation-sent-312)
+-   [Accepting or decline an invitation](/docs/sdk/ios#name-accepting-or-decline-an-invitation-323)
+-   [Interacting with a Rainbow user](/docs/sdk/ios#name-interacting-with-a-rainbow-user-340)
+-   [Remove a contact from your network](/docs/sdk/ios#name-remove-a-contact-from-your-network-364)
+-   [Appendix: Presence](/docs/sdk/ios#name-appendix:-presence-375)
+-   [See also](/docs/sdk/ios#name-see-also-523)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

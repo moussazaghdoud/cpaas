@@ -1,0 +1,148 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/objects/IRainbowConversation"
+lastSynced: "2026-02-20T07:12:28.892Z"
+---
+# Documentation
+
+Object IRainbowConversation
+
+LTS release 2.61.0Published on 202-04-06
+
+## object IRainbowConversation
+
+### interface IRainbowConversation : IDisplayable
+
+Created by letrongh on 27/03/2017.
+
+### val id: String val peerId: String?
+
+Get the id of this conversation.
+
+-   **Returns:** the identifier of this conversation as a String
+
+### val jid: String
+
+Get the jid of the conversation depending on the type of the conversation (room or not).
+
+-   **Returns:** the room jid if room type / the contact jid if not
+
+### val isRoomType: Boolean
+
+Allow to know if the conversation is a room type
+
+-   **Returns:** true if the conversation is a room type
+
+### val contact: IRainbowContact?
+
+Get the contact of this conversation
+
+-   **Returns:** a [IRainbowContact](/docs/sdk/android) object
+
+### val lastMessage: IMMessage
+
+Get the last message of this conversation.
+
+-   **Returns:** the last message as a [IMMessage](/docs/sdk/android)
+
+### val messages: ArrayItemList
+
+Get the list of messages of this conversation
+
+-   **Returns:** the list of messages as a [ArrayItemList](/docs/sdk/android)<[IMMessage](/docs/sdk/android)\>
+
+### val room: Room?
+
+Get the room of this conversation in case of room type
+
+-   **Returns:** the room of this conversation in case of room type (null otherwise)
+
+### val type: PeerType
+
+Get the type of this conversation
+
+-   **Returns:** USER, BOT or ROOM depends of the type of this conversation
+
+### val unreadMessageNumber: Int
+
+Get the number of unread messages of this conversation
+
+-   **Returns:** the number of unread messages
+
+### val isChatType: Boolean
+
+Allow to know if the conversation is a chat type
+
+-   **Returns:** true if the conversation is a chat type
+
+### val mute: Boolean
+
+Get the muted state of this conversation
+
+-   **Returns:** true if the conversation is muted
+
+### val isHistoryLoaded: Boolean
+
+Allow to know if the conversation history is loaded
+
+-   **Returns:** true if the conversation history is loaded
+
+### val isWebinar: Boolean
+
+Allow to know if the conversation belongs to a webinar
+
+-   **Returns:** true if the conversation belongs to a webinar
+
+### fun getMessageById (
+
+Get a specific message by its id
+
+-   **Returns:** a [IMMessage](/docs/sdk/android) the message with the specified id if any
+
+### var textToSend: String
+
+Get or set the last saved text message not already sent
+
+-   **Returns:** the last saved message not already sent
+
+### val bookmark: ConversationBookmark? fun registerChangeListener (ConversationListener) ConversationListener)
+
+Get the bookmark of this conversation if there is one, null otherwise.
+
+-   **Returns:** a [ConversationBookmark](/docs/sdk/android)
+
+### val firstUnreadMessageId: String? }
+
+Get the first unread message id of this conversation if there is one, null otherwise.
+
+-   **Returns:** a [String](/docs/sdk/android)
+
+### On this page
+
+-   [object IRainbowConversation](/docs/sdk/android#name-object-irainbowconversation-0)
+-   [interface IRainbowConversation : IDisplayable](/docs/sdk/android#name-interface-irainbowconversation-:-idisplayable-3)
+-   [val id: String val peerId: String?](/docs/sdk/android#name-val-id:-string-val-peerid:-string-9)
+-   [val jid: String](/docs/sdk/android#name-val-jid:-string-22)
+-   [val isRoomType: Boolean](/docs/sdk/android#name-val-isroomtype:-boolean-35)
+-   [val contact: IRainbowContact?](/docs/sdk/android#name-val-contact:-irainbowcontact-48)
+-   [val lastMessage: IMMessage](/docs/sdk/android#name-val-lastmessage:-immessage-61)
+-   [val messages: ArrayItemList](/docs/sdk/android#name-val-messages:-arrayitemlist-74)
+-   [val room: Room?](/docs/sdk/android#name-val-room:-room-87)
+-   [val type: PeerType](/docs/sdk/android#name-val-type:-peertype-100)
+-   [val unreadMessageNumber: Int](/docs/sdk/android#name-val-unreadmessagenumber:-int-113)
+-   [val isChatType: Boolean](/docs/sdk/android#name-val-ischattype:-boolean-126)
+-   [val mute: Boolean](/docs/sdk/android#name-val-mute:-boolean-139)
+-   [val isHistoryLoaded: Boolean](/docs/sdk/android#name-val-ishistoryloaded:-boolean-152)
+-   [val isWebinar: Boolean](/docs/sdk/android#name-val-iswebinar:-boolean-165)
+-   [fun getMessageById (](/docs/sdk/android#name-fun-getmessagebyid--178)
+-   [var textToSend: String](/docs/sdk/android#name-var-texttosend:-string-191)
+-   [val bookmark: ConversationBookmark? fun registerChangeListener (ConversationListener) ConversationListener)](/docs/sdk/android#name-val-bookmark:-conversationbookmark-fun-registerchangelistener-conversationlistener-conversationlistener-204)
+-   [val firstUnreadMessageId: String? }](/docs/sdk/android#name-val-firstunreadmessageid:-string--217)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

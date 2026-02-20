@@ -1,0 +1,210 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/rpcoverxmpp"
+lastSynced: "2026-02-20T07:12:32.617Z"
+---
+# Documentation
+
+RPCoverXMPP Service
+
+LTS release 2.XPublished on 2025-01-01
+
+## RPCoverXMPPService
+
+This service manages and use an RPC over XMPP requests system.  
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [RPCoverXMPPService](#module_RPCoverXMPPService)
+    -   *Rainbow RPCoverXMPP RPC Client*
+        -   [discoverRPCoverXMPP(headers, rpcoverxmppserver\_jid)](#module_RPCoverXMPPService+discoverRPCoverXMPP) ⇒ `Promise.<any>`
+        -   [callRPCMethod(rpcoverxmppserver\_jid, methodName, params)](#module_RPCoverXMPPService+callRPCMethod) ⇒ `Promise.<any>`
+    -   *Rainbow RPCoverXMPP RPC Server*
+        -   [addRPCMethod(methodName, methodCallback, methodDescription, methodHelp)](#module_RPCoverXMPPService+addRPCMethod) ⇒ `Promise.<any>`
+        -   [removeRPCMethod(methodName)](#module_RPCoverXMPPService+removeRPCMethod) ⇒ `Promise.<any>`
+
+---
+
+### rpCoverXMPPService.discoverRPCoverXMPP(headers, rpcoverxmppserver\_jid) ⇒ `Promise.<any>`
+
+This API allows to send a discover presence to a bare jid to find the resources availables.  
+
+**Kind**: instance method of [`RPCoverXMPPService`](#module_RPCoverXMPPService)
+
+**Returns**: `Promise.<any>` - An object of the result
+
+**Category**: Rainbow RPCoverXMPP RPC Client
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.22.0
+
+Param
+
+Type
+
+Description
+
+headers
+
+`Object`
+
+The Http Headers used to web request.
+
+rpcoverxmppserver\_jid
+
+`string`
+
+the jid of the http over xmpp server used to retrieve the HTTP web request. default value is the jid of the account running the SDK.
+
+---
+
+### rpCoverXMPPService.callRPCMethod(rpcoverxmppserver\_jid, methodName, params) ⇒ `Promise.<any>`
+
+This API allows to send a request to call a rpc method to a bare jid. The result is the result of the method called on RPC server.  
+
+**Kind**: instance method of [`RPCoverXMPPService`](#module_RPCoverXMPPService)
+
+**Returns**: `Promise.<any>` - An object of the result
+
+**Category**: Rainbow RPCoverXMPP RPC Client
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.22.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+rpcoverxmppserver\_jid
+
+`string`
+
+the jid of the rpc server used to retrieve the request. default value is the jid of the account running the SDK.  
+**Note :** only a full JID (with resource) is possible to used.
+
+methodName
+
+`string`
+
+`system.listMethods`
+
+method name of the rpc shared method on server used to retrieve the request.  
+default value is `system.listMethods` for listing the available methods on RPC server.  
+use `system.methodHelp` with the name of a method as parameter to get informations about it.  
+Use `system.methodSignature` with the name of a method as parameter to get it's signature.
+
+params
+
+`Array.<any>`
+
+Array with the parameters for the RPC request. This Array will be splitted in each parameters to the method shared on RPC Server when it is ran.
+
+---
+
+### rpCoverXMPPService.addRPCMethod(methodName, methodCallback, methodDescription, methodHelp) ⇒ `Promise.<any>`
+
+This API allows to expose an RPC method to requests from an XMPP party.  
+
+**Kind**: instance method of [`RPCoverXMPPService`](#module_RPCoverXMPPService)
+
+**Returns**: `Promise.<any>` - An object of the result
+
+**Category**: Rainbow RPCoverXMPP RPC Server
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.22.0
+
+Param
+
+Type
+
+Description
+
+methodName
+
+`string`
+
+The name of the method to be added in RPC server. This is the name used by the RPC Client to call it.
+
+methodCallback
+
+`string`
+
+The callback of the method to be added in RPC server.  
+It is this method which is called when the SDK receives an RPC request for the linked methodName.  
+The method signature is built from this parameter.
+
+methodDescription
+
+`string`
+
+The description of the method to be added in RPC server
+
+methodHelp
+
+`string`
+
+The help of the method to be added in RPC server
+
+---
+
+### rpCoverXMPPService.removeRPCMethod(methodName) ⇒ `Promise.<any>`
+
+This API allows to remove an RPC method from RPC Server.  
+
+**Kind**: instance method of [`RPCoverXMPPService`](#module_RPCoverXMPPService)
+
+**Returns**: `Promise.<any>` - An object of the result
+
+**Category**: Rainbow RPCoverXMPP RPC Server
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.22.0
+
+Param
+
+Type
+
+Description
+
+methodName
+
+`string`
+
+The name of the method to be removed from RPC server
+
+---
+
+### On this page
+
+-   [RPCoverXMPPService](/docs/sdk/node#name-rpcoverxmppservice-3)
+-   [rpCoverXMPPService.discoverRPCoverXMPP(headers, rpcoverxmppserver\_jid) ⇒ Promise.<any>](/docs/sdk/node#name-rpcoverxmppservice.discoverrpcoverxmppheaders-rpcoverxmppserver_jid--promise.any-62)
+-   [rpCoverXMPPService.callRPCMethod(rpcoverxmppserver\_jid, methodName, params) ⇒ Promise.<any>](/docs/sdk/node#name-rpcoverxmppservice.callrpcmethodrpcoverxmppserver_jid-methodname-params--promise.any-129)
+-   [rpCoverXMPPService.addRPCMethod(methodName, methodCallback, methodDescription, methodHelp) ⇒ Promise.<any>](/docs/sdk/node#name-rpcoverxmppservice.addrpcmethodmethodname-methodcallback-methoddescription-methodhelp--promise.any-219)
+-   [rpCoverXMPPService.removeRPCMethod(methodName) ⇒ Promise.<any>](/docs/sdk/node#name-rpcoverxmppservice.removerpcmethodmethodname--promise.any-308)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

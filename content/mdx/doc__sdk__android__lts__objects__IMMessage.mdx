@@ -1,0 +1,156 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/objects/IMMessage"
+lastSynced: "2026-02-20T07:12:28.843Z"
+---
+# Documentation
+
+Object IMMessage
+
+LTS release 2.61.0Published on 202-04-06
+
+## object IMMessage
+
+### var messageDateReceived: Date? = null
+
+Get the date when the message has been received
+
+-   **Returns:** a Date object
+
+### var messageDateRead: Date? = null var timeStamp: Long = 0 var isMsgSent = false
+
+Get the date when the message has been read
+
+-   **Returns:** a Date object
+
+### var contactJid: String? = null var messageId = "" var mamMessageId: String? = null var pollId: String? = null
+
+Get the jabber identifier of the contact
+
+-   **Returns:** the jid of the contact
+
+### var deliveryState = DeliveryState.UNKNOWN var isFromMaM = false var roomEventType = RoomEventType.UNDEFINED
+
+Get the delivery state of the message.
+
+It could be: SENT, SENT\_SERVER\_RECEIVED, SENT\_CLIENT\_RECEIVED, SENT\_CLIENT\_READ, RECEIVED, READ or UNKNOWN
+
+-   **Returns:** a DeliveryState object
+
+### var fileDescriptor: RainbowFileDescriptor? = null var callLogEvent: CallLogExtension? = null private set var startGifAnimation = false var replyMessage: ImReplyMessage? = null var readyToSend: Boolean = false
+
+Get the file descriptor of this message
+
+-   **Returns:** a RainbowFileDescriptor object
+
+### var replaceMessage: ImReplaceMessage? = null var youTubeInformation: YouTubeInformation? = null get (null)
+
+Still there for compatibility reason with older messages, we should now use new fields isModified and isDeleted
+
+### var additionalContents: List? get()
+
+Get or set list of additional contents : ie markdown, adaptive cards, forms...
+
+### var messageContent: String? get (null) msg)
+
+Get the string message
+
+-   **Returns:** the message as a String object
+
+### val messageDate: Date? get (0) timeStamp)
+
+Get the date of the message
+
+-   **Returns:** the date as a Date object
+
+### val isRoomEventType: Boolean get (
+
+Allow to know if this message is a room event type
+
+-   **Returns:** true if this message is a room event type, false otherwise
+
+### val isWebRtcEventType: Boolean get (null) content) STRG) STRG)
+
+Allow to know if this message is a webRTC event type.
+
+That could be used to display a message when someone called you for example.
+
+-   **Returns:** true if this message is a webRTC event type, false otherwise
+
+### val isEventType: Boolean get (null) content) STRG)
+
+Allow to know if this message is an event type.
+
+That means the message is either a webRTC event type, or a room event type.
+
+-   **Returns:** true if the message is an event type, false otherwise
+
+### val isFileDescriptorAvailable: Boolean get (
+
+Allow to know if a file descriptor is available for this message
+
+-   **Returns:** true if a file descriptor is available, false otherwise
+
+### fun setAdditionalContent (AdditionalContent)
+
+Add a single additional content : ie markdown, adaptive cards, forms...
+
+Param
+
+Type
+
+Description
+
+additionalContent
+
+an
+
+additional content
+
+### fun hasAdditionalContents (
+
+-   **Returns:** true if message has additional contents ie : markdown, forms...
+
+### fun getAdditionalContentType (String)
+
+Get content additional content corresponding to type parameter
+
+Param
+
+Type
+
+Description
+
+type
+
+String
+
+-   **Returns:** an AdditionalContent object or null
+
+### On this page
+
+-   [object IMMessage](/docs/sdk/android#name-object-immessage-0)
+-   [var messageDateReceived: Date? = null](/docs/sdk/android#name-var-messagedatereceived:-date--null-3)
+-   [var messageDateRead: Date? = null var timeStamp: Long = 0 var isMsgSent = false](/docs/sdk/android#name-var-messagedateread:-date--null-var-timestamp:-long--0-var-ismsgsent--false-16)
+-   [var contactJid: String? = null var messageId = "" var mamMessageId: String? = null var pollId: String? = null](/docs/sdk/android#name-var-contactjid:-string--null-var-messageid---var-mammessageid:-string--null-var-pollid:-string--null-29)
+-   [var deliveryState = DeliveryState.UNKNOWN var isFromMaM = false var roomEventType = RoomEventType.UNDEFINED](/docs/sdk/android#name-var-deliverystate--deliverystate.unknown-var-isfrommam--false-var-roomeventtype--roomeventtype.undefined-42)
+-   [var fileDescriptor: RainbowFileDescriptor? = null var callLogEvent: CallLogExtension? = null private set var startGifAnimation = false var replyMessage: ImReplyMessage? = null var readyToSend: Boolean = false](/docs/sdk/android#name-var-filedescriptor:-rainbowfiledescriptor--null-var-calllogevent:-calllogextension--null-private-set-var-startgifanimation--false-var-replymessage:-imreplymessage--null-var-readytosend:-boolean--false-58)
+-   [var replaceMessage: ImReplaceMessage? = null var youTubeInformation: YouTubeInformation? = null get (null)](/docs/sdk/android#name-var-replacemessage:-imreplacemessage--null-var-youtubeinformation:-youtubeinformation--null-get-null-71)
+-   [var additionalContents: List? get()](/docs/sdk/android#name-var-additionalcontents:-list--get-77)
+-   [var messageContent: String? get (null) msg)](/docs/sdk/android#name-var-messagecontent:-string-get-null-msg-83)
+-   [val messageDate: Date? get (0) timeStamp)](/docs/sdk/android#name-val-messagedate:-date-get-0-timestamp-96)
+-   [val isRoomEventType: Boolean get (](/docs/sdk/android#name-val-isroomeventtype:-boolean-get--109)
+-   [val isWebRtcEventType: Boolean get (null) content) STRG) STRG)](/docs/sdk/android#name-val-iswebrtceventtype:-boolean-get-null-content-strg-strg-122)
+-   [val isEventType: Boolean get (null) content) STRG)](/docs/sdk/android#name-val-iseventtype:-boolean-get-null-content-strg-138)
+-   [val isFileDescriptorAvailable: Boolean get (](/docs/sdk/android#name-val-isfiledescriptoravailable:-boolean-get--154)
+-   [fun setAdditionalContent (AdditionalContent)](/docs/sdk/android#name-fun-setadditionalcontent-additionalcontent-167)
+-   [fun hasAdditionalContents (](/docs/sdk/android#name-fun-hasadditionalcontents--201)
+-   [fun getAdditionalContentType (String)](/docs/sdk/android#name-fun-getadditionalcontenttype-string-211)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

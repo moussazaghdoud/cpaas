@@ -3,16 +3,432 @@ title: "CPaaS SDK for business communication solutions | Rainbow"
 description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
 type: "sdk"
 source: "https://developers.openrainbow.com/doc/sdk/web/lts/guides/Sharing_files"
-lastSynced: "2026-02-19T22:35:16.141Z"
+lastSynced: "2026-02-20T07:12:26.933Z"
 ---
 # Documentation
 
-Web > lts > guides > Sharing\_files
+Sharing files
 
-### Sur cette page
+LTS release 4.0.0Published on 2022-12-21
+
+## Sharing files
 
 ---
 
-Ce contenu vous a-t-il été utile ?OuiNon
+Using the Rainbow SDK for Web, you can share any kinds of files (Office documents, images, media, etc...) with a Rainbow user or by sharing it within a bubble.
+
+This tutorial will explain how to use the FileStorage service for sharing files in Rainbow.
+
+### Rainbow Knowledge
+
+---
+
+Here are some Rainbow wordings that will help you understanding this guide.
+
+Rainbow concept
+
+Details
+
+**Rainbow storage**
+
+Rainbow offers to each user a dedicated area where their files can be stored securely.
+
+**Quota**
+
+Each user has a predefined files storage quota depending on his profile.
+
+### Limits
+
+---
+
+All files shared with others Rainbow users or within bubbles are stored on Rainbow until you decide to remove them. To avoid bad usages, we have introduced the limits
+
+To consult the exact limits concerning Rainbow Web SDK, visit [this link](/docs/hub/features-limits)
+
+### Knowing the file sharing quota
+
+---
+
+In order to know if you can share a new file, you can call the method `getUserQuotaConsumption()`
+
+```javascript
+rainbowSDK.fileStorage.getUserQuotaConsumption().then(function(quota) {
+        // Do something with the quota
+    }).catch(function(err) {
+        // DO something if there is an error getting the quota
+    });
+```
+
+The quota is a JavaScript Object containing the following properties:
+
+```json
+{
+    "feature": "FILE_SHARING_QUOTA_GB", // Quota associated to the feature File Sharing
+    "currentValue": 120439, // Current total size of files uploaded
+    "maxValue": 1073741824, // Maximum of size allowed
+    "unit": "octet" // Unit used
+}
+```
+
+Each time you share a file with a user or within a bubble or when you remove a file from Rainbow, you can ask the method `getUserQuotaConsumption()` to have an update.
+
+### Sharing a file with a Rainbow user
+
+---
+
+When in a conversation with a Rainbow user, you can share a file by calling the method `uploadFileToConversation()`.
+
+If you get the file from the `FileChooser` or if you construct yourself the `File` object from a `Blob`, you can upload it as follow
+
+```javascript
+let contactIdToSearch = "...";
+
+    let blob = new Blob(["body { background-color: yellow; }"], { type: "text/css" });
+    let file = new File([blob], "style.css");
+
+    // Retrieve a contact by its id
+    rainbowSDK.contacts.searchById(contactIdToSearch)
+    .then(function(contact) {
+        // Retrieve the associated conversation
+        return rainbowSDK.conversations.openConversationForContact(contact);
+    }).then(function(conversation) {
+        // Share the file
+        return rainbowSDK.fileStorage.uploadFileToConversation(conversation, file, "My file style");
+    }).then(function(message) {
+        // Do something once the file has been shared
+    }).catch(function(err) {
+        // Do something in case of error
+    });
+```
+
+`Blob` object can't be used directly. You need to convert it to a `File` as shown in the previous sample.
+
+#### Uploading a local file
+
+If you want to upload a local file from your computer, here is how to do it.
+
+First, create an `input` element of type `file` in your DOM:
+
+```html
+<input type="file" id="fileUpload"></input>
+```
+
+Then handle the change event that will occur on the element above:
+
+```javascript
+/* Somewhere in your code */
+
+let file;
+
+let inputElement = document.getElementById("fileUpload");
+
+inputElement.addEventListener("change", handleFiles, false);
+
+function handleFiles() {
+  console.log('A file has been chosen')
+  file = inputElement.files[0];
+}
+```
+
+Once you retrieve your `file` element, you can inject it into Rainbow Web SDK method as in the following example:
+
+```javascript
+var contactIdToSearch = "...";
+
+    // Retrieve a contact by its id
+    rainbowSDK.contacts.searchById(contactIdToSearch)
+    .then(function(contact) {
+        // Retrieve the associated conversation
+        return rainbowSDK.conversations.openConversationForContact(contact);
+    }).then(function(conversation) {
+        // Share the file
+        // Please note that "file" below represents a file that we have assigned to a "file" variable above
+        return rainbowSDK.fileStorage.uploadFileToConversation(conversation, file, "My message ");
+    }).then(function(message) {
+        // Do something once the file has been shared
+    }).catch(function(err) {
+        // Do something in case of error
+    });
+```
+
+When you share a file, you will get in return the `Message` object exchanged with your recipient as for sending a chat message. In this JavaScript object, the property `fileId` contains the id of the file that can be used to get the description of the file shared:
+
+```json
+{
+    "filename": "myFile.png", // The file name and extension
+    "filesize": 120439, // The file size
+    "mime": "image/png", // The mime type of the file
+    "url": "https://...5256345rdada" // The URL of the file
+}
+```
+
+### Sharing a file within a Bubble
+
+---
+
+Sharing a file within a Bubble can be done as simply as with a contact by calling the method `uploadFileToBubble()`. You can use either a path to your file as in the following sample or a `File` object.
+
+```javascript
+var bubbleId = "...";
+    var file = { /* Your file object that you have retrieved as above */ }
+
+    // Retrieve the bubble
+    var bubble = rainbowSDK.bubbles.getBubbleById(bubbleId);
+
+    rainbowSDK.fileStorage.uploadFileToBubble(bubble, file, "My message ");
+    }).then(function(message) {
+        // Do something once the file has been shared
+    }).catch(function(err) {
+        // Do somehting in case of error
+    });
+```
+
+### Be notified when a file is shared
+
+---
+
+As the file shared is relayed through a chat message, you have to listen to the event `RAINBOW_ONNEWIMMESSAGERECEIVED` to know when a new chat message is received and then to check the property `fileId`. If this property is not `undefined`, then there is a file attached to that message.
+
+To get the `fileDescriptor` data that is going to be useful later on you need to do one more step. Once you are equipped only with the `fileId` property provided in the message object, use `getFileDescriptorFromId()` function that takes it as a parameter.
+
+The following code listens for message received in conversations (One-to-one or in a bubble) and check if there is an attached file or not:
+
+```javascript
+let onNewMessageReceived = function(event) {
+
+        let message = event.message;
+
+        if(message.fileId){
+            let fileDescriptor = rainbowSDK.fileStorage.getFileDescriptorFromId(message.fileId);
+            //do something with the file
+        }
+    };
+
+    document.addEventListener(rainbowSDK.im.RAINBOW_ONNEWIMMESSAGERECEIVED, onNewMessageReceived)
+```
+
+### Downloading a file or an image
+
+---
+
+Files are protected in Rainbow. Even if you get an URL to a Rainbow file, you need to be signed-in to download it using the method `downloadFile()` like in the following code
+
+```javascript
+var saveToFile = function(blob, filename) {
+        var url = window.URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        document.body.appendChild(a);
+        a.style = "display: none";
+        a.href = url;
+        a.download = filename;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    };
+
+    var onNewMessageReceived = function(event, message, conversation) {
+
+        // New message received, check if there is a file
+        if(message.fileId) {
+
+            let fileDescriptor = rainbowSDK.fileStorage.getFileDescriptorFromId(message.fileId);
+
+            rainbowSDK.fileStorage.downloadFile(fileDescriptor).then(function(blob) {
+                // Create object URL that is going to be used to show the thumbnails in <img> element
+                let objectURL = URL.createObjectURL(blob);
+                // Download the file on disk
+                saveToFile(blob, fileDescriptor.fileName);
+            }).catch(function(err) {
+                // Do something in case of error
+            });
+        }
+    };
+```
+
+In that code, the method `downloadFile()` is used to get a JavaScript `Blob` object. Then you can attach it to a link and display it on your page. The user will be able to download it. Here is an helper function that automatically saves the content to a file on disk without having to click on a link.
+
+As the image may only be downloaded/get as JavaScript `Blob` object, to use it (it is an image) in an HTML `<img>` tag, please use the 'objectURL' generated in the method above and pass it to its `src` attribute.
+
+```html
+<img src="PASTE objectURL here" />
+```
+
+### Tracking download and upload progress
+
+When downloading or uploading bigger files, it is necessary to divide the load into little chunks. Rainbow SDK for Web treats all the files that are larger than 1MB as the ones that are going to be divided. To track the download and upload progress and adapt the GUI of your application, you need to listen to `RAINBOW_ONCHUNKDOWNLOADFILEMESSAGE` event as in the code below.
+
+```javascript
+// somewhere in your code
+    let onChunkLoadMessage = function (event){
+        let fileDescriptor = event.detail;
+        //do something with your fileDescriptor object
+    }
+
+    document.addEventListener(rainbowSDK.fileStorage.RAINBOW_ONCHUNKLOADMESSAGE, onChunkLoadMessage)
+```
+
+The event allows the application to receive an updated `fileDescriptor` object that contains all the necessary information about the file that is being transferred from or to the Rainbow server. The details of some of those properties are described below:
+
+-   `chunksTotalNumber` is an integer that informs you into how many pieces the file has been divided;
+-   `chunkPerformed` is the index of the current piece downloaded / uploaded
+-   `chunkPerformedPercent` is an integer that represents the download / upload progress in a form of percentage
+-   `state` property is set to `downloading` during the download process, `uploading` during the upload and to `uploaded` at the end
+
+The event is going to be resent with each chunk of a file that is being downloaded or uploaded
+
+### Cancelling a file transfer
+
+It is possible to cancel a file transfer (i.e. during the download process). To stop the ongoing download or upload of the file in the middle, call `cancelCurrentFileTransfer()` function which takes the ID of the file shared.
+
+```javascript
+// somewhere in your code
+
+var fileDescriptor = {...};
+var id = fileDescriptor.id;
+
+rainbowSDK.fileStorage.cancelCurrentFileTransfer(id)
+    .then(function (newFileDescriptor) {
+            //do something with the newFileDescriptor
+        }
+    );
+```
+
+The function above returns a Promise with an updated `fileDescriptor` object (to emphasise its change, in this tutorial we named it `newFileDescriptor`). The `state` property of the updated fileDescriptor should be now set back to `uploaded`.
+
+After using the function `cancelCurrentFileTransfer()` before the completion of the transfer process, the file (as well as its chunks) will not be downloaded or uploaded.
+
+If you need to upload or download this file, you need to restart the file transfer process again from the beginning.
+
+### Removing a file shared
+
+---
+
+File shared on Rainbow can be removed at any time. When removed, the file can't be downloaded any more by other Rainbow users. To remove a file you own, call the method `removeFile()`.
+
+```javascript
+var fileDescriptor = {...};
+
+    rainbowSDK.fileStorage.removeFile(fileDescriptor).then(function(){
+        // Do something when the file has been removed
+    }).catch(function(err) {
+        // Do something in case of error
+    });
+```
+
+### Retrieving the files sent and received in a conversation
+
+---
+
+At any time, for a dedicated conversation, you can ask for retrieving the list of files sent and received. The method `getFilesSentInConversation()` and `getFilesReceivedInConversation()` have to be used like in the following
+
+```javascript
+var conversation = {...};
+
+    rainbowSDK.fileStorage.getFilesReceivedInConversation(conversation).then(function(files){
+        // Do something with the list of files received in a conversation
+    });
+
+    rainbowSDK.fileStorage.getFilesSentInConversation(conversation).then(function(files){
+        // Do something with the list of files sent in a conversation
+    });
+```
+
+### Retrieving the files sent and received in a bubble
+
+---
+
+Use the method `getFilesSentInBubble()` and `getFilesReceivedInBubble()` if you need the same thing in a Bubble.
+
+```javascript
+var bubble = {...};
+
+    rainbowSDK.fileStorage.getFilesReceivedInBubble(bubble).then(function(files){
+        // Do something with the list of files received in a bubble
+    });
+
+    rainbowSDK.fileStorage.getFilesSentInBubble(bubble).then(function(files){
+        // Do something with the list of files sent in a bubble
+    });
+```
+
+### Retrieving the whole list of files sent
+
+---
+
+If you need to display the whole list of files shared in all conversations and bubbles, you can call the method `getAllFilesSent()`like in the following:
+
+```javascript
+rainbowSDK.fileStorage.getAllFilesSent().then(function(files){
+        // Do something with the full list of files sent
+    });
+```
+
+### Be notified when the upload and download steps have succeeded or not
+
+---
+
+You can be notified if the upload step or download step is successful or not (e.g. if you want to add spinner during these steps).
+
+You have to listen to the following events for the upload part:
+
+```javascript
+let onFileUploaded = function(event) {
+        let file = event.detail;
+        // Do something when the file has been uploaded successfully
+    };
+
+    let onFileUploadedError = function(event) {
+        let error = event.detail
+        // Do something when there is an error uploading a file
+    };
+
+    document.addEventListener(rainbowSDK.fileStorage.RAINBOW_ONFILEUPLOADED, onFileUploaded)
+    document.addEventListener(rainbowSDK.fileStorage.RAINBOW_ONFILEUPLOADED_ERROR, onFileUploadedError)
+```
+
+The same thing can be done when downloading a file
+
+```javascript
+let onFileDownloaded = function(event) {
+        let file = event.detail;
+        // Do something when the file has been downloaded successfully
+    };
+
+    let onFileDownloadedError = function(event) {
+        let error = event.detail;
+        // Do something when there is an error downloading a file
+    };
+
+    document.addEventListener(rainbowSDK.fileStorage.RAINBOW_ONFILEDOWNLOADED, onFileDownloaded)
+    document.addEventListener(rainbowSDK.fileStorage.RAINBOW_ONFILEDOWNLOADED_ERROR, onFileDownloadedError)
+```
+
+You are now ready for playing with files in Rainbow!
+
+---
+
+*Last updated June, 12th 2020*
+
+### On this page
+
+-   [Sharing files](/docs/sdk/web#name-sharing-files-0)
+-   [Rainbow Knowledge](/docs/sdk/web#name-rainbow-knowledge-10)
+-   [Limits](/docs/sdk/web#name-limits-47)
+-   [Knowing the file sharing quota](/docs/sdk/web#name-knowing-the-file-sharing-quota-57)
+-   [Sharing a file with a Rainbow user](/docs/sdk/web#name-sharing-a-file-with-a-rainbow-user-72)
+-   [Uploading a local file](/docs/sdk/web#name-uploading-a-local-file-86)
+-   [Sharing a file within a Bubble](/docs/sdk/web#name-sharing-a-file-within-a-bubble-108)
+-   [Be notified when a file is shared](/docs/sdk/web#name-be-notified-when-a-file-is-shared-116)
+-   [Downloading a file or an image](/docs/sdk/web#name-downloading-a-file-or-an-image-130)
+-   [Tracking download and upload progress](/docs/sdk/web#name-tracking-download-and-upload-progress-145)
+-   [Cancelling a file transfer](/docs/sdk/web#name-cancelling-a-file-transfer-180)
+-   [Removing a file shared](/docs/sdk/web#name-removing-a-file-shared-196)
+-   [Retrieving the files sent and received in a conversation](/docs/sdk/web#name-retrieving-the-files-sent-and-received-in-a-conversation-204)
+-   [Retrieving the files sent and received in a bubble](/docs/sdk/web#name-retrieving-the-files-sent-and-received-in-a-bubble-212)
+-   [Retrieving the whole list of files sent](/docs/sdk/web#name-retrieving-the-whole-list-of-files-sent-220)
+-   [Be notified when the upload and download steps have succeeded or not](/docs/sdk/web#name-be-notified-when-the-upload-and-download-steps-have-succeeded-or-not-228)
+
+---
+
+Was this content helpful to you?YesNo
 
 Feedback

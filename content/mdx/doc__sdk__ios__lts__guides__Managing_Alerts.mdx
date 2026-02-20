@@ -1,0 +1,221 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/ios/lts/guides/Managing_Alerts"
+lastSynced: "2026-02-20T07:12:29.232Z"
+---
+# Documentation
+
+Managing alerts
+
+LTS release 2.12.0Published on 2024-07-23
+
+## Managing alerts
+
+---
+
+### Preamble
+
+`Message` sent and received in a convervation have a `priority: MessagePriority` attribute with the following possible values:
+
+-   [swift](#codegroupTab-hashTag0)
+
+```swift
+// Default, means no priority
+MessagePriority.default
+
+// Low
+MessagePriority.low
+
+// Middle
+MessagePriority.middle
+
+// High (or critical, urgent)
+MessagePriority.high
+```
+
+The message priority does not prioritise the delivery of the messages, it's the reponsabilty of the client application to emphasise the display of that kind of messages, however the high priority level use the Application Critical Alerts, the application must have the Critical Alerts Entitlement `com.apple.developer.usernotifications.critical-alerts` from Apple to use this priority.
+
+To be allowed to use critical alerts in you application and receive those notifications you should request the Critical Alerts Entitlement from Apple at [https://developer.apple.com/contact/request/notifications-critical-alerts-entitlement/](https://developer.apple.com/contact/request/notifications-critical-alerts-entitlement/) then your app will be allowed to send push notifications that play a sound at an app-specified volume when the device is locked, muted, or has Do Not Disturb enabled.
+
+### Authorizations to send and receive critical messages
+
+The company must have the `hasAlertNotificationsCompanyFeatureEnabled` feature flag returning `true` for `MyUser` object to be allowed to use critical messages:
+
+-   [swift](#codegroupTab-hashTag6)
+
+```swift
+/**
+ *  @return `true` if the user company authorizes the sending of alert notifications
+ */
+public private(set) var hasAlertNotificationsCompanyFeatureEnabled: Bool
+```
+
+Only users with `isAlertNotificationsFeatureEnabled` flag set to `true` may receive critical notifications:
+
+-   [swift](#codegroupTab-hashTag7)
+
+```swift
+/**
+ *  @return `true` if the user can receive alert notifications
+ */
+public private(set) var isAlertNotificationsFeatureEnabled: Bool
+```
+
+### Sending message with priority
+
+The `ConversationsManagerService` has several methods that allows to send a textual message with a priority:
+
+-   [swift](#codegroupTab-hashTag1)
+
+```swift
+/**
+ *  Send a textual message in a conversation with different optional parameters
+ *
+ *  @param  message             message text (optional)
+ *  @param  files               list of `File` (optional)
+ *  @param  mentions            list of mentionned participants (optional)
+ *  @param  priority            priority of the message (use `MessagePriority.default` as default)
+ *  @param  repliedMessage      message which is replied (optional)
+ *  @param  conversation        conversation where the message is sent
+ *  @param  completionHandler   block invoked when the message is sent (optional)
+ *
+ *  @return message             return the `Message`
+ */
+
+sendTextMessage(message: String?, files: [File]?, mentions: [MessageMention]?, priority: MessagePriority, repliedMessage: Message?, conversation: Conversation, completionHandler: ConversationsManagerServiceSendMessageCompletionHandler?)
+```
+
+-   [swift](#codegroupTab-hashTag2)
+
+```swift
+/**
+ *  Send a message in a conversation with alternative content
+ *
+ *  @param  message                     message text
+ *  @param  alternativeContentMessage   a string containing alternative content message
+ *  @param  alternativeContentType.     a string with alternative content type, could have one of two values: "text/markdown" (to show markdown) "form/json" (to show adaptive card on Rainbow clients)
+ *  @param  priority                    priority of the message (use `MessagePriority.default` as default)
+ *  @param  conversation                conversation where the message is sent
+ *  @param  completionHandler           block invoked when the message is sent (optional)
+ *
+ *  @return message                         return the `Message`
+ */
+sendTextMessage(message: String, alternativeContentMessage: String, alternativeContentType: String, priority: MessagePriority, conversation: Conversation, completionHandler: ConversationsManagerServiceSendMessageCompletionHandler?)
+```
+
+-   [swift](#codegroupTab-hashTag3)
+
+```swift
+/**
+ *  Send a message in a conversation with different optional parameters
+ *
+ *  @param  message             message text (optional)
+ *  @param  files               list of `File` (optional)
+ *  @param  mentions            list of mentionned participants (optional)
+ *  @param  priority            priority of the message (use `MessagePriorityDefault` as default)
+ *  @param  repliedMessage      message which is replied (optional)
+ *  @param  urlMetadata          url metadata info (optional)
+ *  @param  conversation        conversation where the message is sent
+ *  @param  completionHandler   block invoked when the message is sent (optional)
+ *
+ *  @return message             return the `Message`
+ */
+ 
+sendTextMessage(message: String?, files: [File]?, mentions: [MessageMention]?, priority: MessagePriority, repliedMessage: Message?, urlMetadata: UrlMetadata?, conversation: Conversation, completionHandler: ConversationsManagerServiceSendMessageCompletionHandler?)
+```
+
+The `ConversationsManagerService` also has a method that allows to send a voice message with priority in a conversation:
+
+-   [swift](#codegroupTab-hashTag3)
+
+```swift
+/**
+ *  Send a voice message in a conversation with an attached audio file
+ *
+ *  @param  file                audio `File`
+ *  @param  priority            priority of the message (use `MessagePriority.default` as default)
+ *  @param  conversation        conversation where the message is sent
+ *  @param  completionHandler   block invoked when the message is sent (optional)
+ *
+ *  @return message             return the `Message`
+*/
+
+sendVoiceMessage(file: File, priority: MessagePriority, conversation: Conversation, completionHandler: ConversationsManagerServiceSendMessageCompletionHandler?)
+```
+
+And there is a method to send a location with priority in a conversation:
+
+-   [swift](#codegroupTab-hashTag3)
+
+```swift
+/**
+ *  Send a location message in a conversation with a `Location` object
+ *
+ *  @param location             `Location` of the user (use `createLocationWithLatitude` in `locationService`)
+  * @param priority               priority of the message (use `MessagePriority.default` as default)
+ *  @param conversation         conversation where the message is sent
+ *  @param completionHandler    block invoked when the message is sent (optional)
+ *
+ *  @return message             return the `Message`
+ */
+ 
+sendLocationMessage(location: Location, priority: MessagePriority, conversation: Conversation completionHandler: ConversationsManagerServiceSendMessageCompletionHandler?)
+```
+
+### Acknowledge urgent messages
+
+Recipient of a urgent messages may acknowledge the notification using the following `ConversationsManagerService` method:
+
+-   [swift](#codegroupTab-hashTag4)
+
+```swift
+/**
+ *  Send a reply to an urgent message
+ *
+ *  @param urgentMessage      the urgent message to reply
+ *  @param conversation       conversation where the message is sent
+ *  @param acknowledge        acknowledge or ignore
+ *  @param completionHandler  block invoked when the message is sent (optional)
+ *
+ *  @return message           return the `Message`
+ */
+ 
+sendReply(toUrgentMessage: Message, conversation: Conversation, acknowledge: Bool, completionHandler: ConversationsManagerServiceSendMessageCompletionHandler?)
+```
+
+The `Message` class has the following properties related to urgent messages:
+
+-   [swift](#codegroupTab-hashTag5)
+
+```swift
+/**
+* Boolean set to `true` if this Alert message has been acknowledged
+*/
+public private(set) var isAcknowledged: Bool
+
+/**
+ *  Answered message action (attribute 'action' for urgent message, possible values are .none, .ack and .ignore)
+ */
+public private(set) var answeredMessageAction: AnsweredMessageAction
+
+/**
+ *  Returns `true` if this message is a self answering of an urgent message (by ack or ignore)
+ */
+public private(set) var isSelfAnswerToUrgentMessage: Bool
+```
+
+### On this page
+
+-   [Managing alerts](/docs/sdk/ios#name-managing-alerts-0)
+-   [Preamble](/docs/sdk/ios#name-preamble-4)
+-   [Authorizations to send and receive critical messages](/docs/sdk/ios#name-authorizations-to-send-and-receive-critical-messages-17)
+-   [Sending message with priority](/docs/sdk/ios#name-sending-message-with-priority-28)
+-   [Acknowledge urgent messages](/docs/sdk/ios#name-acknowledge-urgent-messages-45)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

@@ -1,0 +1,316 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Manage_tasks_and_pin_messages"
+lastSynced: "2026-02-20T07:12:28.636Z"
+---
+# Documentation
+
+Manage tasks and pin messages
+
+LTS release 2.61.0Published on 202-04-06
+
+## Manage tasks and pin messages
+
+---
+
+Welcome to the **Rainbow SDK for Android** guide: Managing Tasks and Pinning Messages. This guide will help you manage user task lists, including how to create tasks, convert messages into tasks, update tasks, and listen for changes in the task list. Additionally, you will learn how to pin messages in a conversation so that they are visible to all participants.
+
+**Rainbow concept**
+
+**Description**
+
+**Task**
+
+A task is a "to-do" item, specific to the user. It can be created by specifying a title and an optional description, or by converting a message from a conversation into a task. Tasks are organized by category.
+
+**IMMessage**
+
+An IMMessage refers to any message sent in a conversation. These messages can be added directly to a user's task list.
+
+**PinMessage**
+
+A PinMessage is a message that has been pinned within a conversation. All participants can see pinned messages, though in Room conversations (with multiple participants), only organizers can pin messages.
+
+**Peer**
+
+A peer is a participant in a conversation. The Peer object includes the ID of the user who pinned the message in the case of a PinMessage.
+
+### Preamble
+
+---
+
+This tutorial assumes you have already completed the **Getting Started** and **Connect to Rainbow** tutorials and have an active Rainbow application. Before proceeding with task and pinned message management, ensure that the following prerequisites are met:
+
+-   Your development environment is correctly set up, following the guidelines in the [Getting Started](/docs/sdk/android) tutorial.
+-   Your application is successfully connected to the Rainbow platform, as outlined in the [Connect to Rainbow](/docs/sdk/android) tutorial.
+-   You have the necessary authentication credentials and API keys available.
+
+Once these prerequisites are in place, you're ready to start managing tasks and pinned messages using the Rainbow SDK for Android.
+
+### Retrieve user tasks
+
+---
+
+The tasks of the connected user are loaded when the SDK starts, but only in a minimal version to provide the task list. Additional information that may be found in a task such as the associated `IRainbowContact`, the associated `IRainbowRoom`, the `RainbowFileDescriptor`, or the `IMMessage` itself—are not loaded at startup for performance reasons.
+
+To access these tasks, simply use:
+
+`RainbowSdk().tasks().taskList`, which returns an `ArrayItemList<Task>`, allowing you to listen for real-time changes.
+
+```kotlin
+private val tasksListener = IItemListChangeListener {
+    RainbowSdk().tasks().taskList.copyOfDataList // Contains the latest updates to the task list
+}
+
+RainbowSdk().tasks().taskList.registerChangeListener(tasksListener)
+
+// Don't forget to unregister the listener later
+RainbowSdk().tasks().taskList.unregisterChangeListener(tasksListener)
+```
+
+To retrieve all available information in the tasks, or to refresh the list, you can use the method `fetchTasks(category: String? = null, listener: RainbowListener<Map<String, List<Task>>, Unit>? = null)`.
+
+This method accepts an optional category parameter, allowing you to retrieve tasks only from a specific category. If the parameter is omitted, all tasks are retrieved. You can also pass a listener as a callback to handle the list of tasks grouped by category. This parameter can also be omitted if you're already listening for changes in the task list.
+
+```kotlin
+RainbowSdk().tasks().fetchTasks(listener = object : RainbowListener<Map<String, List<Task>>, Unit> {
+    override fun onSuccess(data: Map<String, List<Task>>) {
+        // Handle success
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle error
+    }
+})
+```
+
+### Create a new task
+
+---
+
+There are two ways to create a task:
+
+1.  **Directly Creating a Task**: You can use the method `createTask(text: String, category: String, additionalDescription: String? = null, position: Int? = 0, listener: RainbowListener<Task, TaskRepository.CreateTaskError>? = null)` to create a task by providing the task’s title (text) and its category (category). Additionally, you can specify an optional description and a position within the category.
+
+In the example below, a task is created in the "High" category without specifying a position, so it will be added at the top of the list.
+
+```kotlin
+RainbowSdk().tasks().createTask(
+    text = "My new task!", 
+    category = "High", 
+    listener = object : RainbowListener<Task, TaskRepository.CreateTaskError> {
+        override fun onSuccess(data: Task) {
+            // Handle success
+        }
+
+        override fun onError(error: RainbowError<TaskRepository.CreateTaskError>) {
+            // Handle error
+        }
+    }
+)
+```
+
+2.  **Creating a Task from a Message**: The second way to create a task is by converting an `IMMessage` into a task using the method `createTaskFromMessage(message: IMMessage, conversation: IRainbowConversation, category: String, position: Int? = 0, listener: RainbowListener<Task, TaskRepository.CreateTaskError>? = null)`.
+
+When you pass a message and its associated conversation as parameters, the task will be linked to the message, and its content will reflect it. You can also specify the task's position within the category.
+
+```kotlin
+RainbowSdk().tasks().createTaskFromMessage(
+    message = imMessage, 
+    conversation = your_conversation, 
+    category = "High", 
+    listener = object : RainbowListener<Task, TaskRepository.CreateTaskError> {
+        override fun onSuccess(data: Task) {
+            // Handle success
+        }
+
+        override fun onError(error: RainbowError<TaskRepository.CreateTaskError>) {
+            // Handle error
+        }
+    }
+)
+```
+
+> **Note**: After calling these APIs, the newly created task will be added to the taskList and automatically resolved to include all necessary information.
+
+### Delete a task
+
+---
+
+Whether the task was created directly or from a message, the deletion process is the same for both cases.
+
+Simply provide the task ID to the method `deleteTask(taskId: String, listener: RainbowListener<Unit, Unit>? = null)`.
+
+```kotlin
+// The listener is optional and can be omitted if you are already listening for task list changes.
+RainbowSdk().tasks().deleteTask(taskId = "id_of_the_task")
+```
+
+Alternatively, if your task is linked to a message and you are working from an `IMMessage` object, you can use the method `deleteTaskFromMessage(messageId: String, listener: RainbowListener<Unit, Unit>?)`. This method will automatically find the task associated with the message and delete it if it exists.
+
+```kotlin
+// The listener is optional and can be omitted if you are already listening for task list changes.
+RainbowSdk().tasks().deleteTaskFromMessage(messageId = "id_of_the_message")
+```
+
+> **Note**: The `deleteTaskFromMessage` method only works for tasks that were created from a message. If the task or message ID does not exist, the operation will fail, so it's important to ensure that the task or message exists before attempting deletion.
+
+### Update a task
+
+---
+
+Updating a task is straightforward and allows you to modify general information such as the category, position, or whether the task has been completed.
+
+For tasks created manually, you can also update the task’s text or its additional description.
+
+In all cases, the update is done using the API `updateTask(task: Task, listener: RainbowListener<Unit, Unit>? = null)`.
+
+```kotlin
+// The listener is optional and can be omitted if you are already listening for task list changes.
+val updatedTask = task.copy(category = newCategory, position = newPosition, done = true)
+RainbowSdk().tasks().updateTask(updatedTask)
+```
+
+In this example, we use the `copy()` method to create a new instance of the Task object, preserving the task ID and other properties while changing the category, position, and marking the task as completed.
+
+**What Can Be Updated:**
+
+-   **Category**: Move the task to a different category.
+-   **Position**: Change its order within the category.
+-   **Completion Status**: Mark the task as completed or incomplete.
+-   **Text and Description** (for manually created tasks): Update the task’s main text and optional description.
+
+### Pin a message
+
+---
+
+Pinned messages differ from tasks in that they are always linked to a specific message, and all participants in the conversation can see them. Otherwise, their structure is quite similar to the tasks.
+
+In a **P2P** conversation, both participants can pin messages, while in a room conversation, only the organizers are allowed to pin messages. This ensures that message pinning is controlled in larger conversations.
+
+Regardless of the conversation type, the API remains the same: `pinMessageInConversation(conversation: IRainbowConversation, message: IMMessage, listener: RainbowListener<PinMessage, Unit>? = null)`.
+
+Here’s how you can easily pin a message:
+
+```kotlin
+RainbowSdk().pins().pinMessageInConversation(
+    conversation = yourConversation, // Replace with your active conversation object
+    message = imMessage, // Replace with the message you want to pin
+    listener = object : RainbowListener<PinMessage, Unit> {
+        override fun onSuccess(data: PinMessage) {
+            // Handle success
+        }
+
+        override fun onError(error: RainbowError<Unit>) {
+            // Handle error
+        }
+    }
+)
+```
+
+> **Note**: Pinned messages are visible to all participants and will remain accessible throughout the conversation.
+
+### Unpin a message
+
+---
+
+Unpinning a message is just as simple as pinning one.
+
+```kotlin
+RainbowSdk().pins().unpinMessageInConversation(
+    conversation = yourConversation, // Replace with your active conversation object
+    message = imMessage, // Replace with the message you want to unpin
+    listener = object : RainbowListener<Unit, Unit> {
+        override fun onSuccess(data: Unit) {
+            // Handle success
+        }
+
+        override fun onError(error: RainbowError<Unit>) {
+            // Handle error
+        }
+    }
+)
+```
+
+> **Note**: In room conversations, an organizer can unpin a message that was pinned by another organizer.
+
+### Retrieve pinned messages from a conversation
+
+---
+
+Unlike tasks, pinned messages are not automatically retrieved when the SDK starts.
+
+To fetch the pinned messages for a specific conversation, use the method `getPinnedMessagesInConversation(conversation: IRainbowConversation, listener: RainbowListener<List<PinMessage>, Unit>? = null)`.
+
+If pinned messages haven't been requested yet for that conversation, a request is sent to the server to fetch them. Afterward, the list is stored locally, making it immediately available in the `onSuccess` callback of the listener for future access without needing additional server requests.
+
+Once the list is retrieved, it stays up-to-date. To listen for real-time changes, you can subscribe using the `PinsChangeListener` interface, which provides two methods: `onPinChange(peerId: String, pinId: String?)` and `onPinRemoved(peerId: String, pinId: String)`.
+
+```kotlin
+// Define a listener for real-time updates
+private val pinsListener = object : Pins.PinsChangeListener {
+    override fun onPinChange(peerId: String, pinId: String?) {
+        // A pin has been created or updated in the conversation with the peerId
+    }
+
+    override fun onPinRemoved(peerId: String, pinId: String) {
+        // A pin has been removed in the conversation with the peerId
+    }
+}
+
+// Somewhere in your application, register the listener
+RainbowSdk().pins().registerChangeListener(pinsListener)
+
+// Remember to unregister the listener later to avoid memory leaks
+RainbowSdk().pins().unregisterChangeListener(pinsListener)
+
+// Fetch pinned messages for the conversation
+RainbowSdk().pins().getPinnedMessagesInConversation(conversation, object : RainbowListener<List<PinMessage>, Unit> {
+    override fun onSuccess(data: List<PinMessage>) {
+        // Handle the list of PinMessages
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle the error
+    }
+})
+```
+
+> **Note**: Using the `PinsChangeListener` allows you to track new or removed pins in real time, making it easier to keep the UI up-to-date with any changes in the conversation.
+
+### Conclusion
+
+---
+
+Congratulations! You've successfully completed the guide on managing tasks and pinned messages with the Rainbow SDK.
+
+In this guide, you learned how to create, update, and delete tasks, whether created manually or from a message. You also mastered how to pin messages in conversations to highlight important information for all participants. These features help you manage tasks more effectively and ensure key messages remain visible to everyone involved.
+
+Now that you’re familiar with task and pin management, there’s so much more you can do with the Rainbow SDK! Dive deeper into other features, enhance your app’s functionality, and continue to optimize the user experience.
+
+If you need assistance or have any questions, our support team is always here to help.
+
+Happy coding and enjoy building with Rainbow!
+
+*Last updated October, 2024*
+
+### On this page
+
+-   [Manage tasks and pin messages](/docs/sdk/android#name-manage-tasks-and-pin-messages-0)
+-   [Preamble](/docs/sdk/android#name-preamble-53)
+-   [Retrieve user tasks](/docs/sdk/android#name-retrieve-user-tasks-80)
+-   [Create a new task](/docs/sdk/android#name-create-a-new-task-101)
+-   [Delete a task](/docs/sdk/android#name-delete-a-task-135)
+-   [Update a task](/docs/sdk/android#name-update-a-task-155)
+-   [Pin a message](/docs/sdk/android#name-pin-a-message-197)
+-   [Unpin a message](/docs/sdk/android#name-unpin-a-message-219)
+-   [Retrieve pinned messages from a conversation](/docs/sdk/android#name-retrieve-pinned-messages-from-a-conversation-232)
+-   [Conclusion](/docs/sdk/android#name-conclusion-254)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

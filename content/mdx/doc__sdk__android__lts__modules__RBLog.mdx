@@ -1,0 +1,367 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/modules/RBLog"
+lastSynced: "2026-02-20T07:12:28.803Z"
+---
+# Documentation
+
+Module RBLog
+
+LTS release 2.61.0Published on 202-04-06
+
+## module RBLog
+
+### object RBLog
+
+RBLog is used to print logs into logcat and also to write it to text files. You can get a zipped file of the logs by calling `zipLogsToPath()` method.
+
+### @JvmOverloads fun initLogger (Context, DEBUG)
+
+Initialize the logger with a specific logs level. This method is automatically called into `RainbowSdk.instance().initialize()`, so in most cases, you don't have to call it explicitly. Only call explicitly this method if you want to log with write to file before you have called `RainbowSdk.instance().initialize()`.
+
+Param
+
+Type
+
+Description
+
+context
+
+Context
+
+The context
+
+level
+
+Level
+
+Can be one of `Level` enum: `TRACE`, `DEBUG`, `INFO`, `ERROR`, `WARNING`
+
+### fun getLevel (
+
+Returns the actual logs level. Can be one of the `Level` enum.
+
+-   **Returns:** Corresponding enum of the actual log level
+
+### fun setLevel (Level)
+
+Changes the logs level. Can be one of the `Level` enum.
+
+Param
+
+Type
+
+Description
+
+level
+
+Level
+
+Can be one of `Level` enum: `TRACE`, `DEBUG`, `INFO`, `ERROR`, `WARNING`
+
+### fun zipLogs (Context, String, File)
+
+Zip log files and store it in the destination path.
+
+Param
+
+Type
+
+Description
+
+context
+
+Context
+
+The context
+
+zipFileName
+
+String
+
+The file name of the zip (without the '.zip' extension)
+
+destinationPath
+
+File
+
+The folder destination path of the zip file
+
+-   **Returns:** File path of the created zip file
+
+### @JvmStatic fun verbose (String,
+
+Send a VERBOSE log message.
+
+Param
+
+Type
+
+Description
+
+logTag
+
+String
+
+Used to identify the source of a log message. It usually identifies the class or activity where the log call occurs.
+
+message
+
+String
+
+message The message you would like logged
+
+### @JvmStatic fun debug (String,
+
+Send a DEBUG log message.
+
+Param
+
+Type
+
+Description
+
+logTag
+
+String
+
+Used to identify the source of a log message. It usually identifies the class or activity where the log call occurs.
+
+message
+
+String
+
+message The message you would like logged
+
+### @JvmStatic fun info (String,
+
+Send an INFO log message.
+
+Param
+
+Type
+
+Description
+
+logTag
+
+String
+
+Used to identify the source of a log message. It usually identifies the class or activity where the log call occurs.
+
+message
+
+String
+
+message The message you would like logged
+
+### @JvmStatic fun warn (String,
+
+Send a WARNING log message.
+
+Param
+
+Type
+
+Description
+
+logTag
+
+String
+
+Used to identify the source of a log message. It usually identifies the class or activity where the log call occurs.
+
+message
+
+String
+
+message The message you would like logged
+
+### @JvmStatic fun error (String,
+
+Send an ERROR log message.
+
+Param
+
+Type
+
+Description
+
+logTag
+
+String
+
+Used to identify the source of a log message. It usually identifies the class or activity where the log call occurs.
+
+message
+
+String
+
+message The message you would like logged
+
+### fun verbose (String, String, Throwable)
+
+Send a VERBOSE log message and log the exception.
+
+Param
+
+Type
+
+Description
+
+logTag
+
+String
+
+Used to identify the source of a log message. It usually identifies the class or activity where the log call occurs.
+
+message
+
+String
+
+The message you would like logged
+
+exception
+
+Throwable
+
+An exception to log
+
+### @JvmStatic fun debug (String, String, Throwable)
+
+Send a DEBUG log message and log the exception.
+
+Param
+
+Type
+
+Description
+
+logTag
+
+String
+
+Used to identify the source of a log message. It usually identifies the class or activity where the log call occurs.
+
+message
+
+String
+
+The message you would like logged
+
+exception
+
+Throwable
+
+An exception to log
+
+### @JvmStatic fun info (String, String, Throwable)
+
+Send an INFO log message and log the exception.
+
+Param
+
+Type
+
+Description
+
+logTag
+
+String
+
+Used to identify the source of a log message. It usually identifies the class or activity where the log call occurs.
+
+message
+
+String
+
+The message you would like logged
+
+exception
+
+Throwable
+
+An exception to log
+
+### @JvmStatic fun warn (String, String, Throwable)
+
+Send a WARNING log message and log the exception.
+
+Param
+
+Type
+
+Description
+
+logTag
+
+String
+
+Used to identify the source of a log message. It usually identifies the class or activity where the log call occurs.
+
+message
+
+String
+
+The message you would like logged
+
+exception
+
+Throwable
+
+An exception to log
+
+### @JvmStatic fun error (String, String, Throwable)
+
+Send an ERROR log message and log the exception.
+
+Param
+
+Type
+
+Description
+
+logTag
+
+String
+
+Used to identify the source of a log message. It usually identifies the class or activity where the log call occurs.
+
+message
+
+String
+
+The message you would like logged
+
+exception
+
+Throwable
+
+An exception to log
+
+### On this page
+
+-   [module RBLog](/docs/sdk/android#name-module-rblog-0)
+-   [object RBLog](/docs/sdk/android#name-object-rblog-3)
+-   [@JvmOverloads fun initLogger (Context, DEBUG)](/docs/sdk/android#name-jvmoverloads-fun-initlogger-context-debug-9)
+-   [fun getLevel (](/docs/sdk/android#name-fun-getlevel--54)
+-   [fun setLevel (Level)](/docs/sdk/android#name-fun-setlevel-level-67)
+-   [fun zipLogs (Context, String, File)](/docs/sdk/android#name-fun-ziplogs-context-string-file-101)
+-   [@JvmStatic fun verbose (String,](/docs/sdk/android#name-jvmstatic-fun-verbose-string-164)
+-   [@JvmStatic fun debug (String,](/docs/sdk/android#name-jvmstatic-fun-debug-string-209)
+-   [@JvmStatic fun info (String,](/docs/sdk/android#name-jvmstatic-fun-info-string-254)
+-   [@JvmStatic fun warn (String,](/docs/sdk/android#name-jvmstatic-fun-warn-string-299)
+-   [@JvmStatic fun error (String,](/docs/sdk/android#name-jvmstatic-fun-error-string-344)
+-   [fun verbose (String, String, Throwable)](/docs/sdk/android#name-fun-verbose-string-string-throwable-389)
+-   [@JvmStatic fun debug (String, String, Throwable)](/docs/sdk/android#name-jvmstatic-fun-debug-string-string-throwable-445)
+-   [@JvmStatic fun info (String, String, Throwable)](/docs/sdk/android#name-jvmstatic-fun-info-string-string-throwable-501)
+-   [@JvmStatic fun warn (String, String, Throwable)](/docs/sdk/android#name-jvmstatic-fun-warn-string-string-throwable-557)
+-   [@JvmStatic fun error (String, String, Throwable)](/docs/sdk/android#name-jvmstatic-fun-error-string-string-throwable-613)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

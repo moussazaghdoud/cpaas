@@ -1,0 +1,369 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/IBubble"
+lastSynced: "2026-02-20T07:12:33.406Z"
+---
+# Documentation
+
+IBubble
+
+[IBubble](#IBubble) : `Interface`
+
+IBubble interface
+
+[IBubblesStyleProps](#IBubblesStyleProps) : `Interface`
+
+IBubblesStyleProps interface
+
+[ICreateBubbleStyleProps](#ICreateBubbleStyleProps) : `Interface`
+
+ICreateBubbleStyleProps interface
+
+[BubbleErrorCode](#BubbleErrorCode) : `Enum`
+
+BubbleErrorCode enum
+
+## IBubble : `Interface`
+
+Bubble interface ,its `extends` from the [IPeer](/docs/sdk/reactnative/api/IPeer)
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+id
+
+`string`
+
+The id of the bubble.
+
+jId
+
+`string`
+
+The jabber identifier of the bubble.
+
+name
+
+`string`
+
+The Bubble name.
+
+topic
+
+`string`
+
+The bubble description.
+
+nameInitials
+
+`string`
+
+the initial name
+
+imageURL
+
+`string`
+
+The image url of the bubble profile picture .
+
+isMyUserOwner
+
+`boolean`
+
+is the login user is the owner of the bubble
+
+isMyUserModerator
+
+`boolean`
+
+is the login user is one of the bubble organizers
+
+hasActiveConference
+
+`boolean`
+
+is this bubble have an active conference
+
+amIConnected
+
+`boolean`
+
+if the connected user is connected to the active conference call
+
+customData
+
+`JSON object`
+
+The customized data that added by you to bubble module under name [customData](/docs/sdk/reactnative/tutorials/BubbleCustomData)
+
+hasActiveConference
+
+`boolean`
+
+a flag is set to true if this peer have an active call
+
+bubbleOwner
+
+`[IContact](/docs/sdk/reactnative/api/IContact)`
+
+the contact object for the bubble creator
+
+## IBubblesStyleProps : `Interface`
+
+IBubblesStyleProps interface
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+noDataMessage
+
+`ViewStyle`
+
+Incase there is no Bubble, the custom style for the parent view
+
+noDataMessageText
+
+`TextStyle`
+
+Incase there is no Bubble, the custom style for the Warning message text
+
+image
+
+`ImageStyle`
+
+The bubble image style
+
+sectionHeader
+
+`TextStyle`
+
+The Tab Text style
+
+## ICreateBubbleStyleProps : `Interface`
+
+ICreateBubbleStyleProps interface
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+loader
+
+`ViewStyle`
+
+The loader style when the Bubbles are not fetched yet
+
+bgColor
+
+`ViewStyle`
+
+The header and Tabs background color
+
+bubbleInfo
+
+`ViewStyle`
+
+The Bubble information page style e.g: name, topic ...
+
+container
+
+`ViewStyle`
+
+The Container that hold all the create bubble page, including the bubble info tab and participant to add tab
+
+headerTitle
+
+`TextStyle`
+
+The page Header text style
+
+errorText
+
+`TextStyle`
+
+The error text style incase of invalid bubble name
+
+textInput
+
+`ViewStyle`
+
+Text input style for the bubble name and bubble topic
+
+tabBarUnderline
+
+`ViewStyle`
+
+Tab underline view style
+
+tabActiveText
+
+`TextStyle`
+
+Tab style when its selected
+
+tabText
+
+`TextStyle`
+
+Tab style when its Unselected
+
+## BubbleErrorCode : `enum`
+
+**Kind**: global enum **Access**: public **Read only**: true **Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+CREATE\_OPEN\_INVITE\_ID\_FAILURE
+
+`string`
+
+`CREATE_OPEN_INVITE_ID_FAILURE`
+
+An error occurred while creating the bubble
+
+RESET\_PASSWORD\_FAILURE
+
+`string`
+
+`RESET_PASSWORD_FAILURE`
+
+An error occurred while creating the bubble
+
+CONFERENCE\_ASSOCIATION\_FAILURE
+
+`string`
+
+`CONFERENCE_ASSOCIATION_FAILURE`
+
+An error occurred while creating the bubble
+
+BIND\_OPEN\_INVITE\_ID\_FAILURE
+
+`string`
+
+`BIND_OPEN_INVITE_ID_FAILURE`
+
+An error occurred while creating the bubble
+
+MAX\_PARTICIPANTS\_REACHED
+
+`string`
+
+`MAX_PARTICIPANTS_REACHED`
+
+An error occurred when reaching bubble max participants
+
+ARCHIVE\_PREVIOUS\_BUBBLE\_FAILED
+
+`string`
+
+`ARCHIVE_PREVIOUS_BUBBLE_FAILED`
+
+An error occurred while archived the bubble
+
+DELETE\_PREVIOUS\_BUBBLE\_FAILED
+
+`string`
+
+`DELETE_PREVIOUS_BUBBLE_FAILED`
+
+An error occurred while deleting the bubble
+
+AVATAR\_UPLOAD\_FAILED
+
+`string`
+
+`AVATAR_UPLOAD_FAILED`
+
+An error occurred while uploading the bubble avatar
+
+BUBBLE\_ALREADY\_EXISTS
+
+`string`
+
+`BUBBLE_ALREADY_EXISTS`
+
+An error occurred if you try creating bubble with exits name
+
+MAX\_BUBBLE\_COUNT\_REACHED
+
+`string`
+
+`MAX_BUBBLE_COUNT_REACHED`
+
+An error occurred when reaching bubble max participants
+
+BAD\_PARAMETER\_VALUE
+
+`string`
+
+`BAD_PARAMETER_VALUE`
+
+wrong input failure
+
+RESPONSE\_PARSING\_FAILURE
+
+`string`
+
+`RESPONSE_PARSING_FAILURE`
+
+An error occurred while creating the bubble
+
+SDK\_WRONG\_STATE
+
+`string`
+
+`SDK_WRONG_STATE`
+
+A Rainbow SDk error
+
+ADD\_PARTICIPANT\_ERROR
+
+`string`
+
+`ADD_PARTICIPANT_ERROR`
+
+An error occurred while adding participant to bubble
+
+UNKNOWN
+
+`string`
+
+`UNKNOWN`
+
+An error occurred while creating the bubble
+
+### On this page
+
+-   [IBubble : Interface](/docs/sdk/reactnative/api/IBubble#name-ibubble-:-interface-4)
+-   [IBubblesStyleProps : Interface](/docs/sdk/reactnative/api/IBubble#name-ibubblesstyleprops-:-interface-176)
+-   [ICreateBubbleStyleProps : Interface](/docs/sdk/reactnative/api/IBubble#name-icreatebubblestyleprops-:-interface-249)
+-   [BubbleErrorCode : enum](/docs/sdk/reactnative/api/IBubble#name-bubbleerrorcode-:-enum-388)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

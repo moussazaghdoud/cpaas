@@ -1,0 +1,94 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/tutorials/ManagingPersonalProfile"
+lastSynced: "2026-02-20T07:12:33.744Z"
+---
+# Documentation
+
+Manage personal profile
+
+### Managing Personal Profile
+
+---
+
+### Preamble
+
+---
+
+Using the Rainbow SDK for react native, you can manage your personal information by getting or updating them.
+
+### Get The Connected User Info
+
+You can get the connected user profile information by calling the component `<UserProfile />` from `react-native-rainbow-module`. This component will return the connected user :
+
+-   name
+-   company name
+-   presence
+-   profile picture
+
+### Change Your Presence
+
+You can change your Rainbow presence to `Online`, `Away`, `Offline` or `Do not disturb` by calling `<PresenceList />` from the sdk library. This component will allow you to change your presence and listen of any presence changes. In Addition it allow you to customize the style of the presence icon by pass the optional props `presenceIconStyle` check code below.
+
+You can use the `<UserProfile />` and `<PresenceList/>` as shown in example code below:
+
+```tsx
+import { Content, List, View } from 'native-base';
+import React from 'react';
+import { UserProfile, PresenceList } from 'react-native-rainbow-module';
+
+const presenceIconStyle: ImageStyle = {
+    width: 25,
+    height: 25,
+};
+class AppMenuView extends React.Component<IProps> {
+    constructor(props: IProps) {
+        super(props);
+    }
+
+    public render() {
+        return (
+            <SafeAreaView style={defaultStyle.safeArea}>
+                <UserProfile />
+                    <View style={defaultStyle.menuContentContainer}>
+                        <Content>
+                            <List>
+                                <PresenceList presenceIconStyle={presenceIconStyle} />
+                            </List>
+                        </Content>
+                    </View>
+            </SafeAreaView>
+
+        );
+    }
+   }
+export default AppMenuView;
+};
+```
+
+### Update your personal information
+
+You can update you personal information by calling the method `updateUserInfo(updateUserRequest: IUpdateUserQuery):void` provided in `userProfileService`. where the [IUpdateUserQuery](/docs/sdk/reactnative/api/IUser) is the query that conation the user info you want to update.
+
+**Note:** please note that not all the connected users have the right to modify the whole of their profile and not only (title, firstName, lastName). to check if the user is allow to change his presence or the information check the two flags in [IUser](/docs/sdk/reactnative/api/IUser) below:
+
+-   `isAllowedToChangePresence` : Define if a user has the right to changes his Presence manually or only use automatic states.
+-   `isAllowedToModifyProfileInfo` : Define if a user has the right to modify the whole of his profile and not only (title, firstName, lastName).
+
+For more details on how you can get and update the connected user info, You can check **MyProfile** component in our [Example code](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/tree/main/src/MyProfile/MyProfileInfo.tsx)
+
+### On this page
+
+-   [Managing Personal Profile](/docs/sdk/reactnative/tutorials/ManagingPersonalProfile#name-managing-personal-profile-0)
+-   [Preamble](/docs/sdk/reactnative/tutorials/ManagingPersonalProfile#name-preamble-4)
+-   [Get The Connected User Info](/docs/sdk/reactnative/tutorials/ManagingPersonalProfile#name-get-the-connected-user-info-11)
+-   [Change Your Presence](/docs/sdk/reactnative/tutorials/ManagingPersonalProfile#name-change-your-presence-39)
+-   [Update your personal information](/docs/sdk/reactnative/tutorials/ManagingPersonalProfile#name-update-your-personal-information-49)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

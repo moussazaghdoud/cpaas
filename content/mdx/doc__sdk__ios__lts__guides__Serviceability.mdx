@@ -1,0 +1,193 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/ios/lts/guides/Serviceability"
+lastSynced: "2026-02-20T07:12:29.514Z"
+---
+# Documentation
+
+Serviceability
+
+LTS release 2.13.0Published on 2025-03-07
+
+## Serviceability
+
+---
+
+### Getting the SDK version
+
+The Rainbow SDK version could be retrieved like this (SDK version > 2.9.0), for example in the AppDelegate of the app:
+
+-   [swift](#codegroupTab-hashTag1)
+-   [objective-c](#codegroupTab-hashTag2)
+
+```swift
+let sdkVersion = ServicesManager.version()
+```
+
+```objective
+NSString *sdkVersion = ServicesManager.version;
+```
+
+### Stopping the SDK
+
+At any time, you can stop the connection to Rainbow by calling the API `disconnect`. This will stop all services. The only way to reconnect is to call the API `connect` again.
+
+-   [swift](#codegroupTab-hashTag3)
+-   [objective C](#codegroupTab-hashTag4)
+
+```swift
+NotificationCenter.default.addObserver(self, selector: #selector(didLogout(notification:)), name: NSNotification.Name(kLoginManagerDidLogoutSucceeded), object: nil)
+ServicesManager.sharedInstance()?.loginManager.disconnect()        ServicesManager.sharedInstance().loginManager.resetAllCredentials()
+```
+
+```objectivec
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogout:) name:kLoginManagerDidLogoutSucceeded object:nil];
+[[ServicesManager sharedInstance].loginManager disconnect];
+[[ServicesManager sharedInstance].loginManager resetAllCredentials];
+```
+
+### Logging
+
+The logs emitted by the Rainbow SDK could be redirected to the Documents directory (`NSDocumentsDirectory`) of the app using the SDK. When the log recording is started using `startRecord` method of `LogRecorder` service a log files named according to this template :
+
+`log_[applicationName]-[applicationVersion]_dd-MM-yyyy HH_mm_ss.txt`
+
+such as `log_Rainbow-1.0.1_06-11-2019 18_09_42.txt` is created in Documents directory and appended with live logs.
+
+#### Starting and stopping log recording
+
+If you want to record all logs coming from the Rainbow SDK you should start the recording in the `init` method of your `AppDelegate` :
+
+-   [swift](#codegroupTab-hashTag5)
+-   [objective C](#codegroupTab-hashTag6)
+
+```swift
+override init() {
+    LogsRecorder.sharedInstance().startRecord()
+}
+```
+
+```objectivec
++(void)initialize {
+    if (self == [AppDelegate self]) {
+        [super initialize];
+        
+        [[LogsRecorder sharedInstance] startRecord];
+    }
+}
+```
+
+To stop the log recording you should call `[[LogsRecorder sharedInstance] stopRecord]`, this flush all pending write to the logs file and close it. You may call `stopRecord` in `ApplicationWillTerminate` method :
+
+-   [swift](#codegroupTab-hashTag7)
+-   [objective C](#codegroupTab-hashTag8)
+
+```swift
+func applicationWillTerminate(_ application: UIApplication) {
+    LogsRecorder.sharedInstance().stopRecord()
+}
+```
+
+```objectivec
+- (void)applicationWillTerminate:(UIApplication *)application {
+    [[LogsRecorder sharedInstance] stopRecord];
+}
+```
+
+*Note*: Each time the `startRecord` method is called a new log file is created.
+
+#### Retrieving the log files
+
+##### File sharing
+
+The log files are created at the root of your app Documents directory so they are visible in the iTunes app in the File sharing section when this feature is activated in XCode. To activate the file sharing for your app you should set the `Application supports iTunes file sharing` property to `YES` in the app's `Info.plist` file:
+
+![](https://sdk.openrainbow.io/ios/docs/assets/filesharing-enable.png)
+
+##### Zipping log files
+
+`LogRecorder` service provide the `-(NSURL *) zippedApplicationLogs` method that compress all the log files together and return a `NSURL` to the resulting file, you could then transmit using eMail, or filetransfer.
+
+The zipped file is also created in the app Documents directory, then it is accessible in the File sharing if activated and could be retrieved manually using iTunes.
+
+*Note*: You should call `stopRecord` before calling `zippedApplicationLogs`, then `startRecord` again.
+
+##### Cleaning log files
+
+The `LogRecorder`service provide several methods to clean the generated log files :
+
+-   [swift](#codegroupTab-hashTag9)
+-   [objective C](#codegroupTab-hashTag10)
+
+```swift
+/**
+ * Remove log files older than 2 days and also the zipped log archive if any.
+ */
+func cleanOldLogs()
+
+/**
+ * Delete all log files
+ */
+func deleteAllLogs() -> Int
+
+/**
+ * Delete a log file
+ * @param  logName      the name of the log file
+ * @return              `YES` if the item was removed successfully
+ */
+func deleteLog(_ logName: String!) -> Bool
+
+/**
+ * Delete a log files created before a given date
+ * @param  date        the date
+ * @return `YES` if the item was removed successfully
+ */
+deleteLogs(before: Date) -> Bool
+```
+
+```objectivec
+/**
+ * Remove log files older than 2 days and also the zipped log archive if any.
+ */
+-(void) cleanOldLogs;
+
+/**
+ * Delete all log files
+ */
+-(NSInteger) deleteAllLogs;
+
+/**
+ * Delete a log file
+ * @param  logName      the name of the log file
+ * @return `YES`            if the item was removed successfully
+ */
+-(BOOL) deleteLog:(NSString*)logName;
+
+/**
+ * Delete a log files created before a given date
+ * @param  date        the date
+ * @return `YES` if the item was removed successfully
+ */
+-(NSArray*) deleteLogsBefore:(NSDate*)date;
+```
+
+You may at least call the `cleanOldLogs` method in the `applicationWillTerminate` of your app to clean older log files and avoid to consume too much space on the device.
+
+*Note*: You should call `stopRecord` before calling these methods.
+
+### On this page
+
+-   [Serviceability](/docs/sdk/ios#name-serviceability-0)
+-   [Getting the SDK version](/docs/sdk/ios#name-getting-the-sdk-version-4)
+-   [Stopping the SDK](/docs/sdk/ios#name-stopping-the-sdk-11)
+-   [Logging](/docs/sdk/ios#name-logging-18)
+-   [Starting and stopping log recording](/docs/sdk/ios#name-starting-and-stopping-log-recording-30)
+-   [Retrieving the log files](/docs/sdk/ios#name-retrieving-the-log-files-44)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

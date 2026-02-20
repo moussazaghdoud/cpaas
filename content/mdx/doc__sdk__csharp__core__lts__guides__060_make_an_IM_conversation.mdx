@@ -3,16 +3,356 @@ title: "CPaaS SDK for business communication solutions | Rainbow"
 description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
 type: "sdk"
 source: "https://developers.openrainbow.com/doc/sdk/csharp/core/lts/guides/060_make_an_IM_conversation"
-lastSynced: "2026-02-19T22:35:13.817Z"
+lastSynced: "2026-02-20T07:12:24.683Z"
 ---
 # Documentation
 
-Csharp > core > lts > guides > 060\_make\_an\_IM\_conversation
+Managing an IM conversation
 
-### Sur cette page
+LTS release 3.XPublished on 2025-03-17
+
+## Managing an IM conversation
+
+This guide explains:
+
+-   How to know last active conversations
+-   How to retrieve messages already exchnaged with Contacts (Peer To Peer - P2P) or Bubbles and how to send new ones.
+
+It's based on a full example available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/blob/master/SDK%20V3.X/ConsoleApp/Conversations%20and%20IM/README.md)
+
+### Retrieving active conversations
 
 ---
 
-Ce contenu vous a-t-il été utile ?OuiNon
+To retrieve all active conversations, you can use the `GetAllConversations` method of `Conversations` object.
+
+They are sorted by date, for the conversation the most recent (i.e. the last one where a message has been exchanged) to the older.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Conversations conversations = myApp.GetConversations();
+Rainbow.Contacts contacts = myApp.GetConversations();
+Rainbow.Bubbles bubbles = myApp.GetConversations();
+
+List<Conversation> list = RbConversations.GetAllConversations();
+foreach(var conversation in list)
+{
+
+    // Is it a conversation in a Bubble's context ?
+    if (conversation.Peer.Type == EntityType.Bubble) 
+    {
+        // Get Bubble object from Peer object
+        var bubble = bubbles.GetBubble(conversation.Peer);
+    }
+    else
+    {
+        // Get Contact object from Peer object
+        var contact = contacts.GetContact(conversation.Peer);
+    }
+}
+```
+
+### Remove a conversation
+
+---
+
+To remove a conversation, you can call `RemoveFromConversationsAsync` method from `Conversations` object.
+
+The conversation is removed from the conversations list but messages already exchanged in it are not deleted.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.Conversations conversations = myApp.GetConversations();
+...
+Rainbow.Conversation conversation; // Your conversation
+
+var sdkResult = await conversations.RemoveFromConversationsAsync(conversation);
+if (sdkResult.Success)
+{
+    var lastConversationDeleted = sdkResult.Data;
+    Util.WriteDarkYellow($"{CR}Conversation deleted:[{lastConversationDeleted.ToString(DetailsLevel.Medium)}]");
+}
+else
+{
+    // Display the reason
+    if (sdkResult.Result.Type == Rainbow.Enums.SdkErrorType.Exception)
+        Util.WriteRed($"RemoveFromConversationsAsync - Exception occurs: [{sdkResult.Result}]");
+    else
+    {
+        if (sdkResult.Result.IncorrectUseError.ErrorCode == 1000)
+            WriteRed($"LoginAsync - SDK triggered an error:{sdkResult.Result}");
+        else
+            WriteRed($"LoginAsync - Server triggered an error:{sdkResult.Result}");
+    }       
+}
+```
+
+### Get older messages exchanged with a Peer
+
+---
+
+To get older messages exchanged with a Peer, the `GetOlderMessagesAsync` method of `InstantMessaging` object must be used.
+
+This method asks the server to get older messages with a Peer and add them in the cache of the SDK.
+
+If you call again this method, older messages from previous result are retrieved until there is no more message.
+
+For performance reason, it's not possible to get all messages in one call. You need to call several times `GetOlderMessagesAsync` until you received no more messages.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.InstantMessaging instantMessaging = myApp.GetInstantMessaging();
+...
+Rainbow.Model.Contact contact; 
+Rainbow.Model.Bubble Bubble;
+int nbMessages = 20; // Nb message to retrieve
+
+Rainbow.Model.Peer peer = contact; // We use here a Peer as Contact 
+// peer = bubble; // => It's also possible to use a Peer as Bubble
+
+var sdkResult = await RbInstantMessaging.GetOlderMessagesAsync(peer, 5);
+if(sdkResult.Success)
+{
+    var messages = sdkResult.Data;
+
+    if (messages.Count > 0)
+    {
+        StringBuilder stringBuilder = new();
+        int index = 0;
+        foreach (var message in messages)
+        {
+            stringBuilder.Append($"{CR}Message [{index++:00}]:");
+            AppendMessage(ref stringBuilder, message, $"{CR}\t");
+        }
+
+        Util.WriteDarkYellow($"{CR}Older messages with Peer:[{peer.ToString(DetailsLevel.Small)}]:");
+        Util.WriteDarkYellow($"{CR}{stringBuilder}");
+    }
+    else
+        Util.WriteDarkYellow($"{CR}No more older messages to retrieve with Peer:[{peer.ToString(DetailsLevel.Small)}]:");
+}
+else
+{
+    // Display the reason
+    if (sdkResult.Result.Type == Rainbow.Enums.SdkErrorType.Exception)
+        Util.WriteRed($"GetOlderMessagesAsync - Exception occurs: [{sdkResult.Result}]");
+    else
+    {
+        if (sdkResult.Result.IncorrectUseError.ErrorCode == 1000)
+            WriteRed($"GetOlderMessagesAsync - SDK triggered an error:{sdkResult.Result}");
+        else
+            WriteRed($"GetOlderMessagesAsync - Server triggered an error:{sdkResult.Result}");
+    } 
+}
+```
+
+### Get messages already exchanged with Contacts / Bubbles
+
+---
+
+To get messages already exchanged with Contacts / Bubbles, use `GetOlderMessages` method of `InstantMessaging` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.InstantMessaging instantMessaging = myApp.GetInstantMessaging();
+...
+Rainbow.Model.Contact contact; 
+Rainbow.Model.Bubble Bubble;
+
+Rainbow.Model.Peer peer = contact; // We use here a Peer as Contact 
+// peer = bubble; // => It's also possible to use a Peer as Bubble
+
+List<Message> list = instantMessaging.GetOlderMessages(peer);
+```
+
+### Send a message to a Peer
+
+---
+
+To send a message to a Peer, use `SendMessageAsync` method of `InstantMessaging` object.
+
+When a message is sent, if there is not yet an active conversation with this Peer automatically the SDK will create a new one.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.InstantMessaging instantMessaging = myApp.GetInstantMessaging();
+...
+
+Rainbow.Model.Contact contact; 
+Rainbow.Model.Bubble Bubble;
+
+Rainbow.Model.Peer peer = contact; // We use here a Peer as Contact 
+// peer = bubble; // => It's also possible to use a Peer as Bubble
+
+String message = "Hello !"; // Your message
+
+var sdkResult = await RbInstantMessaging.SendMessageAsync(peer, message);
+if(sdkResult.Success)
+    Util.WriteBlue($"{CR}IM sent to [{peer.ToString(DetailsLevel.Small)}]");
+else
+    Util.WriteRed($"{CR}Error sending IM: [{sdkResult.Result}]");
+```
+
+### Manage message receipt state
+
+---
+
+A message can have different receipt status (cf. enum `Rainbow.Model.ReceiptType`)
+
+-   `ServerReceived`: The server has received the message
+-   `ClientReceived`: The client has received the message
+-   `ClientRead`: The client has received and read the message
+-   `None`: unknown state
+
+When a message is received, the SDK automatically send to the recipient the receipt status `ClientReceived`
+
+To manage other message receipts status, you need to handle the `ReceiptReceived` event of `InstantMessaging` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.InstantMessaging instantMessaging = myApp.GetInstantMessaging();
+...
+
+instantMessaging.ReceiptReceived += MyApp_ReceiptReceived;
+
+void MyApp_ReceiptReceived(Peer peerContext, Message message, MessageReceiptType receiptType)
+{
+    string messageId = message.Id; // ID of the message
+    var receipt = receiptType; // receipt Type
+}
+```
+
+### Mark a message as read
+
+---
+
+When a message is received, the SDK automatically send to the recipient the receipt status `ClientReceived`.
+
+On your own, you need to send a receipt of type `ClientRead` when the message received has been read.
+
+To send a receipt of type `ClientRead`, you need to use `MarkMessageAsReadAsync` method of `InstantMessaging` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.InstantMessaging instantMessaging = myApp.GetInstantMessaging();
+...
+Peer peer; // Your peer as Contact or as Bubble
+String messageId; // Your message Id
+
+var sdkResult = instantMessaging.MarkMessageAsReadAsync(peer, messageId);
+if(sdkResult.Success)
+    Util.WriteBlue($"{CR}Message has been marked as Read");
+else
+    Util.WriteRed($"{CR}Error: [{sdkResult.Result}]");
+```
+
+### Send the "Is typing" status
+
+---
+
+To send the 'isTyping' status, you need to use `SendIsTypingAsync` method of `InstantMessaging` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.InstantMessaging instantMessaging = myApp.GetInstantMessaging();
+...
+Peer peer; // Your peer as Contact or as Bubble
+
+var sdkResult = instantMessaging.SendIsTypingAsync(peer, true);
+if(sdkResult.Success)
+    Util.WriteBlue($"{CR}IsTyping set with Peer");
+else
+    Util.WriteRed($"{CR}Error: [{sdkResult.Result}]");
+```
+
+### Manage 'isTyping' status form other users
+
+---
+
+To know when someone 'isTyping', you need to use `UserTypingChanged` event of `InstantMessaging` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.InstantMessaging instantMessaging = myApp.GetInstantMessaging();
+...
+instantMessaging.UserTypingChanged += MyApp_UserTypingChanged;
+
+void MyApp_UserTypingChanged(Peer peerContext, Contact contact, bool isTyping)
+{
+    if(peerContext.Type == EntityType.User)
+    {
+        // A P2P context
+        Util.WriteBlue($"{CR} Contact [{contact.ToString(DetailsLevel.Small)}] - isTyping:[{isTyping}]");
+    }
+    else
+    {
+        // A Bubble context
+        Util.WriteBlue($"{CR} Contact [{contact.ToString(DetailsLevel.Small)}] - isTyping:[{isTyping}] in Bubble:[{peerContext.ToString(DetailsLevel.Small)}]");
+    }
+}
+```
+
+### Manage incoming message
+
+---
+
+To know when a new message is received, you need to use `MessageReceived` event of `InstantMessaging` object.
+
+```csharp
+Rainbow.Application myApp = new Rainbow.Application();
+...
+Rainbow.InstantMessaging instantMessaging = myApp.GetInstantMessaging();
+...
+instantMessaging.MessageReceived += MyApp_MessageReceived;
+
+private void MyApp_MessageReceived(object sender, EventHandler<MessageEventArgs> evt)
+{
+    if(message.ToBubble is null)
+    {
+        // Message has NOT be sent to a Bubble
+        Util.WriteBlue($"{CR}Message received: sent by [{message.FromContact.ToString(DetailsLevel.Small)}] to you:");
+    }
+    else
+    {
+        // Message has been sent to a Bubble
+        Util.WriteBlue($"{CR}Message received: sent by [{message.FromContact.ToString(DetailsLevel.Small)}] in Bubble [{message.ToBubble.ToString(DetailsLevel.Small)}]:");
+    }
+    StringBuilder stringBuilder = new();
+    AppendMessage(ref stringBuilder, message, $"{CR}\t");
+    Util.WriteDarkYellow($"{CR}{stringBuilder}");
+}
+```
+
+### Examples
+
+You can take a look to several examples available [here](https://github.com/Rainbow-CPaaS/Rainbow-CSharp-SDK-Samples/tree/master/SDK%20V3.X/README.md)
+
+### On this page
+
+-   [Managing an IM conversation](/docs/sdk/csharp#name-managing-an-im-conversation-0)
+-   [Retrieving active conversations](/docs/sdk/csharp#name-retrieving-active-conversations-21)
+-   [Remove a conversation](/docs/sdk/csharp#name-remove-a-conversation-32)
+-   [Get older messages exchanged with a Peer](/docs/sdk/csharp#name-get-older-messages-exchanged-with-a-peer-43)
+-   [Get messages already exchanged with Contacts / Bubbles](/docs/sdk/csharp#name-get-messages-already-exchanged-with-contacts--bubbles-60)
+-   [Send a message to a Peer](/docs/sdk/csharp#name-send-a-message-to-a-peer-68)
+-   [Manage message receipt state](/docs/sdk/csharp#name-manage-message-receipt-state-79)
+-   [Mark a message as read](/docs/sdk/csharp#name-mark-a-message-as-read-115)
+-   [Send the "Is typing" status](/docs/sdk/csharp#name-send-the-is-typing-status-129)
+-   [Manage 'isTyping' status form other users](/docs/sdk/csharp#name-manage-istyping-status-form-other-users-137)
+-   [Manage incoming message](/docs/sdk/csharp#name-manage-incoming-message-145)
+-   [Examples](/docs/sdk/csharp#name-examples-153)
+
+---
+
+Was this content helpful to you?YesNo
 
 Feedback

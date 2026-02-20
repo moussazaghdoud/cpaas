@@ -1,0 +1,71 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/useRainbowAuth"
+lastSynced: "2026-02-20T07:12:33.530Z"
+---
+# Documentation
+
+useRainbowAuth
+
+### useRainbowAuth Hook
+
+### Overview
+
+The `useRainbowAuth` hook is a custom hook that provides an easy way to access the authentication state and user information from the Redux store within your React components. This hook simplifies the process of checking if a user is authenticated and retrieving the user's details.
+
+### Usage
+
+To use the `useRainbowAuth` hook, simply import it into your component and call it. The hook will return an object containing the authentication status and user information.
+
+```tsx
+import React from 'react';
+import { useRainbowAuth } from 'path-to-hooks';
+
+const UserProfile: React.FC = () => {
+  const { isAuthenticated, user } = useRainbowAuth();
+
+  return (
+    <div>
+      {isAuthenticated ? (
+        <h1>Welcome, {user?.name}!</h1>
+      ) : (
+        <h1>Please log in.</h1>
+      )}
+    </div>
+  );
+};
+```
+
+### Return Value
+
+The `useRainbowAuth` hook returns an object with the following properties:
+
+-   `isAuthenticated`: A boolean indicating whether the [user](/docs/sdk/reactnative/api/IUser) is authenticated.
+    
+-   `user`: An object containing information about the [user](/docs/sdk/reactnative/api/IUser), including their name, email, and other details.
+    
+
+### Error Handling
+
+he hook includes error handling to ensure that it can still function correctly even when used outside of the Redux Provider. If the hook is called outside of the provider context, it falls back to accessing the Redux store directly to retrieve the user state.
+
+### Conclusion
+
+The `useRainbowAuth` hook is a powerful utility for managing authentication state in your React components. By using this hook, you can easily check if a user is authenticated and access their details, streamlining the process of building authentication flows in your application.
+
+### On this page
+
+-   [useRainbowAuth Hook](/docs/sdk/reactnative/api/useRainbowAuth#name-userainbowauth-hook-0)
+-   [Overview](/docs/sdk/reactnative/api/useRainbowAuth#name-overview-3)
+-   [Usage](/docs/sdk/reactnative/api/useRainbowAuth#name-usage-9)
+-   [Return Value](/docs/sdk/reactnative/api/useRainbowAuth#name-return-value-16)
+-   [Error Handling](/docs/sdk/reactnative/api/useRainbowAuth#name-error-handling-34)
+-   [Conclusion](/docs/sdk/reactnative/api/useRainbowAuth#name-conclusion-40)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

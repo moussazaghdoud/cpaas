@@ -1,0 +1,202 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/settingssvc"
+lastSynced: "2026-02-20T07:12:32.710Z"
+---
+# Documentation
+
+Settings Service
+
+LTS release 2.XPublished on 2025-01-01
+
+## Settings
+
+This module manages the settings of the connected user.  
+  
+  
+The main methods proposed in that module allow to:  
+\- Get user settings  
+\- Update user settings  
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [Settings](#module_Settings)
+    -   [getUserSettings()](#module_Settings+getUserSettings) ⇒ `Promise.<UserSettings>`
+    -   [updateUserSettings(settings)](#module_Settings+updateUserSettings) ⇒ `Promise.<Settings, ErrorManager>`
+
+---
+
+### settings.getUserSettings() ⇒ `Promise.<UserSettings>`
+
+Get current User Settings  
+This API can only be used by user himself  
+
+**Kind**: instance method of [`Settings`](#module_Settings)
+
+**Returns**: `Promise.<UserSettings>` - A promise containing the result
+
+Champ
+
+Type
+
+Description
+
+presence
+
+String
+
+Setting for manual user presence (used to go back to this presence when user logs in, instead of default (online))  
+  
+Possible values: `online`, `away`, `invisible`, `dnd`
+
+displayNameOrderFirstNameFirst
+
+Boolean
+
+Setting for user display name order  
+  
+\* true: firstname first  
+\* false: lastname first
+
+activeAlarm
+
+String
+
+Setting for active user alarm sound
+
+activeNotif
+
+String
+
+Setting for active user notification sound
+
+ringingOnDnd
+
+Boolean
+
+Setting for allowing the user's devices to ring when receiving incoming call while being on DND.
+
+promptForCalendarPresence
+
+Boolean
+
+Setting to bypass calendar presence popup
+
+applyCalendarPresence optionnel
+
+Boolean
+
+Calendar presence should be applied as user preference settings (DND)
+
+promptForMsTeamsPresence
+
+Boolean
+
+Setting to bypass Microsoft Teams presence popup
+
+applyMsTeamsPresence optionnel
+
+Boolean
+
+Microsoft Teams presence should be applied as user preference settings (Busy/DND)
+
+protectionAgainstMailTypeOffline
+
+boolean
+
+Never receive unsolicited emails of type 'offLine'
+
+rainbowReadOnly
+
+Object
+
+Some rainbow public settings
+
+nbDaysBeforeWarningByMail
+
+Integer
+
+Notifying offline user by mail, allowed after n days after last login
+
+autoAnswer
+
+Boolean
+
+Setting to allow one rainbow client to answer incoming call initiated by external
+
+delayBetweenTwoWarningByMailInDays
+
+Integer
+
+Retry notifying offline user by mail, allowed after n days after last attempt
+
+autoAnswerByDeviceType
+
+String
+
+Setting to define the default rainbow client used for the autoAnswer feature: IOS or Androïd or Desktop (default = Desktop)
+
+**Category**: Settings - Users
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.20.0
+
+---
+
+### settings.updateUserSettings(settings) ⇒ `Promise.<Settings, ErrorManager>`
+
+Update current User Settings  
+This API can only be used by user himself  
+
+**Kind**: instance method of [`Settings`](#module_Settings)
+
+**Returns**: `Promise.<Settings, ErrorManager>` - A promise containing the result
+
+**Category**: Settings - Users
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.20.0
+
+Param
+
+Type
+
+Description
+
+settings
+
+`Object`
+
+: user settings to update  
+{  
+**presence** optionnel : string : Setting for manual user presence (used to go back to this presence when user logs in, instead of default (online)). Default value : `online`. Possible values : `"online"`, `"away"`, `"invisible"`, `"dnd"`  
+**displayNameOrderFirstNameFirst** optionnel : boolean : Setting for user display name order. \* true: firstname first. \* false: lastname first. Default value : `true`  
+**activeAlarm** optionnel : String : Setting for active user alarm sound. Default value : `relax1`.  
+**activeNotif** optionnel : String : Setting for active user notification sound. Default value : `notif1`.  
+**ringingOnDnd** optionnel : boolean : Setting for allowing devices to ring on incoming call while being on DND. Default value : `false`  
+**protectionAgainstMailTypeOffline** optionnel : boolean : Allow never receiving unsolicited emails of type 'offLine'. Default value : `false`  
+}  
+
+---
+
+### On this page
+
+-   [Settings](/docs/sdk/node#name-settings-3)
+-   [settings.getUserSettings() ⇒ Promise.<UserSettings>](/docs/sdk/node#name-settings.getusersettings--promise.usersettings-38)
+-   [settings.updateUserSettings(settings) ⇒ Promise.<Settings, ErrorManager>](/docs/sdk/node#name-settings.updateusersettingssettings--promise.settings-errormanager-248)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

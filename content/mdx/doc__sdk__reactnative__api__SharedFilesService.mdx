@@ -1,0 +1,226 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/SharedFilesService"
+lastSynced: "2026-02-20T07:12:33.517Z"
+---
+# Documentation
+
+Shared Files Service
+
+### Shared Files Services
+
+---
+
+### Preamble
+
+---
+
+The message services module `sharedFilesService` has all the methods supported by this library.
+
+---
+
+The following are all the supported services for the Shared Files:
+
+[Fetch All Shared Files In Peer](#fetchAllSharedFilesInPeer)
+
+fetchAllSharedFilesInPeer(peerJid: string, isBubble: boolean): void
+
+[Load More Shared Files](#loadMoreSharedFiles)
+
+loadMoreSharedFiles(peerJid: string, isBubble: boolean, numberOfFiles: number = 10): void
+
+[Fetch File Sent In Bubble](#fetchFileSentInBubble)
+
+fetchFileSentInBubble(bubbleId: string): void
+
+[Fetch File Received In Bubble](#fetchFileReceivedInBubble)
+
+fetchFileReceivedInBubble(bubbleId: string): void
+
+[Fetch File Sent In Conversation](#fetchFileSentInConversation)
+
+fetchFileSentInConversation(convId: string): void
+
+[Fetch File Received In Conversation](#fetchFileReceivedInConversation)
+
+fetchFileReceivedInConversation(convId: string): void
+
+[Download File](#downloadFile)
+
+downloadFile(fileDescriptorId: string): void
+
+[Delete File](#deleteFile)
+
+deleteFile(fileId: string):void
+
+---
+
+### Fetch Files In Peer:
+
+To fetch all the shared files in peer (Conversation, Bubble) you can use `sharedFilesService.fetchAllSharedFilesInPeer(peerJid: string, isBubble: boolean)`, where you can get the files results as array of[IFile](/docs/sdk/reactnative/api/IFile) type by listening to `EventType.GetAllSharedFileWithPeerResult`.
+
+```ts
+import { sharedFilesService, IFile } from 'react-native-rainbow-module'
+...
+...
+sharedFilesService.fetchAllSharedFilesInPeer(peer.jId, isBubble);
+        const sharedFileWithPeerResult = eventEmitter.addListener(
+            EventType.GetAllSharedFileWithPeerResult,
+            (eventData: IFile[]) => {
+                logger.info(`GetAllSharedFileWithPeerResult with file count ${eventData.length}`);
+                // Handle the files result
+            }
+        );
+```
+
+### Load More Files:
+
+To Fetch more shared files in this peer (Conversation, Bubble), you can call `sharedFilesService.loadMoreSharedFiles(peerJid: string, isBubble: boolean, numberOfFiles: number = 10)`, where the default umber of files to fetch is 10 and you can get the files results as array of[IFile](/docs/sdk/reactnative/api/IFile) type by listening to `EventType.GetAllSharedFileWithPeerResult`.
+
+```ts
+import { sharedFilesService, IFile } from 'react-native-rainbow-module'
+...
+...
+sharedFilesService.loadMoreSharedFiles(peer.jId, isBubble);
+        const sharedFileWithPeerResult = eventEmitter.addListener(
+            EventType.GetAllSharedFileWithPeerResult,
+            (eventData: IFile[]) => {
+                logger.info(`GetAllSharedFileWithPeerResult with file count ${eventData.length}`);
+                // Handle the files result
+            }
+        );
+```
+
+---
+
+### Fetch Sent Files In Bubble:
+
+To Fetch `sent` the files in the bubble, you can use `sharedFilesService.fetchFileSentInBubble`, where you can get the files results as array of[IFile](/docs/sdk/reactnative/api/IFile) type by listening to `EventType.GetSharedFileSentWithBubbleResult`.
+
+```ts
+import { sharedFilesService, IFile } from 'react-native-rainbow-module'
+...
+const fetchSentFilesInBubble = (bubbleId: string)  => {
+sharedFilesService.fetchFileSentInBubble(bubbleId);
+}
+// Listen to fetching file result
+eventEmitter.addListener(
+  EventType.GetSharedFileSentWithBubbleResult,
+  (eventData: IFile[] ) => {
+    //handle the shared files
+  }
+);
+```
+
+### Fetch Received Files In Bubble:
+
+To Fetch `received` the files in the bubble, you can use `sharedFilesService.fetchFileReceivedInBubble`, where you can get the files results as array of[IFile](/docs/sdk/reactnative/api/IFile) type by listening to `EventType.GetSharedFileReceivedWithBubbleResult`.
+
+```ts
+import { sharedFilesService, IFile } from 'react-native-rainbow-module'
+...
+const fetchFileReceivedInBubble = (bubbleId: string)  => {
+sharedFilesService.fetchFileReceivedInBubble(bubbleId);
+}
+// Listen to fetching file result
+eventEmitter.addListener(
+  EventType.GetSharedFileReceivedWithBubbleResult,
+  (eventData: IFile[] ) => {
+    //handle the shared files
+  }
+);
+```
+
+---
+
+### Fetch Sent Files In Conversation:
+
+To Fetch `sent` the files in the conversation, you can use `sharedFilesService.fetchFileSentInConversation`, where you can get the files results as array of[IFile](/docs/sdk/reactnative/api/IFile) type by listening to `EventType.GetSharedFileSentWithConversationResult`.
+
+```ts
+import { sharedFilesService, IFile } from 'react-native-rainbow-module'
+...
+const fetchFileSentInConversation = (conversationId: string)  => {
+sharedFilesService.fetchFileSentInConversation(conversationId);
+}
+// Listen to fetching file result
+eventEmitter.addListener(
+  EventType.GetSharedFileSentWithConversationResult,
+  (eventData: IFile[] ) => {
+    //handle the shared files
+  }
+);
+```
+
+### Fetch Received Files In Conversation:
+
+To Fetch `received` the files in the conversation, you can use `sharedFilesService.fetchFileReceivedInConversation`, where you can get the files results as array of[IFile](/docs/sdk/reactnative/api/IFile) type by listening to `EventType.GetSharedFileReceivedWithConversationResult`.
+
+```ts
+import { sharedFilesService, IFile } from 'react-native-rainbow-module'
+...
+const fetchFileReceivedInConversation = (conversationId: string)  => {
+sharedFilesService.fetchFileReceivedInConversation(conversationId);
+}
+// Listen to fetching file result
+eventEmitter.addListener(
+  EventType.GetSharedFileReceivedWithConversationResult,
+  (eventData: IFile[] ) => {
+    //handle the shared files
+  }
+);
+```
+
+---
+
+### Download File:
+
+To download a file from a conversation, you can call `downloadFile(fileDescriptorId: string)`, where you can get the file download results by listening to `EventType.FileDownloadFinished`. You can also get the progress percentage of the download using `EventType.fileDownloadProgressUpdated` event.
+
+```ts
+import { sharedFilesService } from 'react-native-rainbow-module'
+...
+const downloadFile = (fileDescriptorId: string)  => {
+sharedFilesService.downloadFile(fileDescriptorId);
+}
+// Listen to file download finish result
+eventEmitter.addListener(
+  EventType.FileDownloadFinished,
+  (eventData: { isSuccess: boolean, fileId: string, errorMsg?: string }) => {
+    //handle downloaded file
+  }
+);
+```
+
+### Delete File:
+
+To delete a file from a conversation, you can call `deleteFile(fileDescriptorId: string)`.
+
+```ts
+import { sharedFilesService } from 'react-native-rainbow-module'
+...
+const deleteFile = (fileDescriptorId: string)  => {
+sharedFilesService.deleteFile(fileDescriptorId);
+}
+```
+
+### On this page
+
+-   [Shared Files Services](/docs/sdk/reactnative/api/SharedFilesService#name-shared-files-services-0)
+-   [Preamble](/docs/sdk/reactnative/api/SharedFilesService#name-preamble-4)
+-   [Fetch Files In Peer:](/docs/sdk/reactnative/api/SharedFilesService#name-fetch-files-in-peer:-17)
+-   [Load More Files:](/docs/sdk/reactnative/api/SharedFilesService#name-load-more-files:-27)
+-   [Fetch Sent Files In Bubble:](/docs/sdk/reactnative/api/SharedFilesService#name-fetch-sent-files-in-bubble:-38)
+-   [Fetch Received Files In Bubble:](/docs/sdk/reactnative/api/SharedFilesService#name-fetch-received-files-in-bubble:-48)
+-   [Fetch Sent Files In Conversation:](/docs/sdk/reactnative/api/SharedFilesService#name-fetch-sent-files-in-conversation:-59)
+-   [Fetch Received Files In Conversation:](/docs/sdk/reactnative/api/SharedFilesService#name-fetch-received-files-in-conversation:-69)
+-   [Download File:](/docs/sdk/reactnative/api/SharedFilesService#name-download-file:-80)
+-   [Delete File:](/docs/sdk/reactnative/api/SharedFilesService#name-delete-file:-90)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

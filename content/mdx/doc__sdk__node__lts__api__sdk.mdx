@@ -1,0 +1,1839 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/sdk"
+lastSynced: "2026-02-20T07:12:32.690Z"
+---
+# Documentation
+
+SDK
+
+LTS release 2.XPublished on 2025-01-01
+
+## Modules
+
+[SDK](#module_SDK)
+
+This module is the core module of the Rainbow SDK for Node.JS  
+. It gives access to the other modules and allow to start/stop the SDK  
+  
+The main methods proposed in that module allow to:  
+\- Access to each module like Bubbles, Contacts...  
+\- Access to Event module  
+\- Start and stop the SDK  
+\- Get the version number  
+\- Get the SDK internal state
+
+```
+Warning: Before deploying in production a bot that can generate heavy traffic, please contact ALE.
+```
+
+## SDK
+
+This module is the core module of the Rainbow SDK for Node.JS  
+. It gives access to the other modules and allow to start/stop the SDK  
+  
+The main methods proposed in that module allow to:  
+\- Access to each module like Bubbles, Contacts...  
+\- Access to Event module  
+\- Start and stop the SDK  
+\- Get the version number  
+\- Get the SDK internal state
+
+```
+Warning: Before deploying in production a bot that can generate heavy traffic, please contact ALE.
+```
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [SDK](#module_SDK)
+    -   *API*
+        -   [start(token)](#module_SDK+start)
+        -   [startWSOnly()](#module_SDK+startWSOnly)
+        -   [startCLI()](#module_SDK+startCLI)
+        -   [siginCLI()](#module_SDK+siginCLI)
+        -   [setRenewedToken()](#module_SDK+setRenewedToken)
+        -   [setCredentialPassword()](#module_SDK+setCredentialPassword)
+        -   [stop()](#module_SDK+stop)
+        -   [destroy()](#module_SDK+destroy)
+        -   \[{LogLevelAreas} getAreasLogs()\](#module\_SDK+{LogLevelAreas} getAreasLogs) ⇒ `ImsService`
+        -   *async*
+            -   [getConnectionStatus()](#module_SDK+getConnectionStatus) ⇒ `Promise.<{restStatus: boolean, xmppStatus: boolean, s2sStatus: boolean, state: SDKSTATUSENUM, nbHttpAdded: number, httpQueueSize: number, nbRunningReq: number, maxSimultaneousRequests: number}>`
+    -   *EVENTS*
+        -   [~NodeSDK](#module_SDK..NodeSDK)
+            -   [NodeSDK()](#new_module_SDK..NodeSDK_new)
+            -   *instance*
+                -   [im](#module_SDK..NodeSDK+im) ⇒ `ImsService`
+                -   [channels](#module_SDK..NodeSDK+channels) ⇒ `ChannelsService`
+                -   [contacts](#module_SDK..NodeSDK+contacts) ⇒ `ContactsService`
+                -   [conversations](#module_SDK..NodeSDK+conversations) ⇒ `ConversationsService`
+                -   [presence](#module_SDK..NodeSDK+presence) ⇒ `PresenceService`
+                -   [bubbles](#module_SDK..NodeSDK+bubbles) ⇒ `BubblesService`
+                -   [groups](#module_SDK..NodeSDK+groups) ⇒ `GroupsService`
+                -   [events](#module_SDK..NodeSDK+events) ⇒ `Events`
+                -   [fileServer](#module_SDK..NodeSDK+fileServer) ⇒ `FileServerService`
+                -   [fileStorage](#module_SDK..NodeSDK+fileStorage) ⇒ `FileStorageService`
+                -   [admin](#module_SDK..NodeSDK+admin) ⇒ `AdminService`
+                -   [profiles](#module_SDK..NodeSDK+profiles) ⇒ `ProfilesService`
+                -   [settings](#module_SDK..NodeSDK+settings) ⇒ `SettingsService`
+                -   [state](#module_SDK..NodeSDK+state) ⇒ `SDKSTATUSENUM`
+                -   [version](#module_SDK..NodeSDK+version) ⇒ `String`
+                -   [connectedUser](#module_SDK..NodeSDK+connectedUser) ⇒ `any`
+                -   [telephony](#module_SDK..NodeSDK+telephony) ⇒ `TelephonyService`
+                -   [tasks](#module_SDK..NodeSDK+tasks) ⇒ `TasksService`
+                -   [calllog](#module_SDK..NodeSDK+calllog) ⇒ `CallLogService`
+                -   [favorites](#module_SDK..NodeSDK+favorites) ⇒ `FavoritesService`
+                -   [invitations](#module_SDK..NodeSDK+invitations) ⇒ `InvitationsService`
+                -   [s2s](#module_SDK..NodeSDK+s2s) ⇒ `S2SService`
+                -   [alerts](#module_SDK..NodeSDK+alerts) ⇒ `AlertsService`
+                -   [rbvoice](#module_SDK..NodeSDK+rbvoice) ⇒ `RBVoiceService`
+                -   [webinars](#module_SDK..NodeSDK+webinars) ⇒ `WebinarsService`
+                -   [httpoverxmpp](#module_SDK..NodeSDK+httpoverxmpp) ⇒ `HTTPoverXMPP`
+                -   [rpcoverxmpp](#module_SDK..NodeSDK+rpcoverxmpp) ⇒ `RPCoverXMPPService`
+            -   *API*
+                -   [DataStoreType](#module_SDK..NodeSDK.DataStoreType) ⇒ `DataStoreType`
+                -   [UrgencyType](#module_SDK..NodeSDK.UrgencyType) ⇒ `UrgencyType`
+                -   [CLOUDPBXCLIOPTIONPOLICY](#module_SDK..NodeSDK.CLOUDPBXCLIOPTIONPOLICY) ⇒ `CLOUDPBXCLIOPTIONPOLICY`
+                -   [PresenceLevel](#module_SDK..NodeSDK.PresenceLevel) ⇒ `PresenceLevel`
+                -   [PresenceShow](#module_SDK..NodeSDK.PresenceShow) ⇒ `PresenceShow`
+                -   [PresenceStatus](#module_SDK..NodeSDK.PresenceStatus) ⇒ `PresenceStatus`
+                -   [PresenceDetails](#module_SDK..NodeSDK.PresenceDetails) ⇒ `PresenceDetails`
+                -   [PresencePhone](#module_SDK..NodeSDK.PresencePhone) ⇒ `PresencePhone`
+                -   [LEVELSNAMES](#module_SDK..NodeSDK.LEVELSNAMES) ⇒ `LEVELSNAMES`
+                -   [LEVELS](#module_SDK..NodeSDK.LEVELS) ⇒ `LEVELS`
+                -   [LEVELSCOLORS](#module_SDK..NodeSDK.LEVELSCOLORS) ⇒ `LEVELSCOLORS`
+                -   [Appreciation](#module_SDK..NodeSDK.Appreciation) ⇒ `Appreciation`
+                -   [CalendarManager](#module_SDK..NodeSDK.CalendarManager) ⇒ `CalendarManager`
+                -   [AutoReplyManager](#module_SDK..NodeSDK.AutoReplyManager) ⇒ `AutoReplyManager`
+        -   [~constructor(options)](#module_SDK..constructor)
+
+---
+
+### sdK.start(token)
+
+Start the SDK  
+Note :  
+The token must be empty to signin with credentials.  
+The SDK is disconnected when the renew of the token had expired (No initial signin possible with out credentials.)  
+There is a sample using the oauth and sdk at https://github.com/Rainbow-CPaaS/passport-rainbow-oauth2-with-rainbow-node-sdk-example  
+
+**Kind**: instance method of [`SDK`](#module_SDK)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+token
+
+`String`
+
+a valid token to login without login/password.  
+if Oauth token is provided to the SDK then application MUST implement the refresh token and send it back to SDK with `setRenewedToken` API, while following event are raised :  
+Events rainbow\_onusertokenrenewfailed : fired when an oauth token is expired.  
+Events rainbow\_onusertokenwillexpire : fired when the duration of the current user token reaches half of the maximum time.  
+For instance, if the token is valid for 1 hour, this event will arrive at 30 minutes.  
+It is recommended to renew the token upon the arrival of this event.  
+
+---
+
+### sdK.startWSOnly()
+
+Start the SDK with only XMPP link  
+
+**Kind**: instance method of [`SDK`](#module_SDK)
+
+**Access**: public
+
+---
+
+### sdK.startCLI()
+
+Start the SDK in CLI Mode
+
+**Kind**: instance method of [`SDK`](#module_SDK)
+
+**Access**: public
+
+---
+
+### sdK.siginCLI()
+
+Sign-in in CLI Mode (without the XMPP link)
+
+**Kind**: instance method of [`SDK`](#module_SDK)
+
+**Access**: public
+
+---
+
+### sdK.setRenewedToken()
+
+Set the token renewed externaly of the SDK. This is for oauth authentication.  
+Note: An event #rainbow\_onusertokenrenewfailed is fired when an oauth token is expired.  
+The application must refresh the token and send it back to SDK with `setRenewedToken` API.
+
+**Kind**: instance method of [`SDK`](#module_SDK)
+
+**Access**: public
+
+---
+
+### sdK.setCredentialPassword()
+
+Set the password credential of the Bot for the login.  
+Note: The SDK use this password in the next connection/reconnection.
+
+**Kind**: instance method of [`SDK`](#module_SDK)
+
+**Access**: public
+
+---
+
+### sdK.stop()
+
+Stop the SDK
+
+**Kind**: instance method of [`SDK`](#module_SDK)
+
+**Access**: public
+
+---
+
+### sdK.destroy()
+
+This method should be called before the bot to point to the SDK's instance to remove listener of "process" object.  
+And then avoid the error `MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 SIGINT listeners added to [process]. Use emitter.setMaxListeners() to increase limit` when the SDK is instantiated and removed more than 10 times.
+
+**Kind**: instance method of [`SDK`](#module_SDK)
+
+**Access**: public
+
+---
+
+### sdK.{LogLevelAreas} getAreasLogs() ⇒ `ImsService`
+
+Get access to the Logs Areas
+
+**Kind**: instance method of [`SDK`](#module_SDK)
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### sdK.getConnectionStatus() ⇒ `Promise.<{restStatus: boolean, xmppStatus: boolean, s2sStatus: boolean, state: SDKSTATUSENUM, nbHttpAdded: number, httpQueueSize: number, nbRunningReq: number, maxSimultaneousRequests: number}>`
+
+Get connections status of each low layer services, and also the full SDK state.  
+  
+{  
+restStatus: boolean, The status of the REST connection authentication to rainbow server.  
+xmppStatus: boolean, The status of the XMPP Connection to rainbow server.  
+s2sStatus: boolean, The status of the S2S Connection to rainbow server.  
+state: SDKSTATUSENUM The state of the SDK.  
+nbHttpAdded: number, the number of HTTP requests (any verb GET, HEAD, POST, ...) added in the HttpManager queue. Note that it is reset to zero when it reaches Number.MAX\_SAFE\_INTEGER value.  
+httpQueueSize: number, the number of requests stored in the Queue. Note that when a request is sent to server, it is already removed from the queue.  
+nbRunningReq: number, the number of requests which has been poped from the queue and the SDK did not yet received an answer for it.  
+maxSimultaneousRequests : number, the number of request which can be launch at a same time.  
+nbReqInQueue : number, the number of requests waiting for being treated by the HttpManager.  
+}  
+
+**Kind**: instance method of [`SDK`](#module_SDK)
+
+**Category**: async
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### SDK~NodeSDK
+
+**Kind**: inner class of [`SDK`](#module_SDK)
+
+**Access**: public
+
+-   [~NodeSDK](#module_SDK..NodeSDK)
+    -   [NodeSDK()](#new_module_SDK..NodeSDK_new)
+    -   *instance*
+        -   [im](#module_SDK..NodeSDK+im) ⇒ `ImsService`
+        -   [channels](#module_SDK..NodeSDK+channels) ⇒ `ChannelsService`
+        -   [contacts](#module_SDK..NodeSDK+contacts) ⇒ `ContactsService`
+        -   [conversations](#module_SDK..NodeSDK+conversations) ⇒ `ConversationsService`
+        -   [presence](#module_SDK..NodeSDK+presence) ⇒ `PresenceService`
+        -   [bubbles](#module_SDK..NodeSDK+bubbles) ⇒ `BubblesService`
+        -   [groups](#module_SDK..NodeSDK+groups) ⇒ `GroupsService`
+        -   [events](#module_SDK..NodeSDK+events) ⇒ `Events`
+        -   [fileServer](#module_SDK..NodeSDK+fileServer) ⇒ `FileServerService`
+        -   [fileStorage](#module_SDK..NodeSDK+fileStorage) ⇒ `FileStorageService`
+        -   [admin](#module_SDK..NodeSDK+admin) ⇒ `AdminService`
+        -   [profiles](#module_SDK..NodeSDK+profiles) ⇒ `ProfilesService`
+        -   [settings](#module_SDK..NodeSDK+settings) ⇒ `SettingsService`
+        -   [state](#module_SDK..NodeSDK+state) ⇒ `SDKSTATUSENUM`
+        -   [version](#module_SDK..NodeSDK+version) ⇒ `String`
+        -   [connectedUser](#module_SDK..NodeSDK+connectedUser) ⇒ `any`
+        -   [telephony](#module_SDK..NodeSDK+telephony) ⇒ `TelephonyService`
+        -   [tasks](#module_SDK..NodeSDK+tasks) ⇒ `TasksService`
+        -   [calllog](#module_SDK..NodeSDK+calllog) ⇒ `CallLogService`
+        -   [favorites](#module_SDK..NodeSDK+favorites) ⇒ `FavoritesService`
+        -   [invitations](#module_SDK..NodeSDK+invitations) ⇒ `InvitationsService`
+        -   [s2s](#module_SDK..NodeSDK+s2s) ⇒ `S2SService`
+        -   [alerts](#module_SDK..NodeSDK+alerts) ⇒ `AlertsService`
+        -   [rbvoice](#module_SDK..NodeSDK+rbvoice) ⇒ `RBVoiceService`
+        -   [webinars](#module_SDK..NodeSDK+webinars) ⇒ `WebinarsService`
+        -   [httpoverxmpp](#module_SDK..NodeSDK+httpoverxmpp) ⇒ `HTTPoverXMPP`
+        -   [rpcoverxmpp](#module_SDK..NodeSDK+rpcoverxmpp) ⇒ `RPCoverXMPPService`
+    -   *static*
+        -   [DataStoreType](#module_SDK..NodeSDK.DataStoreType) ⇒ `DataStoreType`
+        -   [UrgencyType](#module_SDK..NodeSDK.UrgencyType) ⇒ `UrgencyType`
+        -   [CLOUDPBXCLIOPTIONPOLICY](#module_SDK..NodeSDK.CLOUDPBXCLIOPTIONPOLICY) ⇒ `CLOUDPBXCLIOPTIONPOLICY`
+        -   [PresenceLevel](#module_SDK..NodeSDK.PresenceLevel) ⇒ `PresenceLevel`
+        -   [PresenceShow](#module_SDK..NodeSDK.PresenceShow) ⇒ `PresenceShow`
+        -   [PresenceStatus](#module_SDK..NodeSDK.PresenceStatus) ⇒ `PresenceStatus`
+        -   [PresenceDetails](#module_SDK..NodeSDK.PresenceDetails) ⇒ `PresenceDetails`
+        -   [PresencePhone](#module_SDK..NodeSDK.PresencePhone) ⇒ `PresencePhone`
+        -   [LEVELSNAMES](#module_SDK..NodeSDK.LEVELSNAMES) ⇒ `LEVELSNAMES`
+        -   [LEVELS](#module_SDK..NodeSDK.LEVELS) ⇒ `LEVELS`
+        -   [LEVELSCOLORS](#module_SDK..NodeSDK.LEVELSCOLORS) ⇒ `LEVELSCOLORS`
+        -   [Appreciation](#module_SDK..NodeSDK.Appreciation) ⇒ `Appreciation`
+        -   [CalendarManager](#module_SDK..NodeSDK.CalendarManager) ⇒ `CalendarManager`
+        -   [AutoReplyManager](#module_SDK..NodeSDK.AutoReplyManager) ⇒ `AutoReplyManager`
+
+---
+
+#### NodeSDK()
+
+NodeSDK Class
+
+---
+
+#### nodeSDK.im ⇒ `ImsService`
+
+Get access to the IM module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+im
+
+`ImsService`
+
+---
+
+#### nodeSDK.channels ⇒ `ChannelsService`
+
+Get access to the Channels module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+channels
+
+`ChannelsService`
+
+---
+
+#### nodeSDK.contacts ⇒ `ContactsService`
+
+Get access to the Contacts module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+contacts
+
+`ContactsService`
+
+---
+
+#### nodeSDK.conversations ⇒ `ConversationsService`
+
+Get access to the Conversations module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+conversations
+
+`ConversationsService`
+
+---
+
+#### nodeSDK.presence ⇒ `PresenceService`
+
+Get access to the Presence module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+presence
+
+`PresenceService`
+
+---
+
+#### nodeSDK.bubbles ⇒ `BubblesService`
+
+Get access to the Bubbles module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+bubbles
+
+`BubblesService`
+
+---
+
+#### nodeSDK.groups ⇒ `GroupsService`
+
+Get access to the Groups module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+groups
+
+`GroupsService`
+
+---
+
+#### nodeSDK.events ⇒ `Events`
+
+Get access to the Events module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true
+
+**Properties**
+
+Name
+
+Type
+
+events
+
+`Events`
+
+---
+
+#### nodeSDK.fileServer ⇒ `FileServerService`
+
+Get access to the File Server module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+fileServer
+
+`FileServerService`
+
+---
+
+#### nodeSDK.fileStorage ⇒ `FileStorageService`
+
+Get access to the File Storage module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+fileStorage
+
+`FileStorageService`
+
+---
+
+#### nodeSDK.admin ⇒ `AdminService`
+
+Get access to the Admin module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+admin
+
+`AdminService`
+
+---
+
+#### nodeSDK.profiles ⇒ `ProfilesService`
+
+Get access to the Profiles module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+profiles
+
+`Object`
+
+---
+
+#### nodeSDK.settings ⇒ `SettingsService`
+
+Get access to the Settings module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+settings
+
+`SettingsService`
+
+---
+
+#### nodeSDK.state ⇒ `SDKSTATUSENUM`
+
+Return the state of the SDK (eg: STOPPED, STARTED, CONNECTED, READY, DISCONNECTED, RECONNECTING, FAILED, ERROR)
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true
+
+**Properties**
+
+Name
+
+Type
+
+state
+
+`SDKSTATUSENUM`
+
+---
+
+#### nodeSDK.version ⇒ `String`
+
+Return the version of the SDK
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true
+
+**Properties**
+
+Name
+
+Type
+
+version
+
+`String`
+
+---
+
+#### nodeSDK.connectedUser ⇒ `any`
+
+Return the connected user information
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true
+
+**Properties**
+
+Name
+
+Type
+
+connectedUser
+
+`ConnectedUser`
+
+---
+
+#### nodeSDK.telephony ⇒ `TelephonyService`
+
+Get access to the telephony module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+telephony
+
+`TelephonyService`
+
+---
+
+#### nodeSDK.tasks ⇒ `TasksService`
+
+Get access to the tasks module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+tasks
+
+`TasksService`
+
+---
+
+#### nodeSDK.calllog ⇒ `CallLogService`
+
+Get access to the calllog module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+calllog
+
+`CallLogService`
+
+---
+
+#### nodeSDK.favorites ⇒ `FavoritesService`
+
+Get access to the favorite module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+favorites
+
+`FavoritesService`
+
+---
+
+#### nodeSDK.invitations ⇒ `InvitationsService`
+
+Get access to the invitation module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+invitations
+
+`InvitationsService`
+
+---
+
+#### nodeSDK.s2s ⇒ `S2SService`
+
+Get access to the s2s module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+s2s
+
+`S2SService`
+
+---
+
+#### nodeSDK.alerts ⇒ `AlertsService`
+
+Get access to the alerts module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+alerts
+
+`AlertsService`
+
+---
+
+#### nodeSDK.rbvoice ⇒ `RBVoiceService`
+
+Get access to the webinar module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+alerts
+
+`RBVoiceService`
+
+---
+
+#### nodeSDK.webinars ⇒ `WebinarsService`
+
+Get access to the webinar module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Intance**:  
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+alerts
+
+`WebinarsService`
+
+---
+
+#### nodeSDK.httpoverxmpp ⇒ `HTTPoverXMPP`
+
+Get access to the httpoverxmpp module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+httpoverxmpp
+
+`HTTPoverXMPP`
+
+---
+
+#### nodeSDK.rpcoverxmpp ⇒ `RPCoverXMPPService`
+
+Get access to the rpcoverxmpp module
+
+**Kind**: instance property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Nodered**: true  
+**Service**: true
+
+**Properties**
+
+Name
+
+Type
+
+rpcoverxmpp
+
+`RPCoverXMPPService`
+
+---
+
+#### NodeSDK.DataStoreType ⇒ `DataStoreType`
+
+Get access to the DataStoreType type
+
+**Kind**: static property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+DataStoreType
+
+`Object`
+
+---
+
+#### NodeSDK.UrgencyType ⇒ `UrgencyType`
+
+Get access to the UrgencyType type
+
+**Kind**: static property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+UrgencyType
+
+`Object`
+
+---
+
+#### NodeSDK.CLOUDPBXCLIOPTIONPOLICY ⇒ `CLOUDPBXCLIOPTIONPOLICY`
+
+Get access to the CLOUDPBXCLIOPTIONPOLICY type
+
+**Kind**: static property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+CLOUDPBXCLIOPTIONPOLICY
+
+`Object`
+
+---
+
+#### NodeSDK.PresenceLevel ⇒ `PresenceLevel`
+
+Get access to the PresenceLevel type
+
+**Kind**: static property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+PresenceLevel
+
+`Object`
+
+---
+
+#### NodeSDK.PresenceShow ⇒ `PresenceShow`
+
+Get access to the PresenceShow type
+
+**Kind**: static property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+PresenceShow
+
+`Object`
+
+---
+
+#### NodeSDK.PresenceStatus ⇒ `PresenceStatus`
+
+Get access to the PresenceStatus type
+
+**Kind**: static property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+PresenceStatus
+
+`Object`
+
+---
+
+#### NodeSDK.PresenceDetails ⇒ `PresenceDetails`
+
+Get access to the PresenceDetails type
+
+**Kind**: static property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+PresenceDetails
+
+`Object`
+
+---
+
+#### NodeSDK.PresencePhone ⇒ `PresencePhone`
+
+Get access to the PresencePhone type
+
+**Kind**: static property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+PresencePhone
+
+`Object`
+
+---
+
+#### NodeSDK.LEVELSNAMES ⇒ `LEVELSNAMES`
+
+Get access to the LEVELSNAMES type
+
+**Kind**: static property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+LEVELSNAMES
+
+`Object`
+
+---
+
+#### NodeSDK.LEVELS ⇒ `LEVELS`
+
+Get access to the LEVELS type
+
+**Kind**: static property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+LEVELS
+
+`Object`
+
+---
+
+#### NodeSDK.LEVELSCOLORS ⇒ `LEVELSCOLORS`
+
+Get access to the PresencePhone type
+
+**Kind**: static property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+LEVELSCOLORS
+
+`Object`
+
+---
+
+#### NodeSDK.Appreciation ⇒ `Appreciation`
+
+Get connections Appreciation type.  
+
+**Kind**: static property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Appreciation
+
+`Object`
+
+---
+
+#### NodeSDK.CalendarManager ⇒ `CalendarManager`
+
+Get connections CalendarManager type.  
+
+**Kind**: static property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+CalendarManager
+
+`Object`
+
+---
+
+#### NodeSDK.AutoReplyManager ⇒ `AutoReplyManager`
+
+Get connections AutoReplyManager type.  
+
+**Kind**: static property of [`NodeSDK`](#module_SDK..NodeSDK)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+AutoReplyManager
+
+`Object`
+
+---
+
+### SDK~constructor(options)
+
+The entry point of the Rainbow Node SDK.
+
+**Kind**: inner method of [`SDK`](#module_SDK)
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+options
+
+`Object`
+
+SDK Startup options of constructor.
+
+options.rainbow.host
+
+`string`
+
+"official", Can be "sandbox" (developer platform), "official" or any other hostname when using dedicated AIO.
+
+options.rainbow.mode
+
+`string`
+
+"xmpp", The event mode used to receive the events. Can be `xmpp` or `s2s` (default : `xmpp`).
+
+options.xmpp.timeBetweenXmppRequests
+
+`string`
+
+the time between two xmpp request (avoid burst)
+
+options.xmpp.raiseLowLevelXmppInEvent
+
+`string`
+
+enable the raise of event "rainbow\_onxmmpeventreceived" when a data is received in xmpp pipe.
+
+options.xmpp.xmppRessourceName
+
+`string`
+
+to define the name of the xmpp resource.
+
+options.xmpp.raiseLowLevelXmppOutReq
+
+`string`
+
+enable the raise of event "rainbow\_onxmmprequestsent" when a data is sent in xmpp pipe.
+
+options.xmpp.maxIdleTimer
+
+`string`
+
+to define the delay without xmpp exchange after which a ping is sent to server.
+
+options.xmpp.maxPingAnswerTimer
+
+`string`
+
+to define the time to wait the xmpp ping response.
+
+options.xmpp.maxPendingAsyncLockXmppQueue
+
+`string`
+
+the number of xmpp requests waiting for sending.
+
+options.s2s.hostCallback
+
+`string`
+
+"http://3d260881.ngrok.io", S2S Callback URL used to receive events on internet.
+
+options.s2s.locallistenningport
+
+`string`
+
+"4000", Local port where the events must be forwarded from S2S Callback Web server.
+
+options.s2s.expressEngine
+
+`string`
+
+Local instance for S2S Callback Web server.
+
+options.rest.useRestAtStartup
+
+`string`
+
+enable the REST requests to the rainbow server at startup (used with startWSOnly method). default value is true.
+
+options.rest.useGotLibForHttp
+
+`string`
+
+allows to enable the use of `got` lib for REST requests (esle the old Request lib is used). Default value is true.
+
+options.rest.gotOptions,
+
+`string`
+
+allows to customize the `got` lib for REST requests options. Default value is :  
+{  
+agentOptions: {  
+//Keep sockets around in a pool to be used by other requests in the future. Default = false  
+keepAlive: true, // ?: boolean or undefined;  
+  
+//When using HTTP KeepAlive, how often to send TCP KeepAlive packets over sockets being kept alive. Default = 4301.  
+//Only relevant if keepAlive is set to true.  
+keepAliveMsecs: 4301, // ?: number or undefined;  
+  
+Maximum number of sockets to allow per host. Default for Node 0.10 is 5, default for Node 0.12 is Infinity  
+maxSockets: 26, // ?: number or undefined;  
+  
+Maximum number of sockets allowed for all hosts in total. Each request will use a new socket until the maximum is reached. Default: Infinity.  
+maxTotalSockets: Infinity, // ?: number or undefined;  
+  
+Maximum number of sockets to leave open in a free state. Only relevant if keepAlive is set to true. Default = 256.  
+maxFreeSockets: 1001, // ?: number or undefined;  
+  
+Socket timeout in milliseconds. This will set the timeout after the socket is connected.  
+timeout: 60001 , // ?: number or undefined;  
+rejectUnauthorized: true // If not false, the server certificate is verified against the list of supplied CAs. Default: true. }  
+, gotRequestOptions : {  
+timeout: { // This object describes the maximum allowed time for particular events.  
+lookup: 800, // Starts when a socket is assigned. Ends when the hostname has been resolved.  
+connect: 1250, // Starts when lookup completes. Ends when the socket is fully connected.  
+secureConnect: 1250, // Starts when connect completes. Ends when the handshake process completes.  
+socket: 2000, // Starts when the socket is connected. Resets when new data is transferred.  
+send: 90000, // Starts when the socket is connected. Ends when all data have been written to the socket.  
+response: 2000 // Starts when request has been flushed. Ends when the headers are received.  
+}  
+}  
+}  
+
+options.credentials.login
+
+`string`
+
+"user@xxxx.xxx", The Rainbow email account to use.
+
+options.credentials.password
+
+`string`
+
+"XXXXX", The password.
+
+options.application.appID
+
+`string`
+
+"XXXXXXXXXXXXXXXXXXXXXXXXXXXX", The Rainbow Application Identifier.
+
+options.application.appSecret
+
+`string`
+
+"XXXXXXXXXXXXXXXXXXXXXXXXXXXXX", The Rainbow Application Secret.
+
+options.proxy.host
+
+`string`
+
+"xxx.xxx.xxx.xxx", The proxy address.
+
+options.proxy.port
+
+`string`
+
+xxxx, The proxy port.
+
+options.proxy.protocol
+
+`string`
+
+"http", The proxy protocol (note http is used to https also).
+
+options.proxy.user
+
+`string`
+
+"proxyuser", The proxy username.
+
+options.proxy.password
+
+`string`
+
+"XXXXX", The proxy password.
+
+options.logs.enableConsoleLogs
+
+`boolean`
+
+false, Activate logs on the console.
+
+options.logs.enableFileLogs
+
+`boolean`
+
+false, Activate the logs in a file.
+
+options.logs.enableEventsLogs:
+
+`boolean`
+
+false, Activate the logs to be raised from the events service (with `onLog` listener). Used for logs in connection node in red node contrib.
+
+options.logs.enableEncryptedLogs:
+
+`boolean`
+
+true, Activate the encryption of stanza in logs.
+
+options.logs.color
+
+`boolean`
+
+true, Activate the ansii color in the log (more humain readable, but need a term console or reader compatible (ex : vim + AnsiEsc module)).
+
+options.logs.level
+
+`string`
+
+"info", The level of logs. The value can be "error", "warn", "info", "trace", "http", "xmpp", "debug", "internalerror", "internal". These Severities of levels are shown in an inclusive order, so "error" level only show "error" logs, "warn" level only show "error" and "warn" levels, and so on.
+
+options.logs.areas
+
+`LogLevelAreas`
+
+Areas allow to override the log level for specifics limited area of code.
+
+options.logs.customLabel
+
+`string`
+
+"MyRBProject", A label inserted in every lines of the logs. It is usefull if you use multiple SDK instances at a same time. It allows to separate logs in console.
+
+options.logs.file.path
+
+`string`
+
+"c:/temp/", Path to the log file.
+
+options.logs.file.customFileName
+
+`string`
+
+"R-SDK-Node-MyRBProject", A label inserted in the name of the log file.
+
+options.logs.file.zippedArchive
+
+`string`
+
+false Can activate a zip of file. It needs CPU process, so avoid it.
+
+options.testOutdatedVersion
+
+`boolean`
+
+true, Parameter to verify at startup if the current SDK Version is the lastest published on npmjs.com.
+
+options.testDNSentry
+
+`boolean`
+
+true, Parameter to verify at startup/reconnection that the rainbow server DNS entry name is available.
+
+options.httpoverxmppserver
+
+`boolean`
+
+false, Activate the treatment of Http over Xmpp requests (xep0332).
+
+options.intervalBetweenCleanMemoryCache
+
+`number`
+
+21600000 (6 hours), There is a cleannig process to reduce memory use and this option allow to modify the interval between it.
+
+options.requestsRate.useRequestRateLimiter
+
+`string`
+
+true, // Allows to use the rate limit of the http requests to server.
+
+options.requestsRate.maxReqByIntervalForRequestRate
+
+`string`
+
+600, // nb requests during the interval of the rate limit of the http requests to server.
+
+options.requestsRate.intervalForRequestRate
+
+`string`
+
+60, // nb of seconds used for the calcul of the rate limit of the rate limit of the http requests to server.
+
+options.requestsRate.timeoutRequestForRequestRate
+
+`string`
+
+600 // nb seconds Request stay in queue before being rejected if queue is full of the rate limit of the http requests to server.
+
+options.im.sendReadReceipt
+
+`boolean`
+
+true, Allow to automatically send back a 'read' status of the received message. Usefull for Bots.
+
+options.im.messageMaxLength
+
+`string`
+
+16384, Maximum size of messages send by rainbow. Note that this value should not be modified without ALE Agreement. Max stanza's size on server is 18432.
+
+options.im.sendMessageToConnectedUser
+
+`boolean`
+
+false, Forbid the SDK to send a message to the connected user it self. This is to avoid bot loopback.
+
+options.im.conversationsRetrievedFormat
+
+`string`
+
+"small", Set the size of the conversation's content retrieved from server. Can be `small`, `medium`, `full`.
+
+options.im.storeMessages
+
+`string`
+
+false, Tell the server to store the message for delay distribution and also for history. Please avoid to set it to true for a bot which will not read anymore the messages. It is a better way to store it in your own CPaaS application.
+
+options.im.copyMessage
+
+`boolean`
+
+to manage if the Messages hint should not be copied to others resources (https://xmpp.org/extensions/xep-0334.html#no-copy) . The default value is true.
+
+options.im.nbMaxConversations
+
+`string`
+
+15, Parameter to set the maximum number of conversations to keep (defaut value to 15). Old ones are remove from XMPP server with the new method `ConversationsService::removeOlderConversations`.
+
+options.im.rateLimitPerHour
+
+`number`
+
+1000, Parameter to set the maximum of "message" stanza sent to server by hour. Default value is 1000.
+
+options.im.messagesDataStore
+
+`string`
+
+Parameter to override the storeMessages parameter of the SDK to define the behaviour of the storage of the messages (Enum DataStoreType in lib/config/config , default value "DataStoreType.UsestoreMessagesField" so it follows the storeMessages behaviour).  
+DataStoreType.NoStore "no-store" Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore "no-permanent-store" Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide "storetwinside" The messages are fully stored.  
+DataStoreType.UsestoreMessagesField "OldstoreMessagesUsed" to follow the storeMessages SDK's parameter behaviour.
+
+options.im.autoInitialGetBubbles
+
+`boolean`
+
+to allow automatic opening of the bubbles the user is in. Default value is true.
+
+options.im.autoInitialBubblePresence
+
+`boolean`
+
+to allow automatic opening of conversation to the bubbles with sending XMPP initial presence to the room. Default value is true.
+
+options.im.maxBubbleJoinInProgress
+
+`number`
+
+to define the maximum of simultaneous "send initial presence of the bubbles".
+
+options.im.autoInitialBubbleFormat
+
+`boolean`
+
+to allow modify format of data received at getting the bubbles. Default value is true.
+
+options.im.autoInitialBubbleUnsubscribed
+
+`boolean`
+
+to allow get the bubbles when the user is unsubscribed form it. Default value is true.
+
+options.im.autoLoadConversations
+
+`boolean`
+
+to activate the retrieve of conversations from the server. The default value is true.
+
+options.im.autoLoadConversationHistory
+
+`boolean`
+
+to activate the retrieve of conversation's messages from the server. The default value is false.
+
+options.im.autoLoadContacts
+
+`boolean`
+
+to activate the retrieve of contacts from roster from the server. The default value is true.
+
+options.im.autoLoadCallLog
+
+`boolean`
+
+to activate the retrieve of calllog from the server. The default value is false.
+
+options.im.forceHistoryGetContactFromServer
+
+`boolean`
+
+Allows to force to retrieve information about contacts when history messages are getted from server.
+
+options.im.enableCarbon
+
+`boolean`
+
+to manage carbon copy of message (https://xmpp.org/extensions/xep-0280.html). The default value is true. \* @param {string} options.im.enablesendurgentpushmessages permit to add <retry-push xmlns='urn:xmpp:hints'/> tag to allows the server sending this messge in push with a small ttl (meaning urgent for apple/google backend) and retry sending it 10 times to increase probability that it is received by mobile device. The default value is false.
+
+options.im.enablesendurgentpushmessages
+
+`boolean`
+
+permit to add <retry-push xmlns='urn:xmpp:hints'/> tag to allows the server sending this messge in push with a small ttl (meaning urgent for apple/google backend) and retry sending it 10 times to increase probability that it is received by mobile device. The default value is false.
+
+options.im.storeMessagesInConversation
+
+`boolean`
+
+Allows to store messages in conversation cache if true else the conversation.messages property stay empty. The default value is true.
+
+options.im.maxMessagesStoredInConversation
+
+`number`
+
+Allows to store messages in conversation with a maximum entries. The default value is 1000. Note: `storeMessagesInConversation` needs to be setted to true to be relevant.
+
+options.servicesToStart
+
+`Object`
+
+  
+Services to start. This allows to start the SDK with restricted number of services, so there are less call to API.  
+Take care, severals services are linked, so disabling a service can disturb an other one.  
+By default all the services are started. Events received from server are not yet filtered.  
+So this feature is realy risky, and should be used with much more cautions.  
+{  
+"bubbles": {  
+"start\_up": true,  
+},  
+"telephony": {  
+"start\_up": true,  
+},  
+"channels": {  
+"start\_up": true,  
+},  
+"admin": {  
+"start\_up": true,  
+},  
+"fileServer": {  
+"start\_up": true,  
+},  
+"fileStorage": {  
+start\_up: true,  
+},  
+"calllog": {  
+"start\_up": true,  
+},  
+"favorites": {  
+"start\_up": true,  
+
+---
+
+## Type : `enum`
+
+**Kind**: global enum
+
+**Properties**
+
+Name
+
+Type
+
+Default
+
+home
+
+`String`
+
+`home`
+
+work
+
+`String`
+
+`work`
+
+other
+
+`String`
+
+`other`
+
+---
+
+## DeviceType : `enum`
+
+**Kind**: global enum
+
+**Properties**
+
+Name
+
+Type
+
+Default
+
+landline
+
+`String`
+
+`landline`
+
+mobile
+
+`String`
+
+`mobile`
+
+fax
+
+`String`
+
+`fax`
+
+other
+
+`String`
+
+`other`
+
+---
+
+### On this page
+
+-   [Modules](/docs/sdk/node#name-modules-0)
+-   [SDK](/docs/sdk/node#name-sdk-7)
+-   [sdK.start(token)](/docs/sdk/node#name-sdk.starttoken-340)
+-   [sdK.startWSOnly()](/docs/sdk/node#name-sdk.startwsonly-384)
+-   [sdK.startCLI()](/docs/sdk/node#name-sdk.startcli-400)
+-   [sdK.siginCLI()](/docs/sdk/node#name-sdk.sigincli-416)
+-   [sdK.setRenewedToken()](/docs/sdk/node#name-sdk.setrenewedtoken-432)
+-   [sdK.setCredentialPassword()](/docs/sdk/node#name-sdk.setcredentialpassword-448)
+-   [sdK.stop()](/docs/sdk/node#name-sdk.stop-464)
+-   [sdK.destroy()](/docs/sdk/node#name-sdk.destroy-480)
+-   [sdK.{LogLevelAreas} getAreasLogs() ⇒ ImsService](/docs/sdk/node#name-sdk.loglevelareas-getareaslogs--imsservice-496)
+-   [sdK.getConnectionStatus() ⇒ Promise.<{restStatus: boolean, xmppStatus: boolean, s2sStatus: boolean, state: SDKSTATUSENUM, nbHttpAdded: number, httpQueueSize: number, nbRunningReq: number, maxSimultaneousRequests: number}>](/docs/sdk/node#name-sdk.getconnectionstatus--promise.reststatus:-boolean-xmppstatus:-boolean-s2sstatus:-boolean-state:-sdkstatusenum-nbhttpadded:-number-httpqueuesize:-number-nbrunningreq:-number-maxsimultaneousrequests:-number-515)
+-   [SDK~NodeSDK](/docs/sdk/node#name-sdknodesdk-537)
+-   [NodeSDK()](/docs/sdk/node#name-nodesdk-783)
+-   [nodeSDK.im ⇒ ImsService](/docs/sdk/node#name-nodesdk.im--imsservice-793)
+-   [nodeSDK.channels ⇒ ChannelsService](/docs/sdk/node#name-nodesdk.channels--channelsservice-837)
+-   [nodeSDK.contacts ⇒ ContactsService](/docs/sdk/node#name-nodesdk.contacts--contactsservice-881)
+-   [nodeSDK.conversations ⇒ ConversationsService](/docs/sdk/node#name-nodesdk.conversations--conversationsservice-925)
+-   [nodeSDK.presence ⇒ PresenceService](/docs/sdk/node#name-nodesdk.presence--presenceservice-969)
+-   [nodeSDK.bubbles ⇒ BubblesService](/docs/sdk/node#name-nodesdk.bubbles--bubblesservice-1013)
+-   [nodeSDK.groups ⇒ GroupsService](/docs/sdk/node#name-nodesdk.groups--groupsservice-1057)
+-   [nodeSDK.events ⇒ Events](/docs/sdk/node#name-nodesdk.events--events-1101)
+-   [nodeSDK.fileServer ⇒ FileServerService](/docs/sdk/node#name-nodesdk.fileserver--fileserverservice-1145)
+-   [nodeSDK.fileStorage ⇒ FileStorageService](/docs/sdk/node#name-nodesdk.filestorage--filestorageservice-1189)
+-   [nodeSDK.admin ⇒ AdminService](/docs/sdk/node#name-nodesdk.admin--adminservice-1233)
+-   [nodeSDK.profiles ⇒ ProfilesService](/docs/sdk/node#name-nodesdk.profiles--profilesservice-1277)
+-   [nodeSDK.settings ⇒ SettingsService](/docs/sdk/node#name-nodesdk.settings--settingsservice-1321)
+-   [nodeSDK.state ⇒ SDKSTATUSENUM](/docs/sdk/node#name-nodesdk.state--sdkstatusenum-1365)
+-   [nodeSDK.version ⇒ String](/docs/sdk/node#name-nodesdk.version--string-1409)
+-   [nodeSDK.connectedUser ⇒ any](/docs/sdk/node#name-nodesdk.connecteduser--any-1453)
+-   [nodeSDK.telephony ⇒ TelephonyService](/docs/sdk/node#name-nodesdk.telephony--telephonyservice-1497)
+-   [nodeSDK.tasks ⇒ TasksService](/docs/sdk/node#name-nodesdk.tasks--tasksservice-1541)
+-   [nodeSDK.calllog ⇒ CallLogService](/docs/sdk/node#name-nodesdk.calllog--calllogservice-1585)
+-   [nodeSDK.favorites ⇒ FavoritesService](/docs/sdk/node#name-nodesdk.favorites--favoritesservice-1629)
+-   [nodeSDK.invitations ⇒ InvitationsService](/docs/sdk/node#name-nodesdk.invitations--invitationsservice-1673)
+-   [nodeSDK.s2s ⇒ S2SService](/docs/sdk/node#name-nodesdk.s2s--s2sservice-1717)
+-   [nodeSDK.alerts ⇒ AlertsService](/docs/sdk/node#name-nodesdk.alerts--alertsservice-1761)
+-   [nodeSDK.rbvoice ⇒ RBVoiceService](/docs/sdk/node#name-nodesdk.rbvoice--rbvoiceservice-1805)
+-   [nodeSDK.webinars ⇒ WebinarsService](/docs/sdk/node#name-nodesdk.webinars--webinarsservice-1849)
+-   [nodeSDK.httpoverxmpp ⇒ HTTPoverXMPP](/docs/sdk/node#name-nodesdk.httpoverxmpp--httpoverxmpp-1893)
+-   [nodeSDK.rpcoverxmpp ⇒ RPCoverXMPPService](/docs/sdk/node#name-nodesdk.rpcoverxmpp--rpcoverxmppservice-1937)
+-   [NodeSDK.DataStoreType ⇒ DataStoreType](/docs/sdk/node#name-nodesdk.datastoretype--datastoretype-1981)
+-   [NodeSDK.UrgencyType ⇒ UrgencyType](/docs/sdk/node#name-nodesdk.urgencytype--urgencytype-2022)
+-   [NodeSDK.CLOUDPBXCLIOPTIONPOLICY ⇒ CLOUDPBXCLIOPTIONPOLICY](/docs/sdk/node#name-nodesdk.cloudpbxclioptionpolicy--cloudpbxclioptionpolicy-2063)
+-   [NodeSDK.PresenceLevel ⇒ PresenceLevel](/docs/sdk/node#name-nodesdk.presencelevel--presencelevel-2104)
+-   [NodeSDK.PresenceShow ⇒ PresenceShow](/docs/sdk/node#name-nodesdk.presenceshow--presenceshow-2145)
+-   [NodeSDK.PresenceStatus ⇒ PresenceStatus](/docs/sdk/node#name-nodesdk.presencestatus--presencestatus-2186)
+-   [NodeSDK.PresenceDetails ⇒ PresenceDetails](/docs/sdk/node#name-nodesdk.presencedetails--presencedetails-2227)
+-   [NodeSDK.PresencePhone ⇒ PresencePhone](/docs/sdk/node#name-nodesdk.presencephone--presencephone-2268)
+-   [NodeSDK.LEVELSNAMES ⇒ LEVELSNAMES](/docs/sdk/node#name-nodesdk.levelsnames--levelsnames-2309)
+-   [NodeSDK.LEVELS ⇒ LEVELS](/docs/sdk/node#name-nodesdk.levels--levels-2350)
+-   [NodeSDK.LEVELSCOLORS ⇒ LEVELSCOLORS](/docs/sdk/node#name-nodesdk.levelscolors--levelscolors-2391)
+-   [NodeSDK.Appreciation ⇒ Appreciation](/docs/sdk/node#name-nodesdk.appreciation--appreciation-2432)
+-   [NodeSDK.CalendarManager ⇒ CalendarManager](/docs/sdk/node#name-nodesdk.calendarmanager--calendarmanager-2473)
+-   [NodeSDK.AutoReplyManager ⇒ AutoReplyManager](/docs/sdk/node#name-nodesdk.autoreplymanager--autoreplymanager-2514)
+-   [SDK~constructor(options)](/docs/sdk/node#name-sdkconstructoroptions-2555)
+-   [Type : enum](/docs/sdk/node#name-type-:-enum-3336)
+-   [DeviceType : enum](/docs/sdk/node#name-devicetype-:-enum-3399)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

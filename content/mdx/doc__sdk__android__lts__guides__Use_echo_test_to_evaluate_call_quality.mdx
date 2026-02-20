@@ -1,0 +1,142 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Use_echo_test_to_evaluate_call_quality"
+lastSynced: "2026-02-20T07:12:28.775Z"
+---
+# Documentation
+
+Use echo test to evaluate call quality
+
+LTS release 2.61.0Published on 202-04-06
+
+## Use the EchoTest module to evaluate Call Quality
+
+---
+
+The `EchoTest` module provides methods to assess the quality of an audio or video call environment before a real-time conversation begins. This test evaluates the network stability and outgoing stream quality, allowing users to identify potential issues that may affect call performance. It returns the results in the form of a `CallQuality` object, which helps users gauge whether their device and internet connection can support high-quality calls.
+
+**Rainbow concept**
+
+**Description**
+
+**CallQuality**
+
+An object that encapsulates the quality levels of both outgoing audio and video streams, which can be classified as Unusable, Low, Medium, Good, or Awesome.
+
+**EchoTest**
+
+A test that evaluates audio and video quality before a call.
+
+### Preamble
+
+---
+
+Before running an echo test, ensure that:
+
+-   Your development environment is correctly set up, following the guidelines in the [Getting Started](/docs/sdk/android) tutorial.
+-   Your application is successfully connected to the Rainbow platform, as outlined in the [Connect to Rainbow](/docs/sdk/android) tutorial.
+-   You have the necessary authentication credentials and API keys available.
+
+Once these prerequisites are in place, you're ready to start running an echo test using the Rainbow SDK for Android.
+
+### Start an echo test
+
+---
+
+To begin evaluating the audio and network quality of a potential call, use the `startEchoTest()` method. This method checks both audio and video quality and provides the results in a `CallQuality` object through a `RainbowListener`.
+
+Here’s an example of how to start an echo test:
+
+```kotlin
+RainbowSdk().echoTest().startEchoTest(object : RainbowListener<CallQuality, Unit> {
+    override fun onSuccess(data: CallQuality) {
+        // Handle the results of the echo test
+        val audioQuality = data.audioQuality
+        val videoQuality = data.outgoingVideoQuality
+        // Display or use the results to inform the user
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle the error if the test fails
+    }
+})
+```
+
+The listener provides the test results via `onSuccess`, giving you access to audio and video quality metrics. The quality levels are classified into five categories:
+
+-   **Unusable**: The connection or device is not suitable for calls.
+-   **Low**: The connection is weak, and call quality may suffer.
+-   **Medium**: The connection is acceptable, but issues might arise.
+-   **Good**: The call should run smoothly with few interruptions.
+-   **Awesome**: The call quality is excellent, and no issues are expected.
+
+### Stop an echo test
+
+---
+
+You may want to stop the echo test before it completes, especially if the user no longer requires the results or if they wish to cancel the test for another reason. To do this, call the `stopEchoTest()` method.
+
+Here’s an example of stopping an active echo test:
+
+```kotlin
+RainbowSdk().echoTest().stopEchoTest()
+// The echo test is canceled, and no results will be returned.
+```
+
+This method cancels the ongoing test and ensures that no results are provided if it’s interrupted prematurely.
+
+### Handle echo test results
+
+---
+
+The `CallQuality` object returned by the `startEchoTest()` method contains two important properties:
+
+-   **Audio Quality**: Indicates the quality of the outgoing audio stream.
+-   **Video Quality**: Indicates the quality of the outgoing video stream.
+
+You can use these results to alert the user if their device or internet connection does not support a sufficient level of quality for a seamless communication experience. For example, you might prompt the user to switch to a better network if the quality is classified as Low or Unusable.
+
+Example of handling the results:
+
+```kotlin
+override fun onSuccess(data: CallQuality) {
+    when (data.audioQuality) {
+        QualityLevel.UNUSABLE -> showWarning("Audio quality is unusable. Please check your connection.")
+        QualityLevel.LOW -> showWarning("Audio quality is low. You may experience issues during the call.")
+        QualityLevel.MEDIUM -> showInfo("Audio quality is acceptable, but could be better.")
+        QualityLevel.GOOD -> showInfo("Audio quality is good. You should have a smooth call.")
+        QualityLevel.AWESOME -> showInfo("Audio quality is awesome! You're all set.")
+    }
+
+    // Do the same for video quality...
+}
+```
+
+### Conclusion
+
+---
+
+The `EchoTest` module is an essential tool for ensuring high-quality calls by preemptively assessing both the audio and video conditions of the user’s environment. By integrating this test into your app, you can significantly improve the user experience by minimizing call disruptions and providing actionable feedback when network conditions are less than optimal.
+
+Now that you understand how to run an echo test, start improving the call quality in your app today!
+
+Happy coding!
+
+*Last updated October, 2024*
+
+### On this page
+
+-   [Use the EchoTest module to evaluate Call Quality](/docs/sdk/android#name-use-the-echotest-module-to-evaluate-call-quality-0)
+-   [Preamble](/docs/sdk/android#name-preamble-37)
+-   [Start an echo test](/docs/sdk/android#name-start-an-echo-test-64)
+-   [Stop an echo test](/docs/sdk/android#name-stop-an-echo-test-105)
+-   [Handle echo test results](/docs/sdk/android#name-handle-echo-test-results-119)
+-   [Conclusion](/docs/sdk/android#name-conclusion-145)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

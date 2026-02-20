@@ -1,0 +1,438 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/tasks"
+lastSynced: "2026-02-20T07:12:32.741Z"
+---
+# Documentation
+
+Tasks Service
+
+LTS release 2.XPublished on 2025-01-01
+
+## TasksService
+
+This service manages tasks of the connected user.  
+  
+  
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [TasksService](#module_TasksService)
+    -   [addTask(task)](#module_TasksService+addTask) ⇒ `Promise.<Task, ErrorManager>`
+    -   [createTaskcategory(category)](#module_TasksService+createTaskcategory) ⇒ `Promise.<any, ErrorManager>`
+    -   [createOrUpdatePropertiesTaskByCategoryId(categoryId, property)](#module_TasksService+createOrUpdatePropertiesTaskByCategoryId) ⇒ `Promise.<any, ErrorManager>`
+    -   [getTaskById(taskId, forceServerSearch)](#module_TasksService+getTaskById) ⇒ `Promise.<Task, ErrorManager>`
+    -   [getTasksByCategoryId(categoryId, forceServerSearch)](#module_TasksService+getTasksByCategoryId) ⇒ `Promise.<Task, ErrorManager>`
+    -   [getTasks(categoryId, forceServerSearch)](#module_TasksService+getTasks) ⇒ `Promise.<Task, ErrorManager>`
+    -   [getAllCategories(forceServerSearch)](#module_TasksService+getAllCategories) ⇒ `Promise.<any, ErrorManager>`
+    -   [deletePropertiesFromCategoriesTasks(categoriId)](#module_TasksService+deletePropertiesFromCategoriesTasks) ⇒ `Promise.<boolean, ErrorManager>`
+    -   [deleteTask(taskId)](#module_TasksService+deleteTask) ⇒ `Promise.<boolean, ErrorManager>`
+    -   [deleteCategoryFromTasks(categoryId)](#module_TasksService+deleteCategoryFromTasks) ⇒ `Promise.<boolean, ErrorManager>`
+    -   [updateTask(taskId, task)](#module_TasksService+updateTask) ⇒ `Promise.<any, ErrorManager>`
+
+---
+
+### tasksService.addTask(task) ⇒ `Promise.<Task, ErrorManager>`
+
+Create a new task  
+
+**Kind**: instance method of [`TasksService`](#module_TasksService)
+
+**Returns**: `Promise.<Task, ErrorManager>` - The result
+
+**Category**: Tasks MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Task` - Created task object or an error object depending on the result
+
+**Since**: 2.28.0
+
+Param
+
+Type
+
+Description
+
+task
+
+`TaskInput`
+
+The task to create.
+
+---
+
+### tasksService.createTaskcategory(category) ⇒ `Promise.<any, ErrorManager>`
+
+Create a new category  
+
+**Kind**: instance method of [`TasksService`](#module_TasksService)
+
+**Returns**: `Promise.<any, ErrorManager>` - The result
+
+**Category**: Tasks MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.28.0
+
+Param
+
+Type
+
+Description
+
+category
+
+`string`
+
+The category to create.
+
+---
+
+### tasksService.createOrUpdatePropertiesTaskByCategoryId(categoryId, property) ⇒ `Promise.<any, ErrorManager>`
+
+Create a new property for category.  
+
+**Kind**: instance method of [`TasksService`](#module_TasksService)
+
+**Returns**: `Promise.<any, ErrorManager>` - The result
+
+**Category**: Tasks MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.28.0
+
+Param
+
+Type
+
+Description
+
+categoryId
+
+`string`
+
+The id of the category where the property must be added.
+
+property
+
+`any`
+
+The property to be added to the category. JSON object containing category properties attribute properties must contain field color with hexadecimal RGB values.
+
+---
+
+### tasksService.getTaskById(taskId, forceServerSearch) ⇒ `Promise.<Task, ErrorManager>`
+
+Get a task by Id.  
+
+**Kind**: instance method of [`TasksService`](#module_TasksService)
+
+**Returns**: `Promise.<Task, ErrorManager>` - The result
+
+**Category**: Tasks MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.28.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+taskId
+
+`string`
+
+The id of the task to search.
+
+forceServerSearch
+
+`boolean`
+
+`boolean`
+
+force to search on server.
+
+---
+
+### tasksService.getTasksByCategoryId(categoryId, forceServerSearch) ⇒ `Promise.<Task, ErrorManager>`
+
+This API can be used to retrieve the list of user's todos. This API can only be used by user himself.  
+
+**Kind**: instance method of [`TasksService`](#module_TasksService)
+
+**Returns**: `Promise.<Task, ErrorManager>` - The result
+
+**Category**: Tasks MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `any` - This API can be used to retrieve the list of user's todos. This API can only be used by user himself.
+
+**Since**: 2.28.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+categoryId
+
+`string`
+
+allows to retrieve only todos in that category by Id.
+
+forceServerSearch
+
+`boolean`
+
+`false`
+
+True to force a request to the server
+
+---
+
+### tasksService.getTasks(categoryId, forceServerSearch) ⇒ `Promise.<Task, ErrorManager>`
+
+This API can be used to retrieve the list of user's todos. This API can only be used by user himself.  
+
+**Kind**: instance method of [`TasksService`](#module_TasksService)
+
+**Returns**: `Promise.<Task, ErrorManager>` - The result
+
+**Category**: Tasks MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `any` - This API can be used to retrieve the list of user's todos. This API can only be used by user himself.
+
+**Since**: 2.28.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+categoryId
+
+`string`
+
+allows to retrieve only todos in that category by Id.
+
+forceServerSearch
+
+`boolean`
+
+`false`
+
+True to force a request to the server
+
+---
+
+### tasksService.getAllCategories(forceServerSearch) ⇒ `Promise.<any, ErrorManager>`
+
+This API can be used to retrieve the list of categories for tasks. This API can only be used by user himself.  
+
+**Kind**: instance method of [`TasksService`](#module_TasksService)
+
+**Returns**: `Promise.<any, ErrorManager>` - The result
+
+**Category**: Tasks MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `any` - This API can be used to retrieve the list of categories for tasks. This API can only be used by user himself.
+
+**Since**: 2.28.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+forceServerSearch
+
+`boolean`
+
+`false`
+
+True to force a request to the server
+
+---
+
+### tasksService.deletePropertiesFromCategoriesTasks(categoriId) ⇒ `Promise.<boolean, ErrorManager>`
+
+This API can be used to remove a category's properties from a user's to do list. This API can only be used by user himself .  
+
+**Kind**: instance method of [`TasksService`](#module_TasksService)
+
+**Returns**: `Promise.<boolean, ErrorManager>` - The result
+
+**Category**: Tasks MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.28.0
+
+Param
+
+Type
+
+Description
+
+categoriId
+
+`string`
+
+category unique identifier of the properties to delete.
+
+---
+
+### tasksService.deleteTask(taskId) ⇒ `Promise.<boolean, ErrorManager>`
+
+This API can be used to delete a task. This API can only be used by user himself.  
+
+**Kind**: instance method of [`TasksService`](#module_TasksService)
+
+**Returns**: `Promise.<boolean, ErrorManager>` - The result
+
+**Category**: Tasks MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.28.0
+
+Param
+
+Type
+
+Description
+
+taskId
+
+`string`
+
+the id of the task to delete from server and cache.
+
+---
+
+### tasksService.deleteCategoryFromTasks(categoryId) ⇒ `Promise.<boolean, ErrorManager>`
+
+This API can be used to delete a task. This API can only be used by user himself.  
+
+**Kind**: instance method of [`TasksService`](#module_TasksService)
+
+**Returns**: `Promise.<boolean, ErrorManager>` - The result
+
+**Category**: Tasks MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.28.0
+
+Param
+
+Type
+
+Description
+
+categoryId
+
+`string`
+
+the id of the category to delete from server and cache.
+
+---
+
+### tasksService.updateTask(taskId, task) ⇒ `Promise.<any, ErrorManager>`
+
+update a task.  
+
+**Kind**: instance method of [`TasksService`](#module_TasksService)
+
+**Returns**: `Promise.<any, ErrorManager>` - The result
+
+**Category**: Tasks MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.28.0
+
+Param
+
+Type
+
+Description
+
+taskId
+
+`string`
+
+The id of a task to update.
+
+task
+
+`TaskInput`
+
+The properties to be updated.
+
+---
+
+### On this page
+
+-   [TasksService](/docs/sdk/node#name-tasksservice-3)
+-   [tasksService.addTask(task) ⇒ Promise.<Task, ErrorManager>](/docs/sdk/node#name-tasksservice.addtasktask--promise.task-errormanager-83)
+-   [tasksService.createTaskcategory(category) ⇒ Promise.<any, ErrorManager>](/docs/sdk/node#name-tasksservice.createtaskcategorycategory--promise.any-errormanager-139)
+-   [tasksService.createOrUpdatePropertiesTaskByCategoryId(categoryId, property) ⇒ Promise.<any, ErrorManager>](/docs/sdk/node#name-tasksservice.createorupdatepropertiestaskbycategoryidcategoryid-property--promise.any-errormanager-195)
+-   [tasksService.getTaskById(taskId, forceServerSearch) ⇒ Promise.<Task, ErrorManager>](/docs/sdk/node#name-tasksservice.gettaskbyidtaskid-forceserversearch--promise.task-errormanager-262)
+-   [tasksService.getTasksByCategoryId(categoryId, forceServerSearch) ⇒ Promise.<Task, ErrorManager>](/docs/sdk/node#name-tasksservice.gettasksbycategoryidcategoryid-forceserversearch--promise.task-errormanager-338)
+-   [tasksService.getTasks(categoryId, forceServerSearch) ⇒ Promise.<Task, ErrorManager>](/docs/sdk/node#name-tasksservice.gettaskscategoryid-forceserversearch--promise.task-errormanager-414)
+-   [tasksService.getAllCategories(forceServerSearch) ⇒ Promise.<any, ErrorManager>](/docs/sdk/node#name-tasksservice.getallcategoriesforceserversearch--promise.any-errormanager-490)
+-   [tasksService.deletePropertiesFromCategoriesTasks(categoriId) ⇒ Promise.<boolean, ErrorManager>](/docs/sdk/node#name-tasksservice.deletepropertiesfromcategoriestaskscategoriid--promise.boolean-errormanager-552)
+-   [tasksService.deleteTask(taskId) ⇒ Promise.<boolean, ErrorManager>](/docs/sdk/node#name-tasksservice.deletetasktaskid--promise.boolean-errormanager-608)
+-   [tasksService.deleteCategoryFromTasks(categoryId) ⇒ Promise.<boolean, ErrorManager>](/docs/sdk/node#name-tasksservice.deletecategoryfromtaskscategoryid--promise.boolean-errormanager-664)
+-   [tasksService.updateTask(taskId, task) ⇒ Promise.<any, ErrorManager>](/docs/sdk/node#name-tasksservice.updatetasktaskid-task--promise.any-errormanager-720)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

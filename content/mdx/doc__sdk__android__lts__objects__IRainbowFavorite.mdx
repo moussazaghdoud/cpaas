@@ -1,0 +1,66 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/objects/IRainbowFavorite"
+lastSynced: "2026-02-20T07:12:28.898Z"
+---
+# Documentation
+
+Object IRainbowFavorite
+
+LTS release 2.61.0Published on 202-04-06
+
+## object IRainbowFavorite
+
+### val id: String
+
+Get the id of this favorite
+
+-   **Returns:** the identifier of this favorite
+
+### val peerId: String
+
+Get the peer id of the peer associated with this favorite. Can be a id or a roomId depends of the type of favorite
+
+-   **Returns:** the peer identifier
+
+### var position: Int
+
+Get the position of this favorite.
+
+-   **Returns:** the position of the favorite.
+
+### val type: PeerType?
+
+Get the type of this favorite
+
+-   **Returns:** "user", "bot", "room", directory or office365 depends of the type of this favorite
+
+### var contact: IRainbowContact?
+
+Get the contact associated with this favorite if the favorite is of type "user" or "bot", null otherwise
+
+-   **Returns:** a [IRainbowContact](/docs/sdk/android) object
+
+### var room: Room? }
+
+Get the room associated with this favorite if the favorite is of type "room", null otherwise
+
+-   **Returns:** the [Room](/docs/sdk/android) object
+
+### On this page
+
+-   [object IRainbowFavorite](/docs/sdk/android#name-object-irainbowfavorite-0)
+-   [val id: String](/docs/sdk/android#name-val-id:-string-3)
+-   [val peerId: String](/docs/sdk/android#name-val-peerid:-string-16)
+-   [var position: Int](/docs/sdk/android#name-var-position:-int-29)
+-   [val type: PeerType?](/docs/sdk/android#name-val-type:-peertype-42)
+-   [var contact: IRainbowContact?](/docs/sdk/android#name-var-contact:-irainbowcontact-55)
+-   [var room: Room? }](/docs/sdk/android#name-var-room:-room--68)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

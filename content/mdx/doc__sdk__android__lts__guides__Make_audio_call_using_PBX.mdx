@@ -1,0 +1,322 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Make_audio_call_using_PBX"
+lastSynced: "2026-02-20T07:12:28.536Z"
+---
+# Documentation
+
+Make audio call using PBX
+
+LTS release 2.61.0Published on 202-04-06
+
+## Make PBX call
+
+---
+
+### Preamble
+
+---
+
+This guide describes how to make PBX call using the SDK for Android thanks to the nomadic.
+
+### Minimal permissions
+
+---
+
+Before starting with WebRTC and PBX calls, you need to request the following permissions in your application:
+
+```xml
+<uses-permission android:name="android.permission.CAMERA"/>
+<uses-permission android:name="android.permission.RECORD_AUDIO"/>
+<uses-permission android:name="android.permission.ANSWER_PHONE_CALLS"/>
+<uses-permission android:name="android.permission.CALL_PHONE"/>
+<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+```
+
+> Here is how to do this: [Request App Permissions](https://developer.android.com/training/permissions/requesting)
+
+---
+
+All APIs are declared in `RainbowSdk.instance().telephony()`
+
+### Nomadic state
+
+---
+
+Before making any PBX call, nomadic must be activated so that the device on which the application is running, is reachable by the PBX. It can be reachable through GSM or through WebRTC using WebRTC Gateway. To know if the device is reachable, just use the API `isNomadicActivatedOnMyMobile()`. If the returned value is `true`, nothing more is needed.
+
+If the returned value of `isNomadicActivatedOnMyMobile()` is `false`, you should use the API `activateNomadic()`. This method has one argument. You have to give a String corresponding either to the GSM number of the device or to the WebRTC Gateway number. To get this parameter, you should use the API `getNomadicNumber()`. This method has one argument. You have to give a boolean with a value which is `true` to get the WebRTC Gateway number if available.
+
+```java
+if (!isNomadicActivatedOnMyMobile()) {
+    activateNomadic(getNomadicNumber(true));
+}
+```
+
+On some devices, the method `getNomadicNumber()` will not be able to get the GSM number. You will need to give the correct value to the `activateNomadic()` by another way (asking the user or something else).
+
+You can also deactivate the nomadic by calling the API `deactivateNomadic()`. The device will then be no more reachable by the PBX.
+
+To listen to nomadic changes, you should register to `INomadicStatusChangeListener` listener.
+
+This listener implements 2 API which are `onNomadicStatusChanged()` and `onNomadicStatusError()`.
+
+To listen to it, you should use the API `registerNomadicStatusChangeListener()` in telephony module.
+
+To unregister for this event, you should call the API `unregisterNomadicStatusChangeListener()`.
+
+Here is the content of `INomadicStatusChangeListener`:
+
+```java
+/**
+* Nomadic has changed. This is called after activateNomadic or deactivateNomadic
+*/
+void onNomadicStatusChanged();
+
+/**
+* Nomadic error. This is called after activateNomadic or deactivateNomadic
+*/
+void onNomadicStatusError();
+```
+
+### Incoming call
+
+---
+
+To listen to incoming calls, you should register to `ISessionsToDisplayChangeListener` listener.
+
+This listener implements 4 API which are `allSessionsRemoved()`, `sessionAdded()`, `sessionUpdated()` and `sessionRemoved()`.
+
+To listen to it, you should use the API `registerSessionsToDisplayListener()` in telephony module.
+
+To unregister for this event, you should call the API `unregisterSessionsToDisplayListener()`.
+
+Here is the result of `ISessionsToDisplayChangeListener`:
+
+```java
+void allSessionsRemoved();
+
+void sessionAdded(ISession session);
+
+void sessionRemoved(ISession session);
+
+void sessionUpdated(ISession session);
+```
+
+To answer to a PBX call, when the `sessionAdded()` is triggered, if the `ISession` `MediaState` is `RINGING_INCOMING`, you should call the API `takeCall()`. The only argument is an `ISession` which represents the call you want to answer.
+
+You can also deflect an incoming call to any internal number by using `deflectCallTo()`. You can use here any othe number from your PBX.
+
+Finally, you can deflect an incoming call to voicemail by using `deflectCallToVoicemail()`. The user must have a voicemail.
+
+The `ISession` object represents a PBX call. You will automatically get one using the listener `ISessionsToDisplayChangeListener` or you can get them at any time using the API `getSessionsToDisplay()`. Rainbow SDK can handle up to 2 PBX calls, this means that you can get up to 2 `ISession` objects.
+
+Here is the most important content of an `ISession`:
+
+```java
+/**
+     * @return MediaState of this session.
+     */
+    MediaState getState();
+
+    /**
+     * @return Contact[] the participant to this session.
+     */
+    Contact[] getParticipants();
+
+    /**
+     * @return int of the duration in seconds.
+     */
+    int getTime();
+
+    /**
+     * @return long the call start time
+     */
+    long getStartTime();
+
+    /**
+     * @return boolean to determine if the session is a conference or not (check the number of participants)
+     */
+    boolean isConference();
+
+    /**
+     * @return boolean to know if the MediaState.HELD of the call is a result of the distant
+     */
+    boolean isHeldByDistant();
+
+    /**
+     * @return String the subject of the call if any
+     */
+    String getCallSubject();
+
+    /**
+     * @return String the global call id.
+     */
+    String getGlobalCallId();
+
+    /**
+     * @return String the correlator data.
+     */
+    String getCorrelatorData();
+```
+
+And here are the different values that `getState()` can have:
+
+```java
+public enum MediaState
+{
+    /**
+     * The incoming call is ringing.
+     */
+    RINGING_INCOMING,
+
+    /**
+     * The outgoing call is ringing.
+     */
+    RINGING_OUTGOING,
+
+    /**
+     * The call is active (means in conversation).
+     */
+    ACTIVE,
+
+    /**
+     * The call has been placed on hold.
+     */
+    HELD
+}
+```
+
+### Make call
+
+---
+
+To make PBX call, you should use the API `makeCall()`. This method has 3 arguments. You have to give the number you want to call, an optional correlator data that will be propagated into `ISession` and a `IMakeCallListener` to get the result.
+
+Here is the content of `IMakeCallListener`:
+
+```java
+/**
+     * The second PBX call can not be done under 2G coverage because another call is already in progress
+     */
+    void onMakeCallNotPossibleBecauseOfGPRS();
+
+    /**
+     * The GSM call can not be done because another call is already in progress
+     */
+    void onMakeCallNotPossibleAlreadyInCall();
+
+    /**
+     * Maximum number of PBX call reached
+     */
+    void onMakeCallNotPossible();
+
+    /**
+     * PBX call progress can be displayed
+     */
+    void onShowProgressDialog();
+
+    /**
+     * PBX call progress indication can be hidden
+     */
+    void onHideProgressDialog();
+
+    /**
+     * The PBX call has failed because a private GSM call is in progress
+     */
+    void onMakeCallNotPossibleAlreadyInPrivateCall();
+
+    /**
+     * The PBX call has failed
+     *
+     * @param callCause CallCause of the failure
+     */
+    void onMakeCallFailed(CallCause callCause);
+
+    /**
+     * The distant is ringing
+     */
+    void onMakeCallRinging();
+
+    /**
+     * The device has no phone
+     */
+    void onMakeCallFailedNoPhone();
+```
+
+Basically, `onMakeCallRinging()` means SUCCESS and anything else means ERROR appart from `onShowProgressDialog()` and `onHideProgressDialog()` which are dedicated to let you display a progress message while waiting for PBX callback. If you have configured nomadic with GSM phone number, it can take up to 20 seconds.
+
+`onMakeCallFailed()` gives you a `CallCause` of the failure. It can be for example `BUSY` or `DESTNOTOBTAINABLE` if the callee is busy or not reachable.
+
+If everything is ok and PBX is able to reach the mobile, `sessionAdded()` is triggered and you will get the `ISession` object representing your outgoing call.
+
+If `isNomadicActivatedOnMyMobile()` is `false`, we will not try to make a PBX call, but as a fallback mechanism, we will launch a simple GSM call thought native phone application. If such application is not available, you will get the `onMakeCallFailedNoPhone()` called.
+
+### Active call
+
+---
+
+When the call is answered on your side for incoming call or on the other side for outgoing call, the `sessionUpdated()` listener will be triggered and the `ISession` state will be updated to `ACTIVE`.
+
+To send a DTMF to the current ongoing call, you should use the method `sendDTMF()`. This method has 1 argument. You have to give the `String` object you want to send as DTMF. This method only works for VoIP calls.
+
+You can hold any active call by using `hold()`.
+
+To terminate the call, you should use the method `clearCall()`. This method has 1 argument. You have to give the `ISession` object you want to terminate. An `ISession` object represent a PBX call.
+
+### Held call
+
+---
+
+You can retrieve any held call by using `retrieve()`. If the `isHeldByDistant()` method of the `ISession` returns `true`, the `retrieve()` API is useless. Only the distant can perform the `retrieve()`.
+
+### Two calls
+
+---
+
+If you want to make a second outgoing call just call again `makeCall()`.
+
+If you receive a second incoming call just call again `takeCall()` or any other deflect methods.
+
+Now that you have two calls, you can switch between the active call and the held call by using `alternate()`.
+
+You can also in this situation start a conference with the active and held calls by using `conference()`.
+
+Finally, you can transfer the first call to the second one by using `transfer()`. It is not necessary to have an active call and a held call to use this last method. You can also use it if one of the call is in outgoing state.
+
+---
+
+---
+
+### Voicemail
+
+---
+
+If you want to get te current voicemail counter of the connected user, you can have it by calling `getVoicemailCounter()`.
+
+To listen to any change of this counter, you should use the API `registerVoicemailCounterChangeListener()` in telephony module.
+
+To unregister for this event, you should call the API `unregisterSessionsToDisplayListener()`.
+
+*Last updated September, 15th 2020*
+
+### On this page
+
+-   [Make PBX call](/docs/sdk/android#name-make-pbx-call-0)
+-   [Preamble](/docs/sdk/android#name-preamble-4)
+-   [Minimal permissions](/docs/sdk/android#name-minimal-permissions-11)
+-   [Nomadic state](/docs/sdk/android#name-nomadic-state-28)
+-   [Incoming call](/docs/sdk/android#name-incoming-call-61)
+-   [Make call](/docs/sdk/android#name-make-call-101)
+-   [Active call](/docs/sdk/android#name-active-call-124)
+-   [Held call](/docs/sdk/android#name-held-call-140)
+-   [Two calls](/docs/sdk/android#name-two-calls-147)
+-   [Voicemail](/docs/sdk/android#name-voicemail-168)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

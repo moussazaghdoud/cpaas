@@ -3,16 +3,132 @@ title: "CPaaS SDK for business communication solutions | Rainbow"
 description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
 type: "sdk"
 source: "https://developers.openrainbow.com/doc/sdk/web/lts/guides/Supporting_IE11"
-lastSynced: "2026-02-19T22:35:16.159Z"
+lastSynced: "2026-02-20T07:12:26.956Z"
 ---
 # Documentation
 
-Web > lts > guides > Supporting\_IE11
+Supporting IE11
 
-### Sur cette page
+LTS release 4.0.0Published on 2022-12-21
+
+## Supporting IE11
 
 ---
 
-Ce contenu vous a-t-il été utile ?OuiNon
+**UPDATE OCTOBER 2019**: Rainbow Web SDK does not currently support Internet Explorer 11. It is however possible to develop a special version depending on the needs of your project. Please contact your Rainbow representative in order to discuss the details.
+
+The details below represent a helpful hints on how to provide the absolute minimum to ensure Internet Explorer 11 capabilities to run special Rainbow Web SDK version tailored for your needs.
+
+### Adding ES6 compatibility
+
+---
+
+Internet Explorer 11 doesn't support recent standardized specification released in ECMAScript 6 (ECMAScript 2015) like JavaScript Promise implementation, Array advanced methods etc.
+
+Consequently, the Rainbow Web application is not compliant with that browser.
+
+Regarding the SDK for Web, the compatibility can be provided by adding some extra libraries (aka ECMAScript shim) in your HTML file that are loaded before the SDK for Web.
+
+You need to add the following lines in your HTML file:
+
+```html
+<!-- Add the following lines to your 'index.html' file -->
+<!DOCTYPE HTML>
+<html lang="en" ng-controller="sampleController">
+    <head>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/es6-promise/4.0.5/es6-promise.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/string.prototype.startswith@0.2.0/startswith.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jspolyfill-array.prototype.findIndex@0.1.0/findIndex.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser-polyfill.min.js"></script>
+    </head>
+</html>
+```
+
+Here's an explanation of what those libraries actually do:
+
+`es5-shim` and `es6-shim` will provide the compatibility with the Internet Explorer 11 by offering all the missing JavaScript features. `polyfill` for adding Promise polyfill `startswith` is needed to provide String.prototype.startsWith (if needed) `findIndex` is needed to provide Array.prototype.findIndex (if needed)
+
+Feel free to use your own shim/polyfill if your project needs them.
+
+### Example for sending a file, for example in a Bubble, thanks to Esben from the Forum
+
+As IE11 doesn't support File creator (see https://developer.mozilla.org/en-US/docs/Web/API/File) an existing way is to use a XMLHttpRequest() to download it
+
+```js
+function blobToFile(theBlob, fileName) {
+    //A Blob() is almost a File() - it's just missing the two properties below which we will add
+    theBlob.lastModifiedDate = newDate();
+    theBlob.name = fileName;
+    return theBlob;
+}
+
+function insertImageInBubble(ownedBubble) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "https://url.to/image.jpg");
+    xhr.overrideMimeType("image/jpeg");
+    xhr.responseType = "blob"; //force the HTTP response, response-type header to be blob
+    xhr.onload = function () {
+        var myFile = blobToFile(xhr.response, "image.jpg");
+        rainbowSDK.fileStorage.uploadFileToBubble(ownedBubble, myFile, "Demo image");
+    }
+    xhr.send();
+};
+```
+
+### WebRTC audio and video limitation
+
+---
+
+When using Internet Explorer 11, you can't access to Rainbow audio and video services based on WebRTC.
+
+When calling these methods from the Rainbow SDK for Web, you will receive a JSON error message explaining that this feature is not supported by your browser.
+
+Here is the list of methods not supported on IE 11:
+
+-   WebRTCService: `callInAudio()`
+    
+-   WebRTCService: `callInVideo()`
+    
+-   WebRTCService: `answerInAudio()`
+    
+-   WebRTCService: `answerInVideo()`
+    
+-   WebRTCService: `showLocalVideo()`
+    
+-   WebRTCService: `hideLocalVideo()`
+    
+-   WebRTCService: `showRemoteVideo()`
+    
+-   WebRTCService: `hideRemoteVideo()`
+    
+-   WebRTCService: `escaladeToVideoCall()`
+    
+-   WebRTCService: `reverseToAudioCall()`
+    
+-   WebRTCService: `muteAudioCall()`
+    
+-   WebRTCService: `muteVideoCall()`
+    
+-   WebRTCService: `unmuteAudioCall()`
+    
+-   WebRTCService: `unmuteVideoCall()`
+    
+
+---
+
+*Last updated October, 23rd 2019*
+
+### On this page
+
+-   [Supporting IE11](/docs/sdk/web#name-supporting-ie11-0)
+-   [Adding ES6 compatibility](/docs/sdk/web#name-adding-es6-compatibility-10)
+-   [Example for sending a file, for example in a Bubble, thanks to Esben from the Forum](/docs/sdk/web#name-example-for-sending-a-file-for-example-in-a-bubble-thanks-to-esben-from-the-forum-36)
+-   [WebRTC audio and video limitation](/docs/sdk/web#name-webrtc-audio-and-video-limitation-43)
+
+---
+
+Was this content helpful to you?YesNo
 
 Feedback

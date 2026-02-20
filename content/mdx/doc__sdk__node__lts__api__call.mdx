@@ -1,0 +1,1699 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/call"
+lastSynced: "2026-02-20T07:12:31.671Z"
+---
+# Documentation
+
+Call
+
+LTS release 2.XPublished on 2025-01-01
+
+## Classes
+
+[Call](#Call)
+
+[Call](#Call)
+
+## Functions
+
+[updateCall()](#updateCall)
+
+This method is used to update a Call from data object
+
+[CallFactory()](#CallFactory)
+
+This method is used to create a Call from data object
+
+## Call
+
+**Kind**: global class
+
+**Access**: public
+
+-   [Call](#Call)
+    -   [Call()](#new_Call_new)
+    -   *API*
+        -   [status](#Call+status)
+        -   [id](#Call+id)
+        -   [conversationId](#Call+conversationId)
+        -   [type](#Call+type)
+        -   [contact](#Call+contact)
+        -   [remoteMedia](#Call+remoteMedia)
+        -   [localMedia](#Call+localMedia)
+        -   [isEscalated](#Call+isEscalated)
+        -   [startDate](#Call+startDate)
+        -   [isInitiator](#Call+isInitiator)
+        -   [participants](#Call+participants)
+        -   [isRemoteVideoMuted](#Call+isRemoteVideoMuted)
+        -   [isConference](#Call+isConference)
+        -   [avatars](#Call+avatars)
+        -   [currentCalled](#Call+currentCalled)
+        -   [deviceType](#Call+deviceType)
+        -   [deviceState](#Call+deviceState)
+        -   [cause](#Call+cause)
+        -   [jid](#Call+jid)
+        -   [phoneNumber](#Call+phoneNumber)
+        -   [globalCallId](#Call+globalCallId)
+        -   [correlatorData](#Call+correlatorData)
+    -   *API*
+        -   [Status](#Call.Status) : `enum`
+        -   [Type](#Call.Type) : `enum`
+        -   [Media](#Call.Media) : `enum`
+
+---
+
+### Call()
+
+This class represents a Call.  
+
+---
+
+### call.status
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+status
+
+`Object`
+
+The status of the call (e.g. dialing, active, releasing...)
+
+---
+
+### call.id
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+id
+
+`string`
+
+the id of the call
+
+---
+
+### call.conversationId
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+The reference of the conversation
+
+---
+
+### call.type
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+type
+
+`Object`
+
+The type of the call (e.g. webRTC or Telephony)
+
+---
+
+### call.contact
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+contact
+
+`Contact`
+
+The reference of the contact engaged in this call
+
+---
+
+### call.remoteMedia
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+remoteMedia
+
+`Number`
+
+The media used by the recipient (e.g. audio, video, sharing, phone)
+
+---
+
+### call.localMedia
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+localMedia
+
+`Number`
+
+The media used by the user (e.g. audio, video, sharing, phone)
+
+---
+
+### call.isEscalated
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isEscalated
+
+`Boolean`
+
+True if the call has been escalated to sharing or video (only relevant for WebRTC calls)
+
+---
+
+### call.startDate
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+startDate
+
+`Date`
+
+The date when the call has been started
+
+---
+
+### call.isInitiator
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isInitiator
+
+`Boolean`
+
+True if the user is the caller (false if he's the called)
+
+---
+
+### call.participants
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+participants
+
+`Array.<Contact>`
+
+The list of participants in the call (conference)
+
+---
+
+### call.isRemoteVideoMuted
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isRemoteVideoMuted
+
+`Boolean`
+
+True if the webRTC video has been muted by the recipient (only relevant for WebRTC calls)
+
+---
+
+### call.isConference
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Since**: 1.20
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isConference
+
+`Boolean`
+
+True if the call is a conferenceCall
+
+---
+
+### call.avatars
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+avatars
+
+`String`
+
+array of call avatar sources
+
+---
+
+### call.currentCalled
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+currentCalled
+
+`Object`
+
+contains current called number and contact
+
+---
+
+### call.deviceType
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+deviceType
+
+`String`
+
+type of the RCC phoneset (MAIN, SECONDARY, ...).
+
+---
+
+### call.deviceState
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+deviceState
+
+`String`
+
+state of the RCC phoneset.
+
+---
+
+### call.cause
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+cause
+
+`String`
+
+of the event of the call.
+
+---
+
+### call.jid
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+jid
+
+`String`
+
+of the called party.
+
+---
+
+### call.phoneNumber
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+phonenumber
+
+`String`
+
+called.
+
+---
+
+### call.globalCallId
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+globalCallId
+
+`String`
+
+a global id when the call go thrue PBX Node.
+
+---
+
+### call.correlatorData
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+correlatorData
+
+`String`
+
+Data about a call.
+
+---
+
+### Call.Status : `enum`
+
+status of the Call.
+
+**Kind**: static enum of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+UNKNOWN
+
+`Object`
+
+`{key:0,value:Unknown}`
+
+Call cleared
+
+DIALING
+
+`Object`
+
+`{key:1,value:dialing}`
+
+In dialing
+
+QUEUED\_INCOMING
+
+`Object`
+
+`{key:2,value:queuedIncoming}`
+
+In queue (user side)
+
+QUEUED\_OUTGOING
+
+`Object`
+
+`{key:10,value:queuedOutGoing}`
+
+In queue (recipient side)
+
+RINGING\_INCOMING
+
+`Object`
+
+`{key:3,value:incomingCall}`
+
+Call in ringing (user side)
+
+RINGING\_OUTGOING
+
+`Object`
+
+`{key:4,value:ringingOutgoing}`
+
+Call in ringing (recipient side
+
+ACTIVE
+
+`Object`
+
+`{key:5,value:active}`
+
+Active call
+
+HOLD
+
+`Object`
+
+`{key:6,value:held}`
+
+Call in hold
+
+PUT\_ON\_HOLD
+
+`Object`
+
+`{key:7,value:putOnHold}`
+
+Call put on hold
+
+RELEASING
+
+`Object`
+
+`{key:8,value:releasing}`
+
+Call is clearing
+
+ANSWERING
+
+`Object`
+
+`{key:9,value:answering}`
+
+call is answering
+
+CONNECTING
+
+`Object`
+
+`{key:12,value:connecting}`
+
+trying to reconnect
+
+ERROR
+
+`Object`
+
+`{key:11,value:error}`
+
+call in error
+
+---
+
+### Call.Type : `enum`
+
+The Type of the Call
+
+**Kind**: static enum of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+WEBRTC
+
+`Object`
+
+`{key:1,value:Video}`
+
+WebRTC call
+
+PHONE
+
+`Object`
+
+`{key:2,value:Phone}`
+
+Telephony call (from PBX)
+
+---
+
+### Call.Media : `enum`
+
+The Type of Media of the Call
+
+**Kind**: static enum of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+AUDIO
+
+`Object`
+
+`1`
+
+WebRTC audio call
+
+VIDEO
+
+`Object`
+
+`2`
+
+WebRTC audio and video call
+
+PHONE
+
+`Object`
+
+`4`
+
+Telephony call (from pbx)
+
+SHARING
+
+`Object`
+
+`8`
+
+WebRTC Screen sharing call
+
+---
+
+## Call
+
+**Kind**: global class
+
+**this**: [`Call`](#Call)
+
+-   [Call](#Call)
+    -   [Call()](#new_Call_new)
+    -   *instance*
+        -   [status](#Call+status)
+        -   [id](#Call+id)
+        -   [conversationId](#Call+conversationId)
+        -   [type](#Call+type)
+        -   [contact](#Call+contact)
+        -   [remoteMedia](#Call+remoteMedia)
+        -   [localMedia](#Call+localMedia)
+        -   [isEscalated](#Call+isEscalated)
+        -   [startDate](#Call+startDate)
+        -   [isInitiator](#Call+isInitiator)
+        -   [participants](#Call+participants)
+        -   [isRemoteVideoMuted](#Call+isRemoteVideoMuted)
+        -   [isConference](#Call+isConference)
+        -   [avatars](#Call+avatars)
+        -   [currentCalled](#Call+currentCalled)
+        -   [deviceType](#Call+deviceType)
+        -   [deviceState](#Call+deviceState)
+        -   [cause](#Call+cause)
+        -   [jid](#Call+jid)
+        -   [phoneNumber](#Call+phoneNumber)
+        -   [globalCallId](#Call+globalCallId)
+        -   [correlatorData](#Call+correlatorData)
+    -   *static*
+        -   [Status](#Call.Status) : `enum`
+        -   [Type](#Call.Type) : `enum`
+        -   [Media](#Call.Media) : `enum`
+
+---
+
+### Call()
+
+This class represents a Call.  
+
+---
+
+### call.status
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+status
+
+`Object`
+
+The status of the call (e.g. dialing, active, releasing...)
+
+---
+
+### call.id
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+id
+
+`string`
+
+the id of the call
+
+---
+
+### call.conversationId
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+The reference of the conversation
+
+---
+
+### call.type
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+type
+
+`Object`
+
+The type of the call (e.g. webRTC or Telephony)
+
+---
+
+### call.contact
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+contact
+
+`Contact`
+
+The reference of the contact engaged in this call
+
+---
+
+### call.remoteMedia
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+remoteMedia
+
+`Number`
+
+The media used by the recipient (e.g. audio, video, sharing, phone)
+
+---
+
+### call.localMedia
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+localMedia
+
+`Number`
+
+The media used by the user (e.g. audio, video, sharing, phone)
+
+---
+
+### call.isEscalated
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isEscalated
+
+`Boolean`
+
+True if the call has been escalated to sharing or video (only relevant for WebRTC calls)
+
+---
+
+### call.startDate
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+startDate
+
+`Date`
+
+The date when the call has been started
+
+---
+
+### call.isInitiator
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isInitiator
+
+`Boolean`
+
+True if the user is the caller (false if he's the called)
+
+---
+
+### call.participants
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+participants
+
+`Array.<Contact>`
+
+The list of participants in the call (conference)
+
+---
+
+### call.isRemoteVideoMuted
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isRemoteVideoMuted
+
+`Boolean`
+
+True if the webRTC video has been muted by the recipient (only relevant for WebRTC calls)
+
+---
+
+### call.isConference
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Since**: 1.20
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+isConference
+
+`Boolean`
+
+True if the call is a conferenceCall
+
+---
+
+### call.avatars
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+avatars
+
+`String`
+
+array of call avatar sources
+
+---
+
+### call.currentCalled
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+currentCalled
+
+`Object`
+
+contains current called number and contact
+
+---
+
+### call.deviceType
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+deviceType
+
+`String`
+
+type of the RCC phoneset (MAIN, SECONDARY, ...).
+
+---
+
+### call.deviceState
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+deviceState
+
+`String`
+
+state of the RCC phoneset.
+
+---
+
+### call.cause
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+cause
+
+`String`
+
+of the event of the call.
+
+---
+
+### call.jid
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+jid
+
+`String`
+
+of the called party.
+
+---
+
+### call.phoneNumber
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+phonenumber
+
+`String`
+
+called.
+
+---
+
+### call.globalCallId
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+globalCallId
+
+`String`
+
+a global id when the call go thrue PBX Node.
+
+---
+
+### call.correlatorData
+
+**Kind**: instance property of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+correlatorData
+
+`String`
+
+Data about a call.
+
+---
+
+### Call.Status : `enum`
+
+status of the Call.
+
+**Kind**: static enum of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+UNKNOWN
+
+`Object`
+
+`{key:0,value:Unknown}`
+
+Call cleared
+
+DIALING
+
+`Object`
+
+`{key:1,value:dialing}`
+
+In dialing
+
+QUEUED\_INCOMING
+
+`Object`
+
+`{key:2,value:queuedIncoming}`
+
+In queue (user side)
+
+QUEUED\_OUTGOING
+
+`Object`
+
+`{key:10,value:queuedOutGoing}`
+
+In queue (recipient side)
+
+RINGING\_INCOMING
+
+`Object`
+
+`{key:3,value:incomingCall}`
+
+Call in ringing (user side)
+
+RINGING\_OUTGOING
+
+`Object`
+
+`{key:4,value:ringingOutgoing}`
+
+Call in ringing (recipient side
+
+ACTIVE
+
+`Object`
+
+`{key:5,value:active}`
+
+Active call
+
+HOLD
+
+`Object`
+
+`{key:6,value:held}`
+
+Call in hold
+
+PUT\_ON\_HOLD
+
+`Object`
+
+`{key:7,value:putOnHold}`
+
+Call put on hold
+
+RELEASING
+
+`Object`
+
+`{key:8,value:releasing}`
+
+Call is clearing
+
+ANSWERING
+
+`Object`
+
+`{key:9,value:answering}`
+
+call is answering
+
+CONNECTING
+
+`Object`
+
+`{key:12,value:connecting}`
+
+trying to reconnect
+
+ERROR
+
+`Object`
+
+`{key:11,value:error}`
+
+call in error
+
+---
+
+### Call.Type : `enum`
+
+The Type of the Call
+
+**Kind**: static enum of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+WEBRTC
+
+`Object`
+
+`{key:1,value:Video}`
+
+WebRTC call
+
+PHONE
+
+`Object`
+
+`{key:2,value:Phone}`
+
+Telephony call (from PBX)
+
+---
+
+### Call.Media : `enum`
+
+The Type of Media of the Call
+
+**Kind**: static enum of [`Call`](#Call)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+AUDIO
+
+`Object`
+
+`1`
+
+WebRTC audio call
+
+VIDEO
+
+`Object`
+
+`2`
+
+WebRTC audio and video call
+
+PHONE
+
+`Object`
+
+`4`
+
+Telephony call (from pbx)
+
+SHARING
+
+`Object`
+
+`8`
+
+WebRTC Screen sharing call
+
+---
+
+## updateCall()
+
+This method is used to update a Call from data object
+
+**Kind**: global function
+
+**Access**: public
+
+---
+
+## CallFactory()
+
+This method is used to create a Call from data object
+
+**Kind**: global function
+
+**Access**: public
+
+---
+
+### On this page
+
+-   [Classes](/docs/sdk/node#name-classes-0)
+-   [Functions](/docs/sdk/node#name-functions-4)
+-   [Call](/docs/sdk/node#name-call-11)
+-   [Call()](/docs/sdk/node#name-call-177)
+-   [call.status](/docs/sdk/node#name-call.status-187)
+-   [call.id](/docs/sdk/node#name-call.id-234)
+-   [call.conversationId](/docs/sdk/node#name-call.conversationid-281)
+-   [call.type](/docs/sdk/node#name-call.type-328)
+-   [call.contact](/docs/sdk/node#name-call.contact-375)
+-   [call.remoteMedia](/docs/sdk/node#name-call.remotemedia-422)
+-   [call.localMedia](/docs/sdk/node#name-call.localmedia-469)
+-   [call.isEscalated](/docs/sdk/node#name-call.isescalated-516)
+-   [call.startDate](/docs/sdk/node#name-call.startdate-563)
+-   [call.isInitiator](/docs/sdk/node#name-call.isinitiator-610)
+-   [call.participants](/docs/sdk/node#name-call.participants-657)
+-   [call.isRemoteVideoMuted](/docs/sdk/node#name-call.isremotevideomuted-704)
+-   [call.isConference](/docs/sdk/node#name-call.isconference-751)
+-   [call.avatars](/docs/sdk/node#name-call.avatars-801)
+-   [call.currentCalled](/docs/sdk/node#name-call.currentcalled-848)
+-   [call.deviceType](/docs/sdk/node#name-call.devicetype-895)
+-   [call.deviceState](/docs/sdk/node#name-call.devicestate-942)
+-   [call.cause](/docs/sdk/node#name-call.cause-989)
+-   [call.jid](/docs/sdk/node#name-call.jid-1036)
+-   [call.phoneNumber](/docs/sdk/node#name-call.phonenumber-1083)
+-   [call.globalCallId](/docs/sdk/node#name-call.globalcallid-1130)
+-   [call.correlatorData](/docs/sdk/node#name-call.correlatordata-1177)
+-   [Call.Status : enum](/docs/sdk/node#name-call.status-:-enum-1224)
+-   [Call.Type : enum](/docs/sdk/node#name-call.type-:-enum-1448)
+-   [Call.Media : enum](/docs/sdk/node#name-call.media-:-enum-1518)
+-   [Call](/docs/sdk/node#name-call-1616)
+-   [Call()](/docs/sdk/node#name-call-1782)
+-   [call.status](/docs/sdk/node#name-call.status-1792)
+-   [call.id](/docs/sdk/node#name-call.id-1839)
+-   [call.conversationId](/docs/sdk/node#name-call.conversationid-1886)
+-   [call.type](/docs/sdk/node#name-call.type-1933)
+-   [call.contact](/docs/sdk/node#name-call.contact-1980)
+-   [call.remoteMedia](/docs/sdk/node#name-call.remotemedia-2027)
+-   [call.localMedia](/docs/sdk/node#name-call.localmedia-2074)
+-   [call.isEscalated](/docs/sdk/node#name-call.isescalated-2121)
+-   [call.startDate](/docs/sdk/node#name-call.startdate-2168)
+-   [call.isInitiator](/docs/sdk/node#name-call.isinitiator-2215)
+-   [call.participants](/docs/sdk/node#name-call.participants-2262)
+-   [call.isRemoteVideoMuted](/docs/sdk/node#name-call.isremotevideomuted-2309)
+-   [call.isConference](/docs/sdk/node#name-call.isconference-2356)
+-   [call.avatars](/docs/sdk/node#name-call.avatars-2406)
+-   [call.currentCalled](/docs/sdk/node#name-call.currentcalled-2453)
+-   [call.deviceType](/docs/sdk/node#name-call.devicetype-2500)
+-   [call.deviceState](/docs/sdk/node#name-call.devicestate-2547)
+-   [call.cause](/docs/sdk/node#name-call.cause-2594)
+-   [call.jid](/docs/sdk/node#name-call.jid-2641)
+-   [call.phoneNumber](/docs/sdk/node#name-call.phonenumber-2688)
+-   [call.globalCallId](/docs/sdk/node#name-call.globalcallid-2735)
+-   [call.correlatorData](/docs/sdk/node#name-call.correlatordata-2782)
+-   [Call.Status : enum](/docs/sdk/node#name-call.status-:-enum-2829)
+-   [Call.Type : enum](/docs/sdk/node#name-call.type-:-enum-3053)
+-   [Call.Media : enum](/docs/sdk/node#name-call.media-:-enum-3123)
+-   [updateCall()](/docs/sdk/node#name-updatecall-3221)
+-   [CallFactory()](/docs/sdk/node#name-callfactory-3237)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

@@ -1,0 +1,1382 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/conversations"
+lastSynced: "2026-02-20T07:12:32.049Z"
+---
+# Documentation
+
+Conversations Service
+
+LTS release 2.XPublished on 2025-01-01
+
+## ConversationsService
+
+This module is the basic module for handling conversations in Rainbow. In Rainbow, conversations are the way to get in touch with someone or something (i.e. a Rainbow contact, a external phone number, a connected thing, ...) so a conversation is the "long tail" of communication between you and someone or something else like a bubble.  
+A Rainbow conversation by default supports sending and receiving Instant Messages with a single recipient (one-to-one conversation) or with several persons (bubble). Using the FileStorage service, you can share files in conversations.  
+  
+The main methods and events proposed in that service allow to:  
+
+-   Create or close a Rainbow conversation (one-to-one of bubble),  
+    
+-   Get all conversations or get a conversation by Id, bubbleID or bubbleJid  
+    
+-   Retrieve all information linked to that conversation,  
+      
+    
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [ConversationsService](#module_ConversationsService)
+    -   *CONVERSATIONS*
+        -   [getTheNumberOfHitsOfASubstringInAllUsersconversations(userId, substring, limit, webinar)](#module_ConversationsService+getTheNumberOfHitsOfASubstringInAllUsersconversations) ⇒ `Object`
+        -   [getAllConversations()](#module_ConversationsService+getAllConversations) ⇒ `Array.<Conversation>`
+        -   [openConversationForContact(contact)](#module_ConversationsService+openConversationForContact) ⇒ `Conversation`
+        -   [openConversationForBubble(bubble)](#module_ConversationsService+openConversationForBubble) ⇒ `Promise.<Conversation>`
+        -   [getS2SServerConversation(conversationId)](#module_ConversationsService+getS2SServerConversation) ⇒ `Conversation`
+        -   [deleteServerConversation(conversationId)](#module_ConversationsService+deleteServerConversation) ⇒ `Promise`
+        -   [sendConversationByEmail(conversationDbId, emails, lang)](#module_ConversationsService+sendConversationByEmail) ⇒ `Promise.<Array.<Conversation>>`
+        -   [getConversationById(conversationId)](#module_ConversationsService+getConversationById) ⇒ `Conversation`
+        -   [getConversationByDbId(dbId)](#module_ConversationsService+getConversationByDbId) ⇒ `Conversation`
+        -   [getConversationByBubbleId(bubbleId)](#module_ConversationsService+getConversationByBubbleId) ⇒ `Conversation`
+        -   [getConversationByBubbleJid(bubbleJid)](#module_ConversationsService+getConversationByBubbleJid) ⇒ `Conversation`
+        -   [getBubbleConversation(bubbleJid, conversationDbId, lastModification, lastMessageText, missedIMCounter, noError, muted, creationDate, lastMessageSender)](#module_ConversationsService+getBubbleConversation) ⇒ `Promise.<Conversation>`
+        -   [closeConversation(conversation)](#module_ConversationsService+closeConversation) ⇒ `Promise`
+        -   [cleanConversations()](#module_ConversationsService+cleanConversations) ⇒ `Promise.<any>`
+    -   *MESSAGES*
+        -   [ackAllMessages(conversationDbId, maskRead)](#module_ConversationsService+ackAllMessages) ⇒ `Promise.<Array.<Conversation>>`
+        -   [getHistoryPage(conversation, size, useBulk)](#module_ConversationsService+getHistoryPage) ⇒ `Promise.<Array.<Conversation>>`
+        -   [getS2SMessagesByConversationId(conversationId, limit, before, after)](#module_ConversationsService+getS2SMessagesByConversationId) ⇒ `Promise.<any>`
+        -   [loadConversationHistory(conversation, pageSize, useBulk)](#module_ConversationsService+loadConversationHistory) ⇒ `Promise.<Array.<Conversation>>`
+        -   [loadConversationHistoryAsync(conversation, pageSize, useBulk)](#module_ConversationsService+loadConversationHistoryAsync) ⇒ `Promise.<{code:number, label:string}>`
+        -   [getOneMessageFromConversationId(conversationId, messageId, stamp)](#module_ConversationsService+getOneMessageFromConversationId) ⇒ `Promise.<any>`
+        -   [getContactsMessagesFromConversationId(conversationId, useBulk)](#module_ConversationsService+getContactsMessagesFromConversationId) ⇒ `Promise.<any>`
+        -   [sendExistingFSMessage(conversation, message, fileDescriptor, p\_messagesDataStore)](#module_ConversationsService+sendExistingFSMessage) ⇒ `Message`
+        -   [sendCorrectedChatMessage(conversation, data, origMsgId, content, urgency, p\_messagesDataStore)](#module_ConversationsService+sendCorrectedChatMessage) ⇒ `Promise.<string>`
+        -   [deleteMessage(conversation, messageId, p\_messagesDataStore)](#module_ConversationsService+deleteMessage) ⇒ `Message`
+        -   [deleteAllMessageInOneToOneConversation(conversation)](#module_ConversationsService+deleteAllMessageInOneToOneConversation) ⇒ `Message`
+        -   [removeAllMessages(conversation)](#module_ConversationsService+removeAllMessages) ⇒ `Promise`
+        -   [removeMessagesFromConversation(conversation, date, number)](#module_ConversationsService+removeMessagesFromConversation) ⇒ `Promise`
+        -   [sendIsTypingState(conversation, status, p\_messagesDataStore)](#module_ConversationsService+sendIsTypingState) ⇒
+        -   [updateConversationBookmark(userId, conversationId, messageId)](#module_ConversationsService+updateConversationBookmark) ⇒ `Object`
+        -   [deleteConversationBookmark(userId, conversationId)](#module_ConversationsService+deleteConversationBookmark) ⇒ `Object`
+        -   [showAllMatchingMessagesForAPeer(userId, substring, peer, isRoom, limit)](#module_ConversationsService+showAllMatchingMessagesForAPeer) ⇒ `Promise.<any>`
+
+---
+
+### conversationsService.getTheNumberOfHitsOfASubstringInAllUsersconversations(userId, substring, limit, webinar) ⇒ `Object`
+
+This API can be used to search a text substring in all conversations for a given user from recent to old messages.  
+For technical reasons, the same limit value applies on all peer to peer conversations but also on all room conversations.  
+This API can only be used by user himself (i.e. userId of logged-in user).  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Returns**: `Object` - The result
+
+Champ
+
+Type
+
+Description
+
+jid
+
+String
+
+the JID of the peer (P2P, BOT or ROOM)
+
+count
+
+Integer
+
+The number of hits
+
+**Category**: CONVERSATIONS
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.21.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+userId
+
+`string`
+
+User unique identifier
+
+substring
+
+`string`
+
+Text to search
+
+limit
+
+`number`
+
+`100`
+
+Max number of matching messages count (expect up to 2x limit counts since the limit applies both to P2P and Room messages). Default value : 100
+
+webinar
+
+`boolean`
+
+`true`
+
+Include webinars (excluded by default). Default value : false
+
+---
+
+### conversationsService.getAllConversations() ⇒ `Array.<Conversation>`
+
+Allows to get the list of existing conversations (p2p and bubbles)  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Returns**: `Array.<Conversation>` - An array of Conversation object
+
+**Category**: CONVERSATIONS
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### conversationsService.openConversationForContact(contact) ⇒ `Conversation`
+
+Open a conversation to a contact  
+Create a new one if the conversation doesn't exist or reopen a closed conversation  
+This method returns a promise  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Returns**: `Conversation` - The conversation (created or retrieved) or null in case of error
+
+**Category**: CONVERSATIONS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+contact
+
+`Contact`
+
+The contact involved in the conversation
+
+---
+
+### conversationsService.openConversationForBubble(bubble) ⇒ `Promise.<Conversation>`
+
+Open a conversation to a bubble  
+Create a new one if the conversation doesn't exist or reopen a closed conversation  
+This method returns a promise  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Returns**: `Promise.<Conversation>` - The conversation (created or retrieved) or null in case of error
+
+**Category**: CONVERSATIONS
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.65
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`Bubble`
+
+The bubble involved in this conversation
+
+---
+
+### conversationsService.getS2SServerConversation(conversationId) ⇒ `Conversation`
+
+get a conversation from id on S2S API Server.  
+This method returns a promise  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Returns**: `Conversation` - The conversation (created or retrieved) or null in case of error
+
+**Category**: CONVERSATIONS
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.65
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+The id of the conversation to find.
+
+---
+
+### conversationsService.deleteServerConversation(conversationId) ⇒ `Promise`
+
+Allows to delete a conversation on server (p2p and bubbles)  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Category**: CONVERSATIONS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+of the conversation (id field)
+
+---
+
+### conversationsService.sendConversationByEmail(conversationDbId, emails, lang) ⇒ `Promise.<Array.<Conversation>>`
+
+Allows to get the specified conversation as mail attachment to the login email of the current user (p2p and bubbles)  
+can be used to backup a conversation between a rainbow user and another one, or between a user and a room,  
+The backup of the conversation is restricted to a number of days before now. By default the limit is 30 days.  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Category**: CONVERSATIONS
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Conversation[]` - Array of Conversation object
+
+Param
+
+Type
+
+Default
+
+Description
+
+conversationDbId
+
+`string`
+
+ID of the conversation (dbId field)
+
+emails
+
+`Array.<string>`
+
+Allows to send the backup to users from an emails list.  
+When one email matchs with a Rainbow user loginEmail, the mail sent is localized using this user's language.
+
+lang
+
+`string`
+
+`en`
+
+Language of the email notification if user language value is not available (for no Rainbow users). Default value : en
+
+---
+
+### conversationsService.getConversationById(conversationId) ⇒ `Conversation`
+
+Get a p2p conversation by id  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Returns**: `Conversation` - The conversation to retrieve
+
+**Category**: CONVERSATIONS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+Conversation id of the conversation to clean
+
+---
+
+### conversationsService.getConversationByDbId(dbId) ⇒ `Conversation`
+
+Get a conversation by db id  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Returns**: `Conversation` - The conversation to retrieve
+
+**Category**: CONVERSATIONS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+dbId
+
+`string`
+
+db id of the conversation to retrieve
+
+---
+
+### conversationsService.getConversationByBubbleId(bubbleId) ⇒ `Conversation`
+
+Get a bubble conversation by bubble id  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Returns**: `Conversation` - The conversation to retrieve
+
+**Category**: CONVERSATIONS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+bubbleId
+
+`string`
+
+Bubble id of the conversation to retrieve
+
+---
+
+### conversationsService.getConversationByBubbleJid(bubbleJid) ⇒ `Conversation`
+
+Get a bubble conversation by bubble id  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Returns**: `Conversation` - The conversation to retrieve
+
+**Category**: CONVERSATIONS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+bubbleJid
+
+`string`
+
+Bubble jid of the conversation to retrieve
+
+---
+
+### conversationsService.getBubbleConversation(bubbleJid, conversationDbId, lastModification, lastMessageText, missedIMCounter, noError, muted, creationDate, lastMessageSender) ⇒ `Promise.<Conversation>`
+
+Get a conversation associated to a bubble (using the bubble ID to retrieve it)  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Category**: CONVERSATIONS
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Conversation` - Conversation object or null if not found
+
+Param
+
+Type
+
+Description
+
+bubbleJid
+
+`string`
+
+JID of the bubble (dbId field)
+
+conversationDbId
+
+`string`
+
+lastModification
+
+`Date`
+
+lastMessageText
+
+`string`
+
+missedIMCounter
+
+`number`
+
+noError
+
+`boolean`
+
+muted
+
+`boolean`
+
+creationDate
+
+`Date`
+
+lastMessageSender
+
+`string`
+
+---
+
+### conversationsService.closeConversation(conversation) ⇒ `Promise`
+
+Close a conversation  
+This method returns a promise  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Category**: CONVERSATIONS
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: Return nothing in case success
+
+Param
+
+Type
+
+Description
+
+conversation
+
+`Conversation`
+
+The conversation to close
+
+---
+
+### conversationsService.cleanConversations() ⇒ `Promise.<any>`
+
+Allows to clean openned conversations. It keep openned the maxConversations last modified conversations. If maxConversations is not defined then keep the last 15 conversations.  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Returns**: `Promise.<any>` - the result of the deletion.
+
+**Category**: CONVERSATIONS
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### conversationsService.ackAllMessages(conversationDbId, maskRead) ⇒ `Promise.<Array.<Conversation>>`
+
+Mark all unread messages in the conversation as read.  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Category**: MESSAGES
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Conversation[]` - Array of Conversation object
+
+Param
+
+Type
+
+Default
+
+Description
+
+conversationDbId
+
+`string`
+
+ID of the conversation (dbId field)
+
+maskRead
+
+`boolean`
+
+`false`
+
+if true Im won't be shown as read on peer conversation side. Default value : false
+
+---
+
+### conversationsService.getHistoryPage(conversation, size, useBulk) ⇒ `Promise.<Array.<Conversation>>`
+
+Retrieve the remote history of a specific conversation.  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Category**: MESSAGES
+
+**Access**: public
+
+**Fulfil**: `Conversation[]` - Array of Conversation object
+
+Param
+
+Type
+
+Default
+
+Description
+
+conversation
+
+`Conversation`
+
+Conversation to retrieve
+
+size
+
+`number`
+
+`30`
+
+Maximum number of element to retrieve
+
+useBulk
+
+`boolean`
+
+`false`
+
+Does the history should be retrieved with a bulk (group) of messages
+
+---
+
+### conversationsService.getS2SMessagesByConversationId(conversationId, limit, before, after) ⇒ `Promise.<any>`
+
+Retrieve the remote history of a specific conversation.  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Category**: MESSAGES
+
+**Fulfil**: `Pomise<any>` - result object
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+Id of conversation
+
+limit
+
+`number`
+
+Maximum number of messages to return (0 for counting)
+
+before
+
+`number`
+
+Get messages before this Epoch timestamp in microseconds
+
+after
+
+`number`
+
+Get messages after this Epoch timestamp in microseconds
+
+---
+
+### conversationsService.loadConversationHistory(conversation, pageSize, useBulk) ⇒ `Promise.<Array.<Conversation>>`
+
+Retrieve the remote history of a specific conversation.  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Category**: MESSAGES
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Conversation[]` - Array of Conversation object
+
+Param
+
+Type
+
+Default
+
+Description
+
+conversation
+
+`Conversation`
+
+Conversation to retrieve
+
+pageSize
+
+`string`
+
+`30`
+
+number of message in each page to retrieve messages.
+
+useBulk
+
+`boolean`
+
+`false`
+
+Does the history should be retrieved with a bulk (group) of messages
+
+---
+
+### conversationsService.loadConversationHistoryAsync(conversation, pageSize, useBulk) ⇒ `Promise.<{code:number, label:string}>`
+
+Retrieve the remote history of a specific conversation asynchronously. The result only said that the request has succesfully started (or not).  
+The result of the loading process is sent with the event `rainbow_onloadConversationHistoryCompleted`  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Category**: MESSAGES
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+conversation
+
+`Conversation`
+
+Conversation to retrieve
+
+pageSize
+
+`string`
+
+`30`
+
+number of message in each page to retrieve messages.
+
+useBulk
+
+`boolean`
+
+`false`
+
+Does the history should be retrieved with a bulk (group) of messages
+
+---
+
+### conversationsService.getOneMessageFromConversationId(conversationId, messageId, stamp) ⇒ `Promise.<any>`
+
+To retrieve ONE message archived on server exchanged in a conversation based on the specified message Id and the timestamp  
+  
+Time stamp is mandatory - the search is performed using it.  
+Once results are returned, we look for a message with the message id specified.  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Category**: MESSAGES
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+conversationId
+
+`string`
+
+: Id of the conversation
+
+messageId
+
+`string`
+
+: Id of the message
+
+stamp
+
+`string`
+
+: Time stamp. Time stamp is mandatory - the search is performed using it.
+
+---
+
+### conversationsService.getContactsMessagesFromConversationId(conversationId, useBulk) ⇒ `Promise.<any>`
+
+To retrieve messages exchanged by contacts in a conversation. The result is the messages without event type.  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Category**: MESSAGES
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+conversationId
+
+`string`
+
+: Id of the conversation
+
+useBulk
+
+`boolean`
+
+`false`
+
+Does the history should be retrieved with a bulk (group) of messages
+
+---
+
+### conversationsService.sendExistingFSMessage(conversation, message, fileDescriptor, p\_messagesDataStore) ⇒ `Message`
+
+Send a message to this conversation  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Returns**: `Message` - The message sent
+
+**Category**: MESSAGES
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+conversation
+
+`Conversation`
+
+message
+
+`string`
+
+fileDescriptor
+
+`any`
+
+p\_messagesDataStore
+
+`DataStoreType`
+
+used to override the general of SDK's parameter "messagesDataStore". default value `undefined` to use the general value.  
+DataStoreType.NoStore Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide The messages are fully stored.  
+DataStoreType.UsestoreMessagesField to follow the storeMessages SDK's parameter behaviour.  
+DataStoreType.Store Offline storage and Message Archive Management (XEP-0313) \[4\] can define their own rules on what messages to store and usually only store messages that contain a body element. However a sender may want to indicate that a message is worth storing even though it might not match those rules (e.g. an encrypted message that carries the payload outside the body element). Such a message can be marked with a hint.
+
+---
+
+### conversationsService.sendCorrectedChatMessage(conversation, data, origMsgId, content, urgency, p\_messagesDataStore) ⇒ `Promise.<string>`
+
+Send a corrected message to a conversation  
+This method works for sending messages to a one-to-one conversation or to a bubble conversation  
+The new message has the property originalMessageReplaced which spot on original message // Warning this is a circular depend.  
+The original message has the property replacedByMessage which spot on the new message // Warning this is a circular depend.  
+Note: The connected user must be the sender of the original message.  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Returns**: `Promise.<string>` - message the message new correction message sent. Throw an error if the send fails.
+
+**Category**: MESSAGES
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+conversation
+
+`Conversation`
+
+data
+
+`string`
+
+The message string corrected
+
+origMsgId
+
+`string`
+
+The id of the original corrected message.
+
+content
+
+`Object`
+
+Allows to send alternative text base content
+
+content.type
+
+`String`
+
+The content message type `text/markdown`
+
+content.message
+
+`String`
+
+The content message body
+
+urgency
+
+`string`
+
+`std`
+
+The urgence of the message. Value can be : 'high' Urgent message, 'middle' important message, 'low' information message, "std' or null standard message
+
+p\_messagesDataStore
+
+`DataStoreType`
+
+used to override the general of SDK's parameter "messagesDataStore". default value `undefined` to use the general value.  
+DataStoreType.NoStore Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide The messages are fully stored.  
+DataStoreType.UsestoreMessagesField to follow the storeMessages SDK's parameter behaviour.  
+DataStoreType.Store Offline storage and Message Archive Management (XEP-0313) \[4\] can define their own rules on what messages to store and usually only store messages that contain a body element. However a sender may want to indicate that a message is worth storing even though it might not match those rules (e.g. an encrypted message that carries the payload outside the body element). Such a message can be marked with a hint.
+
+---
+
+### conversationsService.deleteMessage(conversation, messageId, p\_messagesDataStore) ⇒ `Message`
+
+Delete a message by sending an empty string in a correctedMessage  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Returns**: `Message` - - message object with updated replaceMsgs property
+
+**Category**: MESSAGES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.58
+
+Param
+
+Type
+
+Description
+
+conversation
+
+`Conversation`
+
+The conversation object
+
+messageId
+
+`string`
+
+The id of the message to be deleted
+
+p\_messagesDataStore
+
+`DataStoreType`
+
+used to override the general of SDK's parameter "messagesDataStore". default value `undefined` to use the general value.  
+DataStoreType.NoStore Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide The messages are fully stored.  
+DataStoreType.UsestoreMessagesField to follow the storeMessages SDK's parameter behaviour.  
+DataStoreType.Store Offline storage and Message Archive Management (XEP-0313) \[4\] can define their own rules on what messages to store and usually only store messages that contain a body element. However a sender may want to indicate that a message is worth storing even though it might not match those rules (e.g. an encrypted message that carries the payload outside the body element). Such a message can be marked with a hint.  
+
+---
+
+### conversationsService.deleteAllMessageInOneToOneConversation(conversation) ⇒ `Message`
+
+Delete all messages for the connected user on a one to one conversation.  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Returns**: `Message` - - message object with updated replaceMsgs property
+
+**Category**: MESSAGES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.67.0
+
+Param
+
+Type
+
+Description
+
+conversation
+
+`Conversation`
+
+The conversation object
+
+---
+
+### conversationsService.removeAllMessages(conversation) ⇒ `Promise`
+
+Cleanup a conversation by removing all previous messages  
+
+If conversation is P2P then the messages are deleted on Bot side.
+
+This method returns a promise  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Category**: MESSAGES
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: Return nothing in case success
+
+Param
+
+Type
+
+Description
+
+conversation
+
+`Conversation`
+
+The conversation to clean
+
+---
+
+### conversationsService.removeMessagesFromConversation(conversation, date, number) ⇒ `Promise`
+
+Remove a specific range of message in a conversation  
+This method returns a promise  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Category**: MESSAGES
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: Return nothing in case success
+
+Param
+
+Type
+
+Description
+
+conversation
+
+`Conversation`
+
+The conversation to clean
+
+date
+
+`Date`
+
+The date since when the message should be deleted.
+
+number
+
+`number`
+
+max number of messages to delete.
+
+---
+
+### conversationsService.sendIsTypingState(conversation, status, p\_messagesDataStore) ⇒
+
+Switch the "is typing" state in a conversation  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Returns**: a promise with no success parameter
+
+**Category**: MESSAGES
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+conversation
+
+`Conversation`
+
+The conversation recipient
+
+status
+
+`boolean`
+
+`false`
+
+The status, true for setting "is Typing", false to remove it. Default Value : false.
+
+p\_messagesDataStore
+
+`DataStoreType`
+
+used to override the general of SDK's parameter "messagesDataStore". default value `undefined` to use the general value.  
+DataStoreType.NoStore Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide The messages are fully stored.  
+DataStoreType.UsestoreMessagesField to follow the storeMessages SDK's parameter behaviour.  
+DataStoreType.Store Offline storage and Message Archive Management (XEP-0313) \[4\] can define their own rules on what messages to store and usually only store messages that contain a body element. However a sender may want to indicate that a message is worth storing even though it might not match those rules (e.g. an encrypted message that carries the payload outside the body element). Such a message can be marked with a hint.  
+
+---
+
+### conversationsService.updateConversationBookmark(userId, conversationId, messageId) ⇒ `Object`
+
+This API can be used to set or replace a bookmarked message in a conversation. This API can only be used by user himself.  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Returns**: `Object` - The result
+
+Champ
+
+Type
+
+Description
+
+status
+
+String
+
+Status message.
+
+data
+
+Object\[\]
+
+No data (empty Array)
+
+**Category**: MESSAGES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.21.0
+
+Param
+
+Type
+
+Description
+
+userId
+
+`string`
+
+User unique identifier.
+
+conversationId
+
+`string`
+
+conversation unique identifier (the dbId property in Conversation).
+
+messageId
+
+`string`
+
+message unique identifier.
+
+---
+
+### conversationsService.deleteConversationBookmark(userId, conversationId) ⇒ `Object`
+
+This API can be used to set or replace a bookmarked message in a conversation. This API can only be used by user himself.  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Returns**: `Object` - The result
+
+Champ
+
+Type
+
+Description
+
+status
+
+String
+
+Status message.
+
+data
+
+Object\[\]
+
+No data (empty Array)
+
+**Category**: MESSAGES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.21.0
+
+Param
+
+Type
+
+Description
+
+userId
+
+`string`
+
+User unique identifier.
+
+conversationId
+
+`string`
+
+conversation unique identifier (the dbId property in Conversation).
+
+---
+
+### conversationsService.showAllMatchingMessagesForAPeer(userId, substring, peer, isRoom, limit) ⇒ `Promise.<any>`
+
+This API can be used to return all matching messages for one specific peer. This API can only be used by user himself.  
+
+**Kind**: instance method of [`ConversationsService`](#module_ConversationsService)
+
+**Returns**: `Promise.<any>` - An object of the result
+
+Champ
+
+Type
+
+Description
+
+timestamp
+
+Integer
+
+Message timestamp in microseconds
+
+msgId
+
+String
+
+The message ID
+
+**Category**: MESSAGES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.21.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+userId
+
+`string`
+
+User unique identifier
+
+substring
+
+`string`
+
+Text to search
+
+peer
+
+`string`
+
+Peer JID
+
+isRoom
+
+`boolean`
+
+Is the peer a room ?
+
+limit
+
+`number`
+
+`20`
+
+Max number of matching messages references. Default value : 20
+
+---
+
+### On this page
+
+-   [ConversationsService](/docs/sdk/node#name-conversationsservice-3)
+-   [conversationsService.getTheNumberOfHitsOfASubstringInAllUsersconversations(userId, substring, limit, webinar) ⇒ Object](/docs/sdk/node#name-conversationsservice.getthenumberofhitsofasubstringinallusersconversationsuserid-substring-limit-webinar--object-214)
+-   [conversationsService.getAllConversations() ⇒ Array.<Conversation>](/docs/sdk/node#name-conversationsservice.getallconversations--array.conversation-357)
+-   [conversationsService.openConversationForContact(contact) ⇒ Conversation](/docs/sdk/node#name-conversationsservice.openconversationforcontactcontact--conversation-382)
+-   [conversationsService.openConversationForBubble(bubble) ⇒ Promise.<Conversation>](/docs/sdk/node#name-conversationsservice.openconversationforbubblebubble--promise.conversation-435)
+-   [conversationsService.getS2SServerConversation(conversationId) ⇒ Conversation](/docs/sdk/node#name-conversationsservice.gets2sserverconversationconversationid--conversation-491)
+-   [conversationsService.deleteServerConversation(conversationId) ⇒ Promise](/docs/sdk/node#name-conversationsservice.deleteserverconversationconversationid--promise-547)
+-   [conversationsService.sendConversationByEmail(conversationDbId, emails, lang) ⇒ Promise.<Array.<Conversation>>](/docs/sdk/node#name-conversationsservice.sendconversationbyemailconversationdbid-emails-lang--promise.array.conversation-597)
+-   [conversationsService.getConversationById(conversationId) ⇒ Conversation](/docs/sdk/node#name-conversationsservice.getconversationbyidconversationid--conversation-681)
+-   [conversationsService.getConversationByDbId(dbId) ⇒ Conversation](/docs/sdk/node#name-conversationsservice.getconversationbydbiddbid--conversation-734)
+-   [conversationsService.getConversationByBubbleId(bubbleId) ⇒ Conversation](/docs/sdk/node#name-conversationsservice.getconversationbybubbleidbubbleid--conversation-787)
+-   [conversationsService.getConversationByBubbleJid(bubbleJid) ⇒ Conversation](/docs/sdk/node#name-conversationsservice.getconversationbybubblejidbubblejid--conversation-840)
+-   [conversationsService.getBubbleConversation(bubbleJid, conversationDbId, lastModification, lastMessageText, missedIMCounter, noError, muted, creationDate, lastMessageSender) ⇒ Promise.<Conversation>](/docs/sdk/node#name-conversationsservice.getbubbleconversationbubblejid-conversationdbid-lastmodification-lastmessagetext-missedimcounter-noerror-muted-creationdate-lastmessagesender--promise.conversation-893)
+-   [conversationsService.closeConversation(conversation) ⇒ Promise](/docs/sdk/node#name-conversationsservice.closeconversationconversation--promise-1031)
+-   [conversationsService.cleanConversations() ⇒ Promise.<any>](/docs/sdk/node#name-conversationsservice.cleanconversations--promise.any-1081)
+-   [conversationsService.ackAllMessages(conversationDbId, maskRead) ⇒ Promise.<Array.<Conversation>>](/docs/sdk/node#name-conversationsservice.ackallmessagesconversationdbid-maskread--promise.array.conversation-1106)
+-   [conversationsService.getHistoryPage(conversation, size, useBulk) ⇒ Promise.<Array.<Conversation>>](/docs/sdk/node#name-conversationsservice.gethistorypageconversation-size-usebulk--promise.array.conversation-1176)
+-   [conversationsService.getS2SMessagesByConversationId(conversationId, limit, before, after) ⇒ Promise.<any>](/docs/sdk/node#name-conversationsservice.gets2smessagesbyconversationidconversationid-limit-before-after--promise.any-1260)
+-   [conversationsService.loadConversationHistory(conversation, pageSize, useBulk) ⇒ Promise.<Array.<Conversation>>](/docs/sdk/node#name-conversationsservice.loadconversationhistoryconversation-pagesize-usebulk--promise.array.conversation-1340)
+-   [conversationsService.loadConversationHistoryAsync(conversation, pageSize, useBulk) ⇒ Promise.<{code:number, label:string}>](/docs/sdk/node#name-conversationsservice.loadconversationhistoryasyncconversation-pagesize-usebulk--promise.code:number-label:string-1424)
+-   [conversationsService.getOneMessageFromConversationId(conversationId, messageId, stamp) ⇒ Promise.<any>](/docs/sdk/node#name-conversationsservice.getonemessagefromconversationidconversationid-messageid-stamp--promise.any-1508)
+-   [conversationsService.getContactsMessagesFromConversationId(conversationId, useBulk) ⇒ Promise.<any>](/docs/sdk/node#name-conversationsservice.getcontactsmessagesfromconversationidconversationid-usebulk--promise.any-1580)
+-   [conversationsService.sendExistingFSMessage(conversation, message, fileDescriptor, p\_messagesDataStore) ⇒ Message](/docs/sdk/node#name-conversationsservice.sendexistingfsmessageconversation-message-filedescriptor-p_messagesdatastore--message-1650)
+-   [conversationsService.sendCorrectedChatMessage(conversation, data, origMsgId, content, urgency, p\_messagesDataStore) ⇒ Promise.<string>](/docs/sdk/node#name-conversationsservice.sendcorrectedchatmessageconversation-data-origmsgid-content-urgency-p_messagesdatastore--promise.string-1736)
+-   [conversationsService.deleteMessage(conversation, messageId, p\_messagesDataStore) ⇒ Message](/docs/sdk/node#name-conversationsservice.deletemessageconversation-messageid-p_messagesdatastore--message-1893)
+-   [conversationsService.deleteAllMessageInOneToOneConversation(conversation) ⇒ Message](/docs/sdk/node#name-conversationsservice.deleteallmessageinonetooneconversationconversation--message-1971)
+-   [conversationsService.removeAllMessages(conversation) ⇒ Promise](/docs/sdk/node#name-conversationsservice.removeallmessagesconversation--promise-2027)
+-   [conversationsService.removeMessagesFromConversation(conversation, date, number) ⇒ Promise](/docs/sdk/node#name-conversationsservice.removemessagesfromconversationconversation-date-number--promise-2083)
+-   [conversationsService.sendIsTypingState(conversation, status, p\_messagesDataStore) ⇒](/docs/sdk/node#name-conversationsservice.sendistypingstateconversation-status-p_messagesdatastore--2155)
+-   [conversationsService.updateConversationBookmark(userId, conversationId, messageId) ⇒ Object](/docs/sdk/node#name-conversationsservice.updateconversationbookmarkuserid-conversationid-messageid--object-2242)
+-   [conversationsService.deleteConversationBookmark(userId, conversationId) ⇒ Object](/docs/sdk/node#name-conversationsservice.deleteconversationbookmarkuserid-conversationid--object-2359)
+-   [conversationsService.showAllMatchingMessagesForAPeer(userId, substring, peer, isRoom, limit) ⇒ Promise.<any>](/docs/sdk/node#name-conversationsservice.showallmatchingmessagesforapeeruserid-substring-peer-isroom-limit--promise.any-2465)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

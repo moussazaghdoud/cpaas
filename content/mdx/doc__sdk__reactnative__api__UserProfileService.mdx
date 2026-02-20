@@ -1,0 +1,111 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/UserProfileService"
+lastSynced: "2026-02-20T07:12:33.538Z"
+---
+# Documentation
+
+User Profile Service
+
+### Connected User Profile Services
+
+---
+
+### Preamble
+
+---
+
+The login user service module `userProfileService` has all the methods supported by this library.
+
+---
+
+### Get Connected User:
+
+To fetch the current connect user info, you can call `userProfileService.getConnectedUser()`, where you can get the user results as object of[IUser](/docs/sdk/reactnative/api/IUser) type by listening to `EventType.ConnectedUserUpdated`.
+
+The same event `EventType.ConnectedUserUpdated` you can listen to when ever changes occurred on the connected user for example his presence, name, profile image,...etc.
+
+```ts
+import { userProfileService, IUser } from 'react-native-rainbow-module';
+
+...
+
+const getCurrentConnectedUser = ()  => {
+userProfileService.getConnectedUser();
+}
+...
+// Listen for the getConnectedUser method result, also when ever changes happened on the connected user.
+const connectedUserUpdated = eventEmitter.addListener(
+            EventType.ConnectedUserUpdated,
+            (eventData: IUser) => {
+                // handle the connected user.
+            }
+        );
+```
+
+---
+
+### Set Connect User Presence
+
+To change the current connected user presence status, you can call `userProfileService.setPresence(presence: Presence)`, where the [presence](/docs/sdk/reactnative/api/IContact) is the new presence you want to change to.
+
+The presence changes result will trigger the `EventType.ConnectedUserUpdated` with the updated user object of type [IUser](/docs/sdk/reactnative/api/IUser).
+
+```ts
+import { userProfileService, IUser } from 'react-native-rainbow-module';
+
+...
+const changeUserPresence = (newPresence: Presence)  => {
+userProfileService.setPresence(newPresence);
+}
+
+...
+// Listen for the getConnectedUser method result, also when ever changes happened on the connected user.
+const connectedUserUpdated = eventEmitter.addListener(
+            EventType.ConnectedUserUpdated,
+            (eventData: IUser) => {
+                // handle the connected user with his new updated presence.
+                const newPresence = eventData.contact.presence;
+            }
+        );
+```
+
+---
+
+### Update Custom Data:
+
+In order to update the customData of the connected user, you have to create a JSONObject, fill it with all your custom data and call the method `userProfileService.updateCustomData(customData: {})`, where this method will automatically trigger the `EventType.ConnectedUserUpdated` with the updated user object of type [IUser](/docs/sdk/reactnative/api/IUser) with the updated `customData` props.
+
+```ts
+import {userProfileService } from 'react-native-rainbow-module'
+...
+const updateConnectedUserCustomData = (customData: {}}) => {
+// Where data is a json data, for example: { 'key1': value, 'key2': value,... }
+userProfileService.updateCustomData(customData);
+}
+...
+// Listen for the getConnectedUser method result, also when ever changes happened on the connected user.
+const connectedUserUpdated = eventEmitter.addListener(
+            EventType.ConnectedUserUpdated,
+            (eventData: IUser) => {
+                // handle the connected user with his new updated presence.
+                const newCustomData = eventData.customData;
+            }
+        );
+```
+
+### On this page
+
+-   [Connected User Profile Services](/docs/sdk/reactnative/api/UserProfileService#name-connected-user-profile-services-0)
+-   [Preamble](/docs/sdk/reactnative/api/UserProfileService#name-preamble-4)
+-   [Get Connected User:](/docs/sdk/reactnative/api/UserProfileService#name-get-connected-user:-12)
+-   [Set Connect User Presence](/docs/sdk/reactnative/api/UserProfileService#name-set-connect-user-presence-23)
+-   [Update Custom Data:](/docs/sdk/reactnative/api/UserProfileService#name-update-custom-data:-34)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

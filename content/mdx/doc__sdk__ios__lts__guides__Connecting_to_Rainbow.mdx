@@ -1,0 +1,484 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/ios/lts/guides/Connecting_to_Rainbow"
+lastSynced: "2026-02-20T07:12:29.109Z"
+---
+# Documentation
+
+Connecting to Rainbow
+
+LTS release 2.13.0Published on 2025-03-07
+
+## Connecting to Rainbow
+
+---
+
+This tutorial details how you connect to Rainbow and more generally how you deal with the authentication and the connection parts. These steps are mandatories in order to have access to services such as voice and video calls, chat or files sharing, etc...
+
+**Rainbow concept**
+
+**Details**
+
+**Sandbox platform for developers**
+
+This Rainbow platform is dedicated to developers.  
+The Sandbox platform for developers is not connected to the Production platform and let developers be familiar with our APIs and SDKs.  
+This platform uses different users accounts and application Id.  
+Some limitations can occur regarding the preformance and availability.
+
+**Production platform**
+
+This Rainbow platform is the official one with all Rainbow services and infrastructures enabling a high availability and accessibility all over the world.  
+For using it, you need to create and deploy an application.  
+This is the platform you use when connecting with our Rainbow applications.
+
+### Preamble
+
+---
+
+The Rainbow SDK for iOS is a library we made in order to allow any iOS applications to use Rainbow services such as chat, voice and video calls, conferences, notifications and much more...
+
+This SDK connects to Rainbow using 2 different ways:
+
+-   The first is by sending **HTTP REST requests** in order to invoke services such as creating a bubbles, inviting a users, etc... A lot of theses API allow to manage your data on Rainbow.
+    
+-   The second is by having a persistant connection to Rainbow using a **Websocket** when the application is active and by having a **notification channel (PUSH)** when the application is in background. This connection is mandatory in order to receive any real-time events coming from Rainbow such as an incomign chat message, an incoming call, etc...
+    
+
+So, if you don't configure the Push notifications service by following our guide [Push notifications](/docs/sdk/ios), you will not be able to receive incoming notifications when your application will be inactive.
+
+This tutorial assumes that you followed the tutorial [Hello world](/docs/sdk/ios) and that you have an active Rainbow application.
+
+### Sign-in to Rainbow
+
+---
+
+This tutorial will start by explaining how to connect on the **Rainbow Production platform** using your Rainbow account and later in that guide, you will see how to connect to the **Rainbow Sandbox Platform for Developers**.
+
+You can sign-in to Rainbow using your username (loginEmail) and your password. For that, you need to call the `setUsername` method with your credentials information followed by the `connect` method.
+
+-   [swift](#codegroupTab-hashTag1)
+-   [objective C](#codegroupTab-hashTag2)
+
+```swift
+func signin(loginEmail: String, password: String) {
+    ServicesManager.sharedInstance().loginManager.setUsername(loginEmail, andPassword: password)
+    ServicesManager.sharedInstance().loginManager.connect()
+}
+```
+
+```objectivec
+- (void) signin:(NSString*)loginEmail andPassword:(NSString*)password {
+    [[ServicesManager sharedInstance].loginManager setUsername:loginEmail andPassword:password];
+    [[ServicesManager sharedInstance].loginManager connect];
+}
+```
+
+### Sign-in to Rainbow using a token
+
+---
+
+A best practice is to do this Rainbow authentication from your backend side and not from your iOS application side. By getting a token from your backend that is then used by your application will better secure this authentication step.
+
+By doing the Rainbow authentication from your server, you will avoid the following security concerns:
+
+-   **Compromising the user credentials**: Managing the authentication on client side will let your application have access to the username and password of the user.
+    
+-   **Compromising your application key secret**: Managing the authentication on client side requires the application secret. So if your application is not secure enough, someone can steal your secret key.
+    
+
+More information can be found by reading the tutorial [Rainbow users authentication](/docs/hub/users-authentication)
+
+So, once received the token from your server, instead of calling the 2 previous methods, just call the method `connectWithToken` with that token like in the following.
+
+-   [swift](#codegroupTab-hashTag3)
+-   [objective C](#codegroupTab-hashTag4)
+
+```swift
+func signinWithToken(token: String) {
+        ServicesManager.sharedInstance().loginManager.connect(withToken: token)
+}
+```
+
+```objectivec
+- (void) signinWithToken:(NSString*)token {
+    [[ServicesManager sharedInstance].loginManager connectWithToken:token];
+}
+```
+
+### Listen to authentication events
+
+---
+
+In order to know if the authentication has succeeded, you need to listen to some Rainbow events. Here is the list of events you need listen to:
+
+Events
+
+Description
+
+**kLoginManagerDidLoginSucceeded**
+
+Fired when the the user is connected to Rainbow and authentified
+
+**kLoginManagerDidFailedToAuthenticate**
+
+Fired when there is an issue during the authentication step.  
+Mainly due to a bad login or password
+
+**kLoginManagerDidReconnect**
+
+Fired when a previous Rainbow session has been reused successfully.  
+In that case the user is connected and authentifed and all the existing data received in the previous session is reoloaded locally from the cache.
+
+**kLoginManagerTryToReconnect**
+
+Fired after 5s if the reconnection has not been reestablished.  
+If the reconnection takes time, this event is fired in order to inform the application that the SDK is still trying to reconnect to Rainbow.
+
+Concretely, you have to use the **NotificationCenter** and to subscribe to these events for being notified of the status.
+
+-   [swift](#codegroupTab-hashTag5)
+-   [objective C](#codegroupTab-hashTag6)
+
+```swift
+@objc func didLogin(notification: NSNotification) {
+    // Do something when logged
+}
+
+@objc func failedToLogin(notification: NSNotification) {
+    // Do something in case of failure during the authentication step
+}
+
+override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    NotificationCenter.default.addObserver(self, selector: #selector(didLogin(notification:)), name: NSNotification.Name(kLoginManagerDidLoginSucceeded), object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(failedToLogin(notification:)), name: NSNotification.Name(kLoginManagerDidFailedToAuthenticate), object: nil)
+}
+```
+
+```objectivec
+-(void) didLogin:(NSNotification *) notification {
+    // Do something when logged
+}
+
+-(void)failedToAuthenticate:(NSNotification *) notification {
+    // Do something in case of failure during the authentication step
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:kLoginManagerDidLoginSucceeded object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(failedToAuthenticate:) name:kLoginManagerDidFailedToAuthenticate object:nil];
+}
+```
+
+Don't forget to remove these listeners when your view disappears
+
+-   [swift](#codegroupTab-hashTag7)
+-   [objective C](#codegroupTab-hashTag8)
+
+```swift
+override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name(kLoginManagerDidLoginSucceeded), object: nil)
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name(kLoginManagerDidFailedToAuthenticate), object: nil)
+}
+```
+
+```objectivec
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoginManagerDidLoginSucceeded object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoginManagerDidFailedToAuthenticate object:nil];
+}
+```
+
+### Signout
+
+---
+
+In order to sign-out from Rainbow and so to close your current session, you need to call the method `disconnect`. If the device can be used by several Rainbow accounts or if you want to remove all cached information linked to the credentials of the user, you need to call the method `resetAllCredentials` in order to clean all saved credentials in keychain too. If you need to know when this operation is finished, you can listen to the event `kLoginManagerDidLogoutSucceeded`
+
+-   [swift](#codegroupTab-hashTag9)
+-   [objective C](#codegroupTab-hashTag10)
+
+```swift
+func signout() {
+    ServicesManager.sharedInstance().loginManager.disconnect()
+    // Optional - Completely clean the device
+    ServicesManager.sharedInstance().loginManager.resetAllCredentials()
+}
+
+@objc func didLogout(notification: NSNotification) {
+    // Do something once the user has been logged-out from Rainbow
+}
+
+override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    // Add the following observer
+    NotificationCenter.default.addObserver(self, selector: #selector(didLogout(notification:)), name: NSNotification.Name(kLoginManagerDidLogoutSucceeded), object: nil)
+}
+
+override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    // Remove the following observer
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name(kLoginManagerDidLogoutSucceeded), object: nil)
+}
+```
+
+```objectivec
+- (void) signout {
+    [[ServicesManager sharedInstance].loginManager disconnect];
+    // Optional - Completely clean the device
+    [[ServicesManager sharedInstance].loginManager resetAllCredentials];
+}
+
+-(void) didLogout:(NSNotification *) notification {
+    // Do something once the user has been logged-out from Rainbow
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    // Add the following observer
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogout:) name:kLoginManagerDidLogoutSucceeded object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+
+    // Remove the following observer
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoginManagerDidLogoutSucceeded object:nil];
+}
+```
+
+### Reconnection
+
+---
+
+If the application is stopped without calling the method `disconnect`, when you call the method `connect` for connecting again the user to Rainbow, in case of success, the event `kLoginManagerDidLoginSucceeded` will not be fired. Instead, the SDK will fire the event `kLoginManagerDidReconnect` to inform the application that the SDK succeeded to connect and to authenticate the user by reusing a previous cached session (ie: your previous Rainbow user token was still valid). This is the **reconnection** mechanism.
+
+In that case, without having to do a complete sign-in (ie: by sending multiple requests to Rainbow to retrieve all user's information), the SDK loads these data from its cache and will receive then from the server all missed things in order to be synchronised.
+
+From the application point of view, you have to consider that you are connected and authenticated to Rainbow as when receiving the `kLoginManagerDidLoginSucceeded`. You can then use the SDK as when the event `kLoginManagerDidLoginSucceeded` is fired but the SDK assumes that the application has preserved its state.
+
+Sometime and depending on the network condition, the reconnection can take time. In that case, you can listen to the event `kLoginManagerTryToReconnect` to know that the SDK is still trying to reconnect. This event is fired **after 5s** if the connection hasn't been established.
+
+-   [swift](#codegroupTab-hashTag11)
+-   [objective C](#codegroupTab-hashTag12)
+
+```swift
+@objc func didReconnect(notification: NSNotification) {
+    // Do something once reconnected from a previous session
+}
+
+@objc func didTryToReconnect(notification: NSNotification) {
+    // Do something during the reconnection
+}
+
+override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    // Add the following observers
+    NotificationCenter.default.addObserver(self, selector: #selector(didReconnect(notification:)), name: NSNotification.Name(kLoginManagerDidReconnect), object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(didTryToReconnect(notification:)), name: NSNotification.Name(kLoginManagerTryToReconnect), object: nil)
+}
+
+override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    // Remove the following observers
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name(kLoginManagerDidReconnect), object: nil)
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name(kLoginManagerTryToReconnect), object: nil)
+}
+```
+
+```objectivec
+-(void) didReconnect:(NSNotification *) notification {
+    // Do something once reconnected from a previous session
+}
+
+-(void) didTryToReconnect:(NSNotification *) notification {
+    // Do something during the reconnection
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    // Add the following observers
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReconnect:) name:kLoginManagerDidReconnect object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didTryToReconnect:) name:kLoginManagerTryToReconnect object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+
+    // Remove the following observers
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoginManagerDidReconnect object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoginManagerTryToReconnect object:nil];
+}
+```
+
+### Connection lost
+
+---
+
+Sometimes, your application loses the connection to Rainbow du to network condition changes. If your application wants to know when it happens, you need to listen to the event `kLoginManagerDidLostConnection`.
+
+Regarding the SDK, you have nothing to do. As soon as the SDK will be able to reconnect, it will do it.
+
+-   [swift](#codegroupTab-hashTag13)
+-   [objective C](#codegroupTab-hashTag14)
+
+```swift
+@objc func didLostConnection(notification: NSNotification) {
+    // Do something once disconnected from Rainbow
+}
+
+override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    // Add the following observer
+    NotificationCenter.default.addObserver(self, selector: #selector(didLostConnection(notification:)), name: NSNotification.Name(kLoginManagerDidLostConnection), object: nil)
+}
+
+override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    // Remove the following observer
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name(kLoginManagerDidLostConnection), object: nil)
+}
+```
+
+```objectivec
+-(void) didLostConnection:(NSNotification *) notification {
+    // Do something once disconnected from Rainbow
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    // Add the following observer
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLostConnection:) name:kLoginManagerDidLostConnection object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+
+    // Remove the following observer
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoginManagerDidLostConnection object:nil];
+}
+```
+
+At any time, your application can access to the connection state by using the getter `isConnected` from the `LoginManager`.
+
+### Connecting to the Rainbow Sandbox platform for developers
+
+---
+
+As described in the preamble, you can connect the SDK to the **Rainbow Sandbox platform for developers**.
+
+This can be done using `switchServer(serverName, login:loginEmail, password: password)` `loginManager` method with the hostname of the Sandbox platform `sandbox.openrainbow.com`, if `loginEmail` and `password` are also provided after switching server a login will be done.
+
+-   [swift](#codegroupTab-hashTag15)
+-   [objective C](#codegroupTab-hashTag16)
+
+```swift
+ServicesManager.sharedInstance().loginManager.switchServer(serverName, login:loginEmail, password: password)
+```
+
+```objectivec
+[[ServicesManager.sharedInstance].loginManager switchServer: serverName login: loginEmail password: password]
+```
+
+You should note that the current Rainbow platform hostname is cached by the SDK, the `connect` method will try to connect to the last used server.
+
+To reset the default server to the Rainbow Production platform, you need to switch back to `server` equals to `openrainbow.com` or to reinstall your application on the device or the simulator.
+
+### Updating the Rainbow user password
+
+---
+
+At any time, you can change the current Rainbow user password by calling the method `sendChangePassword` such as in the following
+
+-   [swift](#codegroupTab-hashTag17)
+-   [objective C](#codegroupTab-hashTag18)
+
+```swift
+func updateUserPassword(current: String, newPassword: String ) {
+    if (ServicesManager.sharedInstance().loginManager.isConnected) {
+
+        ServicesManager.sharedInstance().loginManager.sendChangePassword(current, newPassword: newPassword, completionHandler: { (dictionary: Optional<Dictionary<AnyHashable, Any>>, error:Optional<Error>) in
+            if (error != nil) {
+                print(error.debugDescription)
+            } else {
+                //Do something when password has been changed
+            }
+        })
+
+    }
+}
+```
+
+```objectivec
+- (void)updateUserPassword:(NSString*)current andNewPassword:(NSString*)newPassword {
+
+    if ([ServicesManager sharedInstance].loginManager.isConnected) {
+        [[ServicesManager sharedInstance].loginManager sendChangePassword:current newPassword:newPassword completionHandler:^(NSDictionary *jsonResponse, NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if(error) {
+                    NSLog(@"Change password error %@", error);
+                } else {
+                    // Do something once the password has been changed
+                }
+            }
+        }
+    }
+}
+```
+
+When the password is changed, the user is automatically disconnected. The event `kLoginManagerDidLostConnection` is fired.
+
+In order to log-in again, you need to call the method `setUsername` with the new password set and then the method `connect`.
+
+### See also
+
+---
+
+-   [Hello World](/docs/sdk/ios)
+    
+-   [Managing personal profile](/docs/sdk/ios)
+    
+-   [Managing contacts](/docs/sdk/ios)
+    
+-   [Adding Push Notifications](/docs/sdk/ios)
+    
+
+---
+
+### On this page
+
+-   [Connecting to Rainbow](/docs/sdk/ios#name-connecting-to-rainbow-0)
+-   [Preamble](/docs/sdk/ios#name-preamble-37)
+-   [Sign-in to Rainbow](/docs/sdk/ios#name-sign-in-to-rainbow-65)
+-   [Sign-in to Rainbow using a token](/docs/sdk/ios#name-sign-in-to-rainbow-using-a-token-76)
+-   [Listen to authentication events](/docs/sdk/ios#name-listen-to-authentication-events-105)
+-   [Signout](/docs/sdk/ios#name-signout-166)
+-   [Reconnection](/docs/sdk/ios#name-reconnection-174)
+-   [Connection lost](/docs/sdk/ios#name-connection-lost-191)
+-   [Connecting to the Rainbow Sandbox platform for developers](/docs/sdk/ios#name-connecting-to-the-rainbow-sandbox-platform-for-developers-205)
+-   [Updating the Rainbow user password](/docs/sdk/ios#name-updating-the-rainbow-user-password-222)
+-   [See also](/docs/sdk/ios#name-see-also-236)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

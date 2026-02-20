@@ -1,0 +1,271 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/tutorials/ListenForEvents"
+lastSynced: "2026-02-20T07:12:33.649Z"
+---
+# Documentation
+
+Listen for events
+
+# Listening to SDK Events
+
+## Overview
+
+The Rainbow SDK for React Native uses an event-driven architecture to notify your application about various state changes and updates. This guide explains how to listen and respond to these events in your application.
+
+## Table of Contents
+
+1.  [Introduction to Event System](#introduction-to-event-system)
+2.  [Common Event Patterns](#common-event-patterns)
+3.  [Event Categories](#event-categories)
+    -   [Connection Events](#connection-events)
+    -   [Contact Events](#contact-events)
+    -   [Call Events](#call-events)
+    -   [Message Events](#message-events)
+    -   [Bubble Events](#bubble-events)
+4.  [Best Practices](#best-practices)
+
+## Introduction to Event System
+
+The SDK's event system allows your application to react to changes in real-time. All events are emitted through the `eventEmitter` instance, which you can import from the SDK:
+
+```typescript
+import { eventEmitter, EventType } from 'react-native-rainbow-module';
+
+// Subscribe to an event
+const subscription = eventEmitter.addListener(
+  EventType.ContactsUpdated,
+  (contacts: IContact[]) => {
+    console.log('Contacts updated:', contacts);
+  }
+);
+
+// Don't forget to clean up
+// Usually in a useEffect cleanup function
+subscription.remove();
+```
+
+## Common Event Patterns
+
+### Basic Event Subscription
+
+```typescript
+useEffect(() => {
+  const subscription = eventEmitter.addListener(
+    EventType.ContactsUpdated,
+    (contacts: IContact[]) => {
+      // Handle updated contacts
+    }
+  );
+
+  return () => {
+    // Clean up the subscription
+    subscription.remove();
+  };
+}, []);
+```
+
+### Multiple Event Subscriptions
+
+```typescript
+useEffect(() => {
+  const subscriptions = [
+    eventEmitter.addListener(EventType.ContactsUpdated, handleContactsUpdate),
+    eventEmitter.addListener(EventType.MessagesUpdated, handleMessagesUpdate),
+  ];
+
+  return () => {
+    subscriptions.forEach(sub => sub.remove());
+  };
+}, []);
+```
+
+## Event Categories
+
+### Connection Events
+
+Event
+
+Type
+
+Description
+
+`IsNetworkAvailable`
+
+`boolean`
+
+Fires when network connectivity changes
+
+`ConnectionStateChanged`
+
+`ConnectionState`
+
+Fires when the connection state changes
+
+```typescript
+eventEmitter.addListener(
+  EventType.IsNetworkAvailable,
+  (isAvailable: boolean) => {
+    console.log('Network available:', isAvailable);
+  }
+);
+```
+
+### Contact Events
+
+Event
+
+Type
+
+Description
+
+`ContactsUpdated`
+
+`IContact[]`
+
+Fires when the contact list is updated
+
+`PresenceChanged`
+
+`{ jid: string, presence: string }`
+
+Fires when a contact's presence changes
+
+### Call Events
+
+Event
+
+Type
+
+Description
+
+`CallStateChanged`
+
+`CallState`
+
+Fires when call state changes
+
+`CallAdded`
+
+`ICall`
+
+Fires when a new call is received
+
+`CallRemoved`
+
+`string`
+
+Fires when a call ends (callId)
+
+### Message Events
+
+Event
+
+Type
+
+Description
+
+`MessagesUpdated`
+
+`IMessage[]`
+
+Fires when messages are updated
+
+`IsTyping`
+
+`{ jid: string, isTyping: boolean }`
+
+Fires when typing status changes
+
+### Bubble Events
+
+Event
+
+Type
+
+Description
+
+`BubblesListUpdated`
+
+`IBubble[]`
+
+Fires when the bubble list is updated
+
+`OnBubbleUpdated`
+
+`IBubble`
+
+Fires when a bubble is updated
+
+## Best Practices
+
+1.  **Always Clean Up** Remove event listeners when components unmount to prevent memory leaks.
+    
+2.  **Use TypeScript Types** Always type your event handlers to get better IDE support and catch errors early.
+    
+3.  **Debounce Rapid Events** Some events might fire rapidly (like typing indicators). Consider debouncing the handler if needed.
+    
+4.  **Error Handling** Always handle potential errors in your event handlers.
+    
+5.  **Performance** For events that might cause expensive re-renders, consider using `useCallback` for your handlers.
+    
+
+## Complete Example
+
+```typescript
+import React, { useEffect, useCallback } from 'react';
+import { eventEmitter, EventType, IContact } from 'react-native-rainbow-module';
+
+const MyComponent = () => {
+  const handleContactsUpdate = useCallback((contacts: IContact[]) => {
+    console.log('Contacts updated:', contacts);
+    // Update your component state or perform other actions
+  }, []);
+
+  useEffect(() => {
+    const subscriptions = [
+      eventEmitter.addListener(EventType.ContactsUpdated, handleContactsUpdate),
+      eventEmitter.addListener(EventType.IsNetworkAvailable, (isAvailable) => {
+        console.log('Network status:', isAvailable ? 'Online' : 'Offline');
+      })
+    ];
+
+    return () => {
+      subscriptions.forEach(sub => sub.remove());
+    };
+  }, [handleContactsUpdate]);
+
+  return (
+    // Your component JSX
+  );
+};
+
+export default MyComponent;
+```
+
+For a complete list of all available events and their types, please refer to the [Events API Reference](/docs/sdk/reactnative/api/Events).
+
+### On this page
+
+-   [Overview](/docs/sdk/reactnative/tutorials/ListenForEvents#name-overview-3)
+-   [Table of Contents](/docs/sdk/reactnative/tutorials/ListenForEvents#name-table-of-contents-9)
+-   [Introduction to Event System](/docs/sdk/reactnative/tutorials/ListenForEvents#name-introduction-to-event-system-61)
+-   [Common Event Patterns](/docs/sdk/reactnative/tutorials/ListenForEvents#name-common-event-patterns-68)
+-   [Basic Event Subscription](/docs/sdk/reactnative/tutorials/ListenForEvents#name-basic-event-subscription-71)
+-   [Multiple Event Subscriptions](/docs/sdk/reactnative/tutorials/ListenForEvents#name-multiple-event-subscriptions-75)
+-   [Event Categories](/docs/sdk/reactnative/tutorials/ListenForEvents#name-event-categories-79)
+-   [Connection Events](/docs/sdk/reactnative/tutorials/ListenForEvents#name-connection-events-82)
+-   [Contact Events](/docs/sdk/reactnative/tutorials/ListenForEvents#name-contact-events-125)
+-   [Call Events](/docs/sdk/reactnative/tutorials/ListenForEvents#name-call-events-167)
+-   [Message Events](/docs/sdk/reactnative/tutorials/ListenForEvents#name-message-events-220)
+-   [Bubble Events](/docs/sdk/reactnative/tutorials/ListenForEvents#name-bubble-events-262)
+-   [Best Practices](/docs/sdk/reactnative/tutorials/ListenForEvents#name-best-practices-304)
+-   [Complete Example](/docs/sdk/reactnative/tutorials/ListenForEvents#name-complete-example-334)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

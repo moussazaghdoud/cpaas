@@ -1,0 +1,235 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "rest-docs"
+source: "https://developers.openrainbow.com/doc/rest/Getting_Started"
+lastSynced: "2026-02-20T07:12:28.186Z"
+---
+# Documentation
+
+Getting started
+
+## Getting Started
+
+---
+
+### Preamble
+
+---
+
+Welcome to the Alcatel-Lucent Enterprise Rainbow REST APIs!
+
+The Alcatel-Lucent Enterprise (ALE) Rainbow REST APIs are a set of APIs based on HTTP methods which makes it easy for developers to write applications that connect to Rainbow using any programming langage.
+
+This tutorial will help you starting with the ALE Rainbow REST APIs by explaining what you can do and how to use them.
+
+### Prerequisites
+
+---
+
+There is no real prerequisites on using REST API:
+
+-   You can call REST APIs from any desktop OS like Windows, MacOS and Linux... and from any mobile OS like iOS and Android...
+    
+-   When developing native applications, You can call REST APIs from any kind of programming languages like JavaScript, Java, Swift, C#, Curl, PHP...
+    
+-   When developing Web applications, you can call REST APIs from any kind of browsers like Microsoft Edge, Apple Safari, Google Chrome and Mozilla Firefox...
+    
+
+### Why offering REST APIs ?
+
+---
+
+The Rainbow platform offers REST APIs to make it easier doing administrative tasks and provisionning. These APIs are here to help companies that want to integrate with Rainbow. For these tasks, integrating a SDK can be more complicated that calling some API directly.
+
+So, Rainbow REST APIs allow companies, integrators, IT, Business Partners or administrators to connect their back-end servers to Rainbow (B2B integration) for automating tasks like provisionning accounts, assigning a PBX system to a site, a phone number to a user...
+
+For all other types of integration with Rainbow (ie: end-customer applications), we recommand using a SDK (eg: SDK for Web, Node.JS, iOS or Android).
+
+### REST APIs overview
+
+---
+
+REST APIs cover several aspects of the administration and are grouped by theme.
+
+Here is the list of themes that can be used:
+
+Theme
+
+Descriptions
+
+**Applications APIs**
+
+These APIs authenticate your application and manage the application token
+
+**Companies APIs**
+
+These APIs are dedicated to manage End Customers companies
+
+**Sites APIs**
+
+These APIs allow to create and manage sites
+
+**Organizations APIs**
+
+These APIs are used to create and manage organizations
+
+**Systems APIs**
+
+These APIs allos to create and manage a PABX systems
+
+**Users APIs**
+
+These APIs are dedicated to create and manage users in End Customers companies
+
+**Users Profiles APIs**
+
+These APIs are used to get the profiles associated to users
+
+**Authentication APIs**
+
+These APIs authenticate the user and manage the token
+
+**Voice Provisioning APIs**
+
+These APIs are used to provision Rainbow Voice Communication Platform
+
+**Mass Provisioning API**
+
+This API is used to import users or devices
+
+**Metrics APIs**
+
+Use these APIs to get metrics for your application
+
+**Invoices APIs**
+
+Use these APIs to retrieve invoices
+
+**Offers APIs**
+
+These APIs list the Rainbow offers
+
+**Quotations APIs**
+
+These APIs are dedicated to create quotations
+
+**Subscriptions APIs**
+
+These APIs are used to create and manage subscriptions
+
+Note: Depending the role and right of the user, access to these APIs can be denied (see next paragraph).
+
+### REST APIs level Rights
+
+---
+
+Rainbow defines different roles and rights for a user. Depending on these roles and rights the connecter user has, API are available or not.
+
+This table describes the existing roles and rights.
+
+Role
+
+Right
+
+Description
+
+`user`
+
+\-
+
+This is the default role of users in Rainbow. Each time a user creates an account for using Rainbow, he has the `user` role.  
+  
+Note: Users with `user` role are limited to the REST Authentication API.
+
+`admin`
+
+`site_admin`
+
+A user with `site_admin` right is limited to manage a site of an End Customer company.  
+  
+Note: Users with `site_admin` right are limited to the REST Systems API and Sites API (for doing modifications).
+
+`admin`
+
+`company_admin`
+
+A user with `company_admin` right is limited to manage an End Customer company.  
+  
+Note: Users with `company_admin` have access to all REST API except the REST Quotations API.
+
+`admin`
+
+`organization_admin`
+
+A user with `organization_admin` right can manage all companies under an organization.  
+  
+Note: Users with `organization_admin` have access to all REST API except the REST Quotations API.
+
+An extra right `bp_admin` can be added that allows to subscribe a company to an offer using the REST Subscriptions API and to have access to the REST Quotations API.
+
+### How to access to REST APIs ?
+
+---
+
+REST APIs are available on both developers and official Rainbow platforms:
+
+-   On the Rainbow Developers Sandboxed Platform: To access REST APIs on that platform, you have to prefix the requests by the domain **https://sandbox.openrainbow.com**.
+    
+-   On the Rainbow Official Platform: To access REST APIs on that platform, you have to prefix the requests by the domain **https://openrainbow.com**.
+    
+
+Depending the platform used, restrictions can occur like describing in the next paragraphes.
+
+#### Using REST APIs on the Developers Sandboxed Platform
+
+REST APIs can be used on the Developers Sandboxed Platform with the following restrictions:
+
+-   **Subscriptions API** are not available
+    
+-   **Offers API** are not available
+    
+-   **Quotations API** are not available
+    
+-   **Invoices API** are not available
+    
+
+All others API can be used. Depending on the right of the user who sends the request, limitations can appear. (eg : You can't associate a company to an organization if you're not organization admin).
+
+#### Using REST APIs on the Rainbow Official Platform
+
+REST API can be used on the Rainbow Official Plafform without any restrictions.
+
+Depending on the right of the user who sends the request, limitations can appear. (eg : You can't associate a company to an organization if you're not organization admin).
+
+### Interested in
+
+---
+
+-   [Connecting to Rainbow](/docs/rest/Connecting_to_Rainbow)
+    
+-   [Authentication REST API documentation](/api-reference)
+    
+
+---
+
+*Last updated July, 25th 2022*
+
+### On this page
+
+-   [Getting Started](/docs/rest/Getting_Started#name-getting-started-0)
+-   [Preamble](/docs/rest/Getting_Started#name-preamble-4)
+-   [Prerequisites](/docs/rest/Getting_Started#name-prerequisites-17)
+-   [Why offering REST APIs ?](/docs/rest/Getting_Started#name-why-offering-rest-apis--41)
+-   [REST APIs overview](/docs/rest/Getting_Started#name-rest-apis-overview-54)
+-   [REST APIs level Rights](/docs/rest/Getting_Started#name-rest-apis-level-rights-201)
+-   [How to access to REST APIs ?](/docs/rest/Getting_Started#name-how-to-access-to-rest-apis--275)
+-   [Using REST APIs on the Developers Sandboxed Platform](/docs/rest/Getting_Started#name-using-rest-apis-on-the-developers-sandboxed-platform-297)
+-   [Using REST APIs on the Rainbow Official Platform](/docs/rest/Getting_Started#name-using-rest-apis-on-the-rainbow-official-platform-328)
+-   [Interested in](/docs/rest/Getting_Started#name-interested-in-340)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

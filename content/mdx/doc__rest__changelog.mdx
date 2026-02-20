@@ -1,0 +1,80 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "changelog"
+source: "https://developers.openrainbow.com/doc/rest/changelog"
+lastSynced: "2026-02-20T07:12:28.160Z"
+---
+# Documentation
+
+Changelog
+
+## REST API Changelog
+
+---
+
+### REST API 1.87.0 (April 2021)
+
+---
+
+**3-Release REST API Breaking Changes**
+
+-   None
+
+**API Changes**
+
+-   New **Rainbow Voice Communication Platform Provisioning** API portal. This new portal can be used to manage the Rainbow Voice Communication Platform as creating cloud PBX and subscribers, associating physical devices, assigning external numbers,...
+
+**Other Changes**
+
+-   None
+
+### REST API 1.78.0 (February 2019)
+
+---
+
+**3-Release REST API Breaking Changes**
+
+-   In **Admin** portal, due to Rainbow standard compliancy changes, REST API `POST /api/rainbow/admin/v1.0/companies` and REST API `PUT /api/rainbow/admin/v1.0/companies/{companyId}` have been updated to use standard **ISO Alpha-2** codes for states and provinces provided.
+    
+-   When parameter `country` is set to `USA` or `CAN`, the parameter `state` must be filled - **mandatory** - with a valid Alpha-2 compliant code. See the [Admin APIs documentation](https://hub.openrainbow.com/api/admin/index.html#operation/PostCompanies) for the complete list of alpha-2 codes supported.
+    
+-   REST API `GET /api/rainbow/admin/v1.0/companies`, REST API `GET /api/rainbow/admin/v1.0/companies/{companyId}` and REST API `api/rainbow/admin/v1.0/companies/default` have been updated to return Alpha-2 codes for parameter `state`.
+    
+
+**API Changes**
+
+-   None
+
+**Other Changes**
+
+-   None
+
+### REST API 1.75.0 (January 2019)
+
+---
+
+**3-Release REST API Breaking Changes**
+
+-   None
+
+**API Changes**
+
+-   In **Admin** portal, new optional parameter `visibility` has been added to REST API `POST /api/rainbow/admin/v1.0/companies` in order to set the visibility of the company at creation stage.
+
+**Other Changes**
+
+-   None
+
+### On this page
+
+-   [REST API Changelog](/docs/rest/changelog#name-rest-api-changelog-0)
+-   [REST API 1.87.0 (April 2021)](/docs/rest/changelog#name-rest-api-1.87.0-april-2021-4)
+-   [REST API 1.78.0 (February 2019)](/docs/rest/changelog#name-rest-api-1.78.0-february-2019-38)
+-   [REST API 1.75.0 (January 2019)](/docs/rest/changelog#name-rest-api-1.75.0-january-2019-82)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

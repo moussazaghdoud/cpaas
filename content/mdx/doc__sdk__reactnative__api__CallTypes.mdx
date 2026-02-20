@@ -1,0 +1,470 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/CallTypes"
+lastSynced: "2026-02-20T07:12:33.331Z"
+---
+# Documentation
+
+CallTypes
+
+[ICall](#ICall) : `Interface`
+
+ICall interface
+
+[IP2PCall](#IP2PCall) : `Interface`
+
+IP2PCall interface
+
+[IConference](#IConference) : `Interface`
+
+IConference interface
+
+[IConferenceParticipants](#IConferenceParticipants) : `Interface`
+
+IConferenceParticipants interface
+
+[ISharingConference](#ISharingConference) : `Interface`
+
+ISharingConference interface
+
+[CallState](#CallState) : `Interface`
+
+CallState interface
+
+[CallTypeName](#CallTypeName) : `Interface`
+
+CallTypeName interface
+
+[IWebRtcCallActionProps](#IWebRtcCallActionProps) : `Interface`
+
+IWebRtcCallActionProps interface
+
+[IPbxCallActionProps](#IPbxCallActionProps) : `Interface`
+
+IPbxCallActionProps interface
+
+## ICall : `Interface`
+
+ICall interface
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+callPeer
+
+`[IPeer](/docs/sdk/reactnative/api/IPeer)`
+
+its a `Generic Type` extends from the IPeer
+
+callState
+
+`[CallState](#CallState)`
+
+the call state, it could be either incoming, outgoing, active ...etc
+
+startTime
+
+`number`
+
+the time when the call has been started
+
+callId
+
+`string`
+
+unique id for the call
+
+currentTypeName
+
+`[CallTypeName](#CallTypeName)`
+
+since the ICall is the parent type for call available call \[P2P, Conference, PBX\] this property can help you to define what is the current call type is
+
+## IP2PCall : `Interface`
+
+IP2PCall interface `extends` from [ICall](#ICall) **Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+callPeer
+
+`[IContact](/docs/sdk/reactnative/api/IContact)`
+
+this props is taken from the parent type `ICall`, and in P2P call the callPeer will be a `Contact` peer object
+
+callState
+
+`[CallState](#CallState)`
+
+the call state, it could be either incoming, outgoing, active ...etc
+
+startTime
+
+`number`
+
+the time when the call has been started
+
+callId
+
+`string`
+
+unique id for the call
+
+currentTypeName
+
+`[CallTypeName](#CallTypeName)`
+
+in P2P call this value will be set to `CallTypeName.P2P`
+
+wasInitiatedWithVideo
+
+`boolean`
+
+true ONLY in case the call started with the call peer video
+
+wasInitiatedWithShare
+
+`boolean`
+
+true ONLY in case the call started with the call peer screen sharing video
+
+isLocalVideoEnabled
+
+`boolean`
+
+true when you enable your local video
+
+isRemoteVideoEnabled
+
+`boolean`
+
+true when you other peer enable their remote video
+
+videoRemoteStreamCount
+
+`number`
+
+number of the available remote video, the count = 1 when its either screen sharing or peer remote video, count = 2 when both screen sharing and peer video are available
+
+## IConference : `Interface`
+
+IConference interface `extends` from [ICall](#ICall) **Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+callPeer
+
+`[IBubble](/docs/sdk/reactnative/api/IBubble#IBubble)`
+
+this props is taken from the parent type `ICall`, and in Conference call the callPeer will be a `Bubble` peer object
+
+callState
+
+`[CallState](#CallState)`
+
+the call state, it could be either incoming, outgoing, active ...etc
+
+startTime
+
+`number`
+
+the time when the call has been started
+
+callId
+
+`string`
+
+unique id for the call
+
+currentTypeName
+
+`[CallTypeName](#CallTypeName)`
+
+in Conference call this value will be set to `CallTypeName.Conference`
+
+wasInitiatedWithVideo
+
+`boolean`
+
+true ONLY in case the call started with the call peer video
+
+isLocalVideoEnabled
+
+`boolean`
+
+true when you enable your local video
+
+isOwner
+
+`boolean`
+
+true in case my user start the conference call
+
+isLocked
+
+`boolean`
+
+when the conference is locked, this means no one of the members can join the conference call
+
+hasMyUserJoinedConferenceCall
+
+`boolean`
+
+did my login user join the conference call?
+
+attendees
+
+`[IConferenceParticipants[]](#IConferenceParticipants)`
+
+An array of the contacts that attended the conference
+
+activeSpeaker
+
+`IContact`
+
+\[optional\] the active speaker in the conference call
+
+## CallState : `Enum`
+
+CallState enum
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+ACTIVE
+
+`string`
+
+RINGING\_OUTGOING
+
+`string`
+
+RINGING\_INCOMING
+
+`string`
+
+HELD
+
+`string`
+
+DIALING
+
+`string`
+
+RELEASING
+
+`string`
+
+IDLE
+
+`string`
+
+OFF\_HOOK
+
+`string`
+
+UNKNOWN
+
+`string`
+
+## CallTypeName : `Enum`
+
+CallTypeName enum
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+P2P
+
+`string`
+
+Conference
+
+`string`
+
+PBX
+
+`string`
+
+## IWebRtcCallActionProps : `Interface`
+
+IWebRtcCallActionProps interface
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+iconName
+
+`string`
+
+The icon name according the actionName
+
+actionName
+
+`string`
+
+The WebRtc have two type of call :video or audio so the action will be of type callType (`video`,`audio`)
+
+callType
+
+`'video'`
+
+'audio'
+
+WebRtc call types
+
+## IPbxCallActionProps : `Interface`
+
+IPbxCallActionProps interface
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+enablePbxCalls
+
+`boolean`
+
+Enable the PBX services for your App
+
+## IConferenceParticipants : `Interface`
+
+IConferenceParticipants interface, which means the bubble member who had joined the Conference Call.
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+participantId
+
+`string`
+
+The participant unique Id
+
+contact
+
+`[contact](/docs/sdk/reactnative/api/IContact)`
+
+The Contacts object associated with conference participant
+
+role
+
+`'Moderator'`
+
+'Member'
+
+the role for the participant in the conference
+
+isMuted
+
+`boolean`
+
+is this participant is muted
+
+isTalking
+
+`boolean`
+
+is this participant is now talking
+
+state
+
+`'Ringing'`
+
+'Connected'
+
+'Disconnected'
+
+The participant call state
+
+talkingTime
+
+`number`
+
+the sum of the taking time in the conference
+
+isVideoSubscribed
+
+`boolean`
+
+is this participant publishing a video
+
+## ISharingConference : `Interface`
+
+ISharingConference interface, this a response type for this event `EventType.GetConferenceScreenSharingUpdate`, we use it to know when the Screen Sharing enabled/disabled.
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+isSharingEnabled
+
+`boolean`
+
+a Flag set to true when the Conference Screen Sharing enabled
+
+sharingParticipant
+
+`[IConferenceParticipants](#IConferenceParticipants)`
+
+The participant object who's sharing his screen
+
+### On this page
+
+-   [ICall : Interface](/docs/sdk/reactnative/api/CallTypes#name-icall-:-interface-5)
+-   [IP2PCall : Interface](/docs/sdk/reactnative/api/CallTypes#name-ip2pcall-:-interface-86)
+-   [IConference : Interface](/docs/sdk/reactnative/api/CallTypes#name-iconference-:-interface-219)
+-   [CallState : Enum](/docs/sdk/reactnative/api/CallTypes#name-callstate-:-enum-377)
+-   [CallTypeName : Enum](/docs/sdk/reactnative/api/CallTypes#name-calltypename-:-enum-478)
+-   [IWebRtcCallActionProps : Interface](/docs/sdk/reactnative/api/CallTypes#name-iwebrtccallactionprops-:-interface-531)
+-   [IPbxCallActionProps : Interface](/docs/sdk/reactnative/api/CallTypes#name-ipbxcallactionprops-:-interface-596)
+-   [IConferenceParticipants : Interface](/docs/sdk/reactnative/api/CallTypes#name-iconferenceparticipants-:-interface-636)
+-   [ISharingConference : Interface](/docs/sdk/reactnative/api/CallTypes#name-isharingconference-:-interface-762)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

@@ -1,0 +1,389 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Make_an_IM_conversation"
+lastSynced: "2026-02-20T07:12:28.506Z"
+---
+# Documentation
+
+Make an IM conversation
+
+LTS release 2.61.0Published on 202-04-06
+
+## Make an IM conversation
+
+---
+
+This guide explains how to retrieve messages from a conversation (P2P or Bubble) and how to send new ones.
+
+### Preamble
+
+---
+
+This is the same mechanism for Peer to Peer messages and messages bubbles.
+
+### Open a conversation
+
+---
+
+To open a conversation from a contact or a room, you can call one of these methods.
+
+If the conversation is found locally, the method will just return it in the listener. Otherwise, it will be created before.
+
+#### 1\. From a contact
+
+---
+
+This method only needs the jabber identifier of your contact.
+
+```java
+IRainbowContact contact; // Your contact
+
+RainbowSdk.instance().im().getConversationFromContact(contact.getJid());
+```
+
+#### 2\. From a room
+
+---
+
+This method needs the Room object.
+
+```java
+Room room; // Your room object
+
+RainbowSdk.instance().im().getConversationFromRoom(room, new IRainbowGetConversationListener() {
+    @Override
+    public void onGetConversationSuccess(IRainbowConversation conversation) {
+        // Do what you want with the conversation
+    }
+
+    @Override
+    public void onGetConversationError() {
+        // Manage the error
+    }
+});
+```
+
+### Delete a conversation
+
+---
+
+To delete a conversation, you can call the method `deleteConversation` as following:
+
+```java
+RainbowSdk.instance().im().deleteConversation(your_conversation, new IConversationProxy.IDeleteConversationListener() {
+    @Override
+    public void onDeletionSuccess() {
+
+    }
+
+    @Override
+    public void onDeletionError() {
+
+    }
+});
+```
+
+NB: The conversation is only deleted from the active conversations list (the messages are not deleted).
+
+### Send a conversation by email
+
+---
+
+To send all messages from a conversation to the user login email, you can call the method `sendConversationByEmail` as following:
+
+```java
+RainbowSdk.instance().im().sendConversationByEmail(your_conversation, new IConversationProxy.ISendConversationByEmailListener() {
+        @Override
+        public void onSendConversationByEmailSuccess() {
+
+        }
+
+        @Override
+        public void onSendConversationByEmailFailed(RainbowServiceException exception) {
+
+        }
+    });
+```
+
+### Get the messages and listen to updates
+
+---
+
+Getting messages from a conversation is done in three steps :
+
+-   First, call the API `getMessagesFromConversation(IRainbowConversation conversation)`,
+    
+-   Then listen to the messages list changes. See more in Guide [Using ArrayItemList](/docs/sdk/android).
+    
+-   Finally, call the method `getMessages()` on the IRainbowConversation object.
+    
+
+You can do it by creating an `IItemListChangeListener` in the class and then register the listener.
+
+Here is a complete sample for getting messages from conversations:
+
+```java
+public class ConversationFragment extends Fragment {
+
+    // Creating the listener
+    private IItemListChangeListener m_changeListener = new IItemListChangeListener() {
+        @Override
+        public void dataChanged() {
+            // Do something on the UI thread
+            ArrayItemList<IMMessage> messages = m_conversation.getMessages();
+        }
+    };
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Note that if the second parameter is ommitted, the method is returning the last 50 messages
+        RainbowSdk.instance().im().getMessagesFromConversation(m_conversation, NB_MESSAGES_TO_RETRIEVE);
+        // Here we register the listener
+        m_conversation.getMessages().registerChangeListener(m_changeListener);
+        return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        // Don't forget to unregister to avoid memory leaks
+        m_conversation.getMessages().unregisterChangeListener(m_changeListener);
+        super.onDestroyView();
+    }
+}
+```
+
+### Get more messages from a conversation
+
+---
+
+All messages are not retrieved in one shot for performance reason. You need to retrieve them manually by calling the API `getMoreMessagesFromConversation()`.
+
+The GUI is updated by the `IItemListChangeListener` above
+
+```java
+RainbowSdk.instance().im().getMoreMessagesFromConversation(m_conversation, NB_MESSAGES_TO_RETRIEVE);
+```
+
+### Send a message to a conversation
+
+---
+
+To send a message to a conversation, you just have to call the API `sendMessageToConversation()` with the `IRainbowConversation`. The GUI is updated by the `IItemListChangeListener` above.
+
+```java
+RainbowSdk.instance().im().sendMessageToConversation(m_conversation, "your message");
+```
+
+**Be careful, you must send to the server that you read messages.**
+
+### Delivery state available for messages
+
+State
+
+Description
+
+SENT
+
+the message is sent
+
+SENT\_SERVER\_RECEIVED
+
+the message sent is received by the server
+
+SENT\_CLIENT\_RECEIVED
+
+the message sent is received by the other client (but unread)
+
+SENT\_CLIENT\_READ
+
+the message sent is read by the other client
+
+RECEIVED
+
+the message received by me is correctly received (but unread)
+
+READ
+
+the message received by me is correctly read
+
+UNKNOWN
+
+the message is in a unknown state
+
+For example when an IM is read, you may want to update GUI :
+
+```java
+IMMessage message // Your message
+
+if (message.deliveryState == DeliveryState.READ) {
+    // Update your GUI
+}
+```
+
+### Mark a message as read
+
+---
+
+When receiving a message, the SDK for Android automatically send a receipt of type `received` to your recipient.
+
+On your own, you need to send a receipt of type `read` when the message received has been read.
+
+To send a receipt of type `read`, you need to call the API `markMessageFromConversationAsRead()` with the `IRainbowConversation` and `IMMessage` as method parameters like in the following
+
+```java
+IRainbowConversation conversation; // Your conversation object
+IMMessage message; // Your message object
+
+RainbowSdk.instance().im().markMessageFromConversationAsRead(conversation, message);
+```
+
+### Send the "Is typing" status
+
+---
+
+To send the isTyping status, you must use `sendIsTyping` method which takes two parameters: the conversation and a boolean. If the boolean is equal to true, you will be seen as "is typing / composing".
+
+```java
+// The content of the TextView is not empty (you are typing)
+RainbowSdk.instance().im().sendIsTyping(conversation, true);
+
+// The content of the TextView is empty (you are not typing)
+RainbowSdk.instance().im().sendIsTyping(conversation, false);
+```
+
+### Support of additional contents
+
+When sending a message to a recipient/bubble, the SDK is able to add additional content. An additional content is an `object` that contains a type and a content.
+
+```java
+AdditionalContent addContent = new AdditionalContent("Content", "Type");
+```
+
+> Rainbow applications only support the `text/markodwn` type  
+> You have to provide your own support of content type in your end-user application
+
+#### Sending additional contents
+
+Rainbow SDK provides two methods to send additional contents :
+
+```java
+IRainbowConversation conversation; // Your conversation object
+String message; // Your message to send
+String additionalType = "text/markdown" // Additional type could be everything you want
+String additionalContent = "#Here is a title" // Additional content depend on your type
+
+// First method allow to send a signle additional content.
+RainbowSdk.instance().im().sendMessageToConversation(conversation, message, additionalType, additionalContent)
+
+// Create a list of additional contents
+ArrayList<AdditionalContent> contents = new ArrayList();
+contents.add(new AdditionalContent(additionalContent, additionalType));
+contents.add(new AdditionalContent("<h1>Here is a title</h1>", "text/html"))
+
+// Second method allow to send multiple additional contents.
+RainbowSdk.instance().im().sendMessageToConversation(conversation, message, contents)
+```
+
+#### Retrieve additional contents
+
+```java
+IMMessage message; // Your message object
+
+if (message.hasAdditionalContents()) {
+    ArrayList<AdditionalContent> contents = message.getAdditionalContents();
+}
+```
+
+### To go further
+
+---
+
+Even if you should do the GUI update with the `IItemListChangeListener`, there is a `IRainbowImListener` for specific events :
+
+-   You received a new IM,
+    
+-   You sent an IM,
+    
+-   The typing state changes,
+    
+-   The IM list has changed,
+    
+-   Or you received the new IM after having called `getMoreMessagesFromConversation`
+    
+
+For example , you may want to create notification when an IM is received, you can implement the `IRainbowImListener`:
+
+```java
+public class ImNotificationMgr implements IRainbowImListener {
+
+    public ImNotificationMgr() {
+        RainbowSdk.instance().im().registerListener(this);
+        // Do not forget to unregister listener later
+        // RainbowSdk.instance().im().unregisterListener(this);
+    }
+
+    private void displayNotificationForContact(IRainbowContact contact, IMMessage) {
+        // Create and display the notification for this contact
+    }
+
+    @Override
+    public void onImReceived(String conversationId, IMMessage message) {
+        IRainbowConversation conversation = RainbowSdk.instance().im().getConversationFromId(conversationId);
+        if (conversation != null) {
+            displayNotificationForContact(conversation.getContact(), message);
+        }
+    }
+
+    @Override
+    public void onImSent(String conversation Id, IMMessage message) {
+        // Triggered when sending an IM
+    }
+
+    @Override
+    public void isTypingState(IRainbowContact other, boolean isTyping, String roomId) {
+        // Listen to typing state sent by other contact
+    }
+
+    @Override
+    public void onMessagesListUpdated(int status, String conversationId, List<IMMessage> messages) {
+        // Triggered after calling getMessagesFromConversation
+    }
+
+    @Override
+    public void onMoreMessagesListUpdated(String conversationId, List<IMMessage> messages) {
+        // Triggered when more messages has been retrieved
+    }
+}
+```
+
+---
+
+*Last updated December, 16th 2019*
+
+### On this page
+
+-   [Make an IM conversation](/docs/sdk/android#name-make-an-im-conversation-0)
+-   [Preamble](/docs/sdk/android#name-preamble-7)
+-   [Open a conversation](/docs/sdk/android#name-open-a-conversation-14)
+-   [1\. From a contact](/docs/sdk/android#name-1.-from-a-contact-24)
+-   [2\. From a room](/docs/sdk/android#name-2.-from-a-room-32)
+-   [Delete a conversation](/docs/sdk/android#name-delete-a-conversation-40)
+-   [Send a conversation by email](/docs/sdk/android#name-send-a-conversation-by-email-51)
+-   [Get the messages and listen to updates](/docs/sdk/android#name-get-the-messages-and-listen-to-updates-59)
+-   [Get more messages from a conversation](/docs/sdk/android#name-get-more-messages-from-a-conversation-90)
+-   [Send a message to a conversation](/docs/sdk/android#name-send-a-message-to-a-conversation-101)
+-   [Delivery state available for messages](/docs/sdk/android#name-delivery-state-available-for-messages-112)
+-   [Mark a message as read](/docs/sdk/android#name-mark-a-message-as-read-189)
+-   [Send the "Is typing" status](/docs/sdk/android#name-send-the-is-typing-status-203)
+-   [Support of additional contents](/docs/sdk/android#name-support-of-additional-contents-211)
+-   [Sending additional contents](/docs/sdk/android#name-sending-additional-contents-223)
+-   [Retrieve additional contents](/docs/sdk/android#name-retrieve-additional-contents-230)
+-   [To go further](/docs/sdk/android#name-to-go-further-234)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

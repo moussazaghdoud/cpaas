@@ -1,0 +1,213 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/IUser"
+lastSynced: "2026-02-20T07:12:33.487Z"
+---
+# Documentation
+
+IUser
+
+## Typedefs
+
+[IUser](#IUser) : `Interface`
+
+Connected User interface
+
+[IUpdateUserQuery](#IUpdateUserQuery) : `Interface`
+
+IUpdateUserQuery interface
+
+## IUser : `Interface`
+
+IUser interface, it's a type declared for the current login user.
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+contact
+
+`[IContact](/docs/sdk/reactnative/api/IContact)`
+
+The contact data object
+
+nomadic
+
+`boolean`
+
+is the current user have nomadic feature(Telephony feature)?
+
+nomadicNumber
+
+`string`
+
+\[optional\] Nomadic phone number for the connected user.
+
+licenses
+
+`string[]`
+
+the license array for the connected user, iit could be: `Enterprise`, `Business`,`Essential`
+
+language
+
+`string`
+
+the current language foe the connected user
+
+isAllowedToChangePresence
+
+`boolean`
+
+Define if a user has the right to changes his Presence manually or only use automatic states.
+
+isAllowedToModifyProfileInfo
+
+`boolean`
+
+Define if a user has the right to modify the whole of his profile and not only (title, firstName, lastName)
+
+customData
+
+`string`
+
+\[optional\] additional data added to the connected user
+
+## IUpdateUserQuery : `Interface`
+
+IUpdateUserQuery interface,contains all the user info that you can request to update them.
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+firstName
+
+`string`
+
+contact first name
+
+lastName
+
+`string`
+
+contact last name
+
+loginEmail
+
+`string`
+
+logged in user email
+
+nickName
+
+`string`
+
+contact nick name
+
+title
+
+`string`
+
+Honorifics title: Mrs, Mr, Sir,Lady, Dr...
+
+jobTitle
+
+`string`
+
+contact job title
+
+officePhone
+
+`string`
+
+contact first office phone number
+
+personalMobilePhone
+
+`string`
+
+contact first personal phone number
+
+country
+
+`string`
+
+contact country
+
+language
+
+`string`
+
+contact language
+
+timeZone
+
+`string`
+
+timezone format. Ex: Europe/Paris, Europe/Berlin, Europe/London
+
+customData
+
+`{}`
+
+json object contains the account custom data
+
+## IServicePlane : `enum`
+
+**Kind**: global enum **Access**: public **Read only**: true **Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+Enterprise
+
+`string`
+
+`Enterprise`
+
+Enterprise type account
+
+Business
+
+`string`
+
+`Business`
+
+Business type account
+
+Essential
+
+`string`
+
+`Essential`
+
+Essential type account
+
+### On this page
+
+-   [Typedefs](/docs/sdk/reactnative/api/IUser#name-typedefs-0)
+-   [IUser : Interface](/docs/sdk/reactnative/api/IUser#name-iuser-:-interface-8)
+-   [IUpdateUserQuery : Interface](/docs/sdk/reactnative/api/IUser#name-iupdateuserquery-:-interface-125)
+-   [IServicePlane : enum](/docs/sdk/reactnative/api/IUser#name-iserviceplane-:-enum-286)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

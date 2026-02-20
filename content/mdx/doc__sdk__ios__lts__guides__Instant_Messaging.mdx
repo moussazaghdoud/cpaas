@@ -1,0 +1,579 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/ios/lts/guides/Instant_Messaging"
+lastSynced: "2026-02-20T07:12:29.208Z"
+---
+# Documentation
+
+Chatting with Rainbow users
+
+LTS release 2.13.0Published on 2025-03-07
+
+## Instant Messaging
+
+---
+
+Instant messaging provide one to one and room textual chat capabilities. It could also deliver images, voice messages, geographic maps and allows to share any files.
+
+The sample application [Rainbow-iOS-SDK-Sample-Swift](https://github.com/Rainbow-CPaaS/Rainbow-iOS-SDK-Samples/tree/master/Rainbow-iOS-SDK-Sample-Swift) provide a reference code covering instant messaging using the Rainbow SDK.
+
+### Retrieving Conversations
+
+Retrieving all conversations concerning the connected user is done as follow:
+
+-   [swift](#codegroupTab-hashTag0)
+
+```swift
+let conversations = ServicesManager.sharedInstance().conversationsManagerService.conversations
+```
+
+This will return a list of all conversations you have participated in.
+
+To listen for any changes in conversations you can use the `kConversationsManagerDidUpdateConversation` notification:
+
+-   [swift](#codegroupTab-hashTag1)
+
+```swift
+NotificationCenter.default.addObserver(self, selector: #selector(didUpdateConversation(_:)), name: NSNotification.Name(rawValue:kConversationsManagerDidUpdateConversation), object: nil)
+```
+
+-   [swift](#codegroupTab-hashTag2)
+
+```swift
+@objc func didUpdateConversation(_ notification: Notification) {
+    if let updatedConversation = notification.object as? Conversation {
+        // do some thing with this updatedConversation 
+            ...
+    }
+}
+```
+
+#### Favorite Conversations
+
+Conversations with other users, bots or in rooms could be marked as favorites so the UI part of the application could highlight them and give easy access to them. The favorites are handled by the `FavoritesManager` class in the SDK.
+
+### Listening and responding to incoming messages
+
+#### Listening to incoming messages
+
+Listening to instant messages coming from other users is very easy. You just have to use the `kConversationsManagerDidReceiveNewMessageForConversation` event:
+
+-   [swift](#codegroupTab-hashTag3)
+
+```swift
+NotificationCenter.default.addObserver(self, selector: #selector(didReceiveNewMessage(_:)), name: NSNotification.Name(rawValue:kConversationsManagerDidReceiveNewMessageForConversation), object: nil)
+```
+
+-   [swift](#codegroupTab-hashTag4)
+
+```swift
+@objc func didReceiveNewMessage(_ notification: Notification) {
+    if let conversation = notification.object as? Conversation {
+        //do something with **recivedConversation** object
+        ...
+    }
+}
+```
+
+#### Sending a new message
+
+You can send a new message to a conversation as follow,
+
+-   [swift](#codegroupTab-hashTag5)
+
+```swift
+ServicesManager.sharedInstance().conversationsManagerService.sendTextMessage("Message to send", conversation: conversation) { 
+    message, error in
+        // do something with **message**
+        ...
+ }
+```
+
+#### Sending a new message with a priority
+
+You may use a `MessagePriority` when sending a message. Except for the `MessagePriority.high` priority which need the [Critical Alerts Entitlement](https://developer.apple.com/contact/request/notifications-critical-alerts-entitlement/) from Apple, using the `.default`, `.low` or `.middle` priority doesn't change the delivery of the message, this is the client app responsability to emphasis higher priority messages using the `priority` property of the `Message` class.
+
+-   [swift](#codegroupTab-hashTag23)
+
+```swift
+let conversation : Conversation = ...
+let priority : MessagePriority = .middle // .default | .low | .middle | .high
+ServicesManager.sharedInstance().conversationsManagerService.sendTextMessage("Urgent message", files: nil, mentions: nil, priority: .middle, repliedMessage: nil, conversation: conversation) {
+    message, error in
+       // do something with **message**
+       ...        
+}
+```
+
+### Mark new messages as read
+
+#### Mark all messages as read
+
+If you want to mark all messages as read for a conversation, you must use `markAllMessagesAsReadForConversation` method as follow:
+
+-   [swift](#codegroupTab-hashTag6)
+
+```swift
+ServicesManager.sharedInstance().conversationsManagerService.markAllMessagesAsRead(for: conversation)
+```
+
+Notes:
+
+```
+- The request is delayed and performed when the initial fetch of the conversation is done (to initialize the counter)
+
+- The request is not sent if the number of unread messages is equal to 0
+```
+
+#### Mark all new received message as read in the open conversation
+
+For the currently displayed conversation in the application, you must set the `automaticallySendMarkAsReadNewMessage` parameter for the `Conversation` object to `true`.
+
+For example, you may set it to `true` in the `viewWillAppear` method and `false` in the `viewWillDisappear` method.
+
+### Listening to receipts
+
+Receipts allow to know if the message has been successfully delivered to your recipient. Here are the possible delivery states:
+
+message State
+
+value
+
+Meaning
+
+**`MessageDeliveryState.sent`**
+
+0
+
+The message state is **sent** to server
+
+**`MessageDeliveryState.delivered`**
+
+1
+
+The message state is **Delevered**
+
+**`MessageDeliveryState.received`**
+
+2
+
+The message state is **Received**
+
+**`MessageDeliveryState.read`**
+
+3
+
+The message state is **Read**
+
+**`MessageDeliveryState.failed`**
+
+4
+
+The message state is **Failed** to send
+
+You Can check paramerter **state** for each message as follow,
+
+-   [swift](#codegroupTab-hashTag7)
+
+```swift
+let message = ... // message to check state
+NSLog("\(message.state)")
+```
+
+### Getting the conversation history
+
+You can retrieve the message history of a conversation with the help of a `MessagesBrowser` instance from the `ConversationsManagerService`:
+
+-   [swift](#codegroupTab-hashTag8)
+
+```swift
+// pageSize The maximum number of retrieved messages, for example 20.
+// preload retrieve imediately from the local cache 
+
+let messagesBrowser = ServicesManager.sharedInstance().conversationsManagerService.messagesBrowser(for: conversation, withPageSize:20, preloadMessages: true)
+                                
+messagesBrowser?.delegate = self
+```
+
+You'll, then, have to implement the `CKItemsBrowserDelegate` protocol:
+
+-   [swift](#codegroupTab-hashTag9)
+
+```swift
+#pragma mark - browsing window / cache updates.
+
+/**
+ Invoked when some items that are part of the browsing cache have been added (invoked in the main thread context).
+ @param browser The browser informing the delegate of this event. 
+ @param newItems The added items as an array of `CKBrowsableItem` instances.
+ @param indexes A set of indexes describing where the items have been added in the browsing cache.
+ */
+func itemsBrowser(_ browser: CKItemsBrowser!, didAddCacheItems newItems: [Any]!, at indexes: IndexSet!) {
+    NSLog("Add new items")
+    for item in newItems {
+        if let newMessage = item as? Message {
+            // Insert newMessage in the conversation
+            ...
+        }
+    }
+}
+
+/**
+ Invoked when some items that are part of the browsing cache have been deleted (invoked in the main thread context).
+ @param browser The browser informing the delegate of this event. 
+ @param removedItems The removed items as an array of `CKBrowsableItem` instances.
+ @param indexes A set of indexes describing where the items have been removed from the browsing cache.
+ */
+func itemsBrowser(_ browser: CKItemsBrowser!, didRemoveCacheItems removedItems: [Any]!, at indexes: IndexSet!) {
+    NSLog("Remove items")
+    for item in removedItems {
+        if let removedMessage = item as? Message {
+            // Remove removedMessage from the conversation
+            ...
+        }
+    }
+}
+ 
+/**
+ Invoked when items that are part of the browsing cache have been updated: some of their attributes have been changed.
+ @param browser The browser informing the delegate of this event. 
+ @param changedItems Items from the browsing cache that have been updated.
+ @param indexes A set of indexes describing where the items have been updated from the browsing cache.
+ */   
+func itemsBrowser(_ browser: CKItemsBrowser!, didUpdateCacheItems changedItems: [Any]!, at indexes: IndexSet!) {
+    NSLog("Update items")
+    for item in changedItems {
+        if let changedItem = item as? Message {
+            // Update changedItem in the conversation
+            ...
+        }
+    }   
+}
+
+/**
+ Invoked when some items have been reorder in the browsing cache. This happens when the date of those browsable items have been 
+ changed, so in order to keep the cache properly ordered, the browser has changed their indexes.
+ @param browser The browser informing the delegate of this event. 
+ @param oldIndexes Moved items old indexes.
+ @param newIndexes Moved itmes new indexes.
+ */
+func itemsBrowser(_ browser: CKItemsBrowser!, didReorderCacheItemsAtIndexes oldIndexes: [Any]!, toIndexes newIndexes: [Any]!) {
+    NSLog("Reorder items")
+}
+
+#pragma mark - added / removed / updated items events (optional)
+
+/**
+ Invoked when new items have been received (invoked in the main thread context).
+ NB: when some new items are created on the fly, two selectors are invoked: this one, but also  
+ `itemsBrowser:didAddCacheItems:atIndexes:` that describes how the change impacted the browsing cache. 
+ @param browser The browser informing the delegate of this event.
+ @param addedItems The deleted items as an array of `CKBrowsableItem` instances.
+ */
+func itemsBrowser(_ browser: CKItemsBrowser!, didReceiveItemsAddedEvent addedItems: [Any]!) {
+    NSLog("Receive items")
+}
+    
+/**
+ Invoked when some items have been deleted (invoked in the main thread context).
+ NB: when some items are deleted on the fly, two selectors are invoked: this one, but also  
+ `itemsBrowser:didRemoveCacheItems:atIndexes:` that describes how the change impacted the browsing cache. 
+ @param browser The browser informing the delegate of this event.
+ @param deletedItems The deleted items as an array of `CKBrowsableItem` instances.
+ @see itemsBrowser:didRemoveCacheItems:atIndexes:
+ */
+func itemsBrowser(_ browser: CKItemsBrowser!, didReceiveItemsDeletedEvent deletedItems: [Any]!) {
+    NSLog("Delete items")        
+}
+    
+/**
+ Invoked when ALL items have been deleted (invoked in the main thread context).
+ NB: when ALL items are deleted, two selectors are invoked: this one, but also  
+ `itemsBrowser:didRemoveCacheItems:atIndexes:` that describes how the change impacted the browsing cache. 
+ @param browser The browser informing the delegate of this event.
+ @see itemsBrowser:didRemoveCacheItems:atIndexes: 
+ */    
+ func itemsBrowserDidReceivedAllItemsDeletedEvent(_ browser: CKItemsBrowser!) {   
+    NSLog("Delete all items")        
+}
+```
+
+### Dealing with attachments
+
+#### Sending a file in attachment
+
+Along the text message itself a file could be attached to a message and uploaded to the cloud.
+
+Here follow a sample code that send a message with a UIImage as a attached jpeg file:
+
+-   [objectivec](#codegroupTab-hashTag10)
+
+```objectivec
+File *attachmentFileToSend = nil;
+UIImage *image = ...;
+NSString *fileName = @"image.jpg";
+NSData *dataToSend = UIImageJPEGRepresentation(image, 0.7);
+NSURL *cacheURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@",
+    [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject], fileName]];
+
+attachmentFileToSend = [[ServicesManager sharedInstance].fileSharingService createTemporaryFileWithFileName:fileName andData:dataToSend andURL:cacheURL];
+
+[[ServicesManager sharedInstance].conversationsManagerService sendTextMessage:@"Message to send" fileAttachment:attachmentFileToSend to:conversation completionHandler:^(Message *message, NSError *error) {
+    // do something with **message**
+} attachmentUploadProgressHandler:^(Message *message, double totalBytesSent, double totalBytesExpectedToSend) {
+    NSLog(@"total byte send  : %f",totalBytesSent);
+    NSLog(@"total byte expected to send  : %f",totalBytesExpectedToSend);
+}];
+```
+
+#### Attachments
+
+Optionally a file like a image, a video,... could be attached to messages. The file is uploaded in the cloud and a preview image is computed on the server if it is relevant. The thumbnail image might be retrieved like this,
+
+-   [objectivec](#codegroupTab-hashTag11)
+
+```objectivec
+if(message.attachment && message.attachment.thumbnailData){
+     UIImage image = [UIImage imageWithData:message.attachment.thumbnailData];
+}
+```
+
+The file itself may or may not be cached locally, if it is not already downloaded from the cloud, this could be done like this,
+
+-   [objectivec](#codegroupTab-hashTag12)
+
+```objectivec
+File *file = message.attachment;
+    if(!file.data){
+        [[ServicesManager sharedInstance].fileSharingService downloadDataForFile:file withCompletionHandler:^(File *aFile, NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if(!error){
+                ...
+                } else {
+                ...
+                }
+            }
+        }];
+    }
+```
+
+The file type could be checked using `file.type` with value in
+
+-   [objectivec](#codegroupTab-hashTag13)
+
+```objectivec
+typedef NS_ENUM(NSInteger, FileType) {
+    FileTypeImage,
+    FileTypePDF,
+    FileTypeDoc,
+    FileTypePPT,
+    FileTypeXLS,
+    FileTypeAudio,
+    FileTypeVideo,
+    FileTypeOther
+};
+```
+
+##### Displaying server generated thumbnail images
+
+When a image file is uploaded the server automatically generate a thumbnail image for it and when it is ready send a `kFileSharingServiceDidUpdateFile` notification with the relevant `File` in the notification object. You may then use the `File` object's `thumbnailData` property to display the thumbnail image.
+
+-   [objectivec](#codegroupTab-hashTag14)
+
+```objectivec
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shouldUpdateAttachment:) name:kFileSharingServiceDidUpdateFile object:nil];
+
+...
+
+-(void) shouldUpdateAttachment:(NSNotification  *notification {
+    // The updated file is in the notification object,
+    File *file = notification.object;
+    NSLog(@"[shouldUpdateAttachment] file=%@ mimeType=%@ URL=%@ hasThumbnailData=%@", file.fileName, file.mimeType, file.url, file.thumbnailData!=nil?@"yes":@"no");
+...
+}
+```
+
+### Sending other kind of messages
+
+#### Sending user locations
+
+Here is a sample code that sends the user location as a message in a conversation:
+
+-   [swift](#codegroupTab-hashTag15)
+
+```swift
+// location coordinates
+let latitude : Float = 48.8592002
+let longitude : Float = 2.293932
+
+if let location = Location(latitude: latitude, andLongitude: longitude) {
+        ServicesManager.sharedInstance().conversationsManagerService.sendLocationMessage(location, priority: .default, conversation:conversation) {
+    message, error in
+        // do something with **message**
+        ...
+    }
+}
+```
+
+#### Sending a voice message
+
+Here is a sample code that sends an audio file as a voice message in a conversation:
+
+-   [swift](#codegroupTab-hashTag16)
+
+```swift
+let audioFile = ...
+
+ServicesManager.sharedInstance().conversationsManagerService.sendVoiceMessage(audioFile, priority: .default, conversation:conversation) {
+    message, error in
+        // do something with **message**
+        ...
+}
+```
+
+### Alternate body content
+
+Aside the text body, a `Message` could carry one or more additional contents in the `alternateBody` array property. Each alternate body content have a MIME type, like, for example `text/markdown` and a textual content defined in `MessageContent`.
+
+`Message` also provide a helper method `bodyInMarkdown` which look inside the `alternateBody` array of the message and return the body for the `text/markdown` MIME type if any or `nil`
+
+You should use a `sendTextMessage` variant to send a message with an alternate content like in the following code:
+
+-   [swift](#codegroupTab-hashTag17)
+
+```swift
+let message = "A message"
+let alternativeContent = "**A markdown message**"
+let alternativeContentMimeType = "text/markdown"
+
+ServicesManager.sharedInstance().conversationsManagerService.sendTextMessage(message, alternativeContentMessage: alternativeContent, alternativeContentType: alternativeContentMimeType, priority: .default, conversation: conversation){
+    message,error in
+    // do something with **message**
+}
+```
+
+### Last Message Correction
+
+The Rainbow SDK since release 1.54.x support the IM message correction as described in [XEP-0308: Last Message Correction](https://xmpp.org/extensions/xep-0308.html). This provide the ability to the users to correct or suppress the last message sent to a IM conversation. The correction is done sending a new message with the corrected message or none for suppression, using:
+
+-   [swift](#codegroupTab-hashTag18)
+
+```swift
+let messageToModify = ...
+let replacementText = "New message"
+ServicesManager.sharedInstance().conversationsManagerService.modifyOrDelete(messageToModify, replacementText: replacementText, to: conversation)
+```
+
+After sending the correction message, the original message is not modified or suppressed, both messages are still sent when browsing the conversation, it is the responsability of the UI part of the application using the Rainbow SDK to deal with the correction/removing. The correction message has new attributes set to reference the corrected one:
+
+-   [swift](#codegroupTab-hashTag19)
+
+```swift
+/**
+ * The message ID of the replaced message if this message is a replacement message
+ * for a previously sent message in the XEP-0308 sense
+ */
+let replacedMessageID: String? 
+
+/**
+ * The date of the replacement message if this one has been edited
+ * See XEP-0308 for more details
+ */
+let replacedDate: NSDate?
+```
+
+### Reply to a message
+
+To send a reply to a message in a conversation a variant of the `sendTextMessage` method with the `repliedMessage` parameter should be used:
+
+-   [swift](#codegroupTab-hashTag20)
+
+```swift
+let conversation : Conversation = ...
+let repliedMessage : Message = ...
+ServicesManager.sharedInstance().conversationsManagerService.sendTextMessage("Reply to message", files: nil, mentions: nil, priority: .default, repliedMessage: repliedMessage, conversation: conversation) { 
+    message, error in 
+    ...            
+}
+```
+
+The following propperties of the reply message are set with the relevant values:
+
+-   [swift](#codegroupTab-hashTag21)
+
+```swift
+/**
+ * Message id of the original message this message is a reply of
+ * `nil` if this message is not a reply
+ */
+let answeredMessageId : String?
+
+/**
+ * Message timestamp of the original message this message is a reply of
+ * `nil` if this message is not a reply
+ */
+let answeredMessageTimestamp : String?
+
+/**
+ * Original Message this message is a reply of
+ * `nil` if this message is not a reply or not already found in history
+ */
+let answeredMessage : Message?
+```
+
+### Forward a message to other conversations
+
+A message from a conversation may be forwarded with a optional comment to other conversations with the following method:
+
+-   [swift](#codegroupTab-hashTag22)
+
+```swift
+let messageToForward : Message = ...
+let comment = "Forwarded message"
+let otherConversations: [Conversation] = ...
+ServicesManager.sharedInstance().conversationsManagerService.forwardMessage(messageToForward, withComment: comment, to: otherConversations)
+```
+
+The forwarded message has the boolean property `isForwarded` set to `true`
+
+### Auto archive rooms
+
+Rooms that had no activity for a long amount of time (60 days) are suspended by the XMPP server to free ressources. When a room is suspended the SDK don't send presence stanza to join it at connexion time and it's not possible to send IM to it before it has been reactivated. The SDK handle the underlaying mecanism to automatically awake a suspended room when a application try to send it a IM. However, the application could listen to the notifications about this mecanism and take some mesures to update the UI if needed.
+
+When the server suspend a room, a `kRoomsServiceDidSuspendRoom` notification is sent by the `RoomsService` and the `isActive` flag of the room is set to `false`.
+
+In the other way, when the server reactivate a suspended room, the `RoomsService` send a `kRoomsServiceDidResumeRoom` notification and the `isActive` flag of the room is set to `true`.
+
+### On this page
+
+-   [Instant Messaging](/docs/sdk/ios#name-instant-messaging-0)
+-   [Retrieving Conversations](/docs/sdk/ios#name-retrieving-conversations-10)
+-   [Favorite Conversations](/docs/sdk/ios#name-favorite-conversations-25)
+-   [Listening and responding to incoming messages](/docs/sdk/ios#name-listening-and-responding-to-incoming-messages-31)
+-   [Listening to incoming messages](/docs/sdk/ios#name-listening-to-incoming-messages-34)
+-   [Sending a new message](/docs/sdk/ios#name-sending-a-new-message-42)
+-   [Sending a new message with a priority](/docs/sdk/ios#name-sending-a-new-message-with-a-priority-49)
+-   [Mark new messages as read](/docs/sdk/ios#name-mark-new-messages-as-read-56)
+-   [Mark all messages as read](/docs/sdk/ios#name-mark-all-messages-as-read-59)
+-   [Mark all new received message as read in the open conversation](/docs/sdk/ios#name-mark-all-new-received-message-as-read-in-the-open-conversation-70)
+-   [Listening to receipts](/docs/sdk/ios#name-listening-to-receipts-79)
+-   [Getting the conversation history](/docs/sdk/ios#name-getting-the-conversation-history-161)
+-   [Dealing with attachments](/docs/sdk/ios#name-dealing-with-attachments-172)
+-   [Sending a file in attachment](/docs/sdk/ios#name-sending-a-file-in-attachment-175)
+-   [Attachments](/docs/sdk/ios#name-attachments-185)
+-   [Sending other kind of messages](/docs/sdk/ios#name-sending-other-kind-of-messages-207)
+-   [Sending user locations](/docs/sdk/ios#name-sending-user-locations-210)
+-   [Sending a voice message](/docs/sdk/ios#name-sending-a-voice-message-217)
+-   [Alternate body content](/docs/sdk/ios#name-alternate-body-content-224)
+-   [Last Message Correction](/docs/sdk/ios#name-last-message-correction-237)
+-   [Reply to a message](/docs/sdk/ios#name-reply-to-a-message-248)
+-   [Forward a message to other conversations](/docs/sdk/ios#name-forward-a-message-to-other-conversations-259)
+-   [Auto archive rooms](/docs/sdk/ios#name-auto-archive-rooms-269)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

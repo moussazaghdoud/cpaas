@@ -1,0 +1,237 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/ios/lts/guides/Events"
+lastSynced: "2026-02-20T07:12:29.126Z"
+---
+# Documentation
+
+Events
+
+LTS release 2.12.0Published on 2024-07-23
+
+## Events
+
+---
+
+### Listen to events
+
+Once you have called the `connect()` method, you will begin receiving events from the SDK. If you want to catch them, you have simply to add the following lines to your code:
+
+```objectivec
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:kLoginManagerDidLoginSucceeded object:nil];
+
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailedToLogin:) name:kLoginManagerDidFailedToAuthenticate object:nil];
+```
+```objectivec
+-(void) didLogin:(NSNotification *) notification {
+    // do something when the SDK is ready to be used
+    NSLog(@"DID LOGIN");
+}
+```
+```objectivec
+-(void) didFailedToLogin:(NSNotification *) notification {
+    NSLog(@"DID FAILED TO LOGIN");
+}
+```
+
+### List of events
+
+Here is the complete list of the events that you can subscribe on:
+
+#### Connection Events
+
+Name
+
+Description
+
+**`kLoginManagerDidLoginSucceeded`**
+
+Fired when the SDK is connected to Rainbow and ready to be used
+
+**`kLoginManagerDidLogoutSucceeded`**
+
+Fired when the SDK has successfully logout from the server
+
+**`kLoginManagerDidLostConnection`**
+
+Fired when the SDK lost the connection with Rainbow
+
+**`kLoginManagerDidReconnect`**
+
+Fired when the SDK didn't succeed to reconnect
+
+**`kLoginManagerDidFailedToAuthenticate`**
+
+Fired when something goes wrong (ie: bad 'configurations' parameter...)
+
+**`kLoginManagerDidChangeServer`**
+
+Fired when the message has been received by the server
+
+**`kLoginManagerDidChangeUser`**
+
+Fired when the SDK is connected to Sandbox Server
+
+**`kLoginManagerTryToReconnect`**
+
+Fired when the SDK tries to reconnect
+
+#### Contacts Events
+
+Name
+
+Description
+
+**`kContactsManagerServiceDidAddContact`**
+
+Fired when the SDK has successfully retrieve you contacts
+
+**`kContactsManagerServiceDidUpdateContact`**
+
+Fired when the a contact is updated
+
+**`kContactsManagerServiceDidRemoveContact`**
+
+Fired when the contact is removed from your contacts list
+
+**`kContactsManagerServiceDidInviteContact`**
+
+Fired when you invite contact to Rainbow or add a rainbow user to your contact list
+
+**`kContactsManagerServiceDidFailedToInviteContact`**
+
+Fired when the SDK is failed to invite
+
+**`kContactsManagerServiceDidUpdateMyContact`**
+
+Fired when you update your information
+
+**`kContactsManagerServiceDidChangeContactDisplayUserSettings`**
+
+notification sent when device contact display parameter is changed
+
+**`kContactsManagerServiceLocalAccessGranted`**
+
+Fired when the addressBook access is granted)
+
+**`kContactsManagerServiceDidAddInvitation`**
+
+Fired when a new invitation is added (could be a sent or received one)
+
+**`kContactsManagerServiceDidUpdateInvitation`**
+
+Fired when an invitation is updated (status changed)
+
+**`kContactsManagerServiceDidRemoveInvitation`**
+
+**`kContactsManagerServiceDidUpdateInvitationPendingNumber`**
+
+#### Conversation Events
+
+Name
+
+Description
+
+**`kConversationsManagerDidAddConversation`**
+
+Fired when the SDK has successfully retrieve you conversation
+
+**`kConversationsManagerDidRemoveConversation`**
+
+Fired when the you remove a conversation
+
+**`kConversationsManagerDidRemoveAllConversations`**
+
+Fired when the you remove all conversation
+
+**`kConversationsManagerDidUpdateConversation`**
+
+Fired when the conversation is updated
+
+**`kConversationsManagerDidStartConversation`**
+
+Fired when you start a conversation with contact
+
+**`kConversationsManagerDidStopConversation`**
+
+Fired when you stop a conversation with contact
+
+**`kConversationsManagerDidReceiveNewMessageForConversation`**
+
+Fired when the conversation receive a new message
+
+**`kConversationsManagerDidReceiveComposingMessage`**
+
+**`kConversationsManagerDidAckMessage`**
+
+**`kConversationsManagerDidUpdateMessagesUnreadCount`**
+
+Fired when the SDK did update Messages unread count
+
+#### Audio / Video Call Events
+
+Name
+
+Description
+
+**`kRTCServiceDidAddCall`**
+
+Fired when the SDK has successfully retrieve or start a call
+
+**`kRTCServiceDidUpdateCall`**
+
+Fired when current call status is updated
+
+**`kRTCServiceDidRemoveCall`**
+
+Fired when the you remove current call
+
+**`kRTCServiceCallStats`**
+
+Fired when new stats available for current call
+
+**`kRTCServiceDidAllowMicrophone`**
+
+Fired when you allow Microphone access
+
+**`kRTCServiceDidRefuseMicrophone`**
+
+Fired when you refuse Microphone access
+
+**`kConversationsManagerDidReceiveNewMessageForConversation`**
+
+Fired when the conversation receive a new message
+
+**`kRTCServiceDidAddLocalVideoTrack`**
+
+Fired when you add local video to call
+
+**`kRTCServiceDidRemoveLocalVideoTrack`**
+
+Fired when you remove local video from the call
+
+**`kRTCServiceDidAddRemoteVideoTrack`**
+
+Fired when you add remote video to call\]
+
+**`kRTCServiceDidRemoveRemoteVideoTrack`**
+
+Fired when you remove remote video from the call
+
+### On this page
+
+-   [Events](/docs/sdk/ios#name-events-0)
+-   [Listen to events](/docs/sdk/ios#name-listen-to-events-4)
+-   [List of events](/docs/sdk/ios#name-list-of-events-13)
+-   [Connection Events](/docs/sdk/ios#name-connection-events-19)
+-   [Contacts Events](/docs/sdk/ios#name-contacts-events-100)
+-   [Conversation Events](/docs/sdk/ios#name-conversation-events-213)
+-   [Audio / Video Call Events](/docs/sdk/ios#name-audio--video-call-events-310)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

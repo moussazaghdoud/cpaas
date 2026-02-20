@@ -1,0 +1,196 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/tutorials/RetrieveCalls"
+lastSynced: "2026-02-20T07:12:33.772Z"
+---
+# Documentation
+
+Manage calls
+
+### Retrieve Calls
+
+---
+
+[Setup iOS Environment](#SetupIOSEnvironment)
+
+Setup iOS Environment
+
+[Register Call App](#RegisterCallApp)
+
+Register Call App
+
+[Peer To Peer Call Button](#MakeCallButton)
+
+MakeCallButton
+
+---
+
+## Setup iOS Environment
+
+For the iOS side you need to follow the instructions in the following link, otherwise it WON'T works on the iOS.
+
+-   First you need to setup the app permission: [SET-UP THE APPLICATION AUTHORIZATIONS](https://hub.openrainbow.com/#/documentation/doc/sdk/ios/lts/guides/Managing_voice_video_calls).
+-   Then you need to setup the VOIP certificate: [VoIP Services Certificate](https://hub.openrainbow.com/#/documentation/doc/sdk/ios/lts/guides/Push_notifications_setup).
+
+---
+
+## Register Call App
+
+Before building any of the Call components, you have to register the callApp when your app starts inside `index.js`.
+
+And inside the callApp you can use any call component you want to support whatever its a P2P Call, Conference Call, or PBX Call.
+
+And the purpose of separate the `CallApp` from all other app components because we wanna make sure that when the call is active there is **No** other component that can interfere with the call.
+
+-   If you wanna more detail how to use it, you can check the [Sample Code](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/tree/main/src/Calls/CallApp.tsx).
+-   Incase you wanna know to make ConferenceCallComponent, please check the [Managing Conferences](/docs/sdk/reactnative/tutorials/managing_conferences) and [Conference Services](/docs/sdk/reactnative/api/ConferenceServices).
+-   To know more about how to manage your WebRTC peer to peer calls. please check [Managing Audio and Video calls](/docs/sdk/reactnative/tutorials/managing_webrtc_calls).
+
+```tsx
+const CallApp = () => (
+    <RainbowProvider>
+        <ConferenceCallComponent />
+        <P2PCall />
+    </RainbowProvider>
+);
+
+const registerRainbowCallApp = () => registerRainbowCallComponents(() => CallApp);
+```
+
+where you need to call `registerRainbowCallApp` into your App `index.js`.
+
+---
+
+## Peer To Peer Call Button
+
+After you are successfully set up Rainbow Contacts you can initiate your calls towards your them. Rainbow RN SDK provide you a customizable component `<CallButton />` with some props to be passed. Check table below
+
+**Available props**
+
+#
+
+Name
+
+Notes
+
+Default
+
+Description
+
+1
+
+webRtcActions
+
+[IWebRtcCallActionProps](/docs/sdk/reactnative/api/ICall#IWebRtcCallActionProps)
+
+‘none’
+
+This action provides you the audio and video service
+
+2
+
+contact
+
+IContact
+
+‘none’
+
+The contact object you wish to make the call services
+
+3
+
+pbxEnabled
+
+Boolean
+
+true
+
+Enable the PBX calling?
+
+4
+
+webrtcEnabled
+
+Boolean
+
+true
+
+Enable the Audio and Video calling?
+
+5
+
+image source
+
+ImageSourcePropType
+
+‘none’
+
+The image URL for showing the call logo button
+
+6
+
+style
+
+\[ViewStyle,ImageStyle\]
+
+default style
+
+Customs style for components style props
+
+-   Through `pbxEnabled` and `webrtcEnabled` you can decide to enable/disable both services.
+-   Through Style props, you can customize the component UI.
+
+In our [example](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples), we used this `MakeCallButton` in the Contact Information page and show the call button for this user.
+
+```
+import React from 'react';
+import componentConfig from '../component-config.json';
+import { CallButton, IImageButtonStyleProps, IContact, IPbxCallActionProps, IWebRtcCallActionProps } from 'react-native-rainbow-module'
+import videoCall from './videoCall.png';
+
+interface ICallComponentProps {
+    contact: IContact;
+    showDialog: boolean;
+    openDialog: () => void;
+}
+const customStyle: IImageButtonStyleProps = {
+    image: {
+        width: 60,
+        height: 60
+    }
+};
+export const webRtcActions: IWebRtcCallActionProps[] = [
+    { callType: 'video', actionName: 'video', iconName: 'videocam' },
+    { callType: 'audio', actionName: 'audio', iconName: 'headset' }
+];
+export const PbxActions: IPbxCallActionProps = { enablePbxCalls: true };
+
+export const CallComponent: React.FunctionComponent<ICallComponentProps> = ({ contact }) => {
+    return (
+        <CallButton
+            imageSource={videoCall}
+            style={customStyle}
+            webRtcActions={webRtcActions}
+            PbxActions={PbxActions}
+            contact={contact}
+            pbxEnabled={componentConfig.calls.pbxEnabled}
+            webrtcEnabled={componentConfig.calls.webRtcEnabled}
+        />
+    );
+};
+```
+
+### On this page
+
+-   [Retrieve Calls](/docs/sdk/reactnative/tutorials/RetrieveCalls#name-retrieve-calls-0)
+-   [Setup iOS Environment](/docs/sdk/reactnative/tutorials/RetrieveCalls#name-setup-ios-environment-6)
+-   [Register Call App](/docs/sdk/reactnative/tutorials/RetrieveCalls#name-register-call-app-25)
+-   [Peer To Peer Call Button](/docs/sdk/reactnative/tutorials/RetrieveCalls#name-peer-to-peer-call-button-59)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

@@ -1,0 +1,1176 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/alerts"
+lastSynced: "2026-02-20T07:12:31.595Z"
+---
+# Documentation
+
+Alerts Service
+
+LTS release 2.XPublished on 2025-01-01
+
+## AlertsService
+
+This module is the basic module for handling Alerts in Rainbow.  
+  
+Note: the Rainbow subscriptions "Alerts" is need to use the Alert notification system.  
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [AlertsService](#module_AlertsService)
+    -   *CREATE / UPDATE / DELETE / GET / FEEDBACK ALERTS*
+        -   [createAlert(alert)](#module_AlertsService+createAlert) ⇒ `Promise.<Alert>`
+        -   [updateAlert(alert)](#module_AlertsService+updateAlert) ⇒ `Promise.<Alert>`
+        -   [deleteAlert(alert)](#module_AlertsService+deleteAlert) ⇒ `Promise.<Alert>`
+        -   [getAlert(alertId)](#module_AlertsService+getAlert) ⇒ `Promise.<Alert>`
+        -   [getAlerts(offset, limit)](#module_AlertsService+getAlerts) ⇒ `Promise.<AlertsData>`
+        -   [sendAlertFeedback(deviceId, alertId, answerId)](#module_AlertsService+sendAlertFeedback) ⇒ `Promise.<any>`
+        -   [getAlertFeedbackSentForANotificationMessage(notificationHistoryId)](#module_AlertsService+getAlertFeedbackSentForANotificationMessage) ⇒ `Promise.<any>`
+        -   [getAlertFeedbackSentForAnAlert(alertId)](#module_AlertsService+getAlertFeedbackSentForAnAlert) ⇒ `Promise.<any>`
+        -   [getAlertStatsFeedbackSentForANotificationMessage(notificationHistoryId)](#module_AlertsService+getAlertStatsFeedbackSentForANotificationMessage) ⇒ `Promise.<any>`
+    -   *DEVICE*
+        -   [createDevice(device)](#module_AlertsService+createDevice) ⇒ `Promise.<AlertDevice>`
+        -   [updateDevice(device)](#module_AlertsService+updateDevice) ⇒ `Promise.<AlertDevice>`
+        -   [deleteDevice(device)](#module_AlertsService+deleteDevice) ⇒ `Promise.<AlertDevice>`
+        -   [getDevice(deviceId)](#module_AlertsService+getDevice) ⇒ `Promise.<AlertDevice>`
+        -   [getDevices(companyId, userId, deviceName, type, tag, offset, limit)](#module_AlertsService+getDevices) ⇒ `Promise.<AlertDevicesData>`
+        -   [getDevicesTags(companyId)](#module_AlertsService+getDevicesTags) ⇒ `Promise.<any>`
+        -   [renameDevicesTags(tag, companyId, newTagName)](#module_AlertsService+renameDevicesTags) ⇒ `Promise.<any>`
+        -   [deleteDevicesTags(tag, companyId)](#module_AlertsService+deleteDevicesTags) ⇒ `Promise.<any>`
+        -   [getstatsTags(companyId)](#module_AlertsService+getstatsTags) ⇒ `Promise.<any>`
+    -   *FILTERS*
+        -   [createFilter(filter)](#module_AlertsService+createFilter) ⇒ `Promise.<AlertFilter>`
+        -   [updateFilter(filter)](#module_AlertsService+updateFilter) ⇒ `Promise.<AlertFilter>`
+        -   [deleteFilter(filter)](#module_AlertsService+deleteFilter) ⇒ `Promise.<AlertFilter>`
+        -   [getFilter(filterId)](#module_AlertsService+getFilter) ⇒ `Promise.<AlertFilter>`
+        -   [getFilters(offset, limit)](#module_AlertsService+getFilters) ⇒ `Promise.<AlertFiltersData>`
+    -   *Mark as Received / Read*
+        -   [markAlertMessageAsRead(jid, messageXmppId)](#module_AlertsService+markAlertMessageAsRead) ⇒ `Promise.<any>`
+    -   *REPORTS*
+        -   [getReportSummary(alertId)](#module_AlertsService+getReportSummary) ⇒ `Promise.<any>`
+        -   [getReportDetails(alertId)](#module_AlertsService+getReportDetails) ⇒ `Promise.<any>`
+        -   [getReportComplete(alertId)](#module_AlertsService+getReportComplete) ⇒ `Promise.<any>`
+    -   *TEMPLATE*
+        -   [createTemplate(template)](#module_AlertsService+createTemplate) ⇒ `Promise.<AlertTemplate>`
+        -   [updateTemplate(template)](#module_AlertsService+updateTemplate) ⇒ `Promise.<AlertTemplate>`
+        -   [deleteTemplate(template)](#module_AlertsService+deleteTemplate) ⇒ `Promise.<AlertTemplate>`
+        -   [getTemplate(templateId)](#module_AlertsService+getTemplate) ⇒ `Promise.<AlertTemplate>`
+        -   [getTemplates(companyId, offset, limit)](#module_AlertsService+getTemplates) ⇒ `Promise.<AlertTemplatesData>`
+
+---
+
+### alertsService.createAlert(alert) ⇒ `Promise.<Alert>`
+
+To create an alert. The alert will be sent using the StartDate of the Alert object (so it's possible to set it in future).  
+The alert will be received by devices according the filter id and the company id used.  
+The content of the alert is based on the template id.  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<Alert>` - the result of the operation.
+
+**Category**: CREATE / UPDATE / DELETE / GET / FEEDBACK ALERTS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+alert
+
+`Alert`
+
+Alert to send.
+
+---
+
+### alertsService.updateAlert(alert) ⇒ `Promise.<Alert>`
+
+To update an existing alert. The alert will be sent using the StartDate of the Alert object (so it's possible to set it in future).  
+The alert will be received by devices according the filter id and the company id used.  
+The content of the alert is based on the template id.  
+Note : if no expirationDate is provided, then the validity is one day from the API call.  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<Alert>` - the result of the operation.
+
+**Category**: CREATE / UPDATE / DELETE / GET / FEEDBACK ALERTS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+alert
+
+`Alert`
+
+Alert to update.
+
+---
+
+### alertsService.deleteAlert(alert) ⇒ `Promise.<Alert>`
+
+Delete an alert  
+All the data related to this notification are deleted, including the reports  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<Alert>` - the result of the operation.
+
+**Category**: CREATE / UPDATE / DELETE / GET / FEEDBACK ALERTS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+alert
+
+`Alert`
+
+Alert to Delete.
+
+---
+
+### alertsService.getAlert(alertId) ⇒ `Promise.<Alert>`
+
+Get an alert by id  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<Alert>` - the result of the operation.
+
+**Category**: CREATE / UPDATE / DELETE / GET / FEEDBACK ALERTS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+alertId
+
+`string`
+
+Id of the alert.
+
+---
+
+### alertsService.getAlerts(offset, limit) ⇒ `Promise.<AlertsData>`
+
+Get alerts : required role(s) superadmin,support,admin  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<AlertsData>` - the result of the operation.
+
+**Category**: CREATE / UPDATE / DELETE / GET / FEEDBACK ALERTS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+offset
+
+`number`
+
+`0`
+
+Offset to use to retrieve Alerts - if offset > total, no result is returned.
+
+limit
+
+`number`
+
+`100`
+
+Limit of Alerts to retrieve (100 by default).
+
+---
+
+### alertsService.sendAlertFeedback(deviceId, alertId, answerId) ⇒ `Promise.<any>`
+
+To send a feedback from an alert.  
+To be used by end-user who has received the alert  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<any>` - the result of the operation.
+
+**Category**: CREATE / UPDATE / DELETE / GET / FEEDBACK ALERTS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+deviceId
+
+`string`
+
+Id of the device.
+
+alertId
+
+`string`
+
+Id of the alert.
+
+answerId
+
+`string`
+
+Id of the answer.
+
+---
+
+### alertsService.getAlertFeedbackSentForANotificationMessage(notificationHistoryId) ⇒ `Promise.<any>`
+
+This API allows to list the feedback sent by the devices for a given notification message (identified by its notification history's id).  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<any>` - the result of the operation. { fromCreationDate optionnel Date-Time Allows to filter feedback submitted from provided date (ISO 8601 format).  
+toCreationDate optionnel Date-Time Allows to filter feedback submitted until provided date (ISO 8601 format).  
+format optionnel String Allows to retrieve more or less feedback details in response.  
+
+-   small: id notificationId notificationHistoryId device.id creationDate  
+    
+-   medium: id notificationId notificationHistoryId device.id device.name creationDate data  
+    
+-   full: id notificationId companyId notificationHistoryId device.id device.name device.type device.userId device.jid\_im device.jid\_resource creationDate data (default value : small. Possible values : small, medium, full)  
+    limit optionnel Number Allow to specify the number of feedback to retrieve. (default value : 100)  
+    offset optionnel Number Allow to specify the position of first feedback to retrieve (first feedback if not specified). Warning: if offset > total, no results are returned. (default value : 0)  
+    sortField optionnel String Sort feedback list based on the creationDate field (date when the feedback submitted by the device has been received by Rainbow servers). (default value : creationDate. Possible values : creationDate)  
+    sortOrder optionnel Number Specify order when sorting feedback list. (default value : 1. Possible values : -1, 1)  
+    }
+
+**Category**: CREATE / UPDATE / DELETE / GET / FEEDBACK ALERTS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+notificationHistoryId
+
+`string`
+
+notification history unique identifier. notificationHistoryId corresponds to the id in the history Array of the messages sent for the related notification..
+
+---
+
+### alertsService.getAlertFeedbackSentForAnAlert(alertId) ⇒ `Promise.<any>`
+
+This API allows to list the feedback sent by the devices for a given notification.  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<any>` - the result of the operation. { fromCreationDate optionnel Date-Time Allows to filter feedback submitted from provided date (ISO 8601 format).  
+toCreationDate optionnel Date-Time Allows to filter feedback submitted until provided date (ISO 8601 format).  
+format optionnel String Allows to retrieve more or less feedback details in response.  
+
+-   small: id notificationId notificationHistoryId device.id creationDate  
+    
+-   medium: id notificationId notificationHistoryId device.id device.name creationDate data  
+    
+-   full: id notificationId companyId notificationHistoryId device.id device.name device.type device.userId device.jid\_im device.jid\_resource creationDate data (default value : small. Possible values : small, medium, full)  
+    limit optionnel Number Allow to specify the number of feedback to retrieve. (default value : 100)  
+    offset optionnel Number Allow to specify the position of first feedback to retrieve (first feedback if not specified). Warning: if offset > total, no results are returned. (default value : 0)  
+    sortField optionnel String Sort feedback list based on the creationDate field (date when the feedback submitted by the device has been received by Rainbow servers). (default value : creationDate. Possible values : creationDate)  
+    sortOrder optionnel Number Specify order when sorting feedback list. (default value : 1. Possible values : -1, 1)  
+    }
+
+**Category**: CREATE / UPDATE / DELETE / GET / FEEDBACK ALERTS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+alertId
+
+`string`
+
+Id of the alert.
+
+---
+
+### alertsService.getAlertStatsFeedbackSentForANotificationMessage(notificationHistoryId) ⇒ `Promise.<any>`
+
+This API can be used to list all distinct feedback data submitted by the devices for a given notification message (identified by its notification history's id), with the number of devices for each distinct submitted feedback data.  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<any>` - the result of the operation. { stats Object\[\] List of feedback data submitted by the devices for this given notification message  
+data String data submitted by the devices  
+count String Number of devices having submitted this given data  
+}
+
+**Category**: CREATE / UPDATE / DELETE / GET / FEEDBACK ALERTS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+notificationHistoryId
+
+`string`
+
+notification history unique identifier. notificationHistoryId corresponds to the id in the history Array of the messages sent for the related notification.
+
+---
+
+### alertsService.createDevice(device) ⇒ `Promise.<AlertDevice>`
+
+Create a device which can receive Alerts(notifications) from the server  
+AlertDevice.jid\_im cannot be specified, it's always the Jid of the current user.  
+if AlertDevice.jid\_resource cannot be specified, it's always the Jid\_resource of the current user.  
+if AlertDevice.type is not specified, automatically it's set to "desktop"  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<AlertDevice>` - the result of the operation.
+
+**Category**: DEVICE
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+device
+
+`AlertDevice`
+
+Device to create.
+
+---
+
+### alertsService.updateDevice(device) ⇒ `Promise.<AlertDevice>`
+
+Update a device which can receive Alerts(notifications) from the server  
+AlertDevice.CompanyId cannot be specified, it's always the Compnay of the current user  
+AlertDevice.Jid\_im cannot be specified, it's always the Jid of the current user: Contacts.GetCurrentContactJid()  
+AlertDevice.Jid\_resource cannot be specified, it's always the Jid\_resource of the current user: Application.GetResourceId()  
+if AlertDevice.Type is not specified, automatically it's set to "desktop"  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<AlertDevice>` - the result of the operation.  
+
+**Category**: DEVICE
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+device
+
+`AlertDevice`
+
+Device to Update.
+
+---
+
+### alertsService.deleteDevice(device) ⇒ `Promise.<AlertDevice>`
+
+Delete a device (using its id)  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<AlertDevice>` - the result of the operation.
+
+**Category**: DEVICE
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+device
+
+`AlertDevice`
+
+Device to delete.
+
+---
+
+### alertsService.getDevice(deviceId) ⇒ `Promise.<AlertDevice>`
+
+Get a device using its Id  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<AlertDevice>` - the result of the operation.
+
+**Category**: DEVICE
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+deviceId
+
+`string`
+
+Id of the device.
+
+---
+
+### alertsService.getDevices(companyId, userId, deviceName, type, tag, offset, limit) ⇒ `Promise.<AlertDevicesData>`
+
+Get list of devices  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<AlertDevicesData>` - the result of the operation.
+
+**Category**: DEVICE
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+companyId
+
+`string`
+
+Allows to filter device list on the companyId provided in this option. (optional) If companyId is not provided, the devices linked to all the companies that the administrator manage are returned.
+
+userId
+
+`string`
+
+Allows to filter device list on the userId provided in this option. (optional) If the user has no admin rights, this filter is forced to the logged in user's id (i.e. the user can only list is own devices).
+
+deviceName
+
+`string`
+
+Allows to filter device list on the name provided in this option. (optional) The filtering is case insensitive and on partial name match: all devices containing the provided name value will be returned(whatever the position of the match). Ex: if filtering is done on My, devices with the following names are match the filter 'My device', 'My phone', 'This is my device', ...
+
+type
+
+`string`
+
+Allows to filter device list on the type provided in this option. (optional, exact match, case sensitive).
+
+tag
+
+`string`
+
+Allows to filter device list on the tag provided in this option. (optional, exact match, case sensitive).
+
+offset
+
+`number`
+
+`0`
+
+Allow to specify the position of first device to retrieve (default value is 0 for the first device). Warning: if offset > total, no results are returned.
+
+limit
+
+`number`
+
+`100`
+
+Allow to specify the number of devices to retrieve.
+
+---
+
+### alertsService.getDevicesTags(companyId) ⇒ `Promise.<any>`
+
+Get list of all tags being assigned to devices of the compagnies managed by the administrator  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<any>` - the result of the operation.
+
+**Category**: DEVICE
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+companyId
+
+`string`
+
+Allows to list the tags set for devices associated to the companyIds provided in this option. (optional) If companyId is not provided, the tags being set for devices linked to all the companies that the administrator manage are returned.
+
+---
+
+### alertsService.renameDevicesTags(tag, companyId, newTagName) ⇒ `Promise.<any>`
+
+This API can be used to rename a tag being assigned to some devices of the companies managed by the administrator.
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<any>` - the result of the operation.
+
+**Category**: DEVICE
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+tag
+
+`string`
+
+tag to rename.
+
+companyId
+
+`string`
+
+Allows to rename a tag for the devices being in the companyIds provided in this option.  
+If companyId is not provided, the tag is renamed for all the devices linked to all the companies that the administrator manage.
+
+newTagName
+
+`string`
+
+New tag name. (Body Parameters)
+
+---
+
+### alertsService.deleteDevicesTags(tag, companyId) ⇒ `Promise.<any>`
+
+This API can be used to remove a tag being assigned to some devices of the companies managed by the administrator.
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<any>` - the result of the operation.
+
+**Category**: DEVICE
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+tag
+
+`string`
+
+tag to rename.
+
+companyId
+
+`string`
+
+Allows to remove a tag from the devices being in the companyIds provided in this option..  
+If companyId is not provided, the tag is deleted from all the devices linked to all the companies that the administrator manage.
+
+---
+
+### alertsService.getstatsTags(companyId) ⇒ `Promise.<any>`
+
+This API can be used to list all the tags being assigned to the devices of the companies managed by the administrator, with the number of devices for each tags.
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<any>` - the result of the operation.
+
+**Category**: DEVICE
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+companyId
+
+`string`
+
+Allows to compute the tags statistics for the devices associated to the companyIds provided in this option.  
+if companyId is not provided, the tags statistics are computed for all the devices being in all the companies managed by the logged in administrator.
+
+---
+
+### alertsService.createFilter(filter) ⇒ `Promise.<AlertFilter>`
+
+Create a filter  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<AlertFilter>` - the result of the operation.
+
+**Category**: FILTERS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+filter
+
+`AlertFilter`
+
+Filter to create.
+
+---
+
+### alertsService.updateFilter(filter) ⇒ `Promise.<AlertFilter>`
+
+Update a filter  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<AlertFilter>` - the result of the operation.
+
+**Category**: FILTERS
+
+**Access**: public
+
+Param
+
+Type
+
+Description
+
+filter
+
+`AlertFilter`
+
+Filter to Update.
+
+---
+
+### alertsService.deleteFilter(filter) ⇒ `Promise.<AlertFilter>`
+
+Delete a filter  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<AlertFilter>` - the result of the operation.
+
+**Category**: FILTERS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+filter
+
+`AlertFilter`
+
+Filter to Delete.
+
+---
+
+### alertsService.getFilter(filterId) ⇒ `Promise.<AlertFilter>`
+
+Get an filter by id  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<AlertFilter>` - the result of the operation.
+
+**Category**: FILTERS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+filterId
+
+`string`
+
+Id of the Filter.
+
+---
+
+### alertsService.getFilters(offset, limit) ⇒ `Promise.<AlertFiltersData>`
+
+Get filters : have required role(s) superadmin, admin  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<AlertFiltersData>` - the result of the operation.
+
+**Category**: FILTERS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+offset
+
+`number`
+
+`0`
+
+Offset to use to retrieve filters - if offset > total, no result is returned.
+
+limit
+
+`number`
+
+`100`
+
+Limit of filters to retrieve (100 by default).
+
+---
+
+### alertsService.markAlertMessageAsRead(jid, messageXmppId) ⇒ `Promise.<any>`
+
+Mark as Read the specified alert message  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<any>` - the result of the operation.
+
+**Category**: Mark as Received / Read
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+jid
+
+`string`
+
+The Jid of the sender
+
+messageXmppId
+
+`string`
+
+the Xmpp Id of the alert message
+
+---
+
+### alertsService.getReportSummary(alertId) ⇒ `Promise.<any>`
+
+Allow to retrieve the list of summary reports of an alert (initial alert plus alerts update if any).  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<any>` - the result of the operation.
+
+**Category**: REPORTS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+alertId
+
+`string`
+
+Id of the alert.
+
+---
+
+### alertsService.getReportDetails(alertId) ⇒ `Promise.<any>`
+
+Allow to retrieve detail the list of detail reports of a alert (initial alert plus alerts update if any).  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<any>` - the result of the operation.
+
+**Category**: REPORTS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+alertId
+
+`string`
+
+Id of the alert.
+
+---
+
+### alertsService.getReportComplete(alertId) ⇒ `Promise.<any>`
+
+Allows to get the fileDescriptor storing the detailed CSV report of the notification.  
+  
+The detailed CSV report is generated when one of the APIs getReportSummary or GET getReportDetails is called while the state of the notification message process has reached a final state:  
+  
+completed: all the devices targeted by the notification have been notified and have acknowledged the reception of the message,  
+expired: some devices targeted by the notification haven't acknowledged the reception of the message but the notification expiration date has been reached,  
+cancelled: some devices targeted by the notification haven't acknowledged the reception of the message but the notification status has been set to terminated.  
+  
+The generated detailed CSV report is stored in Rainbow filestorage backend. The fileDescriptor identifier returned by this API can then be used to download it using the Rainbow filestorage API GET /api/rainbow/fileserver/v1.0/files/:fileId  
+The detailed CSV report contains the following columns:  
+DeviceName,DeviceID,Domain\_Username,IpAddress,MacAddress,sent,received,read,feedback,notificationId.  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<any>` - the result of the operation.
+
+**Category**: REPORTS
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+alertId
+
+`string`
+
+Id of the alert.
+
+---
+
+### alertsService.createTemplate(template) ⇒ `Promise.<AlertTemplate>`
+
+Create a template  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<AlertTemplate>` - the result of the operation.
+
+**Category**: TEMPLATE
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+template
+
+`AlertTemplate`
+
+Template to create.
+
+---
+
+### alertsService.updateTemplate(template) ⇒ `Promise.<AlertTemplate>`
+
+Update a template  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<AlertTemplate>` - the result of the operation.
+
+**Category**: TEMPLATE
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+template
+
+`AlertTemplate`
+
+Template to Update.
+
+---
+
+### alertsService.deleteTemplate(template) ⇒ `Promise.<AlertTemplate>`
+
+Delete a template  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<AlertTemplate>` - the result of the operation.
+
+**Category**: TEMPLATE
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+template
+
+`AlertTemplate`
+
+Template to Delete.
+
+---
+
+### alertsService.getTemplate(templateId) ⇒ `Promise.<AlertTemplate>`
+
+Get an template by id  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<AlertTemplate>` - the result of the operation.
+
+**Category**: TEMPLATE
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+templateId
+
+`string`
+
+Id of the template.
+
+---
+
+### alertsService.getTemplates(companyId, offset, limit) ⇒ `Promise.<AlertTemplatesData>`
+
+Get templates  
+
+**Kind**: instance method of [`AlertsService`](#module_AlertsService)
+
+**Returns**: `Promise.<AlertTemplatesData>` - the result of the operation.
+
+**Category**: TEMPLATE
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+companyId
+
+`string`
+
+Id of the company (optional).
+
+offset
+
+`number`
+
+`0`
+
+Offset to use to retrieve templates - if offset > total, no result is returned.
+
+limit
+
+`number`
+
+`100`
+
+Limit of templates to retrieve (100 by default).
+
+---
+
+### On this page
+
+-   [AlertsService](/docs/sdk/node#name-alertsservice-3)
+-   [alertsService.createAlert(alert) ⇒ Promise.<Alert>](/docs/sdk/node#name-alertsservice.createalertalert--promise.alert-230)
+-   [alertsService.updateAlert(alert) ⇒ Promise.<Alert>](/docs/sdk/node#name-alertsservice.updatealertalert--promise.alert-283)
+-   [alertsService.deleteAlert(alert) ⇒ Promise.<Alert>](/docs/sdk/node#name-alertsservice.deletealertalert--promise.alert-336)
+-   [alertsService.getAlert(alertId) ⇒ Promise.<Alert>](/docs/sdk/node#name-alertsservice.getalertalertid--promise.alert-389)
+-   [alertsService.getAlerts(offset, limit) ⇒ Promise.<AlertsData>](/docs/sdk/node#name-alertsservice.getalertsoffset-limit--promise.alertsdata-442)
+-   [alertsService.sendAlertFeedback(deviceId, alertId, answerId) ⇒ Promise.<any>](/docs/sdk/node#name-alertsservice.sendalertfeedbackdeviceid-alertid-answerid--promise.any-515)
+-   [alertsService.getAlertFeedbackSentForANotificationMessage(notificationHistoryId) ⇒ Promise.<any>](/docs/sdk/node#name-alertsservice.getalertfeedbacksentforanotificationmessagenotificationhistoryid--promise.any-590)
+-   [alertsService.getAlertFeedbackSentForAnAlert(alertId) ⇒ Promise.<any>](/docs/sdk/node#name-alertsservice.getalertfeedbacksentforanalertalertid--promise.any-660)
+-   [alertsService.getAlertStatsFeedbackSentForANotificationMessage(notificationHistoryId) ⇒ Promise.<any>](/docs/sdk/node#name-alertsservice.getalertstatsfeedbacksentforanotificationmessagenotificationhistoryid--promise.any-730)
+-   [alertsService.createDevice(device) ⇒ Promise.<AlertDevice>](/docs/sdk/node#name-alertsservice.createdevicedevice--promise.alertdevice-783)
+-   [alertsService.updateDevice(device) ⇒ Promise.<AlertDevice>](/docs/sdk/node#name-alertsservice.updatedevicedevice--promise.alertdevice-836)
+-   [alertsService.deleteDevice(device) ⇒ Promise.<AlertDevice>](/docs/sdk/node#name-alertsservice.deletedevicedevice--promise.alertdevice-889)
+-   [alertsService.getDevice(deviceId) ⇒ Promise.<AlertDevice>](/docs/sdk/node#name-alertsservice.getdevicedeviceid--promise.alertdevice-942)
+-   [alertsService.getDevices(companyId, userId, deviceName, type, tag, offset, limit) ⇒ Promise.<AlertDevicesData>](/docs/sdk/node#name-alertsservice.getdevicescompanyid-userid-devicename-type-tag-offset-limit--promise.alertdevicesdata-995)
+-   [alertsService.getDevicesTags(companyId) ⇒ Promise.<any>](/docs/sdk/node#name-alertsservice.getdevicestagscompanyid--promise.any-1138)
+-   [alertsService.renameDevicesTags(tag, companyId, newTagName) ⇒ Promise.<any>](/docs/sdk/node#name-alertsservice.renamedevicestagstag-companyid-newtagname--promise.any-1191)
+-   [alertsService.deleteDevicesTags(tag, companyId) ⇒ Promise.<any>](/docs/sdk/node#name-alertsservice.deletedevicestagstag-companyid--promise.any-1266)
+-   [alertsService.getstatsTags(companyId) ⇒ Promise.<any>](/docs/sdk/node#name-alertsservice.getstatstagscompanyid--promise.any-1330)
+-   [alertsService.createFilter(filter) ⇒ Promise.<AlertFilter>](/docs/sdk/node#name-alertsservice.createfilterfilter--promise.alertfilter-1383)
+-   [alertsService.updateFilter(filter) ⇒ Promise.<AlertFilter>](/docs/sdk/node#name-alertsservice.updatefilterfilter--promise.alertfilter-1436)
+-   [alertsService.deleteFilter(filter) ⇒ Promise.<AlertFilter>](/docs/sdk/node#name-alertsservice.deletefilterfilter--promise.alertfilter-1486)
+-   [alertsService.getFilter(filterId) ⇒ Promise.<AlertFilter>](/docs/sdk/node#name-alertsservice.getfilterfilterid--promise.alertfilter-1539)
+-   [alertsService.getFilters(offset, limit) ⇒ Promise.<AlertFiltersData>](/docs/sdk/node#name-alertsservice.getfiltersoffset-limit--promise.alertfiltersdata-1592)
+-   [alertsService.markAlertMessageAsRead(jid, messageXmppId) ⇒ Promise.<any>](/docs/sdk/node#name-alertsservice.markalertmessageasreadjid-messagexmppid--promise.any-1665)
+-   [alertsService.getReportSummary(alertId) ⇒ Promise.<any>](/docs/sdk/node#name-alertsservice.getreportsummaryalertid--promise.any-1729)
+-   [alertsService.getReportDetails(alertId) ⇒ Promise.<any>](/docs/sdk/node#name-alertsservice.getreportdetailsalertid--promise.any-1782)
+-   [alertsService.getReportComplete(alertId) ⇒ Promise.<any>](/docs/sdk/node#name-alertsservice.getreportcompletealertid--promise.any-1835)
+-   [alertsService.createTemplate(template) ⇒ Promise.<AlertTemplate>](/docs/sdk/node#name-alertsservice.createtemplatetemplate--promise.alerttemplate-1888)
+-   [alertsService.updateTemplate(template) ⇒ Promise.<AlertTemplate>](/docs/sdk/node#name-alertsservice.updatetemplatetemplate--promise.alerttemplate-1941)
+-   [alertsService.deleteTemplate(template) ⇒ Promise.<AlertTemplate>](/docs/sdk/node#name-alertsservice.deletetemplatetemplate--promise.alerttemplate-1994)
+-   [alertsService.getTemplate(templateId) ⇒ Promise.<AlertTemplate>](/docs/sdk/node#name-alertsservice.gettemplatetemplateid--promise.alerttemplate-2047)
+-   [alertsService.getTemplates(companyId, offset, limit) ⇒ Promise.<AlertTemplatesData>](/docs/sdk/node#name-alertsservice.gettemplatescompanyid-offset-limit--promise.alerttemplatesdata-2100)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

@@ -1,0 +1,158 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/tutorials/EnablePushNotifications"
+lastSynced: "2026-02-20T07:12:33.621Z"
+---
+# Documentation
+
+Enabling push notifications
+
+# Enabling push notifications
+
+---
+
+When your application needs to receive notification at any time, you have to implement push notifications. There are few steps you have to do it in iOS/Android app to handle the notification
+
+## Android setup
+
+---
+
+### Step 1 - Set up firebase cloud messaging
+
+he first step is setting up the Firebase Cloud Messaging feature.
+
+You must follow this [Firebase tutorial](https://firebase.google.com/docs/android/setup). At the end of this step, your project should be configured with a google-services.json (in app directory) and all required dependencies.
+
+#### Step 2 - Access the device registration token
+
+Create a new service class which extends `FirebaseMessagingService` and override `onNewToken()` method to send the token to the Rainbow SDK. In the RN SDk we provided a `notificationHandler` interface, that handle accessing the registration token and send the received messages to Rainbow SDK. So first you need pass your app context to the `notificationHandler` class, as on sample code below. all you have to do is calling the `onTokenRefresh()` to send the refresh token and call `onPushMessageReceived()` to send the received message \[see step 3\].
+
+```java
+import com.ale.rainbow.rn.notifications.INotificationHandler;
+import com.ale.rainbow.rn.notifications.NotificationHandler;
+
+public class MyNotificationPushService extends FirebaseMessagingService {
+
+   @Override
+    public void onCreate() {
+        super.onCreate();
+        notificationHandler = new NotificationHandler(this);
+    }
+
+
+    @Override
+    public void onNewToken(String token) {
+    notificationHandler.onTokenRefresh(refreshedToken);
+    }
+}
+```
+
+Declare the service in your app's manifest:
+
+```java
+<service
+    android:name=".MyNotificationPushService">
+    <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+    </intent-filter>
+</service
+```
+
+#### Step 3 - Handle Messages
+
+In your `MyNotificationPushService` service class, override `onMessageReceived()` and call to send received message to the Rainbow SDK.
+
+```java
+public class MyFirebaseMessagingService extends FirebaseMessagingService {
+
+    @Override
+    public void onMessageReceived(RemoteMessage remoteMessage) {
+        notificationHandler.onPushMessageReceived(remoteMessage, this.getApplication(), MainActivity.Class);
+        super.onMessageReceived(message);
+    }
+}
+```
+
+#### Step 4 - Set the firebase service key to Rainbow Hub
+
+In order to have Rainbow handling push notification, you have to upload the **Firebase server key of your application Firebase** project to your **Rainbow application on the Rainbow hub**.
+
+1 - Get the server key on the Firebase site: Go to the [Firebase console](https://console.firebase.google.com/u/0/), click on your project and copy the server key. ![](doc/sdk/reactnative/screenShots/firebase_serverkey.png).
+
+2 - Rainbow hub: Set the server key for Android. Go to the [Rainbow hub](https://hub.openrainbow.com/#/dashboard/overview) and set the server key for your Android application. ![](doc/sdk/reactnative/screenShots/push_key_hub.png)
+
+### iOS Setup
+
+---
+
+#### Step 1 - CREATING IOS CERTIFICATES and ENABLE PUSH WITH RAINBOW SDK
+
+Please follow this instruction in this link [push notification setup](/docs/sdk/ios).
+
+#### Step 2 - For react-native-rainbow-module >= 1.1.0
+
+Because in this version the remote notification message was encrypted, you need to decrypted by following those steps:
+
+-   add [notification services extensions](https://developer.apple.com/documentation/usernotifications/modifying_content_in_newly_delivered_notifications?language=objc) to you project: Select File > New > Target in Xcode > Select the Notification Service Extension target from the iOS > Application section.
+-   specify a name for your extension.
+-   open `Podfile` and add the following:
+
+```
+target 'YOUR_NOTIFICATION_EXTENSION_NAME' do
+  pod 'react-native-rainbow-module', :path => '../..'
+end
+...
+target 'YOUR_APP_NAME' do
+...
+```
+
+then make `pod install` command.
+
+-   open `NotificationService`, add the following code:
+
+\`\`
+
+# import "NotificationService.h"
+
+# import <RNRainbowRn.h> //<--- add this
+
+@interface NotificationService ()
+
+@property (nonatomic, strong) void (^contentHandler)(UNNotificationContent *contentToDeliver); @property (nonatomic, strong) UNMutableNotificationContent*bestAttemptContent;
+
+@end
+
+@implementation NotificationService
+
+-   (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent* \_Nonnull))contentHandler { self.contentHandler = contentHandler; self.bestAttemptContent = \[request.content mutableCopy\];
+
+// Add this following to your file. NSDictionary *userInfo = \_bestAttemptContent.userInfo; // Check if the notification message is encrypted if (\[userInfo valueForKeyPath:@"aps.crypt"\]) { NotificationsManager*rainbowNotificationManager = \[ServicesManager sharedInstance\].notificationsManager; userInfo = \[rainbowNotificationManager decryptNotificationContentWithUserInfo:userInfo\]; \_bestAttemptContent.userInfo = userInfo; // Refill bestAttemptContent with the updated data NSString \*title = \[userInfo valueForKeyPath:@"aps.alert.title"\]; \_bestAttemptContent.title = title; NSString \*body = \[userInfo valueForKeyPath:@"aps.alert.body"\]; \_bestAttemptContent.body = body;
+
+}
+
+// Modify the notification content here... self.bestAttemptContent.title = \[NSString stringWithFormat:@"%@ \[modified\]", self.bestAttemptContent.title\];
+
+self.contentHandler(self.bestAttemptContent); }
+
+-   (void)serviceExtensionTimeWillExpire { // Called just before the extension will be terminated by the system. // Use this as an opportunity to deliver your "best attempt" at modified content, otherwise the original push payload will be used. self.contentHandler(self.bestAttemptContent); }
+
+@end
+
+### On this page
+
+-   [Android setup](/docs/sdk/reactnative/tutorials/EnablePushNotifications#name-android-setup-7)
+-   [Step 1 - Set up firebase cloud messaging](/docs/sdk/reactnative/tutorials/EnablePushNotifications#name-step-1---set-up-firebase-cloud-messaging-11)
+-   [Step 2 - Access the device registration token](/docs/sdk/reactnative/tutorials/EnablePushNotifications#name-step-2---access-the-device-registration-token-20)
+-   [Step 3 - Handle Messages](/docs/sdk/reactnative/tutorials/EnablePushNotifications#name-step-3---handle-messages-31)
+-   [Step 4 - Set the firebase service key to Rainbow Hub](/docs/sdk/reactnative/tutorials/EnablePushNotifications#name-step-4---set-the-firebase-service-key-to-rainbow-hub-38)
+-   [iOS Setup](/docs/sdk/reactnative/tutorials/EnablePushNotifications#name-ios-setup-50)
+-   [Step 1 - CREATING IOS CERTIFICATES and ENABLE PUSH WITH RAINBOW SDK](/docs/sdk/reactnative/tutorials/EnablePushNotifications#name-step-1---creating-ios-certificates-and-enable-push-with-rainbow-sdk-54)
+-   [Step 2 - For react-native-rainbow-module >= 1.1.0](/docs/sdk/reactnative/tutorials/EnablePushNotifications#name-step-2---for-react-native-rainbow-module--1.1.0-60)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

@@ -1,0 +1,1420 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/channel"
+lastSynced: "2026-02-20T07:12:31.728Z"
+---
+# Documentation
+
+Channel
+
+LTS release 2.XPublished on 2025-01-01
+
+## Classes
+
+[Appreciations](#Appreciations)
+
+[Channel](#Channel)
+
+[Channel](#Channel)
+
+## Functions
+
+[updateChannel()](#updateChannel)
+
+This method is used to update a channel from data object
+
+[ChannelFactory()](#ChannelFactory)
+
+This method is used to create a channel from data object
+
+## Appreciations
+
+**Kind**: global class
+
+**Access**: public
+
+---
+
+### Appreciations()
+
+Number of applause, doubt, fantastic, happy and like appreciations for an item
+
+---
+
+## Channel
+
+**Kind**: global class
+
+**Access**: public
+
+-   [Channel](#Channel)
+    -   [Channel()](#new_Channel_new)
+    -   [name](#Channel+name)
+    -   [id](#Channel+id)
+    -   [visibility](#Channel+visibility)
+    -   [topic](#Channel+topic)
+    -   [creatorId](#Channel+creatorId)
+    -   [companyId](#Channel+companyId)
+    -   [creationDate](#Channel+creationDate)
+    -   [type](#Channel+type)
+    -   [users\_count](#Channel+users_count)
+    -   [subscribers\_count](#Channel+subscribers_count)
+    -   [category](#Channel+category)
+    -   [mode](#Channel+mode)
+    -   [max\_items](#Channel+max_items)
+    -   [max\_payload\_size](#Channel+max_payload_size)
+    -   [lastAvatarUpdateDate](#Channel+lastAvatarUpdateDate)
+    -   [avatar](#Channel+avatar)
+    -   [subscribed](#Channel+subscribed)
+    -   [userRole](#Channel+userRole)
+    -   [invited](#Channel+invited)
+    -   [deleted](#Channel+deleted)
+    -   [mute](#Channel+mute)
+    -   [enable\_comments](#Channel+enable_comments)
+    -   [max\_comments](#Channel+max_comments)
+    -   [max\_payload\_comment\_size](#Channel+max_payload_comment_size)
+    -   [additionDate](#Channel+additionDate)
+    -   [lastCheckDate](#Channel+lastCheckDate)
+    -   [max\_payload\_size\_comment](#Channel+max_payload_size_comment)
+
+---
+
+### Channel()
+
+This class is used to represent a channel
+
+---
+
+### channel.name
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+name
+
+`string`
+
+channel name
+
+---
+
+### channel.id
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+id
+
+`string`
+
+channel unique identifier
+
+---
+
+### channel.visibility
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+visibility
+
+`string`
+
+channel type/visibility  
+"private" : a « Pub » channel, only the owner may publish messages.  
+Managed by owner, the only one who can add or remove users in a private channels.  
+Can't be found by search.  
+"company" : « PubSub » channel (company users may join/leave) May be found by search for users in the same company.  
+"public" : « PubSub » public channel. Only allowed users may create a "public" channel. May be found by search for all users.  
+
+---
+
+### channel.topic
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+topic
+
+`string`
+
+channel topic
+
+---
+
+### channel.creatorId
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+creatorId
+
+`string`
+
+the creator rainbow user id
+
+---
+
+### channel.companyId
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+companyId
+
+`string`
+
+the channel rainbow company id
+
+---
+
+### channel.creationDate
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+creationDate
+
+`Date`
+
+creation date of the channel (read only, set automatically during creation)
+
+---
+
+### channel.type
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+type
+
+`string`
+
+type of role of the user : owner / member / publisher
+
+---
+
+### channel.users\_count
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+users\_count
+
+`number`
+
+The number of users in the channel
+
+---
+
+### channel.subscribers\_count
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+subscribers\_count
+
+`number`
+
+The number of subscribers in the channel
+
+---
+
+### channel.category
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+category
+
+`string`
+
+the category channel
+
+---
+
+### channel.mode
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+mode
+
+`string`
+
+the category mode
+
+---
+
+### channel.max\_items
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+max\_items
+
+`number`
+
+max # of items to persist. Default value : 30
+
+---
+
+### channel.max\_payload\_size
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+max\_payload\_size
+
+`number`
+
+max payload size in bytes. Default value : 60000
+
+---
+
+### channel.lastAvatarUpdateDate
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+lastAvatarUpdateDate
+
+`string`
+
+date of last avatar change
+
+---
+
+### channel.avatar
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+avatar
+
+`string`
+
+The path of the channel avatar.
+
+---
+
+### channel.subscribed
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+subscribed
+
+`boolean`
+
+user subscription state
+
+---
+
+### channel.userRole
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+userRole
+
+`string`
+
+the channel affiliation type of the requesting user. Possible values : owner, publisher, member
+
+---
+
+### channel.invited
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+invited
+
+`boolean`
+
+the channel invitation state of the requesting user
+
+---
+
+### channel.deleted
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+deleted
+
+`boolean`
+
+Channel deleted.
+
+---
+
+### channel.mute
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+mute
+
+`boolean`
+
+current mute state
+
+---
+
+### channel.enable\_comments
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+enable\_comments
+
+`boolean`
+
+enable comments for a channel. Default value : true
+
+---
+
+### channel.max\_comments
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+max\_comments
+
+`number`
+
+max # of comments for an item (-1 for infinite). Default value : -1
+
+---
+
+### channel.max\_payload\_comment\_size
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+max\_payload\_comment\_size
+
+`number`
+
+max payload size in bytes for a comment. Default value : 60000
+
+---
+
+### channel.additionDate
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+additionDate
+
+`boolean`
+
+the invitation/membership date
+
+---
+
+### channel.lastCheckDate
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+lastCheckDate
+
+`string`
+
+---
+
+### channel.max\_payload\_size\_comment
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+max\_payload\_size\_comment
+
+`number`
+
+---
+
+## Channel
+
+**Kind**: global class
+
+**this**: [`Channel`](#Channel)
+
+-   [Channel](#Channel)
+    -   [Channel()](#new_Channel_new)
+    -   [name](#Channel+name)
+    -   [id](#Channel+id)
+    -   [visibility](#Channel+visibility)
+    -   [topic](#Channel+topic)
+    -   [creatorId](#Channel+creatorId)
+    -   [companyId](#Channel+companyId)
+    -   [creationDate](#Channel+creationDate)
+    -   [type](#Channel+type)
+    -   [users\_count](#Channel+users_count)
+    -   [subscribers\_count](#Channel+subscribers_count)
+    -   [category](#Channel+category)
+    -   [mode](#Channel+mode)
+    -   [max\_items](#Channel+max_items)
+    -   [max\_payload\_size](#Channel+max_payload_size)
+    -   [lastAvatarUpdateDate](#Channel+lastAvatarUpdateDate)
+    -   [avatar](#Channel+avatar)
+    -   [subscribed](#Channel+subscribed)
+    -   [userRole](#Channel+userRole)
+    -   [invited](#Channel+invited)
+    -   [deleted](#Channel+deleted)
+    -   [mute](#Channel+mute)
+    -   [enable\_comments](#Channel+enable_comments)
+    -   [max\_comments](#Channel+max_comments)
+    -   [max\_payload\_comment\_size](#Channel+max_payload_comment_size)
+    -   [additionDate](#Channel+additionDate)
+    -   [lastCheckDate](#Channel+lastCheckDate)
+    -   [max\_payload\_size\_comment](#Channel+max_payload_size_comment)
+
+---
+
+### Channel()
+
+This class is used to represent a channel
+
+---
+
+### channel.name
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+name
+
+`string`
+
+channel name
+
+---
+
+### channel.id
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+id
+
+`string`
+
+channel unique identifier
+
+---
+
+### channel.visibility
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+visibility
+
+`string`
+
+channel type/visibility  
+"private" : a « Pub » channel, only the owner may publish messages.  
+Managed by owner, the only one who can add or remove users in a private channels.  
+Can't be found by search.  
+"company" : « PubSub » channel (company users may join/leave) May be found by search for users in the same company.  
+"public" : « PubSub » public channel. Only allowed users may create a "public" channel. May be found by search for all users.  
+
+---
+
+### channel.topic
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+topic
+
+`string`
+
+channel topic
+
+---
+
+### channel.creatorId
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+creatorId
+
+`string`
+
+the creator rainbow user id
+
+---
+
+### channel.companyId
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+companyId
+
+`string`
+
+the channel rainbow company id
+
+---
+
+### channel.creationDate
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+creationDate
+
+`Date`
+
+creation date of the channel (read only, set automatically during creation)
+
+---
+
+### channel.type
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+type
+
+`string`
+
+type of role of the user : owner / member / publisher
+
+---
+
+### channel.users\_count
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+users\_count
+
+`number`
+
+The number of users in the channel
+
+---
+
+### channel.subscribers\_count
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+subscribers\_count
+
+`number`
+
+The number of subscribers in the channel
+
+---
+
+### channel.category
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+category
+
+`string`
+
+the category channel
+
+---
+
+### channel.mode
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+mode
+
+`string`
+
+the category mode
+
+---
+
+### channel.max\_items
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+max\_items
+
+`number`
+
+max # of items to persist. Default value : 30
+
+---
+
+### channel.max\_payload\_size
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+max\_payload\_size
+
+`number`
+
+max payload size in bytes. Default value : 60000
+
+---
+
+### channel.lastAvatarUpdateDate
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+lastAvatarUpdateDate
+
+`string`
+
+date of last avatar change
+
+---
+
+### channel.avatar
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+avatar
+
+`string`
+
+The path of the channel avatar.
+
+---
+
+### channel.subscribed
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+subscribed
+
+`boolean`
+
+user subscription state
+
+---
+
+### channel.userRole
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+userRole
+
+`string`
+
+the channel affiliation type of the requesting user. Possible values : owner, publisher, member
+
+---
+
+### channel.invited
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+invited
+
+`boolean`
+
+the channel invitation state of the requesting user
+
+---
+
+### channel.deleted
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+deleted
+
+`boolean`
+
+Channel deleted.
+
+---
+
+### channel.mute
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+mute
+
+`boolean`
+
+current mute state
+
+---
+
+### channel.enable\_comments
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+enable\_comments
+
+`boolean`
+
+enable comments for a channel. Default value : true
+
+---
+
+### channel.max\_comments
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+max\_comments
+
+`number`
+
+max # of comments for an item (-1 for infinite). Default value : -1
+
+---
+
+### channel.max\_payload\_comment\_size
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+max\_payload\_comment\_size
+
+`number`
+
+max payload size in bytes for a comment. Default value : 60000
+
+---
+
+### channel.additionDate
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+additionDate
+
+`boolean`
+
+the invitation/membership date
+
+---
+
+### channel.lastCheckDate
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+lastCheckDate
+
+`string`
+
+---
+
+### channel.max\_payload\_size\_comment
+
+**Kind**: instance property of [`Channel`](#Channel)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+max\_payload\_size\_comment
+
+`number`
+
+---
+
+## Appreciation : `enum`
+
+All Types of Appreciations to be setted on an item
+
+**Kind**: global enum
+
+**Access**: public
+
+**Read only**: true
+
+---
+
+## updateChannel()
+
+This method is used to update a channel from data object
+
+**Kind**: global function
+
+**Access**: public
+
+---
+
+## ChannelFactory()
+
+This method is used to create a channel from data object
+
+**Kind**: global function
+
+**Access**: public
+
+---
+
+### On this page
+
+-   [Classes](/docs/sdk/node#name-classes-0)
+-   [Functions](/docs/sdk/node#name-functions-4)
+-   [Appreciations](/docs/sdk/node#name-appreciations-11)
+-   [Appreciations()](/docs/sdk/node#name-appreciations-24)
+-   [Channel](/docs/sdk/node#name-channel-34)
+-   [Channel()](/docs/sdk/node#name-channel-196)
+-   [channel.name](/docs/sdk/node#name-channel.name-206)
+-   [channel.id](/docs/sdk/node#name-channel.id-250)
+-   [channel.visibility](/docs/sdk/node#name-channel.visibility-294)
+-   [channel.topic](/docs/sdk/node#name-channel.topic-338)
+-   [channel.creatorId](/docs/sdk/node#name-channel.creatorid-382)
+-   [channel.companyId](/docs/sdk/node#name-channel.companyid-426)
+-   [channel.creationDate](/docs/sdk/node#name-channel.creationdate-470)
+-   [channel.type](/docs/sdk/node#name-channel.type-514)
+-   [channel.users\_count](/docs/sdk/node#name-channel.users_count-558)
+-   [channel.subscribers\_count](/docs/sdk/node#name-channel.subscribers_count-602)
+-   [channel.category](/docs/sdk/node#name-channel.category-646)
+-   [channel.mode](/docs/sdk/node#name-channel.mode-690)
+-   [channel.max\_items](/docs/sdk/node#name-channel.max_items-734)
+-   [channel.max\_payload\_size](/docs/sdk/node#name-channel.max_payload_size-778)
+-   [channel.lastAvatarUpdateDate](/docs/sdk/node#name-channel.lastavatarupdatedate-822)
+-   [channel.avatar](/docs/sdk/node#name-channel.avatar-866)
+-   [channel.subscribed](/docs/sdk/node#name-channel.subscribed-910)
+-   [channel.userRole](/docs/sdk/node#name-channel.userrole-954)
+-   [channel.invited](/docs/sdk/node#name-channel.invited-998)
+-   [channel.deleted](/docs/sdk/node#name-channel.deleted-1042)
+-   [channel.mute](/docs/sdk/node#name-channel.mute-1086)
+-   [channel.enable\_comments](/docs/sdk/node#name-channel.enable_comments-1130)
+-   [channel.max\_comments](/docs/sdk/node#name-channel.max_comments-1174)
+-   [channel.max\_payload\_comment\_size](/docs/sdk/node#name-channel.max_payload_comment_size-1218)
+-   [channel.additionDate](/docs/sdk/node#name-channel.additiondate-1262)
+-   [channel.lastCheckDate](/docs/sdk/node#name-channel.lastcheckdate-1306)
+-   [channel.max\_payload\_size\_comment](/docs/sdk/node#name-channel.max_payload_size_comment-1344)
+-   [Channel](/docs/sdk/node#name-channel-1382)
+-   [Channel()](/docs/sdk/node#name-channel-1544)
+-   [channel.name](/docs/sdk/node#name-channel.name-1554)
+-   [channel.id](/docs/sdk/node#name-channel.id-1598)
+-   [channel.visibility](/docs/sdk/node#name-channel.visibility-1642)
+-   [channel.topic](/docs/sdk/node#name-channel.topic-1686)
+-   [channel.creatorId](/docs/sdk/node#name-channel.creatorid-1730)
+-   [channel.companyId](/docs/sdk/node#name-channel.companyid-1774)
+-   [channel.creationDate](/docs/sdk/node#name-channel.creationdate-1818)
+-   [channel.type](/docs/sdk/node#name-channel.type-1862)
+-   [channel.users\_count](/docs/sdk/node#name-channel.users_count-1906)
+-   [channel.subscribers\_count](/docs/sdk/node#name-channel.subscribers_count-1950)
+-   [channel.category](/docs/sdk/node#name-channel.category-1994)
+-   [channel.mode](/docs/sdk/node#name-channel.mode-2038)
+-   [channel.max\_items](/docs/sdk/node#name-channel.max_items-2082)
+-   [channel.max\_payload\_size](/docs/sdk/node#name-channel.max_payload_size-2126)
+-   [channel.lastAvatarUpdateDate](/docs/sdk/node#name-channel.lastavatarupdatedate-2170)
+-   [channel.avatar](/docs/sdk/node#name-channel.avatar-2214)
+-   [channel.subscribed](/docs/sdk/node#name-channel.subscribed-2258)
+-   [channel.userRole](/docs/sdk/node#name-channel.userrole-2302)
+-   [channel.invited](/docs/sdk/node#name-channel.invited-2346)
+-   [channel.deleted](/docs/sdk/node#name-channel.deleted-2390)
+-   [channel.mute](/docs/sdk/node#name-channel.mute-2434)
+-   [channel.enable\_comments](/docs/sdk/node#name-channel.enable_comments-2478)
+-   [channel.max\_comments](/docs/sdk/node#name-channel.max_comments-2522)
+-   [channel.max\_payload\_comment\_size](/docs/sdk/node#name-channel.max_payload_comment_size-2566)
+-   [channel.additionDate](/docs/sdk/node#name-channel.additiondate-2610)
+-   [channel.lastCheckDate](/docs/sdk/node#name-channel.lastcheckdate-2654)
+-   [channel.max\_payload\_size\_comment](/docs/sdk/node#name-channel.max_payload_size_comment-2692)
+-   [Appreciation : enum](/docs/sdk/node#name-appreciation-:-enum-2730)
+-   [updateChannel()](/docs/sdk/node#name-updatechannel-2749)
+-   [ChannelFactory()](/docs/sdk/node#name-channelfactory-2765)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

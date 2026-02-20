@@ -1,0 +1,234 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/ios/lts/guides/Push_notifications_setup"
+lastSynced: "2026-02-20T07:12:29.502Z"
+---
+# Documentation
+
+Push notifications setup
+
+LTS release 2.13.0Published on 2025-03-07
+
+## Push notifications setup
+
+---
+
+### Creating iOS certificates
+
+Before creating the certificates you must have an Apple account and enroll the Apple Developer Program. It is required to configure push notifications as you will need a push notification certificate for your App ID.
+
+#### Development and Production push notification certificates
+
+1.  Go to Apple developer portal and click on App IDs in the Identifiers category on the left.
+    
+2.  Select your App ID and click on Edit button at the end of the App Services section to enable push notifications service for this App ID. ![](https://sdk.openrainbow.io/ios/docs/assets/push-enable-service.png)
+    
+3.  Create a development or production SSL certificate for push by following process given by Apple.
+    
+4.  Read the information and follow the instructions to create a CSR using Keychain Access in macOS.
+    
+5.  When you have the CSR file return to the developer portal with your web browser and click Continue.
+    
+6.  Select the CSR file you just created and saved and click Continue.
+    
+7.  Click Download to download the certificate (give it the **aps.cer** name).
+    
+8.  Open the downloaded certificate file (it should automatically be opened in Keychain Access, otherwise open it manually in Keychain Access).
+    
+9.  Find the certificate you just opened/imported in Keychain Access and expand the certificate to show the Private Key.
+    
+10.  Export the certificate from the keychain and save it with a specific name for production or development, for example **rainbow-production-cert.p12** or **rainbow-development-cert.p12**. (right click, export and enter your password)
+     
+11.  Expend the certificate and export the private key associated to this certificate, for example **rainbow-production-key.p12** or **rainbow-development-key.p12**. (right click, export and enter your password)
+     
+12.  These files need to be converted to the PEM format by executing these commands from the terminal (Please always enter a passphrase and replace the correct file name for production or development):
+     
+     ```bash
+     $ openssl pkcs12 -clcerts -nokeys -out rainbow-production-cert.pem -in rainbow-production-cert.p12
+     $ openssl pkcs12 -nocerts -out rainbow-production-key.pem -in rainbow-production-key.p12
+     ```
+     
+13.  Remove the passphrase from the PEM file key :
+     
+     ```bash
+     $ openssl rsa -in rainbow-production-key.pem -out rainbow-production-key-noenc.pem
+     ```
+     
+
+14.  Combine the key and cert files into a cert-production.pem :
+     
+     ```bash
+     $ cat rainbow-production-cert.pem rainbow-production-key-noenc.pem > cert-production.pem
+     ```
+     
+
+15.  Upload the **cert-production.pem** file with [Rainbow CLI](/docs/sdk/cli/tutorials/Managing_applications) or directly by using your developer dashboard on [Rainbow Hub](/). For the Rainbow Sandbox certificate repeat all commands from step 12 to create your **cert-development.pem**
+
+#### VoIP Services certificate
+
+1.  Go to Apple developer portal and click on All in the Certificates category on the left.
+    
+2.  Click the Add button (+) in the upper-right corner.
+    
+3.  Select VoIP Services Certificate under Production section and click Continue.
+    
+4.  Select an App ID for your VoIP Service Certificate and click Continue.
+    
+5.  Read the information and follow the instructions to create a CSR using Keychain Access in macOS.
+    
+6.  When you have the CSR file return to the developer portal with your web browser and click Continue.
+    
+7.  Select the CSR file you just created and saved and click Continue.
+    
+8.  Click Download to download the certificate (give it the **voip\_services.cer** name).
+    
+9.  Open the downloaded certificate file (it should automatically be opened in Keychain Access, otherwise open it manually in Keychain Access).
+    
+10.  Find the certificate you just opened/imported in Keychain Access and expand the certificate to show the Private Key.
+     
+11.  Export the certificate from the keychain and save it with a specific name for production or development, for example **rainbow-voip-cert.p12**. (right click, export and enter your password)
+     
+12.  Expend the certificate and export the private key associated to this certificate, for example **rainbow-voip-key.p12**. (right click, export and enter your password)
+     
+13.  These files need to be converted to the PEM format by executing these commands from the terminal (Please always enter a passphrase):
+     
+     ```bash
+     $ openssl pkcs12 -clcerts -nokeys -out rainbow-voip-cert.pem -in rainbow-voip-cert.p12
+     $ openssl pkcs12 -nocerts -out rainbow-voip-key.pem -in rainbow-voip-key.p12
+     ```
+     
+14.  Remove the passphrase from the PEM file key :
+     
+     ```bash
+     $ openssl rsa -in rainbow-voip-key.pem -out rainbow-voip-key-noenc.pem
+     ```
+     
+15.  Combine the key and cert files into a rainbow-voip.pem :
+     
+     ```bash
+     $ cat rainbow-voip-cert.pem rainbow-voip-key-noenc.pem > rainbow-voip.pem
+     ```
+     
+16.  Upload the **rainbow-voip.pem** file with [Rainbow CLI](/docs/sdk/cli/tutorials/Managing_applications) or directly by using your developer dashboard on [Rainbow Hub](/).
+     
+
+### Enable push with Rainbow SDK
+
+1.  Enable push notification in project capabilities
+    
+2.  Set debug mode for sandbox APNs to indicated in which environment your app is build, otherwise the push will not be available on the Rainbow sandbox during the development if you are using HTTP/2 based push notifications certificate (APNS v2).
+    
+
+```
+```objectivec
+#if DEBUG
+// Set sandbox APNs
+[[ServicesManager sharedInstance].notificationsManager useSandboxAPNs:YES];
+#endif
+```
+```
+
+3.  In your code ask to the user the authorisation to use Push by adding the following code :
+    
+    ```objectivec
+    [[ServicesManager sharedInstance].notificationsManager  registerForUserNotificationsSettings];
+    ```
+    -   This code will register the UIUserNotificationActions needed by Rainbow.
+        
+    -   The first time you execute this code, Apple will automatically trigger a notification to the user to got his authorisation, `didRegisterUserNotificationSettings` delegate is trigger on user acceptation.
+        
+4.  Monitor delegates
+    
+    -   On user acceptation this delegate will be triggered, you must request to the iOS platform a push token and give it to Rainbow SDK.
+    
+    ```objectivec
+    -(void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+            // Request for push token
+            [[UIApplication sharedApplication] registerForRemoteNotifications];
+    }
+    ```
+    
+    -   Delegate invoked when the push token is generated by iOS platform
+    
+    ```objectivec
+    -(void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+            [[ServicesManager sharedInstance].notificationsManager didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+    }
+    
+    
+    -(void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+            NSLog(@"User refuse to enable push notification");
+    }
+    ```
+    
+    -   Those delegates can be invoked (based on the iOS platform version) when a push notification is received and clicked by the user, you must send the received information from notification to Rainbow SDK.
+    
+    ```objectivec
+    -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *) userInfo fetchCompletionHandler:(nonnull void (^)(UIBackgroundFetchResult))completionHandler {
+            [[ServicesManager sharedInstance].notificationsManager didReceiveNotificationWithUserInfo:userInfo];
+            completionHandler(UIBackgroundFetchResultNoData);
+     }
+    
+     -(void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void(^)())completionHandler {
+            [[ServicesManager sharedInstance].notificationsManager handleNotificationWithIdentifier:identifier withUserInfo:userInfo withResponseInformation:nil];
+            completionHandler();
+     }
+    ```
+    
+5.  Give your app id and secret key to RainbowSDK
+    
+    -   This method must be invoked before calling `[[ServicesManager sharedInstance].loginManager connect]` method we recommand to add it into the delegate `application:didFinishLaunchingWithOptions`
+    
+    ```objectivec
+    [[ServicesManager sharedInstance] setAppID:@"MyAppID" secretKey:@"MyToken"];
+    ```
+    
+
+### Enable push for VoIP calls
+
+1.  Enable Background Modes capabilities in your project
+    
+2.  Edit the Info.plist file, to add the voip into your application
+    
+    -   Search "Required background modes" section, add a new item, and type as value `voip`
+3.  Request your user access to his microphone
+    
+    -   Add in your Info.plist, the Privacy information for microphone access
+    -   Create a new entry in the root of yor plist, search for an entry called `Privacy - Microphone Usage Description`
+    -   And set the value explaining what you will do with the microphone `Rainbow needs access to your microphone to allow calls`
+    -   Now request the user is authorization to use microphone
+    
+    ```objectivec
+    [[ServicesManager sharedInstance].rtcService requestMicrophoneAccess];
+    ```
+    
+4.  Configure CallKit and Rainbow SDK with your audio file
+    
+    -   Rainbow SDK needs to known which audio file must be played for incoming calls, outgoings call and for hangup
+    -   Supported audio file types are MP3 or wav files
+    
+    ```objectivec
+    [[ServicesManager sharedInstance].rtcService startCallKitWithIncomingSoundName:@"incoming-call.mp3" iconTemplate:@"logo"];
+    [ServicesManager sharedInstance].rtcService.appSoundOutgoingCall = @"outgoing-rings.mp3";
+    [ServicesManager sharedInstance].rtcService.appSoundHangup = @"hangup.wav";
+    ```
+    
+
+The icon image should be a square with side length of 40 points. The alpha channel of the image is used to create a white image mask, which is used in the system native in-call UI for the button which takes the user from this system UI to the 3rd-party app.
+
+### On this page
+
+-   [Push notifications setup](/docs/sdk/ios#name-push-notifications-setup-0)
+-   [Creating iOS certificates](/docs/sdk/ios#name-creating-ios-certificates-4)
+-   [Development and Production push notification certificates](/docs/sdk/ios#name-development-and-production-push-notification-certificates-10)
+-   [VoIP Services certificate](/docs/sdk/ios#name-voip-services-certificate-97)
+-   [Enable push with Rainbow SDK](/docs/sdk/ios#name-enable-push-with-rainbow-sdk-185)
+-   [Enable push for VoIP calls](/docs/sdk/ios#name-enable-push-for-voip-calls-263)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

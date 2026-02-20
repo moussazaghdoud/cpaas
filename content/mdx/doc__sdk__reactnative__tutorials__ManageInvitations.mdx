@@ -1,0 +1,187 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/tutorials/ManageInvitations"
+lastSynced: "2026-02-20T07:12:33.710Z"
+---
+# Documentation
+
+Manage Invitations
+
+# Managing Invitations
+
+---
+
+### Overview
+
+The Rainbow SDK allows you to manage social invitations, which are the primary way users connect and build their network. This feature is essential for creating a collaborative and interactive experience in your application.
+
+### Core Functionalities
+
+The invitation system is built around a few key concepts:
+
+-   **Fetching Invitations**: You can retrieve lists of both sent and received invitations for the logged-in user.
+-   **Responding to Received Invitations**: When a user receives an invitation from another person, your application can allow them to either **accept** it, adding the person to their contacts, or **decline** it.
+-   **Managing Sent Invitations**: For invitations the user has sent, they can choose to **cancel** the invitation before it's accepted or **resend** it if needed.
+-   **Custom UI Components**: The SDK provides flexible UI components to display and manage invitations in your app's interface.
+
+### How It Works
+
+Like other features in the SDK, the invitation system is asynchronous. You will dispatch an action (like accepting an invitation) and then listen for events to know when the action is complete and to receive updated lists of invitations. This ensures your app's UI stays fast and responsive.
+
+## UI Components
+
+### InvitationCard Component
+
+The `InvitationCard` is a flexible UI component that displays a single invitation with appropriate actions based on the invitation type (received or sent). It's perfect for when you need more control over the invitation UI than what the `BubbleInvitations` component provides.
+
+#### Props
+
+Prop
+
+Type
+
+Required
+
+Description
+
+`invitation`
+
+`IInvitation`
+
+Yes
+
+The invitation object to display
+
+`onAccept`
+
+`(invitation: IInvitation) => void`
+
+No
+
+Callback when the accept button is pressed (for received invitations)
+
+`onDecline`
+
+`(invitation: IInvitation) => void`
+
+No
+
+Callback when the decline button is pressed (for received invitations)
+
+`onCancel`
+
+`(invitation: IInvitation) => void`
+
+No
+
+Callback when the cancel button is pressed (for sent invitations)
+
+`onResend`
+
+`(invitation: IInvitation) => void`
+
+No
+
+Callback when the resend button is pressed (for sent invitations)
+
+#### Example Usage
+
+```tsx
+import { InvitationCard } from 'react-native-rainbow-module';
+
+const InvitationList = ({ invitations, onAccept, onDecline, onCancel, onResend }) => {
+  return (
+    <FlatList
+      data={invitations}
+      keyExtractor={(item) => item.id}
+      renderItem={({ invitation }) => (
+        <InvitationCard
+          invitation={invitation}
+          onAccept={ onAccept(invitation)}
+          onDecline={onDecline(invitation)}
+          onCancel={onCancel(invitation)}
+          onResend={onResend(invitation)}
+        />
+      )}
+    />
+  );
+};
+```
+
+### BubbleInvitations Component
+
+For a complete out-of-the-box solution for managing bubble invitations, you can use the `BubbleInvitations` component.
+
+#### Implementation
+
+```tsx
+import { BubbleInvitations } from 'react-native-rainbow-module';
+
+export const BubbleInvitationsComponent: FunctionComponent = () => {
+    return <BubbleInvitations />;
+}
+```
+
+#### Features
+
+-   **View Received Invitations**: See all pending bubble invitations in one place
+-   **Accept/Decline**: Easily accept or decline bubble invitations with built-in UI
+-   **Real-time Updates**: The component automatically updates to reflect the current state of invitations
+
+## Programmatic Invitation Management
+
+For more control over the invitation flow, you can use the Invitation Services API directly. This allows you to:
+
+-   Fetch the list of received and sent invitations
+-   Accept or decline received invitations
+-   Cancel or resend sent invitations
+-   Listen for invitation-related events
+
+### Example: Handling Invitations Programmatically
+
+```tsx
+import { InvitationServices } from 'react-native-rainbow-module';
+
+// Fetch all invitations
+const invitations = await InvitationServices.getInvitations();
+
+// Accept an invitation
+await InvitationServices.acceptInvitation(invitationId);
+
+// Listen for invitation updates
+const subscription = EventEmitter.addListener(EventType.InvitationUpdate, (event) => {
+  console.log('Invitation updated:', event);
+  // Update your UI accordingly
+});
+
+// Don't forget to clean up
+subscription.remove();
+```
+
+## Next Steps
+
+For detailed API reference and additional customization options, please refer to the **[Invitation Services API Reference](/docs/sdk/reactnative/api/InvitationServices)**.
+
+### On this page
+
+-   [Overview](/docs/sdk/reactnative/tutorials/ManageInvitations#name-overview-4)
+-   [Core Functionalities](/docs/sdk/reactnative/tutorials/ManageInvitations#name-core-functionalities-10)
+-   [How It Works](/docs/sdk/reactnative/tutorials/ManageInvitations#name-how-it-works-38)
+-   [UI Components](/docs/sdk/reactnative/tutorials/ManageInvitations#name-ui-components-44)
+-   [InvitationCard Component](/docs/sdk/reactnative/tutorials/ManageInvitations#name-invitationcard-component-47)
+-   [Props](/docs/sdk/reactnative/tutorials/ManageInvitations#name-props-53)
+-   [Example Usage](/docs/sdk/reactnative/tutorials/ManageInvitations#name-example-usage-146)
+-   [BubbleInvitations Component](/docs/sdk/reactnative/tutorials/ManageInvitations#name-bubbleinvitations-component-150)
+-   [Implementation](/docs/sdk/reactnative/tutorials/ManageInvitations#name-implementation-156)
+-   [Features](/docs/sdk/reactnative/tutorials/ManageInvitations#name-features-160)
+-   [Programmatic Invitation Management](/docs/sdk/reactnative/tutorials/ManageInvitations#name-programmatic-invitation-management-180)
+-   [Example: Handling Invitations Programmatically](/docs/sdk/reactnative/tutorials/ManageInvitations#name-example:-handling-invitations-programmatically-208)
+-   [Next Steps](/docs/sdk/reactnative/tutorials/ManageInvitations#name-next-steps-212)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

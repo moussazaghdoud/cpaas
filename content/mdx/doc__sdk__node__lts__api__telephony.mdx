@@ -1,0 +1,1280 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/telephony"
+lastSynced: "2026-02-20T07:12:32.784Z"
+---
+# Documentation
+
+Telephony Service
+
+LTS release 2.XPublished on 2025-01-01
+
+## TelephonyService
+
+This services manages PBX phone calls in a conversation. so it manages PBX calls between your PABX associated phone and a recipient's phone. If you don't have this service activated for your Rainbow user, all these methods will return an error when called.  
+  
+The main methods and events proposed in that service allow to:  
+\- Know if this service is activated or not for the connected user,  
+\- Know the version of the agent (deployed on the PBX) that monitors your line,  
+\- Handle the basic telephony services: Make a call, take a call, hold a call, retrieve a call and release a call,  
+\- Listen to the call state change  
+  
+Depending the agent version deployed, some services can return an error (unavailable service) when called  
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [TelephonyService](#module_TelephonyService)
+    -   *Telephony CALL*
+        -   [getVoiceMessageCounter()](#module_TelephonyService+getVoiceMessageCounter) ⇒ `Promise.<integer>`
+        -   [getCallToHangOut()](#module_TelephonyService+getCallToHangOut) ⇒ `Call`
+        -   [getActiveCall()](#module_TelephonyService+getActiveCall) ⇒ `Call`
+        -   [getActiveCalls()](#module_TelephonyService+getActiveCalls) ⇒ `Call`
+        -   [getCalls()](#module_TelephonyService+getCalls) ⇒ `Call`
+        -   [getCallsSize()](#module_TelephonyService+getCallsSize) ⇒ `Call`
+        -   [getActiveCall(contact)](#module_TelephonyService+getActiveCall) ⇒ `Call`
+        -   [makeCall(contact, phoneNumber, correlatorData)](#module_TelephonyService+makeCall) ⇒ `Promise.<Call>`
+        -   [makeCall(phoneNumber, correlatorData)](#module_TelephonyService+makeCall) ⇒ `Promise.<Call>`
+        -   [releaseCall(call)](#module_TelephonyService+releaseCall) ⇒ `Promise.<Call>`
+        -   [answerCall(call)](#module_TelephonyService+answerCall) ⇒ `Promise.<Call>`
+        -   [holdCall(call)](#module_TelephonyService+holdCall) ⇒ `Call`
+        -   [retrieveCall(call)](#module_TelephonyService+retrieveCall) ⇒ `Promise.<Call>`
+        -   [deflectCallToVM(call)](#module_TelephonyService+deflectCallToVM) ⇒ `Promise`
+        -   [deflectCall(call, callee)](#module_TelephonyService+deflectCall) ⇒ `Promise`
+        -   [transfertCall(activeCall, heldCall)](#module_TelephonyService+transfertCall) ⇒ `Promise`
+        -   [conferenceCall(activeCall, heldCall)](#module_TelephonyService+conferenceCall) ⇒ `Promise`
+        -   [forwardToDevice(phoneNumber)](#module_TelephonyService+forwardToDevice) ⇒ `Promise`
+        -   [forwardToVoicemail()](#module_TelephonyService+forwardToVoicemail) ⇒ `Promise`
+        -   [cancelForward()](#module_TelephonyService+cancelForward) ⇒ `Promise.<Call>`
+        -   [sendDtmf(connectionId, dtmf)](#module_TelephonyService+sendDtmf) ⇒ `Promise`
+        -   [logon(endpointTel, agentId, password, groupId)](#module_TelephonyService+logon) ⇒ `Promise`
+        -   [logoff(endpointTel, agentId, password, groupId)](#module_TelephonyService+logoff) ⇒ `Promise`
+        -   [withdrawal(agentId, groupId, status)](#module_TelephonyService+withdrawal) ⇒ `Promise`
+        -   [wrapup(agentId, groupId, password, status)](#module_TelephonyService+wrapup) ⇒ `Promise`
+    -   *Telephony MANAGEMENT*
+        -   [isTelephonyAvailable()](#module_TelephonyService+isTelephonyAvailable) ⇒ `boolean`
+        -   [getAgentVersion()](#module_TelephonyService+getAgentVersion) ⇒ `string`
+        -   [getXMPPAgentStatus()](#module_TelephonyService+getXMPPAgentStatus) ⇒ `string`
+        -   [getPhoneAPIStatus()](#module_TelephonyService+getPhoneAPIStatus) ⇒ `string`
+        -   [getMediaPillarInfo()](#module_TelephonyService+getMediaPillarInfo) ⇒ `Promise.<any>`
+    -   *Telephony NOMADIC*
+        -   [getNomadicStatus()](#module_TelephonyService+getNomadicStatus) ⇒ `Promise`
+    -   *Telephony Voice Messages*
+        -   [deleteAllMyVoiceMessagesFromPbx()](#module_TelephonyService+deleteAllMyVoiceMessagesFromPbx) ⇒ `Promise`
+        -   [deleteAVoiceMessageFromPbx(messageId)](#module_TelephonyService+deleteAVoiceMessageFromPbx) ⇒ `Promise`
+        -   [getAVoiceMessageFromPbx(messageId, messageDate, messageFrom)](#module_TelephonyService+getAVoiceMessageFromPbx) ⇒ `Promise`
+        -   [getDetailedListOfVoiceMessages()](#module_TelephonyService+getDetailedListOfVoiceMessages) ⇒ `Promise`
+        -   [getNumbersOfVoiceMessages()](#module_TelephonyService+getNumbersOfVoiceMessages) ⇒ `Promise`
+
+---
+
+### telephonyService.getVoiceMessageCounter() ⇒ `Promise.<integer>`
+
+Get the number of voice message  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise.<integer>` - Return resolved promise if succeed with the number of messages, and a rejected else.
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### telephonyService.getCallToHangOut() ⇒ `Call`
+
+Get the call which can be hang out  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Call` - The call with the ability to be hang out.
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### telephonyService.getActiveCall() ⇒ `Call`
+
+get the active call  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Call` - The active call
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### telephonyService.getActiveCalls() ⇒ `Call`
+
+get active calls  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Call` - The active call
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### telephonyService.getCalls() ⇒ `Call`
+
+get calls  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Call` - The calls
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### telephonyService.getCallsSize() ⇒ `Call`
+
+get calls tab size. Warning do not use length on the getCalls method result because it is the last index id +1  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Call` - The calls tab size
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### telephonyService.getActiveCall(contact) ⇒ `Call`
+
+get the active call for a contact  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Call` - The active call
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+contact
+
+`Contact`
+
+The contact with an active call with us.
+
+---
+
+### telephonyService.makeCall(contact, phoneNumber, correlatorData) ⇒ `Promise.<Call>`
+
+Call a number  
+Contacts and numbers are allowed  
+Return a promise  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise.<Call>` - Return a promise with the call created
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+contact
+
+`Contact`
+
+contact object that you want to call
+
+phoneNumber
+
+`String`
+
+The number to call
+
+correlatorData
+
+`String`
+
+contains User-to-User information to be sent out as a SIP header via underlying PBX trunk for a given call
+
+---
+
+### telephonyService.makeCall(phoneNumber, correlatorData) ⇒ `Promise.<Call>`
+
+Call a number  
+Return a promise  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise.<Call>` - Return a promise with the call created
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+phoneNumber
+
+`String`
+
+The number to call
+
+correlatorData
+
+`String`
+
+contains User-to-User information to be sent out as a SIP header via underlying PBX trunk for a given call
+
+---
+
+### telephonyService.releaseCall(call) ⇒ `Promise.<Call>`
+
+Release a call  
+Return a promise  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise.<Call>` - Return a promise with the call released
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+call
+
+`Call`
+
+The call to release
+
+---
+
+### telephonyService.answerCall(call) ⇒ `Promise.<Call>`
+
+Answer a call  
+Return a promise  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise.<Call>` - Return a promise with the answered call.
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+call
+
+`Call`
+
+The call to answer
+
+---
+
+### telephonyService.holdCall(call) ⇒ `Call`
+
+Hold a call  
+Return a promise  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Call` - Return a promise with the held call.
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+call
+
+`Call`
+
+The call to hold
+
+---
+
+### telephonyService.retrieveCall(call) ⇒ `Promise.<Call>`
+
+Retrieve a call  
+Return a promise  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise.<Call>` - Return a promise with the call retrieved
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+call
+
+`Call`
+
+The call to retrieve
+
+---
+
+### telephonyService.deflectCallToVM(call) ⇒ `Promise`
+
+Deflect a call to the voice mail  
+Return a promise  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise` - Return resolved promise if succeed, and a rejected else.
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+call
+
+`Call`
+
+The call to deflect
+
+---
+
+### telephonyService.deflectCall(call, callee) ⇒ `Promise`
+
+Deflect a call to an other telephone number  
+Return a promise  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise` - Return resolved promise if succeed, and a rejected else.
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+call
+
+`Call`
+
+The call to deflect
+
+callee
+
+`Object`
+
+The callee phone number informations where the call shopuld be deflecte'd.
+
+callee.calleeExtNumber
+
+`string`
+
+: The phone number where the call is deflected, the format could be anything the user can type, it will be transformed in E164 format.,
+
+callee.calleeIntNumber
+
+`string`
+
+: Internal number if available,
+
+callee.calleePbxId
+
+`string`
+
+: The pbx id if available,
+
+\[callee.calleeShortNumber\]
+
+`string`
+
+: Short number,
+
+\[callee.calleeDisplayName\]
+
+`string`
+
+: The displayed name,
+
+\[callee.calleeCountry\]
+
+`string`
+
+: The contry whe the call will be deflected.
+
+---
+
+### telephonyService.transfertCall(activeCall, heldCall) ⇒ `Promise`
+
+Transfer a held call to the active call  
+User should have transfer rights  
+Return a promise  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise` - Return resolved promise if succeed, and a rejected else.
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+activeCall
+
+`Call`
+
+The active call
+
+heldCall
+
+`Call`
+
+The held call to transfer to the activeCall
+
+---
+
+### telephonyService.conferenceCall(activeCall, heldCall) ⇒ `Promise`
+
+Create a conference with a held call and the active call  
+User should have conference rights  
+Return a promise  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise` - Return a resolved promise .
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+activeCall
+
+`Call`
+
+The active call
+
+heldCall
+
+`Call`
+
+The held call to transfer to the activeCall
+
+---
+
+### telephonyService.forwardToDevice(phoneNumber) ⇒ `Promise`
+
+Activate the forward to a number  
+Return a promise  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise` - Return a promise resolved.
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+phoneNumber
+
+`String`
+
+The number to call
+
+---
+
+### telephonyService.forwardToVoicemail() ⇒ `Promise`
+
+Activate the forward to VM  
+Return a promise  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise` - Return a promise resolved.
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### telephonyService.cancelForward() ⇒ `Promise.<Call>`
+
+Cancel the forward  
+Return a promise  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise.<Call>` - Return a promise with the canceled forward call.
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### telephonyService.sendDtmf(connectionId, dtmf) ⇒ `Promise`
+
+send dtmf to the remote party  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise` - Return resolved promise if succeed, and a rejected else.
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+connectionId
+
+`string`
+
+dtmf
+
+`string`
+
+---
+
+### telephonyService.logon(endpointTel, agentId, password, groupId) ⇒ `Promise`
+
+This api allows an CCD Agent to logon into the CCD system.  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise` - Return resolved promise if succeed, and a rejected else.
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+endpointTel
+
+`String`
+
+The endpoint device phone number.
+
+agentId
+
+`String`
+
+optionnel CCD Agent identifier (agent device number).
+
+password
+
+`String`
+
+optionnel Password or authorization code.
+
+groupId
+
+`String`
+
+optionnel CCD Agent's group number
+
+---
+
+### telephonyService.logoff(endpointTel, agentId, password, groupId) ⇒ `Promise`
+
+This api allows an CCD Agent logoff logon from the CCD system.  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise` - Return resolved promise if succeed, and a rejected else.
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+endpointTel
+
+`String`
+
+The endpoint device phone number.
+
+agentId
+
+`String`
+
+optionnel CCD Agent identifier (agent device number).
+
+password
+
+`String`
+
+optionnel Password or authorization code.
+
+groupId
+
+`String`
+
+optionnel CCD Agent's group number
+
+---
+
+### telephonyService.withdrawal(agentId, groupId, status) ⇒ `Promise`
+
+This api allows an CCD Agent to change to the state 'Not Ready' on the CCD system. When the parameter 'status' is passed and has the value 'off', the state is changed to 'Ready'  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise` - Return resolved promise if succeed, and a rejected else.
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+agentId
+
+`String`
+
+optionnel CCD Agent identifier (agent device number).
+
+groupId
+
+`String`
+
+optionnel CCD Agent's group number
+
+status
+
+`String`
+
+optionnel Used to deactivate the withdrawal state. Values: 'on', 'off'; 'on' is optional.
+
+---
+
+### telephonyService.wrapup(agentId, groupId, password, status) ⇒ `Promise`
+
+This api allows an CCD Agent to change to the state Working After Call in the CCD system. When the parameter 'status' is passed and has the value 'off', the state is changed to 'Ready'.  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise` - Return resolved promise if succeed, and a rejected else.
+
+**Category**: Telephony CALL
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+agentId
+
+`String`
+
+CCD Agent identifier (agent device number).
+
+groupId
+
+`String`
+
+CCD Agent's group number
+
+password
+
+`String`
+
+optionnel Password or authorization code.
+
+status
+
+`String`
+
+optionnel Used to deactivate the WrapUp state. Values: 'on', 'off'; 'on' is optional.
+
+---
+
+### telephonyService.isTelephonyAvailable() ⇒ `boolean`
+
+Check if the telephony service can be used or not (if the connected user has a phone monitored by a PBX)  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `boolean` - Return true if the telephony service is configured
+
+**Category**: Telephony MANAGEMENT
+
+**Access**: public
+
+---
+
+### telephonyService.getAgentVersion() ⇒ `string`
+
+Get the associated PBX agent version  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `string` - Return the version of the agent or "unknown"
+
+**Category**: Telephony MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### telephonyService.getXMPPAgentStatus() ⇒ `string`
+
+Get the status of the XMPP connection to the PBX Agent  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `string` - Return the status of the connections to the agent or "unknown"
+
+**Category**: Telephony MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### telephonyService.getPhoneAPIStatus() ⇒ `string`
+
+Get the status of the Phone API status for the PBX Agent  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `string` - Return the Phone API status for to this Agent or "unknown"
+
+**Category**: Telephony MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### telephonyService.getMediaPillarInfo() ⇒ `Promise.<any>`
+
+This API allows user to retrieve the Jabber id of the Media Pillar linked to the system he belongs, or Media Pillar user to retrieve the Jabber id credentials and data of the Media Pillar he belongs.  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Category**: Telephony MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### telephonyService.getNomadicStatus() ⇒ `Promise`
+
+This api allows to get the nomadic status.  
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise` - Return resolved promise if succeed, and a rejected else.
+
+**Category**: Telephony NOMADIC
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### telephonyService.deleteAllMyVoiceMessagesFromPbx() ⇒ `Promise`
+
+This api allows to Delete all user's present (read and unread) voice messages from the Pbx.  
+This command is to be used to remove all read and unread messages for one user, on the pbx side, it has no effect on the file storage side.  
+Do not use this API command to delete the voice messages file from the file storage.  
+
+return :
+
+Champ
+
+Type
+
+Description
+
+status
+
+String
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise` - Return resolved promise if succeed, and a rejected else.
+
+**Category**: Telephony Voice Messages
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### telephonyService.deleteAVoiceMessageFromPbx(messageId) ⇒ `Promise`
+
+This api allows to Delete a voice message from the Pbx, using it's unique identifier (messageId), which is the one given in the messages list.  
+This command is to be used to remove the message on the pbx side; it has no effect on the file storage side.  
+Do not use this API command to delete the voice message file from the file storage.  
+
+return :
+
+Champ
+
+Type
+
+Description
+
+status
+
+String
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise` - Return resolved promise if succeed, and a rejected else.
+
+**Category**: Telephony Voice Messages
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+messageId
+
+`string`
+
+The message Id
+
+---
+
+### telephonyService.getAVoiceMessageFromPbx(messageId, messageDate, messageFrom) ⇒ `Promise`
+
+This api allows to Get a voice message from the Pbx, using it's unique identifier (messageId), which is the one given in the messages list.  
+But, in order to build a proper file name, we also need the message's creation date (ISO 8601) and the distant user's phone number.  
+Initialy all voice messages are stored in the pbx, therefore they have to be transfered to Rainbow server before being given to the asking client.  
+The positive acknowledged of this request only signifies that the pbx has accepted the download request. The client will be informed further once the message is available on file storage server. In the case the file transfer should fail, the client will also be informed..  
+
+parameters:  
+
+-   messageDate : mandatory, date in ISO 8601 format, used form : YYYY-MM-DDTHH:MM:SSTZ.  
+    
+-   messageFrom : the message sender phone number (can an external number in E164 form or an internal short).  
+    
+
+return :
+
+Champ
+
+Type
+
+Description
+
+status
+
+String
+
+resultCode
+
+String
+
+Pbx result code
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise` - Return resolved promise if succeed, and a rejected else.
+
+**Category**: Telephony Voice Messages
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+messageId
+
+`string`
+
+The message Id
+
+messageDate
+
+`string`
+
+The date in ISO 8601 format, used form : YYYY-MM-DDTHH:MM:SSTZ
+
+messageFrom
+
+`string`
+
+The message sender phone number (can an external number in E164 form or an internal short).
+
+---
+
+### telephonyService.getDetailedListOfVoiceMessages() ⇒ `Promise`
+
+This api allows to Get the detailed list of all available voice messages.  
+For a user, which has a voice mail box, it is possible to get the detailed list of it's messages.  
+A voice message can be :  
+
+-   a message recorded by a calling party which couldn't reach the user,  
+    
+-   a conversation recorded by the user itself.  
+    
+
+return :
+
+Champ
+
+Type
+
+Description
+
+status
+
+String
+
+data
+
+Object
+
+voicemessages
+
+Object
+
+voiceMessageList
+
+Object\[\]
+
+Table of message descriptor.
+
+id
+
+String
+
+Message unique id.
+
+unread
+
+String
+
+Message state, false for already read, true elsewhere.
+
+length
+
+String
+
+Message length is seconds.
+
+date
+
+Date-Time
+
+Message date in ISO 8601 (usual form : YYYY-MM-DDTHH:MM:SSTZ).
+
+from
+
+String
+
+Message sender's number.
+
+jid
+
+String
+
+Message sender's jid.
+
+callable
+
+String
+
+Message sender can be called back or not.
+
+identity
+
+Object
+
+Message sender names.
+
+displayName
+
+String
+
+Message sender's display name.
+
+firstName
+
+String
+
+Message sender's first name.
+
+lastName
+
+String
+
+Message sender's last name.
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise` - Return resolved promise if succeed, and a rejected else.
+
+**Category**: Telephony Voice Messages
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### telephonyService.getNumbersOfVoiceMessages() ⇒ `Promise`
+
+This api allows to Get voice messages counters, total and unlistened.  
+For a user, which has a voice mail box, it is possible to get the number of not yet listened message (aka unread messages).  
+When possible the total number of messages is also given.  
+Some VoiceMail units only gives if the users has or not one or more messages in his box, the number of them is unknown.  
+
+return :
+
+Champ
+
+Type
+
+Description
+
+status
+
+String
+
+data
+
+Object
+
+voicemessages
+
+Object
+
+unread
+
+Number
+
+Number of unlistened messages
+
+total
+
+Number
+
+Total number of voice messages
+
+present optionnel
+
+Boolean
+
+Pbx doesn't know how much messages a user has, only that one or more are present
+
+**Kind**: instance method of [`TelephonyService`](#module_TelephonyService)
+
+**Returns**: `Promise` - Return resolved promise if succeed, and a rejected else.
+
+**Category**: Telephony Voice Messages
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### On this page
+
+-   [TelephonyService](/docs/sdk/node#name-telephonyservice-3)
+-   [telephonyService.getVoiceMessageCounter() ⇒ Promise.<integer>](/docs/sdk/node#name-telephonyservice.getvoicemessagecounter--promise.integer-236)
+-   [telephonyService.getCallToHangOut() ⇒ Call](/docs/sdk/node#name-telephonyservice.getcalltohangout--call-261)
+-   [telephonyService.getActiveCall() ⇒ Call](/docs/sdk/node#name-telephonyservice.getactivecall--call-286)
+-   [telephonyService.getActiveCalls() ⇒ Call](/docs/sdk/node#name-telephonyservice.getactivecalls--call-311)
+-   [telephonyService.getCalls() ⇒ Call](/docs/sdk/node#name-telephonyservice.getcalls--call-336)
+-   [telephonyService.getCallsSize() ⇒ Call](/docs/sdk/node#name-telephonyservice.getcallssize--call-361)
+-   [telephonyService.getActiveCall(contact) ⇒ Call](/docs/sdk/node#name-telephonyservice.getactivecallcontact--call-386)
+-   [telephonyService.makeCall(contact, phoneNumber, correlatorData) ⇒ Promise.<Call>](/docs/sdk/node#name-telephonyservice.makecallcontact-phonenumber-correlatordata--promise.call-439)
+-   [telephonyService.makeCall(phoneNumber, correlatorData) ⇒ Promise.<Call>](/docs/sdk/node#name-telephonyservice.makecallphonenumber-correlatordata--promise.call-514)
+-   [telephonyService.releaseCall(call) ⇒ Promise.<Call>](/docs/sdk/node#name-telephonyservice.releasecallcall--promise.call-578)
+-   [telephonyService.answerCall(call) ⇒ Promise.<Call>](/docs/sdk/node#name-telephonyservice.answercallcall--promise.call-631)
+-   [telephonyService.holdCall(call) ⇒ Call](/docs/sdk/node#name-telephonyservice.holdcallcall--call-684)
+-   [telephonyService.retrieveCall(call) ⇒ Promise.<Call>](/docs/sdk/node#name-telephonyservice.retrievecallcall--promise.call-737)
+-   [telephonyService.deflectCallToVM(call) ⇒ Promise](/docs/sdk/node#name-telephonyservice.deflectcalltovmcall--promise-790)
+-   [telephonyService.deflectCall(call, callee) ⇒ Promise](/docs/sdk/node#name-telephonyservice.deflectcallcall-callee--promise-843)
+-   [telephonyService.transfertCall(activeCall, heldCall) ⇒ Promise](/docs/sdk/node#name-telephonyservice.transfertcallactivecall-heldcall--promise-973)
+-   [telephonyService.conferenceCall(activeCall, heldCall) ⇒ Promise](/docs/sdk/node#name-telephonyservice.conferencecallactivecall-heldcall--promise-1037)
+-   [telephonyService.forwardToDevice(phoneNumber) ⇒ Promise](/docs/sdk/node#name-telephonyservice.forwardtodevicephonenumber--promise-1101)
+-   [telephonyService.forwardToVoicemail() ⇒ Promise](/docs/sdk/node#name-telephonyservice.forwardtovoicemail--promise-1154)
+-   [telephonyService.cancelForward() ⇒ Promise.<Call>](/docs/sdk/node#name-telephonyservice.cancelforward--promise.call-1179)
+-   [telephonyService.sendDtmf(connectionId, dtmf) ⇒ Promise](/docs/sdk/node#name-telephonyservice.senddtmfconnectionid-dtmf--promise-1204)
+-   [telephonyService.logon(endpointTel, agentId, password, groupId) ⇒ Promise](/docs/sdk/node#name-telephonyservice.logonendpointtel-agentid-password-groupid--promise-1259)
+-   [telephonyService.logoff(endpointTel, agentId, password, groupId) ⇒ Promise](/docs/sdk/node#name-telephonyservice.logoffendpointtel-agentid-password-groupid--promise-1345)
+-   [telephonyService.withdrawal(agentId, groupId, status) ⇒ Promise](/docs/sdk/node#name-telephonyservice.withdrawalagentid-groupid-status--promise-1431)
+-   [telephonyService.wrapup(agentId, groupId, password, status) ⇒ Promise](/docs/sdk/node#name-telephonyservice.wrapupagentid-groupid-password-status--promise-1506)
+-   [telephonyService.isTelephonyAvailable() ⇒ boolean](/docs/sdk/node#name-telephonyservice.istelephonyavailable--boolean-1592)
+-   [telephonyService.getAgentVersion() ⇒ string](/docs/sdk/node#name-telephonyservice.getagentversion--string-1614)
+-   [telephonyService.getXMPPAgentStatus() ⇒ string](/docs/sdk/node#name-telephonyservice.getxmppagentstatus--string-1639)
+-   [telephonyService.getPhoneAPIStatus() ⇒ string](/docs/sdk/node#name-telephonyservice.getphoneapistatus--string-1664)
+-   [telephonyService.getMediaPillarInfo() ⇒ Promise.<any>](/docs/sdk/node#name-telephonyservice.getmediapillarinfo--promise.any-1689)
+-   [telephonyService.getNomadicStatus() ⇒ Promise](/docs/sdk/node#name-telephonyservice.getnomadicstatus--promise-1711)
+-   [telephonyService.deleteAllMyVoiceMessagesFromPbx() ⇒ Promise](/docs/sdk/node#name-telephonyservice.deleteallmyvoicemessagesfrompbx--promise-1736)
+-   [telephonyService.deleteAVoiceMessageFromPbx(messageId) ⇒ Promise](/docs/sdk/node#name-telephonyservice.deleteavoicemessagefrompbxmessageid--promise-1792)
+-   [telephonyService.getAVoiceMessageFromPbx(messageId, messageDate, messageFrom) ⇒ Promise](/docs/sdk/node#name-telephonyservice.getavoicemessagefrompbxmessageid-messagedate-messagefrom--promise-1876)
+-   [telephonyService.getDetailedListOfVoiceMessages() ⇒ Promise](/docs/sdk/node#name-telephonyservice.getdetailedlistofvoicemessages--promise-2008)
+-   [telephonyService.getNumbersOfVoiceMessages() ⇒ Promise](/docs/sdk/node#name-telephonyservice.getnumbersofvoicemessages--promise-2230)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

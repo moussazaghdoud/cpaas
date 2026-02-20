@@ -3,16 +3,351 @@ title: "CPaaS SDK for business communication solutions | Rainbow"
 description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
 type: "docs-hub"
 source: "https://developers.openrainbow.com/doc/hub/application-lifecycle"
-lastSynced: "2026-02-19T22:35:12.982Z"
+lastSynced: "2026-02-20T07:12:23.674Z"
 ---
 # Documentation
 
-Hub > application-lifecycle
+Applications lifecycle
 
-### Sur cette page
+## Applications lifecycle
 
 ---
 
-Ce contenu vous a-t-il été utile ?OuiNon
+### Preamble
+
+---
+
+Integrating the SDK into your application is the first step to use Rainbow.
+
+As for a user, an application needs to be identified.
+
+That's why, as a developer, you need to register an application in the Rainbow For Developers portal to obtain an application identifier that can be injected in your REST APIs or SDK.
+
+This document describes the way to get those credentials and the lifecycle of your application.
+
+It also summarizes the different things you can do depending on the state of your application.
+
+### Application Environment and States
+
+---
+
+There are two things to understand in order to know if your users can or can't use your application to connect to Rainbow.
+
+-   The **application environment**: This environment represents the right of your application to run on the production platform.
+    
+-   The **application state**: This represents the current state of your application and depending on this state, the connection to the Rainbow Official Platform is authorized or not.
+    
+
+#### Application Environment
+
+The application environment can take 3 values: **Not deployed**, **In deployment** and **Deployed**
+
+The following table recaps these information:
+
+Environment
+
+Description
+
+**NOT\_DEPLOYED**
+
+Your application is not allowed to access to the production platform.  
+You have to deploy it.  
+This is the default value when creating an application.
+
+**IN-DEPLOYMENT**
+
+You requested the deployment (authorization to connect your application on the Rainbow Official Platform).  
+ALE is checking your information to validate your request.
+
+**DEPLOYED**
+
+Your application has been granted access to the Rainbow production platform and your users can connect to it.
+
+This status can be seen in the Rainbow For Developers portal for each of your application.
+
+#### Application State
+
+When your application is deployed on the Rainbow production platform (ie: Environment = DEPLOYED), your application can have the following states: **running**, **stopped**, **blocked**, **deleted**.
+
+The following table recaps these information:
+
+State
+
+Description
+
+**RUNNING**
+
+Your application is authorized to connect to Rainbow.  
+This is the default value when your application has been granted access to Rainbow.
+
+**BLOCKED**
+
+Your application has been blocked by ALE due to API misuse or other bad behavior observed
+
+**STOPPED**
+
+You have manually stopped your application in order to avoid your users to connect to
+
+**DELETED**
+
+You have deleted your application. Nobody can connect anymore.  
+Your application is no more visible in your list of applications
+
+#### Summary
+
+This table recaps from an end-user point of view, the possibility to connect or not to Rainbow depending on the state and environment of your application:
+
+Environment
+
+State
+
+Description
+
+**DEPLOYED**
+
+RUNNING
+
+Users can connect to Rainbow using your application
+
+**DEPLOYED**
+
+BLOCKED  
+STOPPED  
+DELETED  
+
+Users can't connect anymore to Rainbow using your application
+
+**NOT\_DEPLOYED**  
+**IN\_DEPLOYMENT**
+
+\-
+
+Users has never connected to Rainbow using your application
+
+To summarize, your users can connect to Rainbow only when the application environment is **DEPLOYED** and the state is equal to **RUNNING**.
+
+The next paragraph explains how to reach the right state and environment using the Rainbow For Developers.
+
+#### Note
+
+When using Rainbow CLI, application environment and application state are visible as separated properties. In the Rainbow for Developers portal, these two properties are aggregated in one "Application state" for simplicity. This value can be **NOT\_DEPLOYED**, **IN\_DEPLOYMENT**, **RUNNING**, **BLOCKED**, **STOPPED**.
+
+### Application lifecycle
+
+---
+
+The Rainbow For Developers provides all you need to successfully create and deploy your application easily.
+
+#### Registering a new application and getting application identifier and secret
+
+The first thing to do is to create a new application. To create it:
+
+-   Log-in to the Rainbow For Developers using your Rainbow user account (ie: email and password).
+    
+-   On the left menu, select the option **Applications**
+    
+-   Click on the button **Create a New application** to start the application creation wizard.
+    
+-   Fill the form and submit it: Application name, Type and Activity.
+    
+-   The application creation wizard displays the newly created application identifier and secret. These can be copied by clicking the button on the right of the identifier and secret values.
+    
+
+If you need to get the application identifier and secret once the application creation wizard has been closed, you can edit your application and get them from the application edition page.
+
+The application identifier and secret are mandatory to be able to connect to Rainbow. You have to inject them in your application code.
+
+See the different part of the documentation of each SDK to understand how to inject these information into the SDK for authorizing your application to connect to Rainbow.
+
+Your application is now created.
+
+Action done
+
+Environment
+
+State
+
+I have just registered a new app
+
+NOT\_DEPLOYED
+
+\-
+
+#### Understanding the application offers
+
+In this section, we will introduce you to the three distinct application offers available for Rainbow CPaaS. These offers include:
+
+-   **Pay As You Go**: This self-service offer allows you to pay for the resources your application consumes on a monthly basis, after setting up a payment method through the Rainbow for Developers portal.
+    
+-   **App Connect**: With this offer, you will need to complete a form and submit it to our Sales representative before deployment. Once deployed, the subscription to the application for your customers will be performed through the Rainbow Administration portal.
+    
+-   **Business**: For a comprehensive solution, the Business offer provides you the opportunity to work with your ALE sales representative who will work closely with you to define a customized business contract.
+    
+
+More details in the [Rainbow CPaaS Pricing](/pricing) page.
+
+The application offer can be configured in the application edition page. Note that the application offer **can not be changed** once it has been deployed.
+
+#### Submiting your application
+
+When you're ready to deploy your application on the Rainbow production platform, follow these steps:
+
+-   Access the Applications section from the left menu in the Rainbow for Developers portal.
+-   Locate your newly created application in the applications table and click on the deploy icon. Alternatively, you can click on the edit icon to access the application edition page and deploy your application from there.
+
+Please note that the application offer you selected cannot be changed once deployed.
+
+The deployment process varies depending on the chosen offer:
+
+-   For **Business** offer applications: A deployment request will be sent to ALE, and it may take up to one business day for the process to complete. The request will be either accepted or rejected based on the provided information.
+    
+-   For **App Connect** offer applications: Fill out and submit the required form to our Sales representative. Similar to the Business offer, this process may take up to one business day for acceptance or rejection.
+    
+-   For **Pay As You Go** offer applications: If you have configured a payment method in the Rainbow for Developers portal, your application will be automatically deployed.
+    
+
+Action done
+
+Environment
+
+State
+
+My application is a **Business** or offer application, I have just submitted my application to ALE
+
+IN\_DEPLOYMENT
+
+\-
+
+My application is an "App Connect" offer application, I have just sent my application to Sale Business
+
+IN\_DEPLOYMENT
+
+\-
+
+My application is a **Pay As You Go** offer application
+
+DEPLOYED
+
+RUNNING
+
+#### Validating your application.
+
+For Business and App Connect offer applications, ALE conducts a validation process to ensure authenticity and gather additional information about your application. ALE will review your case and may contact you for further details such as infrastructure, SDK/API usage, etc. Once your application has been validated, it will gain access to the Rainbow production platform.
+
+Action done
+
+Environment
+
+State
+
+Your application has been validated by ALE
+
+DEPLOYED
+
+RUNNING
+
+#### Stopping an application
+
+At any time, you can decide to stop your application. When your application is stopped, your users can't connect anymore to the Rainbow production Platform.
+
+To do it:
+
+-   On the left menu, select the option **Applications**
+    
+-   On your application, click on the **Stop** icon
+    
+
+You can activate again your application when you want by clicking on the button **Restart**.
+
+Action done
+
+Environment
+
+State
+
+You stopped your application
+
+DEPLOYED
+
+STOPPED
+
+#### Blocked application
+
+In case of API misuse or if the ALE Rainbow policies are not respected, your application can be blocked by us and you will not be able to activate it until you contact the ALE support to check the issue.
+
+Action done
+
+Environment
+
+State
+
+Your application didn't respect the Rainbow policies
+
+DEPLOYED
+
+BLOCKED
+
+If, things are fixed, your application goes back to **STOPPED**.
+
+#### Deleting an application
+
+At any time, you can decide to delete your application. This action is **irreversible** !
+
+When your application is deleted, you will not see it in your list of applications anymore. So you will not be able to restore it.
+
+If you still need to delete an application:
+
+-   On the left menu, select the option **Applications**
+    
+-   On your application, click on the **Delete** icon
+    
+
+Action done
+
+Environment
+
+State
+
+Your application has been deleted
+
+DEPLOYED
+
+DELETED
+
+### Interested in
+
+---
+
+-   [Developing on the Rainbow Sandbox](/docs/hub/developer-sandboxed-platform)
+    
+-   [Deploying your application on Rainbow production](/docs/hub/get-ready-for-production)
+    
+
+---
+
+*Last updated July, 5th 2023*
+
+### On this page
+
+-   [Applications lifecycle](/docs/hub/application-lifecycle#name-applications-lifecycle-0)
+-   [Preamble](/docs/hub/application-lifecycle#name-preamble-4)
+-   [Application Environment and States](/docs/hub/application-lifecycle#name-application-environment-and-states-23)
+-   [Application Environment](/docs/hub/application-lifecycle#name-application-environment-42)
+-   [Application State](/docs/hub/application-lifecycle#name-application-state-92)
+-   [Summary](/docs/hub/application-lifecycle#name-summary-147)
+-   [Note](/docs/hub/application-lifecycle#name-note-209)
+-   [Application lifecycle](/docs/hub/application-lifecycle#name-application-lifecycle-215)
+-   [Registering a new application and getting application identifier and secret](/docs/hub/application-lifecycle#name-registering-a-new-application-and-getting-application-identifier-and-secret-222)
+-   [Understanding the application offers](/docs/hub/application-lifecycle#name-understanding-the-application-offers-295)
+-   [Submiting your application](/docs/hub/application-lifecycle#name-submiting-your-application-324)
+-   [Validating your application.](/docs/hub/application-lifecycle#name-validating-your-application.-415)
+-   [Stopping an application](/docs/hub/application-lifecycle#name-stopping-an-application-449)
+-   [Blocked application](/docs/hub/application-lifecycle#name-blocked-application-501)
+-   [Deleting an application](/docs/hub/application-lifecycle#name-deleting-an-application-538)
+-   [Interested in](/docs/hub/application-lifecycle#name-interested-in-590)
+
+---
+
+Was this content helpful to you?YesNo
 
 Feedback

@@ -1,0 +1,781 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/filedescriptor"
+lastSynced: "2026-02-20T07:12:32.190Z"
+---
+# Documentation
+
+FileDescriptor
+
+LTS release 2.XPublished on 2025-01-01
+
+## Classes
+
+[Thumbnail](#Thumbnail)
+
+[FileDescriptor](#FileDescriptor)
+
+[FileDescriptor](#FileDescriptor)
+
+## Thumbnail
+
+**Kind**: global class
+
+**this**: [`FileDescriptor`](#FileDescriptor)
+
+---
+
+## FileDescriptor
+
+**Kind**: global class
+
+**Access**: public
+
+-   [FileDescriptor](#FileDescriptor)
+    -   [FileDescriptor()](#new_FileDescriptor_new)
+    -   [id](#FileDescriptor+id)
+    -   [url](#FileDescriptor+url)
+    -   [ownerId](#FileDescriptor+ownerId)
+    -   [fileName](#FileDescriptor+fileName)
+    -   [extension](#FileDescriptor+extension)
+    -   [typeMIME](#FileDescriptor+typeMIME)
+    -   [thumbnailPlaceholder](#FileDescriptor+thumbnailPlaceholder)
+    -   [size](#FileDescriptor+size)
+    -   [registrationDate](#FileDescriptor+registrationDate)
+    -   [uploadedDate](#FileDescriptor+uploadedDate)
+    -   [viewers](#FileDescriptor+viewers)
+    -   [orientation](#FileDescriptor+orientation)
+    -   [md5sum](#FileDescriptor+md5sum)
+    -   [applicationId](#FileDescriptor+applicationId)
+
+---
+
+### FileDescriptor()
+
+This class is used to represent a File Descriptor or a Short File Descriptor which describes a file shared in a conversation (one-to-one or bubble).
+
+---
+
+### fileDescriptor.id
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+id
+
+`string`
+
+The file descriptor ID (File Descriptor only)
+
+---
+
+### fileDescriptor.url
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+url
+
+`string`
+
+The file descriptor url (File Descriptor only)
+
+---
+
+### fileDescriptor.ownerId
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+ownerId
+
+`string`
+
+The ID of the owner (File Descriptor only)
+
+---
+
+### fileDescriptor.fileName
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+fileName
+
+`string`
+
+The name of the file
+
+---
+
+### fileDescriptor.extension
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+extension
+
+`string`
+
+The extension of the file
+
+---
+
+### fileDescriptor.typeMIME
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+typeMIME
+
+`string`
+
+The mime type of the file ('mime' in Short File Descriptor)
+
+---
+
+### fileDescriptor.thumbnailPlaceholder
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+thumbnailPlaceholder
+
+`ThumbnailPlaceholder`
+
+The thumbnail icon placeholder info
+
+---
+
+### fileDescriptor.size
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+size
+
+`string`
+
+The size of the file (octets)
+
+---
+
+### fileDescriptor.registrationDate
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+registrationDate
+
+`Object`
+
+The creation date (File Descriptor only)
+
+---
+
+### fileDescriptor.uploadedDate
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+uploadedDate
+
+`Object`
+
+The upload date (File Descriptor only)
+
+---
+
+### fileDescriptor.viewers
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+viewers
+
+`Array.<any>`
+
+The list of viewers (File Descriptor only)
+
+---
+
+### fileDescriptor.orientation
+
+There are four possible values for orientation and the image should be rotated acording to this value. 1 -> rotate(0deg), 3 -> rotate(180deg), 6 -> rotate(90deg), 8 -> rotate(270deg).
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+orientation
+
+`number`
+
+---
+
+### fileDescriptor.md5sum
+
+md5 of the file get from the backend file storage (default: "", refreshed each time the file is uploaded).
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+md5sum
+
+`string`
+
+---
+
+### fileDescriptor.applicationId
+
+applicationId the file belong to.
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+applicationId
+
+`string`
+
+---
+
+## FileDescriptor
+
+**Kind**: global class
+
+**this**: [`FileDescriptor`](#FileDescriptor)
+
+-   [FileDescriptor](#FileDescriptor)
+    -   [FileDescriptor()](#new_FileDescriptor_new)
+    -   [id](#FileDescriptor+id)
+    -   [url](#FileDescriptor+url)
+    -   [ownerId](#FileDescriptor+ownerId)
+    -   [fileName](#FileDescriptor+fileName)
+    -   [extension](#FileDescriptor+extension)
+    -   [typeMIME](#FileDescriptor+typeMIME)
+    -   [thumbnailPlaceholder](#FileDescriptor+thumbnailPlaceholder)
+    -   [size](#FileDescriptor+size)
+    -   [registrationDate](#FileDescriptor+registrationDate)
+    -   [uploadedDate](#FileDescriptor+uploadedDate)
+    -   [viewers](#FileDescriptor+viewers)
+    -   [orientation](#FileDescriptor+orientation)
+    -   [md5sum](#FileDescriptor+md5sum)
+    -   [applicationId](#FileDescriptor+applicationId)
+
+---
+
+### FileDescriptor()
+
+This class is used to represent a File Descriptor or a Short File Descriptor which describes a file shared in a conversation (one-to-one or bubble).
+
+---
+
+### fileDescriptor.id
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+id
+
+`string`
+
+The file descriptor ID (File Descriptor only)
+
+---
+
+### fileDescriptor.url
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+url
+
+`string`
+
+The file descriptor url (File Descriptor only)
+
+---
+
+### fileDescriptor.ownerId
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+ownerId
+
+`string`
+
+The ID of the owner (File Descriptor only)
+
+---
+
+### fileDescriptor.fileName
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+fileName
+
+`string`
+
+The name of the file
+
+---
+
+### fileDescriptor.extension
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+extension
+
+`string`
+
+The extension of the file
+
+---
+
+### fileDescriptor.typeMIME
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+typeMIME
+
+`string`
+
+The mime type of the file ('mime' in Short File Descriptor)
+
+---
+
+### fileDescriptor.thumbnailPlaceholder
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+thumbnailPlaceholder
+
+`ThumbnailPlaceholder`
+
+The thumbnail icon placeholder info
+
+---
+
+### fileDescriptor.size
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+size
+
+`string`
+
+The size of the file (octets)
+
+---
+
+### fileDescriptor.registrationDate
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+registrationDate
+
+`Object`
+
+The creation date (File Descriptor only)
+
+---
+
+### fileDescriptor.uploadedDate
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+uploadedDate
+
+`Object`
+
+The upload date (File Descriptor only)
+
+---
+
+### fileDescriptor.viewers
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+viewers
+
+`Array.<any>`
+
+The list of viewers (File Descriptor only)
+
+---
+
+### fileDescriptor.orientation
+
+There are four possible values for orientation and the image should be rotated acording to this value. 1 -> rotate(0deg), 3 -> rotate(180deg), 6 -> rotate(90deg), 8 -> rotate(270deg).
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+orientation
+
+`number`
+
+---
+
+### fileDescriptor.md5sum
+
+md5 of the file get from the backend file storage (default: "", refreshed each time the file is uploaded).
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+md5sum
+
+`string`
+
+---
+
+### fileDescriptor.applicationId
+
+applicationId the file belong to.
+
+**Kind**: instance property of [`FileDescriptor`](#FileDescriptor)
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+applicationId
+
+`string`
+
+---
+
+### On this page
+
+-   [Classes](/docs/sdk/node#name-classes-0)
+-   [Thumbnail](/docs/sdk/node#name-thumbnail-7)
+-   [FileDescriptor](/docs/sdk/node#name-filedescriptor-20)
+-   [FileDescriptor()](/docs/sdk/node#name-filedescriptor-117)
+-   [fileDescriptor.id](/docs/sdk/node#name-filedescriptor.id-127)
+-   [fileDescriptor.url](/docs/sdk/node#name-filedescriptor.url-174)
+-   [fileDescriptor.ownerId](/docs/sdk/node#name-filedescriptor.ownerid-221)
+-   [fileDescriptor.fileName](/docs/sdk/node#name-filedescriptor.filename-268)
+-   [fileDescriptor.extension](/docs/sdk/node#name-filedescriptor.extension-315)
+-   [fileDescriptor.typeMIME](/docs/sdk/node#name-filedescriptor.typemime-362)
+-   [fileDescriptor.thumbnailPlaceholder](/docs/sdk/node#name-filedescriptor.thumbnailplaceholder-409)
+-   [fileDescriptor.size](/docs/sdk/node#name-filedescriptor.size-456)
+-   [fileDescriptor.registrationDate](/docs/sdk/node#name-filedescriptor.registrationdate-503)
+-   [fileDescriptor.uploadedDate](/docs/sdk/node#name-filedescriptor.uploadeddate-550)
+-   [fileDescriptor.viewers](/docs/sdk/node#name-filedescriptor.viewers-597)
+-   [fileDescriptor.orientation](/docs/sdk/node#name-filedescriptor.orientation-644)
+-   [fileDescriptor.md5sum](/docs/sdk/node#name-filedescriptor.md5sum-685)
+-   [fileDescriptor.applicationId](/docs/sdk/node#name-filedescriptor.applicationid-726)
+-   [FileDescriptor](/docs/sdk/node#name-filedescriptor-767)
+-   [FileDescriptor()](/docs/sdk/node#name-filedescriptor-864)
+-   [fileDescriptor.id](/docs/sdk/node#name-filedescriptor.id-874)
+-   [fileDescriptor.url](/docs/sdk/node#name-filedescriptor.url-921)
+-   [fileDescriptor.ownerId](/docs/sdk/node#name-filedescriptor.ownerid-968)
+-   [fileDescriptor.fileName](/docs/sdk/node#name-filedescriptor.filename-1015)
+-   [fileDescriptor.extension](/docs/sdk/node#name-filedescriptor.extension-1062)
+-   [fileDescriptor.typeMIME](/docs/sdk/node#name-filedescriptor.typemime-1109)
+-   [fileDescriptor.thumbnailPlaceholder](/docs/sdk/node#name-filedescriptor.thumbnailplaceholder-1156)
+-   [fileDescriptor.size](/docs/sdk/node#name-filedescriptor.size-1203)
+-   [fileDescriptor.registrationDate](/docs/sdk/node#name-filedescriptor.registrationdate-1250)
+-   [fileDescriptor.uploadedDate](/docs/sdk/node#name-filedescriptor.uploadeddate-1297)
+-   [fileDescriptor.viewers](/docs/sdk/node#name-filedescriptor.viewers-1344)
+-   [fileDescriptor.orientation](/docs/sdk/node#name-filedescriptor.orientation-1391)
+-   [fileDescriptor.md5sum](/docs/sdk/node#name-filedescriptor.md5sum-1432)
+-   [fileDescriptor.applicationId](/docs/sdk/node#name-filedescriptor.applicationid-1473)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

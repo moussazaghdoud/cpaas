@@ -1,0 +1,2078 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/filestorage"
+lastSynced: "2026-02-20T07:12:32.235Z"
+---
+# Documentation
+
+FileStorage Service
+
+LTS release 2.XPublished on 2025-01-01
+
+## FileStorage
+
+This service shares files with a single user (one-to-one conversation) or with several persons (bubble conversation).  
+  
+The main methods and events proposed in that service allow to:
+
+-   Upload a file in a one-to-one conversation or bubble conversation,
+-   Download a file from a conversation or bubble,
+-   To be notified when a file has been successfully uploaded when there is an error when uploading or downloading a file in a conversation or a bubble.
+-   Get the list of files send or received in a one-to-one conversation
+-   Get the list of files send or received in a bubble conversation
+-   Get the connected user quota and consumption
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [FileStorage](#module_FileStorage)
+    -   *Files FILE MANAGEMENT / PROPERTIES*
+        -   [getFileDescriptorFromId(id)](#module_FileStorage+getFileDescriptorFromId) ⇒ `FileDescriptor`
+        -   [getFilesReceivedInConversation(conversation)](#module_FileStorage+getFilesReceivedInConversation) ⇒ `Array.<FileDescriptor>`
+        -   [getFilesReceivedInBubble(bubble, ownerId, fileName, extension, typeMIME, isUploaded, purpose, roomName, overall, format, limit, offset, sortField, sortOrder)](#module_FileStorage+getFilesReceivedInBubble) ⇒ `Promise.<Array.<FileDescriptor>>`
+        -   [getReceivedFilesForRoom(bubbleId)](#module_FileStorage+getReceivedFilesForRoom) ⇒ `Array.<FileDescriptor>`
+        -   [retrieveFileDescriptorsListPerOwner(fileName, extension, typeMIME, purpose, isUploaded, viewerId, path, limit, offset, sortField, sortOrder, format)](#module_FileStorage+retrieveFileDescriptorsListPerOwner) ⇒ `Promise.<Array.<FileDescriptor>>`
+        -   [retrieveSentFiles(peerId, fileName, extension, typeMIME, purpose, isUploaded, path, limit, offset, sortField, sortOrder, format)](#module_FileStorage+retrieveSentFiles) ⇒ `Promise.<Array.<FileDescriptor>>`
+        -   [retrieveReceivedFilesForRoom(bubbleId, ownerId, fileName, extension, typeMIME, isUploaded, purpose, roomName, overall, format, limit, offset, sortField, sortOrder)](#module_FileStorage+retrieveReceivedFilesForRoom) ⇒ `Promise.<Array.<FileDescriptor>>`
+        -   [retrieveReceivedFiles(viewerId, ownerId, fileName, extension, typeMIME, isUploaded, purpose, roomName, overall, format, limit, offset, sortField, sortOrder)](#module_FileStorage+retrieveReceivedFiles) ⇒ `Promise.<Array.<FileDescriptor>>`
+        -   [getFilesSentInConversation(conversation, fileName, extension, typeMIME, isUploaded, purpose, format, limit, offset, sortField, sortOrder)](#module_FileStorage+getFilesSentInConversation) ⇒ `Array.<FileDescriptor>`
+        -   [getFilesSentInBubble(bubble, fileName, extension, typeMIME, isUploaded, purpose, path, format, limit, offset, sortField, sortOrder)](#module_FileStorage+getFilesSentInBubble) ⇒ `Array.<FileDescriptor>`
+        -   [getUserQuotaConsumption()](#module_FileStorage+getUserQuotaConsumption) ⇒ `Object`
+        -   [getAllFilesSent()](#module_FileStorage+getAllFilesSent) ⇒ `Array.<FileDescriptor>`
+        -   [getAllFilesReceived()](#module_FileStorage+getAllFilesReceived) ⇒ `Array.<FileDescriptor>`
+        -   [retrieveOneFileDescriptor(fileId)](#module_FileStorage+retrieveOneFileDescriptor) ⇒ `Promise.<FileDescriptor>`
+        -   [getFileDescriptorsByCompanyId(companyId, fileName, extension, typeMIME, purpose, isUploaded, format, limit, offset, sortField, sortOrder)](#module_FileStorage+getFileDescriptorsByCompanyId) ⇒ `Promise.<any>`
+        -   [copyFileInPersonalCloudSpace(fileId)](#module_FileStorage+copyFileInPersonalCloudSpace) ⇒ `Promise.<FileDescriptor>`
+        -   [fileOwnershipChange(fileId, userId)](#module_FileStorage+fileOwnershipChange) ⇒ `Promise.<FileDescriptor>`
+    -   *Files TRANSFER*
+        -   [uploadFileToConversation(conversation, object, strMessage, p\_messagesDataStore)](#module_FileStorage+uploadFileToConversation) ⇒ `Message`
+        -   [uploadFileToBubble(bubble, file, strMessage, p\_messagesDataStore)](#module_FileStorage+uploadFileToBubble) ⇒ `Message`
+        -   [uploadFileToStorage(file, voicemessage, duration, encoding, ccarelogs, ccareclientlogs)](#module_FileStorage+uploadFileToStorage)
+        -   [downloadFile(fileDescriptor)](#module_FileStorage+downloadFile) ⇒
+        -   [downloadFileInPath(fileDescriptor, path)](#module_FileStorage+downloadFileInPath) ⇒ `Observable.<any>`
+        -   [getFilesTemporaryURL(fileId)](#module_FileStorage+getFilesTemporaryURL) ⇒ `Object`
+        -   [removeFile(fileDescriptor)](#module_FileStorage+removeFile) ⇒ `Object`
+
+---
+
+### fileStorage.getFileDescriptorFromId(id) ⇒ `FileDescriptor`
+
+Get the file descriptor the user own by it's id  
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: `FileDescriptor` - Return a file descriptors found or null if no file descriptor has been found
+
+**Category**: Files FILE MANAGEMENT / PROPERTIES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.47.1
+
+Param
+
+Type
+
+Description
+
+id
+
+`String`
+
+The file id
+
+---
+
+### fileStorage.getFilesReceivedInConversation(conversation) ⇒ `Array.<FileDescriptor>`
+
+Get the list of all files received in a conversation with a contact  
+Return a promise  
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: `Array.<FileDescriptor>` - Return an array of file descriptors found or an empty array if no file descriptor has been found
+
+**Category**: Files FILE MANAGEMENT / PROPERTIES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.47.1
+
+Param
+
+Type
+
+Description
+
+conversation
+
+`Conversation`
+
+The conversation where to get the files
+
+---
+
+### fileStorage.getFilesReceivedInBubble(bubble, ownerId, fileName, extension, typeMIME, isUploaded, purpose, roomName, overall, format, limit, offset, sortField, sortOrder) ⇒ `Promise.<Array.<FileDescriptor>>`
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: `Promise.<Array.<FileDescriptor>>` - : list of received files descriptors
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+File descriptor Object
+
+tags
+
+Object
+
+Wrap a set of data according with the file use
+
+path
+
+String
+
+The path under which the owner will be able to classified the file. The folder management is not yet available; only a get files per path. For instance this facility is used to implement OXO visual voice mail feature on client side.  
+  
+\* /  
+\* /voice-messages
+
+msgId
+
+String
+
+When the file is generated by the Rainbow visual voice mail feature - The message Id (ex: "g0F6jhGrIXN5NQa")
+
+messageType
+
+String
+
+When the file is generated by the Rainbow visual voice mail feature - The message type  
+  
+Valeur par défaut : `voice_message`  
+  
+Valeurs autorisées : `voice_message`, `conv_recording`
+
+duration
+
+Number
+
+The message duration in second (voice message duration)
+
+id
+
+String
+
+File unique identifier (like 56d0277a0261b53142a5cab5)
+
+fileName
+
+String
+
+Name of the file
+
+extension
+
+String
+
+File extension (jpeg, txt, ...)
+
+typeMIME
+
+String
+
+https://fr.wikipedia.org/wiki/Type\_MIME (image/jpeg, text/plain, ...)
+
+ownerId
+
+String
+
+Rainbow Id of the file owner. Useful to filter file descriptor for files shared inside a room. In this case the provider is also a viewer.
+
+isUploaded
+
+Boolean
+
+true when the file was uploaded at least one time
+
+size
+
+Number
+
+Size of the file (Default: value given by Rainbow clients). Refreshed from the backend file storage each time the file is uploaded.
+
+viewers
+
+Object\[\]
+
+A set of objects including user or room Rainbow Id, type (user, room)
+
+dateToSort
+
+Date-Time
+
+A processed date to help ordering descriptors not only from the file name.  
+  
+dateToSort is processed as follow:  
+  
+\* `Default value`: either file is never uploaded : dateToSort = 1970-01-01T00:00:00.000Z or file is uploaded but no downloaded date is available : dateToSort = upLoadedDate  
+\* In case of the viewerId is a user, a downloadedDate may override the default value. In this case dateToSort is the `downloadedDate`.  
+\* When a query sorted by uploadedDate is wanted (`sort=uploadedDate`), no 'dateToSort' processing is done. The uploadedDate field is copied instead.
+
+thumbnail
+
+Object
+
+Data of the thumbnail 'low resolution' (200X200 for images, 300x300 for .pdf, at least one dimension is 200 or 300))
+
+availableThumbnail
+
+Boolean
+
+Thumbnail availability
+
+wantThumbnailDate
+
+Date-Time
+
+When the thumbnail is ordered
+
+size
+
+Number
+
+Thumbnail size
+
+md5sum
+
+String
+
+md5 of the thumbnail get from the backend file storage
+
+typeMIME
+
+String
+
+https://fr.wikipedia.org/wiki/Type\_MIME (application/octet-stream)
+
+thumbnail500
+
+Object
+
+Data of the thumbnail 'High resolution' (500x500 - at least one dimension is 500)
+
+availableThumbnail
+
+Boolean
+
+Thumbnail availability
+
+wantThumbnailDate
+
+Date-Time
+
+When the thumbnail is ordered
+
+size
+
+Number
+
+Thumbnail size
+
+md5sum
+
+String
+
+md5 of the thumbnail get from the backend file storage
+
+isClean
+
+Boolean
+
+Null when the file is not yet scanned by an anti-virus
+
+typeMIME
+
+String
+
+https://fr.wikipedia.org/wiki/Type\_MIME (application/octet-stream)
+
+avReport
+
+String
+
+Null when the file is not yet scanned by an anti-virus
+
+**Category**: Files FILE MANAGEMENT / PROPERTIES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.47.1
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`Bubble`
+
+The bubble where to get the files
+
+ownerId
+
+`string`
+
+Among all files shared with the user, allow to precify a provider.
+
+fileName
+
+`boolean`
+
+Allows to filter file descriptors by fileName criterion.
+
+extension
+
+`string`
+
+Allows to filter file descriptors by extension criterion.
+
+typeMIME
+
+`string`
+
+Allows to filter file descriptors by typeMIME criterion. typeMIME='image/jpeg' allows to get all jpeg file typeMime='image' allows to get all image files whatever the extension typeMIME='image/jpeg'&typeMIME='image/png' allows to get all jpeg and png files typeMIME='image'&typeMIME='video' allows to get all image and video files whatever the extension
+
+isUploaded
+
+`boolean`
+
+Allows to filter file descriptors by isUploaded criterion.
+
+purpose
+
+`string`
+
+Allows to filter file descriptors by the utility of the file (conference\_record for instance). purpose=conference\_record allows to get all records of conference
+
+roomName
+
+`string`
+
+A word of the conference name. When purpose=conference\_record is used, allow to reduce the list of results focusing of the recording name.
+
+overall
+
+`boolean`
+
+When true, allow to get all files (my files and received files) in the same paginated list
+
+format
+
+`string`
+
+Allows to retrieve viewers of each file when the format is full. small: \_id fileName extension typeMIME ownerId isUploaded uploadedDate size thumbnail thumbnail500 isClean tags medium: \_id fileName extension typeMIME ownerId isUploaded uploadedDate size thumbnail thumbnail500 isClean tags full: \_id fileName extension typeMIME ownerId isUploaded uploadedDate size viewers thumbnail thumbnail500 isClean tags Default value : full Possibles values : small, medium, full
+
+limit
+
+`number`
+
+Allow to specify the number of fileDescriptors to retrieve. Default value : 1000
+
+offset
+
+`number`
+
+Allow to specify the position of first fileDescriptor to retrieve (first fileDescriptor if not specified). Warning: if offset > total, no results are returned.
+
+sortField
+
+`string`
+
+Sort fileDescriptor list based on the given field. Default value : fileName
+
+sortOrder
+
+`number`
+
+Specify order when sorting fileDescriptor list (1: arranged in alphabetical order, -1: reverse order). Default value : 1 Possibles values : -1, 1
+
+---
+
+### fileStorage.getReceivedFilesForRoom(bubbleId) ⇒ `Array.<FileDescriptor>`
+
+Method to get the list of received files descriptors.
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Category**: Files FILE MANAGEMENT / PROPERTIES
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+bubbleId
+
+`string`
+
+id of the bubble
+
+---
+
+### fileStorage.retrieveFileDescriptorsListPerOwner(fileName, extension, typeMIME, purpose, isUploaded, viewerId, path, limit, offset, sortField, sortOrder, format) ⇒ `Promise.<Array.<FileDescriptor>>`
+
+Method retrieve full list of files belonging to user making the request  
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Category**: Files FILE MANAGEMENT / PROPERTIES
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+fileName
+
+`string`
+
+Allows to filter file descriptors by fileName criterion.
+
+extension
+
+`string`
+
+Allows to filter file descriptors by extension criterion.
+
+typeMIME
+
+`string`
+
+Allows to filter file descriptors by typeMIME criterion. typeMIME='image/jpeg' allows to get all jpeg file typeMime='image' allows to get all image files whatever the extension typeMIME='image/jpeg'&typeMIME='image/png' allows to get all jpeg and png files typeMIME='image'&typeMIME='video' allows to get all image and video files whatever the extension
+
+purpose
+
+`string`
+
+Allows to filter file descriptors by the utility of the file (conference\_record for instance). purpose=conference\_record allows to get all records of conference
+
+isUploaded
+
+`boolean`
+
+Allows to filter file descriptors by isUploaded criterion.
+
+viewerId
+
+`string`
+
+Among all files shared by the user, allow to specify a viewer.
+
+path
+
+`string`
+
+For visual voice mail feature only (step1), allows to get file descriptors of each file under the given path.
+
+limit
+
+`number`
+
+`1000`
+
+Allow to specify the number of items to retrieve. Default value : 1000 Possibles values : 0-1000
+
+offset
+
+`number`
+
+`0`
+
+Allow to specify the position of first item to retrieve (first item if not specified). Warning: if offset > total, no results are returned. Default value : 0
+
+sortField
+
+`string`
+
+Sort items list based on the given field.
+
+sortOrder
+
+`string`
+
+`1`
+
+Specify order when sorting items list. Default value : 1 Possibles values : -1, 1
+
+format
+
+`string`
+
+`full`
+
+Allows to retrieve more or less file descriptors details in response. small: \_id, fileName, extension, isClean medium: \_id, fileName, extension, typeMIME, size, isUploaded,isClean, avReport, thumbnail, thumbnail500, original\_w, original\_h full: all descriptors fields except storageURL Default value : full Possibles values : "small", "medium", "full"
+
+---
+
+### fileStorage.retrieveSentFiles(peerId, fileName, extension, typeMIME, purpose, isUploaded, path, limit, offset, sortField, sortOrder, format) ⇒ `Promise.<Array.<FileDescriptor>>`
+
+Method request for the list of files sent to a given peer (i.e. inside a given conversation)  
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: `Promise.<Array.<FileDescriptor>>` - : list of sent files descriptors
+
+**Category**: Files FILE MANAGEMENT / PROPERTIES
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+peerId
+
+`string`
+
+\[required\] id of peer user in the conversation
+
+fileName
+
+`string`
+
+Allows to filter file descriptors by fileName criterion.
+
+extension
+
+`string`
+
+Allows to filter file descriptors by extension criterion.
+
+typeMIME
+
+`string`
+
+Allows to filter file descriptors by typeMIME criterion. typeMIME='image/jpeg' allows to get all jpeg file typeMime='image' allows to get all image files whatever the extension typeMIME='image/jpeg'&typeMIME='image/png' allows to get all jpeg and png files typeMIME='image'&typeMIME='video' allows to get all image and video files whatever the extension
+
+purpose
+
+`string`
+
+Allows to filter file descriptors by the utility of the file (conference\_record for instance). purpose=conference\_record allows to get all records of conference
+
+isUploaded
+
+`boolean`
+
+Allows to filter file descriptors by isUploaded criterion.
+
+path
+
+`string`
+
+For visual voice mail feature only (step1), allows to get file descriptors of each file under the given path.
+
+limit
+
+`number`
+
+Allow to specify the number of items to retrieve. Default value : 1000 Possibles values : 0-1000
+
+offset
+
+`number`
+
+Allow to specify the position of first item to retrieve (first item if not specified). Warning: if offset > total, no results are returned. Default value : 0
+
+sortField
+
+`string`
+
+Sort items list based on the given field.
+
+sortOrder
+
+`string`
+
+Specify order when sorting items list. Default value : 1 Possibles values : -1, 1
+
+format
+
+`string`
+
+Allows to retrieve more or less file descriptors details in response. small: \_id, fileName, extension, isClean medium: \_id, fileName, extension, typeMIME, size, isUploaded,isClean, avReport, thumbnail, thumbnail500, original\_w, original\_h full: all descriptors fields except storageURL Default value : full Possibles values : "small", "medium", "full"
+
+---
+
+### fileStorage.retrieveReceivedFilesForRoom(bubbleId, ownerId, fileName, extension, typeMIME, isUploaded, purpose, roomName, overall, format, limit, offset, sortField, sortOrder) ⇒ `Promise.<Array.<FileDescriptor>>`
+
+Method request for the list of files received in a room  
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: `Promise.<Array.<FileDescriptor>>` - : list of received files descriptors
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+File descriptor Object
+
+tags
+
+Object
+
+Wrap a set of data according with the file use
+
+path
+
+String
+
+The path under which the owner will be able to classified the file. The folder management is not yet available; only a get files per path. For instance this facility is used to implement OXO visual voice mail feature on client side.  
+  
+\* /  
+\* /voice-messages
+
+msgId
+
+String
+
+When the file is generated by the Rainbow visual voice mail feature - The message Id (ex: "g0F6jhGrIXN5NQa")
+
+messageType
+
+String
+
+When the file is generated by the Rainbow visual voice mail feature - The message type  
+  
+Valeur par défaut : `voice_message`  
+  
+Valeurs autorisées : `voice_message`, `conv_recording`
+
+duration
+
+Number
+
+The message duration in second (voice message duration)
+
+id
+
+String
+
+File unique identifier (like 56d0277a0261b53142a5cab5)
+
+fileName
+
+String
+
+Name of the file
+
+extension
+
+String
+
+File extension (jpeg, txt, ...)
+
+typeMIME
+
+String
+
+https://fr.wikipedia.org/wiki/Type\_MIME (image/jpeg, text/plain, ...)
+
+ownerId
+
+String
+
+Rainbow Id of the file owner. Useful to filter file descriptor for files shared inside a room. In this case the provider is also a viewer.
+
+isUploaded
+
+Boolean
+
+true when the file was uploaded at least one time
+
+size
+
+Number
+
+Size of the file (Default: value given by Rainbow clients). Refreshed from the backend file storage each time the file is uploaded.
+
+viewers
+
+Object\[\]
+
+A set of objects including user or room Rainbow Id, type (user, room)
+
+dateToSort
+
+Date-Time
+
+A processed date to help ordering descriptors not only from the file name.  
+  
+dateToSort is processed as follow:  
+  
+\* `Default value`: either file is never uploaded : dateToSort = 1970-01-01T00:00:00.000Z or file is uploaded but no downloaded date is available : dateToSort = upLoadedDate  
+\* In case of the viewerId is a user, a downloadedDate may override the default value. In this case dateToSort is the `downloadedDate`.  
+\* When a query sorted by uploadedDate is wanted (`sort=uploadedDate`), no 'dateToSort' processing is done. The uploadedDate field is copied instead.
+
+thumbnail
+
+Object
+
+Data of the thumbnail 'low resolution' (200X200 for images, 300x300 for .pdf, at least one dimension is 200 or 300))
+
+availableThumbnail
+
+Boolean
+
+Thumbnail availability
+
+wantThumbnailDate
+
+Date-Time
+
+When the thumbnail is ordered
+
+size
+
+Number
+
+Thumbnail size
+
+md5sum
+
+String
+
+md5 of the thumbnail get from the backend file storage
+
+typeMIME
+
+String
+
+https://fr.wikipedia.org/wiki/Type\_MIME (application/octet-stream)
+
+thumbnail500
+
+Object
+
+Data of the thumbnail 'High resolution' (500x500 - at least one dimension is 500)
+
+availableThumbnail
+
+Boolean
+
+Thumbnail availability
+
+wantThumbnailDate
+
+Date-Time
+
+When the thumbnail is ordered
+
+size
+
+Number
+
+Thumbnail size
+
+md5sum
+
+String
+
+md5 of the thumbnail get from the backend file storage
+
+isClean
+
+Boolean
+
+Null when the file is not yet scanned by an anti-virus
+
+typeMIME
+
+String
+
+https://fr.wikipedia.org/wiki/Type\_MIME (application/octet-stream)
+
+avReport
+
+String
+
+Null when the file is not yet scanned by an anti-virus
+
+**Category**: Files FILE MANAGEMENT / PROPERTIES
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+bubbleId
+
+`string`
+
+\[required\] Id of the room
+
+ownerId
+
+`string`
+
+Among all files shared with the user, allow to precify a provider.
+
+fileName
+
+`boolean`
+
+Allows to filter file descriptors by fileName criterion.
+
+extension
+
+`string`
+
+Allows to filter file descriptors by extension criterion.
+
+typeMIME
+
+`string`
+
+Allows to filter file descriptors by typeMIME criterion. typeMIME='image/jpeg' allows to get all jpeg file typeMime='image' allows to get all image files whatever the extension typeMIME='image/jpeg'&typeMIME='image/png' allows to get all jpeg and png files typeMIME='image'&typeMIME='video' allows to get all image and video files whatever the extension
+
+isUploaded
+
+`boolean`
+
+Allows to filter file descriptors by isUploaded criterion.
+
+purpose
+
+`string`
+
+Allows to filter file descriptors by the utility of the file (conference\_record for instance). purpose=conference\_record allows to get all records of conference
+
+roomName
+
+`string`
+
+A word of the conference name. When purpose=conference\_record is used, allow to reduce the list of results focusing of the recording name.
+
+overall
+
+`boolean`
+
+When true, allow to get all files (my files and received files) in the same paginated list
+
+format
+
+`string`
+
+Allows to retrieve viewers of each file when the format is full. small: \_id fileName extension typeMIME ownerId isUploaded uploadedDate size thumbnail thumbnail500 isClean tags medium: \_id fileName extension typeMIME ownerId isUploaded uploadedDate size thumbnail thumbnail500 isClean tags full: \_id fileName extension typeMIME ownerId isUploaded uploadedDate size viewers thumbnail thumbnail500 isClean tags Default value : full Possibles values : small, medium, full
+
+limit
+
+`number`
+
+Allow to specify the number of fileDescriptors to retrieve. Default value : 1000
+
+offset
+
+`number`
+
+Allow to specify the position of first fileDescriptor to retrieve (first fileDescriptor if not specified). Warning: if offset > total, no results are returned.
+
+sortField
+
+`string`
+
+Sort fileDescriptor list based on the given field. Default value : fileName
+
+sortOrder
+
+`number`
+
+Specify order when sorting fileDescriptor list (1: arranged in alphabetical order, -1: reverse order). Default value : 1 Possibles values : -1, 1
+
+---
+
+### fileStorage.retrieveReceivedFiles(viewerId, ownerId, fileName, extension, typeMIME, isUploaded, purpose, roomName, overall, format, limit, offset, sortField, sortOrder) ⇒ `Promise.<Array.<FileDescriptor>>`
+
+Method request for the list of files received by a user  
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: `Promise.<Array.<FileDescriptor>>` - : list of received files descriptors
+
+**Category**: Files FILE MANAGEMENT / PROPERTIES
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+viewerId
+
+`string`
+
+\[required\] Id of the viewer, could be either an userId or a bubbleId
+
+ownerId
+
+`string`
+
+Among all files shared with the user, allow to precify a provider. Example a peerId in a face to face conversation.
+
+fileName
+
+`boolean`
+
+Allows to filter file descriptors by fileName criterion.
+
+extension
+
+`string`
+
+Allows to filter file descriptors by extension criterion.
+
+typeMIME
+
+`string`
+
+Allows to filter file descriptors by typeMIME criterion.  
+typeMIME='image/jpeg' allows to get all jpeg file  
+typeMime='image' allows to get all image files whatever the extension  
+typeMIME='image/jpeg'&typeMIME='image/png' allows to get all jpeg and png files  
+typeMIME='image'&typeMIME='video' allows to get all image and video files whatever the extension  
+
+isUploaded
+
+`boolean`
+
+Allows to filter file descriptors by isUploaded criterion.
+
+purpose
+
+`string`
+
+Allows to filter file descriptors by the utility of the file (conference\_record for instance).  
+purpose=conference\_record allows to get all records of conference
+
+roomName
+
+`string`
+
+A word of the conference name. When purpose=conference\_record is used, allow to reduce the list of results focusing of the recording name.
+
+overall
+
+`boolean`
+
+When true, allow to get all files (my files and received files) in the same paginated list
+
+format
+
+`string`
+
+Allows to retrieve viewers of each file when the format is full. small: \_id fileName extension typeMIME ownerId isUploaded uploadedDate size thumbnail thumbnail500 isClean tags medium: \_id fileName extension typeMIME ownerId isUploaded uploadedDate size thumbnail thumbnail500 isClean tags full: \_id fileName extension typeMIME ownerId isUploaded uploadedDate size viewers thumbnail thumbnail500 isClean tags Default value : full. Possibles values : small, medium, full
+
+limit
+
+`number`
+
+Allow to specify the number of fileDescriptors to retrieve. Default value : 100
+
+offset
+
+`number`
+
+Allow to specify the position of first fileDescriptor to retrieve (first fileDescriptor if not specified). Warning: if offset > total, no results are returned.
+
+sortField
+
+`string`
+
+Sort fileDescriptor list based on the given field. Default value : fileName
+
+sortOrder
+
+`number`
+
+Specify order when sorting fileDescriptor list (1: arranged in alphabetical order, -1: reverse order). Default value : 1. Possibles values : -1, 1
+
+---
+
+### fileStorage.getFilesSentInConversation(conversation, fileName, extension, typeMIME, isUploaded, purpose, format, limit, offset, sortField, sortOrder) ⇒ `Array.<FileDescriptor>`
+
+Get the list of all files sent in a conversation with a contact  
+Return a promise  
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: `Array.<FileDescriptor>` - Return an array of file descriptors found or an empty array if no file descriptor has been found
+
+**Category**: Files FILE MANAGEMENT / PROPERTIES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.47.1
+
+Param
+
+Type
+
+Description
+
+conversation
+
+`Conversation`
+
+The conversation where to get the files
+
+fileName
+
+`boolean`
+
+Allows to filter file descriptors by fileName criterion.
+
+extension
+
+`string`
+
+Allows to filter file descriptors by extension criterion.
+
+typeMIME
+
+`string`
+
+Allows to filter file descriptors by typeMIME criterion.  
+typeMIME='image/jpeg' allows to get all jpeg file  
+typeMime='image' allows to get all image files whatever the extension  
+typeMIME='image/jpeg'&typeMIME='image/png' allows to get all jpeg and png files  
+typeMIME='image'&typeMIME='video' allows to get all image and video files whatever the extension  
+
+isUploaded
+
+`boolean`
+
+Allows to filter file descriptors by isUploaded criterion.
+
+purpose
+
+`string`
+
+Allows to filter file descriptors by the utility of the file (conference\_record for instance).  
+purpose=conference\_record allows to get all records of conference
+
+format
+
+`string`
+
+Allows to retrieve viewers of each file when the format is full. small: \_id fileName extension typeMIME ownerId isUploaded uploadedDate size thumbnail thumbnail500 isClean tags medium: \_id fileName extension typeMIME ownerId isUploaded uploadedDate size thumbnail thumbnail500 isClean tags full: \_id fileName extension typeMIME ownerId isUploaded uploadedDate size viewers thumbnail thumbnail500 isClean tags Default value : full. Possibles values : small, medium, full
+
+limit
+
+`number`
+
+Allow to specify the number of fileDescriptors to retrieve. Default value : 100
+
+offset
+
+`number`
+
+Allow to specify the position of first fileDescriptor to retrieve (first fileDescriptor if not specified). Warning: if offset > total, no results are returned.
+
+sortField
+
+`string`
+
+Sort fileDescriptor list based on the given field. Default value : fileName
+
+sortOrder
+
+`number`
+
+Specify order when sorting fileDescriptor list (1: arranged in alphabetical order, -1: reverse order). Default value : 1. Possibles values : -1, 1
+
+---
+
+### fileStorage.getFilesSentInBubble(bubble, fileName, extension, typeMIME, isUploaded, purpose, path, format, limit, offset, sortField, sortOrder) ⇒ `Array.<FileDescriptor>`
+
+Get the list of all files sent in a bubble  
+Return a promise  
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: `Array.<FileDescriptor>` - Return an array of file descriptors found or an empty array if no file descriptor has been found
+
+**Category**: Files FILE MANAGEMENT / PROPERTIES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.47.1
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`Bubble`
+
+The bubble where to get the files
+
+fileName
+
+`boolean`
+
+Allows to filter file descriptors by fileName criterion.
+
+extension
+
+`string`
+
+Allows to filter file descriptors by extension criterion.
+
+typeMIME
+
+`string`
+
+Allows to filter file descriptors by typeMIME criterion.  
+typeMIME='image/jpeg' allows to get all jpeg file  
+typeMime='image' allows to get all image files whatever the extension  
+typeMIME='image/jpeg'&typeMIME='image/png' allows to get all jpeg and png files  
+typeMIME='image'&typeMIME='video' allows to get all image and video files whatever the extension  
+
+isUploaded
+
+`boolean`
+
+Allows to filter file descriptors by isUploaded criterion.
+
+purpose
+
+`string`
+
+Allows to filter file descriptors by the utility of the file (conference\_record for instance).  
+purpose=conference\_record allows to get all records of conference
+
+path
+
+`string`
+
+For visual voice mail feature only (step1), allows to get file descriptors of each file under the given path.
+
+format
+
+`string`
+
+Allows to retrieve viewers of each file when the format is full. small: \_id fileName extension typeMIME ownerId isUploaded uploadedDate size thumbnail thumbnail500 isClean tags medium: \_id fileName extension typeMIME ownerId isUploaded uploadedDate size thumbnail thumbnail500 isClean tags full: \_id fileName extension typeMIME ownerId isUploaded uploadedDate size viewers thumbnail thumbnail500 isClean tags Default value : full. Possibles values : small, medium, full
+
+limit
+
+`number`
+
+Allow to specify the number of fileDescriptors to retrieve. Default value : 100
+
+offset
+
+`number`
+
+Allow to specify the position of first fileDescriptor to retrieve (first fileDescriptor if not specified). Warning: if offset > total, no results are returned.
+
+sortField
+
+`string`
+
+Sort fileDescriptor list based on the given field. Default value : fileName
+
+sortOrder
+
+`number`
+
+Specify order when sorting fileDescriptor list (1: arranged in alphabetical order, -1: reverse order). Default value : 1. Possibles values : -1, 1
+
+---
+
+### fileStorage.getUserQuotaConsumption() ⇒ `Object`
+
+Get the current file storage quota and consumption for the connected user  
+Return a promise  
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: `Object` - Return an object containing the user quota and consumption
+
+**Category**: Files FILE MANAGEMENT / PROPERTIES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.47.1
+
+---
+
+### fileStorage.getAllFilesSent() ⇒ `Array.<FileDescriptor>`
+
+Get the list of files (represented using an array of File Descriptor objects) created and owned by the connected which is the list of file sent to all of his conversations and bubbles.  
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: `Array.<FileDescriptor>` - Return an array containing the list of FileDescriptor objects representing the files sent
+
+**Category**: Files FILE MANAGEMENT / PROPERTIES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.47.1
+
+---
+
+### fileStorage.getAllFilesReceived() ⇒ `Array.<FileDescriptor>`
+
+Get the list of files (represented using an array of File Descriptor objects) received by the connected user from all of his conversations and bubbles.  
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: `Array.<FileDescriptor>` - Return an array containing a list of FileDescriptor objects representing the files received
+
+**Category**: Files FILE MANAGEMENT / PROPERTIES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.47.1
+
+---
+
+### fileStorage.retrieveOneFileDescriptor(fileId) ⇒ `Promise.<FileDescriptor>`
+
+Method retrieve a specific file descriptor from server  
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: `Promise.<FileDescriptor>` - file descriptor retrieved
+
+**Category**: Files FILE MANAGEMENT / PROPERTIES
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+fileId
+
+`string`
+
+\[required\] Identifier of file descriptor to retrieve
+
+---
+
+### fileStorage.getFileDescriptorsByCompanyId(companyId, fileName, extension, typeMIME, purpose, isUploaded, format, limit, offset, sortField, sortOrder) ⇒ `Promise.<any>`
+
+Get all file descriptors belonging to a given companyId.  
+The result is paginated.  
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: `Promise.<any>` - all file descriptors belonging to a given companyId.
+
+**Category**: Files FILE MANAGEMENT / PROPERTIES
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+companyId
+
+`string`
+
+Company unique identifier. If no value is provided then the companyId of the connected user is used.
+
+fileName
+
+`boolean`
+
+Allows to filter file descriptors by fileName criterion.
+
+extension
+
+`string`
+
+Allows to filter file descriptors by extension criterion.
+
+typeMIME
+
+`string`
+
+Allows to filter file descriptors by typeMIME criterion.  
+  
+\- typeMIME=audio/wav allows to get all wav file  
+\- typeMime=audio allows to get all audio files whatever the extension  
+\- typeMIME=audio/wav&typeMIME=audio/mp3 allows to get all wav and mp3 files  
+  
+
+purpose
+
+`string`
+
+Allows to filter file descriptors by the utility of the file (rvcp\_voice\_promp, rvcp\_record).  
+  
+\- purpose=rvcp\_voice\_promp allows to get all voice prompt used by Rainbow Voice Communication Platform  
+\- purpose=rvcp\_record allows to get all records generated by Rainbow Voice Communication Platform  
+\- purpose=rvcp allows to get all Rainbow Voice Communication Platform files  
+  
+
+isUploaded
+
+`boolean`
+
+Allows to filter file descriptors by isUploaded criterion.
+
+format
+
+`string`
+
+Allows to retrieve viewers of each file when the format is full.  
+  
+\- small: \_id, fileName, extension, isClean  
+\- medium: \_id, fileName, extension, typeMIME, size, isUploaded,isClean, avReport, thumbnail, thumbnail500, original\_w, original\_h  
+\- full: all descriptors fields except storageURL  
+  
+Default value : small  
+Possible values : small, medium, full  
+  
+
+limit
+
+`number`
+
+Allow to specify the number of fileDescriptors to retrieve. Default value : 100
+
+offset
+
+`number`
+
+Allow to specify the position of first fileDescriptor to retrieve (first fileDescriptor if not specified). Warning: if offset > total, no results are returned.
+
+sortField
+
+`string`
+
+Sort fileDescriptor list based on the given field. Default value : fileName
+
+sortOrder
+
+`number`
+
+Specify order when sorting fileDescriptor list (1: arranged in alphabetical order, -1: reverse order). Default value : 1. Possible values : -1, 1
+
+---
+
+### fileStorage.copyFileInPersonalCloudSpace(fileId) ⇒ `Promise.<FileDescriptor>`
+
+This API allows to keep a copy in my personal cloud space. Then:
+
+-   A new file descriptor is created.
+-   The viewer becomes owner. The file has not yet viewer.
+-   A copy of the file is put in the viewer's personal cloud space.
+-   A STANZA MESSAGE (type management) is sent to the owner of this new file. (tag 'file', action='update')
+
+To copy the file you must:
+
+-   have enough space to store the file.(errorDetailsCode: 403630)
+-   not be the owner of the file.(errorDetailsCode: 403631)
+-   be an allowed viewer. The file is shared via a conversation or via a room.(errorDetailsCode: 403632)
+-   copy a file uploaded.(errorDetailsCode: 403630)
+-   have a personal cloud space in the same data center than the owner of the file.
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: `Promise.<FileDescriptor>` - File descriptor Object
+
+**Category**: Files FILE MANAGEMENT / PROPERTIES
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+fileId
+
+`string`
+
+\[required\] Identifier of file descriptor to modify
+
+---
+
+### fileStorage.fileOwnershipChange(fileId, userId) ⇒ `Promise.<FileDescriptor>`
+
+As a file owner, I want to Drop the ownership to another Rainbow user of the same company.  
+Then:  
+  
+The former owner becomes a viewer to stay allowed to get the display of the file.  
+The new owner may loose his status of viewer when needed (as he becomes owner).  
+  
+Error cases:
+
+-   the former owner's company must allow file ownership change (forbidFileOwnerChangeCustomisation == disabled) errorDetailCode 403156 Access denied: this API can only be called by users having the feature key forbidFileOwnerChangeCustomisation disabled
+-   the logged in user is not the owner (errorDetailsCode: 403629)
+-   the new owner must belong to the same company of the current owner. errorDetailCode 403637 User \[userId\] doesn't belong to the company \[companyId\]
+-   the target file is not uploaded yet. errorDetailCode 403638 File \[fileId\] is not uploaded yet. So it can't be re-allocated.
+-   the new owner must have enough space to store the file.(errorDetailsCode: 403630)
+-   A STANZA MESSAGE (type management) is sent to the owner and each viewers. (tag 'file', action='update', owner='xxxxxxxxxxxxx')
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: `Promise.<FileDescriptor>` - File descriptor Object
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+File descriptor Object
+
+id
+
+String
+
+File unique identifier (like 56d0277a0261b53142a5cab5)
+
+fileName
+
+String
+
+Name of the file
+
+ownerId
+
+String
+
+Rainbow Id of the file owner
+
+md5sum
+
+String
+
+md5 of the file get from the backend file storage (default: "", refreshed each time the file is uploaded)
+
+extension
+
+String
+
+File extension (jpeg, txt, ...)
+
+typeMIME
+
+String
+
+https://fr.wikipedia.org/wiki/Type\_MIME (image/jpeg,text/plain,...)
+
+size
+
+Number
+
+Size of the file (Default: value given by Rainbow clients). Refreshed from the backend file storage each time the file is uploaded.
+
+registrationDate
+
+Date-Time
+
+Date when the submit to upload this file was registered
+
+isUploaded
+
+Boolean
+
+true when the file was uploaded at least one time
+
+uploadedDate
+
+Date-Time
+
+Last time when the file was uploaded
+
+viewers
+
+Object\[\]
+
+A set of objects including user or room Rainbow Id, type (user, room)
+
+thumbnail
+
+Object
+
+Data of the thumbnail 'low resolution' (200X200 for images, 300x300 for .pdf, at least one dimension is 200 or 300))
+
+availableThumbnail
+
+Boolean
+
+Thumbnail availability
+
+wantThumbnailDate
+
+Date-Time
+
+When the thumbnail is ordered
+
+size
+
+Number
+
+Thumbnail size
+
+md5sum
+
+String
+
+md5 of the thumbnail get from the backend file storage
+
+typeMIME
+
+String
+
+https://fr.wikipedia.org/wiki/Type\_MIME (application/octet-stream)
+
+thumbnail500
+
+Object
+
+Data of the thumbnail 'High resolution' (500x500 - at least one dimension is 500)
+
+availableThumbnail
+
+Boolean
+
+Thumbnail availability
+
+wantThumbnailDate
+
+Date-Time
+
+When the thumbnail is ordered
+
+size
+
+Integer
+
+Thumbnail size
+
+md5sum
+
+String
+
+md5 of the thumbnail get from the backend file storage
+
+isClean
+
+Boolean
+
+Null when the file is not yet scanned by an anti-virus
+
+typeMIME
+
+String
+
+https://fr.wikipedia.org/wiki/Type\_MIME (application/octet-stream)
+
+avReport
+
+String
+
+Null when the file is not yet scanned by an anti-virus
+
+original\_w
+
+Number
+
+For images only (jpeg, jpg, png, gif, pdf), this is the original width. It is processed at the same time as the thumbnails processing. (asynchronously)
+
+original\_h
+
+Number
+
+For images only (jpeg, jpg, png, gif, pdf), this is the original height. It is processed at the same time as the thumbnails processing. (asynchronously)
+
+tags
+
+Object
+
+Wrap a set of data according with the file use
+
+path
+
+String
+
+The path under which the owner will be able to classified the file. The folder management is not yet available; only a get files per path. For instance this facility is used to implement OXO visual voice mail feature on client side.  
+  
+\* /  
+\* /voice-messages
+
+msgId
+
+String
+
+When the file is generated by the Rainbow visual voice mail feature - The message Id (ex: "g0F6jhGrIXN5NQa")
+
+messageType
+
+String
+
+When the file is generated by the Rainbow visual voice mail feature - The message type  
+  
+default : `voice_message`  
+  
+Possible values : `voice_message`, `conv_recording`
+
+duration
+
+Number
+
+The message duration in second (voice message duration)
+
+**Category**: Files FILE MANAGEMENT / PROPERTIES
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+fileId
+
+`string`
+
+\[required\] Identifier of file descriptor to modify
+
+userId
+
+`string`
+
+ID of another user which will become owner.
+
+---
+
+### fileStorage.uploadFileToConversation(conversation, object, strMessage, p\_messagesDataStore) ⇒ `Message`
+
+Allow to add a file to an existing conversation (ie: conversation with a contact)  
+Return the promise  
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: `Message` - Return the message sent  
+
+**Category**: Files TRANSFER
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.47.1
+
+Param
+
+Type
+
+Description
+
+conversation
+
+`Conversation`
+
+The conversation where the message will be added
+
+object
+
+`Object`
+
+reprensenting The file to add. Properties are : the Size of the file in octets, the mimetype, the name, a thumbnail preview if it is an image, the path to the file to share.
+
+strMessage
+
+`String`
+
+An optional message to add with the file
+
+p\_messagesDataStore
+
+`DataStoreType`
+
+used to override the general of SDK's parameter "messagesDataStore". default value `undefined` to use the general value.  
+DataStoreType.NoStore Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide The messages are fully stored.  
+DataStoreType.UsestoreMessagesField to follow the storeMessages SDK's parameter behaviour.  
+
+---
+
+### fileStorage.uploadFileToBubble(bubble, file, strMessage, p\_messagesDataStore) ⇒ `Message`
+
+Allow to add a file to an existing Bubble conversation  
+Return a promise  
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: `Message` - Return the message sent  
+
+**Category**: Files TRANSFER
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.47.1
+
+Param
+
+Type
+
+Description
+
+bubble
+
+`Bubble`
+
+The bubble where the message will be added
+
+file
+
+`File`
+
+The file to add
+
+strMessage
+
+`String`
+
+An optional message to add with the file
+
+p\_messagesDataStore
+
+`DataStoreType`
+
+used to override the general of SDK's parameter "messagesDataStore". default value `undefined` to use the general value.  
+DataStoreType.NoStore Tell the server to NOT store the messages for delay distribution or for history of the bot and the contact.  
+DataStoreType.NoPermanentStore Tell the server to NOT store the messages for history of the bot and the contact. But being stored temporarily as a normal part of delivery (e.g. if the recipient is offline at the time of sending).  
+DataStoreType.StoreTwinSide The messages are fully stored.  
+DataStoreType.UsestoreMessagesField to follow the storeMessages SDK's parameter behaviour.  
+
+---
+
+### fileStorage.uploadFileToStorage(file, voicemessage, duration, encoding, ccarelogs, ccareclientlogs)
+
+Send a file in user storage  
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Category**: Files TRANSFER
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.67.0
+
+Param
+
+Type
+
+Description
+
+file
+
+`String` \\
+
+`File`
+
+An {size, type, name, preview, path}} object reprensenting The file to add. Properties are : the Size of the file in octets, the mimetype, the name, a thumbnail preview if it is an image, the path to the file to share.
+
+voicemessage
+
+`boolean`
+
+When set to True, that allows to identify voice memos in a chat or multi-users chat conversation.
+
+duration
+
+`number`
+
+The voice message in seconds. This field must be a positive number and is only taken into account when voicemessage is true.
+
+encoding
+
+`boolean`
+
+AAC is the choosen format to encode a voice message. This is the native format for mobile clients, nor web client (OPUS, OGG..). This field must be set to true to order a transcodind and is only taken into account when voicemessage is true.
+
+ccarelogs
+
+`boolean`
+
+When set to True, that allows to identify a log file uploaded by the user
+
+ccareclientlogs
+
+`boolean`
+
+When set to True, that allows to identify a log file uploaded automatically by the client application
+
+---
+
+### fileStorage.downloadFile(fileDescriptor) ⇒
+
+Allow to download a file from the server  
+Return a promise  
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: Object with : Array of buffer Binary data of the file type, Mime type, fileSize: fileSize, Size of the file , fileName: fileName The name of the file Return the file received
+
+**Category**: Files TRANSFER
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.47.1
+
+Param
+
+Type
+
+Description
+
+fileDescriptor
+
+`FileDescriptor`
+
+The description of the file to download (short file descriptor)
+
+---
+
+### fileStorage.downloadFileInPath(fileDescriptor, path) ⇒ `Observable.<any>`
+
+Allow to download a file from the server and store it in provided path.  
+Return a promise  
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: `Observable.<any>` - Return an Observable object to see the completion of the download/save.  
+It returns a percentage of downloaded data Values are between 0 and 100 (include).  
+The last one value is the description and content of the file :  
+{  
+buffer : blobArray, // the buffer with the content of the file.  
+type: mime, // The mime type of the encoded file  
+fileSize: fileSize, // The size in octects of the file  
+fileName: fileName // The file saved.  
+}  
+Warning !!! :  
+take care to not log this last data which can be very important for big files. You can test if the value is < 101.  
+
+**Category**: Files TRANSFER
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.79.0
+
+Param
+
+Type
+
+Description
+
+fileDescriptor
+
+`FileDescriptor`
+
+The description of the file to download (short file descriptor)
+
+path
+
+`string`
+
+If provided then the retrieved file is stored in it. If not provided then
+
+---
+
+### fileStorage.getFilesTemporaryURL(fileId) ⇒ `Object`
+
+In order to use a download manager, get a file backend temporary URL.  
+Return a promise  
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: `Object` - Return a SDK OK Object or a SDK error object depending the result
+
+**Category**: Files TRANSFER
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.47.1
+
+Param
+
+Type
+
+Description
+
+fileId
+
+`string`
+
+The id of description of the file to get download url.
+
+---
+
+### fileStorage.removeFile(fileDescriptor) ⇒ `Object`
+
+Remove an uploaded file  
+Return a promise  
+
+**Kind**: instance method of [`FileStorage`](#module_FileStorage)
+
+**Returns**: `Object` - Return a SDK OK Object or a SDK error object depending the result
+
+**Category**: Files TRANSFER
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.47.1
+
+Param
+
+Type
+
+Description
+
+fileDescriptor
+
+`FileDescriptor`
+
+The description of the file to remove (short file descriptor)
+
+---
+
+### On this page
+
+-   [FileStorage](/docs/sdk/node#name-filestorage-3)
+-   [fileStorage.getFileDescriptorFromId(id) ⇒ FileDescriptor](/docs/sdk/node#name-filestorage.getfiledescriptorfromidid--filedescriptor-194)
+-   [fileStorage.getFilesReceivedInConversation(conversation) ⇒ Array.<FileDescriptor>](/docs/sdk/node#name-filestorage.getfilesreceivedinconversationconversation--array.filedescriptor-250)
+-   [fileStorage.getFilesReceivedInBubble(bubble, ownerId, fileName, extension, typeMIME, isUploaded, purpose, roomName, overall, format, limit, offset, sortField, sortOrder) ⇒ Promise.<Array.<FileDescriptor>>](/docs/sdk/node#name-filestorage.getfilesreceivedinbubblebubble-ownerid-filename-extension-typemime-isuploaded-purpose-roomname-overall-format-limit-offset-sortfield-sortorder--promise.array.filedescriptor-306)
+-   [fileStorage.getReceivedFilesForRoom(bubbleId) ⇒ Array.<FileDescriptor>](/docs/sdk/node#name-filestorage.getreceivedfilesforroombubbleid--array.filedescriptor-838)
+-   [fileStorage.retrieveFileDescriptorsListPerOwner(fileName, extension, typeMIME, purpose, isUploaded, viewerId, path, limit, offset, sortField, sortOrder, format) ⇒ Promise.<Array.<FileDescriptor>>](/docs/sdk/node#name-filestorage.retrievefiledescriptorslistperownerfilename-extension-typemime-purpose-isuploaded-viewerid-path-limit-offset-sortfield-sortorder-format--promise.array.filedescriptor-888)
+-   [fileStorage.retrieveSentFiles(peerId, fileName, extension, typeMIME, purpose, isUploaded, path, limit, offset, sortField, sortOrder, format) ⇒ Promise.<Array.<FileDescriptor>>](/docs/sdk/node#name-filestorage.retrievesentfilespeerid-filename-extension-typemime-purpose-isuploaded-path-limit-offset-sortfield-sortorder-format--promise.array.filedescriptor-1098)
+-   [fileStorage.retrieveReceivedFilesForRoom(bubbleId, ownerId, fileName, extension, typeMIME, isUploaded, purpose, roomName, overall, format, limit, offset, sortField, sortOrder) ⇒ Promise.<Array.<FileDescriptor>>](/docs/sdk/node#name-filestorage.retrievereceivedfilesforroombubbleid-ownerid-filename-extension-typemime-isuploaded-purpose-roomname-overall-format-limit-offset-sortfield-sortorder--promise.array.filedescriptor-1272)
+-   [fileStorage.retrieveReceivedFiles(viewerId, ownerId, fileName, extension, typeMIME, isUploaded, purpose, roomName, overall, format, limit, offset, sortField, sortOrder) ⇒ Promise.<Array.<FileDescriptor>>](/docs/sdk/node#name-filestorage.retrievereceivedfilesviewerid-ownerid-filename-extension-typemime-isuploaded-purpose-roomname-overall-format-limit-offset-sortfield-sortorder--promise.array.filedescriptor-1804)
+-   [fileStorage.getFilesSentInConversation(conversation, fileName, extension, typeMIME, isUploaded, purpose, format, limit, offset, sortField, sortOrder) ⇒ Array.<FileDescriptor>](/docs/sdk/node#name-filestorage.getfilessentinconversationconversation-filename-extension-typemime-isuploaded-purpose-format-limit-offset-sortfield-sortorder--array.filedescriptor-2000)
+-   [fileStorage.getFilesSentInBubble(bubble, fileName, extension, typeMIME, isUploaded, purpose, path, format, limit, offset, sortField, sortOrder) ⇒ Array.<FileDescriptor>](/docs/sdk/node#name-filestorage.getfilessentinbubblebubble-filename-extension-typemime-isuploaded-purpose-path-format-limit-offset-sortfield-sortorder--array.filedescriptor-2166)
+-   [fileStorage.getUserQuotaConsumption() ⇒ Object](/docs/sdk/node#name-filestorage.getuserquotaconsumption--object-2343)
+-   [fileStorage.getAllFilesSent() ⇒ Array.<FileDescriptor>](/docs/sdk/node#name-filestorage.getallfilessent--array.filedescriptor-2371)
+-   [fileStorage.getAllFilesReceived() ⇒ Array.<FileDescriptor>](/docs/sdk/node#name-filestorage.getallfilesreceived--array.filedescriptor-2399)
+-   [fileStorage.retrieveOneFileDescriptor(fileId) ⇒ Promise.<FileDescriptor>](/docs/sdk/node#name-filestorage.retrieveonefiledescriptorfileid--promise.filedescriptor-2427)
+-   [fileStorage.getFileDescriptorsByCompanyId(companyId, fileName, extension, typeMIME, purpose, isUploaded, format, limit, offset, sortField, sortOrder) ⇒ Promise.<any>](/docs/sdk/node#name-filestorage.getfiledescriptorsbycompanyidcompanyid-filename-extension-typemime-purpose-isuploaded-format-limit-offset-sortfield-sortorder--promise.any-2480)
+-   [fileStorage.copyFileInPersonalCloudSpace(fileId) ⇒ Promise.<FileDescriptor>](/docs/sdk/node#name-filestorage.copyfileinpersonalcloudspacefileid--promise.filedescriptor-2643)
+-   [fileStorage.fileOwnershipChange(fileId, userId) ⇒ Promise.<FileDescriptor>](/docs/sdk/node#name-filestorage.fileownershipchangefileid-userid--promise.filedescriptor-2748)
+-   [fileStorage.uploadFileToConversation(conversation, object, strMessage, p\_messagesDataStore) ⇒ Message](/docs/sdk/node#name-filestorage.uploadfiletoconversationconversation-object-strmessage-p_messagesdatastore--message-3224)
+-   [fileStorage.uploadFileToBubble(bubble, file, strMessage, p\_messagesDataStore) ⇒ Message](/docs/sdk/node#name-filestorage.uploadfiletobubblebubble-file-strmessage-p_messagesdatastore--message-3313)
+-   [fileStorage.uploadFileToStorage(file, voicemessage, duration, encoding, ccarelogs, ccareclientlogs)](/docs/sdk/node#name-filestorage.uploadfiletostoragefile-voicemessage-duration-encoding-ccarelogs-ccareclientlogs-3402)
+-   [fileStorage.downloadFile(fileDescriptor) ⇒](/docs/sdk/node#name-filestorage.downloadfilefiledescriptor--3513)
+-   [fileStorage.downloadFileInPath(fileDescriptor, path) ⇒ Observable.<any>](/docs/sdk/node#name-filestorage.downloadfileinpathfiledescriptor-path--observable.any-3569)
+-   [fileStorage.getFilesTemporaryURL(fileId) ⇒ Object](/docs/sdk/node#name-filestorage.getfilestemporaryurlfileid--object-3636)
+-   [fileStorage.removeFile(fileDescriptor) ⇒ Object](/docs/sdk/node#name-filestorage.removefilefiledescriptor--object-3692)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

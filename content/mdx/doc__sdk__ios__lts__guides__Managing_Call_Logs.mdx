@@ -1,0 +1,162 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/ios/lts/guides/Managing_Call_Logs"
+lastSynced: "2026-02-20T07:12:29.242Z"
+---
+# Documentation
+
+Managing call logs
+
+LTS release 2.12.0Published on 2024-07-23
+
+## Managing call logs
+
+---
+
+Rainbow manages up to 75 call logs.
+
+By reading this tutorial, you will be able
+
+-   To retrieve your call logs
+    
+-   To mark call logs as read
+    
+-   To delete call logs
+    
+
+### Coding using Swift
+
+---
+
+This tutorial uses the **Swift** language. Objective-C code will not be provided, if needed please ask for having it in our [Rainbow for developers Forum](https://support.openrainbow.com/hc/en-us/community/topics/115000150070-Hub-Support-Community)
+
+### Retrieving your call logs
+
+---
+
+When connecting to the Rainbow server, the SDK retrieves the call logs for the current connected user. Once retrieved, the `kCallLogsServiceDidFetchCallLogs` event is fired. Afterwards, if a new call log l is received by the SDK, the event `kCallLogsServiceDidAddCallLog` is fired to allow the update of the list in your application. Events are also fired when call logs are removed (`kCallLogsServiceDidRemoveAllCallLogs` and `kCallLogsServiceDidRemoveCallLogs`).
+
+Retrieve the call logs.
+
+```swift
+// somewhere in your code
+var callLogs: Array<CallLog>
+
+callLogs = ServicesManager.sharedInstance().callLogsService.getAllCallLogs()
+
+
+// you're only interested by the unread call logs
+
+let unreadCallLogs = ServicesManager.sharedInstance().callLogsService.getUnreadCallLogs()
+```
+
+### Mark call logs as read
+
+---
+
+#### Mark all call logs as read
+
+---
+
+```swift
+ServicesManager.sharedInstance().callLogsService.markAllCallLogsAsRead()
+```
+
+#### Mark call logs as read for a given contact
+
+---
+
+```swift
+let contact = ...
+
+ServicesManager.sharedInstance().callLogsService.markCallLogsAsRead(withRemoteParty: contact)
+```
+
+### Delete call logs
+
+---
+
+#### Delete all call logs
+
+---
+
+```swift
+ServicesManager.sharedInstance().callLogsService.deleteAllCallLogs()
+```
+
+#### Delete call logs for a given contact
+
+---
+
+```swift
+let contact = ...
+
+ServicesManager.sharedInstance().callLogsService.deleteCallLog(withRemoteParty: contact)
+```
+
+#### Delete a given call log
+
+---
+
+```swift
+let callLog = ...
+
+ServicesManager.sharedInstance().callLogsService.delete(callLog)
+```
+
+#### Listening to call logs changes
+
+---
+
+Each time the SDK manages any changes in the call logs list, a relevant event is fired:
+
+-   `kCallLogsServiceDidRemoveAllCallLogs` :
+-   `didRemoveCallLogs` :
+-   `kCallLogsServiceDidAddCallLog` :
+
+```swift
+// Somewhere in your application
+NotificationCenter.default.addObserver(self, selector: #selector(didAddCallLog), name: NSNotification.Name(rawValue: kCallLogsServiceDidAddCallLog), object: nil)
+
+NotificationCenter.default.addObserver(self, selector: #selector(didRemoveCallLogs), name: NSNotification.Name(rawValue: kCallLogsServiceDidRemoveCallLogs), object: nil)
+
+// handler
+
+@objc
+func didAddCallLog(notification: Notification) {
+    if let callLog = notification.object as? CallLog {
+        // Add the callLog to your call logs array ...
+    }
+}
+
+@objc
+func didRemoveCallLogs(notification: Notification) {
+    if let callLogs = notification.object as? [CallLog] {
+        callLogs.forEach { callLog in
+            // Remove the call logs from your call logs array ...
+        }
+    }
+}
+```
+
+### On this page
+
+-   [Managing call logs](/docs/sdk/ios#name-managing-call-logs-0)
+-   [Coding using Swift](/docs/sdk/ios#name-coding-using-swift-27)
+-   [Retrieving your call logs](/docs/sdk/ios#name-retrieving-your-call-logs-34)
+-   [Mark call logs as read](/docs/sdk/ios#name-mark-call-logs-as-read-45)
+-   [Mark all call logs as read](/docs/sdk/ios#name-mark-all-call-logs-as-read-49)
+-   [Mark call logs as read for a given contact](/docs/sdk/ios#name-mark-call-logs-as-read-for-a-given-contact-54)
+-   [Delete call logs](/docs/sdk/ios#name-delete-call-logs-59)
+-   [Delete all call logs](/docs/sdk/ios#name-delete-all-call-logs-63)
+-   [Delete call logs for a given contact](/docs/sdk/ios#name-delete-call-logs-for-a-given-contact-68)
+-   [Delete a given call log](/docs/sdk/ios#name-delete-a-given-call-log-73)
+-   [Listening to call logs changes](/docs/sdk/ios#name-listening-to-call-logs-changes-78)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

@@ -1,0 +1,380 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/s2s-starterkit-nodejs/services/ImService"
+lastSynced: "2026-02-20T07:12:33.888Z"
+---
+# Documentation
+
+ImService
+
+## Classes
+
+[ImService](#ImService)
+
+[ImService](#ImService)
+
+## ImService
+
+**Kind**: global class
+
+-   [ImService](#ImService)
+    -   [ImService()](#new_ImService_new)
+    -   [ImService(\_eventModule, \_logger, \_s2sMessageApi, \_connectedUserInfo, \_connectionInfo, \_options)](#new_ImService_new)
+    -   [stop()](#ImService+stop)
+    -   [sendMessage(cvId, messageToBeSent, lang, content, title)](#ImService+sendMessage)
+    -   [acknowledgeMessageAsRead(cvId, messageId)](#ImService+acknowledgeMessageAsRead)
+    -   [acknowledgeMessageReception(cvId, messageId)](#ImService+acknowledgeMessageReception)
+    -   [getAllMessagesFromAConversation(cvId)](#ImService+getAllMessagesFromAConversation)
+
+### ImService()
+
+This module manages Instant Messages. It allows to send messages to a user or a bubble.  
+  
+The main methods proposed in that module allow to:  
+\- Send a message to a conversation ( user or room)  
+\- Mark a message as read  
+
+### ImService(\_eventModule, \_logger, \_s2sMessageApi, \_connectedUserInfo, \_connectionInfo, \_options)
+
+constructor
+
+Param
+
+Type
+
+Description
+
+\_eventModule
+
+`*`
+
+the event manager module
+
+\_logger
+
+`*`
+
+the logger module
+
+\_s2sMessageApi
+
+`*`
+
+S2S messaging API
+
+\_connectedUserInfo
+
+`*`
+
+connected user info
+
+\_connectionInfo
+
+`*`
+
+connection info
+
+\_options
+
+`*`
+
+s2s options (global parameters defined in configuration file)
+
+### imService.stop()
+
+Stop ImService
+
+**Kind**: instance method of [`ImService`](#ImService)  
+
+### imService.sendMessage(cvId, messageToBeSent, lang, content, title)
+
+send a messaeg to peers in a conversation
+
+**Kind**: instance method of [`ImService`](#ImService)
+
+Param
+
+Type
+
+Description
+
+cvId
+
+`*`
+
+the conversation id to send message to
+
+messageToBeSent
+
+`*`
+
+the message to send
+
+lang
+
+`*`
+
+the language used
+
+content
+
+`*`
+
+title
+
+`*`
+
+the message subject
+
+### imService.acknowledgeMessageAsRead(cvId, messageId)
+
+acknowledge a message as read using its message id
+
+**Kind**: instance method of [`ImService`](#ImService)
+
+Param
+
+Type
+
+cvId
+
+`*`
+
+messageId
+
+`*`
+
+### imService.acknowledgeMessageReception(cvId, messageId)
+
+acknowledge a message reception
+
+**Kind**: instance method of [`ImService`](#ImService)
+
+Param
+
+Type
+
+Description
+
+cvId
+
+`*`
+
+the conversation in witch the message is exchnaged
+
+messageId
+
+`*`
+
+the message id
+
+### imService.getAllMessagesFromAConversation(cvId)
+
+retreive all message from a conversation
+
+**Kind**: instance method of [`ImService`](#ImService)
+
+Param
+
+Description
+
+cvId
+
+the conversation id
+
+## ImService
+
+**Kind**: global class
+
+-   [ImService](#ImService)
+    -   [ImService()](#new_ImService_new)
+    -   [ImService(\_eventModule, \_logger, \_s2sMessageApi, \_connectedUserInfo, \_connectionInfo, \_options)](#new_ImService_new)
+    -   [stop()](#ImService+stop)
+    -   [sendMessage(cvId, messageToBeSent, lang, content, title)](#ImService+sendMessage)
+    -   [acknowledgeMessageAsRead(cvId, messageId)](#ImService+acknowledgeMessageAsRead)
+    -   [acknowledgeMessageReception(cvId, messageId)](#ImService+acknowledgeMessageReception)
+    -   [getAllMessagesFromAConversation(cvId)](#ImService+getAllMessagesFromAConversation)
+
+### ImService()
+
+This module manages Instant Messages. It allows to send messages to a user or a bubble.  
+  
+The main methods proposed in that module allow to:  
+\- Send a message to a conversation ( user or room)  
+\- Mark a message as read  
+
+### ImService(\_eventModule, \_logger, \_s2sMessageApi, \_connectedUserInfo, \_connectionInfo, \_options)
+
+constructor
+
+Param
+
+Type
+
+Description
+
+\_eventModule
+
+`*`
+
+the event manager module
+
+\_logger
+
+`*`
+
+the logger module
+
+\_s2sMessageApi
+
+`*`
+
+S2S messaging API
+
+\_connectedUserInfo
+
+`*`
+
+connected user info
+
+\_connectionInfo
+
+`*`
+
+connection info
+
+\_options
+
+`*`
+
+s2s options (global parameters defined in configuration file)
+
+### imService.stop()
+
+Stop ImService
+
+**Kind**: instance method of [`ImService`](#ImService)  
+
+### imService.sendMessage(cvId, messageToBeSent, lang, content, title)
+
+send a messaeg to peers in a conversation
+
+**Kind**: instance method of [`ImService`](#ImService)
+
+Param
+
+Type
+
+Description
+
+cvId
+
+`*`
+
+the conversation id to send message to
+
+messageToBeSent
+
+`*`
+
+the message to send
+
+lang
+
+`*`
+
+the language used
+
+content
+
+`*`
+
+title
+
+`*`
+
+the message subject
+
+### imService.acknowledgeMessageAsRead(cvId, messageId)
+
+acknowledge a message as read using its message id
+
+**Kind**: instance method of [`ImService`](#ImService)
+
+Param
+
+Type
+
+cvId
+
+`*`
+
+messageId
+
+`*`
+
+### imService.acknowledgeMessageReception(cvId, messageId)
+
+acknowledge a message reception
+
+**Kind**: instance method of [`ImService`](#ImService)
+
+Param
+
+Type
+
+Description
+
+cvId
+
+`*`
+
+the conversation in witch the message is exchnaged
+
+messageId
+
+`*`
+
+the message id
+
+### imService.getAllMessagesFromAConversation(cvId)
+
+retreive all message from a conversation
+
+**Kind**: instance method of [`ImService`](#ImService)
+
+Param
+
+Description
+
+cvId
+
+the conversation id
+
+### On this page
+
+-   [Classes](/docs/sdk/s2s-starterkit-nodejs/services/ImService#name-classes-0)
+-   [ImService](/docs/sdk/s2s-starterkit-nodejs/services/ImService#name-imservice-7)
+-   [ImService()](/docs/sdk/s2s-starterkit-nodejs/services/ImService#name-imservice-60)
+-   [ImService(\_eventModule, \_logger, \_s2sMessageApi, \_connectedUserInfo, \_connectionInfo, \_options)](/docs/sdk/s2s-starterkit-nodejs/services/ImService#name-imservice_eventmodule-_logger-_s2smessageapi-_connecteduserinfo-_connectioninfo-_options-69)
+-   [imService.stop()](/docs/sdk/s2s-starterkit-nodejs/services/ImService#name-imservice.stop-161)
+-   [imService.sendMessage(cvId, messageToBeSent, lang, content, title)](/docs/sdk/s2s-starterkit-nodejs/services/ImService#name-imservice.sendmessagecvid-messagetobesent-lang-content-title-170)
+-   [imService.acknowledgeMessageAsRead(cvId, messageId)](/docs/sdk/s2s-starterkit-nodejs/services/ImService#name-imservice.acknowledgemessageasreadcvid-messageid-254)
+-   [imService.acknowledgeMessageReception(cvId, messageId)](/docs/sdk/s2s-starterkit-nodejs/services/ImService#name-imservice.acknowledgemessagereceptioncvid-messageid-296)
+-   [imService.getAllMessagesFromAConversation(cvId)](/docs/sdk/s2s-starterkit-nodejs/services/ImService#name-imservice.getallmessagesfromaconversationcvid-347)
+-   [ImService](/docs/sdk/s2s-starterkit-nodejs/services/ImService#name-imservice-381)
+-   [ImService()](/docs/sdk/s2s-starterkit-nodejs/services/ImService#name-imservice-434)
+-   [ImService(\_eventModule, \_logger, \_s2sMessageApi, \_connectedUserInfo, \_connectionInfo, \_options)](/docs/sdk/s2s-starterkit-nodejs/services/ImService#name-imservice_eventmodule-_logger-_s2smessageapi-_connecteduserinfo-_connectioninfo-_options-443)
+-   [imService.stop()](/docs/sdk/s2s-starterkit-nodejs/services/ImService#name-imservice.stop-535)
+-   [imService.sendMessage(cvId, messageToBeSent, lang, content, title)](/docs/sdk/s2s-starterkit-nodejs/services/ImService#name-imservice.sendmessagecvid-messagetobesent-lang-content-title-544)
+-   [imService.acknowledgeMessageAsRead(cvId, messageId)](/docs/sdk/s2s-starterkit-nodejs/services/ImService#name-imservice.acknowledgemessageasreadcvid-messageid-628)
+-   [imService.acknowledgeMessageReception(cvId, messageId)](/docs/sdk/s2s-starterkit-nodejs/services/ImService#name-imservice.acknowledgemessagereceptioncvid-messageid-670)
+-   [imService.getAllMessagesFromAConversation(cvId)](/docs/sdk/s2s-starterkit-nodejs/services/ImService#name-imservice.getallmessagesfromaconversationcvid-721)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

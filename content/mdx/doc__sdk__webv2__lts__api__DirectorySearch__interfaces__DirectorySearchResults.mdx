@@ -3,16 +3,51 @@ title: "CPaaS SDK for business communication solutions | Rainbow"
 description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
 type: "sdk"
 source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/DirectorySearch/interfaces/DirectorySearchResults"
-lastSynced: "2026-02-19T22:35:17.215Z"
+lastSynced: "2026-02-20T07:12:27.541Z"
 ---
 # Documentation
 
-Webv2 > lts > api > DirectorySearch > interfaces > DirectorySearchResults
+DirectorySearchResults
 
-### Sur cette page
+LTS release 5.0.0Published on 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
 
 ---
 
-Ce contenu vous a-t-il été utile ?OuiNon
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [DirectorySearch](doc/sdk/webv2/lts/api/DirectorySearch/index) / DirectorySearchResults
+
+# Interface: DirectorySearchResults
+
+List of data provided as the result of a directory search.
+
+## Properties
+
+### moreResultsAvailable
+
+> **moreResultsAvailable**: `boolean`
+
+Indicates whether there are more results available. If this flag is true and the contact/user searched for is not present in the results list, then the user can
+
+-   request more results (via 'limit' option) for the same query
+-   refine the search
+
+---
+
+### users
+
+> **users**: [`User`](doc/sdk/webv2/lts/api/User/interfaces/User)\[\]
+
+The list of users (as User model) matching the search criteria.
+
+### On this page
+
+-   [Properties](/docs/sdk/web#name-properties-13)
+-   [moreResultsAvailable](/docs/sdk/web#name-moreresultsavailable-16)
+-   [users](/docs/sdk/web#name-users-40)
+
+---
+
+Was this content helpful to you?YesNo
 
 Feedback

@@ -1,0 +1,159 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/tutorials/ShowSharedFiles"
+lastSynced: "2026-02-20T07:12:33.809Z"
+---
+# Documentation
+
+Sharing files
+
+### Show Shared File For Peer
+
+---
+
+This guide explains how to show all the shared files for Peer (Conversation, Bubble) by using using `<SharedFiles />` component.
+
+### Preamble
+
+---
+
+This tutorial will explain how to use the`<SharedFiles />` component that used to render the sharing files in Rainbow. Also, you can check [Shared Files Service](/docs/sdk/reactnative/api/SharedFilesService), to see all the supported shared file services.
+
+---
+
+### Shared Files Available props:
+
+#
+
+Name
+
+Type
+
+Description
+
+1
+
+peer
+
+[IPeer](/docs/sdk/reactnative/api/IPeer)
+
+the peer object its could be a conversation type or bubble type
+
+2
+
+onFileItemClicked
+
+(item: [IFile](/docs/sdk/reactnative/api/IFile)) => void
+
+\[Optional\] callback method when one of the files item clicked
+
+3
+
+renderFilesItems
+
+(files: [IFile](/docs/sdk/reactnative/api/IFile)\[\]) => React.ReactElement
+
+\[Optional\] you can call this method when you want to call your own custom list view
+
+4
+
+onEndReached
+
+() => void
+
+\[optional\] callback method when the user scrolled to end of the list.
+
+5
+
+sharedFileArray
+
+[IFile\[\]](https://developers.openrainbow.com/doc/sdk/reactnative/api/IFile)
+
+All the files you have sent or received via rainbow
+
+6
+
+isLoading
+
+() => void
+
+flag for fetching file
+
+---
+
+### How To Use:
+
+First you should fetch your shared files by calling the method `fetchAllSharedFilesInPeer(peerId: string, isBubble: boolean)` from `SharedFilesService`. And you need to listen for fetching the files result by using `EventType.GetAllSharedFileWithPeerResult` event. After you successfully got the shared files array you need to import the `<SharedFiles ..props />` from the RN sdk npm package and pass some requited props as explained above in the table. The `SharedFils` component will render the files list you share through the provided peer(conversation or bubble) using a *RecyclerListView*. if you want to customize the files list or you want to use another list view you can call the optional method `renderFilesItems()`.
+
+You can check the file information details \[file size, name, extension, owner and the file viewers\] by clicking on file from the rendered list, then a new view will open shows all the file details. You can control on how you want to view these information by calling the method `onFileItemClicked?: (item: IFile)`
+
+```tsx
+import { IPeer, SharedFiles, IFile } from 'react-native-rainbow-module';
+
+...
+...
+    const [sharedFileArray, setSharedFileArray] = useState<IFile[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const isBubble = peer.type === PeerType.Bubble;
+
+    useEffect(() => {
+        sharedFilesService.fetchAllSharedFilesInPeer(peer.jId, isBubble);
+        const sharedFileWithPeerResult = eventEmitter.addListener(
+            EventType.GetAllSharedFileWithPeerResult,
+            (eventData: IFile[]) => {
+                console.log(`GetAllSharedFileWithPeerResult with file count ${eventData.length}`);
+                setSharedFileArray(eventData);
+                setIsLoading(false);
+
+            }
+        );
+
+        return () => {
+            sharedFileWithPeerResult.remove();
+        }
+    }, [isBubble, peer]);
+
+const renderOnFileClicked = (selectedFile: IFile) => {
+    // Go the the file description view, for example!
+        Actions.FileDescription({ file: selectedFile });
+    }
+    const renderCustomFilesList = (files: IFile[]) => {
+    // If you want another list than the RecyclerListView we used in the `SharedFiles` component to
+    // render the shared files
+        return <Text> you should pass your custom list here! </Text>;
+    }
+
+    return (
+            <View style={{flex: 1}} >
+                <SharedFiles
+                peer={peer}
+                onFileItemClicked={renderOnFileClicked}
+                renderFilesItems={renderCustomFilesList}
+                sharedFileArray={sharedFileArray}
+                isLoading={isLoading}
+                />
+            </View>
+    );
+```
+
+**`You can check this` [example](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/tree/main/src/SharedFile/SharedFileComponent.tsx) `for more detail about how to use the SharedFiles.`**
+
+### Sort file by \[name, date and size\]:
+
+After you fetch all your shared files , you can sort them by name, size or date.You can check how we did the sort in our [Example code](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/tree/main/src/SharedFile/SharedFileComponent.tsx)
+
+### On this page
+
+-   [Show Shared File For Peer](/docs/sdk/reactnative/tutorials/ShowSharedFiles#name-show-shared-file-for-peer-0)
+-   [Preamble](/docs/sdk/reactnative/tutorials/ShowSharedFiles#name-preamble-7)
+-   [Shared Files Available props:](/docs/sdk/reactnative/tutorials/ShowSharedFiles#name-shared-files-available-props:-15)
+-   [How To Use:](/docs/sdk/reactnative/tutorials/ShowSharedFiles#name-how-to-use:-123)
+-   [Sort file by \[name, date and size\]:](/doc/sdk/reactnative/tutorials/ShowSharedFiles#name-sort-file-by-name-date-and-size:-136)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

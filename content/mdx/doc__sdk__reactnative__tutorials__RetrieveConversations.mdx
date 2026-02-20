@@ -1,0 +1,193 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/tutorials/RetrieveConversations"
+lastSynced: "2026-02-20T07:12:33.790Z"
+---
+# Documentation
+
+Manage conversations
+
+### Retrieve Conversation
+
+---
+
+This guide explains how to retrieve the list of conversations (P2P or Bubble).
+
+### Preamble
+
+---
+
+This guide will show you how to retrieve the list of conversations in your network.
+
+To retrieve all active conversations (one-to-one and bubbles), all you need to do is import the component `<Conversations />` from the Rainbow RN library. Then you need to add some props as shown in the following table.
+
+**Available props**
+
+#
+
+Name
+
+Type
+
+Description
+
+1
+
+conversations
+
+[IConversation](/docs/sdk/reactnative/api/IConversation)\[\]
+
+Conversations list
+
+2
+
+style
+
+IConversationStyleProps
+
+Conversations list view style
+
+3
+
+cellWidth
+
+number
+
+Width of row in conversations list
+
+4
+
+cellHeight
+
+number
+
+Height of row in conversations list
+
+5
+
+renderItems
+
+(item: IConversation) => React.ReactElement
+
+Render conversation items, where you can use our [ConversationCard](#ConversationCard) or you can just build your own view
+
+6
+
+renderEmptyList
+
+() => React.ReactElement
+
+Render the view when the conversations list is empty
+
+**How to use:**
+
+```tsx
+import React, { FunctionComponent, useEffect, useState } from 'react';
+import { Content, Text } from 'native-base';
+import { IBubble, conversationsService, IConversation, eventEmitter, EventType, Conversations, ConversationCard } from 'react-native-rainbow-module';
+import { Actions } from 'react-native-router-flux';
+import { Strings } from '../resources/localization/Strings';
+
+export const ConversationsComponent: FunctionComponent = () => {
+    const [conversations, setConversations] = useState<IConversation[]>([]);
+    useEffect(() => {
+    //Get all conversations using conversations services
+    conversationsService.getConversations();
+    //Listen to conversation list changes
+    const conversationsUpdated = eventEmitter.addListener(
+      EventType.ConversationsUpdated,
+      (eventData: IConversation[]) => {
+        setConversations(eventData);
+      }
+    );
+    return () => {
+      conversationsUpdated.remove();
+    };
+  }, []);
+
+  const onClickItem = (conversation: IConversation) => {
+    if (conversation.bubble) {
+      const bubble: IBubble = conversation.bubble
+      Actions.BubbleChatView({
+        bubble
+      });
+    }
+    else {
+      Actions.PeerConversationChatView({
+        conversation,
+      });
+    }
+  };
+
+  const renderEmptyList = () => {
+    return (
+      <Content>
+        <Text note={true} style={defaultStyle.NoDataMessages}>
+          {Strings.noDataFound}
+        </Text>
+      </Content>
+    );
+  }
+
+  const renderItems = (item: IConversation) => {
+    return <ConversationCard conversation={item} onClickItem={onClickItem}  />
+  }
+
+  return (
+    <Conversations
+      conversations={conversations}
+      renderItems={renderItems}
+      renderEmptyList={renderEmptyList}
+    />
+  );
+}
+```
+
+**ConversationCard:**
+
+We make a Conversation Card view just to make it easy to you to build the conversation list by using the `renderItems` method inside the Conversations list, please check the following props for the Conversation Card:
+
+#
+
+Name
+
+Type
+
+Description
+
+1
+
+conversation
+
+[IConversation](/docs/sdk/reactnative/api/IConversation)
+
+The conversation object you wanna show in the card view
+
+2
+
+style
+
+IConversationCardStyleProps
+
+Customize style for the conversation card
+
+3
+
+onClickItem
+
+(conversation: IConversation) => void
+
+Callback method when there is a click on the conversation card
+
+### On this page
+
+-   [Retrieve Conversation](/docs/sdk/reactnative/tutorials/RetrieveConversations#name-retrieve-conversation-0)
+-   [Preamble](/docs/sdk/reactnative/tutorials/RetrieveConversations#name-preamble-7)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

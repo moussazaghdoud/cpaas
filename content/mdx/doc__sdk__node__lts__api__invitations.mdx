@@ -1,0 +1,1687 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/invitations"
+lastSynced: "2026-02-20T07:12:32.394Z"
+---
+# Documentation
+
+Invitations Service
+
+LTS release 2.XPublished on 2025-01-01
+
+## InvitationsService
+
+This services manages the invitations received/ sent from/to server.  
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [InvitationsService](#module_InvitationsService)
+    -   *Invitations RECEIVED*
+        -   [getReceivedInvitations()](#module_InvitationsService+getReceivedInvitations) ⇒ `Array.<Invitation>`
+        -   [searchInvitationsReceivedFromServer(sortField, status, format, limit, offset, sortOrder)](#module_InvitationsService+searchInvitationsReceivedFromServer) ⇒ `any`
+        -   [getAcceptedInvitations()](#module_InvitationsService+getAcceptedInvitations) ⇒ `Array.<Invitation>`
+        -   [getInvitationsNumberForCounter()](#module_InvitationsService+getInvitationsNumberForCounter) ⇒ `Array.<Invitation>`
+        -   [getServerInvitation(invitationId)](#module_InvitationsService+getServerInvitation) ⇒ `Invitation`
+        -   [getInvitation(invitationId)](#module_InvitationsService+getInvitation) ⇒ `Invitation`
+        -   [joinContactInvitation(contact)](#module_InvitationsService+joinContactInvitation) ⇒ `Promise.<Object>`
+        -   [acceptInvitation(invitation)](#module_InvitationsService+acceptInvitation) ⇒ `Promise.<Object>`
+        -   [declineInvitation(invitation)](#module_InvitationsService+declineInvitation) ⇒ `Promise.<Object>`
+    -   *Invitations RECEIVED/SENT*
+        -   [getAllInvitationsNumber()](#module_InvitationsService+getAllInvitationsNumber) ⇒ `Array.<Invitation>`
+    -   *Invitations SENT*
+        -   [getSentInvitations()](#module_InvitationsService+getSentInvitations) ⇒ `Array.<Invitation>`
+        -   [searchInvitationsSentFromServer(sortField, status, format, limit, offset, sortOrder)](#module_InvitationsService+searchInvitationsSentFromServer) ⇒ `any`
+        -   [sendInvitationByEmail(email, lang, customMessage)](#module_InvitationsService+sendInvitationByEmail) ⇒ `Object`
+        -   [sendInvitationByCriteria(email, invitedPhoneNumber, invitedUserId, lang, customMessage)](#module_InvitationsService+sendInvitationByCriteria) ⇒ `Object`
+        -   [cancelOneSendInvitation(invitation)](#module_InvitationsService+cancelOneSendInvitation) ⇒ `Object`
+        -   [reSendInvitation(invitationId, customMessage)](#module_InvitationsService+reSendInvitation) ⇒ `Object`
+        -   [sendInvitationsByBulk(listOfMails, lang, customMessage)](#module_InvitationsService+sendInvitationsByBulk) ⇒ `Object`
+        -   [deleteAUserInvitation(invitation)](#module_InvitationsService+deleteAUserInvitation) ⇒ `Object`
+
+---
+
+### invitationsService.getReceivedInvitations() ⇒ `Array.<Invitation>`
+
+Get the invite received coming from Rainbow users  
+
+**Kind**: instance method of [`InvitationsService`](#module_InvitationsService)
+
+**Returns**: `Array.<Invitation>` - The list of invitations received
+
+**Category**: Invitations RECEIVED
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.65
+
+---
+
+### invitationsService.searchInvitationsReceivedFromServer(sortField, status, format, limit, offset, sortOrder) ⇒ `any`
+
+retrieve the invites received from others Rainbow users from server.  
+
+**Kind**: instance method of [`InvitationsService`](#module_InvitationsService)
+
+**Returns**: `any` - The list of invite received
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object\[\]
+
+List of user invitation Objects.
+
+limit
+
+Number
+
+Number of requested items
+
+offset
+
+Number
+
+Requested position of the first item to retrieve
+
+total
+
+Number
+
+Total number of items
+
+id
+
+String
+
+Invitation unique Id
+
+invitedUserId optionnel
+
+String
+
+Invited user unique Rainbow Id.  
+Only available for the inviting user if the invited user has been invited from his userId (parameter invitedUserId in API POST /api/rainbow/enduser/v1.0/users/:userId/invitations) or if the invitation has been accepted.
+
+invitedPhoneNumber optionnel
+
+String
+
+Invited user phoneNumber
+
+invitedUserEmail optionnel
+
+String
+
+Invited user email
+
+invitingUserId
+
+String
+
+Inviting user unique Rainbow Id
+
+invitingUserEmail
+
+String
+
+Inviting user loginEmail
+
+requestedNotificationLanguage
+
+String
+
+Requested notification language (used to re-send email request in that language)
+
+invitingDate
+
+Date-Time
+
+Date the invitation was created
+
+lastNotificationDate
+
+Date-Time
+
+Date when the last email notification was sent
+
+status
+
+String
+
+Invitation status: one of `pending`, `accepted`, `auto-accepted`, `declined`, `canceled`, `failed`  
+  
+\* `pending`: invitation has been sent by inviting user and not yet accepted by invited user  
+\* `accepted`: invitation has been accepted by invited user  
+\* `auto-accepted`: invitation has been auto-accepted (case of users in same company)  
+\* `declined`: invitation has been declined by invited user. Only invited user can see that he has declined an invitation. Inviting user still see the invitation as `pending`  
+\* `canceled`: invitation has been canceled by inviting user. If invited user does not have an account in Rainbow, he can still use this invitationId received by email to create his Rainbow account, but he will not be added to inviting user roster.  
+\* `failed`: invitation email failed to be sent to invited user (determined by parsing SMTP server logs). It can be the case if the provided invited email address does not exists.
+
+type
+
+String
+
+Invitation type:  
+  
+\* `visibility` (invited user exists in Rainbow),  
+\* `registration` (invited user did not exist in Rainbow when invitation was sent)
+
+**Category**: Invitations RECEIVED
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.9.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+sortField
+
+`string`
+
+`lastNotificationDate`
+
+Sort items list based on the given field. Default value : lastNotificationDate.
+
+status
+
+`string`
+
+`pending`
+
+List all invitations having the provided status(es). Possible values : pending, accepted, auto-accepted, declined, canceled, failed. Default value : pending.
+
+format
+
+`string`
+
+`small`
+
+Allows to retrieve more or less invitation details in response. Default value : `small`. Possible values : `small`, `medium`, `full`
+
+limit
+
+`number`
+
+`500`
+
+Allow to specify the number of items to retrieve. Default value : 500
+
+offset
+
+`number`
+
+`0`
+
+Allow to specify the position of first item to retrieve (first item if not specified). Warning: if offset > total, no results are returned. Default value : 0.
+
+sortOrder
+
+`number`
+
+`1`
+
+Specify order when sorting items list. Default value : 1. Possible values : -1, 1.
+
+---
+
+### invitationsService.getAcceptedInvitations() ⇒ `Array.<Invitation>`
+
+Get the invites you accepted received from others Rainbow users  
+
+**Kind**: instance method of [`InvitationsService`](#module_InvitationsService)
+
+**Returns**: `Array.<Invitation>` - The list of invite sent
+
+**Category**: Invitations RECEIVED
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.65
+
+---
+
+### invitationsService.getInvitationsNumberForCounter() ⇒ `Array.<Invitation>`
+
+Get the number of invitations received from others Rainbow users  
+
+**Kind**: instance method of [`InvitationsService`](#module_InvitationsService)
+
+**Returns**: `Array.<Invitation>` - The list of invite sent
+
+**Category**: Invitations RECEIVED
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.65
+
+---
+
+### invitationsService.getServerInvitation(invitationId) ⇒ `Invitation`
+
+Get an invitation by its id from server.  
+
+**Kind**: instance method of [`InvitationsService`](#module_InvitationsService)
+
+**Returns**: `Invitation` - The invite if found
+
+**Category**: Invitations RECEIVED
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.65
+
+Param
+
+Type
+
+Description
+
+invitationId
+
+`String`
+
+the id of the invite to retrieve
+
+---
+
+### invitationsService.getInvitation(invitationId) ⇒ `Invitation`
+
+Get an invitation by its id  
+
+**Kind**: instance method of [`InvitationsService`](#module_InvitationsService)
+
+**Returns**: `Invitation` - The invite if found
+
+**Category**: Invitations RECEIVED
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.65
+
+Param
+
+Type
+
+Description
+
+invitationId
+
+`String`
+
+the id of the invite to retrieve
+
+---
+
+### invitationsService.joinContactInvitation(contact) ⇒ `Promise.<Object>`
+
+Accepts an invitation from an other Rainbow user to mutually join the network  
+Once accepted, the user will be part of your network.  
+Return a promise  
+
+**Kind**: instance method of [`InvitationsService`](#module_InvitationsService)
+
+**Returns**: `Promise.<Object>` - A promise that contains SDK.OK if success or an object that describes the error
+
+**Category**: Invitations RECEIVED
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.65
+
+Param
+
+Type
+
+Description
+
+contact
+
+`Contact`
+
+The invitation to accept
+
+---
+
+### invitationsService.acceptInvitation(invitation) ⇒ `Promise.<Object>`
+
+Accepts an invitation from an other Rainbow user to mutually join the network  
+Once accepted, the user will be part of your network.  
+Return a promise  
+
+**Kind**: instance method of [`InvitationsService`](#module_InvitationsService)
+
+**Returns**: `Promise.<Object>` - A promise that contains SDK.OK if success or an object that describes the error
+
+Champ
+
+Type
+
+Description
+
+id
+
+String
+
+Invitation unique Id
+
+invitedUserId optionnel
+
+String
+
+Invited user unique Rainbow Id.  
+Only available for the inviting user if the invited user has been invited from his userId (parameter invitedUserId in API POST /api/rainbow/enduser/v1.0/users/:userId/invitations) or if the invitation has been accepted.
+
+invitedPhoneNumber optionnel
+
+String
+
+Invited user phoneNumber
+
+invitedUserEmail optionnel
+
+String
+
+Invited user email
+
+invitingUserId
+
+String
+
+Inviting user unique Rainbow Id
+
+invitingUserEmail
+
+String
+
+Inviting user loginEmail
+
+requestedNotificationLanguage
+
+String
+
+Requested notification language (used to re-send email request in that language)
+
+invitingDate
+
+Date-Time
+
+Date the invitation was created
+
+lastNotificationDate
+
+Date-Time
+
+Date when the last email notification was sent
+
+status
+
+String
+
+Invitation status: one of `pending`, `accepted`, `auto-accepted`, `declined`, `canceled`, `failed`  
+  
+\* `pending`: invitation has been sent by inviting user and not yet accepted by invited user  
+\* `accepted`: invitation has been accepted by invited user  
+\* `auto-accepted`: invitation has been auto-accepted (case of users in same company)  
+\* `declined`: invitation has been declined by invited user. Only invited user can see that he has declined an invitation. Inviting user still see the invitation as `pending`  
+\* `canceled`: invitation has been canceled by inviting user. If invited user does not have an account in Rainbow, he can still use this invitationId received by email to create his Rainbow account, but he will not be added to inviting user roster.  
+\* `failed`: invitation email failed to be sent to invited user (determined by parsing SMTP server logs). It can be the case if the provided invited email address does not exists.
+
+type
+
+String
+
+Invitation type:  
+  
+\* `visibility` (invited user exists in Rainbow),  
+\* `registration` (invited user did not exist in Rainbow when invitation was sent)
+
+**Category**: Invitations RECEIVED
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.65
+
+Param
+
+Type
+
+Description
+
+invitation
+
+`Invitation`
+
+The invitation to accept
+
+---
+
+### invitationsService.declineInvitation(invitation) ⇒ `Promise.<Object>`
+
+Decline an invitation from an other Rainbow user to mutually join the network  
+Once declined, the user will not be part of your network.  
+Return a promise  
+
+**Kind**: instance method of [`InvitationsService`](#module_InvitationsService)
+
+**Returns**: `Promise.<Object>` - A promise that contains SDK.OK in case of success or an object that describes the error
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+User invitation Object.
+
+id
+
+String
+
+Invitation unique Id
+
+invitedUserId optionnel
+
+String
+
+Invited user unique Rainbow Id.  
+Only available for the inviting user if the invited user has been invited from his userId (parameter invitedUserId in API POST /api/rainbow/enduser/v1.0/users/:userId/invitations) or if the invitation has been accepted.
+
+invitedPhoneNumber optionnel
+
+String
+
+Invited user phoneNumber
+
+invitedUserEmail optionnel
+
+String
+
+Invited user email
+
+invitingUserId
+
+String
+
+Inviting user unique Rainbow Id
+
+invitingUserEmail
+
+String
+
+Inviting user loginEmail
+
+requestedNotificationLanguage
+
+String
+
+Requested notification language (used to re-send email request in that language)
+
+invitingDate
+
+Date-Time
+
+Date the invitation was created
+
+lastNotificationDate
+
+Date-Time
+
+Date when the last email notification was sent
+
+status
+
+String
+
+Invitation status: one of `pending`, `accepted`, `auto-accepted`, `declined`, `canceled`, `failed`  
+  
+\* `pending`: invitation has been sent by inviting user and not yet accepted by invited user  
+\* `accepted`: invitation has been accepted by invited user  
+\* `auto-accepted`: invitation has been auto-accepted (case of users in same company)  
+\* `declined`: invitation has been declined by invited user. Only invited user can see that he has declined an invitation. Inviting user still see the invitation as `pending`  
+\* `canceled`: invitation has been canceled by inviting user. If invited user does not have an account in Rainbow, he can still use this invitationId received by email to create his Rainbow account, but he will not be added to inviting user roster.  
+\* `failed`: invitation email failed to be sent to invited user (determined by parsing SMTP server logs). It can be the case if the provided invited email address does not exists.
+
+type
+
+String
+
+Invitation type:  
+  
+\* `visibility` (invited user exists in Rainbow),  
+\* `registration` (invited user did not exist in Rainbow when invitation was sent)
+
+**Category**: Invitations RECEIVED
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.65
+
+Param
+
+Type
+
+Description
+
+invitation
+
+`Invitation`
+
+The invitation to decline
+
+---
+
+### invitationsService.getAllInvitationsNumber() ⇒ `Array.<Invitation>`
+
+Get the number of invitations sent/received to/from others Rainbow users  
+
+**Kind**: instance method of [`InvitationsService`](#module_InvitationsService)
+
+**Returns**: `Array.<Invitation>` - The list of invite sent
+
+**Category**: Invitations RECEIVED/SENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.65
+
+---
+
+### invitationsService.getSentInvitations() ⇒ `Array.<Invitation>`
+
+Get the invites sent to others Rainbow users  
+
+**Kind**: instance method of [`InvitationsService`](#module_InvitationsService)
+
+**Returns**: `Array.<Invitation>` - The list of invite sent
+
+**Category**: Invitations SENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.65
+
+---
+
+### invitationsService.searchInvitationsSentFromServer(sortField, status, format, limit, offset, sortOrder) ⇒ `any`
+
+retrieve the invites sent to others Rainbow users from server.  
+
+**Kind**: instance method of [`InvitationsService`](#module_InvitationsService)
+
+**Returns**: `any` - The list of invite sent
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object\[\]
+
+List of user invitation Objects.
+
+authorizedReSendInvitationDate optionnel
+
+Date-Time
+
+Date when the inviting user will be allowed to resend again the invitation to the invited user.  
+authorizedReSendInvitationDate is only set if invitation still have the status pending.
+
+limit
+
+Number
+
+Number of requested items
+
+offset
+
+Number
+
+Requested position of the first item to retrieve
+
+total
+
+Number
+
+Total number of items
+
+id
+
+String
+
+Invitation unique Id
+
+invitedUserId optionnel
+
+String
+
+Invited user unique Rainbow Id.  
+Only available for the inviting user if the invited user has been invited from his userId (parameter invitedUserId in API POST /api/rainbow/enduser/v1.0/users/:userId/invitations) or if the invitation has been accepted.
+
+invitedPhoneNumber optionnel
+
+String
+
+Invited user phoneNumber
+
+invitedUserEmail optionnel
+
+String
+
+Invited user email
+
+invitingUserId
+
+String
+
+Inviting user unique Rainbow Id
+
+invitingUserEmail
+
+String
+
+Inviting user loginEmail
+
+requestedNotificationLanguage
+
+String
+
+Requested notification language (used to re-send email request in that language)
+
+invitingDate
+
+Date-Time
+
+Date the invitation was created
+
+lastNotificationDate
+
+Date-Time
+
+Date when the last email notification was sent
+
+status
+
+String
+
+Invitation status: one of `pending`, `accepted`, `auto-accepted`, `declined`, `canceled`, `failed`  
+  
+\* `pending`: invitation has been sent by inviting user and not yet accepted by invited user  
+\* `accepted`: invitation has been accepted by invited user  
+\* `auto-accepted`: invitation has been auto-accepted (case of users in same company)  
+\* `declined`: invitation has been declined by invited user. Only invited user can see that he has declined an invitation. Inviting user still see the invitation as `pending`  
+\* `canceled`: invitation has been canceled by inviting user. If invited user does not have an account in Rainbow, he can still use this invitationId received by email to create his Rainbow account, but he will not be added to inviting user roster.  
+\* `failed`: invitation email failed to be sent to invited user (determined by parsing SMTP server logs). It can be the case if the provided invited email address does not exists.
+
+type
+
+String
+
+Invitation type:  
+  
+\* `visibility` (invited user exists in Rainbow),  
+\* `registration` (invited user did not exist in Rainbow when invitation was sent)
+
+**Category**: Invitations SENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.9.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+sortField
+
+`string`
+
+`lastNotificationDate`
+
+Sort items list based on the given field. Default value : lastNotificationDate
+
+status
+
+`string`
+
+`pending`
+
+List all invitations having the provided status(es). Possible values : pending, accepted, auto-accepted, declined, canceled, failed. Default value : pending.
+
+format
+
+`string`
+
+`small`
+
+Allows to retrieve more or less invitation details in response. Default value : `small`. Possible values : `small`, `medium`, `full`
+
+limit
+
+`number`
+
+`500`
+
+Allow to specify the number of items to retrieve. Default value : 500
+
+offset
+
+`number`
+
+`0`
+
+Allow to specify the position of first item to retrieve (first item if not specified). Warning: if offset > total, no results are returned.
+
+sortOrder
+
+`number`
+
+`1`
+
+Specify order when sorting items list. Default value : 1. Possible values : -1, 1.
+
+---
+
+### invitationsService.sendInvitationByEmail(email, lang, customMessage) ⇒ `Object`
+
+This API allows logged in user to invite another user by email.  
+At the end of the process, if invited user accepts the invitation, invited user and inviting user will be searchable mutually and will be in each other rosters.  
+
+**Kind**: instance method of [`InvitationsService`](#module_InvitationsService)
+
+**Returns**: `Object` - A promise that contains the contact added or an object describing an error
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+User invitation Object.
+
+authorizedReSendInvitationDate
+
+Date-Time
+
+Date when the inviting user will be allowed to resend again the invitation to the invited user.
+
+invitationUrl optionnel
+
+String
+
+Invitation URL to be sent to the invited user.  
+Only returned for invitations sent using `invitedPhoneNumber`, as invitation URL link is sent by SMS on client side.
+
+id
+
+String
+
+Invitation unique Id
+
+invitedUserId optionnel
+
+String
+
+Invited user unique Rainbow Id.  
+Only available for the inviting user if the invited user has been invited from his userId (parameter invitedUserId in API POST /api/rainbow/enduser/v1.0/users/:userId/invitations) or if the invitation has been accepted.
+
+invitedPhoneNumber optionnel
+
+String
+
+Invited user phoneNumber
+
+invitedUserEmail optionnel
+
+String
+
+Invited user email
+
+invitingUserId
+
+String
+
+Inviting user unique Rainbow Id
+
+invitingUserEmail
+
+String
+
+Inviting user loginEmail
+
+requestedNotificationLanguage
+
+String
+
+Requested notification language (used to re-send email request in that language)
+
+invitingDate
+
+Date-Time
+
+Date the invitation was created
+
+lastNotificationDate
+
+Date-Time
+
+Date when the last email notification was sent
+
+status
+
+String
+
+Invitation status: one of `pending`, `accepted`, `auto-accepted`, `declined`, `canceled`, `failed`  
+  
+\* `pending`: invitation has been sent by inviting user and not yet accepted by invited user  
+\* `accepted`: invitation has been accepted by invited user  
+\* `auto-accepted`: invitation has been auto-accepted (case of users in same company)  
+\* `declined`: invitation has been declined by invited user. Only invited user can see that he has declined an invitation. Inviting user still see the invitation as `pending`  
+\* `canceled`: invitation has been canceled by inviting user. If invited user does not have an account in Rainbow, he can still use this invitationId received by email to create his Rainbow account, but he will not be added to inviting user roster.  
+\* `failed`: invitation email failed to be sent to invited user (determined by parsing SMTP server logs). It can be the case if the provided invited email address does not exists.
+
+type
+
+String
+
+Invitation type:  
+  
+\* `visibility` (invited user exists in Rainbow),  
+\* `registration` (invited user did not exist in Rainbow when invitation was sent)
+
+**Category**: Invitations SENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.65
+
+Param
+
+Type
+
+Description
+
+email
+
+`string`
+
+The email.
+
+lang
+
+`string`
+
+The lang of the message.
+
+customMessage
+
+`string`
+
+The email text (optional).
+
+---
+
+### invitationsService.sendInvitationByCriteria(email, invitedPhoneNumber, invitedUserId, lang, customMessage) ⇒ `Object`
+
+This API allows logged in user to invite another user by criteria.  
+At the end of the process, if invited user accepts the invitation, invited user and inviting user will be searchable mutually and will be in each other rosters.  
+
+**Notes**:
+
+-   One of email, invitedPhoneNumber or invitedUserId is mandatory.
+    
+-   It's not possible to invite users having only the role `guest`. (CPAAS user)
+    
+-   Users with visibility `isolated` or being in a company with visibility `isolated` are not allowed to invite external users.
+    
+-   Users with visibility `isolated` or being in a company with visibility `isolated` are not allowed to be invited by external users. From **1.53.0**, a user can be embedded in a chat or conference room, as guest, with limited rights until he finalizes his registration. It is not a user with the role `guest`. This user gets the role `user` and the flag `guestMode` is set to true, waiting for the user finalizes his account. Besides, his `visibility` is 'none'. We can't invite this kind of user to join the logged in network. (HTTP error 403509)
+    
+    Here are some details about this API and user invitation features. Users can be invited:
+    
+-   by `email`:
+    
+    -   If the provided email corresponds to the loginEmail of a Rainbow user, a visibility request is sent (if this Rainbow user is not in logged in user roster).
+        -   An InviteUser entry is stored in database (with a generated invitationId).
+        -   The invited user receive an email with a validation link (containing the invitationId).
+        -   The invited user is notified with an XMPP message (containing the invitationId).
+        -   The inviting user is notified with an XMPP message (containing the invitationId) (useful for multi-device).
+        -   The list of all visibility requests received by the logged in user (invited user side) can be retrieved with the API [GET /api/rainbow/enduser/v1.0/users/:userId/invitations/received(?status=pending|accepted|auto-accepted|declined)](#api-enduser_invitations-enduser_users_GetReceivedInvites)
+        -   The list of all visibility requests sent by the logged in user (inviting user side) can be retrieved with the API [GET /api/rainbow/enduser/v1.0/users/:userId/invitations/sent(?status=pending|accepted|auto-accepted|declined)](#api-enduser_invitations-enduser_users_GetSentInvites)
+        -   The inviting user can re-send a visibility request notification (only by email) using API [POST /api/rainbow/enduser/v1.0/notifications/emails/invite-by-end-user/:invitationId/re-send](#api-enduser_notifications_emails-enduser_ResendInvite)
+        -   To accept the visibility request (invited user side), client has to call API [POST /api/rainbow/enduser/v1.0/users/:userId/invitations/:invitationId/accept](#api-enduser_invitations-enduser_users_AcceptInvites) Once accepted, invited and inviting user will be in each other roster and will be mutually visible (search API, GET users, GET users/:userId, ...)
+        -   To decline the visibility request (invited user side), client has to call API [POST /api/rainbow/enduser/v1.0/users/:userId/invitations/:invitationId/decline](#api-enduser_invitations-enduser_users_DeclineInvites)
+    -   If the provided email is not known in Rainbow, an invitation is sent to this email to invite the person to create a Rainbow account
+        -   An InviteUser entry is stored in database (with a generated invitationId).
+        -   The invited user receive an email with a creation link (containing the invitationId).
+        -   The inviting user is notified with an XMPP message (containing the invitationId) (useful for multi-device).
+        -   The list of all visibility requests sent by the logged in user (inviting user side) can be retrieved with the API [GET /api/rainbow/enduser/v1.0/users/:userId/invitations/sent(?status=pending|accepted|auto-accepted|declined)](#api-enduser_invitations-enduser_users_GetSentInvites)
+        -   The inviting user can re-send a visibility request notification (only by email) using API [POST /api/rainbow/enduser/v1.0/notifications/emails/invite-by-end-user/:invitationId/re-send](#api-enduser_notifications_emails-enduser_ResendInvite)
+        -   To create his Rainbow account, the invited user has to use API "Self register a user" ([POST /api/rainbow/enduser/v1.0/users/self-register](#api-enduser_users-enduser_SelfRegisterUsers))
+-   by phoneNumber (`invitedPhoneNumber`):
+    
+    -   No match is done on potential existing Rainbow users.
+    -   An InviteUser entry is stored in database (with a generated invitationId).
+    -   No email is sent to invited user. It is **up to clients calling this API to send an SMS to the invited user's phone** (with the invitationId).
+    -   The inviting user is notified with an XMPP message (containing the invitationId) (useful for multi-device).
+    -   If the invitedPhoneNumber correspond to a user already existing in Rainbow, he **will not** be able to see the request using the API [GET /api/rainbow/enduser/v1.0/users/:userId/invitations/received(?status=pending|accepted|auto-accepted|declined)](#api-enduser_invitations-enduser_users_GetReceivedInvites), as no match is done between the invitedPhoneNumber and a potential user existing in Rainbow
+    -   The list of all visibility requests sent by the logged in user (inviting user side) can be retrieved with the API [GET /api/rainbow/enduser/v1.0/users/:userId/invitations/sent(?status=pending|accepted|auto-accepted|declined)](#api-enduser_invitations-enduser_users_GetSentInvites)
+    -   The inviting user can re-send a visibility request notification done by phoneNumber using API [POST /api/rainbow/enduser/v1.0/notifications/emails/invite-by-end-user/:invitationId/re-send](#api-enduser_notifications_emails-enduser_ResendInvite), however it is still **up to client to send an SMS to the invited user's phone** (the API only updates the field lastNotificationDate). If needed, it is **up to clients to re-send the SMS to the invited user's phone**.
+    -   To create his Rainbow account, the invited user has to use API "Self register a user" using the associated invitationId ([POST /api/rainbow/enduser/v1.0/users/self-register](#api-enduser_users-enduser_SelfRegisterUsers))
+-   by Rainbow user id (`invitedUserId`):
+    
+    -   if no user is found with the provided invitedUserId, an error 404 is returned
+    -   otherwise, a visibility request is sent (if this Rainbow user is not in logged in user roster). Same documentation than existing user invited by email apply (see above).
+
+**Kind**: instance method of [`InvitationsService`](#module_InvitationsService)
+
+**Returns**: `Object` - A promise that contains the contact added or an object describing an error
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+User invitation Object.
+
+authorizedReSendInvitationDate
+
+Date-Time
+
+Date when the inviting user will be allowed to resend again the invitation to the invited user.
+
+invitationUrl optionnel
+
+String
+
+Invitation URL to be sent to the invited user.  
+Only returned for invitations sent using `invitedPhoneNumber`, as invitation URL link is sent by SMS on client side.
+
+id
+
+String
+
+Invitation unique Id
+
+invitedUserId optionnel
+
+String
+
+Invited user unique Rainbow Id.  
+Only available for the inviting user if the invited user has been invited from his userId (parameter invitedUserId in API POST /api/rainbow/enduser/v1.0/users/:userId/invitations) or if the invitation has been accepted.
+
+invitedPhoneNumber optionnel
+
+String
+
+Invited user phoneNumber
+
+invitedUserEmail optionnel
+
+String
+
+Invited user email
+
+invitingUserId
+
+String
+
+Inviting user unique Rainbow Id
+
+invitingUserEmail
+
+String
+
+Inviting user loginEmail
+
+requestedNotificationLanguage
+
+String
+
+Requested notification language (used to re-send email request in that language)
+
+invitingDate
+
+Date-Time
+
+Date the invitation was created
+
+lastNotificationDate
+
+Date-Time
+
+Date when the last email notification was sent
+
+status
+
+String
+
+Invitation status: one of `pending`, `accepted`, `auto-accepted`, `declined`, `canceled`, `failed`  
+  
+\* `pending`: invitation has been sent by inviting user and not yet accepted by invited user  
+\* `accepted`: invitation has been accepted by invited user  
+\* `auto-accepted`: invitation has been auto-accepted (case of users in same company)  
+\* `declined`: invitation has been declined by invited user. Only invited user can see that he has declined an invitation. Inviting user still see the invitation as `pending`  
+\* `canceled`: invitation has been canceled by inviting user. If invited user does not have an account in Rainbow, he can still use this invitationId received by email to create his Rainbow account, but he will not be added to inviting user roster.  
+\* `failed`: invitation email failed to be sent to invited user (determined by parsing SMTP server logs). It can be the case if the provided invited email address does not exists.
+
+type
+
+String
+
+Invitation type:  
+  
+\* `visibility` (invited user exists in Rainbow),  
+\* `registration` (invited user did not exist in Rainbow when invitation was sent)
+
+**Category**: Invitations SENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.9.0
+
+Param
+
+Type
+
+Description
+
+email
+
+`string`
+
+The email.
+
+invitedPhoneNumber
+
+`string`
+
+Invited phone number.
+
+invitedUserId
+
+`string`
+
+Invited Rainbow user unique ID
+
+lang
+
+`string`
+
+The lang of the message.
+
+customMessage
+
+`string`
+
+The email text (optional).
+
+---
+
+### invitationsService.cancelOneSendInvitation(invitation) ⇒ `Object`
+
+Cancel an invitation sent  
+
+**Kind**: instance method of [`InvitationsService`](#module_InvitationsService)
+
+**Returns**: `Object` - The SDK Ok object or an error
+
+**Category**: Invitations SENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.65
+
+Param
+
+Type
+
+Description
+
+invitation
+
+`Invitation`
+
+The invitation to cancel
+
+---
+
+### invitationsService.reSendInvitation(invitationId, customMessage) ⇒ `Object`
+
+This API can be used to re-send a user invitation which has already been sent.  
+Logged in user must be the one who sent the invitatio.  
+An invitation can only be re-sent after a given period since last notification (1 hour by default).  
+If invitation is canceled or failed, it is set back to pending and then re-sent.  
+If invitation is accepted or auto-accepted, error 409 is returned.  
+If invitation is declined, it is set back to pending and re-sent if the last notification was sent since a given period (1 week by default).  
+
+**Kind**: instance method of [`InvitationsService`](#module_InvitationsService)
+
+**Returns**: `Object` - The SDK Ok object or an error
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+User invitation Object.
+
+authorizedReSendInvitationDate
+
+Date-Time
+
+Date when the inviting user will be allowed to resend again the invitation to the invited user.
+
+invitationUrl optionnel
+
+String
+
+Invitation URL to be sent to the invited user.  
+Only returned for invitations sent using `invitedPhoneNumber`, as invitation URL link is sent by SMS on client side.
+
+id
+
+String
+
+Invitation unique Id
+
+invitedUserId optionnel
+
+String
+
+Invited user unique Rainbow Id.  
+Only available for the inviting user if the invited user has been invited from his userId (parameter invitedUserId in API POST /api/rainbow/enduser/v1.0/users/:userId/invitations) or if the invitation has been accepted.
+
+invitedPhoneNumber optionnel
+
+String
+
+Invited user phoneNumber
+
+invitedUserEmail optionnel
+
+String
+
+Invited user email
+
+invitingUserId
+
+String
+
+Inviting user unique Rainbow Id
+
+invitingUserEmail
+
+String
+
+Inviting user loginEmail
+
+requestedNotificationLanguage
+
+String
+
+Requested notification language (used to re-send email request in that language)
+
+invitingDate
+
+Date-Time
+
+Date the invitation was created
+
+lastNotificationDate
+
+Date-Time
+
+Date when the last email notification was sent
+
+status
+
+String
+
+Invitation status: one of `pending`, `accepted`, `auto-accepted`, `declined`, `canceled`, `failed`  
+  
+\* `pending`: invitation has been sent by inviting user and not yet accepted by invited user  
+\* `accepted`: invitation has been accepted by invited user  
+\* `auto-accepted`: invitation has been auto-accepted (case of users in same company)  
+\* `declined`: invitation has been declined by invited user. Only invited user can see that he has declined an invitation. Inviting user still see the invitation as `pending`  
+\* `canceled`: invitation has been canceled by inviting user. If invited user does not have an account in Rainbow, he can still use this invitationId received by email to create his Rainbow account, but he will not be added to inviting user roster.  
+\* `failed`: invitation email failed to be sent to invited user (determined by parsing SMTP server logs). It can be the case if the provided invited email address does not exists.
+
+type
+
+String
+
+Invitation type:  
+  
+\* `visibility` (invited user exists in Rainbow),  
+\* `registration` (invited user did not exist in Rainbow when invitation was sent)
+
+**Category**: Invitations SENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.65
+
+Param
+
+Type
+
+Description
+
+invitationId
+
+`string`
+
+The invitation to re send
+
+customMessage
+
+`string`
+
+Custom message that inviting user can add in email body
+
+---
+
+### invitationsService.sendInvitationsByBulk(listOfMails, lang, customMessage) ⇒ `Object`
+
+Send invitations for a list of emails as UCaaS  
+LIMITED TO 100 invitations  
+
+**Kind**: instance method of [`InvitationsService`](#module_InvitationsService)
+
+**Returns**: `Object` - A promise that the invite result or an object describing an error
+
+Champ
+
+Type
+
+Description
+
+report
+
+Object
+
+Report of the bulk operation
+
+status
+
+String
+
+Status of the bulk operation.  
+`ongoing`: there is at least 1 email to send  
+`failed`: there is no email to send and errors occurred with the synchronous validation of the provided emails  
+  
+Possibles values : `ongoing`, `failed`
+
+ongoing
+
+Object\[\]
+
+List of emails which will be treated
+
+email
+
+String
+
+Email address to invite
+
+index
+
+Number
+
+Position of the email address to invite in the input emails array
+
+errors
+
+Object\[\]
+
+Errors which has occurred during the validation of this email. Should always be empty, otherwise the email would be in the failed array.
+
+status
+
+String
+
+Status of the email invitation. Should always be ongoing, as the treatment is asynchronous and there is currently no way for the client to know the progression of the bulk invitations.
+
+failed
+
+Object\[\]
+
+List of emails for which the synchronous validation has failed
+
+email
+
+String
+
+Email address which failed validation
+
+index
+
+Number
+
+Position of the email address in the input emails array
+
+errors
+
+Object\[\]
+
+Errors which has occurred during the validation of this email.
+
+errorCode
+
+Number
+
+HTTP error code
+
+errorMsg
+
+string
+
+HTTP error message
+
+errorDetails
+
+string
+
+Detailed message about the error
+
+errorDetailsCode
+
+Number
+
+Detailed code about the error
+
+status
+
+String
+
+Status of the email invitation (failed).
+
+counters
+
+Object
+
+Counters of the different operation status
+
+total
+
+Number
+
+Total number of email addresses processed
+
+errorDetailsData
+
+Object
+
+Data about the error. The data being in this object (if any) are specific to the error and can help the clients to build an error message regarding the error.
+
+ongoing
+
+Number
+
+Number of emails that will be treated
+
+failed
+
+Number
+
+Number of emails for which the synchronous validation has failed
+
+**Category**: Invitations SENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.65
+
+Param
+
+Type
+
+Description
+
+listOfMails
+
+`Array.<string>`
+
+The list of emails
+
+lang
+
+`string`
+
+Force language of the email notification if not available.  
+Language format is composed of locale using format ISO 639-1, with optionally the regional variation using ISO 3166‑1 alpha-2 (separated by hyphen).  
+Locale part is in lowercase, regional part is in uppercase. Examples: en, en-US, fr, fr-FR, fr-CA, es-ES, es-MX, ...  
+More information about the format can be found on this link.  
+Algorithm for choosing language of email:  
+invited user language is used if invited user exists in Rainbow and his language is available,  
+else provided language in parameter lang is used if provided,  
+else inviting user language is used if language is available,  
+otherwise English is used.  
+
+customMessage
+
+`string`
+
+Custom message that inviting user can add in email body. The message will be the same for all emails.
+
+---
+
+### invitationsService.deleteAUserInvitation(invitation) ⇒ `Object`
+
+This API can be used to delete an invitation sent to/received from another Rainbow user.  
+
+**Kind**: instance method of [`InvitationsService`](#module_InvitationsService)
+
+**Returns**: `Object` - The SDK Ok object or an error
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+User invitation Object.
+
+id
+
+String
+
+Invitation unique Id
+
+invitedUserId optionnel
+
+String
+
+Invited user unique Rainbow Id.  
+Only available for the inviting user if the invited user has been invited from his userId (parameter invitedUserId in API POST /api/rainbow/enduser/v1.0/users/:userId/invitations) or if the invitation has been accepted.
+
+invitedPhoneNumber optionnel
+
+String
+
+Invited user phoneNumber
+
+invitedUserEmail optionnel
+
+String
+
+Invited user email
+
+invitingUserId
+
+String
+
+Inviting user unique Rainbow Id
+
+invitingUserEmail
+
+String
+
+Inviting user loginEmail
+
+requestedNotificationLanguage
+
+String
+
+Requested notification language (used to re-send email request in that language)
+
+invitingDate
+
+Date-Time
+
+Date the invitation was created
+
+lastNotificationDate
+
+Date-Time
+
+Date when the last email notification was sent
+
+status
+
+String
+
+Invitation status: one of `pending`, `accepted`, `auto-accepted`, `declined`, `canceled`, `failed`  
+  
+\* `pending`: invitation has been sent by inviting user and not yet accepted by invited user  
+\* `accepted`: invitation has been accepted by invited user  
+\* `auto-accepted`: invitation has been auto-accepted (case of users in same company)  
+\* `declined`: invitation has been declined by invited user. Only invited user can see that he has declined an invitation. Inviting user still see the invitation as `pending`  
+\* `canceled`: invitation has been canceled by inviting user. If invited user does not have an account in Rainbow, he can still use this invitationId received by email to create his Rainbow account, but he will not be added to inviting user roster.  
+\* `failed`: invitation email failed to be sent to invited user (determined by parsing SMTP server logs). It can be the case if the provided invited email address does not exists.
+
+type
+
+String
+
+Invitation type:  
+  
+\* `visibility` (invited user exists in Rainbow),  
+\* `registration` (invited user did not exist in Rainbow when invitation was sent)
+
+**Category**: Invitations SENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.21.0
+
+Param
+
+Type
+
+Description
+
+invitation
+
+`Invitation`
+
+The invitation to delete.
+
+---
+
+### On this page
+
+-   [InvitationsService](/docs/sdk/node#name-invitationsservice-3)
+-   [invitationsService.getReceivedInvitations() ⇒ Array.<Invitation>](/docs/sdk/node#name-invitationsservice.getreceivedinvitations--array.invitation-139)
+-   [invitationsService.searchInvitationsReceivedFromServer(sortField, status, format, limit, offset, sortOrder) ⇒ any](/docs/sdk/node#name-invitationsservice.searchinvitationsreceivedfromserversortfield-status-format-limit-offset-sortorder--any-167)
+-   [invitationsService.getAcceptedInvitations() ⇒ Array.<Invitation>](/docs/sdk/node#name-invitationsservice.getacceptedinvitations--array.invitation-481)
+-   [invitationsService.getInvitationsNumberForCounter() ⇒ Array.<Invitation>](/docs/sdk/node#name-invitationsservice.getinvitationsnumberforcounter--array.invitation-509)
+-   [invitationsService.getServerInvitation(invitationId) ⇒ Invitation](/docs/sdk/node#name-invitationsservice.getserverinvitationinvitationid--invitation-537)
+-   [invitationsService.getInvitation(invitationId) ⇒ Invitation](/docs/sdk/node#name-invitationsservice.getinvitationinvitationid--invitation-593)
+-   [invitationsService.joinContactInvitation(contact) ⇒ Promise.<Object>](/docs/sdk/node#name-invitationsservice.joincontactinvitationcontact--promise.object-649)
+-   [invitationsService.acceptInvitation(invitation) ⇒ Promise.<Object>](/docs/sdk/node#name-invitationsservice.acceptinvitationinvitation--promise.object-705)
+-   [invitationsService.declineInvitation(invitation) ⇒ Promise.<Object>](/docs/sdk/node#name-invitationsservice.declineinvitationinvitation--promise.object-899)
+-   [invitationsService.getAllInvitationsNumber() ⇒ Array.<Invitation>](/docs/sdk/node#name-invitationsservice.getallinvitationsnumber--array.invitation-1104)
+-   [invitationsService.getSentInvitations() ⇒ Array.<Invitation>](/docs/sdk/node#name-invitationsservice.getsentinvitations--array.invitation-1132)
+-   [invitationsService.searchInvitationsSentFromServer(sortField, status, format, limit, offset, sortOrder) ⇒ any](/docs/sdk/node#name-invitationsservice.searchinvitationssentfromserversortfield-status-format-limit-offset-sortorder--any-1160)
+-   [invitationsService.sendInvitationByEmail(email, lang, customMessage) ⇒ Object](/docs/sdk/node#name-invitationsservice.sendinvitationbyemailemail-lang-custommessage--object-1485)
+-   [invitationsService.sendInvitationByCriteria(email, invitedPhoneNumber, invitedUserId, lang, customMessage) ⇒ Object](/docs/sdk/node#name-invitationsservice.sendinvitationbycriteriaemail-invitedphonenumber-inviteduserid-lang-custommessage--object-1734)
+-   [invitationsService.cancelOneSendInvitation(invitation) ⇒ Object](/docs/sdk/node#name-invitationsservice.cancelonesendinvitationinvitation--object-2193)
+-   [invitationsService.reSendInvitation(invitationId, customMessage) ⇒ Object](/docs/sdk/node#name-invitationsservice.resendinvitationinvitationid-custommessage--object-2249)
+-   [invitationsService.sendInvitationsByBulk(listOfMails, lang, customMessage) ⇒ Object](/docs/sdk/node#name-invitationsservice.sendinvitationsbybulklistofmails-lang-custommessage--object-2487)
+-   [invitationsService.deleteAUserInvitation(invitation) ⇒ Object](/docs/sdk/node#name-invitationsservice.deleteauserinvitationinvitation--object-2813)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

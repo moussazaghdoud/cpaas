@@ -1,0 +1,274 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/ConferenceServices"
+lastSynced: "2026-02-20T07:12:33.344Z"
+---
+# Documentation
+
+Conference Service
+
+### Conference Services
+
+---
+
+### Preamble
+
+---
+
+The conference services module `conferenceService` has all the methods supported by this library.
+
+### Start Conference Call
+
+---
+
+You can initiate the conference call by calling `conferenceService.startConference(bubbleId: string)` in the bubble if and only if:
+
+-   you have the conference privilege into your account.
+-   your login user must be either the bubble owner or organizer \[`moderator`\].
+
+```ts
+import { conferenceService } from 'react-native-rainbow-module'
+...
+const startConference = (bubbleId: string) => {
+conferenceService.startConference(bubbleId);
+}
+```
+
+`Please Note:` You can check the [Sample App](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/blob/main/src/Messages/BubbleChatView.tsx) how we used the start conference call.
+
+### Join Conference
+
+---
+
+Incase the login user have joinable conference \[active conference\], you can call `conferenceService.joinConference(bubbleId: string)`.
+
+```ts
+import { conferenceService } from 'react-native-rainbow-module'
+...
+const joinConference = (bubbleId: string) => {
+conferenceService.joinConference(bubbleId);
+}
+...
+```
+
+`Please Note:` You can check the [Sample App](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/blob/main/src/Messages/BubbleChatView.tsx) how we used the join conference call.
+
+### End Conference Call
+
+---
+
+For ending the active conference call, you can call `conferenceService.endConferenceCall(bubbleId: string)`.
+
+```ts
+import { conferenceService } from 'react-native-rainbow-module'
+...
+const endConferenceCall = (bubbleId: string) => {
+conferenceService.endConferenceCall(bubbleId);
+}
+...
+```
+
+`Please Note:` In the `Sample App` we used the `conferenceService.endConferenceCall` in the already built component for you `<EndConferenceCallButton call={call}/>` as shown in the following link [Conference](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/blob/main/src/Calls/Conference/CustomizableConferenceView.tsx).
+
+### Decline Conference Call
+
+---
+
+For decline the incoming conference call, you can call `conferenceService.declineCall(bubbleId: string)`. The difference between the `End Conference` and the `Decline Conference` is that `Decline` is used for the incoming call otherwise the `End Conference` is used.
+
+```ts
+import { conferenceService } from 'react-native-rainbow-module'
+...
+const declineConferenceCall = (bubbleId: string) => {
+conferenceService.declineCall(bubbleId);
+}
+...
+```
+
+`Please Note:` In the `Sample App` we used the `conferenceService.declineCall` in the already built component for you `<EndConferenceCallButton call={call}/>` as shown in the following link [Conference](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/blob/main/src/Calls/Conference/CustomizableConferenceView.tsx).
+
+### Add Video To Conference
+
+---
+
+To add a local video to the active conference , you can call `conferenceService.addVideoToConference`
+
+```ts
+import { conferenceService } from 'react-native-rainbow-module'
+...
+const addVideoToConference = () => {
+conferenceService.addVideoToConference();
+}
+...
+```
+
+`Please Note:` In the `Sample App` we used the `conferenceService.addVideoToConference` in the already built component for you `<AddVideoToConfButton call={call} />` as shown in the following link [Conference](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/blob/main/src/Calls/Conference/CustomizableConferenceView.tsx).
+
+### Remove Video From Conference
+
+---
+
+To remove the local video from the active conference , you can call `conferenceService.removeVideoFromConference`
+
+```ts
+import { conferenceService } from 'react-native-rainbow-module'
+...
+const removeVideoFromConference = () => {
+conferenceService.removeVideoFromConference();
+}
+...
+```
+
+`Please Note:` In the `Sample App` we used the `conferenceService.addVideoToConference` in the already built component for you `<AddVideoToConfButton call={call} />` as shown in the following link [Conference](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/blob/main/src/Calls/Conference/CustomizableConferenceView.tsx).
+
+### Mute All Participants
+
+---
+
+To mute all the attendees in the active conference , you can call `conferenceService.muteAllParticipants(bubbleId: string)`
+
+```ts
+import { conferenceService } from 'react-native-rainbow-module'
+...
+const muteAllParticipants = (bubbleId: string) => {
+conferenceService.muteAllParticipants(bubbleId);
+}
+...
+```
+
+### Un Mute All Participants
+
+---
+
+To un mute all the attendees in the active conference , you can call `conferenceService.unMuteAllParticipants(bubbleId: string)`
+
+```ts
+import { conferenceService } from 'react-native-rainbow-module'
+...
+const unMuteAllParticipants = (bubbleId: string) => {
+conferenceService.unMuteAllParticipants(bubbleId);
+}
+...
+```
+
+### Delegate Conference
+
+---
+
+Incase you are the conference call initiator and you wanna to handle the conference call to another participant and leave the conference , you can call `conferenceService.delegateConference(conferenceRoomId: string, participantId: string)`
+
+```ts
+import { conferenceService } from 'react-native-rainbow-module'
+...
+const delegateConferenceCall = (bubbleId: string, participantId: string) => {
+conferenceService.delegateConference(bubbleId, participantId);
+}
+...
+```
+
+### Lock Conference Call
+
+---
+
+In case you wanna lock the conference call were to prevent any participant to join the conference call, you can use this method `conferenceService.lockConference(conferenceRoomId: string)` to switch the Lock state (lock/unlock), and then you can listen to the lock state changes result `EventType.GetConferenceLockState`.
+
+Please check the following example:
+
+```ts
+import { conferenceService } from 'react-native-rainbow-module';
+
+// Listen to the conference lock state event.
+const conferenceLockState = eventEmitter.addListener(EventType.GetConferenceLockState, (eventData: boolean) => {
+            console.log("conference lock state had changed to : ", eventData);
+            ...
+        });
+        ...
+// Switch conference lock state
+const switchConferenceLock = (bubbleId: string) => {
+    conferenceService.lockConference(bubbleId);
+}
+```
+
+`Please Note:` In the `Sample App` we used the `conferenceService.lockConference` in the already built component for you `<LockConfButton call={call} />` as shown in the following link [Conference](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/blob/main/src/Calls/Conference/CustomizableConferenceView.tsx).
+
+### Check Conference Availability
+
+---
+
+You can check the conference availability by calling `conferenceService.CheckConferenceAvailability(bubbleId: string)`, and the result will fired the `EventType.ConferenceCapability` with boolean event data.
+
+Incase conference availability data result is `true` this mean the following:
+
+-   you have the conference privilege and he is either the owner or organizer.
+-   you have an active conference in this bubble, which mean you can join it, but its not necessarily have a conference privilege.
+
+```ts
+import { conferenceService } from 'react-native-rainbow-module'
+...
+
+conferenceService.CheckConferenceAvailability(props.bubble.id);
+// Listen to the conference availability result.
+   eventEmitter.addListener(EventType.   ConferenceCapability, (eventData: boolean) => {
+       // handle conference availability result.
+    });
+```
+
+### Get Active Speaker in conference call
+
+---
+
+You get the active speaker who is talking during the active conference call by using `conferenceObject.activeSpeaker`, where the `conferenceObject` is of type `IConference` and you can listen to `EventType.CurrentConferenceUpdated`, that will be triggered when when there is any changes happened on the conference including the `activeSpeaker` changes
+
+```ts
+import { conferenceService } from 'react-native-rainbow-module'
+...
+
+conferenceObject.activeSpeaker
+// Listen to the conference changes result.
+   eventEmitter.addListener(EventType.CurrentConferenceUpdated, (call?: IConference) => {
+       // do what you want with the active speaker object result.
+       let speaker  = call?.activeSpeaker;
+    });
+```
+
+### Hang Up Myself from Conference
+
+---
+
+To leave a conference call without ending it for other participants, you can use `conferenceService.hangUpMyself(conferenceRoomId: string)`. This is useful when you want to leave the conference but allow it to continue for other participants.
+
+```ts
+import { conferenceService } from 'react-native-rainbow-module'
+...
+const leaveConference = (conferenceRoomId: string) => {
+    conferenceService.hangUpMyself(conferenceRoomId);
+}
+```
+
+`Please Note:` This method only removes the current user from the conference. The conference will continue for other participants if there are still participants remaining.
+
+### On this page
+
+-   [Conference Services](/docs/sdk/reactnative/api/ConferenceServices#name-conference-services-0)
+-   [Preamble](/docs/sdk/reactnative/api/ConferenceServices#name-preamble-4)
+-   [Start Conference Call](/docs/sdk/reactnative/api/ConferenceServices#name-start-conference-call-11)
+-   [Join Conference](/docs/sdk/reactnative/api/ConferenceServices#name-join-conference-34)
+-   [End Conference Call](/docs/sdk/reactnative/api/ConferenceServices#name-end-conference-call-45)
+-   [Decline Conference Call](/docs/sdk/reactnative/api/ConferenceServices#name-decline-conference-call-56)
+-   [Add Video To Conference](/docs/sdk/reactnative/api/ConferenceServices#name-add-video-to-conference-67)
+-   [Remove Video From Conference](/docs/sdk/reactnative/api/ConferenceServices#name-remove-video-from-conference-78)
+-   [Mute All Participants](/docs/sdk/reactnative/api/ConferenceServices#name-mute-all-participants-89)
+-   [Un Mute All Participants](/docs/sdk/reactnative/api/ConferenceServices#name-un-mute-all-participants-97)
+-   [Delegate Conference](/docs/sdk/reactnative/api/ConferenceServices#name-delegate-conference-105)
+-   [Lock Conference Call](/docs/sdk/reactnative/api/ConferenceServices#name-lock-conference-call-113)
+-   [Check Conference Availability](/docs/sdk/reactnative/api/ConferenceServices#name-check-conference-availability-127)
+-   [Get Active Speaker in conference call](/docs/sdk/reactnative/api/ConferenceServices#name-get-active-speaker-in-conference-call-150)
+-   [Hang Up Myself from Conference](/docs/sdk/reactnative/api/ConferenceServices#name-hang-up-myself-from-conference-158)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

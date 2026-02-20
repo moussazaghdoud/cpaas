@@ -1,0 +1,639 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/ios/lts/guides/Managing_voice_video_calls"
+lastSynced: "2026-02-20T07:12:29.488Z"
+---
+# Documentation
+
+Managing voice and video calls
+
+LTS release 2.12.0Published on 2024-07-23
+
+## Managing voice and video calls
+
+---
+
+In this tutorial, you will learn how to call others Rainbow users using voice and video.
+
+By reading this tutorial, you will be able
+
+-   To set-up your application for having the right authorizations,
+    
+-   To configure CallKit and ringtones for incoming and outgoing calls
+    
+-   To call a Rainbow user
+    
+-   To answer to an incoming call
+    
+-   To terminate a call
+    
+
+Additionnaly to that, you will be able to select between the front and back camera as well as to choose the right video format from your camera and adapted to your device.
+
+### Limitations using an Xcode simulator
+
+---
+
+Be careful when developing an application using Voice and Video calls, if you are launching your application from a Xcode simulator, you will not able to test all the different cases and possibly your application will crash.
+
+-   You are limited to call a Rainbow user using voice only. If you try to use the video, your application will crash. This is because the simulator don't allow your application to use a camera. There is no issue with voice call.
+    
+-   You are limited to outgoing call. You can't receive an incoming call as Callkit is not managed by the Xcode simulator. Your application will not be alerted of incoming calls.
+    
+
+The best practice is to use a real device. As you will see later in that tutorial, you have to use low level APIs for using the camera, selecting the right video format, etc...
+
+### Coding using Swift
+
+---
+
+This tutorial uses the **Swift** language. Objective-C code will not be provided, if needed please ask for having it in our [Rainbow for developers Forum](https://support.openrainbow.com/hc/en-us/community/topics/115000150070-Hub-Support-Community)
+
+### Set-up the application authorizations
+
+---
+
+In order to send and receive call, the first thing to do is to add some properties in your property list (aka plist).
+
+Open the file `info.plist` and add the following properties:
+
+```xml
+<!-- Complete file info.plist with these properties -->
+<key>NSMicrophoneUsageDescription</key>
+<string>The application needs to access the device microphone</string>
+<key>NSCameraUsageDescription</key>
+<string>The application needs to access the device camera</string>
+<key>NSUserActivityTypes</key>
+<array>
+    <string>INStartAudioCallIntent</string>
+</array>
+<key>UIBackgroundModes</key>
+<array>
+    <string>audio</string>
+    <string>voip</string>
+</array>
+```
+
+You need to add the keys `NSMicrophoneUsageDescription` and `NSCameraUsageDescription` in order for your application to request access to the microphone and camera. The key `UIBackgroundModes` is describe more in details in tutorial [Push notifications setup](/docs/sdk/ios).
+
+Then, somewhere in your application, it could be when your application starts (ie: in your file `AppDelegate.swift`), you need to request the access to the microphone by calling the method `requestMicrophoneAccess`.
+
+```swift
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+    // Add listener to microphone access
+    NotificationCenter.default.addObserver(self, selector: #selector(didAllowMicrophone(notification:)), name: NSNotification.Name.rtcServiceDidAllowMicrophone, object: nil)
+
+    NotificationCenter.default.addObserver(self, selector: #selector(didRefuseMicrophone(notification:)), name: NSNotification.Name.rtcServiceDidRefuseMicrophone, object: nil)
+
+    ServicesManager.sharedInstance()?.rtcService.requestMicrophoneAccess()
+}
+
+@objc func didAllowMicrophone(notification: NSNotification) {
+    // Do something when the microphone access has been granted
+}
+
+@objc func didRefuseMicrophone(notification: NSNotification) {
+    // Do something in case the microphone access has been declined
+}
+```
+
+The next step will be to configure the ringtones to use in your application.
+
+### Configure CallKit and ringtones
+
+---
+
+Depending on the kind of call your application can do which can be an incoming call or an outgoing call, you can configure the ringtones and the way your are notified of an incoming call.
+
+#### Configuring the ringtone for outgoing calls
+
+---
+
+When your application makes an outgoing call, you can configure the ringtone used by setting the property `appSoundOutgoingCall`. You just have to specify the path to a media file of type `MP3` or `WAV`.
+
+```swift
+ServicesManager.sharedInstance()?.rtcService.appSoundOutgoingCall = "outgoing-ringtone.mp3"
+```
+
+#### Configuring the ringtone when hanging-up a call
+
+---
+
+When a call is released, you can configure a ringtone that will be played during that step. Use the property `appSoundHangup` to configure it. You just need to specify the path to a media file of type `MP3` or `WAV`.
+
+```swift
+ServicesManager.sharedInstance()?.rtcService.appSoundHangup = "hangup-ringtone.wav"
+```
+
+#### Configuring CallKit and ringtones for incoming calls
+
+---
+
+When your application receives a call, CallKit displays a call screen with 2 buttons allowing the user to accept or decline the call.
+
+In that CallKit screen, you can configure the ringtone to use and the text and icon that appear. For that, use the method `startCallKit` like in the following
+
+```swift
+ServicesManager.sharedInstance()?.rtcService.startCallKit(withIncomingSoundName: "incoming-ringtone.mp3", iconTemplate: "logo_application")
+```
+
+The method `startCallKit` **MUST** be called by your application in order to handle incoming calls when callkit is available.
+
+*Note*: The icon image should be a square with side length of 40 points. The alpha channel of the image is used to create a white image mask, which is used in the system native in-call UI for the button.
+
+Your application is now ready for managing calls. The next paragraphes describes how to deal with outgoing and incoming calls.
+
+### Managing outgoing calls
+
+---
+
+Calling a Rainbow user can be done by using the method `beginNewOutgoingCall`. Depending on the kind of call you want to do, you will use it differently.
+
+2 types of calls can be done:
+
+-   **A voice only call**: This call only requires microphone access and so is easy to put in place
+    
+-   **A voice and video call**: This call requires a microphone and a camera access. For that kind of call, you will need to manage the camera capturer and to deal with the remote video.
+    
+
+#### Initiating a call
+
+---
+
+For launching an outgoing call, as mentionned, you need to use the method `beginNewOutgoingCall` with a Rainbow `Contact` object to call and a call type set to voice or voice and video:
+
+```swift
+enum CALL_TYPE {
+    case VOICE
+    case AUDIO_VIDEO
+}
+
+func getCallFeatures(kind: CALL_TYPE) -> RTCCallFeatureFlags {
+    if(kind == CALL_TYPE.VOICE) {
+        return RTCCallFeatureFlags.init(rawValue: RTCCallFeatureFlags.audio.rawValue)!
+    } else {
+        return RTCCallFeatureFlags.init(rawValue: RTCCallFeatureFlags.audio.rawValue | RTCCallFeatureFlags.localVideo.rawValue)!
+    }
+}
+
+func startCall(contact: Contact, kind: CALL_TYPE) {
+
+    if(ServicesManager.sharedInstance()?.rtcService.microphoneAccessGranted ?? false){
+
+        let features: RTCCallFeatureFlags = getCallFeatures(kind)
+
+        let currentCall = ServicesManager.sharedInstance()?.rtcService.beginNewOutgoingCall(with: contact, withFeatures: features)
+
+        print("call reference \(call.callID)")
+
+        // Do something with the call launched
+
+    } else {
+        // Do something if the microfone has not been granted
+    }
+}
+```
+
+#### Managing call state events
+
+---
+
+When a call is in progress, several events are generated and can be handled by your application to know exactly the state of that call. There are 3 differents events kinds of events that can be listened: `telephonyServiceDidAddCall` (ie: when a call is received or is initiated), `telephonyServiceDidUpdateCall` (ie: when the call state changes) and `telephonyServiceDidRemoveCall` (ie: when the call has been released localy or by the remote participant).
+
+Here is a code extract for managing these events:
+
+```swift
+override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    NotificationCenter.default.addObserver(self, selector: #selector(didAddCall(notification:)), name: NSNotification.Name.telephonyServiceDidAddCall, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(didUpdateCall(notification:)), name: NSNotification.Name.telephonyServiceDidUpdateCall, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(didRemoveCall(notification:)), name: NSNotification.Name.telephonyServiceDidRemoveCall, object: nil)
+}
+
+override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name.telephonyServiceDidAddCall, object: nil)
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name.telephonyServiceDidUpdateCall, object: nil)
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name.telephonyServiceDidRemoveCall, object: nil)
+
+}
+
+@objc func didAddCall(notification: NSNotification) {
+    if !Thread.isMainThread {
+        DispatchQueue.main.async {
+            self.didAddCall(notification: notification)
+        }
+        return
+    }
+
+    // Do something when an incoming call is received or an outgoing call is initiated
+}
+
+@objc func didUpdateCall(notification: NSNotification) {
+
+    if !Thread.isMainThread {
+        DispatchQueue.main.async {
+            self.didUpdateCall(notification: notification)
+        }
+        return
+    }
+
+    guard let call:RTCCall = notification.object as? RTCCall else {
+        return
+    }
+
+    // Do something with the new state of the call (eg: display it as text in a label)
+    callStateLabel.text = getupdateCallStateToDisplay(state: call.status)
+}
+
+@objc func didRemoveCall(notification: NSNotification) {
+    if !Thread.isMainThread {
+        DispatchQueue.main.async {
+            self.didRemoveCall(notification: notification)
+        }
+        return
+    }
+
+    // Do something when the call has been ended
+}
+
+func getupdateCallStateToDisplay(state: CallStatus) -> String {
+
+    var stateToDisplay:String = ""
+
+    switch state {
+    case CallStatus.ringing:
+        stateToDisplay = "Calling"
+    case CallStatus.connecting:
+        stateToDisplay = "Connecting"
+    case CallStatus.established:
+        stateToDisplay = "In Call"
+    case CallStatus.timeout:
+        stateToDisplay = "Ended"
+    case CallStatus.declined:
+        stateToDisplay = "Ended"
+    case CallStatus.hangup:
+        stateToDisplay = "Ended"
+    case CallStatus.canceled:
+        stateToDisplay = "Ended"
+    default:
+        stateToDisplay = ""
+    }
+
+    return stateToDisplay
+}
+```
+
+#### Canceling the call
+
+---
+
+When you have initiated a call and when the call is in the state `CallStatus.ringing`, you can cancel it by calling the method `cancelOutgoingCall`
+
+```swift
+func cancelCall(call: RTCCall) {
+    if(call.status == CallStatus.ringing) {
+        ServicesManager.sharedInstance()?.rtcService.cancelOutgoingCall(call)
+    }
+}
+```
+
+#### Display local video
+
+---
+
+When in video, the next part to do is to be able to display your own video. This is not mandatory, but displaying your own video allow you to control how your remote contact will see you.
+
+For that, you need to listen to the event `rtcServiceDidAddCaptureSession`. This event is triggered when the WebRTC Camera capturer has been initialized and started capturing using the front camera. You need to get it using the following code
+
+```swift
+override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    //...
+    NotificationCenter.default.addObserver(self, selector: #selector(didAddCaptureSession(notification:)), name: NSNotification.Name.rtcServiceDidAddCaptureSession, object: nil)
+}
+
+@objc func didAddCaptureSession(notification: NSNotification) {
+    if !Thread.isMainThread {
+        DispatchQueue.main.async {
+            self.didAddCaptureSession(notification: notification)
+        }
+        return
+    }
+
+    // 
+    self.pipView.captureSession = notification.object as? AVCaptureSession
+}
+```
+
+To get the local video track you need to listen to the event `rtcServiceDidAddLocalVideoTrack`
+
+```swift
+@IBOutlet weak var pipView: RTCCameraPreviewView!
+
+override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    // ...
+    NotificationCenter.default.addObserver(self, selector: #selector(didAddLocalVideoTrack(notification:)), name: NSNotification.Name.rtcServiceDidAddLocalVideoTrack, object: nil)
+}
+
+@objc func didAddLocalVideoTrack(notification: NSNotification) {
+    if !Thread.isMainThread {
+        DispatchQueue.main.async {
+            self.didAddLocalVideoTrack(notification: notification)
+        }
+        return
+    }
+
+    // Set localVideoTrack from notification object
+}
+```
+
+If you succeeded this part, when calling someone, you should be able to display your own camera video track. The next paragraph will give you the supplementary part for managing incoming call.
+
+#### Display remote video
+
+---
+
+Once the call has been established, you need to listen to the event `rtcServiceDidAddRemoteVideoTrack` to know when the remote video track is available and can be displayed into your application.
+
+```swift
+@IBOutlet weak var remoteView: RTCMTLVideoView!
+
+override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    // ...
+    NotificationCenter.default.addObserver(self, selector: #selector(didAddRemoteVideoTrack(notification:)), name: NSNotification.Name.rtcServiceDidAddRemoteVideoTrack, object: nil)
+
+    NotificationCenter.default.addObserver(self, selector: #selector(didRemoveRemoteVideoTrack(notification:)), name: NSNotification.Name.rtcServiceDidRemoveRemoteVideoTrack, object: nil)
+ }
+
+ @objc func didAddRemoteVideoTrack(notification: NSNotification) {
+    if !Thread.isMainThread {
+        DispatchQueue.main.async {
+            self.didAddRemoteVideoTrack(notification: notification)
+        }
+        return
+    }
+
+    if self.currentCall?.isRemoteVideoEnabled() ?? false {
+
+        var remoteVideoTrack:RTCVideoTrack? = notification.object as? RTCVideoTrack
+
+        if remoteVideoTrack == nil {
+            remoteVideoTrack = ServicesManager.sharedInstance()?.rtcService.remoteVideoTrack(for: self.currentCall!)            
+        }
+
+        guard let videoTrack = remoteVideoTrack else {
+            print(">>> error no track unwrapped")
+            return
+        }
+
+        videoTrack.add(self.remoteView)
+        self.view.setNeedsLayout()
+    }
+}
+```
+
+Don't forget to adapt your view using a **Content Mode** equals to `Scale To Fill` in order to have a better UX and avoid the black borders.
+
+*Note*: Be careful when using RTCMTLVideoView. If you want to support old device such as A7 device (< IOS 8.0), you need to check if Metal is supported and use RTCEAGLVideoView instead.
+
+### Manage incoming calls
+
+---
+
+#### When the application is in foreground
+
+---
+
+When the application is in foreground and when receiving an incoming call, a Callkit screen is displayed and the user has to accept or decline the call. Whatever the user is doing in your application, this CallKit screen will be displayed because of the priority of the call.
+
+The consequence is that your application will not have to do something for displaying this call nor for answering or declining it.
+
+As you have already subscribed to the event `telephonyServiceDidUpdateCall` for managing outgoing calls, you will be notified with the same way for all incoming calls accepted by the user.
+
+If the user declines the incoming call, the event `telephonyServiceDidRemoveCall` is fired.
+
+*Note*: Event `telephonyServiceDidAddCall` will never be sent for incoming calls.
+
+#### When the application is in background
+
+---
+
+If your application is in background, the only way to be notified of an incoming call is to configure and use the **Apple Push Notification service**. Please refer to the tutorial [Push notifications setup](/docs/sdk/ios) for more information.
+
+### Adding and removing the Video part
+
+---
+
+The local video stream can be added or removed to any existing calls.
+
+#### Adding the local video stream
+
+---
+
+When you have established a voice only call, at any time, you can add the Video part by calling the method `addVideoMedia`. Then once available, you will be able to display this video stream like described previously listening to the event `rtcServiceDidAddLocalVideoTrack`.
+
+#### Removing the local video stream
+
+---
+
+In the same way, at any time, you can remove the video stream if shared by calling the method `removeVideoMedia`. Once removed, the event `rtcServiceDidRemoveLocalVideoTrack` will be fired to clean-up your graphical interface.
+
+### Sending a DTFM code
+
+---
+
+At any time during a call, you can send a DTMF code. The parameter must be one character, either a digit (0 to 9) or \* or #.
+
+If the user is not allowed to send the DTMF code to the current call, a log is printed starting by "DTMF Error". Check it to get more details.
+
+```swif
+ServicesManager.sharedInstance()?.rtcService.sendDTMF(digit)
+```
+
+### Ending a call
+
+---
+
+A call can be ended in several ways:
+
+-   The user has ended the call
+    
+-   The remote user has ended the call
+    
+-   The call has ended due to very bad network quality or a connection lost
+    
+
+#### Ending a call manually
+
+---
+
+At any time during a call, you can end it by calling the method `hangupCall`.
+
+```swift
+func endCall(call: RTCCall) {
+    if !Thread.isMainThread {
+        DispatchQueue.main.async {
+            self.endCall(call: call)
+        }
+        return
+    }
+
+    ServicesManager.sharedInstance()?.rtcService.hangupCall(call)
+}
+```
+
+Whatever the `call.status` value, you have to call this method to hang-up the call. An alternative method `cancelOutgoingCall` can be used to stop an outgoing call when the `call.status` value is equals to `ringing` only.
+
+#### Handling call ended by the remote participant
+
+---
+
+When a call is ended, your application is noticed by the event `telephonyServiceDidRemoveCall` and the `call.status` value moves to `hangup`.
+
+```swift
+override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    NotificationCenter.default.addObserver(self, selector: #selector(didRemoveCall(notification:)), name: NSNotification.Name.telephonyServiceDidRemoveCall, object: nil)
+}
+
+@objc func didRemoveCall(notification: NSNotification) {
+    if !Thread.isMainThread {
+        DispatchQueue.main.async {
+            self.didRemoveCall(notification: notification)
+        }
+        return
+    }
+
+    guard let call:RTCCall = notification.object as? RTCCall else {
+        return
+    }
+
+    // Do something when the call ended
+    // ...
+}
+```
+
+#### Handling call ended due to network reachability
+
+---
+
+Sometimes, your mobile is not reachable from the network and so your call is cut. In that case, your application is alerted by receiving the event `telephonyServiceDidUpdateCall` with the `call.status` value equals to `connecting`.
+
+If you receive the value `connecting` after having received the value `established`, this means that the call has been cut and the SDK tries to find a way to reconnect it.
+
+If you receive the value `connecting` and with a `call.iceFailed` value equals to `true`, this means that the call can't be established due to the network condition. It should happen rarely when the WebRTC stack find no route to connect to the remote user.
+
+### Annex
+
+---
+
+The following call status are supported for a call:
+
+Call status
+
+value
+
+Meaning
+
+**`RTCCallStatusRinging`**
+
+0
+
+Call is ringing
+
+**`RTCCallStatusConnecting`**
+
+1
+
+Call has been accepted and media is currently connecting
+
+**`RTCCallStatusDeclined`**
+
+2
+
+Call has been declined
+
+**`RTCCallStatusTimeout`**
+
+3
+
+Call has not been accepted/declined in time.
+
+**`RTCCallStatusCanceled`**
+
+4
+
+Call has been canceled
+
+**`RTCCallStatusEstablished`**
+
+5
+
+Call has been established
+
+**`RTCCallStatusHangup`**
+
+6
+
+Call has been hangup
+
+### See also
+
+---
+
+-   [Hello World](/docs/sdk/ios)
+    
+-   [Managing contacts](/docs/sdk/ios)
+    
+-   [Push notifications setup](/docs/sdk/ios)
+    
+
+---
+
+### On this page
+
+-   [Managing voice and video calls](/docs/sdk/ios#name-managing-voice-and-video-calls-0)
+-   [Limitations using an Xcode simulator](/docs/sdk/ios#name-limitations-using-an-xcode-simulator-40)
+-   [Coding using Swift](/docs/sdk/ios#name-coding-using-swift-62)
+-   [Set-up the application authorizations](/docs/sdk/ios#name-set-up-the-application-authorizations-69)
+-   [Configure CallKit and ringtones](/docs/sdk/ios#name-configure-callkit-and-ringtones-90)
+-   [Configuring the ringtone for outgoing calls](/docs/sdk/ios#name-configuring-the-ringtone-for-outgoing-calls-97)
+-   [Configuring the ringtone when hanging-up a call](/docs/sdk/ios#name-configuring-the-ringtone-when-hanging-up-a-call-105)
+-   [Configuring CallKit and ringtones for incoming calls](/docs/sdk/ios#name-configuring-callkit-and-ringtones-for-incoming-calls-113)
+-   [Managing outgoing calls](/docs/sdk/ios#name-managing-outgoing-calls-133)
+-   [Initiating a call](/docs/sdk/ios#name-initiating-a-call-155)
+-   [Managing call state events](/docs/sdk/ios#name-managing-call-state-events-163)
+-   [Canceling the call](/docs/sdk/ios#name-canceling-the-call-174)
+-   [Display local video](/docs/sdk/ios#name-display-local-video-182)
+-   [Display remote video](/docs/sdk/ios#name-display-remote-video-200)
+-   [Manage incoming calls](/docs/sdk/ios#name-manage-incoming-calls-214)
+-   [When the application is in foreground](/docs/sdk/ios#name-when-the-application-is-in-foreground-218)
+-   [When the application is in background](/docs/sdk/ios#name-when-the-application-is-in-background-237)
+-   [Adding and removing the Video part](/docs/sdk/ios#name-adding-and-removing-the-video-part-244)
+-   [Adding the local video stream](/docs/sdk/ios#name-adding-the-local-video-stream-251)
+-   [Removing the local video stream](/docs/sdk/ios#name-removing-the-local-video-stream-258)
+-   [Sending a DTFM code](/docs/sdk/ios#name-sending-a-dtfm-code-265)
+-   [Ending a call](/docs/sdk/ios#name-ending-a-call-276)
+-   [Ending a call manually](/docs/sdk/ios#name-ending-a-call-manually-300)
+-   [Handling call ended by the remote participant](/docs/sdk/ios#name-handling-call-ended-by-the-remote-participant-311)
+-   [Handling call ended due to network reachability](/docs/sdk/ios#name-handling-call-ended-due-to-network-reachability-319)
+-   [Annex](/docs/sdk/ios#name-annex-332)
+-   [See also](/docs/sdk/ios#name-see-also-433)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

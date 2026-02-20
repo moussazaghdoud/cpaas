@@ -1,0 +1,438 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Enable_push_notifications"
+lastSynced: "2026-02-20T07:12:28.459Z"
+---
+# Documentation
+
+Enable push notifications
+
+LTS release 2.61.0Published on 202-04-06
+
+## Enable push notifications
+
+---
+
+Welcome to the tutorial on managing Push Notifications with the **Rainbow SDK for Android**. In this guide, we'll help you properly configure your application to receive Push Notifications sent by Rainbow.
+
+### What You'll Learn
+
+In this tutorial, you'll learn how to:
+
+-   **Set up your Firebase Project for Push Notifications:**
+    -   Learn how to configure Firebase Cloud Messaging (FCM) for your Android project to enable Push Notifications.
+-   **Configure Your Rainbow Project on the Developer's Site:**
+    -   Understand the steps required to configure your Rainbow project on the developer's site to enable Push Notifications.
+-   **Handle Incoming Push Notifications Seamlessly:**
+    -   Implement methods to handle incoming Push Notifications seamlessly in your Android application, ensuring a smooth user experience.
+
+By mastering these steps, you'll be equipped to effectively enable and manage Push Notifications in your Android application using the Rainbow SDK, enhancing user engagement and interaction.
+
+### Preamble
+
+---
+
+This tutorial assumes that you have followed the **Getting Started** and **Connect to Rainbow** tutorials and that you have an active Rainbow application. Before diving into notifications, make sure:
+
+-   Your development environment is set up according to the guidelines in the [Getting Started](/docs/sdk/android) tutorial.
+-   You have successfully connected your application to the Rainbow platform as explained in the [Connect to Rainbow](/docs/sdk/android) tutorial.
+-   You have obtained the necessary authentication credentials and API keys.
+-   To be familiar with the Rainbow SDK
+
+In the context of the Rainbow platform, push notifications play a significant role in enabling real-time communication and collaboration features even when the application is not actively running. Here's how push notifications are utilized within the Rainbow ecosystem:
+
+1.  **Real-Time Communication:** Rainbow allows users to stay connected and receive notifications for various events, such as new messages, incoming calls, or updates from their contacts. Push notifications ensure that users are promptly notified of these events, even if the Rainbow application is not currently in use.
+2.  **Message Notifications:** Users receive push notifications for new messages received within Rainbow chat conversations. These notifications typically include details such as the sender's name, message preview, and options to quickly reply or view the message.
+3.  **Call Notifications:** Incoming call notifications are sent via push notifications, alerting users to incoming voice or video calls. Users can then choose to accept or decline the call directly from the notification, even if the Rainbow application is not open.
+4.  **New Channel Messages:** Push notifications are used to notify users about new messages posted in channels they are subscribed to. This ensures that users stay updated on important discussions and announcements happening within their channels.
+5.  **New Voice Message:** Push notifications are used to notify users about new voice messages received on the voicemail. These notifications ensure that users are aware of incoming voice messages and can listen to them promptly.
+6.  **Webinar Invitation:** Push notifications are used to receive invitations to webinars hosted on the Rainbow platform. These notifications provide essential details about the webinar, such as the topic, date, time, and instructions for joining, ensuring users are aware of and can participate in the webinar.
+
+Once you have met these prerequisites, you are ready to dive into the configuration and management of push notifications with the Rainbow SDK for Android. Let's get started!
+
+With the Rainbow SDK and Firebase Cloud Messaging, setting up push notifications is effortless and can be accomplished in just a few simple steps.
+
+Push messages are sent encrypted and decrypted by the SDK before being processed. Once processed, the usual notification channels are used.
+
+For more detailed information, **please refer to:**
+
+-   [Which events are managed by push](#step-6---which-events-are-managed-by-push)
+-   [Manage notifications](/docs/sdk/android)
+
+### Step 1 - Set up Firebase Cloud Messaging
+
+---
+
+To get started with Firebase Cloud Messaging (FCM), follow these instructions:
+
+1.  Follow the Firebase Tutorial: Visit [Add Firebase to Your Android Project](https://firebase.google.com/docs/android/setup) and follow the steps outlined in the tutorial.
+2.  Configure Your Project: Ensure that your project is configured with a `google-services.json` file. This file contains important configuration details required for integrating Firebase services into your Android application. Place this file in the app directory of your project.
+3.  Add Dependencies: Make sure to include all necessary dependencies for Firebase Cloud Messaging in your project. These dependencies are specified in the Firebase setup tutorial and are essential for enabling FCM functionality in your Android application.
+
+By the end of this step, your Android project should be properly configured to utilize Firebase Cloud Messaging, with the google-services.json file in place and all required dependencies added.
+
+### Step 2 - Access the device registration token
+
+---
+
+To access the device registration token and send it to the Rainbow SDK, follow these steps:
+
+1.  **Create a Service Class:** Create a new service class in your Android project that extends `FirebaseMessagingService`. Override the `onNewToken()` method within this class to capture the device's registration token and pass it to the Rainbow SDK. Here's an example implementation:
+
+-   [kotlin](#codegroupTab-push_service_kt)
+-   [java](#codegroupTab-push_service_java)
+
+```kotlin
+class PushService : FirebaseMessagingService() {
+    override fun onNewToken(token: String) {
+        RainbowSdk().push().onTokenRefresh(token)
+    }
+}
+```
+
+```java
+public class PushService extends FirebaseMessagingService {
+
+    @Override
+    public void onNewToken(String token) {
+        RainbowSdk.instance().push().onTokenRefresh(token);
+    }
+}
+```
+
+2.  **Declare the Service in the Manifest:** Ensure that you declare the service in your app's manifest file. This declaration specifies the service class and associates it with the `com.google.firebase.MESSAGING_EVENT` action. Add the following code snippet to your manifest file:
+
+```xml
+<service
+    android:name=".PushService"
+    android:exported="false">
+    <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT" />
+    </intent-filter>
+</service>
+```
+
+By implementing these steps, your Android application will be able to access the device registration token and seamlessly integrate it with the Rainbow SDK for push notification functionality.
+
+### Step 3 - Handle messages
+
+---
+
+In your `PushService` service class, override the `onMessageReceived()` method to handle incoming push messages and send them to the Rainbow SDK for processing.
+
+Inside the `onMessageReceived()` method, call `RainbowSdk.instance().push().onMessageReceived()` to decrypt and process the received push message. We will see later the use of the `IMessageReceivedListener`.
+
+Here's how you can implement this:
+
+-   [kotlin](#codegroupTab-onMessageReceived_kt)
+-   [java](#codegroupTab-onMessageReceived_java)
+
+```kotlin
+// ...
+
+    override fun onMessageReceived(message: RemoteMessage) {
+        RainbowSdk().push().onMessageReceived(message.data) {
+            // Application is not started, take appropriate action here
+        }
+
+        super.onMessageReceived(message)
+    }
+```
+
+```java
+public class PushService extends FirebaseMessagingService {
+
+    // ...
+
+    @Override
+    public void onMessageReceived(RemoteMessage message) {
+        RainbowSdk.instance().push().onMessageReceived(message.getData(), () -> {
+            // Application is not started, take appropriate action here
+        });
+
+        super.onMessageReceived(message);
+    }
+}
+```
+
+By overriding the `onMessageReceived()` method in your service class and calling `RainbowSdk.instance().push().onMessageReceived()`, you ensure that incoming push messages are decrypted and processed by the Rainbow SDK. Additionally, you can handle scenarios where the application is not started by implementing the `IMessageReceivedListener` interface.
+
+### Step 4 - Set the Firebase Server Key to Rainbow Developers site
+
+---
+
+To enable Rainbow to handle push notifications for your application, you need to upload the Firebase server key of your application's Firebase project to your Rainbow application on the Rainbow Developers site.
+
+Follow these steps:
+
+1.  **Get the Firebase Server Key:**
+    
+    -   Navigate to the [Firebase console](https://console.firebase.google.com) and select your project.
+    -   Generate a new private key and download the JSON file.
+    
+    ![Firebase configuration](/docs/sdk/android)
+    
+2.  **Upload the JSON file on Rainbow Developers site:**
+    
+    -   Visit [Rainbow for developers](/applications) and select your application.
+    -   Click on the EDIT button to update your application settings.
+    
+    ![Rainbow Developers configuration](/docs/sdk/android)
+    
+    -   Scroll down to the Android Push Notifications section and upload the file for your Android application.
+    
+    ![JSON file upload](/docs/sdk/android)
+    
+    -   Once uploaded, the configuration is loaded, you just have to activate the push.
+    
+    ![Push configured](/docs/sdk/android)
+    
+
+By completing these steps, your application will be capable of receiving push notifications and subsequently receiving messages in background mode.
+
+---
+
+### Step 5 - Managing the different push cases
+
+---
+
+When the SDK receives the push notification, it decrypts the message. Subsequently, the content of the message is analyzed to determine the associated event.
+
+In some cases, not all the necessary information is contained in the message body. To process such cases, the user must be logged in and the application must be launched. The `IMessageReceivedListener` interface, implemented within the `onMessageReceived()` method, handles these scenarios. The `onApplicationNotStarted()` method is called in these cases, providing an opportunity to take appropriate action.
+
+Once the application is restarted, simply call `RainbowSdk.instance().push().onMessageReceived(message.getData(), null)` again.
+
+Here's an example implementation:
+
+-   [kotlin](#codegroupTab-onApplicationNotStarted_kt)
+-   [java](#codegroupTab-onApplicationNotStarted_java)
+
+```kotlin
+// ...
+
+    override fun onMessageReceived(message: RemoteMessage) {
+        RainbowSdk().push().onMessageReceived(message.data) {
+            // Application is not started, we need to launch it
+            YourApplicationInstance.yourFunctionToRestartAndLogin(object : SigningResponseListener {
+                override fun onSigninSucceeded() {
+                    RainbowSdk.instance().push().onMessageReceived(message.getData(), null);
+                }
+
+                override fun onRequestFailed() {
+                    // Unable to sign-in user
+                }
+            });
+        }
+
+        super.onMessageReceived(message)
+    }
+```
+
+```java
+public class PushService extends FirebaseMessagingService {
+
+    // ...
+
+    @Override
+    public void onMessageReceived(RemoteMessage message) {
+        RainbowSdk.instance().push().onMessageReceived(message.getData(), () -> {
+            // Application is not started, we need to launch it
+            YourApplicationInstance.yourFunctionToRestartAndLogin(new SigningResponseListener() {
+                @Override
+                public void onSigninSucceeded() {
+                    RainbowSdk.instance().push().onMessageReceived(message.getData(), null);
+                }
+
+                @Override
+                public void onRequestFailed() {
+                    // Unable to sign-in user
+                }
+            });
+        });
+
+        super.onMessageReceived(message);
+    }
+}
+```
+
+This approach ensures that your application effectively handles various push notification scenarios and processes them appropriately.
+
+Here is an example of what can be done in your `YourApplicationInstance.yourFunctionToRestartAndLogin`:
+
+-   [kotlin](#codegroupTab-onApplicationNotStarted_sample_kt)
+-   [java](#codegroupTab-onApplicationNotStarted_sample_java)
+
+```kotlin
+fun yourFunctionToRestartAndLogin(listener: Connection.ISignInListener) {
+    
+    // (Optional) Eventually start the services or whatever you need for your application.
+
+    // Use one of the available methods to authenticate the user, upon successful authentication, call the listener's onSigninSucceeded method.
+
+    val storedLogin = RainbowSdk().user().userLoginInCache
+    val storedPassword = RainbowSdk().user().userPasswordInCache
+    
+    RainbowSdk.instance().connection().signIn(storedLogin, storedPassword, object : Connection.ISignInListener {
+        override fun onSignInSucceeded() {
+            listener.onSignInSucceeded();
+        }
+
+        override fun onSignInFailed(errorCode: Connection.ErrorCode, error: RainbowError<Unit>) {
+            listener.onSignInFailed(errorCode, err);
+        }
+    })
+}
+```
+
+```java
+public void yourFunctionToRestartAndLogin(Connection.ISignInListener listener) {
+
+    // (Optional) Eventually start the services or whatever you need for your application.
+
+    // Use one of the available methods to authenticate the user, upon successful authentication, call the listener's onSigninSucceeded method.
+
+    String storedLogin = RainbowSdk.instance().user().getUserLoginInCache();
+    String storedPassword = RainbowSdk.instance().user().getUserPasswordInCache();
+
+    RainbowSdk.instance().connection().signIn(storedLogin, storedPassword, new Connection.ISignInListener() {
+        @Override
+        public void onSignInSucceeded() {
+            listener.onSignInSucceeded();
+        }
+
+        @Override
+        public void onSignInFailed(@NonNull Connection.ErrorCode errorCode, @NonNull RainbowError<Unit> error) {
+            listener.onSignInFailed(errorCode, err);
+        }
+    });
+}
+```
+
+---
+
+### Step 6 - Which events are managed by push
+
+Here is a comprehensive list of events that can be received via push messages in the Rainbow SDK. For each event type, you'll find the following information:
+
+-   Whether it is necessary for the user to be logged in. If so, the `onApplicationNotStarted()` method may be called for this event type.
+-   What happens after the message is processed.
+
+Type of events
+
+Details
+
+User has to be logged
+
+What happens next
+
+Channel
+
+Creation of a channel item
+
+Yes
+
+`IChannelsListener.notifyChannelMessage()` method is called
+
+Missed call
+
+Missed call, not answered on another client
+
+No
+
+`ICallLogsListener.notifyMissedCall()` method is called
+
+Call
+
+P2P call
+
+Yes
+
+`ITelephonyListener.onCallAdded()` method is called
+
+Events
+
+Recording file ready
+
+No
+
+`IFileStorageListener.notifyConferenceRecordingFileAvailable()` method is called
+
+The voice message counter changes
+
+No
+
+`IVoicemailsListener.notifyVoicemailCounterChanged()` method is called
+
+Invitation to join a bubble
+
+Yes
+
+`Bubbles().getAllBubbles().dataChanged()` triggered
+
+Invitation to join a webinar
+
+Yes
+
+`IWebinarsListener.notifyWebinarInvitation()` method is called
+
+A conference starts
+
+Yes
+
+`IRainbowRoom.RoomListener.roomUpdated()` and `IRainbowRoom.RoomListener.conferenceUpdated()` triggered
+
+A conference is rejected (from another client)
+
+Yes
+
+`IRoomNotificationMgr.conferenceRejected()` method is called
+
+Mark all message as read
+
+Marks all messages in a conversation as read
+
+No
+
+`IRainbowImListener.onConversationsListUpdated()` method is called
+
+Chat messages
+
+P2P or bubble messages
+
+No
+
+Application is started : `IRainbowImListener.onImReceived()` method is called
+
+No
+
+Application is stopped : `IRainbowImListener.notifyNewMessageWithApplicationStopped()` is called
+
+Urgent message
+
+Yes
+
+`IRainbowImListener.notifyNewMessageWithApplicationStopped()` is called
+
+This table provides valuable insight into the different types of push events managed by the Rainbow SDK and how they are processed. It serves as a helpful reference for developers integrating push notifications into their applications.
+
+*Last updated: March 2024*
+
+### On this page
+
+-   [Enable push notifications](/docs/sdk/android#name-enable-push-notifications-0)
+-   [What You'll Learn](/docs/sdk/android#name-what-youll-learn-7)
+-   [Preamble](/docs/sdk/android#name-preamble-54)
+-   [Step 1 - Set up Firebase Cloud Messaging](/docs/sdk/android#name-step-1---set-up-firebase-cloud-messaging-142)
+-   [Step 2 - Access the device registration token](/docs/sdk/android#name-step-2---access-the-device-registration-token-169)
+-   [Step 3 - Handle messages](/docs/sdk/android#name-step-3---handle-messages-195)
+-   [Step 4 - Set the Firebase Server Key to Rainbow Developers site](/docs/sdk/android#name-step-4---set-the-firebase-server-key-to-rainbow-developers-site-212)
+-   [Step 5 - Managing the different push cases](/docs/sdk/android#name-step-5---managing-the-different-push-cases-288)
+-   [Step 6 - Which events are managed by push](/docs/sdk/android#name-step-6---which-events-are-managed-by-push-313)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

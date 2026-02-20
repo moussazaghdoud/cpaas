@@ -1,0 +1,1195 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/objects/IRainbowContact"
+lastSynced: "2026-02-20T07:12:28.880Z"
+---
+# Documentation
+
+Object IRainbowContact
+
+LTS release 2.61.0Published on 202-04-06
+
+## object IRainbowContact
+
+### @Suppress (
+
+Interface representing a Rainbow contact, extending the \[IDisplayable\] interface. It includes methods for retrieving various information and capabilities associated with a Rainbow contact.
+
+### val id: String?
+
+Gets the contact's ID.
+
+The ID is non-null only for Rainbow contacts. For phone contacts or Office 365 contacts, this property returns null.
+
+-   **Returns:** The contact's ID as a String or null.
+
+### val jid: String?
+
+Gets the contact's Jabber identifier (JID).
+
+Jabber identifiers (JIDs) uniquely identify individual entities in the Jabber network. **See Also:** [Definition of Jabber Identifiers](https://xmpp.org/extensions/xep-0029.html)
+
+-   **Returns:** The contact's JID as a String or null.
+
+### val uniqueId: String?
+
+Gets the contact's unique ID.
+
+When the instance is a Rainbow contact, this method is equivalent to \[jid\]. Otherwise, for other Contact types, this method returns a unique ID.
+
+-   **Returns:** The contact's unique ID as a String or null.
+
+### val additionalInformation1: String?
+
+Gets the first additional information associated with the contact.
+
+This property is set for non-Rainbow users (office, company directory, personal contacts).
+
+-   **Returns:** First additional information associated with the contact as a String or null.
+
+### val additionalInformation2: String?
+
+Gets the second additional information associated with the contact.
+
+This property is set for non-Rainbow users (office, company directory, personal contacts).
+
+-   **Returns:** Second additional information as a String or null.
+
+### val isValidRainbowUser: Boolean
+
+Indicates whether the contact is a valid Rainbow user.
+
+This property checks if the contact is a valid Rainbow user and not from another directory (office, company directory, personal directory). If the contact is a Rainbow user, it further checks that they have a valid ID, a valid Jabber identifier (JID), and either a first name or a last name.
+
+-   **Returns:** true if the contact is a valid Rainbow user with a valid ID, a valid JID, and either
+    
+    a first name or a last name; false otherwise.
+    
+
+### val companyId: String?
+
+Gets the contact's company identifier.
+
+The company identifier is non-null only for Rainbow contacts. For phone contacts or Office 365 contacts, this property returns null.
+
+-   **Returns:** The contact's company identifier as a String or null.
+
+### val photo: Bitmap?
+
+Gets the contact's photo.
+
+This attribute is only available for Office 365 contacts; for other contacts, this method will always return null. To retrieve a contact's avatar, see \[getAvatarUrl\].
+
+-   **Returns:** The contact's photo as a Bitmap object or null.
+
+### val thumbnailUri: Uri?
+
+Gets the contact's thumbnail Uri, if available.
+
+The thumbnailUri is available only for local phone contacts. For other contacts, this property returns null.
+
+-   **Returns:** The contact's thumbnail Uri or null.
+
+### val firstName: String?
+
+Gets the contact's first name.
+
+-   **Returns:** The contact's first name as a String or null.
+
+### val lastName: String?
+
+Gets the contact's last name.
+
+-   **Returns:** The contact's last name as a String or null.
+
+### val nickName: String?
+
+Gets the contact's nickname.
+
+-   **Returns:** The contact's nickname as a String or null.
+
+### val country: String?
+
+Gets the contact's country.
+
+The country is returned using the ISO 3166-1 alpha3 format. Examples: FRA, DEU, GBR...
+
+-   **Returns:** The contact's country as a String or null.
+
+### val timezone: String?
+
+Gets the contact's timezone.
+
+The timezone is returned using the timezone name format. Examples: Europe/Paris, Europe/Berlin, Europe/London
+
+-   **Returns:** The contact's timezone as a String or null.
+
+### val postalAddresses: Set
+
+Gets the contact's postal addresses, if any.
+
+This attribute is only available for Office 365, company Active Directory, and local phone contacts. For Rainbow contacts, this attribute will return an empty set.
+
+-   **Returns:** The contact's postal addresses as a Set or an empty Set.
+
+### val websites: Set
+
+Gets the contact's websites, if any.
+
+This attribute is only available for Office 365 and local phone contacts. For Rainbow contacts, this attribute will return an empty set.
+
+-   **Returns:** The contact's websites as a Set or an empty Set.
+
+### [JvmName](/docs/sdk/android#) (
+
+Allows checking if the contact is connected to a PBX.
+
+-   **Returns:** `true` if the contact is connected to a PBX, `false` otherwise.
+
+### val language: String?
+
+Gets the contact's language.
+
+The language is returned using the ISO 639-1 code format, with the possibility of regional variation. Examples: fr, de, en, fr-ch, de-ch, en-us
+
+-   **Returns:** The contact's language as a String or null.
+
+### val title: String?
+
+Gets the contact's title.
+
+Honorific titles like Mrs, Mr, Sir, Lord, Lady, Dr...
+
+-   **Returns:** The contact's title as a String or null.
+
+### val jobTitle: String?
+
+Gets the contact's job title.
+
+-   **Returns:** The contact's job title as a String or null.
+
+### val jobDepartment: String?
+
+Gets the contact's job department.
+
+-   **Returns:** The contact's job department as a String or null.
+
+### val tags: List
+
+Gets the contact's tags, if any.
+
+This attribute represents an array of "free" tags associated with the user. A maximum of 5 tags is allowed, and each tag can have a maximum length of 64 characters. Tags are set by users who have administrator rights on the user. The user himself can't modify his tags. Tags are only visible to the user and all contacts belonging to his company. For other contacts, this method will return an empty list.
+
+-   **Returns:** The contact's tags as a List or an empty List.
+
+### val presence: RainbowPresence
+
+Gets the contact's presence.
+
+-   **Returns:** The contact's presence as a \[RainbowPresence\] object.
+
+### val isDND: Boolean
+
+Checks if the contact is in do not disturb (DND) mode.
+
+-   **Returns:** `true` if the contact is in do not disturb (DND) mode.
+
+### val calendarPresence: CalendarPresence
+
+Gets the contact's calendar presence.
+
+Calendar presence is only filled in if the user has shared their calendar information with Rainbow. Otherwise, the calendar presence status will be set to undefined.
+
+-   **Returns:** The contact's calendar presence as a \[CalendarPresence\] object.
+
+### val outOfOffice: OutOfOffice
+
+Gets the contact's out-of-office status.
+
+-   **Returns:** The out-of-office status as an \[OutOfOffice\] object.
+
+### val companyName: String?
+
+Gets the contact's company name.
+
+-   **Returns:** The contact's company name as a String or null.
+
+### val companyNameOfGuest: String?
+
+Gets the guest's company name.
+
+-   **Returns:** The guest's company name as a String or null.
+
+### val lastPresenceReceivedDate: Date?
+
+Gets the date of the last presence received, if any.
+
+-   **Returns:** The contact's last presence date as a Date or null.
+
+### val lastAvatarUpdateDate: String?
+
+Gets the last modification date of the avatar.
+
+This method will return null if no avatar has been uploaded yet.
+
+-   **Returns:** The last avatar update date as a String or null.
+
+### val isInDefaultCompany: Boolean
+
+Checks if the contact is in the default company (Rainbow).
+
+-   **Returns:** `true` if the contact is in the default company, `false` otherwise.
+
+### [JvmName](/docs/sdk/android#) (
+
+Checks if the contact has an avatar.
+
+-   **Returns:** `true` if the contact has an avatar, `false` otherwise.
+
+### val isInitialized: Boolean
+
+Checks if the contact has terminated the onboarding process.
+
+This method is only available for the connected user.
+
+-   **Returns:** `true` if the contact has terminated the onboarding process, `false` otherwise.
+
+### val isTerminated: Boolean
+
+Checks if the contact or their administrator has deleted their account.
+
+-   **Returns:** `true` if the account is deleted, `false` otherwise.
+
+### val isGuest: Boolean
+
+Checks if the contact is a guest user.
+
+This method is only available for the connected user.
+
+-   **Returns:** `true` if the contact is a guest user, `false` otherwise.
+
+### val isSelfRegisterAllowed: Boolean
+
+Checks if the guest can create an account.
+
+This method is only available for the connected user.
+
+-   **Returns:** `true` if the guest can create an account, `false` otherwise.
+
+### val isInvited: Boolean
+
+Checks if the contact has already been invited.
+
+-   **Returns:** `true` if the contact has already been invited, `false` otherwise.
+
+### val isRoster: Boolean
+
+Checks if the contact is in the roster.
+
+-   **Returns:** `true` if the contact is in the roster, `false` otherwise.
+
+### val isRainbowUser: Boolean
+
+Checks if the contact is a Rainbow user.
+
+This method is based on the type: `user`, `bot`, or `TV`.
+
+-   **Returns:** `true` if the contact is a Rainbow user, `false` otherwise.
+
+### val isTv: Boolean
+
+Checks if the contact is a TV.
+
+This method is based on the type `TV`.
+
+-   **Returns:** `true` if the contact is a TV, `false` otherwise.
+
+### val isBot: Boolean
+
+Checks if the contact is a bot.
+
+This method is based on the type `bot`.
+
+-   **Returns:** `true` if the contact is a bot, `false` otherwise.
+
+### val isFromMyCompanyDirectory: Boolean
+
+Checks if the contact is from the company directory.
+
+This method is based on the type `company_directory`.
+
+-   **Returns:** `true` if the contact is from the company directory, `false` otherwise.
+
+### val isFromMyPersonalDirectory: Boolean
+
+Checks if the contact is from the personal directory.
+
+This method is based on the type `personal_directory`.
+
+-   **Returns:** `true` if the contact is from the personal directory, `false` otherwise.
+
+### val isLocalContact: Boolean
+
+Checks if the contact is a local contact from the phone.
+
+-   **Returns:** `true` if the contact is a local contact from the phone, `false` otherwise.
+
+### val isOffice365: Boolean
+
+Checks if the contact is an Office 365 contact.
+
+-   **Returns:** `true` if the contact is an Office 365 contact, `false` otherwise.
+
+### val isOffice365Contact: Boolean
+
+Checks if the contact is an Office 365 contact with all details loaded.
+
+-   **Returns:** `true` if the contact is an Office 365 contact with all details loaded, `false` otherwise.
+
+### val isPhoneBook: Boolean
+
+Checks if the contact is from the PBX phone book.
+
+-   **Returns:** `true` if the contact is from the PBX phone book, `false` otherwise.
+
+### val isSipWise: Boolean
+
+Checks if the contact is a SipWise user.
+
+This method is only available for the connected user.
+
+-   **Returns:** `true` if the contact is a SipWise user, `false` otherwise.
+
+### val phoneNumbers: Set
+
+Gets the contact phone numbers.
+
+You can get the value of a phone number by \[PhoneNumber.getPhoneNumberValue\].
+
+-   **Returns:** The contact phone numbers as a set of \[PhoneNumber\] objects, or an empty Set.
+
+### val emails: Set
+
+Gets the contact emails.
+
+-   **Returns:** The contact emails as a set of \[EmailAddress\] objects, or an empty Set.
+
+### [JvmName](/docs/sdk/android#) (
+
+Indicates whether a user can create or participate in bubbles (chat and conference).
+
+-   **Returns:** `true` if allowed.
+
+### [JvmName](/docs/sdk/android#) (
+
+Indicates whether a user has the right to create or be a member of channels.
+
+-   **Returns:** `true` if allowed.
+
+### [JvmName](/docs/sdk/android#) (
+
+Indicates whether a user has the right to join via video and use video features (start a P2P video call, add video in a P2P call, add video in a conference call).
+
+-   **Returns:** `true` if allowed.
+
+### [JvmName](/docs/sdk/android#) (
+
+Indicates whether a user has the right to join via audio (WebRTC) and use Rainbow audio (WebRTC) (start a P2P audio call, start a conference call).
+
+-   **Returns:** `true` if allowed.
+
+### val useOtherPhoneMode: Boolean
+
+Indicates whether a user has the right to use nomadic mode with other phone numbers. Only applicable to Hybrid users.
+
+-   **Returns:** `true` if allowed.
+
+### val useComputerMode:Boolean
+
+Indicates whether a user has the right to use nomadic mode with VoIP. Only applicable to Hybrid users.
+
+-   **Returns:** `true` if allowed.
+
+### val isInstantMessagesCustomisationAllowed: Boolean
+
+Indicates whether a user has the right to use instant messaging, start a chat (P2P or group chat), or receive chat messages and notifications.
+
+-   **Returns:** `true` if allowed.
+
+### val isUserProfileCustomisationAllowed: Boolean
+
+Indicates whether a user has the right to modify their complete profile, not just limited to title, first name, and last name.
+
+-   **Returns:** `true` if allowed.
+
+### val isFileStorageCustomisationAllowed: Boolean
+
+Indicates whether a user has the right to upload/download/copy or share documents.
+
+-   **Returns:** `true` if allowed.
+
+### val isOverridePresenceCustomisationAllowed: Boolean
+
+Indicates whether a user has the right to manually change their presence settings or only use automatic states.
+
+-   **Returns:** `true` if allowed.
+
+### val isChangeSettingsCustomisationAllowed: Boolean
+
+Indicates whether a user has the right to manually change their settings.
+
+-   **Returns:** `true` if allowed.
+
+### val isGifAllowed: Boolean
+
+Indicates whether a user has the right to send GIFs.
+
+-   **Returns:** `true` if allowed.
+
+### val isChangeTelephonyCustomisationAllowed: Boolean
+
+Indicates whether a user has the right to manually change their telephony settings.
+
+-   **Returns:** `true` if allowed.
+
+### [JvmName](/docs/sdk/android#) (
+
+Indicates whether a user has the right to see speaking time statistics.
+
+-   **Returns:** `true` if allowed.
+
+### val isReadReceiptCustomisationAllowed: Boolean
+
+Indicates whether other users have the right to see read receipts from this user.
+
+-   **Returns:** `true` if allowed.
+
+### val isFileSharingAllowed: Boolean
+
+Indicates whether file sharing is allowed for the user.
+
+-   **Returns:** `true` if file sharing is allowed, `false` otherwise.
+
+### val isUserNameCustomisationAllowed: Boolean
+
+Indicates whether the modification of the title, name, first name, and surname is allowed for the user.
+
+-   **Returns:** `true` if modification is allowed, `false` otherwise.
+
+### val isPublicChannelsAdminActivated: Boolean
+
+Indicates whether the user has the right to create public channels.
+
+-   **Returns:** `true` if allowed, `false` otherwise.
+
+### val isClosedChannelActivated: Boolean
+
+Indicates whether the user has the right to create restricted channels.
+
+-   **Returns:** `true` if allowed, `false` otherwise.
+
+### val isAllCompanyChannelActivated: Boolean
+
+Indicates whether the user has the right to create public channels for all companies.
+
+-   **Returns:** `true` if allowed, `false` otherwise.
+
+### val isPrivateChannelsAdminActivated: Boolean
+
+Indicates whether the user has the right to create private channels.
+
+-   **Returns:** `true` if allowed, `false` otherwise.
+
+### val isConferenceRecordingAllowed: Boolean
+
+Indicates whether the user has the right to record a conference.
+
+-   **Returns:** `true` if allowed, `false` otherwise.
+
+### val useWebRTCOnlyIfMobileLoggedCustomisationAllowed: Boolean
+
+Indicates whether the user can only be logged through WebRTC if he has a logged-in mobile.
+
+-   **Returns:** `true` if allowed, `false` otherwise.
+
+### val isSetInvisiblePresenceCustomisationAllowed: Boolean
+
+Indicates whether the user has the right to set his presence to `invisible`.
+
+-   **Returns:** `true` if allowed, `false` otherwise.
+
+### val isUseTestConfigCustomisationAllowed: Boolean
+
+Indicates whether the user has the right to use the configuration test.
+
+-   **Returns:** `true` if allowed, `false` otherwise.
+
+### val isUseSendReportCustomisationAllowed: Boolean
+
+Indicates whether the user has the right to use the send report.
+
+-   **Returns:** `true` if allowed, `false` otherwise.
+
+### val isUseNotesCustomisationAllowed: Boolean
+
+Indicates whether the user has the right to use the notes.
+
+-   **Returns:** `true` if allowed, `false` otherwise.
+
+### val isCallToPbxAuthorized: Boolean
+
+Indicates whether a user can call a participant within a conference. Applicable to hybrid users only.
+
+-   **Returns:** `true` if allowed, `false` otherwise.
+
+### val isAlertNotificationEnabled: Boolean
+
+Indicates whether the contact can receive alerts.
+
+-   **Returns:** `true` if the contact can receive alerts, `false` otherwise.
+
+### val capabilityOxeOverflow: Boolean
+
+Indicates whether a user can set a fallback overflow when not connected to Rainbow. Applicable to hybrid users only.
+
+-   **Returns:** `true` if allowed, `false` otherwise.
+
+### val capabilityOxeBusy: Boolean
+
+Indicates whether a user can set a flag indicating if the associated PBX user is considered as busy when busy in Rainbow. Applicable to hybrid users only.
+
+-   **Returns:** `true` if allowed, `false` otherwise.
+
+### val displaySecretIdentityService: Boolean
+
+Define if a user can set his secret identity or not. For hybrid users only.
+
+-   **Returns:** boolean true if allowed
+
+### val useExternalStorage: Boolean
+
+Indicates whether a user is allowed to use external storage.
+
+-   **Returns:** `true` if allowed, `false` otherwise.
+
+### val useRainbowStorage: Boolean
+
+Indicates whether a user is allowed to use Rainbow storage.
+
+-   **Returns:** `true` if allowed, `false` otherwise.
+
+### val canAccessWhatsNew: Boolean
+
+Indicates whether a user is allowed to access Whats new.
+
+-   **Returns:** `true` if allowed, `false` otherwise.
+
+### val canAccessFaqCustomisation: Boolean
+
+Indicates whether a user is allowed to access FAQ.
+
+-   **Returns:** `true` if allowed, `false` otherwise.
+
+### val canAccessHelpCenterCustomisation: Boolean
+
+Indicates whether a user is allowed to access the Help Center.
+
+-   **Returns:** `true` if allowed, `false` otherwise.
+
+### val canCallParticipantPbxNumberCustomisation: Boolean
+
+Indicates whether a user is allowed to call a participant by number in conferences. Applicable to hybrid users only.
+
+-   **Returns:** `true` if allowed, `false` otherwise.
+
+### fun getAvatarUrl (128)
+
+Gets the avatar URL of a contact.
+
+Param
+
+Type
+
+Description
+
+resolution
+
+Int
+
+(optional) - The desired resolution. Defaults to 128 if not set.
+
+-   **Returns:** The contact's avatar URL, or null if not available.
+
+### fun getFirstOrLastName (
+
+Returns the first or last name based on display name format preferences.
+
+If the display name format is set to last name and the last name is empty but the first name is available, it will use the first name.
+
+Param
+
+Type
+
+Description
+
+unknownName
+
+Optional
+
+default name to be used if the first or last name is not available. Defaults to an empty string.
+
+-   **Returns:** The first or last name based on display name format preferences.
+
+### fun getInitials (
+
+Gets the contact initials.
+
+Param
+
+Type
+
+Description
+
+unknownName
+
+Optional
+
+default name to be used if the first or last name is not available. Defaults to an empty string.
+
+-   **Returns:** The initials of the contact, typically 1 or 2 characters in length.
+
+### fun getDisplayName4Log (
+
+Gets the contact display name for logging purposes.
+
+The display name may appear as anonymous when private log is enabled.
+
+Param
+
+Type
+
+Description
+
+unknownNameString
+
+Optional
+
+default name to be used if the contact's display name is not available. Defaults to an empty string.
+
+-   **Returns:** The contact display name.
+
+### fun getPhoneNumber (
+
+Gets the phone number that corresponds to the given number.
+
+You can then retrieve the phone number value by calling the \[PhoneNumber.getPhoneNumberValue\] method.
+
+Param
+
+Type
+
+Description
+
+phoneNumberValue
+
+(Optional)
+
+String representing the phone number to search.
+
+-   **Returns:** The first contact phone number as a \[PhoneNumber\] object, or null if there is no matching PhoneNumber.
+
+### fun getPhoneNumber (PhoneNumberType)
+
+Gets the phone number that corresponds to the given type.
+
+You can then retrieve the phone number value by calling the \[PhoneNumber.getPhoneNumberValue\] method.
+
+Param
+
+Type
+
+Description
+
+type
+
+\[PhoneNumber.PhoneNumberType\]
+
+object representing the type of the phone number.
+
+-   **Returns:** The first contact phone number as a \[PhoneNumber\] object, or null if there is no matching type.
+
+### fun getFirstOfficePhoneNumber (
+
+Gets the first office phone number associated with the contact.
+
+You can retrieve the phone number value by calling the \[PhoneNumber.getPhoneNumberValue\] method.
+
+-   **Returns:** The first office phone number as a \[PhoneNumber\] object, or null if no office number is associated with this contact.
+
+### fun getFirstOfficePhoneNumberValue (
+
+Gets the value of the first office phone number associated with the contact.
+
+This is a helper method.
+
+-   **See also:** \[getFirstOfficePhoneNumber\]
+    
+-   **Returns:** The phone number value or null.
+    
+
+### fun getFirstWorkPhoneNumber (
+
+Gets the first work phone number associated with the contact.
+
+You can retrieve the phone number value by calling the \[PhoneNumber.getPhoneNumberValue\] method.
+
+-   **Returns:** The first work phone number of the contact as a \[PhoneNumber\] object or null if no work number is associated with this contact.
+
+### fun getFirstWorkPhoneNumberValue (
+
+Gets the value of the first work phone number associated with the contact.
+
+This is a helper method.
+
+-   **See also:** \[getFirstWorkPhoneNumber\]
+    
+-   **Returns:** The phone number value or null.
+    
+
+### fun getFirstMobilePhoneNumber (
+
+Gets the first mobile phone number associated with the contact.
+
+You can retrieve the phone number value by calling the \[PhoneNumber.getPhoneNumberValue\] method.
+
+-   **Returns:** The first mobile phone number of the contact as a \[PhoneNumber\] object or null if no mobile number is associated with this contact.
+
+### fun getFirstMobilePhoneNumberValue (
+
+Gets the value of the first mobile phone number associated with the contact.
+
+This is a helper method.
+
+-   **See also:** \[getFirstMobilePhoneNumber\]
+    
+-   **Returns:** The phone number value or null.
+    
+
+### fun getFirstPersonalPhoneNumber (
+
+Gets the first personal phone number associated with the contact.
+
+You can retrieve the phone number value by calling the \[PhoneNumber.getPhoneNumberValue\] method.
+
+-   **Returns:** The first personal phone number of the contact as a \[PhoneNumber\] object or null if no personal number is associated with this contact.
+
+### fun getFirstPersonalPhoneNumberValue (
+
+Gets the value of the first personal phone number associated with the contact.
+
+This is a helper method.
+
+-   **See also:** \[getFirstPersonalPhoneNumber\]
+    
+-   **Returns:** The phone number value or null.
+    
+
+### fun getFirstPersonalMobilePhoneNumber (
+
+Gets the first personal mobile phone number associated with the contact.
+
+You can retrieve the phone number value by calling the \[PhoneNumber.getPhoneNumberValue\] method.
+
+-   **Returns:** The first personal mobile phone number of the contact as a \[PhoneNumber\] object or null if no personal mobile number is associated with this contact.
+
+### fun getFirstPersonalMobilePhoneNumberValue (
+
+Gets the value of the first personal mobile phone number associated with the contact.
+
+This is a helper method.
+
+-   **See also:** \[getFirstPersonalMobilePhoneNumber\]
+    
+-   **Returns:** The phone number value or null.
+    
+
+### fun getFirstAvailableNumber (
+
+Gets the first available phone number associated with the contact.
+
+You can retrieve the phone number value by calling the \[PhoneNumber.getPhoneNumberValue\] method.
+
+-   **Returns:** The first phone number of the contact as a \[PhoneNumber\] object or null if no number is associated with this contact.
+
+### fun getFirstAvailableNumberValue (
+
+Gets the value of the first available phone number associated with the contact.
+
+This is a helper method.
+
+-   **See also:** \[getFirstAvailableNumber\]
+    
+-   **Returns:** The phone number value or null.
+    
+
+### fun getVoicemailNumber (
+
+Gets the voicemail number associated with the contact.
+
+This method is only available for the connected user.
+
+-   **Returns:** The contact's voicemail number as a String or null.
+
+### val redirectNumber: String?
+
+Gets the contact's redirect number if any. Only applicable to hybrid users.
+
+This method is only available for the connected user.
+
+-   **Returns:** The contact's redirect number as a String or null.
+
+### val isRedirectNumberEditable: Boolean
+
+Indicates whether the contact's redirect number is editable or enforced by the administrator. Only applicable to hybrid users.
+
+-   **Returns:** true if the contact's redirect number is editable, false otherwise.
+
+### fun getMainEmailAddress (
+
+Gets the main email address associated with the contact.
+
+-   **Returns:** The contact's main email address as a String or null if no main email address is associated with this contact.
+
+### fun getFirstEmailAddress (
+
+Gets the first email address associated with the contact.
+
+-   **Returns:** The contact's first email address as a String or null if no email address is associated with this contact.
+
+### fun getEmailWithType (EmailType)
+
+Gets the first email address associated with the contact that corresponds to the given type.
+
+Param
+
+Type
+
+Description
+
+type
+
+\[EmailAddress.EmailType\]
+
+object.
+
+-   **Returns:** The contact's first email address as a String or null if no email address matches the given type.
+
+### fun hasEmailAddress (String)
+
+Indicates whether there is an email address that corresponds to the given String.
+
+Param
+
+Type
+
+Description
+
+emailAddress
+
+A
+
+String representing the email to check.
+
+-   **Returns:** `true` if there is an email address matching the given String, `false` otherwise.
+
+### fun hasPhoneNumber (
+
+Indicates whether there is a phone number that corresponds to the given String.
+
+Param
+
+Type
+
+Description
+
+phoneNumber
+
+A
+
+String representing the phone number to check.
+
+-   **Returns:** `true` if there is a phone number matching the given String, `false` otherwise.
+
+### fun isInTheSameCompany (IRainbowContact)
+
+Indicates whether the contact is in the same company as the current connected user.
+
+Param
+
+Type
+
+Description
+
+contactToCheck
+
+The
+
+contact to check.
+
+-   **Returns:** `true` if the contact is in the same company, `false` otherwise.
+
+### fun canBeAddedToRoster (
+
+Indicates whether the contact can be added to the roster of the connected user.
+
+-   **Returns:** `true` if the contact can be added, `false` otherwise.
+
+### fun hasMobilePresence (
+
+Indicates whether the contact is currently connected on a mobile device.
+
+-   **Returns:** `true` if the contact is connected on a mobile device, `false` otherwise.
+
+### fun isRainbowDefaultStorage (
+
+Indicates whether a user can set their secret identity. Applicable to hybrid users only.
+
+-   **Returns:** `true` if allowed, `false` otherwise.
+
+### fun registerChangeListener (IContactListener)
+
+Registers an implementation of \[IContactListener\] to receive callbacks when the contact changes.
+
+Param
+
+Type
+
+Description
+
+contactListener
+
+The
+
+\[IContactListener\] implementation to be registered for contact change callbacks.
+
+### fun unregisterChangeListener (IContactListener)
+
+Unregisters a previously registered \[IContactListener\], stopping callbacks for contact changes.
+
+Param
+
+Type
+
+Description
+
+contactListener
+
+The
+
+\[IContactListener\] implementation to be unregistered from contact change callbacks.
+
+### val silentRinging: Boolean
+
+Let you know is the user has a deskPhone that supports silent ringing. Only applicable to hybrid users.
+
+This method is only available for the connected user.
+
+-   **Returns:** true if the deskPhone supports silent ringing, false otherwise.
+
+### interface IContactListener
+
+Interface defining callbacks for handling events related to contacts within the SDK.
+
+Implement this interface to receive notifications about contact updates, presence changes, and company changes.
+
+### fun contactUpdated (IRainbowContact)
+
+Invoked when a contact has been updated.
+
+Param
+
+Type
+
+Description
+
+updatedContact
+
+The
+
+\[IRainbowContact\] instance representing the updated contact.
+
+### fun onPresenceChanged (IRainbowContact,
+
+Invoked when the presence of a contact changes.
+
+Param
+
+Type
+
+Description
+
+contact
+
+The
+
+\[IRainbowContact\] instance for which the presence has changed.
+
+presence
+
+The
+
+updated \[RainbowPresence\] of the contact.
+
+### fun onCompanyChanged (
+
+Called when the company associated with a contact changes.
+
+Param
+
+Type
+
+Description
+
+companyId
+
+The
+
+ID of the new company associated with the contact.
+
+### On this page
+
+-   [object IRainbowContact](/docs/sdk/android#name-object-irainbowcontact-0)
+-   [@Suppress (](/docs/sdk/android#name-suppress--3)
+-   [val id: String?](/docs/sdk/android#name-val-id:-string-9)
+-   [val jid: String?](/docs/sdk/android#name-val-jid:-string-25)
+-   [val uniqueId: String?](/docs/sdk/android#name-val-uniqueid:-string-41)
+-   [val additionalInformation1: String?](/docs/sdk/android#name-val-additionalinformation1:-string-57)
+-   [val additionalInformation2: String?](/docs/sdk/android#name-val-additionalinformation2:-string-73)
+-   [val isValidRainbowUser: Boolean](/docs/sdk/android#name-val-isvalidrainbowuser:-boolean-89)
+-   [val companyId: String?](/docs/sdk/android#name-val-companyid:-string-108)
+-   [val photo: Bitmap?](/docs/sdk/android#name-val-photo:-bitmap-124)
+-   [val thumbnailUri: Uri?](/docs/sdk/android#name-val-thumbnailuri:-uri-140)
+-   [val firstName: String?](/docs/sdk/android#name-val-firstname:-string-156)
+-   [val lastName: String?](/docs/sdk/android#name-val-lastname:-string-169)
+-   [val nickName: String?](/docs/sdk/android#name-val-nickname:-string-182)
+-   [val country: String?](/docs/sdk/android#name-val-country:-string-195)
+-   [val timezone: String?](/docs/sdk/android#name-val-timezone:-string-211)
+-   [val postalAddresses: Set](/docs/sdk/android#name-val-postaladdresses:-set-227)
+-   [val websites: Set](/docs/sdk/android#name-val-websites:-set-243)
+-   [JvmName (](/docs/sdk/android#name-jvmname--259)
+-   [val language: String?](/docs/sdk/android#name-val-language:-string-272)
+-   [val title: String?](/docs/sdk/android#name-val-title:-string-288)
+-   [val jobTitle: String?](/docs/sdk/android#name-val-jobtitle:-string-304)
+-   [val jobDepartment: String?](/docs/sdk/android#name-val-jobdepartment:-string-317)
+-   [val tags: List](/docs/sdk/android#name-val-tags:-list-330)
+-   [val presence: RainbowPresence](/docs/sdk/android#name-val-presence:-rainbowpresence-346)
+-   [val isDND: Boolean](/docs/sdk/android#name-val-isdnd:-boolean-359)
+-   [val calendarPresence: CalendarPresence](/docs/sdk/android#name-val-calendarpresence:-calendarpresence-372)
+-   [val outOfOffice: OutOfOffice](/docs/sdk/android#name-val-outofoffice:-outofoffice-388)
+-   [val companyName: String?](/docs/sdk/android#name-val-companyname:-string-401)
+-   [val companyNameOfGuest: String?](/docs/sdk/android#name-val-companynameofguest:-string-414)
+-   [val lastPresenceReceivedDate: Date?](/docs/sdk/android#name-val-lastpresencereceiveddate:-date-427)
+-   [val lastAvatarUpdateDate: String?](/docs/sdk/android#name-val-lastavatarupdatedate:-string-440)
+-   [val isInDefaultCompany: Boolean](/docs/sdk/android#name-val-isindefaultcompany:-boolean-456)
+-   [JvmName (](/docs/sdk/android#name-jvmname--469)
+-   [val isInitialized: Boolean](/docs/sdk/android#name-val-isinitialized:-boolean-482)
+-   [val isTerminated: Boolean](/docs/sdk/android#name-val-isterminated:-boolean-498)
+-   [val isGuest: Boolean](/docs/sdk/android#name-val-isguest:-boolean-511)
+-   [val isSelfRegisterAllowed: Boolean](/docs/sdk/android#name-val-isselfregisterallowed:-boolean-527)
+-   [val isInvited: Boolean](/docs/sdk/android#name-val-isinvited:-boolean-543)
+-   [val isRoster: Boolean](/docs/sdk/android#name-val-isroster:-boolean-556)
+-   [val isRainbowUser: Boolean](/docs/sdk/android#name-val-israinbowuser:-boolean-569)
+-   [val isTv: Boolean](/docs/sdk/android#name-val-istv:-boolean-585)
+-   [val isBot: Boolean](/docs/sdk/android#name-val-isbot:-boolean-601)
+-   [val isFromMyCompanyDirectory: Boolean](/docs/sdk/android#name-val-isfrommycompanydirectory:-boolean-617)
+-   [val isFromMyPersonalDirectory: Boolean](/docs/sdk/android#name-val-isfrommypersonaldirectory:-boolean-633)
+-   [val isLocalContact: Boolean](/docs/sdk/android#name-val-islocalcontact:-boolean-649)
+-   [val isOffice365: Boolean](/docs/sdk/android#name-val-isoffice365:-boolean-662)
+-   [val isOffice365Contact: Boolean](/docs/sdk/android#name-val-isoffice365contact:-boolean-675)
+-   [val isPhoneBook: Boolean](/docs/sdk/android#name-val-isphonebook:-boolean-688)
+-   [val isSipWise: Boolean](/docs/sdk/android#name-val-issipwise:-boolean-701)
+-   [val phoneNumbers: Set](/docs/sdk/android#name-val-phonenumbers:-set-717)
+-   [val emails: Set](/docs/sdk/android#name-val-emails:-set-733)
+-   [JvmName (](/docs/sdk/android#name-jvmname--746)
+-   [JvmName (](/docs/sdk/android#name-jvmname--759)
+-   [JvmName (](/docs/sdk/android#name-jvmname--772)
+-   [JvmName (](/docs/sdk/android#name-jvmname--785)
+-   [val useOtherPhoneMode: Boolean](/docs/sdk/android#name-val-useotherphonemode:-boolean-798)
+-   [val useComputerMode:Boolean](/docs/sdk/android#name-val-usecomputermode:boolean-811)
+-   [val isInstantMessagesCustomisationAllowed: Boolean](/docs/sdk/android#name-val-isinstantmessagescustomisationallowed:-boolean-824)
+-   [val isUserProfileCustomisationAllowed: Boolean](/docs/sdk/android#name-val-isuserprofilecustomisationallowed:-boolean-837)
+-   [val isFileStorageCustomisationAllowed: Boolean](/docs/sdk/android#name-val-isfilestoragecustomisationallowed:-boolean-850)
+-   [val isOverridePresenceCustomisationAllowed: Boolean](/docs/sdk/android#name-val-isoverridepresencecustomisationallowed:-boolean-863)
+-   [val isChangeSettingsCustomisationAllowed: Boolean](/docs/sdk/android#name-val-ischangesettingscustomisationallowed:-boolean-876)
+-   [val isGifAllowed: Boolean](/docs/sdk/android#name-val-isgifallowed:-boolean-889)
+-   [val isChangeTelephonyCustomisationAllowed: Boolean](/docs/sdk/android#name-val-ischangetelephonycustomisationallowed:-boolean-902)
+-   [JvmName (](/docs/sdk/android#name-jvmname--915)
+-   [val isReadReceiptCustomisationAllowed: Boolean](/docs/sdk/android#name-val-isreadreceiptcustomisationallowed:-boolean-928)
+-   [val isFileSharingAllowed: Boolean](/docs/sdk/android#name-val-isfilesharingallowed:-boolean-941)
+-   [val isUserNameCustomisationAllowed: Boolean](/docs/sdk/android#name-val-isusernamecustomisationallowed:-boolean-954)
+-   [val isPublicChannelsAdminActivated: Boolean](/docs/sdk/android#name-val-ispublicchannelsadminactivated:-boolean-967)
+-   [val isClosedChannelActivated: Boolean](/docs/sdk/android#name-val-isclosedchannelactivated:-boolean-980)
+-   [val isAllCompanyChannelActivated: Boolean](/docs/sdk/android#name-val-isallcompanychannelactivated:-boolean-993)
+-   [val isPrivateChannelsAdminActivated: Boolean](/docs/sdk/android#name-val-isprivatechannelsadminactivated:-boolean-1006)
+-   [val isConferenceRecordingAllowed: Boolean](/docs/sdk/android#name-val-isconferencerecordingallowed:-boolean-1019)
+-   [val useWebRTCOnlyIfMobileLoggedCustomisationAllowed: Boolean](/docs/sdk/android#name-val-usewebrtconlyifmobileloggedcustomisationallowed:-boolean-1032)
+-   [val isSetInvisiblePresenceCustomisationAllowed: Boolean](/docs/sdk/android#name-val-issetinvisiblepresencecustomisationallowed:-boolean-1045)
+-   [val isUseTestConfigCustomisationAllowed: Boolean](/docs/sdk/android#name-val-isusetestconfigcustomisationallowed:-boolean-1058)
+-   [val isUseSendReportCustomisationAllowed: Boolean](/docs/sdk/android#name-val-isusesendreportcustomisationallowed:-boolean-1071)
+-   [val isUseNotesCustomisationAllowed: Boolean](/docs/sdk/android#name-val-isusenotescustomisationallowed:-boolean-1084)
+-   [val isCallToPbxAuthorized: Boolean](/docs/sdk/android#name-val-iscalltopbxauthorized:-boolean-1097)
+-   [val isAlertNotificationEnabled: Boolean](/docs/sdk/android#name-val-isalertnotificationenabled:-boolean-1110)
+-   [val capabilityOxeOverflow: Boolean](/docs/sdk/android#name-val-capabilityoxeoverflow:-boolean-1123)
+-   [val capabilityOxeBusy: Boolean](/docs/sdk/android#name-val-capabilityoxebusy:-boolean-1136)
+-   [val displaySecretIdentityService: Boolean](/docs/sdk/android#name-val-displaysecretidentityservice:-boolean-1149)
+-   [val useExternalStorage: Boolean](/docs/sdk/android#name-val-useexternalstorage:-boolean-1162)
+-   [val useRainbowStorage: Boolean](/docs/sdk/android#name-val-userainbowstorage:-boolean-1175)
+-   [val canAccessWhatsNew: Boolean](/docs/sdk/android#name-val-canaccesswhatsnew:-boolean-1188)
+-   [val canAccessFaqCustomisation: Boolean](/docs/sdk/android#name-val-canaccessfaqcustomisation:-boolean-1201)
+-   [val canAccessHelpCenterCustomisation: Boolean](/docs/sdk/android#name-val-canaccesshelpcentercustomisation:-boolean-1214)
+-   [val canCallParticipantPbxNumberCustomisation: Boolean](/docs/sdk/android#name-val-cancallparticipantpbxnumbercustomisation:-boolean-1227)
+-   [fun getAvatarUrl (128)](/docs/sdk/android#name-fun-getavatarurl-128-1240)
+-   [fun getFirstOrLastName (](/docs/sdk/android#name-fun-getfirstorlastname--1281)
+-   [fun getInitials (](/docs/sdk/android#name-fun-getinitials--1325)
+-   [fun getDisplayName4Log (](/docs/sdk/android#name-fun-getdisplayname4log--1366)
+-   [fun getPhoneNumber (](/docs/sdk/android#name-fun-getphonenumber--1410)
+-   [fun getPhoneNumber (PhoneNumberType)](/docs/sdk/android#name-fun-getphonenumber-phonenumbertype-1454)
+-   [fun getFirstOfficePhoneNumber (](/docs/sdk/android#name-fun-getfirstofficephonenumber--1498)
+-   [fun getFirstOfficePhoneNumberValue (](/docs/sdk/android#name-fun-getfirstofficephonenumbervalue--1514)
+-   [fun getFirstWorkPhoneNumber (](/docs/sdk/android#name-fun-getfirstworkphonenumber--1538)
+-   [fun getFirstWorkPhoneNumberValue (](/docs/sdk/android#name-fun-getfirstworkphonenumbervalue--1554)
+-   [fun getFirstMobilePhoneNumber (](/docs/sdk/android#name-fun-getfirstmobilephonenumber--1578)
+-   [fun getFirstMobilePhoneNumberValue (](/docs/sdk/android#name-fun-getfirstmobilephonenumbervalue--1594)
+-   [fun getFirstPersonalPhoneNumber (](/docs/sdk/android#name-fun-getfirstpersonalphonenumber--1618)
+-   [fun getFirstPersonalPhoneNumberValue (](/docs/sdk/android#name-fun-getfirstpersonalphonenumbervalue--1634)
+-   [fun getFirstPersonalMobilePhoneNumber (](/docs/sdk/android#name-fun-getfirstpersonalmobilephonenumber--1658)
+-   [fun getFirstPersonalMobilePhoneNumberValue (](/docs/sdk/android#name-fun-getfirstpersonalmobilephonenumbervalue--1674)
+-   [fun getFirstAvailableNumber (](/docs/sdk/android#name-fun-getfirstavailablenumber--1698)
+-   [fun getFirstAvailableNumberValue (](/docs/sdk/android#name-fun-getfirstavailablenumbervalue--1714)
+-   [fun getVoicemailNumber (](/docs/sdk/android#name-fun-getvoicemailnumber--1738)
+-   [val redirectNumber: String?](/docs/sdk/android#name-val-redirectnumber:-string-1754)
+-   [val isRedirectNumberEditable: Boolean](/docs/sdk/android#name-val-isredirectnumbereditable:-boolean-1770)
+-   [fun getMainEmailAddress (](/docs/sdk/android#name-fun-getmainemailaddress--1783)
+-   [fun getFirstEmailAddress (](/docs/sdk/android#name-fun-getfirstemailaddress--1796)
+-   [fun getEmailWithType (EmailType)](/docs/sdk/android#name-fun-getemailwithtype-emailtype-1809)
+-   [fun hasEmailAddress (String)](/docs/sdk/android#name-fun-hasemailaddress-string-1850)
+-   [fun hasPhoneNumber (](/docs/sdk/android#name-fun-hasphonenumber--1891)
+-   [fun isInTheSameCompany (IRainbowContact)](/docs/sdk/android#name-fun-isinthesamecompany-irainbowcontact-1932)
+-   [fun canBeAddedToRoster (](/docs/sdk/android#name-fun-canbeaddedtoroster--1973)
+-   [fun hasMobilePresence (](/docs/sdk/android#name-fun-hasmobilepresence--1986)
+-   [fun isRainbowDefaultStorage (](/docs/sdk/android#name-fun-israinbowdefaultstorage--1999)
+-   [fun registerChangeListener (IContactListener)](/docs/sdk/android#name-fun-registerchangelistener-icontactlistener-2012)
+-   [fun unregisterChangeListener (IContactListener)](/docs/sdk/android#name-fun-unregisterchangelistener-icontactlistener-2046)
+-   [val silentRinging: Boolean](/docs/sdk/android#name-val-silentringing:-boolean-2080)
+-   [interface IContactListener](/docs/sdk/android#name-interface-icontactlistener-2096)
+-   [fun contactUpdated (IRainbowContact)](/docs/sdk/android#name-fun-contactupdated-irainbowcontact-2105)
+-   [fun onPresenceChanged (IRainbowContact,](/docs/sdk/android#name-fun-onpresencechanged-irainbowcontact-2139)
+-   [fun onCompanyChanged (](/docs/sdk/android#name-fun-oncompanychanged--2184)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

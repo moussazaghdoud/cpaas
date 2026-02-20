@@ -1,0 +1,347 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/ios/lts/guides/Managing_personal_profile"
+lastSynced: "2026-02-20T07:12:29.395Z"
+---
+# Documentation
+
+Managing personal profile
+
+LTS release 2.12.0Published on 2024-07-23
+
+## Managing personal profile
+
+---
+
+In this tutorial, you will learn how to retrieve or update your Rainbow personal profile information.
+
+By reading this tutorial, you will be able
+
+-   To retrieve your Rainbow personal information such as your name, firstname, title, company name, avatar, etc...
+    
+-   To edit your firstname, lastname or any others information and update your avatar
+    
+-   To change your presence status
+    
+
+So, take time to read this tutorial to understand how to manage these information.
+
+### Accessing your personal profile
+
+---
+
+Using the SDK for iOS, the application have access to the Rainbow personal profile of the connected user by using the property `contact` of the interface `myUser`.
+
+```swift
+let personalProfile:Contact? = ServicesManager.sharedInstance()?.myUser.contact
+```
+
+Be carefull when accessing this information, the `contact` property is an `Optional` and is only set either when the user is connected to Rainbow or if the SDK has stored a previous session used. In other cases, `contact` will be equal to `nil`.
+
+From the property `contact`, you have access to all information of the personal profile of the connected user including the following properties:
+
+-   `fullname`: The is the concatenation of the connected user `firstName` and `lastName`
+    
+-   `companyName`: This represents the Rainbow company of the user.
+    
+-   `photoData`: this property contains the avatar of the user. It could be `nil` if the connected user has never set an avatar.
+    
+-   `presence` : This information represents the availability of the connected user which means the way how other users will see him (ie: online, busy, away...)
+    
+-   `rainbowId`: The Rainbow unique identifier of the connected user
+    
+-   `jid`: Secondary Rainbow identifier used for real time services such as instant messages, voice and video call, etc...
+    
+-   `...`: There is a lot of other information contained into the user profile: `emailAddresses`, `addresses`, `phoneNumbers`, etc...
+    
+
+For example, the following code displays the user profile when connected to Rainbow
+
+```swift
+func updateConnectedUser() {
+
+    // Try to access the user information
+    guard let userContact = ServicesManager.sharedInstance()?.myUser.contact,
+          let name = userContact.fullName,
+          let companyName = userContact.companyName
+    else {
+          resetUserInformation()
+          return
+    }
+
+    let avatar = userContact.photoData ?? Data()
+
+    updateUserInformation(name: name, nameOfCompany: companyName, avatar: avatar)
+}
+    
+func updateUserInformation(name: String = "", nameOfCompany: String = "", avatar: Data = Data()) {
+
+    // Uddate some labels
+    userFullname.text = name
+    companyName.text = nameOfCompany
+    // Update an ImageView containing the user avatar
+    userPhoto.image = UIImage(data: avatar)
+}
+
+func resetUserInformation() {
+    // Display empty fields when no user
+    updateUserInformation()
+}
+
+@objc func didLogin(notification: NSNotification) {
+
+    DispatchQueue.main.async {
+        self.updateConnectedUser()
+    }
+}
+```
+
+### Displaying the presence status
+
+---
+
+The presence status can be accessed from the property `ServicesManager.sharedInstance()?.myUser.contact.presence`.
+
+There are several status of presence in Rainbow. These presence status represent several things that help and give to other users two main informations, which are
+
+-   Is the user available or not ?
+    
+-   How to reach him ?
+    
+
+A complete list of these status can be found in that [guide](https://support.openrainbow.com/hc/en-us/articles/115000046710-What-Does-My-Contacts-Status-Mean-). This guide also explains how users can interact with you depending on this status.
+
+If you want to display this status as a `String`, you can use the function `Presence.string()` such as in the following code
+
+```swift
+var presence = Presence.string(forContactPresence: userContact.presence)
+```
+
+You will received value such as `Online`, `Away`, `Do not disturb` and `Invisible`.
+
+Additionnaly to that, you can know if the user is connected using a mobile application only using the property `isConnectedWithMobile`
+
+```swift
+if userContact.isConnectedWithMobile {
+    // Do something with that information
+}
+```
+
+If the user is connected with a desktop application that embeds a SDK too, he will be seen as `Online`, the property `isConnectedWithMobile` is set to `false`.
+
+*Note*: You have only access to the presence of users of your network.
+
+### Handling personal profile change
+
+---
+
+Each time you change something in your personal profile, you can receive a notification that confirms this change in order to update your application. so for example, when you change your avatar photo, your will receive this event. It will be the same when your manually change your presence or when your presence change due to an incoming call, etc...
+
+To listen to that event, you have to use the `NotificationsCenter` and to observe the event `kContactsManagerServiceDidUpdateMyContact`.
+
+Here is the code to add to the previous example in order to call the function `updateConnectedUser()` each time an update is done in your profile in order to refresh your application UI.
+
+```swift
+@objc func didUpdateConnectedUserInformation(notification: NSNotification) {
+
+    DispatchQueue.main.async {
+        self.updateConnectedUser()
+    }
+}
+
+override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    // Add the following listener to receive change on the connected user profile information
+    NotificationCenter.default.addObserver(self, selector: #selector(didUpdateConnectedUserInformation(notification:)), name: NSNotification.Name(kContactsManagerServiceDidUpdateMyContact), object: nil)
+}
+
+override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    // Remove this listener when the view disapears
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name(kContactsManagerServiceDidUpdateMyContact), object: nil)
+}
+```
+
+Using that way, each time something changes, your application is notified and so could be updated. You can avoid refreshing the UI to much times by enumerating the properties that have changed in order to know if you need to refresh or not your application.
+
+This can be done by using the `NSNotification` object received. Depending on the change, we don't explicitely list all the properties that changed. It is usefull when the `presence` changed or the `photoData` which corresponds to the avatar changed. In other cases, the SDK don't list them and so, you need to compare and check which fields have really changed. At least you will receive an attribute that indicates that someting has changed which is the `lastUpdateDate`.
+
+Here is a part of code that yo can use to figure out what has really changed:
+
+```swift
+@objc func didUpdateConnectedUserInformation(notification: NSNotification) {
+
+    // Prevent from nil object
+    guard let data = notification.object as? NSDictionary else {
+        return
+    }
+
+    // Prevent from nil contact
+    guard let user = data.object(forKey: "contact") as? Contact else {
+        return
+    }
+
+    // Prevent from no attributes
+    guard let attrs = data.object(forKey: "attributes") as? NSArray else {
+        return
+    }
+
+    let enumerator = attrs.objectEnumerator()
+    var isFinished = false
+    while (!isFinished) {
+
+        let attributeChanged = enumerator.nextObject() as? String ?? ""
+        if(attributeChanged.count == 0) {
+            isFinished = true
+        } else {
+            switch attributeChanged {
+            case "isConnectedWithMobile":
+                // Do something when the presence changed
+            case "presence":
+                // Do something when the presence changed
+            case "lastActivityDate":
+                // Do something when receiving the date when the presence changed
+            case "lastUpdateDate":
+                // Do something when receiving the date when something changed
+            case "photoData":
+                // Do something when the avatar changed
+            default:
+                // Do something else is needed
+            }
+        }
+    }
+}
+```
+
+Depending on what you want to do, you will have to choose the right strategy for updating your UI and so you will need to modify the previous function.
+
+### Changing the presence status
+
+---
+
+Changing the presence can be done by calling the method `changeMyPresence` of the `contactManagerService` such as in the following code
+
+```swift
+@IBAction func onPresenceManuallyChangedToAway(_ sender: UIButton) {
+    if ServicesManager.sharedInstance().loginManager.isConnected {
+        ServicesManager.sharedInstance().contactsManagerService.changeMyPresence(Presence.presenceAway())
+    }
+}
+```
+
+This code will update the presence of the connected user to **away** which means that the user is not using the application right now. 4 levels of presence can be selected from methods of the `Presence` interface: `Online`, `Do not disturb`, `Away`, `Invisible`.
+
+When calling the method `changeMyPresence()`, once done, the event `kContactsManagerServiceDidUpdateMyContact` is fired and can be handled by using the `NotificationsCenter` like shown previously. This is the confirmation that the presence has been changed in Rainbow.
+
+### Changing profile information
+
+---
+
+Regarding your profile information, you have the possibility to change a lot of things such as your firstname and lastname, etc...
+
+To do that, you have to use the method `updateUser` from the `contactManagerService`. The following example changes the `firstname` from a text field.
+
+```swift
+if (ServicesManager.sharedInstance()?.loginManager.isConnected ?? false) {
+
+    let firstNameValue = firstNameTxt.text ?? ""
+
+    ServicesManager.sharedInstance()?.contactsManagerService.updateUser(withFields: ["firstname": firstNameValue], withCompletionBlock: {
+
+        (error:Optional<Error>) in
+
+        if (error != nil) {
+            print(error.debugDescription)
+        } else {
+            // Do something once updated successfully
+        }
+    })
+}
+```
+
+When updating any fields of the user profile, the event `kContactsManagerServiceDidUpdateMyContact` is fired and can be handled by using the `NotificationsCenter`.
+
+This table lists the fields that can be updated
+
+**Fields**
+
+`firstname`
+
+`lastname`
+
+`nickname`
+
+`jobrole`
+
+`title`
+
+`personal_email`
+
+`professional_mobilephone`
+
+`personal_landphone`
+
+`personal_mobilephone`
+
+Note: Additionnal properties such as `country`, `timezone` and `language` could be changed with care. More information on the accepted value can be found in [here](/api/admin/index.html).
+
+### Changing user avatar
+
+---
+
+#### Update with new avatar
+
+```Swift
+let newAvatar = UIImage()
+ServicesManager.sharedInstance().contactsManagerService.updateUserAvatar(newAvatar) 
+{ error in
+
+}
+```
+
+#### Delete current avatar
+
+```Swift
+ServicesManager.sharedInstance().contactsManagerService.deleteUserAvatar()
+{ error in
+            
+}
+```
+
+### See also
+
+---
+
+-   [Hello World](/docs/sdk/ios)
+    
+-   [Connecting to Rainbow](/docs/sdk/ios)
+    
+-   [Managing contacts](/docs/sdk/ios)
+    
+-   [Adding Push Notifications](/docs/sdk/ios)
+    
+
+---
+
+### On this page
+
+-   [Managing personal profile](/docs/sdk/ios#name-managing-personal-profile-0)
+-   [Accessing your personal profile](/docs/sdk/ios#name-accessing-your-personal-profile-30)
+-   [Displaying the presence status](/docs/sdk/ios#name-displaying-the-presence-status-85)
+-   [Handling personal profile change](/docs/sdk/ios#name-handling-personal-profile-change-127)
+-   [Changing the presence status](/docs/sdk/ios#name-changing-the-presence-status-154)
+-   [Changing profile information](/docs/sdk/ios#name-changing-profile-information-168)
+-   [Changing user avatar](/docs/sdk/ios#name-changing-user-avatar-244)
+-   [Update with new avatar](/docs/sdk/ios#name-update-with-new-avatar-248)
+-   [Delete current avatar](/docs/sdk/ios#name-delete-current-avatar-252)
+-   [See also](/docs/sdk/ios#name-see-also-256)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

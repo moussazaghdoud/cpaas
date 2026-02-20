@@ -1,0 +1,477 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Manage_call_logs"
+lastSynced: "2026-02-20T07:12:28.577Z"
+---
+# Documentation
+
+Android > lts > guides > Manage\_call\_logs
+
+LTS release 2.47.0Published on 2024-04-20
+
+## Manage call logs
+
+---
+
+Welcome to the **Rainbow SDK for Android** guide on managing call logs. This guide will walk you through how to handle call logs in your application, including managing missed call logs, grouping call logs by contact, and handling call logs for hunting groups.
+
+**Rainbow concept**
+
+**Description**
+
+**CallLog**
+
+Represents an individual call log entry, including details such as call duration, date, and contact.
+
+**Missed Call Logs**
+
+Represents a collection of call logs that have not been answered. These are a subset of all call logs, filtered to show only missed calls.
+
+**CallLogGroup**
+
+Represents a grouping of call logs associated with a specific contact. This helps in organizing and managing call logs by contact.
+
+**Read Status**
+
+Indicates whether a call log has been read or not. Managing read status is essential for tracking which calls have been answered.
+
+**GroupCallLog**
+
+Represents call logs specific to hunting groups.
+
+### Preamble
+
+---
+
+This tutorial assumes that you have completed the **Getting Started** and **Connect to Rainbow** tutorials, and that you have an active Rainbow application. Before diving into call log management, ensure the following:
+
+-   Your development environment is set up according to the guidelines provided in the [Getting Started](/docs/sdk/android) tutorial.
+-   You have successfully connected your application to the Rainbow platform as described in the [Connect to Rainbow](/docs/sdk/android) tutorial.
+-   You have the necessary authentication credentials and API keys.
+
+With these prerequisites met, you're ready to manage call logs using the Rainbow SDK for Android. In this guide, we will cover how to retrieve, filter, and manage call logs, including handling missed call logs, grouping logs by contact, and working with hunting group call logs.
+
+### Retrieve the list of user call logs
+
+---
+
+To retrieve the list of call logs for the logged-in user, simply call the following API in the CallLogs module. This API fetches the data from the server, limited to the last 75 entries, to optimize both memory usage and server load.
+
+-   [kotlin](#codegroupTab-fetch_call_logs)
+-   [java](#codegroupTab-fetch_call_logs)
+
+```kotlin
+RainbowSdk().callLogs().fetchCallLogs(object : RainbowListener<List<CallLog>, Unit> {
+    override fun onSuccess(data: List<CallLog>) {
+        // You can directly use data
+        // Or you can use `RainbowSdk().callLogs().callLogs`
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle error
+    }
+})
+```
+
+```java
+RainbowSdk.instance().callLogs().fetchCallLogs(new RainbowListener<List<CallLog>, Unit>() {
+    @Override
+    public void onSuccess(List<CallLog> data) {
+        // You can directly use data
+        // Or you can use `RainbowSdk().callLogs().callLogs`
+    }
+
+    @Override
+    public void onError(@NonNull RainbowError<Unit> error) {
+        // Handle error
+    }
+});
+```
+
+Once the fetch is complete, the `RainbowSdk().callLogs().callLogs` property contains the user's latest call logs, sorted in descending date order (most recent first).
+
+> **Note:** You can listen to changes in the call log list using the following:
+
+-   [kotlin](#codegroupTab-register_change_listener_kotlin)
+-   [java](#codegroupTab-register_change_listener_java)
+
+```kotlin
+private val callLogListener = IItemListChangeListener {
+    // Handle updates
+}
+
+RainbowSdk().callLogs().callLogs.registerChangeListener(callLogListener)
+// ...
+
+// Don't forget to call unregisterChangeListener to avoid memory leaks
+RainbowSdk().callLogs().callLogs.unregisterChangeListener(callLogListener)
+```
+
+```java
+private final IItemListChangeListener callLogListener = () -> {
+    // Handle updates
+};
+
+RainbowSdk.callLogs().getCallLogs().registerChangeListener(callLogListener);
+// ...
+
+// Don't forget to call unregisterChangeListener to avoid memory leaks
+RainbowSdk.callLogs().getCallLogs().unregisterChangeListener(callLogListener);
+```
+
+If you need to retrieve call logs for a specific contact, use the following methods:
+
+-   `RainbowSdk().callLogs().getCallLogsGroupForContact(contactUniqueId)`
+-   `RainbowSdk().callLogs().getMissedCallLogsGroupForContact(contactUniqueId)`
+
+> These methods perform a local search for the call logs related to the contact. Note that these methods do not fetch data from the server but provide access to the locally available call logs.
+
+For additional ways to manage these call logs, you have access to the following properties:
+
+-   `missedCallLogs`: This property contains all the missed call logs. It allows you to focus specifically on calls that were not answered.
+    
+-   `groupedCallLogs`: This property contains all the call logs grouped by contact. It organizes call logs in a way that lets you easily see all interactions with a specific contact.
+    
+-   `groupedMissedCallLogs`: This property contains all the missed call logs grouped by contact, enabling you to track missed interactions with specific contacts effectively.
+    
+
+> These three properties are not instances of `ArrayItemList`, so you can't listen to changes directly on them. However, they are updated automatically whenever the `callLogs` property is updated.
+
+### Mark Call Logs as Read
+
+---
+
+There are several ways to mark call logs as read, depending on the level of specificity you need. Here are three common scenarios:
+
+1.  Mark all call logs as read:
+
+This scenario is useful if you want to mark all call logs as read when you exit the call logs screen, ensuring that no logs remain unread. To do this, use the following method:
+
+-   [kotlin](#codegroupTab-mark_all_read_kotlin)
+-   [java](#codegroupTab-mark_all_read_java)
+
+```kotlin
+RainbowSdk().callLogs().markAllCallLogsAsRead()
+```
+
+```java
+RainbowSdk.callLogs().markAllCallLogsAsRead();
+```
+
+2.  Mark call logs of a specific contact as read:
+
+If you want to mark a specific contact's call logs as read, such as on a page displaying interactions with that contact, use the following method. This is particularly useful for maintaining clarity in conversation history with individual contacts:
+
+-   [kotlin](#codegroupTab-mark_group_read_kotlin)
+-   [java](#codegroupTab-mark_group_read_java)
+
+```kotlin
+val callLogGroup: CallLogGroup = // obtain call log group for the contact
+RainbowSdk().callLogs().markCallLogsAsReadForGroup(callLogGroup)
+```
+
+```java
+CallLogGroup callLogGroup = // obtain call log group for the contact
+RainbowSdk.callLogs().markCallLogsAsReadForGroup(callLogGroup);
+```
+
+3.  Mark a single call Log as read:
+
+To mark a single call log as read, use this method. This approach is ideal when you want to acknowledge just one particular call log without affecting others:
+
+-   [kotlin](#codegroupTab-mark_single_read_kotlin)
+-   [java](#codegroupTab-mark_single_read_java)
+
+```kotlin
+val callLog: CallLog = // obtain specific call log
+RainbowSdk().callLogs().markCallLogAsRead(callLog)
+```
+
+```java
+CallLog callLog = // obtain specific call log
+RainbowSdk.callLogs().markCallLogAsRead(callLog);
+```
+
+These methods provide flexibility in managing call logs, allowing you to customize the user experience based on specific scenarios. Whether you need to clear all notifications or just focus on a particular interaction, these options ensure you can handle call log statuses efficiently.
+
+### Delete call logs
+
+---
+
+Managing your call logs also involves deleting entries that are no longer needed. This section outlines the available methods to remove call logs, whether individually, as a group, or all at once.
+
+1.  Delete specific call logs:
+
+To delete a specific list of call logs, use the `deleteCallLogs` method. This is useful when you need to remove selected logs:
+
+-   [kotlin](#codegroupTab-delete_specific_kotlin)
+-   [java](#codegroupTab-delete_specific_java)
+
+```kotlin
+val callLogs: List<CallLog> = // obtain the list of call logs to delete
+RainbowSdk().callLogs().deleteCallLogs(callLogs, object : RainbowListener<Unit, Unit> {
+    override fun onSuccess(data: Unit) {
+        // handle success
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // handle error
+    }
+})
+```
+
+```java
+List<CallLog> callLogs = // obtain the list of call logs to delete
+RainbowSdk.callLogs().deleteCallLogs(callLogs, new RainbowListener<Unit, Unit>() {
+    @Override
+    public void onSuccess(Unit result) {
+        // handle success
+    }
+
+    @Override
+    public void onError(Unit error) {
+        // handle error
+    }
+});
+```
+
+2.  Delete all call logs:
+
+If you want to delete all call logs at once, use the `deleteAllCallLogs` method. This can be particularly useful when you need to clear your call history entirely:
+
+-   [kotlin](#codegroupTab-delete_all_kotlin)
+-   [java](#codegroupTab-delete_all_java)
+
+```kotlin
+RainbowSdk().callLogs().deleteAllCallLogs(object : RainbowListener<Unit, Unit> {
+    override fun onSuccess(data: Unit) {
+        // handle success
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // handle error
+    }
+})
+```
+
+```java
+RainbowSdk.callLogs().deleteAllCallLogs(new RainbowListener<Unit, Unit>() {
+    @Override
+    public void onSuccess(Unit result) {
+        // handle success
+    }
+
+    @Override
+    public void onError(Unit error) {
+        // handle error
+    }
+});
+```
+
+3.  Delete all call logs for contacts:
+
+To delete all call logs associated with specific contacts, use the `deleteAllCallLogsForGroups` method. This is ideal for managing logs in the context of particular contacts:
+
+-   [kotlin](#codegroupTab-delete_contact_kotlin)
+-   [java](#codegroupTab-delete_contact_java)
+
+```kotlin
+val callLogGroups: List<CallLogGroup> = // obtain the list of call log groups by contact
+RainbowSdk().callLogs().deleteAllCallLogsForGroups(callLogGroups, object : RainbowListener<Unit, Unit> {
+    override fun onSuccess(data: Unit) {
+        // handle success
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // handle error
+    }
+})
+```
+
+```java
+List<CallLogGroup> callLogGroups = // obtain the list of call log groups by contact
+RainbowSdk.callLogs().deleteAllCallLogsForGroups(callLogGroups, new RainbowListener<Unit, Unit>() {
+    @Override
+    public void onSuccess(Unit result) {
+        // handle success
+    }
+
+    @Override
+    public void onError(Unit error) {
+        // handle error
+    }
+});
+```
+
+These methods enable you to manage your call logs effectively by providing the flexibility to delete entries selectively, clear all logs, or remove logs for specific contacts. Using the optional listener parameter, you can handle success and error events, ensuring responsive application behavior.
+
+### Managing call logs for Hunting Groups
+
+---
+
+A hunting group is a special type of group within Rainbow where multiple users are part of a collective call queue. These groups are used to manage incoming calls that are distributed among several users, ensuring that calls are answered efficiently by the available members of the group.
+
+In the context of managing call logs, hunting groups allow you to handle and organize call logs specific to these groups. This can be particularly useful for scenarios where you want to track and manage call logs associated with a group of users handling shared responsibilities.
+
+To manage call logs for a hunting group, you first need to retrieve them from the server. This is done using the `fetchCallLogsForHuntingGroup` method. The results are then stored locally in a dictionary where each groupId maps to its corresponding list of call logs.
+
+-   [kotlin](#codegroupTab-fetch_call_logs_for_hunting_group_kotlin)
+-   [java](#codegroupTab-fetch_call_logs_for_hunting_group_java)
+
+```kotlin
+RainbowSdk().callLogs().fetchCallLogsForHuntingGroup("your-group-id", object : RainbowListener<List<GroupCallLog>, Unit> {
+    override fun onSuccess(data: List<GroupCallLog>) {
+        // Handle the retrieved call logs
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle any errors
+    }
+})
+```
+
+```java
+RainbowSdk.callLogs().fetchCallLogsForHuntingGroup("your-group-id", new RainbowListener<List<GroupCallLog>, Unit>() {
+    @Override
+    public void onSuccess(List<GroupCallLog> result) {
+        // Handle the retrieved call logs
+    }
+
+    @Override
+    public void onError(Unit error) {
+        // Handle any errors
+    }
+});
+```
+
+After fetching, you can access the retrieved call logs using the `getHuntingGroupCallLogs` method. This method provides a way to retrieve the locally stored call logs for a specific hunting group.
+
+-   [kotlin](#codegroupTab-get_hunting_group_call_logs_kotlin)
+-   [java](#codegroupTab-get_hunting_group_call_logs_java)
+
+```kotlin
+val groupCallLogs: List<GroupCallLog> = RainbowSdk().callLogs().getHuntingGroupCallLogs("your-group-id")
+// Use the retrieved call logs
+```
+
+```java
+List<GroupCallLog> groupCallLogs = RainbowSdk.callLogs().getHuntingGroupCallLogs("your-group-id");
+// Use the retrieved call logs
+```
+
+Once you have retrieved the call logs for a hunting group, you can perform various operations on them. These operations include deleting specific call logs, deleting all call logs, and marking all call logs as read. Below are the methods you can use for managing hunting group call logs.
+
+**Delete specific call logs for a Hunting Group**
+
+To delete specific call logs within a hunting group, use the `deleteCallLogsForHuntingGroup` method. This method allows you to specify a list of call logs to be removed from the group.
+
+-   [kotlin](#codegroupTab-delete_call_logs_for_hunting_group_kotlin)
+-   [java](#codegroupTab-delete_call_logs_for_hunting_group_java)
+
+```kotlin
+val callLogsToDelete: List<GroupCallLog> = // obtain the list of call logs to delete
+RainbowSdk().callLogs().deleteCallLogsForHuntingGroup("your-group-id", callLogsToDelete, object : RainbowListener<Unit, Unit> {
+    override fun onSuccess(data: Unit) {
+        // Handle successful deletion
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle any errors
+    }
+})
+```
+
+```java
+List<GroupCallLog> callLogsToDelete = // obtain the list of call logs to delete
+RainbowSdk.callLogs().deleteCallLogsForHuntingGroup("your-group-id", callLogsToDelete, new RainbowListener<Unit, Unit>() {
+    @Override
+    public void onSuccess(Unit result) {
+        // Handle successful deletion
+    }
+
+    @Override
+    public void onError(Unit error) {
+        // Handle any errors
+    }
+});
+```
+
+**Delete all call logs for a Hunting Group**
+
+To delete all call logs within a specific hunting group, use the `deleteAllCallLogsForHuntingGroup` method. This method removes all call logs associated with the given group ID.
+
+-   [kotlin](#codegroupTab-delete_all_call_logs_for_hunting_group_kotlin)
+-   [java](#codegroupTab-delete_all_call_logs_for_hunting_group_java)
+
+```kotlin
+RainbowSdk().callLogs().deleteAllCallLogsForHuntingGroup("your-group-id", object : RainbowListener<Unit, Unit> {
+    override fun onSuccess(data: Unit) {
+        // Handle successful deletion
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle any errors
+    }
+})
+```
+
+```java
+RainbowSdk.callLogs().deleteAllCallLogsForHuntingGroup("your-group-id", new RainbowListener<Unit, Unit>() {
+    @Override
+    public void onSuccess(Unit result) {
+        // Handle successful deletion
+    }
+
+    @Override
+    public void onError(Unit error) {
+        // Handle any errors
+    }
+});
+```
+
+**Mark all call logs as read for a Hunting Group**
+
+To mark all call logs as read within a specific hunting group, use the `markAllCallLogsAsReadForHuntingGroup` method. This method updates the read status for all call logs associated with the given group ID.
+
+-   [kotlin](#codegroupTab-mark_all_call_logs_as_read_for_hunting_group_kotlin)
+-   [java](#codegroupTab-mark_all_call_logs_as_read_for_hunting_group_java)
+
+```kotlin
+RainbowSdk().callLogs().markAllCallLogsAsReadForHuntingGroup("your-group-id")
+```
+
+```java
+RainbowSdk.callLogs().markAllCallLogsAsReadForHuntingGroup("your-group-id");
+```
+
+### Conclusion
+
+---
+
+**Fantastic! You’ve completed the Call Logs guide.**
+
+In this guide, you’ve learned how to retrieve, manage, and organize both user and hunting group call logs. You can now mark call logs as read, delete specific entries or all call logs, and handle call logs efficiently.
+
+Keep exploring what the Rainbow SDK can offer, and remember, if you need any help or have questions, our support team is here to help.
+
+Happy coding!
+
+*Last updated August, 2024*
+
+### On this page
+
+-   [Manage call logs](/docs/sdk/android#name-manage-call-logs-0)
+-   [Preamble](/docs/sdk/android#name-preamble-61)
+-   [Retrieve the list of user call logs](/docs/sdk/android#name-retrieve-the-list-of-user-call-logs-88)
+-   [Mark Call Logs as Read](/docs/sdk/android#name-mark-call-logs-as-read-150)
+-   [Delete call logs](/docs/sdk/android#name-delete-call-logs-193)
+-   [Managing call logs for Hunting Groups](/docs/sdk/android#name-managing-call-logs-for-hunting-groups-236)
+-   [Conclusion](/docs/sdk/android#name-conclusion-278)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

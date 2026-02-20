@@ -1,0 +1,382 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/httpoverxmpp"
+lastSynced: "2026-02-20T07:12:32.280Z"
+---
+# Documentation
+
+HTTPoverXMPP Service
+
+LTS release 2.XPublished on 2025-01-01
+
+## HTTPoverXMPP
+
+This service manages an HTTP over XMPP requests system.  
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [HTTPoverXMPP](#module_HTTPoverXMPP)
+    -   [get(urlToGet, headers, httpoverxmppserver\_jid)](#module_HTTPoverXMPP+get) ⇒ `Promise.<any>`
+    -   [discoverHTTPoverXMPP(headers, httpoverxmppserver\_jid)](#module_HTTPoverXMPP+discoverHTTPoverXMPP) ⇒ `Promise.<any>`
+    -   [trace(urlToTrace, headers, httpoverxmppserver\_jid)](#module_HTTPoverXMPP+trace) ⇒ `Promise.<any>`
+    -   [head(urlToHead, headers, httpoverxmppserver\_jid)](#module_HTTPoverXMPP+head) ⇒ `Promise.<any>`
+    -   [post(urlToPost, headers, data, httpoverxmppserver\_jid)](#module_HTTPoverXMPP+post) ⇒ `Promise.<any>`
+    -   [put(urlToPost, headers, data, httpoverxmppserver\_jid)](#module_HTTPoverXMPP+put) ⇒ `Promise.<any>`
+    -   [delete(urlToPost, headers, data, httpoverxmppserver\_jid)](#module_HTTPoverXMPP+delete) ⇒ `Promise.<any>`
+
+---
+
+### httPoverXMPP.get(urlToGet, headers, httpoverxmppserver\_jid) ⇒ `Promise.<any>`
+
+This API allows to send a GET http request to an XMPP server supporting Xep0332.  
+
+**Kind**: instance method of [`HTTPoverXMPP`](#module_HTTPoverXMPP)
+
+**Returns**: `Promise.<any>` - An object of the result
+
+**Category**: Rainbow HTTPoverXMPP
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.10.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+urlToGet
+
+`string`
+
+The url to request
+
+headers
+
+`Object`
+
+`{}`
+
+The Http Headers used to web request.
+
+httpoverxmppserver\_jid
+
+`string`
+
+the jid of the http over xmpp server used to retrieve the HTTP web request. default value is the jid of the account running the SDK.
+
+---
+
+### httPoverXMPP.discoverHTTPoverXMPP(headers, httpoverxmppserver\_jid) ⇒ `Promise.<any>`
+
+This API allows to send a discover presence to a bare jid to find the resources availables.  
+
+**Kind**: instance method of [`HTTPoverXMPP`](#module_HTTPoverXMPP)
+
+**Returns**: `Promise.<any>` - An object of the result
+
+**Category**: Rainbow HTTPoverXMPP
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.10.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+headers
+
+`Object`
+
+`{}`
+
+The Http Headers used to web request.
+
+httpoverxmppserver\_jid
+
+`string`
+
+the jid of the http over xmpp server used to retrieve the HTTP web request. default value is the jid of the account running the SDK.
+
+---
+
+### httPoverXMPP.trace(urlToTrace, headers, httpoverxmppserver\_jid) ⇒ `Promise.<any>`
+
+This API allows to send a TRACE http request to an XMPP server supporting Xep0332. TRACE is only used for debugging  
+
+**Kind**: instance method of [`HTTPoverXMPP`](#module_HTTPoverXMPP)
+
+**Returns**: `Promise.<any>` - An object of the result
+
+**Category**: Rainbow HTTPoverXMPP
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.10.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+urlToTrace
+
+`string`
+
+The url to request
+
+headers
+
+`Object`
+
+`{}`
+
+The Http Headers used to web request.
+
+httpoverxmppserver\_jid
+
+`string`
+
+the jid of the http over xmpp server used to retrieve the HTTP web request. default value is the jid of the account running the SDK.
+
+---
+
+### httPoverXMPP.head(urlToHead, headers, httpoverxmppserver\_jid) ⇒ `Promise.<any>`
+
+This API allows to send a HEAD http request to an XMPP server supporting Xep0332.  
+
+**Kind**: instance method of [`HTTPoverXMPP`](#module_HTTPoverXMPP)
+
+**Returns**: `Promise.<any>` - An object of the result
+
+**Category**: Rainbow HTTPoverXMPP
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.10.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+urlToHead
+
+`string`
+
+The url to request
+
+headers
+
+`Object`
+
+`{}`
+
+The Http Headers used to web request.
+
+httpoverxmppserver\_jid
+
+`string`
+
+the jid of the http over xmpp server used to retrieve the HTTP web request. default value is the jid of the account running the SDK.
+
+---
+
+### httPoverXMPP.post(urlToPost, headers, data, httpoverxmppserver\_jid) ⇒ `Promise.<any>`
+
+This API allows to send a POST http request to an XMPP server supporting Xep0332.  
+
+**Kind**: instance method of [`HTTPoverXMPP`](#module_HTTPoverXMPP)
+
+**Returns**: `Promise.<any>` - An object of the result
+
+**Category**: Rainbow HTTPoverXMPP
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.10.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+urlToPost
+
+`string`
+
+The url to request
+
+headers
+
+`Object`
+
+`{}`
+
+The Http Headers used to web request.
+
+data
+
+`string`
+
+The body data of the http request.
+
+httpoverxmppserver\_jid
+
+`string`
+
+the jid of the http over xmpp server used to retrieve the HTTP web request. default value is the jid of the account running the SDK.
+
+---
+
+### httPoverXMPP.put(urlToPost, headers, data, httpoverxmppserver\_jid) ⇒ `Promise.<any>`
+
+This API allows to send a PUT http request to an XMPP server supporting Xep0332.  
+
+**Kind**: instance method of [`HTTPoverXMPP`](#module_HTTPoverXMPP)
+
+**Returns**: `Promise.<any>` - An object of the result
+
+**Category**: Rainbow HTTPoverXMPP
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.10.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+urlToPost
+
+`string`
+
+The url to request
+
+headers
+
+`Object`
+
+`{}`
+
+The Http Headers used to web request.
+
+data
+
+`string`
+
+The body data of the http request.
+
+httpoverxmppserver\_jid
+
+`string`
+
+the jid of the http over xmpp server used to retrieve the HTTP web request. default value is the jid of the account running the SDK.
+
+---
+
+### httPoverXMPP.delete(urlToPost, headers, data, httpoverxmppserver\_jid) ⇒ `Promise.<any>`
+
+This API allows to send a DELETE http request to an XMPP server supporting Xep0332.  
+
+**Kind**: instance method of [`HTTPoverXMPP`](#module_HTTPoverXMPP)
+
+**Returns**: `Promise.<any>` - An object of the result
+
+**Category**: Rainbow HTTPoverXMPP
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.10.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+urlToPost
+
+`string`
+
+The url to request
+
+headers
+
+`Object`
+
+`{}`
+
+The Http Headers used to web request.
+
+data
+
+`string`
+
+The body data of the http request.
+
+httpoverxmppserver\_jid
+
+`string`
+
+the jid of the http over xmpp server used to retrieve the HTTP web request. default value is the jid of the account running the SDK.
+
+---
+
+### On this page
+
+-   [HTTPoverXMPP](/docs/sdk/node#name-httpoverxmpp-3)
+-   [httPoverXMPP.get(urlToGet, headers, httpoverxmppserver\_jid) ⇒ Promise.<any>](/docs/sdk/node#name-httpoverxmpp.geturltoget-headers-httpoverxmppserver_jid--promise.any-63)
+-   [httPoverXMPP.discoverHTTPoverXMPP(headers, httpoverxmppserver\_jid) ⇒ Promise.<any>](/docs/sdk/node#name-httpoverxmpp.discoverhttpoverxmppheaders-httpoverxmppserver_jid--promise.any-153)
+-   [httPoverXMPP.trace(urlToTrace, headers, httpoverxmppserver\_jid) ⇒ Promise.<any>](/docs/sdk/node#name-httpoverxmpp.traceurltotrace-headers-httpoverxmppserver_jid--promise.any-229)
+-   [httPoverXMPP.head(urlToHead, headers, httpoverxmppserver\_jid) ⇒ Promise.<any>](/docs/sdk/node#name-httpoverxmpp.headurltohead-headers-httpoverxmppserver_jid--promise.any-319)
+-   [httPoverXMPP.post(urlToPost, headers, data, httpoverxmppserver\_jid) ⇒ Promise.<any>](/docs/sdk/node#name-httpoverxmpp.posturltopost-headers-data-httpoverxmppserver_jid--promise.any-409)
+-   [httPoverXMPP.put(urlToPost, headers, data, httpoverxmppserver\_jid) ⇒ Promise.<any>](/docs/sdk/node#name-httpoverxmpp.puturltopost-headers-data-httpoverxmppserver_jid--promise.any-513)
+-   [httPoverXMPP.delete(urlToPost, headers, data, httpoverxmppserver\_jid) ⇒ Promise.<any>](/docs/sdk/node#name-httpoverxmpp.deleteurltopost-headers-data-httpoverxmppserver_jid--promise.any-617)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

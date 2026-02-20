@@ -1,0 +1,118 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/objects/RainbowPresence"
+lastSynced: "2026-02-20T07:12:28.910Z"
+---
+# Documentation
+
+Object RainbowPresence
+
+LTS release 2.61.0Published on 202-04-06
+
+## object RainbowPresence
+
+### enum RainbowPresence
+
+This class describes the RainbowPresence object.
+
+### boolean isOffline()
+
+Allow to know if the presence of the user is on **offline**
+
+-   **Returns:** true if the user is offline
+
+### boolean isOnline()
+
+Allow to know if the presence of the user is on **online**
+
+-   **Returns:** true if the user is online
+
+### boolean isAway()
+
+Allow to know if the presence of the user is on **away**.
+
+This state is automatically set after a few times of inactivity.
+
+-   **Returns:** true if the user is away
+
+### boolean isManualAway()
+
+Allow to know if the presence of the user is on **manual\_away**.
+
+That means the user sets himself to this presence.
+
+-   **Returns:** true if the user has manually set that he is away
+
+### boolean isDND()
+
+Allow to know if the presence of the user is on **dnd**.
+
+-   **Returns:**
+
+### boolean isDNDPresentation()
+
+Allow to know if the presence of the user is on **dnd\_presentation**.
+
+That means the user is on full screen mode on a computer.
+
+-   **Returns:** true if the user is in presentation
+
+### boolean isDNDCalendar()
+
+Allow to know if the presence of the user is on **dnd\_calendar**.
+
+That means the user is out of office or in a meeting and has chosen to have his presence set to DND automatically when that happens.
+
+-   **Returns:** true if the user is in presentation
+
+### boolean isMobileOnline()
+
+Allow to know if the presence of the user is on **mobile\_online**.
+
+That means the user is not online (but could be away) on desktop client, and connected on mobile.
+
+-   **Returns:** true if the user is only online on mobile
+
+### boolean isBusy()
+
+Allow to know if the presence of the user is on **busy**.
+
+-   **Returns:**
+
+### boolean isUnsubscribed()
+
+Allow to know if the presence of the user is on **unsubscribed**.
+
+That means the connected user has not the other user is his network.
+
+-   **Returns:**
+
+### String getPresence()
+
+Get the presence
+
+-   **Returns:** the presence as a String
+
+### On this page
+
+-   [object RainbowPresence](/docs/sdk/android#name-object-rainbowpresence-0)
+-   [enum RainbowPresence](/docs/sdk/android#name-enum-rainbowpresence-3)
+-   [boolean isOffline()](/docs/sdk/android#name-boolean-isoffline-9)
+-   [boolean isOnline()](/docs/sdk/android#name-boolean-isonline-22)
+-   [boolean isAway()](/docs/sdk/android#name-boolean-isaway-35)
+-   [boolean isManualAway()](/docs/sdk/android#name-boolean-ismanualaway-51)
+-   [boolean isDND()](/docs/sdk/android#name-boolean-isdnd-67)
+-   [boolean isDNDPresentation()](/docs/sdk/android#name-boolean-isdndpresentation-80)
+-   [boolean isDNDCalendar()](/docs/sdk/android#name-boolean-isdndcalendar-96)
+-   [boolean isMobileOnline()](/docs/sdk/android#name-boolean-ismobileonline-112)
+-   [boolean isBusy()](/docs/sdk/android#name-boolean-isbusy-128)
+-   [boolean isUnsubscribed()](/docs/sdk/android#name-boolean-isunsubscribed-141)
+-   [String getPresence()](/docs/sdk/android#name-string-getpresence-157)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

@@ -1,0 +1,291 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Organize_your_rooms"
+lastSynced: "2026-02-20T07:12:28.736Z"
+---
+# Documentation
+
+Organize your rooms
+
+LTS release 2.61.0Published on 202-04-06
+
+## Organize your rooms
+
+---
+
+Welcome to the **Rainbow SDK for Android** guide on organizing rooms into containers. This guide will help you classify user rooms into containers, allowing for better organization and efficient access.
+
+**Rainbow concept**
+
+**Description**
+
+**Room**
+
+A room is a group conversation that includes multiple contacts, allowing for collaborative discussions.
+
+**Container**
+
+A container functions as a folder to store and categorize rooms, making it easier to manage and locate conversations.
+
+### Preamble
+
+---
+
+This tutorial assumes that you have completed the **Getting Started** and **Connect to Rainbow** tutorials, and that you have an active Rainbow application. Before proceeding with room organization and container management, please ensure the following:
+
+-   Your development environment is set up according to the guidelines provided in the [Getting Started](/docs/sdk/android) tutorial.
+-   You have successfully connected your application to the Rainbow platform as described in the [Connect to Rainbow](/docs/sdk/android) tutorial.
+-   You have the necessary authentication credentials and API keys.
+
+With these prerequisites in place, you're ready to manage containers and organize rooms using the Rainbow SDK for Android. In this guide, we will cover:
+
+-   **Creating, updating, and deleting containers**
+-   **Adding rooms to containers**
+-   **Removing rooms from containers**
+-   **Listening to containers changes**
+
+### Retrieve user containers
+
+---
+
+The user's containers are automatically retrieved after the user has authenticated. The SDK calls the method `RainbowSdk().roomContainer().fetchContainers()`, which retrieves the first 300 containers by default.
+
+The API supports pagination, so if the user has more than 300 containers, you can call this method yourself and specify either a larger limit or a different offset. You can also specify `SORT_ASCENDING` or `SORT_DESCENDING` to sort by container name.
+
+```kotlin
+suspend fun fetchContainers(
+    @IntRange(from = 1) limit: Int = DEFAULT_LIMIT_FETCH_CONTAINER,
+    @IntRange(from = 0) offset: Int = 0,
+    @SortOrder sortOrder: Int = SORT_ASCENDING
+) : RainbowResult<List<Container>>
+```
+
+You can use this method from a coroutine scope, and it returns a `RainbowResult<List<Container>>`.
+
+```kotlin
+// Example usage in a coroutine scope
+viewModelScope.launch {
+    RainbowSdk().roomContainers().fetchContainers(limit = 100, offset = 100)
+        .onSuccess { containers ->
+            // Here you have access to the list of containers
+        }
+        .onFailure {
+            // Handle error
+        }
+}
+```
+
+If you want to retrieve information about a specific container, you can use the following method:
+
+`RainbowSdk().roomContainer().fetchContainerById(containerId)`.
+
+These methods are considered *lazy* to avoid loading more than necessary. By default, a `Container` only contains the IDs of the rooms it holds. If you want to resolve these `Room` objects, you can call the following method:
+
+```kotlin
+suspend fun fetchRoomsForContainerIfNeeded(
+    container: Container
+) : RainbowResult<List<IRainbowRoom>>
+```
+
+This method first checks the cache to see if the rooms are available. If not, it attempts to resolve them via an API call. You need to call this method if, for example, you want to display the rooms within a container.
+
+```kotlin
+// Example of retrieving rooms from a container
+viewModelScope.launch {
+    RainbowSdk().roomContainers().fetchRoomsForContainerIfNeeded(container)
+        .onSuccess { rooms ->
+            // Here you have access to the list of rooms in the container
+        }
+        .onFailure {
+            // Handle error
+        }
+}
+```
+
+### Observe containers list
+
+---
+
+`RainbowSdk().roomContainers().containers` is a property of type `StateFlow<List<Container>>`. It is a hot flow that produces the updated list of containers whenever an event modifies the user's containers. The flow starts when the user is authenticated and can be used until the user logs out or exits the application.
+
+You can observe this flow to get real-time updates whenever the containers list changes.
+
+```kotlin
+// Example of observing the containers list
+viewLifecycleOwner.lifecycleScope.launch {
+    repeatOnLifecycle(Lifecycle.State.STARTED) {
+        RainbowSdk().roomContainer().containers.collect { containers ->
+            // Do something with containers list
+        }
+    }
+}
+```
+
+### Create a new container
+
+---
+
+You can create a new container using the `createContainer()` method. A container must have a name between 1 and 64 characters, and it may have an optional description up to 255 characters. Additionally, during the creation, you can specify a list of room IDs to directly add rooms to the container.
+
+> **Note: Rooms can also be added to an existing container after it has been created, so it is not mandatory to add them during container creation.**
+
+```kotlin
+// Example of creating a new container with rooms
+viewModelScope.launch {
+    val roomIds = roomsToAdd.map { it.id } // Get list of room IDs to add to the container
+    RainbowSdk().roomContainer().createContainer("A name", "Description", roomIds)
+        .onSuccess {
+            // Handle success: The container was successfully created
+        }
+        .onFailure { error ->
+            when {
+                error.detailsCode == Failure.DUPLICATE_CONTAINER_NAME -> {
+                    // Handle error: Container name must be unique
+                }
+                error.detailsCode == Failure.MAX_QUOTA_REACHED -> {
+                    // Handle error: The user has reached the maximum number of containers
+                }
+                else -> {
+                    // Handle other generic errors
+                }
+            }
+        }
+}
+```
+
+**Error Handling**
+
+-   **Duplicate Container Name**: If the user tries to create a container with a name that already exists, the API will return an error with the `Failure.DUPLICATE_CONTAINER_NAME` code. You should prompt the user to choose a different name for the container.
+    
+-   **Max Quota Reached**: If the user exceeds the maximum allowed number of containers, the API will return a `Failure.MAX_QUOTA_REACHED` code. Provide appropriate feedback to inform the user that they cannot create more containers.
+    
+-   **Generic Errors**: Handle other errors gracefully, such as network issues or unexpected failures. Ensure to provide fallback error handling or logging for debugging purposes.
+    
+
+### Update an existing container
+
+---
+
+You can update an existing container's name or description by using the `updateContainer()` method. The same rules for naming and description length apply as when creating a new container: the name must be between 1 and 64 characters, and the description can be up to 255 characters.
+
+```kotlin
+// Example of updating an existing container with a new name and description
+viewModelScope.launch {
+    RainbowSdk().roomContainer().updateContainer("New name", "New description")
+        .onSuccess {
+            // Handle success: The container was successfully updated
+        }
+        .onFailure { error ->
+            when {
+                error.detailsCode == Failure.DUPLICATE_CONTAINER_NAME -> {
+                    // Handle error: Container name must be unique
+                }
+                else -> {
+                    // Handle other generic errors
+                }
+            }
+        }
+}
+```
+
+### Delete a container
+
+---
+
+To delete a container, simply call the `deleteContainer()` method with the container's ID. This operation will permanently remove the container and its associated data.
+
+```kotlin
+// Example of deleting a container by its ID
+viewModelScope.launch { RainbowSdk().roomContainer().deleteContainer(containerId) }
+```
+
+### Add and remove rooms from container
+
+You can manage the rooms within a container using the `addRoomsToContainer()` and `removeRoomsFromContainer()` methods. These methods allow you to add or remove rooms from a specified container. You need to provide the container's ID along with a list of room IDs to add or remove.
+
+These methods return a `RainbowResult<Pair<Container, List<InvalidRoom>>>`. In case of partial success, rooms that could not be added or removed will appear in the list of `InvalidRoom`.
+
+```kotlin
+// Example of adding rooms to a container
+viewModelScope.launch {
+    RainbowSdk().roomContainer().addRoomsToContainer(containerId, rooms.map { it.id })
+        .onSuccess {
+            // Check for partial success
+            if (it.second.isEmpty) {
+                // Handle success: All rooms were successfully added to the container
+            } else {
+                // Handle invalid room, e.g., log or notify the user
+            }
+        }
+        .onFailure { error ->
+            // Handle error
+        }
+}
+
+// Example of removing rooms from a container
+viewModelScope.launch {
+    RainbowSdk().roomContainer().removeRoomsFromContainer(containerId, rooms.map { it.id })
+        .onSuccess {
+            // Check for partial success
+            if (it.second.isEmpty) {
+                // Handle success: All rooms were successfully removed from the container
+            } else {
+                // Handle invalid room, e.g., log or notify the user
+            }
+        }
+        .onFailure { error ->
+            // Handle error
+        }
+}
+```
+
+Alternatively, you can move a room from one container to another by using the `moveRooms()` method. You need to specify both the source and destination container IDs.
+
+> **Note: This method performs a removal followed by an addition.**
+
+```kotlin
+// Example of moving rooms between containers
+viewModelScope.launch {
+    RainbowSdk().roomContainer().moveRooms(sourceContainerId, destinationContainerId, rooms.map { it.id })
+        .onSuccess {
+            // Handle success: Rooms have been successfully moved from one container to another
+        }
+        .onFailure { error ->
+            // Handle error: Provide feedback to the user
+        }
+}
+```
+
+### Conclusion
+
+---
+
+**Great job! Here is the end of the guide to managing room containers.**
+
+In this guide, you’ve learned how to create, update, and delete containers, as well as how to efficiently manage rooms within them. You’ve also explored how to retrieve containers, and listen to changes in the container list.
+
+Keep exploring the Rainbow SDK's capabilities, and remember that our support team is always here to help if you need assistance or have questions.
+
+Happy coding!
+
+*Last updated November, 2024*
+
+### On this page
+
+-   [Organize your rooms](/docs/sdk/android#name-organize-your-rooms-0)
+-   [Preamble](/docs/sdk/android#name-preamble-37)
+-   [Retrieve user containers](/docs/sdk/android#name-retrieve-user-containers-86)
+-   [Observe containers list](/docs/sdk/android#name-observe-containers-list-115)
+-   [Create a new container](/docs/sdk/android#name-create-a-new-container-126)
+-   [Update an existing container](/docs/sdk/android#name-update-an-existing-container-159)
+-   [Delete a container](/docs/sdk/android#name-delete-a-container-167)
+-   [Add and remove rooms from container](/docs/sdk/android#name-add-and-remove-rooms-from-container-175)
+-   [Conclusion](/docs/sdk/android#name-conclusion-194)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

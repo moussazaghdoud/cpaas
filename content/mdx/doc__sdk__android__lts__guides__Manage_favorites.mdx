@@ -1,0 +1,272 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Manage_favorites"
+lastSynced: "2026-02-20T07:12:28.591Z"
+---
+# Documentation
+
+Manage favorites
+
+LTS release 2.61.0Published on 202-04-06
+
+## Manage Favorites
+
+---
+
+Welcome to the **Rainbow SDK for Android** guide on managing favorites. This guide will walk you through how to handle favorite contacts and rooms in your application, including adding, removing, and listening to changes in the favorite list.
+
+**Rainbow concept**
+
+**Description**
+
+**IRainbowFavorite**
+
+Represents a favorite entry, which can either be a contact or a room.
+
+**PeerId**
+
+Represents the unique identifier (`id`) of the contact or room stored in the IRainbowFavorite object.
+
+**PeerType**
+
+An enum that specifies the type of favorite. It differentiates between a Contact and a Room. For contacts, there are several subtypes:
+
+\- **User**
+
+Represents a standard Rainbow user in the contact list.
+
+\- **Bot**
+
+Represents an automated bot account in the contact list.
+
+\- **Directory**
+
+Represents a contact coming from a corporate directory.
+
+\- **Office365**
+
+Represents a contact synchronized from Office 365.
+
+**ArrayItemList**
+
+Represents a list that contains the user's favorites (both contacts and rooms). This list can be observed for changes, allowing you to react when favorites are added, removed, or updated.
+
+### Preamble
+
+---
+
+This tutorial assumes that you have completed the **Getting Started** and **Connect to Rainbow** tutorials, and that you have an active Rainbow application. Before diving into favorites management, ensure the following:
+
+-   Your development environment is set up according to the guidelines provided in the Getting Started tutorial.
+-   You have successfully connected your application to the Rainbow platform as described in the Connect to Rainbow tutorial.
+-   You have the necessary authentication credentials and API keys.
+
+With these prerequisites met, you're ready to manage your favorites using the Rainbow SDK for Android. In this guide, we will cover how to add contacts or rooms to your favorites, remove favorites, and listen for changes in the favorites list.
+
+### Retrieve favorites
+
+---
+
+The SDK automatically retrieves the list of favorites after the user is authenticated. However, if you need to manually refresh the favorites list at any point, you can use the `fetchFavorites()` method from the `Favorites` module.
+
+This method accepts a listener that allows you to access the list of `IRainbowFavorite` objects returned by the server. If you prefer, you can also omit the listener if you have already subscribed to changes on the `favorites` property of the module, which automatically updates when the favorites list changes.
+
+```kotlin
+RainbowSdk().favorites().fetchFavorites(object : RainbowListener<List<IRainbowFavorite>, Unit> {
+    override fun onSuccess(data: List<IRainbowFavorite>) {
+        // handle success
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // handle error
+    }
+})
+```
+
+Otherwise, you can simply use the `favorites` property:
+
+`RainbowSdk().favorites().favorites`
+
+To listen for changes in the favorites list and be notified when an update occurs, you can register a change listener as shown below:
+
+```kotlin
+private val favoritesChangeListener = IItemListChangeListener {
+    // Handle update in the list
+}
+
+RainbowSdk().favorites().favorites.registerChangeListener(favoritesChangeListener)
+```
+
+Remember to unregister the listener when it's no longer needed to avoid memory leaks:
+
+`RainbowSdk().favorites().favorites.unregisterChangeListener(favoritesChangeListener)`
+
+### Create a new Favorite
+
+---
+
+To create a favorite, you can use one of the following methods:
+
+-   `createFavorite(peerId: String, type: PeerType, position: Int? = null, listener: RainbowListener<IRainbowFavorite, CreateFavoriteError>? = null)`
+-   `fun createFavoriteFromContact(contact: IRainbowContact, position: Int? = null, listener: RainbowListener<IRainbowFavorite, CreateFavoriteError>? = null)`
+
+The first method allows you to create any type of favorite by specifying the `PeerType`. The second method creates a favorite from a contact, automatically resolving the appropriate `PeerType` based on the contact.
+
+It's important to note that having the correct `PeerType` is essential for correctly resolving the contact's information.
+
+Both methods accept an optional parameter to specify the position at which the favorite is added. If the position is not specified or is out of bounds, the favorite is added at the end of the list.
+
+```kotlin
+val peerId = "contactOrRoomId"
+val peerType = PeerType.User // Could also be PeerType.Room, PeerType.Bot, etc.
+val position: Int? = 0 // Optional, null to add to the end of the list
+
+RainbowSdk().favorites().createFavorite(peerId, peerType, position, object : RainbowListener<IRainbowFavorite, CreateFavoriteError> {
+    override fun onSuccess(data: IRainbowFavorite) {
+        // Handle successful creation of favorite
+        println("Favorite created: ${data.peerId}")
+    }
+
+    override fun onError(error: RainbowError<CreateFavoriteError>) {
+        // Handle error
+        println("Error creating favorite: $error")
+    }
+})
+```
+```kotlin
+val contact: IRainbowContact = getSelectedContact() // Assume this returns a valid contact
+
+RainbowSdk().favorites().createFavoriteFromContact(contact, listener = object : RainbowListener<IRainbowFavorite, CreateFavoriteError> {
+    override fun onSuccess(data: IRainbowFavorite) {
+        // Handle successful creation of favorite
+        println("Favorite created for contact: ${data.peerId}")
+    }
+
+    override fun onError(error: RainbowError<CreateFavoriteError>) {
+        // Handle error
+        println("Error creating favorite from contact: $error")
+    }
+})
+```
+
+### Delete a Favorite
+
+---
+
+To delete a favorite, use the following method:
+
+`fun deleteFavorite(favoriteId: String, listener: RainbowListener<Unit, Unit>? = null)`
+
+You must specify the ID of the favorite, not the peerId. This is the ID of the favorite itself.
+
+**Example: Deleting a Favorite**
+
+```kotlin
+val favoriteId = "favoriteUniqueId" // The ID of the favorite to delete, not the peerId
+
+RainbowSdk().favorites().deleteFavorite(favoriteId, object : RainbowListener<Unit, Unit> {
+    override fun onSuccess(data: Unit) {
+        // Handle successful deletion
+        println("Favorite with ID $favoriteId has been successfully deleted.")
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle error during deletion
+        println("Error occurred while trying to delete favorite with ID $favoriteId.")
+    }
+})
+```
+
+### Change the position of a Favorite
+
+---
+
+You can specify the position of a favorite during its creation, but you can also change it later. This can be particularly useful if you display favorites in a list and want to allow users to change the order through drag-and-drop.
+
+It's easy to change the position using the following method:
+
+`fun updateFavoritePosition(favoriteId: String, position: Int, listener: RainbowListener<IRainbowFavorite, Unit>? = null)`
+
+As with any operation, the `favorites` list will be updated, and you can omit the listener if you prefer.
+
+```kotlin
+val favoriteId = "favoriteUniqueId" // The ID of the favorite whose position you want to change
+val newPosition = 1 // The new position in the favorites list
+
+RainbowSdk().favorites().updateFavoritePosition(favoriteId, newPosition, object : RainbowListener<IRainbowFavorite, Unit> {
+    override fun onSuccess(data: IRainbowFavorite) {
+        // Handle successful position update
+        println("Favorite with ID $favoriteId has been moved to position $newPosition.")
+    }
+
+    override fun onError(error: RainbowError<Unit>) {
+        // Handle error during position update
+        println("Error occurred while trying to change the position of favorite with ID $favoriteId.")
+    }
+})
+```
+
+**Note:** When you change the position of a favorite, the positions of other favorites will also be updated accordingly to maintain the correct order.
+
+### Retrieve a Favorite
+
+---
+
+You can retrieve a favorite using either of the following methods:
+
+-   `fun getFavoriteById(favoriteId: String): IRainbowFavorite?`
+-   `fun getFavoriteByPeerId(peerId: String): IRainbowFavorite?`
+
+The first method retrieves a favorite based on its unique favorite ID, while the second method retrieves a favorite using the `peerId`.
+
+```kotlin
+val favoriteId = "favoriteUniqueId" // The ID of the favorite you want to retrieve
+
+val favorite = RainbowSdk().favorites().getFavoriteById(favoriteId)
+if (favorite != null) {
+    println("Retrieved favorite: ${favorite.peerId} of type ${favorite.type}")
+} else {
+    println("No favorite found with ID $favoriteId.")
+}
+```
+```kotlin
+val peerId = "contactOrRoomId" // The Peer ID of the favorite you want to retrieve
+
+val favorite = RainbowSdk().favorites().getFavoriteByPeerId(peerId)
+if (favorite != null) {
+    println("Retrieved favorite: ${favorite.peerId} of type ${favorite.type}")
+} else {
+    println("No favorite found with Peer ID $peerId.")
+}
+```
+
+### Conclusion
+
+---
+
+In this guide, we've covered the essential aspects of managing favorites using the **Rainbow SDK for Android**. You learned how to create, delete, and update the positions of favorites, as well as how to retrieve them by their unique IDs or peer IDs.
+
+These functionalities enable you to enhance the user experience by allowing easy access to frequently contacted users and important rooms. By implementing these features, you can create a more organized and efficient communication environment within your application.
+
+Feel free to explore additional features and customize the favorite management to suit your application's needs!
+
+*Last updated September, 2024*
+
+### On this page
+
+-   [Manage Favorites](/docs/sdk/android#name-manage-favorites-0)
+-   [Preamble](/docs/sdk/android#name-preamble-85)
+-   [Retrieve favorites](/docs/sdk/android#name-retrieve-favorites-112)
+-   [Create a new Favorite](/docs/sdk/android#name-create-a-new-favorite-139)
+-   [Delete a Favorite](/docs/sdk/android#name-delete-a-favorite-169)
+-   [Change the position of a Favorite](/docs/sdk/android#name-change-the-position-of-a-favorite-186)
+-   [Retrieve a Favorite](/docs/sdk/android#name-retrieve-a-favorite-206)
+-   [Conclusion](/docs/sdk/android#name-conclusion-230)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

@@ -1,0 +1,348 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Manage_notifications"
+lastSynced: "2026-02-20T07:12:28.614Z"
+---
+# Documentation
+
+Manage notifications
+
+LTS release 2.61.0Published on 202-04-06
+
+## Manage notifications
+
+---
+
+Welcome to the tutorial on how to manage notifications with the **Rainbow SDK for Android!** In this guide, we'll take you through the process of notifying the user about events that happen when the application is running or stopped.
+
+**Rainbow concept**
+
+**Description**
+
+**IRainbowImListener**
+
+Dive into the definition of the [IRainbowImListener interface](/docs/sdk/android) – your key to unlocking powerful event-driven notifications for messaging events.
+
+**IChannelsListener**
+
+Explore the capabilities of the [IChannelsListener interface](/docs/sdk/android) – your guide to handling events related to channels.
+
+**IConferencesListener**
+
+Discover the functionalities offered by the [IConferencesListener interface](/docs/sdk/android) – providing event-based notifications for conferences.
+
+**ICallLogsListener**
+
+Gain insights into the [ICallLogsListener interface](/docs/sdk/android) – facilitating event notifications related to call logs.
+
+**IFileStorageListener**
+
+Learn about the [IFileStorageListener interface](/docs/sdk/android) – enabling you to handle events related to file storage.
+
+**IVoicemailsListener**
+
+Discover the features of the [IVoicemailsListener interface](/docs/sdk/android) – your gateway to event-driven notifications for voicemails.
+
+**IWebinarsListener**
+
+Explore the [IWebinarsListener interface](/docs/sdk/android) – providing event-based notifications for webinars.
+
+### What You'll Learn
+
+-   Add a listener to listen to events sent from the SDK.
+-   Performing actions on notifications for enhanced user interaction.
+-   Handling incoming notifications seamlessly.
+
+### Preamble
+
+---
+
+This tutorial assumes that you have followed the **Getting Started** and **Connect to Rainbow** tutorials and that you have an active Rainbow application. Before diving into notifications, make sure:
+
+-   Your development environment is set up according to the guidelines in the [Getting Started](/docs/sdk/android) tutorial.
+-   You have successfully connected your application to the Rainbow platform as explained in the [Connect to Rainbow](/docs/sdk/android) tutorial.
+-   You have obtained the necessary authentication credentials and API keys.
+-   To be familiar with the Rainbow SDK
+
+To respond to events reported by the SDK, it is recommended to use a dedicated class for registering listeners across different modules based on your application's requirements.
+
+Creating a central management class within your `Application` class offers several advantages. This approach consolidates the handling of notifications, providing a centralized and organized structure. One key benefit is the accessibility of notifications, even when the application is running in the background. By centralizing the management of events, your application gains consistency and ease of maintenance, enhancing the overall robustness of event-driven functionalities. This allows you to display Android notifications or perform custom actions as needed.
+
+### Creation of a NotificationCenter class
+
+**Please note** that the provided example is a template for implementation. Feel free to adjust it according to your specific needs or explore alternative approaches that better suit your application's architecture.
+
+-   [kotlin](#codegroupTab-notification_center_kotlin)
+-   [java](#codegroupTab-notification_center_java)
+
+```kotlin
+class NotificationCenter(private val applicationContext: Context) : Channels.IChannelsListener, Im.IRainbowImListener {
+
+    // Define a channel ID for notifications
+    private val sampleChannelID = "SAMPLE_CHANNEL_ID"
+
+    // Initialize the NotificationCenter and register the desired listeners
+    fun start() {
+        val notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
+
+        notificationManager?.createNotificationChannel(NotificationChannel(sampleChannelID, "Default notification", NotificationManager.IMPORTANCE_DEFAULT))
+
+        RainbowSdk().channels().registerChannelsListener(this)
+        RainbowSdk().im().registerListener(this)
+    }
+
+    // Stop the NotificationCenter by unregistering all listeners
+    fun stop() {
+        RainbowSdk().channels().unregisterChannelsListener(this)
+        RainbowSdk().im().unregisterListener(this)
+    }
+}
+```
+
+```java
+class NotificationCenter implements Notifications.INotificationListener, Im.IRainbowImListener {
+   
+    // Define a channel ID for notifications
+    private final String sampleChannelID = "SAMPLE_CHANNEL_ID";
+    private final Context applicationContext;
+
+    public NotificationCenter(Context applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+
+    // Initialize the NotificationCenter and register the desired listeners
+    public void start() {
+        NotificationManager notificationManager = (NotificationManager) applicationContext.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (notificationManager != null) {
+            notificationManager.createNotificationChannel(new NotificationChannel(sampleChannelID, "Default notification", NotificationManager.IMPORTANCE_DEFAULT));
+        }
+
+        RainbowSdk.instance().channels().registerChannelsListener(this);
+        RainbowSdk.instance().im().registerListener(this);
+    }
+   
+    // Stop the NotificationCenter by unregistering all listeners
+    public void stop() {
+        RainbowSdk.instance().channels().unregisterChannelsListener(this);
+        RainbowSdk.instance().im().unregisterListener(this);
+    }
+}
+```
+
+Once the class has been created, you need to initialize it in your `Application` class.
+
+-   [kotlin](#codegroupTab-app_notification_center_kotlin)
+-   [java](#codegroupTab-app_notification_center_kotlin)
+
+```kotlin
+class RainbowApplication : Application() {
+
+    private lateinit var notificationCenter: NotificationCenter
+
+    override fun onCreate() {
+        super.onCreate()
+        RainbowSdk().initialize(
+            applicationContext = this,
+            applicationId = "YOUR_APP_ID",
+            applicationSecret = "YOUR_APP_SECRET",
+        )
+
+        notificationCenter = NotificationCenter(this)
+        notificationCenter.start()
+    }
+    
+    fun stop() {
+        notificationCenter.stop()
+    }
+}
+```
+
+```java
+public class MyApp extends Application {
+
+    private NotificationCenter notificationCenter;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        RainbowSdk.instance().initialize(this, "YOUR_APP_ID", "YOUR_APP_SECRET");
+        notificationCenter = new NotificationCenter(this);
+        notificationCenter.start();
+    }
+
+    public void stop() {
+        notificationCenter.stop()
+    }
+}
+```
+
+### Listen to Events
+
+Now that your `NotificationCenter` class implements some listeners, you have the flexibility to implement the methods that correspond to your needs.
+
+*Please note* that the callbacks in the `RainbowSDK` interface are designed to handle different notification scenarios. However, it's essential to be aware that some callbacks will only be triggered when the application is actively running, while others may still function even when the application is in a terminated state.
+
+Take this into consideration when implementing your event-handling logic. For a seamless user experience, ensure that your application gracefully handles notifications in both active and inactive states.
+
+To illustrate how to implement a basic notification, let's consider a scenario where you want to display a notification when the connected user receives a new channel message. Below is a simple sample implementation:
+
+-   [kotlin](#codegroupTab-notification_sample_kotlin)
+-   [java](#codegroupTab-notification_sample_java)
+
+```kotlin
+class NotificationCenter(private val applicationContext: Context) : Channels.IChannelsListener, Im.IRainbowImListener {
+
+    private val sampleChannelID = "SAMPLE_CHANNEL_ID"
+    private val channelGroupID = "CHANNEL_GROUP_ID"
+
+    fun start() { /** ... **/ }
+
+    fun stop() { /** ... **/ }
+
+    // Display notifications when a channel message is received
+    override fun notifyChannelMessage(channelItem: ChannelItem, channel: Channel) {
+        val contactName = channelItem.contact?.getDisplayName("Unknown") ?: "Unknown"
+        val text = "$contactName has published a new message in the channel"
+
+        val notification = NotificationCompat.Builder(applicationContext, sampleChannelID)
+            .setGroup(channelGroupID)
+            .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+            .setColor(ContextCompat.getColor(applicationContext, R.color.my_light_primary))
+            .setAutoCancel(true)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setDefaults(NotificationCompat.DEFAULT_LIGHTS)
+            .setContentTitle(channel.name)
+            .setContentText(text)
+            .build()
+
+        // Check whether the notifications permissions have been accepted
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || PermissionChecker.checkSelfPermission(applicationContext, Manifest.permission.POST_NOTIFICATIONS) == PermissionChecker.PERMISSION_GRANTED) {
+            NotificationManagerCompat.from(applicationContext).notify(channel.id.hashCode(), notification)
+        }
+    }
+
+    override fun onImReceived(conversation: IRainbowConversation?, message: IMMessage?) {
+        // Implement logic to display a notification
+    }
+}
+```
+
+```java
+class NotificationCenterJava implements Channels.IChannelsListener, Im.IRainbowImListener {
+
+   private final String sampleChannelID = "SAMPLE_CHANNEL_ID";
+   private final String channelGroupID = "CHANNEL_GROUP_ID";
+   private final Context applicationContext;
+
+   public NotificationCenterJava(Context applicationContext) {
+      this.applicationContext = applicationContext;
+   }
+
+   public void start() { /** ... **/ }
+
+   public void stop() { /** ... **/ }
+
+
+   // Display notifications when a channel message is received
+   @Override
+   public void notifyChannelMessage(@NonNull ChannelItem channelItem, @NonNull Channel channel) {
+      IRainbowContact contact = channelItem.getContact();
+      String contactName = "Unknown";
+
+      if (contact != null)
+         contactName = channelItem.getContact().getDisplayName("Unknown");
+
+      String text = contactName + " has published a new message in the channel";
+
+      Notification notification = new NotificationCompat.Builder(applicationContext, sampleChannelID)
+              .setGroup(channelGroupID)
+              .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+              .setColor(ContextCompat.getColor(applicationContext, R.color.my_light_primary))
+              .setAutoCancel(true)
+              .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+              .setDefaults(NotificationCompat.DEFAULT_LIGHTS)
+              .setContentTitle(channel.getName())
+              .setContentText(text)
+              .build();
+
+      // Check whether the notifications permissions have been accepted
+      if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || PermissionChecker.checkSelfPermission(applicationContext, Manifest.permission.POST_NOTIFICATIONS) == PermissionChecker.PERMISSION_GRANTED) {
+         NotificationManagerCompat.from(applicationContext).notify(channel.getId().hashCode(), notification);
+      }
+   }
+
+   @Override
+   public void onImReceived(IRainbowConversation conversation, IMMessage message) {
+        // Implement logic to display a notification
+   }
+}
+```
+
+Another frequent scenario is to present a notification upon receiving an incoming call. Achieving this is straightforward:
+
+-   [kotlin](#codegroupTab-telephony_sample_kotlin)
+-   [java](#codegroupTab-telephony_sample_java)
+
+```kotlin
+class NotificationCenter(private val applicationContext: Context) : ITelephonyListener {
+
+    // Other class members and methods...
+
+    override fun onCallAdded(call: WebRTCCall?, secondCall: Boolean) {
+        // Implement logic to display an incoming call notification
+    }
+
+    override fun onCallModified(call: WebRTCCall?, secondCall: Boolean) {
+        // Implement logic to handle call modifications
+    }
+
+    override fun onCallRemoved(call: WebRTCCall?, secondCall: Boolean) {
+        // Implement logic to remove the incoming call notification if necessary
+    }
+}
+```
+
+```java
+class NotificationCenterJava implements ITelephonyListener {
+
+    // Other class members and methods...
+
+    @Override
+    public void onCallAdded(WebRTCCall call, boolean secondCall) {
+        // Implement logic to display an incoming call notification
+    }
+
+    @Override
+    public void onCallModified(WebRTCCall call, boolean secondCall) {
+        // Implement logic to handle call modifications
+    }
+
+    @Override
+    public void onCallRemoved(WebRTCCall call, boolean secondCall) {
+        // Implement logic to remove the incoming call notification if necessary
+    }
+}
+```
+
+Now that you've mastered reacting to SDK events and displaying notifications, consider exploring the power of [Push notifications](/docs/sdk/android). This will ensure you stay informed even when your application is in a stopped state. Happy coding!
+
+---
+
+*Last updated February, 2024*
+
+### On this page
+
+-   [Manage notifications](/docs/sdk/android#name-manage-notifications-0)
+-   [What You'll Learn](/docs/sdk/android#name-what-youll-learn-77)
+-   [Preamble](/docs/sdk/android#name-preamble-97)
+-   [Creation of a NotificationCenter class](/docs/sdk/android#name-creation-of-a-notificationcenter-class-132)
+-   [Listen to Events](/docs/sdk/android#name-listen-to-events-143)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

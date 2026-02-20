@@ -1,0 +1,4832 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/contacts"
+lastSynced: "2026-02-20T07:12:31.983Z"
+---
+# Documentation
+
+Contacts Service
+
+LTS release 2.XPublished on 2025-01-01
+
+## ContactsService
+
+This module manages \_contacts. A contact is defined by a set of public information (name, firstname, avatar...) and a set of private information.  
+Using this module, you can get access to your network \_contacts or search for Rainbow \_contacts.  
+  
+  
+The main methods proposed in that module allow to:  
+\- Get the network \_contacts (roster)  
+\- Get and search \_contacts by Id, JID or loginEmail  
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [ContactsService](#module_ContactsService)
+    -   *Contacts Contacts API - Enduser portal*
+        -   [updateContactData(userId, sourceId, contactIddb, contactId, firstName, lastName, displayName, company, jobTitle, phoneNumbers, emails, addresses, groups, otherData)](#module_ContactsService+updateContactData) ⇒ `Object`
+        -   [createContact(userId, sourceId, contactId, firstName, lastName, displayName, company, jobTitle, phoneNumbers, emails, addresses, groups, otherData)](#module_ContactsService+createContact) ⇒ `Object`
+        -   [getContactData(userId, sourceId, contactId)](#module_ContactsService+getContactData) ⇒ `Object`
+        -   [getContactsList(userId, sourceId, format)](#module_ContactsService+getContactsList) ⇒ `Object`
+        -   [deleteContact(userId, sourceId, contactId)](#module_ContactsService+deleteContact) ⇒ `Object`
+    -   *Contacts INFORMATION*
+        -   [getAll()](#module_ContactsService+getAll) ⇒ `Array.<Contact>`
+        -   [getAllContactsInCache()](#module_ContactsService+getAllContactsInCache) ⇒ `Array.<Contact>`
+        -   [getContactByJid(jid, forceServerSearch)](#module_ContactsService+getContactByJid) ⇒ `Promise.<Contact, ErrorManager>`
+        -   [getContactById(id, forceServerSearch)](#module_ContactsService+getContactById) ⇒ `Promise.<Contact, ErrorManager>`
+        -   [getContactByLoginEmail(loginEmail, forceServerSearch)](#module_ContactsService+getContactByLoginEmail) ⇒ `Promise.<Contact, ErrorManager>`
+        -   [getContactIdByLoginEmail(loginEmail, forceServerSearch)](#module_ContactsService+getContactIdByLoginEmail) ⇒ `Promise.<String, ErrorManager>`
+        -   [getMyInformations()](#module_ContactsService+getMyInformations) ⇒ `Promise.<Object, ErrorManager>`
+        -   [getPeerById(peerId)](#module_ContactsService+getPeerById) ⇒ `Promise.<Object, ErrorManager>`
+        -   [getPeerByJid(peerJid)](#module_ContactsService+getPeerByJid) ⇒ `Promise.<Object, ErrorManager>`
+        -   [getContactsInformationByIds(iDs, sortOrder, forceServerSearch)](#module_ContactsService+getContactsInformationByIds) ⇒ `Promise.<Array.<Contact>, ErrorManager>`
+        -   [getContactsInformationByJIDs(JIDs, sortOrder, forceServerSearch)](#module_ContactsService+getContactsInformationByJIDs) ⇒ `Promise.<Array.<Contact>, ErrorManager>`
+        -   [getCompanyInfos(companyId, format, selectedThemeObj, name, status, visibility, organisationId, isBP, hasBP, bpType)](#module_ContactsService+getCompanyInfos) ⇒ `string`
+        -   [getAvatarByContactId(id, lastAvatarUpdateDate)](#module_ContactsService+getAvatarByContactId) ⇒ `string`
+        -   [getConnectedUser()](#module_ContactsService+getConnectedUser) ⇒ `Contact`
+        -   [getDisplayName(contact)](#module_ContactsService+getDisplayName) ⇒ `string`
+        -   [updateMyInformations(dataToUpdate)](#module_ContactsService+updateMyInformations) ⇒ `string`
+    -   *Contacts NETWORK*
+        -   [getRosters(bulkLoadOfInformations)](#module_ContactsService+getRosters) ⇒ `Promise.<Array.<Contact>, ErrorManager>`
+        -   [addToNetwork(contact)](#module_ContactsService+addToNetwork) ⇒ `Promise.<Contact>`
+        -   [addToContactsList(contact)](#module_ContactsService+addToContactsList) ⇒ `Promise.<Contact>`
+        -   [removeFromNetwork(contact)](#module_ContactsService+removeFromNetwork) ⇒ `Promise`
+        -   [getInvitationById(strInvitationId)](#module_ContactsService+getInvitationById) ⇒ `Invitation`
+        -   [acceptInvitation(invitation)](#module_ContactsService+acceptInvitation) ⇒ `Object`
+        -   [declineInvitation(invitation)](#module_ContactsService+declineInvitation) ⇒ `Object`
+        -   [joinContacts(contact, contactIds)](#module_ContactsService+joinContacts) ⇒ `Promise.<Object, ErrorManager>`
+    -   *Contacts Personal Directory*
+        -   [createPersonalDirectoryEntry(firstName, lastName, companyName, department, street, city, state, postalCode, country, workPhoneNumbers, mobilePhoneNumbers, otherPhoneNumbers, jobTitle, eMail, tags, custom1, custom2)](#module_ContactsService+createPersonalDirectoryEntry)
+    -   *Contacts Personnal Directory*
+        -   [getDirectoryEntryData(entryId, format)](#module_ContactsService+getDirectoryEntryData) ⇒ `Promise.<any>`
+        -   [getListPersonalDirectoryEntriesData(name, search, type, companyName, phoneNumbers, fromUpdateDate, toUpdateDate, tags, format, limit, offset, sortField, sortOrder, view)](#module_ContactsService+getListPersonalDirectoryEntriesData) ⇒ `Promise.<any>`
+        -   [updatePersonalDirectoryEntry(entryId, firstName, lastName, companyName, department, street, city, state, postalCode, country, workPhoneNumbers, mobilePhoneNumbers, otherPhoneNumbers, jobTitle, eMail, tags, custom1, custom2)](#module_ContactsService+updatePersonalDirectoryEntry) ⇒ `Promise.<any>`
+        -   [deletePersonalDirectoryEntry(entryId)](#module_ContactsService+deletePersonalDirectoryEntry) ⇒ `Promise.<any>`
+    -   *Contacts SOURCES*
+        -   [createSource(userId, sourceId, os)](#module_ContactsService+createSource) ⇒ `Object`
+        -   [deleteSource(userId, sourceId)](#module_ContactsService+deleteSource) ⇒ `Object`
+        -   [getSourceData(userId, sourceId)](#module_ContactsService+getSourceData) ⇒ `Object`
+        -   [getAllSourcesByUserId(userId, format, sortField, limit, offset, sortOrder)](#module_ContactsService+getAllSourcesByUserId) ⇒ `Object`
+        -   [updateSourceData(userId, sourceId, os)](#module_ContactsService+updateSourceData) ⇒ `Object`
+    -   *Contacts Search*
+        -   [searchInAlldirectories(pbxId, systemId, numberE164, shortnumber, format, limit, offset, sortField, sortOrder)](#module_ContactsService+searchInAlldirectories) ⇒ `Promise.<any>`
+        -   [searchInPhonebook(pbxId, name, number, format, limit, offset, sortField, sortOrder)](#module_ContactsService+searchInPhonebook) ⇒ `Promise.<any>`
+        -   [searchUserByPhonenumber(number)](#module_ContactsService+searchUserByPhonenumber) ⇒ `Promise.<any>`
+        -   [searchUsers(limit, displayName, search, companyId, excludeCompanyId, offset, sortField, sortOrder)](#module_ContactsService+searchUsers) ⇒ `Promise.<any>`
+
+---
+
+### contactsService.updateContactData(userId, sourceId, contactIddb, contactId, firstName, lastName, displayName, company, jobTitle, phoneNumbers, emails, addresses, groups, otherData) ⇒ `Object`
+
+This API is used to update a contact data.  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Object` - The result
+
+Champ
+
+Type
+
+Description
+
+id
+
+String
+
+Contact unique identifier
+
+contactId
+
+String
+
+Id of the contact coming from the source who created it
+
+firstName
+
+String
+
+Contact firstName
+
+lastName
+
+String
+
+Contact lastName
+
+displayName
+
+String
+
+Contact displayName
+
+company
+
+String
+
+Contact company
+
+jobTitle
+
+String
+
+Contact jobTitle
+
+phoneNumbers
+
+Object\[\]
+
+Contact phone numbers
+
+type
+
+String
+
+Phone number type  
+  
+Possibles values `home`, `work`, `other`
+
+number
+
+String
+
+Contact phone number
+
+emails
+
+Object\[\]
+
+Contact emails
+
+email
+
+String
+
+Contact email
+
+type
+
+String
+
+Contact email type  
+  
+Possibles values `home`, `work`, `other`
+
+addresses
+
+Object\[\]
+
+Contact addresses
+
+type
+
+String
+
+Contact address type  
+  
+Possibles values `home`, `work`, `other`
+
+address
+
+String
+
+Contact address
+
+street
+
+String
+
+Contact street
+
+city
+
+String
+
+Contact city
+
+state
+
+String
+
+Contact state
+
+postalCode
+
+String
+
+Contact postalCode
+
+country
+
+String
+
+Contact country
+
+groups
+
+String\[\]
+
+Contact groups type  
+  
+Possibles values `home`, `work`, `other`
+
+otherData
+
+Object\[\]
+
+Other user data – may include birthday date, Skype/Facebook pseudo/profile
+
+key
+
+String
+
+Other user data key
+
+value
+
+String
+
+Other user data value
+
+**Category**: Contacts Contacts API - Enduser portal
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.21.0
+
+Param
+
+Type
+
+Description
+
+userId
+
+`string`
+
+User unique identifier
+
+sourceId
+
+`string`
+
+Source unique identifier
+
+contactIddb
+
+`string`
+
+Contact unique identifier
+
+contactId
+
+`string`
+
+Contact unique id used by target mobile
+
+firstName
+
+`string`
+
+First name
+
+lastName
+
+`string`
+
+Last name
+
+displayName
+
+`string`
+
+First/last name, some OS don’t mind to have it in two attribute
+
+company
+
+`string`
+
+Company name
+
+jobTitle
+
+`string`
+
+Job title
+
+phoneNumbers
+
+`Array.<Object>`
+
+Contact phone numbers  
+{ number : string // Contact phone number, type : string // Phone number type. Possibles values home, work, other }
+
+emails
+
+`Array.<Object>`
+
+Contact emails { email : string // Contact email, type : string // Contact email type Possibles values home, work, other }
+
+addresses
+
+`Array.<Object>`
+
+Contact addresses {type : string // Contact address type Possibles values home, work, other ,  
+address : string // Contact address ,  
+street : string // Contact street ,  
+city : string // Contact city ,  
+state : string // Contact state ,  
+postalCode : string // Contact postalCode ,  
+country : string // Contact country  
+}  
+
+groups
+
+`Array.<Object>`
+
+Contact groups type. Possibles values home, work, other
+
+otherData
+
+`Array.<Object>`
+
+Other user data – may include birthday date, Skype/Facebook pseudo/profile.  
+{ key : string // Other user data key , value : string // Other user data value }
+
+---
+
+### contactsService.createContact(userId, sourceId, contactId, firstName, lastName, displayName, company, jobTitle, phoneNumbers, emails, addresses, groups, otherData) ⇒ `Object`
+
+This API is used to create a contact for a given user's source.  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Object` - The result
+
+Champ
+
+Type
+
+Description
+
+id
+
+String
+
+Contact unique identifier
+
+contactId
+
+String
+
+Id of the contact coming from the source who created it
+
+firstName
+
+String
+
+Contact firstName
+
+lastName
+
+String
+
+Contact lastName
+
+displayName
+
+String
+
+Contact displayName
+
+company
+
+String
+
+Contact company
+
+jobTitle
+
+String
+
+Contact jobTitle
+
+phoneNumbers
+
+Object\[\]
+
+Contact phone numbers
+
+type
+
+String
+
+Phone number type  
+  
+Possibles values `home`, `work`, `other`
+
+number
+
+String
+
+Contact phone number
+
+emails
+
+Object\[\]
+
+Contact emails
+
+email
+
+String
+
+Contact email
+
+type
+
+String
+
+Contact email type  
+  
+Possibles values `home`, `work`, `other`
+
+addresses
+
+Object\[\]
+
+Contact addresses
+
+type
+
+String
+
+Contact address type  
+  
+Possibles values `home`, `work`, `other`
+
+address
+
+String
+
+Contact address
+
+street
+
+String
+
+Contact street
+
+city
+
+String
+
+Contact city
+
+state
+
+String
+
+Contact state
+
+postalCode
+
+String
+
+Contact postalCode
+
+country
+
+String
+
+Contact country
+
+groups
+
+String\[\]
+
+Contact groups type  
+  
+Possibles values `home`, `work`, `other`
+
+otherData
+
+Object\[\]
+
+Other user data – may include birthday date, Skype/Facebook pseudo/profile
+
+key
+
+String
+
+Other user data key
+
+value
+
+String
+
+Other user data value
+
+**Category**: Contacts Contacts API - Enduser portal
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.21.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+userId
+
+`string`
+
+User unique identifier
+
+sourceId
+
+`string`
+
+Source unique identifier
+
+contactId
+
+`string`
+
+Contact unique id used by target mobile
+
+firstName
+
+`string`
+
+First name
+
+lastName
+
+`string`
+
+Last name
+
+displayName
+
+`string`
+
+First/last name, some OS don’t mind to have it in two attribute
+
+company
+
+`string`
+
+Company name
+
+jobTitle
+
+`string`
+
+Job title
+
+phoneNumbers
+
+`Array.<Object>`
+
+`[`
+
+Contact phone numbers  
+{ number : string // Contact phone number, type : string // Phone number type. Possibles values home, work, other }
+
+emails
+
+`Array.<Object>`
+
+`[`
+
+Contact emails { email : string // Contact email, type : string // Contact email type Possibles values home, work, other }
+
+addresses
+
+`Array.<Object>`
+
+`[`
+
+Contact addresses {type : string // Contact address type Possibles values home, work, other ,  
+address : string // Contact address ,  
+street : string // Contact street ,  
+city : string // Contact city ,  
+state : string // Contact state ,  
+postalCode : string // Contact postalCode ,  
+country : string // Contact country  
+}  
+
+groups
+
+`Array.<Object>`
+
+`[`
+
+Contact groups type. Possibles values home, work, other
+
+otherData
+
+`Array.<Object>`
+
+`[`
+
+Other user data – may include birthday date, Skype/Facebook pseudo/profile.  
+{ key : string // Other user data key , value : string // Other user data value }
+
+---
+
+### contactsService.getContactData(userId, sourceId, contactId) ⇒ `Object`
+
+This API is used to get a contact data.  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Object` - The result
+
+Champ
+
+Type
+
+Description
+
+id
+
+String
+
+Contact unique identifier
+
+contactId
+
+String
+
+Id of the contact coming from the source who created it
+
+firstName
+
+String
+
+Contact firstName
+
+lastName
+
+String
+
+Contact lastName
+
+displayName
+
+String
+
+Contact displayName
+
+company
+
+String
+
+Contact company
+
+jobTitle
+
+String
+
+Contact jobTitle
+
+phoneNumbers
+
+Object\[\]
+
+Contact phone numbers
+
+type
+
+String
+
+Phone number type  
+  
+Possibles values `home`, `work`, `other`
+
+number
+
+String
+
+Contact phone number
+
+emails
+
+Object\[\]
+
+Contact emails
+
+email
+
+String
+
+Contact email
+
+type
+
+String
+
+Contact email type  
+  
+Possibles values `home`, `work`, `other`
+
+addresses
+
+Object\[\]
+
+Contact addresses
+
+type
+
+String
+
+Contact address type  
+  
+Possibles values `home`, `work`, `other`
+
+address
+
+String
+
+Contact address
+
+street
+
+String
+
+Contact street
+
+city
+
+String
+
+Contact city
+
+state
+
+String
+
+Contact state
+
+postalCode
+
+String
+
+Contact postalCode
+
+country
+
+String
+
+Contact country
+
+groups
+
+String\[\]
+
+Contact groups type  
+  
+Possibles values `home`, `work`, `other`
+
+otherData
+
+Object\[\]
+
+Other user data – may include birthday date, Skype/Facebook pseudo/profile
+
+key
+
+String
+
+Other user data key
+
+value
+
+String
+
+Other user data value
+
+**Category**: Contacts Contacts API - Enduser portal
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.21.0
+
+Param
+
+Type
+
+Description
+
+userId
+
+`string`
+
+User unique identifier
+
+sourceId
+
+`string`
+
+Source unique identifier
+
+contactId
+
+`string`
+
+Contact unique identifier
+
+---
+
+### contactsService.getContactsList(userId, sourceId, format) ⇒ `Object`
+
+This API is used to get contacts list.  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Object` - The result
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object\[\]
+
+List of contact Objects.
+
+id
+
+String
+
+Contact unique identifier
+
+contactId
+
+String
+
+Id of the contact coming from the source who created it
+
+firstName
+
+String
+
+Contact firstName
+
+lastName
+
+String
+
+Contact lastName
+
+displayName
+
+String
+
+Contact displayName
+
+company
+
+String
+
+Contact company
+
+jobTitle
+
+String
+
+Contact jobTitle
+
+phoneNumbers
+
+Object\[\]
+
+Contact phone numbers
+
+type
+
+String
+
+Phone number type  
+  
+Possibles values `home`, `work`, `other`
+
+number
+
+String
+
+Contact phone number
+
+emails
+
+Object\[\]
+
+Contact emails
+
+email
+
+String
+
+Contact email
+
+type
+
+String
+
+Contact email type  
+  
+Possibles values `home`, `work`, `other`
+
+addresses
+
+Object\[\]
+
+Contact addresses
+
+type
+
+String
+
+Contact address type  
+  
+Possibles values `home`, `work`, `other`
+
+address
+
+String
+
+Contact address
+
+street
+
+String
+
+Contact street
+
+city
+
+String
+
+Contact city
+
+state
+
+String
+
+Contact state
+
+postalCode
+
+String
+
+Contact postalCode
+
+country
+
+String
+
+Contact country
+
+groups
+
+String\[\]
+
+Contact groups type  
+  
+Possibles values `home`, `work`, `other`
+
+otherData
+
+Object\[\]
+
+Other user data – may include birthday date, Skype/Facebook pseudo/profile
+
+key
+
+String
+
+Other user data key
+
+value
+
+String
+
+Other user data value
+
+**Category**: Contacts Contacts API - Enduser portal
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.21.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+userId
+
+`string`
+
+User unique identifier
+
+sourceId
+
+`string`
+
+Source unique identifier
+
+format
+
+`string`
+
+`small`
+
+Allows to retrieve more or less contact details in response.  
+\- small: id, contactId  
+\- medium: id, contactId, firstName, lastName, displayName, company, jobTitle  
+\- full: all contact fields  
+Default value : small. Possibles values : small, medium, full  
+
+---
+
+### contactsService.deleteContact(userId, sourceId, contactId) ⇒ `Object`
+
+This API is used to delete a contact from a source.  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Object` - The result
+
+Champ
+
+Type
+
+Description
+
+status
+
+String
+
+Deletion status
+
+data
+
+Object\[\]
+
+No data (empty Array)
+
+**Category**: Contacts Contacts API - Enduser portal
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.21.0
+
+Param
+
+Type
+
+Description
+
+userId
+
+`string`
+
+User unique identifier
+
+sourceId
+
+`string`
+
+Source unique identifier
+
+contactId
+
+`string`
+
+Contact unique identifier
+
+---
+
+### contactsService.getAll() ⇒ `Array.<Contact>`
+
+Return the list of \_contacts in cache that are in the network of the connected users (aka rosters)  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Array.<Contact>` - the list of \_contacts
+
+**Category**: Contacts INFORMATION
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### contactsService.getAllContactsInCache() ⇒ `Array.<Contact>`
+
+Return the list of \_contacts that are in the cache of the current instance of the connected users.  
+`Note:` the stored contacts can be or not in the network. Rainbow SDK only receives event of contacts in the network.  
+So others are only cache about previous exchange, and are cleaned with the clean memory process. The cleaning interval is defined by "intervalBetweenCleanMemoryCache" SDK's option.
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Array.<Contact>` - the list of \_contacts
+
+**Category**: Contacts INFORMATION
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### contactsService.getContactByJid(jid, forceServerSearch) ⇒ `Promise.<Contact, ErrorManager>`
+
+Get a contact by his JID by searching in the connected user \_contacts list (full information) and if not found by searching on the server too (limited set of information)  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Category**: Contacts INFORMATION
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Contact` - Found contact or null or an error object depending on the result
+
+Param
+
+Type
+
+Default
+
+Description
+
+jid
+
+`string`
+
+The contact jid
+
+forceServerSearch
+
+`boolean`
+
+`false`
+
+Boolean to force the search of the \_contacts information on the server.
+
+---
+
+### contactsService.getContactById(id, forceServerSearch) ⇒ `Promise.<Contact, ErrorManager>`
+
+Get a contact by his id  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Category**: Contacts INFORMATION
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Contact` - Found contact or null or an error object depending on the result
+
+Param
+
+Type
+
+Default
+
+Description
+
+id
+
+`string`
+
+The contact id
+
+forceServerSearch
+
+`boolean`
+
+`false`
+
+Boolean to force the search of the \_contacts information on the server.
+
+---
+
+### contactsService.getContactByLoginEmail(loginEmail, forceServerSearch) ⇒ `Promise.<Contact, ErrorManager>`
+
+Get a contact by his loginEmail  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Category**: Contacts INFORMATION
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Contact` - Found contact or null or an error object depending on the result
+
+Param
+
+Type
+
+Default
+
+Description
+
+loginEmail
+
+`string`
+
+The contact loginEmail
+
+forceServerSearch
+
+`boolean`
+
+`false`
+
+Boolean to force the search of the \_contacts information on the server.
+
+---
+
+### contactsService.getContactIdByLoginEmail(loginEmail, forceServerSearch) ⇒ `Promise.<String, ErrorManager>`
+
+Get a contact Id by his loginEmail  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Category**: Contacts INFORMATION
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `string` - Found contact Id or null or an error object depending on the result
+
+Param
+
+Type
+
+Default
+
+Description
+
+loginEmail
+
+`string`
+
+The contact loginEmail
+
+forceServerSearch
+
+`boolean`
+
+`false`
+
+Boolean to force the search of the \_contacts information on the server.
+
+---
+
+### contactsService.getMyInformations() ⇒ `Promise.<Object, ErrorManager>`
+
+Get information about the connected user  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Category**: Contacts INFORMATION
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Object` - Found information or null or an error object depending on the result
+
+---
+
+### contactsService.getPeerById(peerId) ⇒ `Promise.<Object, ErrorManager>`
+
+Get information about a peer by id. Can be a "user", a "room"  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Category**: Contacts INFORMATION
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Object` - Found information or null or an error object depending on the result
+
+Param
+
+Type
+
+Description
+
+peerId
+
+`string`
+
+ID of another user, ID of a room or ID of a bot, according to value of type field: user ID: id returned in Contact objects. user ID is also available in user vCard via a proprietary field name 'rainbowId'. room ID: id returned in Bubble objects.
+
+---
+
+### contactsService.getPeerByJid(peerJid) ⇒ `Promise.<Object, ErrorManager>`
+
+Get information about a peer by jid. Can be a "user", a "room"  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Category**: Contacts INFORMATION
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Object` - Found information or null or an error object depending on the result
+
+Param
+
+Type
+
+Description
+
+peerJid
+
+`string`
+
+JID of another user, JID of a room or JID of a bot, according to value of type field: user JID: id returned in Contact objects. room JID: id returned in Bubble objects.
+
+---
+
+### contactsService.getContactsInformationByIds(iDs, sortOrder, forceServerSearch) ⇒ `Promise.<Array.<Contact>, ErrorManager>`
+
+Get a list of \_contacts details by IDs.  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Category**: Contacts INFORMATION
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `ErrorManager` - ErrorManager object depending on the result (ErrorManager.getErrorManager().OK in case of success)
+
+Param
+
+Type
+
+Default
+
+Description
+
+iDs
+
+`Array.<string>`
+
+Allows to search users having id equal to one of the ids provided in this option.
+
+sortOrder
+
+`string`
+
+`1`
+
+Users are sorted by id. sortOrder allows to specify order when sorting user list. Default value : 1. Possible values : -1, 1.
+
+forceServerSearch
+
+`boolean`
+
+`false`
+
+Boolean to force the search of the \_contacts information on the server.
+
+---
+
+### contactsService.getContactsInformationByJIDs(JIDs, sortOrder, forceServerSearch) ⇒ `Promise.<Array.<Contact>, ErrorManager>`
+
+Get a list of \_contacts details by JIDs.  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Category**: Contacts INFORMATION
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `ErrorManager` - ErrorManager object depending on the result (ErrorManager.getErrorManager().OK in case of success)
+
+Param
+
+Type
+
+Default
+
+Description
+
+JIDs
+
+`Array.<string>`
+
+Allows to search users having jid\_im equal to one of the jids provided in this option.
+
+sortOrder
+
+`string`
+
+`1`
+
+Users are sorted by jid\_im. sortOrder allows to specify order when sorting user list. Default value : 1. Possible values : -1, 1.
+
+forceServerSearch
+
+`boolean`
+
+`false`
+
+Boolean to force the search of the \_contacts information on the server.
+
+---
+
+### contactsService.getCompanyInfos(companyId, format, selectedThemeObj, name, status, visibility, organisationId, isBP, hasBP, bpType) ⇒ `string`
+
+This API allows user to get a company data.  
+**Users can only retrieve their own company and companies they can see** (companies with `visibility`\=`public`, companies having user's companyId in `visibleBy` field, companies being in user's company organization and having `visibility`\=`organization`, BP company of user's company).  
+If user request his own company, `numberUsers` field is returned with the number of Rainbow users being in this company.  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `string` - Contact avatar URL or file
+
+Champ
+
+Type
+
+Description
+
+numberUsers
+
+Number
+
+Number of Rainbow users being associated to the company.  
+Only returned if the requested company is the logged in user's company.
+
+meetingRecordingCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to record a meeting.  
+Defines if a user can record a meeting.  
+meetingRecordingCustomisation can be:  
+  
+\* `enabled`: The user can record a meeting.  
+\* `disabled`: The user can't record a meeting.
+
+eLearningGamificationCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to earn badges for Elearning progress.  
+Defines if a user can earn badges for Elearning progress.  
+eLearningGamificationCustomisation can be:  
+  
+\* `enabled`: The user can earn badges for Elearning progress.  
+\* `disabled`: The user can't earn badges for Elearning progress.
+
+eLearningCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to participate on a Elearning training.  
+Defines if a user can particapate on an Elearning training.  
+eLearningCustomisation can be:  
+  
+\* `enabled`: The user can participate on an Elearning training.  
+\* `disabled`: The user can't participate on an Elearning training.
+
+autoAcceptUserInvitations optionnel
+
+Boolean
+
+Allow to enable or disable the auto-acceptation of user invitations between users of this company (default true: enabled)  
+  
+Default value : `true`
+
+dataLocation
+
+Object
+
+Information regarding the location where the company data and relative private data are stored (including users of the company and their own private data).  
+Only returned if the requested company is the logged in user's company.
+
+name
+
+String
+
+Name of the zone where the company data are stored.
+
+location
+
+String
+
+Location of the zone where the company data are stored. Should usually be the country name (English) where the zone is located.
+
+country
+
+String
+
+Country (ISO 3166-1 alpha3 format) of the zone where the company data are stored
+
+id
+
+String
+
+Company unique identifier
+
+creationDate
+
+Date-Time
+
+Company creation date (Read only)
+
+statusUpdatedDate
+
+Date-Time
+
+Date of last company status update (Read only)
+
+lastAvatarUpdateDate
+
+Date-Time
+
+Date of last company avatar update (Read only)
+
+name
+
+String
+
+Company name
+
+country optionnel
+
+String
+
+Company country (ISO 3166-1 alpha3 format)  
+  
+The list of allowed countries can be obtained using the API [GET /api/rainbow/enduser/v1.0/countries](/enduser/#api-countries-getCountries)
+
+street optionnel
+
+String
+
+Company street  
+
+city optionnel
+
+String
+
+Company city  
+
+state optionnel
+
+String
+
+When country is 'USA' or 'CAN', a state must be defined. Else it is not managed.  
+  
+The list of allowed states can be obtained using the API [GET /api/rainbow/enduser/v1.0/countries](/enduser/#api-countries-getCountries) for the associated countries.  
+  
+\* List of allowed states for `USA`:  
+\* `AA`: "Armed Forces America",  
+\* `AE`: "Armed Forces",  
+\* `AP`: "Armed Forces Pacific",  
+\* `AK`: "Alaska",  
+\* `AL`: "Alabama",  
+\* `AR`: "Arkansas",  
+\* `AZ`: "Arizona",  
+\* `CA`: "California",  
+\* `CO`: "Colorado",  
+\* `CT`: "Connecticut",  
+\* `DC`: Washington DC",  
+\* `DE`: "Delaware",  
+\* `FL`: "Florida",  
+\* `GA`: "Georgia",  
+\* `GU`: "Guam",  
+\* `HI`: "Hawaii",  
+\* `IA`: "Iowa",  
+\* `ID`: "Idaho",  
+\* `IL`: "Illinois",  
+\* `IN`: "Indiana",  
+\* `KS`: "Kansas",  
+\* `KY`: "Kentucky",  
+\* `LA`: "Louisiana",  
+\* `MA`: "Massachusetts",  
+\* `MD`: "Maryland",  
+\* `ME`: "Maine",  
+\* `MI`: "Michigan",  
+\* `MN`: "Minnesota",  
+\* `MO`: "Missouri",  
+\* `MS`: "Mississippi",  
+\* `MT`: "Montana",  
+\* `NC`: "North Carolina",  
+\* `ND`: "North Dakota",  
+\* `NE`: "Nebraska",  
+\* `NH`: "New Hampshire",  
+\* `NJ`: "New Jersey",  
+\* `NM`: "New Mexico",  
+\* `NV`: "Nevada",  
+\* `NY`: "New York",  
+\* `OH`: "Ohio",  
+\* `OK`: "Oklahoma",  
+\* `OR`: "Oregon",  
+\* `PA`: "Pennsylvania",  
+\* `PR`: "Puerto Rico",  
+\* `RI`: "Rhode Island",  
+\* `SC`: "South Carolina",  
+\* `SD`: "South Dakota",  
+\* `TN`: "Tennessee",  
+\* `TX`: "Texas",  
+\* `UT`: "Utah",  
+\* `VA`: "Virginia",  
+\* `VI`: "Virgin Islands",  
+\* `VT`: "Vermont",  
+\* `WA`: "Washington",  
+\* `WI`: "Wisconsin",  
+\* `WV`: "West Virginia",  
+\* `WY`: "Wyoming"  
+\* List of allowed states for `CAN`:  
+\* `AB`: "Alberta",  
+\* `BC`: "British Columbia",  
+\* `MB`: "Manitoba",  
+\* `NB`: "New Brunswick",  
+\* `NL`: "Newfoundland and Labrador",  
+\* `NS`: "Nova Scotia",  
+\* `NT`: "Northwest Territories",  
+\* `NU`: "Nunavut",  
+\* `ON`: "Ontario",  
+\* `PE`: "Prince Edward Island",  
+\* `QC`: "Quebec",  
+\* `SK`: "Saskatchewan",  
+\* `YT`: "Yukon"  
+  
+Possibles values `null`, `"AA"`, `"AE"`, `"AP"`, `"AK"`, `"AL"`, `"AR"`, `"AZ"`, `"CA"`, `"CO"`, `"CT"`, `"DC"`, `"DE"`, `"FL"`, `"GA"`, `"GU"`, `"HI"`, `"IA"`, `"ID"`, `"IL"`, `"IN"`, `"KS"`, `"KY"`, `"LA"`, `"MA"`, `"MD"`, `"ME"`, `"MI"`, `"MN"`, `"MO"`, `"MS"`, `"MT"`, `"NC"`, `"ND"`, `"NE"`, `"NH"`, `"NJ"`, `"NM"`, `"NV"`, `"NY"`, `"OH"`, `"OK"`, `"OR"`, `"PA"`, `"PR"`, `"RI"`, `"SC"`, `"SD"`, `"TN"`, `"TX"`, `"UT"`, `"VA"`, `"VI"`, `"VT"`, `"WA"`, `"WI"`, `"WV"`, `"WY"`, `"AB"`, `"BC"`, `"MB"`, `"NB"`, `"NL"`, `"NS"`, `"NT"`, `"NU"`, `"ON"`, `"PE"`, `"QC"`, `"SK"`, `"YT"`
+
+postalCode optionnel
+
+String
+
+Company postal code  
+
+currency optionnel
+
+String
+
+Company currency, for payment of premium offers (ISO 4217 format)  
+For now, only USD, EUR and CNY are supported  
+  
+Possibles values `USD`, `EUR`, `CNY`
+
+status
+
+String
+
+Company status  
+  
+Possibles values `initializing`, `active`, `alerting`, `hold`, `terminated`
+
+visibility optionnel
+
+string
+
+Company visibility (define if users being in this company can be searched by users being in other companies and if the user can search users being in other companies).  
+  
+\* `public`: User can be searched by external users / can search external users. User can invite external users / can be invited by external users  
+\* `private`: User **can't** be searched by external users (even within his organisation) / can search external users. User can invite external users / can be invited by external users  
+\* `organisation`: User **can't** be searched by external users / can search external users. User can invite external users / can be invited by external users  
+\* `closed`: User **can't** be searched by external users / **can't** search external users. User can invite external users / can be invited by external users  
+\* `isolated`: User **can't** be searched by external users / **can't** search external users. User **can't** invite external users / **can't** be invited by external users  
+\* `none`: Default value reserved for guest. User **can't** be searched by **any users** (even within the same company) / can search external users. User can invite external users / can be invited by external users  
+  
+External users mean public user not being in user's company nor user's organisation nor a company visible by user's company.  
+  
+Note related to organisation visibility:  
+  
+\* Under the same organisation, a company can choose the visibility=organisation. That means users belonging to this company are visible for users of foreign companies inside the same organisation.  
+\* The visibility=organisation is same as visibility=private outside the organisation. That is to say users can't be searched outside the organisation's companies.  
+  
+Default value : `private`  
+  
+Possibles values `public`, `private`, `organisation`, `closed`, `isolated`
+
+visibleBy
+
+String\[\]
+
+If visibility is private, list of companyIds for which visibility is allowed
+
+adminEmail optionnel
+
+String
+
+Company contact person email
+
+supportEmail optionnel
+
+String
+
+Company support email
+
+supportUrlFAQ optionnel
+
+String
+
+Company support URL
+
+companyContactId optionnel
+
+String
+
+User Id of a Rainbow user which is the contact for this company
+
+disableCCareAdminAccess optionnel
+
+Boolean
+
+When True, disables the access to the customer care logs for admins of this company.  
+Note that if `disableCCareAdminAccessCustomers` is enabled on its BP company or `disableCCareAdminAccessResellers` is enabled on its BP VAD company, this setting is forced to true.
+
+disableCCareAdminAccessCustomers optionnel
+
+Boolean
+
+When True, disables the access to the customer care logs for admins of all the customers company.  
+This setting is only applicable for BP companies (`isBP`\=true)  
+  
+\* If the BP company is a DR or an IR, enabling this setting disables the access to the customer care logs for the admins of all its customers companies.  
+\* If the BP company is a VAD, enabling this setting disables the access to the customer care logs for all the admins of its customers companies.  
+Note that the bp\_admins/admins of all the BP IRs companies linked to this VAD still have access to the customer care logs (the setting `disableCCareAdminAccessResellers` on the BP VAD company allows to disable it).
+
+disableCCareAdminAccessResellers optionnel
+
+Boolean
+
+When True, disables the access to the customer care logs for admins of all the BP IRs companies linked to the BP VAD and their customers company.  
+This setting is only applicable for BP VAD companies (`isBP`\=true and `bpType`\=`VAD`)  
+Enabling this setting disables on the BP VAD company disables the access to the customer care logs for the bp\_admins/admins of all the BP IRs linked to this VAD, and to all the admins of their customers.  
+Note that the admins of all the customer companies directly linked to this VAD still have access to the customer care logs (the setting `disableCCareAdminAccessCustomers` on the BP VAD company allows to disable it).
+
+userSelfRegisterEnabled
+
+Boolean
+
+Allow users with email domain matching 'userSelfRegisterAllowedDomains' to join the company by self-register process
+
+userSelfRegisterAllowedDomains
+
+String\[\]
+
+Allow users with email domain matching one of the values of this array to join the company by self-register process (if userSelfRegisterEnabled is true)
+
+slogan optionnel
+
+String
+
+A free string corresponding to the slogan of the company (255 char length)
+
+description optionnel
+
+String
+
+A free string that describes the company (2000 char length)
+
+size
+
+String
+
+An overview of the number of employees  
+  
+Possibles values `"self-employed"`, `"1-10 employees"`, `"11-50 employees"`, `"51-200 employees"`, `"201-500 employees"`, `"501-1000 employees"`, `"1001-5000 employees"`, `"5001-10,000 employees"`, `"10,001+ employees"`
+
+economicActivityClassification optionnel
+
+String
+
+\* `A`: AGRICULTURE, FORESTRY AND FISHING  
+\* `B`: MINING AND QUARRYING  
+\* `C`: MANUFACTURING  
+\* `D`: ELECTRICITY, GAS, STEAM AND AIR CONDITIONING SUPPLY  
+\* `E`: WATER SUPPLY; SEWERAGE, WASTE MANAGEMENT AND REMEDIATION ACTIVITIES  
+\* `F`: CONSTRUCTION  
+\* `G`: WHOLESALE AND RETAIL TRADE; REPAIR OF MOTOR VEHICLES AND MOTORCYCLES  
+\* `H`: TRANSPORTATION AND STORAGE  
+\* `I`: ACCOMMODATION AND FOOD SERVICE ACTIVITIES  
+\* `J`: INFORMATION AND COMMUNICATION  
+\* `K`: FINANCIAL AND INSURANCE ACTIVITIES  
+\* `L`: REAL ESTATE ACTIVITIES  
+\* `M`: PROFESSIONAL, SCIENTIFIC AND TECHNICAL ACTIVITIES  
+\* `N`: ADMINISTRATIVE AND SUPPORT SERVICE ACTIVITIES  
+\* `O`: PUBLIC ADMINISTRATION AND DEFENCE; COMPULSORY SOCIAL SECURITY  
+\* `P`: EDUCATION  
+\* `Q`: HUMAN HEALTH AND SOCIAL WORK ACTIVITIES  
+\* `R`: ARTS, ENTERTAINMENT AND RECREATION  
+\* `S`: OTHER SERVICE ACTIVITIES  
+\* `T`: ACTIVITIES OF HOUSEHOLDS AS EMPLOYERS; UNDIFFERENTIATED GOODS- AND SERVICES-PRODUCING ACTIVITIES OF HOUSEHOLDS FOR OWN USE  
+\* `U`: ACTIVITIES OF EXTRATERRITORIAL ORGANISATIONS AND BODIES  
+  
+Possibles values `"NONE"`, `"A"`, `"B"`, `"C"`, `"D"`, `"E"`, `"F"`, `"G"`, `"H"`, `"I"`, `"J"`, `"K"`, `"L"`, `"M"`, `"N"`, `"O"`, `"P"`, `"Q"`, `"R"`, `"S"`, `"T"`, `"U"`
+
+giphyEnabled optionnel
+
+Boolean
+
+Whether or not giphy feature is enabled for users belonging to this company (possibility to use animated gifs in conversations)
+
+website optionnel
+
+String
+
+Company website URL
+
+organisationId
+
+String
+
+Optional identifier to indicate the company belongs to an organisation
+
+catalogId
+
+String
+
+Id of the catalog of Rainbow offers to which the company is linked. The catalog corresponds to the list of offers the company can subscribe.
+
+bpId
+
+String
+
+Optional identifier which links the company to the corresponding Business partner company
+
+adminHasRightToUpdateSubscriptions optionnel
+
+Boolean
+
+In the case the company is linked to a Business Partner company, indicates if the `bp_admin` allows the `company_admin` to update the subscriptions of his company (if enable, allowed operations depend of the value of `adminAllowedUpdateSubscriptionsOps`).  
+Can only be set by `superadmin` or `bp_admin`/`bp_finance` of the related company.
+
+adminAllowedUpdateSubscriptionsOps optionnel
+
+String
+
+In the case the company is linked to a Business Partner company and `adminHasRightToUpdateSubscriptions` is enabled, indicates the update operations for which the `bp_admin` allows the `company_admin` to perform on the subscriptions of his company.  
+  
+Can only be set by `superadmin` or `bp_admin`/`bp_finance` of the related company.  
+  
+Possible values:  
+  
+\* `all`: company\_admin is allowed to perform all update operations on the subscriptions of his company  
+\* `increase_only`: company\_admin is only allowed to increase `maxNumberUsers` on the subscriptions of his company (decrease is forbidden)  
+  
+Possibles values `all`, `increase_only`
+
+isBP
+
+Boolean
+
+Indicates if the company is a Business partner company  
+  
+Default value : `false`
+
+bpType optionnel
+
+String
+
+Indicates BP Company type  
+  
+\* `IR`: Indirect Reseller,  
+\* `VAD`: Value Added Distributor,  
+\* `DR`: Direct Reseller.  
+  
+Possibles values `IR`, `VAD`, `DR`
+
+bpBusinessModel optionnel
+
+String
+
+Indicates BP business model
+
+bpApplicantNumber optionnel
+
+String
+
+Reference of the Business Partner in ALE Finance tools (SAP)
+
+bpCRDid optionnel
+
+String
+
+Reference of the Business Partner in CDR
+
+bpHasRightToSell optionnel
+
+Boolean
+
+Indicates if the Business has the right to sell
+
+bpHasRightToConnect optionnel
+
+Boolean
+
+When True, the BP can connect CPE equipment of managed companies. So when False, the "equipment" tab should be removed from the admin GUI
+
+bpIsContractAccepted optionnel
+
+Boolean
+
+Indicates if the Business has accepted the contract and can sell Rainbow offers
+
+bpContractAcceptationInfo optionnel
+
+Object
+
+If the Business has accepted the contract, indicates who accepted the contract, Only visible by `superadmin` and `support`.
+
+acceptationDate
+
+Date-Time
+
+Date of contract acceptation by the BP admin
+
+bpAdminId
+
+String
+
+User Id of the BP admin who accepted the contract
+
+offerType
+
+String
+
+Allowed company offer types  
+  
+Possibles values `freemium`, `premium`
+
+bpAdminLoginEmail
+
+String
+
+User loginEmail of the BP admin who accepted the contract
+
+businessSpecific optionnel
+
+String
+
+When the customer has subscribed to specific business offers, this field is set to the associated specific business (ex: HDS for HealthCare business specific)  
+  
+Possibles values `HDS`
+
+externalReference optionnel
+
+String
+
+Free field that BP can use to link their customers to their IS/IT tools  
+Only applicable by `superadmin` or by `bp_admin`/`bp_finance` on one of his customer companies.  
+
+externalReference2 optionnel
+
+String
+
+Free field that BP can use to link their customers to their IS/IT tools  
+Only applicable by `superadmin` or by `bp_admin`/`bp_finance` on one of his customer companies.  
+
+avatarShape optionnel
+
+String
+
+Company's avatar customization  
+  
+Possibles values `square`, `circle`
+
+allowUsersSelectTheme
+
+Boolean
+
+Allow users of this company to select a theme among the ones available (owned or visible by the company).
+
+allowUsersSelectPublicTheme
+
+Boolean
+
+Allow users of this company to select a public theme.
+
+selectedTheme optionnel
+
+Object
+
+Set the selected theme(s) for users of the company.
+
+light optionnel
+
+String
+
+Set the selected theme light for users of the company.
+
+dark optionnel
+
+String
+
+Set the selected theme dark for users of the company.
+
+adminCanSetCustomData optionnel
+
+Boolean
+
+Whether or not administrators can set `customData` field for their own company.
+
+isLockedByBp optionnel
+
+Boolean
+
+Whether or not BP company has locked themes so that indicates if company admin can manage themes (create/update/delete).
+
+superadminComment optionnel
+
+String
+
+Free field that only `superadmin` can see  
+
+bpBusinessType optionnel
+
+String\[\]
+
+Business type that can be sold by a BP.  
+  
+Possibles values `voice_by_partner`, `voice_by_ale`, `conference`, `default`
+
+billingModel optionnel
+
+String
+
+Billing model that can be subscribed for this company.  
+  
+Possibles values `monthly`, `prepaid_1y`, `prepaid_3y`, `prepaid_5y`
+
+office365Tenant optionnel
+
+String
+
+Office365 tenant configured for this company.
+
+office365ScopesGranted optionnel
+
+String\[\]
+
+Scopes granted to Rainbow for usage of Microsoft Office365 APIs.  
+If no office365Tenant is set or if admin has not granted access of Office365 APIs to Rainbow for the configured office365Tenant, office365ScopesGranted is set to an empty Array.  
+Otherwise, office365ScopesGranted lists the scopes requested by Rainbow to use Office365 APIs for the configured office365Tenant. This field can be used to determine if the admin must re-authenticate to Microsoft Office365 in the case new scopes are requested for Rainbow application (scopes requested for the current version of office365-portal are listed in API GET /api/rainbow/office365/v1.0/consent).  
+  
+Possibles values `directory`, `calendar`
+
+mobilePermanentConnectionMode
+
+Boolean
+
+deactivate push mode for mobile devices.  
+When we can't rely on Internet and Google FCM services to wake-up the app or notify the app, we can fall back to a direct XMPP connection.  
+For customers using Samsung devices with Google Play services, we must have an option on admin side to set this permanent connection mode, so that mobile apps can rely on this parameter. This option will be applied for the whole company.
+
+fileSharingCustomisation
+
+String
+
+Activate/Deactivate file sharing capability per company  
+Define if the company can use the file sharing service then, allowed to download and share file.  
+FileSharingCustomisation can be:  
+  
+\* `enabled`: Each user of the company can use the file sharing service, except when his own capability is set to 'disabled'.  
+\* `disabled`: No user of the company can use the file sharing service, except when his own capability is set to 'enabled'. When one user of the company has the capability 'fileSharingCustomisation' set to 'same\_than\_company', his capability follow the company setting.
+
+userTitleNameCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to modify his profile (title, firstName, lastName) per company  
+Define if the company allows his users to change some profile data.  
+userTitleNameCustomisation can be:  
+  
+\* `enabled`: Each user of the company can change some profile data, except when his own capability is set to 'disabled'.  
+\* `disabled`: No user of the company can change some profile data, except when his own capability is set to 'enabled'. When one user of the company has the capability 'userTitleNameCustomisation' set to 'same\_than\_company', his capability follow the company setting.
+
+softphoneOnlyCustomisation
+
+String
+
+Activate/Deactivate the capability for an UCaas application not to offer all Rainbow services and but to focus to telephony services.  
+Define if UCaas apps used by a user of this company must provide Softphone functions, i.e. no chat, no bubbles, no meetings, no channels, and so on.  
+softphoneOnlyCustomisation can be:  
+  
+\* `enabled`: The user switch to a softphone mode only.  
+\* `disabled`: The user can use telephony services, chat, bubbles, channels meeting services and so on.
+
+useRoomCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to use bubbles.  
+Define if a user can create bubbles or participate in bubbles (chat and web conference).  
+useRoomCustomisation can be:  
+  
+\* `enabled`: Each user of the company can use bubbles.  
+\* `disabled`: No user of the company can use bubbles.
+
+phoneMeetingCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to use phone meetings (PSTN conference).  
+Define if a user has the right to join phone meetings.  
+phoneMeetingCustomisation can be:  
+  
+\* `enabled`: Each user of the company can join phone meetings.  
+\* `disabled`: No user of the company can join phone meetings.
+
+useChannelCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to use a channel.  
+Define if a user has the right to create channels or be a member of channels.  
+useChannelCustomisation can be:  
+  
+\* `enabled`: Each user of the company can use some channels.  
+\* `disabled`: No user of the company can use some channel.
+
+useScreenSharingCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to share a screen.  
+Define if a user has the right to share his screen.  
+useScreenSharingCustomisation can be:  
+  
+\* `enabled`: Each user of the company can share his screen.  
+\* `disabled`: No user of the company can share his screen.
+
+useWebRTCVideoCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to switch to a Web RTC video conversation.  
+Define if a user has the right to be joined via video and to use video (start a P2P video call, add video in a P2P call, add video in a web conference call).  
+useWebRTCVideoCustomisation can be:  
+  
+\* `enabled`: Each user of the company can switch to a Web RTC video conversation.  
+\* `disabled`: No user of the company can switch to a Web RTC video conversation.
+
+useWebRTCAudioCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to switch to a Web RTC audio conversation.  
+Define if a user has the right to be joined via audio (WebRTC) and to use Rainbow audio (WebRTC) (start a P2P audio call, start a web conference call).  
+useWebRTCVideoCustomisation can be:  
+  
+\* `enabled`: Each user of the company can switch to a Web RTC audio conversation.  
+\* `disabled`: No user of the company can switch to a Web RTC audio conversation.
+
+instantMessagesCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to use instant messages.  
+Define if a user has the right to use IM, then to start a chat (P2P ou group chat) or receive chat messages and chat notifications.  
+instantMessagesCustomisation can be:  
+  
+\* `enabled`: Each user of the company can use instant messages.  
+\* `disabled`: No user of the company can use instant messages.
+
+userProfileCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to modify his profile.  
+Define if a user has the right to modify the globality of his profile and not only (title, firstName, lastName).  
+userProfileCustomisation can be:  
+  
+\* `enabled`: Each user of the company can modify his profile.  
+\* `disabled`: No user of the company can modify his profile.
+
+fileStorageCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to access to Rainbow file storage.  
+Define if a user has the right to upload/download/copy or share documents.  
+fileStorageCustomisation can be:  
+  
+\* `enabled`: Each user of the company can manage and share files.  
+\* `disabled`: No user of the company can manage and share files.
+
+overridePresenceCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to change manually his presence.  
+Define if a user has the right to change his presence manually or only use automatic states.  
+overridePresenceCustomisation can be:  
+  
+\* `enabled`: Each user of the company can change his presence.  
+\* `disabled`: No user of the company can change his presence.
+
+alertNotificationReception
+
+String
+
+Activate/Deactivate the capability for a user to receive alert notification.  
+Define if a user has the right to receive alert notification  
+alertNotificationReception can be:  
+  
+\* `enabled`: Each user of the company can receive alert notification.  
+\* `disabled`: No user of the company can receive alert notification.
+
+alertNotificationSending
+
+String
+
+Activate/Deactivate the capability for a user to send alert notification.  
+Define if a user has the right to send alert notification  
+alertNotificationSending can be:  
+  
+\* `enabled`: Each user of the company can send alert notification.  
+\* `disabled`: No user of the company can send alert notification.
+
+changeTelephonyCustomisation
+
+String
+
+Activate/Deactivate the ability for a user to modify some telephony settings.  
+Define if a user has the right to modify telephony settings like forward activation ....  
+changeTelephonyCustomisation can be:  
+  
+\* `enabled`: The user can modify telephony settings.  
+\* `disabled`: The user can't modify telephony settings.
+
+changeSettingsCustomisation
+
+String
+
+Activate/Deactivate the ability for a user to change all client general settings.  
+Define if a user has the right to change his client general settings.  
+changeSettingsCustomisation can be:  
+  
+\* `enabled`: The user can change all client general settings.  
+\* `disabled`: The user can't change any client general setting. recordingConversationCustomisation Activate/Deactivate the capability for a user to record a conversation.  
+Define if a user has the right to record a conversation (for P2P and multi-party calls).  
+recordingConversationCustomisation can be:  
+\* `enabled`: The user can record a peer to peer or a multi-party call.  
+\* `disabled`: The user can't record a peer to peer or a multi-party call.
+
+useGifCustomisation
+
+String
+
+Activate/Deactivate the ability for a user to Use GIFs in conversations.  
+Define if a user has the is allowed to send animated GIFs in conversations  
+useGifCustomisation can be:  
+  
+\* `enabled`: The user can send animated GIFs in conversations.  
+\* `disabled`: The user can't send animated GIFs in conversations.
+
+useDialOutCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to use dial out in phone meetings.  
+Define if a user is allowed to be called by the Rainbow conference bridge.  
+useDialOutCustomisation can be:  
+  
+\* `enabled`: The user can be called by the Rainbow conference bridge.  
+\* `disabled`: The user can't be called by the Rainbow conference bridge.
+
+fileCopyCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to copy files  
+Define if one or all users of a company is allowed to copy any file he receives in his personal cloud space.  
+fileCopyCustomisation can be:  
+  
+\* `enabled`: The user can make a copy of a file to his personal cloud space.  
+\* `disabled`: The user can't make a copy of a file to his personal cloud space.
+
+fileTransferCustomisation
+
+String
+
+Activate/Deactivate the ability for a user to transfer files.  
+Define if one or all users of a company has the right to copy a file from a conversation then share it inside another conversation.  
+fileTransferCustomisation can be:  
+  
+\* `enabled`: The user can transfer a file doesn't belong to him.  
+\* `disabled`: The user can't transfer a file doesn't belong to him.
+
+forbidFileOwnerChangeCustomisation
+
+String
+
+Activate/Deactivate the ability for a user to loose the ownership on one file.  
+Define if one or all users can drop the ownership of a file to another Rainbow user of the same company  
+forbidFileOwnerChangeCustomisation can be:  
+  
+\* `enabled`: The user can't give the ownership of his file.  
+\* `disabled`: The user can give the ownership of his file.
+
+readReceiptsCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to allow a sender to check if a chat message is read.  
+Defines whether a peer user in a conversation allows the sender of a chat message to see if this IM is acknowledged by the peer.  
+This right is used by Ucaas or Cpaas application to show either or not a message is acknowledged. No check is done on backend side.  
+readReceiptsCustomisation can be:  
+  
+\* `enabled`: Each user of the company allow the sender to check if an IM is read.  
+\* `disabled`: No user of the company allow the sender to check if an IM is read.
+
+useSpeakingTimeStatistics
+
+String
+
+Activate/Deactivate the ability for a user to see speaking time statistics..  
+Defines whether a user has the right to see for a given meeting the speaking time for each attendee of this meeting.  
+useSpeakingTimeStatistics can be:  
+  
+\* `enabled`: Each user of the company can use meeting speaking time statistics.  
+\* `disabled`: No user of the company can use meeting speaking time statistics.
+
+defaultLicenseGroup
+
+String
+
+Group of license to assign to user when finalizing his account (e.g. Enterprise, Business ...)
+
+defaultOptionsGroups
+
+String\[\]
+
+List of options to assign to user when finalizing his account (e.g. Alert ...)
+
+selectedThemeCustomers optionnel
+
+Object
+
+Set the selected theme(s) for customers of this BP company.  
+This attribute only applies for BP companies.
+
+light optionnel
+
+String
+
+Set the selected theme light for customers of this BP company.
+
+dark optionnel
+
+String
+
+Set the selected theme dark for customers of this BP company.
+
+ddiReadOnly optionnel
+
+Boolean
+
+Indicates if admin of IR company is allowed to create or delete a DDI. Used only on IR companies.
+
+locked optionnel
+
+Boolean
+
+Allow to lock selected theme for customers. If true, customers won't be able to manage themes (create/update/delete).
+
+customData optionnel
+
+Object
+
+Company's custom data.  
+Object with free keys/values.  
+It is up to the client to manage the company's customData (new customData provided overwrite the existing one).  
+  
+Restrictions on customData Object:  
+  
+\* max 10 keys,  
+\* max key length: 64 characters,  
+\* max value length: 512 characters.
+
+**Category**: Contacts INFORMATION
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+companyId
+
+`string`
+
+The company id unique identifier
+
+format
+
+`string`
+
+`small`
+
+Allows to retrieve more or less company details in response.  
+\* small: id, name  
+\* medium: id, name, status, adminEmail, companyContactId, country, website, slogan, description, size, economicActivityClassification, lastAvatarUpdateDate, lastBannerUpdateDate, avatarShape  
+\* full: id, name, status, adminEmail, companyContactId, country, website, slogan, description, size, economicActivityClassification, lastAvatarUpdateDate, lastBannerUpdateDate, avatarShape  
+When a user wants data of his own company in 'full' mode, he gets all fields except subscriptions and fields related to a business partner managing this company.  
+Default value : full. Possibles values : small, medium, full
+
+selectedThemeObj
+
+`boolean`
+
+Allows to return selectedTheme attribute as an object:  
+\* true returns selectedTheme as an object (e.g. { "light": "60104754c8fada2ad4be3e48", "dark": "5ea304e4359c0e6815fc8b57" }),  
+\* false return selectedTheme as a string.  
+
+name
+
+`string`
+
+Allows to filter companies list on the given keyword(s) on field name.  
+The filtering is case insensitive and on partial name match: all companies containing the provided name value will be returned (whatever the position of the match).  
+Ex: if filtering is done on comp, companies with the following names are match the filter 'My company', 'Company', 'A comp 1', 'Comp of comps', ...
+
+status
+
+`string`
+
+Allows to filter companies list on the provided status(es). Possibles values initializing, active, alerting, hold, terminated
+
+visibility
+
+`string`
+
+Allows to filter companies list on the provided visibility(ies). Possibles values public, private, organization, closed, isolated
+
+organisationId
+
+`string`
+
+Allows to filter companies list on the organisationIds provided in this option. This filter can only be used if user has role(s) superadmin, support, bp\_admin or admin
+
+isBP
+
+`boolean`
+
+Allows to filter companies list on isBP field:  
+\* true returns only Business Partner companies,  
+\* false return only companies which are not Business Partner.  
+This filter can only be used if user has role(s) superadmin, business\_admin,customer\_success\_admin, support, bp\_admin or admin.
+
+hasBP
+
+`boolean`
+
+Allows to filter companies list on companies being linked or not to a BP:  
+\* true returns only companies linked to a BP (BP IR companies are also returned),  
+\* false return only companies which are not linked to a BP.  
+This filter can only be used if user has role(s) superadmin, business\_admin,customer\_success\_admin, support or bp\_admin.  
+Users with role bp\_admin can only use this filter with value false.
+
+bpType
+
+`string`
+
+Allows to filter companies list on bpType field.  
+This filter allow to get all the Business Partner companies from a given bpType.  
+Only users with role superadmin, business\_admin,customer\_success\_admin, support or bp\_admin can use this filter.
+
+---
+
+### contactsService.getAvatarByContactId(id, lastAvatarUpdateDate) ⇒ `string`
+
+Get a contact avatar by his contact id  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `string` - Contact avatar URL or file
+
+**Category**: Contacts INFORMATION
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+The contact id
+
+lastAvatarUpdateDate
+
+`string`
+
+use this field to give the stored date ( could be retrieved with contact.lastAvatarUpdateDate ) if missing or null in case where no avatar available a local module file is provided instead of URL
+
+---
+
+### contactsService.getConnectedUser() ⇒ `Contact`
+
+Get the connected user information  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Contact` - Return a Contact object representing the connected user information or null if not connected
+
+**Category**: Contacts INFORMATION
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### contactsService.getDisplayName(contact) ⇒ `string`
+
+Get the display name of a contact  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `string` - The contact first name and last name
+
+**Category**: Contacts INFORMATION
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+contact
+
+`Contact`
+
+The contact to get display name
+
+---
+
+### contactsService.updateMyInformations(dataToUpdate) ⇒ `string`
+
+This API can be used to update data of logged in user. This API can only be used by user himself (i.e. userId of logged in user = value of userId parameter in URL)
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `string` - The contact first name and last name
+
+**Category**: Contacts INFORMATION
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+dataToUpdate
+
+`Object`
+
+: { {string} number User phone number (as entered by user). Not mandatory if the PhoneNumber to update is a PhoneNumber linked to a system (pbx) {string} type String Phone number type Possible values : home, work, other {string} deviceType String Phone number device type Possible values : landline, mobile, fax, other {boolean} isVisibleByOthers optionnel Boolean Allow user to choose if the phone number is visible by other users or not. Note that administrators can see all the phone numbers, even if isVisibleByOthers is set to false. Note that phone numbers linked to a system (isFromSystem=true) are always visible, isVisibleByOthers can't be set to false for these numbers. {string} shortNumber optionnel String \[Only for update of PhoneNumbers linked to a system (pbx)\] Short phone number (corresponds to the number monitored by PCG). Read only field, only used by server to find the related system PhoneNumber to update (couple shortNumber/systemId). {string} systemId optionnel String \[Only for update of PhoneNumbers linked to a system (pbx)\] Unique identifier of the system in Rainbow database to which the system PhoneNumbers belong. Read only field, only used by server to find the related system PhoneNumber to update (couple shortNumber/systemId). {string} internalNumber optionnel String \[Only for update of PhoneNumbers linked to a system (pbx)\] Internal phone number. Usable within a PBX group. By default, it is equal to shortNumber. Admins and users can modify this internalNumber field. internalNumber must be unique in the whole system group to which the related PhoneNumber belong (an error 409 is raised if someone tries to update internalNumber to a number already used by another PhoneNumber in the same system group). {Array} emails optionnel Object Array of user emails addresses objects {Array} phoneNumbers optionnel Object\[\] Array of user PhoneNumbers objects Notes: Provided PhoneNumbers data overwrite previous values: PhoneNumbers which are not known on server side are added, PhoneNumbers which are changed are updated, PhoneNumbers which are not provided but existed on server side are deleted. This does not applies to PhoneNumbers linked to a system(pbx), which can only be updated (addition and deletion of system PhoneNumbers are ignored). When number is present, the server tries to compute the associated E.164 number (numberE164 field) using provided PhoneNumber country if available, user country otherwise. If numberE164 can't be computed, an error 400 is returned (ex: wrong phone number, phone number not matching country code, ...) PhoneNumber linked to a system (pbx) can also be updated. In that case, shortNumber and systemId of the existing system PhoneNumber must be provided with the fields to update (see example bellow). \* System phoneNumbers can't be created nor deleted using this API, only PCG can create/delete system PhoneNumbers. {string} selectedTheme optionnel String Theme to be used by the user If the user is allowed to (company has 'allowUserSelectTheme' set to true), he can choose his preferred theme among the list of supported themes (see https://openrainbow.com/api/rainbow/enduser/v1.0/themes). {string} firstName optionnel String User first name {string} lastName optionnel String User last name {string} nickName optionnel String User nickName {string} title optionnel String User title (honorifics title, like Mr, Mrs, Sir, Lord, Lady, Dr, Prof,...) {string} jobTitle optionnel String User job title {string} visibility optionnel String User visibility Define if the user can be searched by users being in other company and if the user can search users being in other companies. Visibility can be: same\_than\_company: The same visibility than the user's company's is applied to the user. When this user visibility is used, if the visibility of the company is changed the user's visibility will use this company new visibility. public: User can be searched by external users / can search external users. User can invite external users / can be invited by external users private: User can't be searched by external users / can search external users. User can invite external users / can be invited by external users closed: User can't be searched by external users / can't search external users. User can invite external users / can be invited by external users isolated: User can't be searched by external users / can't search external users. User can't invite external users / can't be invited by external users none: Default value reserved for guest. User can't be searched by any users (even within the same company) / can search external users. User can invite external users / can be invited by external users External users mean 'public user not being in user's company nor user's organisation nor a company visible by user's company. Default value : same\_than\_company Possible values : same\_than\_company, public, private, closed, isolated, none {boolean} isInitialized optionnel Boolean Is user initialized {string} timezone optionnel String User timezone name Allowed values: one of the timezone names defined in IANA tz database Timezone name are composed as follow: Area/Location (ex: Europe/Paris, America/New\_York,...) {string} language optionnel String User language Language format is composed of locale using format ISO 639-1, with optionally the regional variation using ISO 3166‑1 alpha-2 (separated by hyphen). Locale part is in lowercase, regional part is in uppercase. Examples: en, en-US, fr, fr-FR, fr-CA, es-ES, es-MX, ... More information about the format can be found on this link. {string} state optionnel String When country is 'USA' or 'CAN', a state can be defined. Else it is not managed (null). {string} country optionnel String User country (ISO 3166-1 alpha3 format) {string} department optionnel String User department {string} email String User email address {string} country optionnel String Phone number country (ISO 3166-1 alpha3 format). country field is automatically computed using the following algorithm when creating/updating a phoneNumber entry: If number is provided and is in E164 format, country is computed from E164 number Else if country field is provided in the phoneNumber entry, this one is used Else user country field is used Note that in the case number field is set (but not in E164 format), associated numberE164 field is computed using phoneNumber'country field. So, number and country field must match so that numberE164 can be computed. {string} type String User email type Possible values : home, work, other {string} customData optionnel Object User's custom data. Object with free keys/values. It is up to the client to manage the user's customData (new customData provided overwrite the existing one). Restrictions on customData Object: max 20 keys, max key length: 64 characters, max value length: 4096 characters. User customData can only be created/updated by: the user himself `company_admin` or `organization_admin` of his company, `bp_admin` and `bp_finance` of his company, `superadmin`. }
+
+---
+
+### contactsService.getRosters(bulkLoadOfInformations) ⇒ `Promise.<Array.<Contact>, ErrorManager>`
+
+Get the list of \_contacts that are in the user's network (aka rosters)  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Category**: Contacts NETWORK
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `ErrorManager` - ErrorManager object depending on the result (ErrorManager.getErrorManager().OK in case of success)
+
+Param
+
+Type
+
+Default
+
+Description
+
+bulkLoadOfInformations
+
+`boolean`
+
+`true`
+
+Load of contacts from roster with bulk mode.
+
+---
+
+### contactsService.addToNetwork(contact) ⇒ `Promise.<Contact>`
+
+Send an invitation to a Rainbow user for joining his network.  
+The user will receive an invitation that can be accepted or declined  
+In return, when accepted, he will be part of your network  
+When in the same company, invitation is automatically accepted (ie: can't be declined)  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Promise.<Contact>` - A promise that contains the contact added or an object describing an error
+
+**Category**: Contacts NETWORK
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.17
+
+Param
+
+Type
+
+Description
+
+contact
+
+`Contact`
+
+The contact object to subscribe
+
+---
+
+### contactsService.addToContactsList(contact) ⇒ `Promise.<Contact>`
+
+Send an invitation to a Rainbow user for joining his network.  
+The user will receive an invitation that can be accepted or declined  
+In return, when accepted, he will be part of your network  
+When in the same company, invitation is automatically accepted (ie: can't be declined)  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Promise.<Contact>` - A promise that contains the contact added or an object describing an error
+
+**Category**: Contacts NETWORK
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.17
+
+Param
+
+Type
+
+Description
+
+contact
+
+`Contact`
+
+The contact object to subscribe
+
+---
+
+### contactsService.removeFromNetwork(contact) ⇒ `Promise`
+
+Remove a contact from the list of contacts and unsubscribe to the contact's presence  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Promise` - A promise that contains success code if removed or an object describing an error
+
+**Category**: Contacts NETWORK
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.69
+
+Param
+
+Type
+
+Description
+
+contact
+
+`Contact`
+
+The contact object to unsubscribe
+
+---
+
+### contactsService.getInvitationById(strInvitationId) ⇒ `Invitation`
+
+Get an invite by its id  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Invitation` - The invite if found
+
+**Category**: Contacts NETWORK
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.64.0
+
+Param
+
+Type
+
+Description
+
+strInvitationId
+
+`string`
+
+the id of the invite to retrieve
+
+---
+
+### contactsService.acceptInvitation(invitation) ⇒ `Object`
+
+Accept an invitation from an other Rainbow user to mutually join the network  
+Once accepted, the user will be part of your network.  
+Return a promise  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Object` - A promise that contains SDK.OK if success or an object that describes the error
+
+**Category**: Contacts NETWORK
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.17
+
+Param
+
+Type
+
+Description
+
+invitation
+
+`Invitation`
+
+The invitation to accept
+
+---
+
+### contactsService.declineInvitation(invitation) ⇒ `Object`
+
+Decline an invitation from an other Rainbow user to mutually join the network  
+Once declined, the user will not be part of your network.  
+Return a promise  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Object` - A promise that contains SDK.OK in case of success or an object that describes the error
+
+**Category**: Contacts NETWORK
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.17
+
+Param
+
+Type
+
+Description
+
+invitation
+
+`Invitation`
+
+The invitation to decline
+
+---
+
+### contactsService.joinContacts(contact, contactIds) ⇒ `Promise.<Object, ErrorManager>`
+
+As admin, add \_contacts to a user roster  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Category**: Contacts NETWORK
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `any` - Join result or an error object depending on the result
+
+**Since**: 1.41
+
+Param
+
+Type
+
+Description
+
+contact
+
+`Contact`
+
+The contact object to subscribe
+
+contactIds
+
+`Array.<string>`
+
+List of contactId to add to the user roster
+
+---
+
+### contactsService.createPersonalDirectoryEntry(firstName, lastName, companyName, department, street, city, state, postalCode, country, workPhoneNumbers, mobilePhoneNumbers, otherPhoneNumbers, jobTitle, eMail, tags, custom1, custom2)
+
+This API allows connected user to Create a personal directory entry.  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Category**: Contacts Personal Directory
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.9.0
+
+Param
+
+Type
+
+Description
+
+firstName
+
+`string`
+
+Contact first Name
+
+lastName
+
+`string`
+
+Contact last Name
+
+companyName
+
+`string`
+
+Company Name of the contact
+
+department
+
+`string`
+
+Contact address: Department
+
+street
+
+`string`
+
+Contact address: Street
+
+city
+
+`string`
+
+Contact address: City
+
+state
+
+`string`
+
+When country is 'USA' or 'CAN', a state should be defined. Else it is not managed. Allowed values: "AK", "AL", "....", "NY", "WY"
+
+postalCode
+
+`string`
+
+Contact address: postal code / ZIP
+
+country
+
+`string`
+
+Contact address: country (ISO 3166-1 alpha3 format)
+
+workPhoneNumbers
+
+`Array.<string>`
+
+Work phone numbers. Allowed format are E164 or national with a country code. e.g: \["+33390671234"\] or \["+33390671234, 0690676790"\] with "country": "FRA") If a number is not in E164 format, it is converted to E164 format using provided country (or company country if contact's country is not set)
+
+mobilePhoneNumbers
+
+`Array.<string>`
+
+Mobile phone numbers. Allowed format are E164 or national with a country code. e.g: \["+33390671234"\] or \["+33390671234, 0690676790"\] with "country": "FRA") If a number is not in E164 format, it is converted to E164 format using provided country (or company country if contact's country is not set)
+
+otherPhoneNumbers
+
+`Array.<string>`
+
+Other phone numbers. Allowed format are E164 or national with a country code. e.g: \["+33390671234"\] or \["+33390671234, 0690676790"\] with "country": "FRA") If a number is not in E164 format, it is converted to E164 format using provided country (or company country if contact's country is not set)
+
+jobTitle
+
+`string`
+
+Contact Job title
+
+eMail
+
+`string`
+
+Contact Email address
+
+tags
+
+`Array.<string>`
+
+An Array of free tags  
+A maximum of 5 tags is allowed, each tag can have a maximum length of 64 characters.  
+The tags can be used to search the directory entries of type user or company using multi-criterion search (search query parameter of the API GET /api/rainbow/directory/v1.0/entries). The multi-criterion search using the tags can only be done on directories belonging to the company of the logged in user (and to the companies belonging to the organisation of the logged in user if that is the case).  
+
+custom1
+
+`string`
+
+Custom field 1
+
+custom2
+
+`string`
+
+Custom field 2
+
+---
+
+### contactsService.getDirectoryEntryData(entryId, format) ⇒ `Promise.<any>`
+
+This API allows user to get data about an entry of his personnal directory.  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Category**: Contacts Personnal Directory
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.10.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+entryId
+
+`string`
+
+Id of the entry.
+
+format
+
+`string`
+
+`small`
+
+Allows to retrieve more or less entry details in response.  
+\- small: id, firstName, lastName  
+\- medium: id, companyId, firstName, lastName, workPhoneNumbers  
+\- full: all fields.  
+default : small  
+Valid values : small, medium, full  
+
+---
+
+### contactsService.getListPersonalDirectoryEntriesData(name, search, type, companyName, phoneNumbers, fromUpdateDate, toUpdateDate, tags, format, limit, offset, sortField, sortOrder, view) ⇒ `Promise.<any>`
+
+This API allows connected users to get an entry of his personal directory.  
+  
+name, phoneNumbers, search and tags parameters are exclusives.
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Promise.<any>` -  
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object\[\]
+
+Data objects
+
+id
+
+String
+
+Directory entry identifier
+
+companyId optionnel
+
+String
+
+Id of the company
+
+userId optionnel
+
+String
+
+Id of the user
+
+type
+
+String
+
+Type of the directory entry  
+\* `user` if firstName and/or lastName are filled,  
+\* `company` if only companyName is filled (firstName and lastName empty)  
+Possible values : `user`, `company`
+
+firstName optionnel
+
+String
+
+Contact First name  
+
+lastName optionnel
+
+String
+
+Contact Last name  
+
+companyName optionnel
+
+String
+
+Company Name of the contact  
+
+department optionnel
+
+String
+
+Contact address: Department  
+
+street optionnel
+
+String
+
+Contact address: Street  
+
+city optionnel
+
+String
+
+Contact address: City  
+
+state optionnel
+
+String
+
+When country is 'USA' or 'CAN', a state should be defined. Else it is not managed. Allowed values: "AK", "AL", "....", "NY", "WY"
+
+postalCode optionnel
+
+String
+
+Contact address: postal code / ZIP  
+
+country optionnel
+
+String
+
+Contact address: country (ISO 3166-1 alpha3 format)
+
+workPhoneNumbers optionnel
+
+String\[\]
+
+Work phone numbers (E164 format)  
+
+mobilePhoneNumbers optionnel
+
+String\[\]
+
+Mobile phone numbers (E164 format)  
+
+otherPhoneNumbers optionnel
+
+String\[\]
+
+other phone numbers (E164 format)  
+
+jobTitle optionnel
+
+String
+
+Contact Job title  
+
+eMail optionnel
+
+String
+
+Contact Email address  
+
+tags optionnel
+
+String\[\]
+
+An Array of free tags  
+
+custom1 optionnel
+
+String
+
+Custom field 1  
+
+custom2 optionnel
+
+String
+
+Custom field 2  
+
+**Category**: Contacts Personnal Directory
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.9.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+name
+
+`string`
+
+Allows to filter the list of directory entries of user type on the name provided in this option.  
+\- keywords exact match (ex: 'John Doe' find 'John Doe') - keywords partial match (ex: 'Jo Do' find 'John Doe') - case insensitive (ex: 'john doe' find 'John Doe') - accents insensitive (ex: 'herve mothe' find 'Hervé Mothé') - on only firstname or lastname (ex: 'john' find 'John Doe') - order firstname / lastname does not matter (eg: 'doe john' find 'John Doe')
+
+search
+
+`string`
+
+Allows to filter the list of directory entries by the words provided in this option.  
+\- The query parameter type allows to specify on which type of directory entries the search is performed ('user' (default), 'company', or all entries) - Multi criterion search is only available to users having feature SEARCH\_BY\_TAGS in their profiles - keywords exact match (ex: 'John Doe' find 'John Doe') - keywords partial match (ex: 'Jo Do' find 'John Doe') - case insensitive (ex: 'john doe' find 'John Doe') - accents insensitive (ex: 'herve mothe' find 'Hervé Mothé') - multi criterion: fields firstName, lastName, jobTitle,companyName, department and tags. - order firstname / lastname does not matter (eg: 'doe john' find 'John Doe')
+
+type
+
+`string`
+
+Allows to specify on which type of directory entries the multi-criterion search is performed ('user' (default), 'company', or all entries)  
+This parameter is only used if the query parameter search is also specified, otherwise it is ignored. Default value : user. Possible values : user, company
+
+companyName
+
+`string`
+
+Allows to filter the list of directory entries of company type on the name provided in this option.  
+\- keywords exact match (ex: 'John Doe' find 'John Doe') - keywords partial match (ex: 'Jo Do' find 'John Doe') - case insensitive (ex: 'john doe' find 'John Doe') - accents insensitive (ex: 'herve mothe' find 'Hervé Mothé') - on only companyName (ex: 'john' find 'John Doe')
+
+phoneNumbers
+
+`string`
+
+Allows to filter the list of directory entries on the number provided in this option. (users and companies type)  
+Note the numbers must be in E164 format separated by a space and the character "+" replaced by "%2B". ex. "phoneNumbers=%2B33390676790 %2B33611223344"
+
+fromUpdateDate
+
+`Date`
+
+Allows to filter the list of directory entries from provided date (ISO 8601 format eg: '2019-04-11 16:06:47').
+
+toUpdateDate
+
+`Date`
+
+Allows to filter the list of directory entries until provided date (ISO 8601 format).
+
+tags
+
+`string`
+
+Allows to filter the list of directory entries on the tag(s) provided in this option.  
+Only usable by users with admin rights, so that he can list the directory entries to which a given tag is assigned (useful for tag administration).  
+Using this parameter, the tags are matched with strict equality (i.e. it is case sensitive and the whole tag must be provided).
+
+format
+
+`string`
+
+`small`
+
+Allows to retrieve more or less entry details in response.  
+\- small: id, firstName, lastName  
+\- medium: id, companyId, firstName, lastName, workPhoneNumbers  
+\- full: all fields.  
+default : small  
+Valid values : small, medium, full  
+
+limit
+
+`number`
+
+`100`
+
+Allow to specify the number of phone book entries to retrieve. Default value : 100
+
+offset
+
+`number`
+
+`0`
+
+Allow to specify the position of first phone book entry to retrieve (first one if not specified) Warning: if offset > total, no results are returned.
+
+sortField
+
+`string`
+
+`lastName`
+
+Sort directory list based on the given field. Default value : lastName
+
+sortOrder
+
+`number`
+
+`1`
+
+Specify order when sorting phone book list. Default value : 1. Possible values : -1, 1
+
+view
+
+`string`
+
+`all`
+
+Precises ios the user would like to consult either his personal directory, his company directory or the both. Default value : all. Possible values : personal, company, all
+
+---
+
+### contactsService.updatePersonalDirectoryEntry(entryId, firstName, lastName, companyName, department, street, city, state, postalCode, country, workPhoneNumbers, mobilePhoneNumbers, otherPhoneNumbers, jobTitle, eMail, tags, custom1, custom2) ⇒ `Promise.<any>`
+
+This API allows the connected user to update an entry of his personal directory.  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Category**: Contacts Personnal Directory
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.2.0
+
+Param
+
+Type
+
+Description
+
+entryId
+
+`string`
+
+Id of the entry.
+
+firstName
+
+`string`
+
+Contact first Name
+
+lastName
+
+`string`
+
+Contact last Name
+
+companyName
+
+`string`
+
+Company Name of the contact
+
+department
+
+`string`
+
+Contact address: Department
+
+street
+
+`string`
+
+Contact address: Street
+
+city
+
+`string`
+
+Contact address: City
+
+state
+
+`string`
+
+When country is 'USA' or 'CAN', a state should be defined. Else it is not managed. Allowed values: "AK", "AL", "....", "NY", "WY"
+
+postalCode
+
+`string`
+
+Contact address: postal code / ZIP
+
+country
+
+`string`
+
+Contact address: country (ISO 3166-1 alpha3 format)
+
+workPhoneNumbers
+
+`Array.<string>`
+
+Work phone numbers. Allowed format are E164 or national with a country code. e.g: \["+33390671234"\] or \["+33390671234, 0690676790"\] with "country": "FRA") If a number is not in E164 format, it is converted to E164 format using provided country (or company country if contact's country is not set)
+
+mobilePhoneNumbers
+
+`Array.<string>`
+
+Mobile phone numbers. Allowed format are E164 or national with a country code. e.g: \["+33390671234"\] or \["+33390671234, 0690676790"\] with "country": "FRA") If a number is not in E164 format, it is converted to E164 format using provided country (or company country if contact's country is not set)
+
+otherPhoneNumbers
+
+`Array.<string>`
+
+Other phone numbers. Allowed format are E164 or national with a country code. e.g: \["+33390671234"\] or \["+33390671234, 0690676790"\] with "country": "FRA") If a number is not in E164 format, it is converted to E164 format using provided country (or company country if contact's country is not set)
+
+jobTitle
+
+`string`
+
+Contact Job title
+
+eMail
+
+`string`
+
+Contact Email address
+
+tags
+
+`Array.<string>`
+
+An Array of free tags  
+A maximum of 5 tags is allowed, each tag can have a maximum length of 64 characters.  
+The tags can be used to search the directory entries of type user or company using multi-criterion search (search query parameter of the API GET /api/rainbow/directory/v1.0/entries). The multi-criterion search using the tags can only be done on directories belonging to the company of the logged in user (and to the companies belonging to the organisation of the logged in user if that is the case).
+
+custom1
+
+`string`
+
+Custom field 1
+
+custom2
+
+`string`
+
+Custom field 2
+
+---
+
+### contactsService.deletePersonalDirectoryEntry(entryId) ⇒ `Promise.<any>`
+
+This API allows connected user to delete an entry from his personal directory.  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Category**: Contacts Personnal Directory
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.9.0
+
+Param
+
+Type
+
+Description
+
+entryId
+
+`string`
+
+Id of the entry.
+
+---
+
+### contactsService.createSource(userId, sourceId, os) ⇒ `Object`
+
+A client could have one or more mobile devices as a source of contacts with his contacts stored in.  
+Also a source of contacts could be Microsoft Outlook / Linkedin or Facebook.  
+ontacts could be used for constructing recommendation rules.  
+SourceId must be unique for a given user.  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Object` - The result
+
+Champ
+
+Type
+
+Description
+
+id
+
+String
+
+Source unique identifier
+
+os
+
+String
+
+Operating system name and version
+
+sourceId
+
+String
+
+Id of source that could be IMEI or factory number for mobiles, email for Outloock or account number for Facebook
+
+**Category**: Contacts SOURCES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.21.0
+
+Param
+
+Type
+
+Description
+
+userId
+
+`string`
+
+User unique identifier
+
+sourceId
+
+`string`
+
+Id of source, that could be IMEI or factory number for mobiles , email for Outlook or account number for Facebook. Only one sourceId must exist by user.
+
+os
+
+`string`
+
+Operating system name and version.
+
+---
+
+### contactsService.deleteSource(userId, sourceId) ⇒ `Object`
+
+This API is used to delete a source.  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Object` - The result
+
+Champ
+
+Type
+
+Description
+
+status
+
+String
+
+Deletion status
+
+data
+
+Object\[\]
+
+No data (empty Array)
+
+**Category**: Contacts SOURCES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.21.0
+
+Param
+
+Type
+
+Description
+
+userId
+
+`string`
+
+User unique identifier
+
+sourceId
+
+`string`
+
+Source unique identifier.
+
+---
+
+### contactsService.getSourceData(userId, sourceId) ⇒ `Object`
+
+This API is used to get a source data.  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Object` - The result
+
+Champ
+
+Type
+
+Description
+
+id
+
+String
+
+Source unique identifier
+
+os
+
+String
+
+Operating system name and version
+
+sourceId
+
+String
+
+Id of source that could be IMEI or factory number for mobiles, email for Outloock or account number for Facebook
+
+**Category**: Contacts SOURCES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.21.0
+
+Param
+
+Type
+
+Description
+
+userId
+
+`string`
+
+User unique identifier
+
+sourceId
+
+`string`
+
+Source unique identifier.
+
+---
+
+### contactsService.getAllSourcesByUserId(userId, format, sortField, limit, offset, sortOrder) ⇒ `Object`
+
+This API is used to get all sources by userId.  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Object` - The result
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object\[\]
+
+sources id list is sent.
+
+id
+
+String
+
+limit
+
+Number
+
+Number of requested items
+
+offset
+
+Number
+
+Requested position of the first item to retrieve
+
+total
+
+Number
+
+Total number of items
+
+**Category**: Contacts SOURCES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.21.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+userId
+
+`string`
+
+User unique identifier
+
+format
+
+`string`
+
+`small`
+
+Allows to retrieve more or less source details in response.  
+\- small: id, sourceId  
+\- medium: id, sourceId, os  
+\- full: all source fields  
+Default value : small. Possibles values : small, medium, full
+
+sortField
+
+`string`
+
+`name`
+
+Sort items list based on the given field. Default value : name
+
+limit
+
+`number`
+
+`100`
+
+Allow to specify the number of items to retrieve. Default value : 100.
+
+offset
+
+`number`
+
+`0`
+
+Allow to specify the position of first item to retrieve (first item if not specified). Warning: if offset > total, no results are returned. Default value : 0
+
+sortOrder
+
+`number`
+
+`1`
+
+Specify order when sorting items list. Default value : 1. Possibles values -1, 1.
+
+---
+
+### contactsService.updateSourceData(userId, sourceId, os) ⇒ `Object`
+
+This API is used to update a source data.  
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Object` - The result
+
+Champ
+
+Type
+
+Description
+
+id
+
+String
+
+Source unique identifier
+
+os
+
+String
+
+Operating system name and version
+
+sourceId
+
+String
+
+Id of source that could be IMEI or factory number for mobiles, email for Outloock or account number for Facebook
+
+**Category**: Contacts SOURCES
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.21.0
+
+Param
+
+Type
+
+Description
+
+userId
+
+`string`
+
+User unique identifier
+
+sourceId
+
+`string`
+
+Source unique identifier
+
+os
+
+`string`
+
+Operating system name and version.
+
+---
+
+### contactsService.searchInAlldirectories(pbxId, systemId, numberE164, shortnumber, format, limit, offset, sortField, sortOrder) ⇒ `Promise.<any>`
+
+This API allows to search for resources matching given keywords.  
+Depending on the provided query parameters, search can be done:  
+
+-   on shortNumber
+-   on numberE164  
+      
+    For both cases, systemId or pbxId must be provided, corresponding to the identifier of the system for which the search is requested.  
+      
+    This API tries to find a resource in the directories:
+-   PBX devices of the system for which the search is requested, if associated to a Rainbow user (PBX devices of all systems belonging to the system's group if applicable),
+-   phonebook of the system for which the search is requested (phonebooks of all systems belonging to the system's group if applicable),
+-   Office365 database associated to the company(ies) to which is(are) linked the system for which the search is requested,
+-   Business directory database associated to the company(ies) to which is(are) linked the system for which the search is requested.  
+    If several entries match in several directories, the order defined in searchResultOrder setting of the system is applied.  
+      
+    
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Promise.<any>` - An object of the result
+
+Champ
+
+Type
+
+Description
+
+firstName
+
+String
+
+First name as it is present in one directory (either phonebbok,user or ActiveDirectory)
+
+lastName
+
+String
+
+Last name as it is present in one directory (either phonebbok,user or ActiveDirectory)
+
+id
+
+String
+
+id of the user (if a user is found)
+
+jid\_im
+
+String
+
+jid\_im of the user (if a user is found)
+
+**Category**: Contacts Search
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.8.9
+
+Param
+
+Type
+
+Default
+
+Description
+
+pbxId
+
+`string`
+
+pbxId of the system for which the search is requested. One of systemId or pbxId is mandatory.
+
+systemId
+
+`string`
+
+identifier of the system for which the search is requested. One of systemId or pbxId is mandatory.
+
+numberE164
+
+`string`
+
+Allows to filter users list on the numberE164 provided in this option.
+
+shortnumber
+
+`string`
+
+Allows to filter users list on the phone short number provided in this option.
+
+format
+
+`string`
+
+`small`
+
+Allows to retrieve more or less phone book details in response. small: id, firstName, lastName, number. medium: id, firstName, lastName, number. full: id, firstName, lastName, number. Default value : small Possible values : small, medium, full.
+
+limit
+
+`number`
+
+`100`
+
+Allow to specify the number of phone book entries to retrieve. Default value : 100
+
+offset
+
+`number`
+
+Allow to specify the position of first phone book entry to retrieve (first entry if not specified). Warning: if offset > total, no results are returned.
+
+sortField
+
+`string`
+
+`reverseDisplayName`
+
+Sort phone book list based on the given field. Default value : reverseDisplayName
+
+sortOrder
+
+`number`
+
+`1`
+
+Specify order when sorting phone book list. Default value : 1. Possible values : -1, 1.
+
+---
+
+### contactsService.searchInPhonebook(pbxId, name, number, format, limit, offset, sortField, sortOrder) ⇒ `Promise.<any>`
+
+This API allows to search for resources matching given keywords. The search is done on name and phone number.  
+Search can be:  
+
+-   on name:  
+    -   keywords exact match (ex: 'John Doe' find 'John Doe')
+    -   keywords partial match (ex: 'Jo Do' find 'John Doe')
+    -   case insensitive (ex: 'john doe' find 'John Doe')
+    -   accents insensitive (ex: 'herve mothe' find 'Hervé Mothé')
+    -   on only firstname or lastname (ex: 'john' find 'John Doe')
+    -   order firstname / lastname does not matter (ex: 'doe john' find 'John Doe')
+-   on number:  
+    -   keywords exact match (ex: '0630594224' finds '0630594224' but NOT '+33630594224')  
+        In case of user requesting the API, the search is done on user's system phonebook.  
+        In case of PCG requesting the API, pbxId parameter is mandatory and the search is done on related system phonebook.  
+          
+        **Specific feature:** Sharing a system between several companies  
+        Since 1.47.0 release, configuring companies sharing a multi-tenant system is possible.  
+        An OXE can be multi-company.  
+        A multi-tenant system, so called CENTREX, allows sharing a call-server between several entities.  
+        Each company in this multi-tenant system has his own range of phone number. Each company has a company prefix named 'tenantCallNumber' in the companies data model  
+          
+        
+-   Company A - 8210xxxx (82103000 Alice, 82103001 Bob)
+-   Company B - 8211xxxx (82113001 Carol)  
+    Carol can't search Alice by name because her phone number begins by a wrong company prefix. Carol can't search Bob by number because her phone number begins by a wrong company prefix.". In case of inconsistent configuration, an HTTP error 409210 is thrown.  
+    
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Promise.<any>` - An object of the result
+
+Champ
+
+Type
+
+Description
+
+id
+
+String
+
+phone book id
+
+firstName
+
+String
+
+First name as it is present in the phone book
+
+lastName
+
+String
+
+Last name as it is present in the phone book
+
+number
+
+String
+
+Phone number as it is present in the phone book
+
+**Category**: Contacts Search
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.8.9
+
+Param
+
+Type
+
+Default
+
+Description
+
+pbxId
+
+`string`
+
+Mandatory if role is pcg.
+
+name
+
+`string`
+
+Allows to filter users list on the given keyword(s) provided in this option.
+
+number
+
+`string`
+
+Allows to filter users list on the phone number provided in this option.
+
+format
+
+`string`
+
+`small`
+
+Allows to retrieve more or less phone book details in response. small: id, firstName, lastName, number. medium: id, firstName, lastName, number. full: id, firstName, lastName, number. Default value : small Possible values : small, medium, full.
+
+limit
+
+`number`
+
+`100`
+
+Allow to specify the number of phone book entries to retrieve. Default value : 100
+
+offset
+
+`number`
+
+Allow to specify the position of first phone book entry to retrieve (first entry if not specified). Warning: if offset > total, no results are returned.
+
+sortField
+
+`string`
+
+Sort phone book list based on the given field.
+
+sortOrder
+
+`number`
+
+`1`
+
+Specify order when sorting phone book list. Default value : 1. Possible values : -1, 1.
+
+---
+
+### contactsService.searchUserByPhonenumber(number) ⇒ `Promise.<any>`
+
+This API allows to search user being associated to the requested number.  
+The algorithm of this API is the following:  
+
+-   The API first search if the provided number matches one belonging to the pbx group of logged in user's pbx and being affected to a Rainbow user.
+-   Otherwise, the API search for users having the provided E164 number filled in their profile (only if setting isVisibleByOthers related to this number is not set to false). The API returns the result only if found user is in the same company or organisation than the logged in user's. If several numbers match, the first one found is returned.  
+      
+    
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Promise.<any>` - An object of the result
+
+Champ
+
+Type
+
+Description
+
+id
+
+String
+
+User unique identifier
+
+firstName
+
+String
+
+User first name
+
+lastName
+
+String
+
+User last name
+
+jid\_im
+
+String
+
+User Jabber IM identifier
+
+companyId
+
+String
+
+User company unique identifier
+
+companyName
+
+String
+
+User company name
+
+organisationId
+
+String
+
+User organisation unique identifier
+
+lastAvatarUpdate
+
+Date-Time
+
+Date Date of last user avatar create/update, null if no avatar
+
+lastUpdateDate
+
+Date-Time
+
+Date of last user create/update
+
+guestMode
+
+Boolean
+
+Indicates a user embedded in a chat or conference room, as guest, with limited rights until he finalizes his registration.
+
+fileSharingCustomisation
+
+String
+
+Activate/Deactivate file sharing capability per user  
+Define if the user can use the file sharing service.  
+FileSharingCustomisation can be:  
+  
+\* `enabled`: The user can use the file sharing service.  
+\* `disabled`: The user can't use the file sharing service.
+
+fileStorageCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to access to Rainbow file storage.  
+Define if a user has the right to upload/download/copy or share documents.  
+fileStorageCustomisation can be:  
+  
+\* `enabled`: The user can manage and share files.  
+\* `disabled`: The user can't manage and share files.
+
+useRoomCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to use bubbles.  
+Define if a user can create bubbles or participate in bubbles (chat and web conference).  
+useRoomCustomisation can be:  
+  
+\* `enabled`: The user can use bubbles.  
+\* `disabled`: The user can't use bubbles.
+
+phoneMeetingCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to use phone meetings (PSTN conference).  
+Define if a user has the right to join phone meetings.  
+phoneMeetingCustomisation can be:  
+  
+\* `enabled`: The user can join phone meetings.  
+\* `disabled`: The user can't join phone meetings.
+
+useChannelCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to use a channel.  
+Define if a user has the right to create channels or be a member of channels.  
+useChannelCustomisation can be:  
+  
+\* `enabled`: The user can use some channels.  
+\* `disabled`: The user can't use some channel.
+
+useScreenSharingCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to share a screen.  
+Define if a user has the right to share his screen.  
+useScreenSharingCustomisation can be:  
+  
+\* `enabled`: Each user of the company can share his screen.  
+\* `disabled`: No user of the company can share his screen.
+
+useWebRTCVideoCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to switch to a Web RTC video conversation.  
+Define if a user has the right to be joined via video and to use video (start a P2P video call, add video in a P2P call, add video in a web conference call).  
+useWebRTCVideoCustomisation can be:  
+  
+\* `enabled`: The user can switch to a Web RTC video conversation.  
+\* `disabled`: The user can't switch to a Web RTC video conversation.
+
+useWebRTCAudioCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to switch to a Web RTC audio conversation.  
+Define if a user has the right to be joined via audio (WebRTC) and to use Rainbow audio (WebRTC) (start a P2P audio call, start a web conference call).  
+useWebRTCAudioCustomisation can be:  
+  
+\* `enabled`: The user can switch to a Web RTC audio conversation.  
+\* `disabled`: The user can't switch to a Web RTC audio conversation.
+
+instantMessagesCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to use instant messages.  
+Define if a user has the right to use IM, then to start a chat (P2P ou group chat) or receive chat messages and chat notifications.  
+instantMessagesCustomisation can be:  
+  
+\* `enabled`: The user can use instant messages.  
+\* `disabled`: The user can't use instant messages.
+
+isTerminated
+
+Boolean
+
+Indicates if the user account has been deleted.
+
+**Category**: Contacts Search
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.8.9
+
+Param
+
+Type
+
+Description
+
+number
+
+`string`
+
+number to search. The number can be:  
+\- a system phone number being in the pbx group of logged in user's pbx  
+\- a phone number entered manually by a user in his profile and being in the same organisation than logged in user's (in that case, provided number must be in E164 format)  
+
+---
+
+### contactsService.searchUsers(limit, displayName, search, companyId, excludeCompanyId, offset, sortField, sortOrder) ⇒ `Promise.<any>`
+
+This API allows to search users. Two type of searches are available:
+
+-   Search on displayName (query parameter `displayName`):
+    -   The search is done on users' `firstName` and `lastName`, and search is done in all Rainbow public users and users being in companies visible by logged in user's company.
+    -   If logged in user's has visibility `closed` or `isolated`, or `same_than_company` and logged in user's company has visibility `closed` or `isolated`, search is done only on users being in companies visible by logged in user's company.
+    -   Search on display name can be:
+        -   firstName and lastName exact match (ex: 'John Doe' find 'John Doe')
+        -   partial match (ex: 'Jo Do' find 'John Doe')
+        -   case insensitive (ex: 'john doe' find 'John Doe')
+        -   accents insensitive (ex: 'herve mothe' find 'Hervé Mothé')
+        -   on only firstname or lastname (ex: 'john' find 'John Doe')
+        -   order firstname / lastname does not matter (ex: 'doe john' find 'John Doe')
+    -   It is possible to specify on which company(ies) users are searched (using `companyId` query parameter)
+    -   It is possible to exclude users from some company(ies) in the search (using `excludeCompanyId` query parameter)
+-   Multi-criterion search (query parameter `search`):
+    -   Multi criterion search is only available to users having feature `SEARCH_BY_TAGS` in their profiles,
+    -   Multi criterion allows to search users based on their fields `firstName`, `lastName`, `jobTitle`, `department`, `companyName` and `tags`.
+        -   Multi criterion search is limited to users belonging to logged in user's company or users being in a company that belongs to the same organization.
+        -   For other users which does not belong to the same company or organisation (Rainbow public users and users being in companies visible by logged in user's company outside the organisation), the search is only done on users' `firstName` and `lastName`. If logged in user's has visibility `closed` or `isolated` (or `same_than_company` and logged in user's company has visibility `closed` or `isolated`), search on `firstName`/`lastName` is done only on users being in companies visible by logged in user's company (similar behavior than search with query parameter displayName).
+    -   Provided search tags can be a single word or composed of several words separated by spaces.
+    -   Only users matching all provided search tags in their fields `firstName`, `lastName`, `jobTitle`,`department`, `companyName` and/or `tags` (or `firstName` and/or `lastName` for users outside the logged in user company/organisation) will be returned in the results.
+    -   Matching of the search tags is done from the start of the word, case is insensitive and special characters are ignored.
+    -   Example, consider a user as follow:  
+        {  
+        firstName: 'John',  
+        lastName: 'Doe',  
+        companyName: 'Alcatel-Lucent International',  
+        jobTitle: 'Sales Representative',  
+        department: 'Sales',  
+        tags: \['Healthcare', 'Hospitality'\]  
+        }  
+          
+        
+
+-   This user can be found with the following search tags:
+    -   exact match (ex: 'John Doe', 'John Sales Representative', 'John Healthcare', ...)
+    -   partial match (ex: 'Jo Do', 'Jo Sales', 'Jo Health', 'Do Alcatel', ...)
+    -   case insensitive (ex: 'john doe', 'john sales', 'john hospitality', 'doe alcatel', ...)
+    -   on only one field (ex: 'doe', 'sales', 'healthcare')
+    -   order does not matter (ex: 'doe john', 'sales alcatel', 'healthcare sales john', ...)
+-   It is possible to specify on which company(ies) users are searched (using companyId query parameter)
+-   It is possible to exclude users from some company(ies) in the search (using excludeCompanyId query parameter)  
+    One of `displayName` or `search` parameters must be provided to execute the search request.  
+    
+
+**Kind**: instance method of [`ContactsService`](#module_ContactsService)
+
+**Returns**: `Promise.<any>` - An object of the result
+
+Champ
+
+Type
+
+Description
+
+limit
+
+Number
+
+Number of requested items
+
+offset
+
+Number
+
+Requested position of the first item to retrieve
+
+total
+
+Number
+
+Total number of items
+
+data
+
+Object\[\]
+
+List of user Objects.
+
+id
+
+String
+
+User unique identifier
+
+loginEmail
+
+String
+
+User email address (used for login)  
+`loginEmail` field is only returned for users being in the same company than logged in user and not being in the default Rainbow company.
+
+firstName
+
+String
+
+User first name
+
+lastName
+
+String
+
+User last name
+
+jid\_im
+
+String
+
+User Jabber IM identifier
+
+companyId
+
+String
+
+User company unique identifier
+
+companyName
+
+String
+
+User company name
+
+jobTitle optionnel
+
+String
+
+User job title.  
+Only returned if search is requested using `search` parameter and found user is in the same company or organisation than logged in user.
+
+tags optionnel
+
+String\[\]
+
+Tags associated to the user by an administrator.  
+Only returned if search is requested using `search` parameter and found user is in the same company or organisation than logged in user.
+
+lastAvatarUpdate
+
+Date-Time
+
+Date Date of last user avatar create/update, null if no avatar
+
+lastUpdateDate
+
+Date-Time
+
+Date of last user create/update
+
+guestMode
+
+Boolean
+
+Indicated a user embedded in a chat or conference room, as guest, with limited rights until he finalizes his registration.
+
+fileSharingCustomisation
+
+String
+
+Activate/Deactivate file sharing capability per user  
+Define if the user can use the file sharing service.  
+FileSharingCustomisation can be:  
+  
+\* `enabled`: The user can use the file sharing service.  
+\* `disabled`: The user can't use the file sharing service.
+
+fileStorageCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to access to Rainbow file storage.  
+Define if a user has the right to upload/download/copy or share documents.  
+fileStorageCustomisation can be:  
+  
+\* `enabled`: The user can manage and share files.  
+\* `disabled`: The user can't manage and share files.
+
+useRoomCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to use bubbles.  
+Define if a user can create bubbles or participate in bubbles (chat and web conference).  
+useRoomCustomisation can be:  
+  
+\* `enabled`: The user can use bubbles.  
+\* `disabled`: The user can't use bubbles.
+
+phoneMeetingCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to use phone meetings (PSTN conference).  
+Define if a user has the right to join phone meetings.  
+phoneMeetingCustomisation can be:  
+  
+\* `enabled`: The user can join phone meetings.  
+\* `disabled`: The user can't join phone meetings.
+
+useChannelCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to use a channel.  
+Define if a user has the right to create channels or be a member of channels.  
+useChannelCustomisation can be:  
+  
+\* `enabled`: The user can use some channels.  
+\* `disabled`: The user can't use some channel.
+
+useScreenSharingCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to share a screen.  
+Define if a user has the right to share his screen.  
+useScreenSharingCustomisation can be:  
+  
+\* `enabled`: Each user of the company can share his screen.  
+\* `disabled`: No user of the company can share his screen.
+
+useWebRTCVideoCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to switch to a Web RTC video conversation.  
+Define if a user has the right to be joined via video and to use video (start a P2P video call, add video in a P2P call, add video in a web conference call).  
+useWebRTCVideoCustomisation can be:  
+  
+\* `enabled`: The user can switch to a Web RTC video conversation.  
+\* `disabled`: The user can't switch to a Web RTC video conversation.
+
+useWebRTCAudioCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to switch to a Web RTC audio conversation.  
+Define if a user has the right to be joined via audio (WebRTC) and to use Rainbow audio (WebRTC) (start a P2P audio call, start a web conference call).  
+useWebRTCAudioCustomisation can be:  
+  
+\* `enabled`: The user can switch to a Web RTC audio conversation.  
+\* `disabled`: The user can't switch to a Web RTC audio conversation.
+
+instantMessagesCustomisation
+
+String
+
+Activate/Deactivate the capability for a user to use instant messages.  
+Define if a user has the right to use IM, then to start a chat (P2P ou group chat) or receive chat messages and chat notifications.  
+instantMessagesCustomisation can be:  
+  
+\* `enabled`: The user can use instant messages.  
+\* `disabled`: The user can't use instant messages.
+
+isTv
+
+Boolean
+
+True if it is a TV user
+
+isAlertNotificationEnabled
+
+Boolean
+
+True if user is to subscribed to Alert Offer
+
+phoneNumbers
+
+Object\[\]
+
+Array of user phone numbers objects.  
+Phone number objects can:  
+  
+\* be created by user (information filled by user),  
+\* come from association with a system (pbx) device (association is done by admin).
+
+phoneNumberId
+
+String
+
+Phone number unique id in phone-numbers directory collection.
+
+number optionnel
+
+String
+
+User phone number (as entered by user)
+
+numberE164 optionnel
+
+String
+
+User E.164 phone number, computed by server from `number` and `country` fields
+
+country
+
+String
+
+Phone number country (ISO 3166-1 alpha3 format)  
+`country` field is automatically computed using the following algorithm when creating/updating a phoneNumber entry:  
+  
+\* If `number` is provided and is in E164 format, `country` is computed from E164 number  
+\* Else if `country` field is provided in the phoneNumber entry, this one is used  
+\* Else user `country` field is used
+
+isFromSystem optionnel
+
+Boolean
+
+Boolean indicating if phone is linked to a system (pbx).
+
+shortNumber optionnel
+
+String
+
+**\[Only for phone numbers linked to a system (pbx)\]**  
+If phone is linked to a system (pbx), short phone number (corresponds to the number monitored by PCG).  
+Only usable within the same PBX.  
+Only PCG can set this field.
+
+internalNumber optionnel
+
+String
+
+**\[Only for phone numbers linked to a system (pbx)\]**  
+If phone is linked to a system (pbx), internal phone number.  
+Usable within a PBX group.  
+Admins and users can modify this internalNumber field.
+
+systemId optionnel
+
+String
+
+**\[Only for phone numbers linked to a system (pbx)\]**  
+If phone is linked to a system (pbx), unique identifier of that system in Rainbow database.
+
+pbxId optionnel
+
+String
+
+**\[Only for phone numbers linked to a system (pbx)\]**  
+If phone is linked to a system (pbx), unique identifier of that pbx.
+
+type
+
+String
+
+Phone number type, one of `home`, `work`, `other`.
+
+deviceType
+
+String
+
+Phone number device type, one of `landline`, `mobile`, `fax`, `other`.
+
+isVisibleByOthers
+
+Boolean
+
+Allow user to choose if the phone number is visible by other users or not.  
+Note that administrators can see all the phone numbers, even if `isVisibleByOthers` is set to false.  
+Note that phone numbers linked to a system (`isFromSystem`\=true) are always visible, `isVisibleByOthers` can't be set to false for these numbers.
+
+**Category**: Contacts Search
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.8.9
+
+Param
+
+Type
+
+Default
+
+Description
+
+limit
+
+`number`
+
+`20`
+
+Allow to specify the number of users to retrieve. Default value : 20
+
+displayName
+
+`string`
+
+earch users on the given displayName. displayName and search parameters are exclusives, displayName parameter can only be set if search parameter is not provided.
+
+search
+
+`string`
+
+Search users belonging to the same company/organisation than logged in user on the given search tags on fields firstName, lastName, companyName, jobTitle, department,tags. Other public users/users in companies visible by logged in user's company are searched only on fields firstName and lastName (except if logged in user has visibility closed or isolated). displayName and search parameters are exclusives, search parameter can only be set if displayName parameter is not provided.
+
+companyId
+
+`string`
+
+Search users being in the requested company(ies). companyId and excludeCompanyId parameters are exclusives, companyId parameter can only be set if excludeCompanyId parameter is not provided.
+
+excludeCompanyId
+
+`string`
+
+Exclude users being in the requested company(ies) from the search results. companyId and excludeCompanyId parameters are exclusives, excludeCompanyId parameter can only be set if companyId parameter is not provided.
+
+offset
+
+`number`
+
+Allow to specify the position of first item to retrieve (first item if not specified). Warning: if offset > total, no results are returned.
+
+sortField
+
+`string`
+
+Sort items list based on the given field.
+
+sortOrder
+
+`number`
+
+`1`
+
+Specify order when sorting items list. Default value : 1. Possible values : -1, 1
+
+---
+
+### On this page
+
+-   [ContactsService](/docs/sdk/node#name-contactsservice-3)
+-   [contactsService.updateContactData(userId, sourceId, contactIddb, contactId, firstName, lastName, displayName, company, jobTitle, phoneNumbers, emails, addresses, groups, otherData) ⇒ Object](/docs/sdk/node#name-contactsservice.updatecontactdatauserid-sourceid-contactiddb-contactid-firstname-lastname-displayname-company-jobtitle-phonenumbers-emails-addresses-groups-otherdata--object-292)
+-   [contactsService.createContact(userId, sourceId, contactId, firstName, lastName, displayName, company, jobTitle, phoneNumbers, emails, addresses, groups, otherData) ⇒ Object](/docs/sdk/node#name-contactsservice.createcontactuserid-sourceid-contactid-firstname-lastname-displayname-company-jobtitle-phonenumbers-emails-addresses-groups-otherdata--object-783)
+-   [contactsService.getContactData(userId, sourceId, contactId) ⇒ Object](/docs/sdk/node#name-contactsservice.getcontactdatauserid-sourceid-contactid--object-1305)
+-   [contactsService.getContactsList(userId, sourceId, format) ⇒ Object](/docs/sdk/node#name-contactsservice.getcontactslistuserid-sourceid-format--object-1675)
+-   [contactsService.deleteContact(userId, sourceId, contactId) ⇒ Object](/docs/sdk/node#name-contactsservice.deletecontactuserid-sourceid-contactid--object-2068)
+-   [contactsService.getAll() ⇒ Array.<Contact>](/docs/sdk/node#name-contactsservice.getall--array.contact-2185)
+-   [contactsService.getAllContactsInCache() ⇒ Array.<Contact>](/docs/sdk/node#name-contactsservice.getallcontactsincache--array.contact-2210)
+-   [contactsService.getContactByJid(jid, forceServerSearch) ⇒ Promise.<Contact, ErrorManager>](/docs/sdk/node#name-contactsservice.getcontactbyjidjid-forceserversearch--promise.contact-errormanager-2235)
+-   [contactsService.getContactById(id, forceServerSearch) ⇒ Promise.<Contact, ErrorManager>](/docs/sdk/node#name-contactsservice.getcontactbyidid-forceserversearch--promise.contact-errormanager-2305)
+-   [contactsService.getContactByLoginEmail(loginEmail, forceServerSearch) ⇒ Promise.<Contact, ErrorManager>](/docs/sdk/node#name-contactsservice.getcontactbyloginemailloginemail-forceserversearch--promise.contact-errormanager-2375)
+-   [contactsService.getContactIdByLoginEmail(loginEmail, forceServerSearch) ⇒ Promise.<String, ErrorManager>](/docs/sdk/node#name-contactsservice.getcontactidbyloginemailloginemail-forceserversearch--promise.string-errormanager-2445)
+-   [contactsService.getMyInformations() ⇒ Promise.<Object, ErrorManager>](/docs/sdk/node#name-contactsservice.getmyinformations--promise.object-errormanager-2515)
+-   [contactsService.getPeerById(peerId) ⇒ Promise.<Object, ErrorManager>](/docs/sdk/node#name-contactsservice.getpeerbyidpeerid--promise.object-errormanager-2537)
+-   [contactsService.getPeerByJid(peerJid) ⇒ Promise.<Object, ErrorManager>](/docs/sdk/node#name-contactsservice.getpeerbyjidpeerjid--promise.object-errormanager-2587)
+-   [contactsService.getContactsInformationByIds(iDs, sortOrder, forceServerSearch) ⇒ Promise.<Array.<Contact>, ErrorManager>](/docs/sdk/node#name-contactsservice.getcontactsinformationbyidsids-sortorder-forceserversearch--promise.array.contact-errormanager-2637)
+-   [contactsService.getContactsInformationByJIDs(JIDs, sortOrder, forceServerSearch) ⇒ Promise.<Array.<Contact>, ErrorManager>](/docs/sdk/node#name-contactsservice.getcontactsinformationbyjidsjids-sortorder-forceserversearch--promise.array.contact-errormanager-2721)
+-   [contactsService.getCompanyInfos(companyId, format, selectedThemeObj, name, status, visibility, organisationId, isBP, hasBP, bpType) ⇒ string](/docs/sdk/node#name-contactsservice.getcompanyinfoscompanyid-format-selectedthemeobj-name-status-visibility-organisationid-isbp-hasbp-bptype--string-2805)
+-   [contactsService.getAvatarByContactId(id, lastAvatarUpdateDate) ⇒ string](/docs/sdk/node#name-contactsservice.getavatarbycontactidid-lastavatarupdatedate--string-4162)
+-   [contactsService.getConnectedUser() ⇒ Contact](/docs/sdk/node#name-contactsservice.getconnecteduser--contact-4226)
+-   [contactsService.getDisplayName(contact) ⇒ string](/docs/sdk/node#name-contactsservice.getdisplaynamecontact--string-4251)
+-   [contactsService.updateMyInformations(dataToUpdate) ⇒ string](/docs/sdk/node#name-contactsservice.updatemyinformationsdatatoupdate--string-4304)
+-   [contactsService.getRosters(bulkLoadOfInformations) ⇒ Promise.<Array.<Contact>, ErrorManager>](/docs/sdk/node#name-contactsservice.getrostersbulkloadofinformations--promise.array.contact-errormanager-4357)
+-   [contactsService.addToNetwork(contact) ⇒ Promise.<Contact>](/docs/sdk/node#name-contactsservice.addtonetworkcontact--promise.contact-4413)
+-   [contactsService.addToContactsList(contact) ⇒ Promise.<Contact>](/docs/sdk/node#name-contactsservice.addtocontactslistcontact--promise.contact-4469)
+-   [contactsService.removeFromNetwork(contact) ⇒ Promise](/docs/sdk/node#name-contactsservice.removefromnetworkcontact--promise-4525)
+-   [contactsService.getInvitationById(strInvitationId) ⇒ Invitation](/docs/sdk/node#name-contactsservice.getinvitationbyidstrinvitationid--invitation-4581)
+-   [contactsService.acceptInvitation(invitation) ⇒ Object](/docs/sdk/node#name-contactsservice.acceptinvitationinvitation--object-4637)
+-   [contactsService.declineInvitation(invitation) ⇒ Object](/docs/sdk/node#name-contactsservice.declineinvitationinvitation--object-4693)
+-   [contactsService.joinContacts(contact, contactIds) ⇒ Promise.<Object, ErrorManager>](/docs/sdk/node#name-contactsservice.joincontactscontact-contactids--promise.object-errormanager-4749)
+-   [contactsService.createPersonalDirectoryEntry(firstName, lastName, companyName, department, street, city, state, postalCode, country, workPhoneNumbers, mobilePhoneNumbers, otherPhoneNumbers, jobTitle, eMail, tags, custom1, custom2)](/docs/sdk/node#name-contactsservice.createpersonaldirectoryentryfirstname-lastname-companyname-department-street-city-state-postalcode-country-workphonenumbers-mobilephonenumbers-otherphonenumbers-jobtitle-email-tags-custom1-custom2-4813)
+-   [contactsService.getDirectoryEntryData(entryId, format) ⇒ Promise.<any>](/docs/sdk/node#name-contactsservice.getdirectoryentrydataentryid-format--promise.any-5042)
+-   [contactsService.getListPersonalDirectoryEntriesData(name, search, type, companyName, phoneNumbers, fromUpdateDate, toUpdateDate, tags, format, limit, offset, sortField, sortOrder, view) ⇒ Promise.<any>](/docs/sdk/node#name-contactsservice.getlistpersonaldirectoryentriesdataname-search-type-companyname-phonenumbers-fromupdatedate-toupdatedate-tags-format-limit-offset-sortfield-sortorder-view--promise.any-5115)
+-   [contactsService.updatePersonalDirectoryEntry(entryId, firstName, lastName, companyName, department, street, city, state, postalCode, country, workPhoneNumbers, mobilePhoneNumbers, otherPhoneNumbers, jobTitle, eMail, tags, custom1, custom2) ⇒ Promise.<any>](/docs/sdk/node#name-contactsservice.updatepersonaldirectoryentryentryid-firstname-lastname-companyname-department-street-city-state-postalcode-country-workphonenumbers-mobilephonenumbers-otherphonenumbers-jobtitle-email-tags-custom1-custom2--promise.any-5618)
+-   [contactsService.deletePersonalDirectoryEntry(entryId) ⇒ Promise.<any>](/docs/sdk/node#name-contactsservice.deletepersonaldirectoryentryentryid--promise.any-5858)
+-   [contactsService.createSource(userId, sourceId, os) ⇒ Object](/docs/sdk/node#name-contactsservice.createsourceuserid-sourceid-os--object-5911)
+-   [contactsService.deleteSource(userId, sourceId) ⇒ Object](/docs/sdk/node#name-contactsservice.deletesourceuserid-sourceid--object-6039)
+-   [contactsService.getSourceData(userId, sourceId) ⇒ Object](/docs/sdk/node#name-contactsservice.getsourcedatauserid-sourceid--object-6145)
+-   [contactsService.getAllSourcesByUserId(userId, format, sortField, limit, offset, sortOrder) ⇒ Object](/docs/sdk/node#name-contactsservice.getallsourcesbyuseriduserid-format-sortfield-limit-offset-sortorder--object-6262)
+-   [contactsService.updateSourceData(userId, sourceId, os) ⇒ Object](/docs/sdk/node#name-contactsservice.updatesourcedatauserid-sourceid-os--object-6466)
+-   [contactsService.searchInAlldirectories(pbxId, systemId, numberE164, shortnumber, format, limit, offset, sortField, sortOrder) ⇒ Promise.<any>](/docs/sdk/node#name-contactsservice.searchinalldirectoriespbxid-systemid-numbere164-shortnumber-format-limit-offset-sortfield-sortorder--promise.any-6594)
+-   [contactsService.searchInPhonebook(pbxId, name, number, format, limit, offset, sortField, sortOrder) ⇒ Promise.<any>](/docs/sdk/node#name-contactsservice.searchinphonebookpbxid-name-number-format-limit-offset-sortfield-sortorder--promise.any-6861)
+-   [contactsService.searchUserByPhonenumber(number) ⇒ Promise.<any>](/docs/sdk/node#name-contactsservice.searchuserbyphonenumbernumber--promise.any-7143)
+-   [contactsService.searchUsers(limit, displayName, search, companyId, excludeCompanyId, offset, sortField, sortOrder) ⇒ Promise.<any>](/docs/sdk/node#name-contactsservice.searchuserslimit-displayname-search-companyid-excludecompanyid-offset-sortfield-sortorder--promise.any-7448)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

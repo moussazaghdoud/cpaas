@@ -1,0 +1,371 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "rest-docs"
+source: "https://developers.openrainbow.com/doc/rest/Connecting_to_Rainbow"
+lastSynced: "2026-02-20T07:12:28.176Z"
+---
+# Documentation
+
+Connect to Rainbow
+
+## Connecting to Rainbow
+
+---
+
+### Preamble
+
+---
+
+The Rainbow platform offers REST APIs to make it easier doing administrative and provisionning tasks such as creating new Rainbow users, etc...
+
+For being able to make these requests, you need first to **authenticate** your user to Rainbow in order to received a **token** that will let you invoke other APIs.
+
+This tutorial explains how to authenticate to Rainbow and how to call API using the token received. Additional information can be found in the [Authentication API documentation](/api-reference).
+
+### Users authentication
+
+---
+
+#### Authentication API
+
+---
+
+Users authentication to Rainbow is done by calling the API `api/rainbow/authentication/v1.0/login`.
+
+This API will try to authenticate you and in case of sucess will return a token that is mandatory for calling other Rainbow APIs.
+
+Depending where you want to connect, you have to use the following hosts:
+
+-   For connecting to the Rainbow Sandbow platform for developers, you have to use the host `sandbox.openrainbow.com`
+    
+-   For connecting to the Rainbow Production platform, you have to use the host `openrainbow.com`
+    
+
+For both platforms, you need to have a valid and deployed application id with the associated secret key.
+
+#### Authentication information
+
+To authenticate, you need to have:
+
+-   **A login email**: This can be a Rainbow official account, a sandbox developer account or a any other test accounts
+    
+-   **A password**: The Rainbow password associated to the account used
+    
+-   **An application Id**: The id of a deployed application on the platform you want to connect
+    
+-   **A secret key**: The secret key associated to the application used
+    
+
+This diagram sums-up this authentication procedure.
+
+![](/docs/rest/../assets/rest_login.png)
+
+In return, you will receive:
+
+-   Information about the user connected
+    
+-   Information about the application used
+    
+-   A valid token
+    
+
+#### Authentication code sample
+
+---
+
+Here is a example of code for authenticating to Rainbow:
+
+This sample will load some JavaScript dependencies to ease your development:
+
+```html
+<script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/es6-promise/4.0.5/es6-promise.min.js"></script>
+<script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
+```
+
+Put the previous lines in your HTML file.
+
+Once done, you can edit your JavaScript file and add the following lines:
+
+```js
+// Your Rainbow login email
+var loginEmail = "jon.doe@mycompany.com";
+
+// Your Rainbow password
+var password = "MyPassword_12!";
+
+// Rainbow developers sandbox platform
+var host = "sandbox.openrainbow.com";
+
+// Protocol to use
+var protocol = "https://";
+
+// Port
+var port = "443";
+
+// Your application Id - replace by your own application ID
+var appID = "7b18d330e3f41...a9fb4194558de16c";
+
+// The secret key associated to the application - replace by you own secret key
+var appSecretKey = "dWgSBzCf6aoXOULVudU8z...EL82OScnczQ2BrWXtdqVeEH9Yat6F4xOsl8z";
+
+// The token received
+var token = "";
+
+var authenticate = function authenticate(email, password, id, secret) {
+    return new Promise(function(resolve, reject) {
+        var auth = btoa(email + ":" + password);
+        var appAuth = btoa(id + ":" + CryptoJS.SHA256(secret + password));
+        var authenticateURL = "/api/rainbow/authentication/v1.0/login";
+
+        $.ajax({
+            url: protocol + host + ":" + port + authenticateURL,
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                Authorization: "Basic " + auth,
+                "x-rainbow-app-auth": "Basic " + appAuth
+            }
+        })
+            .done(function(data, textStatus, jqXHR) {
+                resolve(data);
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                reject(errorThrown);
+            });
+    });
+};
+
+authenticate(loginEmail, password, appID, appSecretKey)
+    .then(function(json) {
+        token = json.token;
+    })
+    .catch(function(err) {
+        //...
+    });
+```
+
+When the authentication has succedded, you receive a JSON object containing the following structure:
+
+```json
+{
+    "loggedInApplication": {
+        // Properties of the application
+    },
+    "loggedInUser": {
+        // Properties of the user
+    },
+    // Valid token received
+    "token": "eyJ0e..._pwB34-JJ6EF8x0hsg"
+}
+```
+
+Note: The `token` received has to be used for all other requests to Rainbow.
+
+### Using Rainbow Tokens
+
+---
+
+Once authenticated, each Rainbow request must contain this Rainbow token to be valid. This paragraph describes what are Rainbow tokens and how to renew them.
+
+#### Understanding Rainbow tokens
+
+---
+
+Rainbow tokens are **JSON Web tokens**.
+
+A Rainbow token contains:
+
+-   The `exp` (expiration time): After this date/time, Rainbow will no more accept request containing this token.
+    
+-   The `iat` (issued at): The time when the token was issued.
+    
+-   The `countRenewed`: The number of time this token has been renewed.
+    
+-   The `maxTokenRenew`: The maximum time the token can be renewed.
+    
+
+Rainbow token received expires after **21600** minutes (ie: after 15 days). You can extract information to now the expiration time.
+
+#### Check token validity
+
+---
+
+Rainbow offers an API to check if a token is still valid or not.
+
+You have to call the API `/api/rainbow/authentication/v1.0/validator` like in the following sample:
+
+```js
+var checkToken = function checkToken(token) {
+    return new Promise(function(resolve, reject) {
+        var url = "/api/rainbow/authentication/v1.0/validator";
+
+        $.ajax({
+            url: protocol + host + ":" + port + searchURL,
+            method: "GET",
+            headers: {
+                Authorization: "Bearer " + token,
+                Accept: "application/json"
+            }
+        })
+            .done(function(data, textStatus, jqXHR) {
+                resolve(data);
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                reject(errorThrown);
+            });
+    });
+};
+
+// The valid token received
+var token = "eyJ0e..._pwB34-JJ6EF8x0hsg";
+
+checkToken(token)
+    .then(function(json) {
+        if (json.status === "OK") {
+            // token is still valid
+        } else {
+            // token has expired
+        }
+    })
+    .catch(function(err) {
+        // ...
+    });
+```
+
+#### Renew a Rainbow token
+
+---
+
+When token will expire soon, you can renew it in order to keep the current user session active.
+
+This action can be done using the API `/api/rainbow/authentication/v1.0/renew` like in the following sample
+
+```js
+var renewToken = function renewToken(token) {
+    return new Promise(function(resolve, reject) {
+        var url = "/api/rainbow/authentication/v1.0/renew";
+
+        $.ajax({
+            url: protocol + host + ":" + port + searchURL,
+            method: "GET",
+            headers: {
+                Authorization: "Bearer " + token,
+                Accept: "application/json"
+            }
+        })
+            .done(function(data, textStatus, jqXHR) {
+                resolve(data);
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                reject(errorThrown);
+            });
+    });
+};
+
+// The valid token received
+var token = "eyJ0e..._pwB34-JJ6EF8x0hsg";
+
+renewToken(token)
+    .then(function(json) {
+        token = json.token;
+    })
+    .catch(function(err) {
+        // ...
+    });
+```
+
+Each time you renew the token, the parameter `countRenewed` is incremented. Once you reach the `maxTokenRenew` value, you will not be able to renew it again. You current token will stay valid up to its `exp` value. Then you will need to call the authentication API to get a new valide token that can be renewed.
+
+### Sending requests to Rainbow
+
+---
+
+Sending requests to Rainbow is approximatively done in the same way except that you need to check the REST verb used. But you need to use the valid token received.
+
+Here is an sample of making a search request.
+
+```js
+// Rainbow developers sandbox platform
+var host = "sandbox.openrainbow.com";
+
+// Protocol to use
+var protocol = "https://";
+
+// Port to use
+var port = "443";
+
+var simpleSearch = function simpleSearch(name, token) {
+    console.log("[DEMO] :: Try to search for a user using the token received", name);
+
+    return new Promise(function(resolve, reject) {
+        var searchURL = "/api/rainbow/search/v1.0/users?displayName=" + name;
+
+        $.ajax({
+            url: protocol + host + ":" + port + searchURL,
+            method: "GET",
+            headers: {
+                Authorization: "Bearer " + token,
+                Accept: "application/json"
+            }
+        })
+            .done(function(data, textStatus, jqXHR) {
+                console.log("[DEMO] :: Search success", data);
+                resolve(data);
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                console.log("[DEMO] :: Search failed", errorThrown);
+                reject(errorThrown);
+            });
+    });
+};
+
+// The valid token received
+var token = "eyJ0e..._pwB34-JJ6EF8x0hsg";
+
+simpleSearch("smith", token)
+    .then(function(user) {
+        console.log("User found", user);
+    })
+    .catch(function(err) {
+        console.log("ERROR", err);
+    });
+```
+
+You are now able to send any requests you want to Rainbow!
+
+### Interested in
+
+---
+
+-   [Getting started with Rainbow REST API](/docs/rest/Getting_Started)
+    
+-   [Authentication REST API documentation](/api-reference)
+    
+
+---
+
+*Last updated January, 18th 2019*
+
+### On this page
+
+-   [Connecting to Rainbow](/docs/rest/Connecting_to_Rainbow#name-connecting-to-rainbow-0)
+-   [Preamble](/docs/rest/Connecting_to_Rainbow#name-preamble-4)
+-   [Users authentication](/docs/rest/Connecting_to_Rainbow#name-users-authentication-17)
+-   [Authentication API](/docs/rest/Connecting_to_Rainbow#name-authentication-api-21)
+-   [Authentication information](/docs/rest/Connecting_to_Rainbow#name-authentication-information-49)
+-   [Authentication code sample](/docs/rest/Connecting_to_Rainbow#name-authentication-code-sample-103)
+-   [Using Rainbow Tokens](/docs/rest/Connecting_to_Rainbow#name-using-rainbow-tokens-128)
+-   [Understanding Rainbow tokens](/docs/rest/Connecting_to_Rainbow#name-understanding-rainbow-tokens-135)
+-   [Check token validity](/docs/rest/Connecting_to_Rainbow#name-check-token-validity-170)
+-   [Renew a Rainbow token](/docs/rest/Connecting_to_Rainbow#name-renew-a-rainbow-token-181)
+-   [Sending requests to Rainbow](/docs/rest/Connecting_to_Rainbow#name-sending-requests-to-rainbow-195)
+-   [Interested in](/docs/rest/Connecting_to_Rainbow#name-interested-in-209)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

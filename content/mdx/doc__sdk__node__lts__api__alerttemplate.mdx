@@ -1,0 +1,584 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/alerttemplate"
+lastSynced: "2026-02-20T07:12:31.611Z"
+---
+# Documentation
+
+AlertTemplate
+
+LTS release 2.XPublished on 2025-01-01
+
+## Classes
+
+[AlertTemplate](#AlertTemplate)
+
+[AlertTemplatesData](#AlertTemplatesData)
+
+## AlertTemplate
+
+**Kind**: global class
+
+**Access**: public
+
+-   [AlertTemplate](#AlertTemplate)
+    -   [AlertTemplate()](#new_AlertTemplate_new)
+    -   [id](#AlertTemplate+id)
+    -   [name](#AlertTemplate+name)
+    -   [companyId](#AlertTemplate+companyId)
+    -   [event](#AlertTemplate+event)
+    -   [description](#AlertTemplate+description)
+    -   [mimeType](#AlertTemplate+mimeType)
+    -   [senderName](#AlertTemplate+senderName)
+    -   [headline](#AlertTemplate+headline)
+    -   [instruction](#AlertTemplate+instruction)
+    -   [contact](#AlertTemplate+contact)
+    -   [type](#AlertTemplate+type)
+    -   [status](#AlertTemplate+status)
+    -   [scope](#AlertTemplate+scope)
+    -   [category](#AlertTemplate+category)
+    -   [urgency](#AlertTemplate+urgency)
+    -   [severity](#AlertTemplate+severity)
+    -   [certainty](#AlertTemplate+certainty)
+
+---
+
+### AlertTemplate()
+
+This class represents a filter used when an alert is created to notify only some devices.  
+
+---
+
+### alertTemplate.id
+
+**Kind**: instance property of [`AlertTemplate`](#AlertTemplate)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+id
+
+`string`
+
+The Template Id
+
+---
+
+### alertTemplate.name
+
+**Kind**: instance property of [`AlertTemplate`](#AlertTemplate)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+name
+
+`string`
+
+The Human readable string identifying this template
+
+---
+
+### alertTemplate.companyId
+
+**Kind**: instance property of [`AlertTemplate`](#AlertTemplate)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+companyId
+
+`string`
+
+The unique identifier of the company that own this template. default value user logged in company Id
+
+---
+
+### alertTemplate.event
+
+**Kind**: instance property of [`AlertTemplate`](#AlertTemplate)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+event
+
+`string`
+
+The String denoting the type of the subject event of the alert message (max 255 characters)
+
+---
+
+### alertTemplate.description
+
+**Kind**: instance property of [`AlertTemplate`](#AlertTemplate)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+description
+
+`string`
+
+The String describing the subject event of the alert message (max 8192 characters)
+
+---
+
+### alertTemplate.mimeType
+
+**Kind**: instance property of [`AlertTemplate`](#AlertTemplate)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+mimeType
+
+`string`
+
+The Mime Type of description's content (max 255 characters) - Default value: text/plain
+
+---
+
+### alertTemplate.senderName
+
+**Kind**: instance property of [`AlertTemplate`](#AlertTemplate)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+senderName
+
+`string`
+
+The String naming the originator of the alert message (max 255 characters)
+
+---
+
+### alertTemplate.headline
+
+**Kind**: instance property of [`AlertTemplate`](#AlertTemplate)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+headline
+
+`string`
+
+The headline of the alert message (max 255 characters) used for short message devices that may only presents this field (mobile device push)
+
+---
+
+### alertTemplate.instruction
+
+**Kind**: instance property of [`AlertTemplate`](#AlertTemplate)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+instruction
+
+`string`
+
+The text representing the recommended action (max 4096 characters)
+
+---
+
+### alertTemplate.contact
+
+**Kind**: instance property of [`AlertTemplate`](#AlertTemplate)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+contact
+
+`string`
+
+The contact for follow-up or confirmation of the alert message (optional)
+
+---
+
+### alertTemplate.type
+
+**Kind**: instance property of [`AlertTemplate`](#AlertTemplate)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+type
+
+`string`
+
+The templates type only 'cap' is allowed
+
+---
+
+### alertTemplate.status
+
+**Kind**: instance property of [`AlertTemplate`](#AlertTemplate)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+status
+
+`string`
+
+The templates status ( 'Actual', 'Exercise', 'System', 'Test','Draft') - default: Actual
+
+---
+
+### alertTemplate.scope
+
+**Kind**: instance property of [`AlertTemplate`](#AlertTemplate)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+scope
+
+`string`
+
+The templates scope ( 'Public', 'Restricted', 'Alert') - Default value: Public
+
+---
+
+### alertTemplate.category
+
+**Kind**: instance property of [`AlertTemplate`](#AlertTemplate)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+category
+
+`string`
+
+The template category ('Geo', 'Met', 'Safety', 'Security', 'Rescue', 'Fire', 'Health', 'Env', 'Transport', 'Infra', 'CBRNE', 'Other') - Default value: Safety
+
+---
+
+### alertTemplate.urgency
+
+**Kind**: instance property of [`AlertTemplate`](#AlertTemplate)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+urgency
+
+`string`
+
+The template urgency ('Immediate', 'Expected', 'Future', 'Past', 'Unknown') - Default value: Immediate
+
+---
+
+### alertTemplate.severity
+
+**Kind**: instance property of [`AlertTemplate`](#AlertTemplate)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+severity
+
+`string`
+
+The template severity ('Extreme', 'Severe', 'Moderate', 'Minor', 'Unknown') - Default value: Severe
+
+---
+
+### alertTemplate.certainty
+
+**Kind**: instance property of [`AlertTemplate`](#AlertTemplate)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+certainty
+
+`string`
+
+The template certainty ('Observed', 'Likely', 'Possible', 'Unlikely', 'Unknown') - Default value: Observed
+
+---
+
+## AlertTemplatesData
+
+**Kind**: global class
+
+-   [AlertTemplatesData](#AlertTemplatesData)
+    -   [AlertTemplatesData()](#new_AlertTemplatesData_new)
+    -   [total](#AlertTemplatesData+total)
+    -   [limit](#AlertTemplatesData+limit)
+    -   [offset](#AlertTemplatesData+offset)
+
+---
+
+### AlertTemplatesData()
+
+This class represents a Structure used when retrieving severals AlertTemplate from server.  
+
+---
+
+### alertTemplatesData.total
+
+**Kind**: instance property of [`AlertTemplatesData`](#AlertTemplatesData)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+total
+
+`number`
+
+The Total number of items available
+
+---
+
+### alertTemplatesData.limit
+
+**Kind**: instance property of [`AlertTemplatesData`](#AlertTemplatesData)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+limit
+
+`number`
+
+The Number of items asked
+
+---
+
+### alertTemplatesData.offset
+
+**Kind**: instance property of [`AlertTemplatesData`](#AlertTemplatesData)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+offset
+
+`number`
+
+The Offset used
+
+---
+
+### On this page
+
+-   [Classes](/docs/sdk/node#name-classes-0)
+-   [AlertTemplate](/docs/sdk/node#name-alerttemplate-7)
+-   [AlertTemplate()](/docs/sdk/node#name-alerttemplate-119)
+-   [alertTemplate.id](/docs/sdk/node#name-alerttemplate.id-129)
+-   [alertTemplate.name](/docs/sdk/node#name-alerttemplate.name-176)
+-   [alertTemplate.companyId](/docs/sdk/node#name-alerttemplate.companyid-223)
+-   [alertTemplate.event](/docs/sdk/node#name-alerttemplate.event-270)
+-   [alertTemplate.description](/docs/sdk/node#name-alerttemplate.description-317)
+-   [alertTemplate.mimeType](/docs/sdk/node#name-alerttemplate.mimetype-364)
+-   [alertTemplate.senderName](/docs/sdk/node#name-alerttemplate.sendername-411)
+-   [alertTemplate.headline](/docs/sdk/node#name-alerttemplate.headline-458)
+-   [alertTemplate.instruction](/docs/sdk/node#name-alerttemplate.instruction-505)
+-   [alertTemplate.contact](/docs/sdk/node#name-alerttemplate.contact-552)
+-   [alertTemplate.type](/docs/sdk/node#name-alerttemplate.type-599)
+-   [alertTemplate.status](/docs/sdk/node#name-alerttemplate.status-646)
+-   [alertTemplate.scope](/docs/sdk/node#name-alerttemplate.scope-693)
+-   [alertTemplate.category](/docs/sdk/node#name-alerttemplate.category-740)
+-   [alertTemplate.urgency](/docs/sdk/node#name-alerttemplate.urgency-787)
+-   [alertTemplate.severity](/docs/sdk/node#name-alerttemplate.severity-834)
+-   [alertTemplate.certainty](/docs/sdk/node#name-alerttemplate.certainty-881)
+-   [AlertTemplatesData](/docs/sdk/node#name-alerttemplatesdata-928)
+-   [AlertTemplatesData()](/docs/sdk/node#name-alerttemplatesdata-967)
+-   [alertTemplatesData.total](/docs/sdk/node#name-alerttemplatesdata.total-977)
+-   [alertTemplatesData.limit](/docs/sdk/node#name-alerttemplatesdata.limit-1024)
+-   [alertTemplatesData.offset](/docs/sdk/node#name-alerttemplatesdata.offset-1071)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

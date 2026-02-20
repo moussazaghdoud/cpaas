@@ -1,0 +1,162 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/ios/lts/guides/File_Sharing"
+lastSynced: "2026-02-20T07:12:29.143Z"
+---
+# Documentation
+
+Sharing files
+
+LTS release 2.12.0Published on 2024-07-23
+
+## Sharing files
+
+This tutorial will help you to share files with other Rainbow users or bubbles. All the shared files are stored on Rainbow until the owner decides to remove it.
+
+### Sharing files with a Rainbow user or a bubble
+
+See **Dealing with attachments** chapter in [Instant Messaging](/docs/sdk/ios)
+
+### File sharing quota
+
+Each user has a given file storage quota depending on its licence
+
+Licence
+
+Quota
+
+Details
+
+Essential
+
+1 GB
+
+You can share files up to 1 GB of storage space
+
+Business
+
+1 GB
+
+You can share files up to 1 GB of storage space
+
+Enterprise
+
+20 GB
+
+You can share files up to 20 GB of storage space
+
+#### Verify my file sharing quota
+
+Your file storage consumption is accessible via properties of the fileSharingService.
+
+-   max consumption (maxQuotaSize in GB)
+-   total consumption (currentSize in bytes)
+-   conference recording consumption (recordingsQuotaSize in bytes)
+-   other files consumption (othersQuotaSize in bytes)
+
+The sizes are given in GB.
+
+```swift
+var maxSize = ServicesManager.sharedInstance().fileSharingService.maxQuotaSize
+var currentSize = ServicesManager.sharedInstance().fileSharingService.currentSize
+var recordingSize = ServicesManager.sharedInstance().fileSharingService.recordingsQuotaSize
+var otherFilesSize = ServicesManager.sharedInstance().fileSharingService.othersQuotaSize
+```
+
+### Managing files
+
+#### File classe
+
+Files are managed via instances of `File`classes. When a file is shared in a conversation (received or sent), an instance of this file is created and stored in a file array (`files` property of the fileSharingService). Knowing their `rainbowID`it is possible to get the associated file instance.
+
+Notifications are fired each time a file is
+
+-   created (by me or by others if I can view it) : `kFileSharingServiceDidCreateFile`
+-   modified (including thumbnail creation) : `kFileSharingServiceDidUpdateFile`
+-   deleted (removed by me or removed from the viewers) : `kFileSharingServiceDidRemoveFile`
+
+When a file is deleted, the file instance is still available in the `files` porperty array, but the `isDeleted` property is `true`.
+
+#### Receive files
+
+##### File data
+
+File instances are created when the file descriptor is retrieved from the server. At this time, the file data are not available in the SDK. The file data have to be explicitely requested via a download request and are then stored in cache. Further download requests will access the cached data and won't download them from the server anymore, until the cache is removed.
+
+```swift
+let myFile = ServicesManager.sharedInstance().fileSharingService.getFileByRainbowID(fileId))
+
+ServicesManager.sharedInstance().fileSharingService.downloadData(for: myFile) { file, error in
+    if let error = error as? NSError {
+        // Error management
+        ...
+    } 
+    if let data = file.data {
+        ...
+    }
+}
+```
+
+#### Send files
+
+To send a file, create first a temporary file with the file data. Temporary files are not stored in the `files` property of the fileSharingService.
+
+```swift
+var filesToCreate = [File]()
+
+guard let file = ServicesManager.sharedInstance().fileSharingService.createTemporaryFile(
+            withFileName: "myFileName",
+            andData: data, andURL: nil) else {
+    // Error management     
+    return
+}
+
+filesToCreate.append(file)
+
+ServicesManager.sharedInstance().fileSharingService.uploadFiles(toPersonalStorage: filesToCreate) { errorsDict, error in
+    if let errorsDict = errorsDict {
+        // Error management
+    }
+    ...
+}
+```
+
+#### Thumbnails
+
+When files are uploaded on the rainbow server, a thumbnail is generated. The SDK is informed and downloads the thumbnail. A notification `kFileSharingServiceDidUpdateFile` is fired once the thumbnail image is available in the `file.thumbnail`property.
+
+The `file.thumbnail`property will always provide an image, even if the thumbnail is not available. In this case, an icon corresponding to the file type is returned.
+
+### Retrieve sent and / or received files from the server
+
+```swift
+// Retrieve all (sent anr received) video files sorted by date in descending order
+ServicesManager.sharedInstance().fileSharingService.fetchRainbowStorageFiles(fromOffset: 0, filterType: .all, withLimit: 50, withTypeMIME: .video, with: .date, withSortOrderAscending: false) { files, offset, error in
+    if let error = error as NSError? {
+        // Error management             
+    } else if let files = files {
+        ...
+    }
+}
+```
+
+### On this page
+
+-   [Sharing files](/docs/sdk/ios#name-sharing-files-0)
+-   [Sharing files with a Rainbow user or a bubble](/docs/sdk/ios#name-sharing-files-with-a-rainbow-user-or-a-bubble-6)
+-   [File sharing quota](/docs/sdk/ios#name-file-sharing-quota-12)
+-   [Verify my file sharing quota](/docs/sdk/ios#name-verify-my-file-sharing-quota-68)
+-   [Managing files](/docs/sdk/ios#name-managing-files-100)
+-   [File classe](/docs/sdk/ios#name-file-classe-103)
+-   [Receive files](/docs/sdk/ios#name-receive-files-132)
+-   [Send files](/docs/sdk/ios#name-send-files-142)
+-   [Thumbnails](/docs/sdk/ios#name-thumbnails-149)
+-   [Retrieve sent and / or received files from the server](/docs/sdk/ios#name-retrieve-sent-and--or-received-files-from-the-server-158)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

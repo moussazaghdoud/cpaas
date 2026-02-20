@@ -1,0 +1,222 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/rainbowvoicecloudpbx"
+lastSynced: "2026-02-20T07:12:32.493Z"
+---
+# Documentation
+
+RainbowVoiceCloudPBX
+
+LTS release 2.XPublished on 2025-01-01
+
+## Classes
+
+[HuntingGroup](#HuntingGroup)
+
+[GroupMember](#GroupMember)
+
+## Typedefs
+
+[HuntingGroupType](#HuntingGroupType) : `'hunting_group'` | `'manager_assistant'`
+
+[HuntingGroupSubType](#HuntingGroupSubType) : `'default'` | `'hg_attendant'` | `'manager_assistant'`
+
+[HuntingGroupMemberConnection](#HuntingGroupMemberConnection) : `'connected'` | `'disconnected'` | `'deskphone'` | `'unknown'`
+
+[HuntingGroupPolicy](#HuntingGroupPolicy) : `'serial'` | `'parallel'` | `'circular'`
+
+[HuntingGroupProfiles](#HuntingGroupProfiles) : `'all'` | `'external_only'` | `'internal_only'` | `'none'`
+
+[HuntingGroupMemberRole](#HuntingGroupMemberRole) : `'agent'` | `'manager'` | `'leader'` | `'assistant'`
+
+[HuntingGroupMemberStatus](#HuntingGroupMemberStatus) : `'active'` | `'idle'`
+
+## HuntingGroup
+
+**Kind**: global class
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+name
+
+`String`
+
+Hunting group name - displayed on the caller phone set
+
+shortNumber
+
+`String`
+
+Internal Number of the new cloud PBX hunting group
+
+type
+
+`String`
+
+(hunting\_group) Group type. hunting\_group,manager\_assistant  
+  
+Note that **manager\_assistant** is **DEPRECATED**. See manager\_assistant subType  
+
+subType
+
+[`HuntingGroupSubType`](#HuntingGroupSubType)
+
+(default) Group sub type, only Voice attendant users can be part of hg\_attendant group and can not be part of default group
+
+policy
+
+[`HuntingGroupPolicy`](#HuntingGroupPolicy)
+
+(parallel) Hunting group policy - only parallel policy for hg\_attendant hunting group, only serial for manager\_assistant
+
+timeout
+
+`5-30`
+
+(10) Timeout in seconds after which the next member of the hunting group will be selected (ringing) - applicable to serial or circular hunting group type only
+
+isEmergencyGroup
+
+`Boolean`
+
+(false) Is this Hunting group the emergency group of the associated Cloud PBX
+
+isEmptyAllowed
+
+`Boolean`
+
+(true) Indicates if the last active member of the hunting group can leave the group or not
+
+isDDIUpdateByManagerAllowed
+
+`Boolean`
+
+(true) Indicates if changing the DDI of this hunting group by a manager is allowed or not
+
+members
+
+[`Array.<GroupMember>`](#GroupMember)
+
+List of group members. In case of serial hunt group policy, or for several assistants, the order is the ringing order
+
+---
+
+### HuntingGroup()
+
+Class representing a hunting group.
+
+---
+
+## GroupMember
+
+**Kind**: global class
+
+**Access**: public
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+memberId
+
+`String`
+
+Member (user) unique identifier
+
+roles
+
+[`Array.<HuntingGroupMemberRole>`](#HuntingGroupMemberRole)
+
+(\["agent"\]) Member role inside the group.
+
+status
+
+[`HuntingGroupMemberStatus`](#HuntingGroupMemberStatus)
+
+(active) Member status inside the group
+
+---
+
+### GroupMember()
+
+Class representing a group member.
+
+---
+
+## HuntingGroupType : `'hunting_group'` | `'manager_assistant'`
+
+**Kind**: global typedef
+
+---
+
+## HuntingGroupSubType : `'default'` | `'hg_attendant'` | `'manager_assistant'`
+
+**Kind**: global typedef
+
+---
+
+## HuntingGroupMemberConnection : `'connected'` | `'disconnected'` | `'deskphone'` | `'unknown'`
+
+**Kind**: global typedef
+
+---
+
+## HuntingGroupPolicy : `'serial'` | `'parallel'` | `'circular'`
+
+**Kind**: global typedef
+
+---
+
+## HuntingGroupProfiles : `'all'` | `'external_only'` | `'internal_only'` | `'none'`
+
+**Kind**: global typedef
+
+---
+
+## HuntingGroupMemberRole : `'agent'` | `'manager'` | `'leader'` | `'assistant'`
+
+**Kind**: global typedef
+
+---
+
+## HuntingGroupMemberStatus : `'active'` | `'idle'`
+
+**Kind**: global typedef
+
+---
+
+### On this page
+
+-   [Classes](/docs/sdk/node#name-classes-0)
+-   [Typedefs](/docs/sdk/node#name-typedefs-4)
+-   [HuntingGroup](/docs/sdk/node#name-huntinggroup-11)
+-   [HuntingGroup()](/docs/sdk/node#name-huntinggroup-154)
+-   [GroupMember](/docs/sdk/node#name-groupmember-164)
+-   [GroupMember()](/docs/sdk/node#name-groupmember-230)
+-   [HuntingGroupType : 'hunting\_group' | 'manager\_assistant'](/docs/sdk/node#name-huntinggrouptype-:-hunting_group--manager_assistant-240)
+-   [HuntingGroupSubType : 'default' | 'hg\_attendant' | 'manager\_assistant'](/docs/sdk/node#name-huntinggroupsubtype-:-default--hg_attendant--manager_assistant-250)
+-   [HuntingGroupMemberConnection : 'connected' | 'disconnected' | 'deskphone' | 'unknown'](/docs/sdk/node#name-huntinggroupmemberconnection-:-connected--disconnected--deskphone--unknown-260)
+-   [HuntingGroupPolicy : 'serial' | 'parallel' | 'circular'](/docs/sdk/node#name-huntinggrouppolicy-:-serial--parallel--circular-270)
+-   [HuntingGroupProfiles : 'all' | 'external\_only' | 'internal\_only' | 'none'](/docs/sdk/node#name-huntinggroupprofiles-:-all--external_only--internal_only--none-280)
+-   [HuntingGroupMemberRole : 'agent' | 'manager' | 'leader' | 'assistant'](/docs/sdk/node#name-huntinggroupmemberrole-:-agent--manager--leader--assistant-290)
+-   [HuntingGroupMemberStatus : 'active' | 'idle'](/docs/sdk/node#name-huntinggroupmemberstatus-:-active--idle-300)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

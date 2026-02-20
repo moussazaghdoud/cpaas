@@ -1,0 +1,502 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/tutorials/ManagingConferences"
+lastSynced: "2026-02-20T07:12:33.731Z"
+---
+# Documentation
+
+Manage Conferences
+
+### Retrieve Conference Call
+
+---
+
+### Preamble
+
+---
+
+This guide describes how to use SFU which is Rainbow conference service. This conference uses bubbles.
+
+In this tutorial we will talking bout the following:
+
+-   How to use [ConferenceCallComponent](#ConferenceCallComponent).
+-   Listen to the Conference event including: [EventType.CurrentConferenceUpdated](#EventType.CurrentConferenceUpdated), [EventType.GetConferenceScreenSharingUpdate](#EventType.GetConferenceScreenSharingUpdate), [EventType.ConferenceAttendeesUpdates](#EventType.ConferenceAttendeesUpdates)
+-   If you want to know how to use The `Conference Services` like start conference, join conference ...etc, please check this link for more detail [Conference Services](/docs/sdk/reactnative/api/ConferenceServices).
+-   Get more detail bout [ConferenceCallView](#ConferenceCallView) for the conference UI view and how to add your customization to it.
+-   Get more detail bout [ConferenceScreenSharingView](#ConferenceScreenSharingView) for the conference screen sharing and how to add your customization to it.
+-   Get more detail bout [ConferenceActionsView](#ConferenceActionsView) for the conference action buttons and how to add your customization to it.
+
+---
+
+**How To Use:**
+
+This example bellow will show to you how to use Conference Call in general and simple way. If you wanna more detail how to use it, you can check the [Sample Code](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/tree/main/src/Calls/Conference/ConferenceCallComponent.tsx).
+
+`Please Note:` in the `Sample Code` we listen beside the event `EventType.CurrentConferenceUpdated` we listen to `EventType.GetCurrentCall` event too. And the reason that we need to get the current call after retrieving the call view, please read this link for more info [Retrieve Active Call View](/docs/sdk/reactnative/tutorials/CurrentCallServices).
+
+```tsx
+import React, { FunctionComponent, useEffect, useState } from 'react';
+import { eventEmitter, EventType, IConference, ConferenceActionsView, ConferenceCallView } from 'react-native-rainbow-module';
+import { Body, Container, Header, Left, Title, Right, Icon } from 'native-base';
+import {
+    StyleSheet,
+    View
+} from 'react-native';
+
+const ConferenceCallComponent: FunctionComponent = () => {
+
+    const [conferenceCall, setConferenceCall] = useState<IConference>();
+
+    useEffect(() => {
+        // Listen to the conference updated including conference added, updated and removed
+        const currentConferenceUpdatedListener = eventEmitter.addListener(EventType.CurrentConferenceUpdated, (call?: IConference) => {
+            // incase of the removed call, the call event will be `undefined`
+            setConferenceCall(call);
+        });
+
+    return () => {
+            currentConferenceUpdatedListener.remove();
+        }
+    }, [conferenceCall]);
+
+ // Check if there is a valid Conference Call to show it to the user.
+    if (conferenceCall) {
+        const { name } = conferenceCall.callPeer;
+
+        return (
+            <Container >
+                <Header style={defaultStyle.headerColor} hasSegment={true}>
+                    <Body>
+                        <Title style={defaultStyle.headerTitle}>{name}</Title>
+                    </Body>
+                </Header>
+                <View style={defaultStyle.backgroundImage}>
+                    <ConferenceCallView conferenceCall={conferenceCall}  />
+                    <ConferenceActionsView call={conferenceCall}  />
+                </View>
+
+            </Container>
+        );
+    }
+    else {
+        return null;
+    }
+}
+```
+
+**Conference Call Screenshot**
+
+![](doc/sdk/reactnative/screenShots/conference1.png)
+
+---
+
+**Conference Updated Event:**
+
+To listen to the conference event changes, you can use `EventType.CurrentConferenceUpdated`, where the event response will be a conference object of type [IConference](/docs/sdk/reactnative/api/CallTypes) and the conference object will be as `undefined` in case of the `Call Removed`.
+
+```tsx
+const currentConferenceUpdatedListener = eventEmitter.addListener(EventType.CurrentConferenceUpdated, (call?: IConference) => {
+            // incase of the removed call, the call event will be `undefined`
+            setConferenceCall(call);
+        });
+```
+
+**Conference Attendees Updates Event:**
+
+To listen to the conference attendees event changes for example when one of the participant joining the conference or leave the conference, you can use `EventType.ConferenceAttendeesUpdates`, where the event response will be a attendees array of type [IConferenceParticipants](/docs/sdk/reactnative/api/CallTypes).
+
+```tsx
+const confAttendeesUpdatesListener = eventEmitter.addListener(EventType.ConferenceAttendeesUpdates, (attendees: IConferenceParticipants[]) => {
+          // Check if there is a valid conference call object
+            if (conferenceCall) {
+                // update the conference call attendees with the new updated attendees.
+                setConferenceCall({ ...conferenceCall, attendees });
+            }
+        });
+```
+
+**Conference Screen Sharing Updates Event:**
+
+To listen to the conference Screen Sharing event changes for example when the screen sharing is enabled/disabled or when the participant who's sharing changed, you can use `EventType.GetConferenceScreenSharingUpdate`, where the event response will be as [ISharingConference](/docs/sdk/reactnative/api/CallTypes) type.
+
+```tsx
+const getSharingUpdate = eventEmitter.addListener(
+            EventType.GetConferenceScreenSharingUpdate,
+            (eventData: ISharingConference) => {
+                console.log(`conference screen sharing update with isSharingEnabled: ${eventData.isSharingEnabled}`);
+                // handle screen sharing updates
+            }
+        );
+```
+
+---
+
+**Conference Call View:**
+
+This Component will show to you the conference call view and its have tho following props for your customization:
+
+#
+
+Name
+
+Type
+
+Description
+
+1
+
+conferenceCall
+
+[IConference](/docs/sdk/reactnative/api/CallTypes)
+
+The Conference call object
+
+2
+
+renderIncomingCallView
+
+(conferenceCall: [IConference](/docs/sdk/reactnative/api/CallTypes)) => React.ReactNode
+
+\[`optional`\] Incase you wanna override the default view, you can use it to add your own custom view for the `Incoming Conference Call`
+
+3
+
+renderOutgoingCallView
+
+(conferenceCall: [IConference](/docs/sdk/reactnative/api/CallTypes)) => React.ReactNode
+
+\[`optional`\] Incase you wanna override the default view, you can use it to add your own custom view for the `Outgoing Conference Call`
+
+4
+
+renderActiveCallView
+
+(conferenceCall: [IConference](/docs/sdk/reactnative/api/CallTypes)) => React.ReactNode
+
+\[`optional`\] Incase you wanna override the default view, you can use it to add your own custom view for the `Outgoing Conference Call`
+
+If you wanna more detail how to use it, you can check the [Sample Code](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/tree/main/src/Calls/Conference/).
+
+please check the following example:
+
+```tsx
+// Custom Incoming Conference Call
+ const renderCustomIncomingCall = (call: IConference) => {
+    const { callPeer } = call;
+    return (
+        <View style={defaultStyle.viewStyle}>
+            <Text style={defaultStyle.incomingCallInvitedMsg}>{`${callPeer.bubbleOwner.name} ${Strings.ConferenceCallInvitation} ${callPeer.name} `}</Text>
+            <ImageHolder url={callPeer.imageURL} style={conferenceBubbleImageStyle} name={callPeer.name} />
+        </View>
+    );
+}
+
+// Custom Active Conference Call
+ const renderParticipantItem = ({ item }: { item: IConferenceParticipants }) => {
+    return (
+        <View style={defaultStyle.participantItemContainer}>
+            <ParticipantConferenceView participant={item} key={item.contact.jId} style={participantViewStyle} />
+        </View>
+    )
+}
+
+ const renderCustomActiveCall = (call: IConference) => {
+    const { isLocalVideoEnabled } = call;
+    return (
+        <View style={defaultStyle.viewStyle}>
+            {isLocalVideoEnabled && <ConferenceLocalVideo />}
+            <FlatGrid
+                itemDimension={140}
+                data={call.attendees}
+                style={defaultStyle.participantListStyle}
+                spacing={10}
+                renderItem={renderParticipantItem}
+            />
+        </View>
+    );
+}
+
+const CallView = (
+            <ConferenceCallView conferenceCall={conferenceCall} renderIncomingCallView={renderCustomIncomingCall} renderActiveCallView={renderCustomActiveCall} />
+        );
+```
+
+**Conference View Screenshot**
+
+![](doc/sdk/reactnative/screenShots/conference2.png)
+
+---
+
+**Conference Actions View:**
+
+This Component will show to you the conference Actions buttons view and its have tho following props for your customization:
+
+#
+
+Name
+
+Type
+
+Description
+
+1
+
+conferenceCall
+
+[IConference](/docs/sdk/reactnative/api/CallTypes)
+
+The Conference call object
+
+2
+
+renderIncomingConferenceActions
+
+(conferenceCall: [IConference](/docs/sdk/reactnative/api/CallTypes)) => React.ReactNode
+
+\[`optional`\] Incase you wanna override the default Buttons view, you can use it to add your own custom view for the `Incoming Conference Call`
+
+3
+
+renderOutgoingConferenceActions
+
+(conferenceCall: [IConference](/docs/sdk/reactnative/api/CallTypes)) => React.ReactNode
+
+\[`optional`\] Incase you wanna override the default Buttons view, you can use it to add your own custom view for the `Outgoing Conference Call`
+
+4
+
+renderActiveConferenceActions
+
+(conferenceCall: [IConference](/docs/sdk/reactnative/api/CallTypes)) => React.ReactNode
+
+\[`optional`\] Incase you wanna override the default Buttons view, you can use it to add your own custom view for the `Outgoing Conference Call`
+
+If you wanna more detail how to use it, you can check the [Sample Code](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/tree/main/src/Calls/Conference/).
+
+please check the following example:
+
+```tsx
+// Custom Conference Action Buttons
+ const renderIncomingCallActionsButtons = (call: IConference) => {
+    return (
+        <View style={defaultStyle.buttonsViewStyle} >
+            <AnswerConfCallButton call={call} />
+            <EndConferenceCallButton
+                call={call}
+                style={{
+                    container: {
+                        width: 60,
+                        height: 60,
+                    }
+                }}
+            />
+        </View>
+    );
+}
+
+// Custom Active Conference Action Buttons
+ const renderActiveCallActionsButtons = (call: IConference) => {
+    const { callPeer, isLocalVideoEnabled } = call;
+    return (
+        <View style={defaultStyle.buttonsViewStyle} >
+            <MicButton />
+            {isLocalVideoEnabled && <SwitchCameraButton />}
+            <HideConferenceCallViewButton call={call} />
+            <AddVideoToConfButton call={call} />
+            <LoudspeakerButton />
+            {callPeer.isMyUserModerator && <LockConfButton call={call} />}
+            <EndConferenceCallButton call={call} />
+        </View>
+    );
+}
+
+const CallButtonsView = (
+            <ConferenceCallView conferenceCall={conferenceCall} renderIncomingConferenceActions={renderIncomingCallActionsButtons} renderActiveConferenceActions={renderActiveCallActionsButtons} />
+        );
+```
+
+### Lock Conference Call
+
+---
+
+In case you wanna lock the conference call were to prevent any participant to join the conference call, you can use this method `conferenceService.lockConference(conferenceRoomId: string)` to switch the Lock state (lock/unlock), and then you can listen to the lock state changes result `EventType.GetConferenceLockState`.
+
+Please check the following example:
+
+```ts
+import { conferenceService } from 'react-native-rainbow-module';
+
+// Listen to the conference lock state event.
+const conferenceLockState = eventEmitter.addListener(EventType.GetConferenceLockState, (eventData: boolean) => {
+            console.log("conference lock state had changed to : ", eventData);
+            ...
+        });
+        ...
+// Switch conference lock state
+const switchConferenceLock = (bubbleId: string) => {
+    conferenceService.lockConference(bubbleId);
+}
+```
+
+**Conference Actions Screenshot**
+
+![](doc/sdk/reactnative/screenShots/conference3.png)
+
+Rainbow RN SDK provide you a customizable Actions buttons components you can use if you want to customize yr call action views
+
+#
+
+Name
+
+props
+
+Description
+
+1
+
+AnswerConfCallButton
+
+(`call`: [IConference](/docs/sdk/reactnative/api/CallTypes))  
+(`style`:{ icon?: TextStyle, container?: ViewStyle })  
+(`iconName`:string)
+
+call `<AnswerConfCallButton call={call} iconName='yourIconName' style={{}}/>` to answer the conference call , also you can pass your custom style and icon name
+
+2
+
+EndConferenceCallButton
+
+(`call`: [IConference](/docs/sdk/reactnative/api/CallTypes))  
+(`style`:{ icon?: TextStyle, container?: ViewStyle })  
+(`iconName`:string)
+
+call `<EndConferenceCallButton call={call} iconName='yourIconName' style={{}}/>` to end the conference call, also you can pass your custom style and icon name
+
+3
+
+MicButton
+
+none
+
+call `<MicButton />` to enable/disable the Mic, also you can pass your custom style and icon name
+
+4
+
+SwitchCameraButton
+
+(`style`:{ icon?: TextStyle, (`iconCallName`:string)
+
+call `<SwitchCameraButton iconCallName='yourIconName' style={{}}/>` to switch the camera from the back camera to the front camera and vice versa, also you can pass your custom style and icon name
+
+5
+
+HideConferenceCallViewButton
+
+(`call`: [IConference](/docs/sdk/reactnative/api/CallTypes))  
+(`style`:{ icon?: TextStyle, container?: ViewStyle })  
+(`iconCallName`:string)
+
+call `<HideConferenceCallViewButton call={call} iconCallName='yourIconName' style={{}}/>` to hide the call view and show the App view , also you can pass your custom style and icon name
+
+6
+
+AddVideoToConfButton
+
+(`call`: [IConference](/docs/sdk/reactnative/api/CallTypes))  
+(`style`:{ icon?: TextStyle, container?: ViewStyle })  
+(`iconCallName`:string)
+
+call `<AddVideoToConfButton call={call} iconCallName='yourIconName' style={{}}/>` to add your local video , also you can pass your custom style and icon name
+
+7
+
+LockConfButton
+
+(`call`: [IConference](/docs/sdk/reactnative/api/CallTypes))  
+(`style`:{ icon?: TextStyle, container?: ViewStyle })  
+(`iconCallName`:string)
+
+call `<LockConfButton call={call} iconCallName='yourIconName' style={{}}/>` to lock the conference and forbid anyone to join the call , also you can pass your custom style and icon name
+
+---
+
+**Share Conference View:**
+
+Incase you wanna add a Screen Sharing, you can use `ConferenceScreenSharingView` where you can depends on this Event: [EventType.GetConferenceScreenSharingUpdate](#EventType.GetConferenceScreenSharingUpdate) to show/hide the Screen Sharing view.
+
+Please check the following props for your customization:
+
+#
+
+Name
+
+Type
+
+Description
+
+1
+
+style
+
+ViewStyle
+
+Your custom style for the screen sharing view
+
+2
+
+zOrder
+
+number
+
+the `zOrder` of the screen sharing view according to the other views
+
+If you wanna more detail how to use it, you can check the [Sample Code](https://github.com/Rainbow-CPaaS/Rainbow-React-Native-Samples/tree/main/src/Calls/Conference/).
+
+please check the following example:
+
+```tsx
+const [sharingInfo, setSharingInfo] = useState<ISharingConference>();
+...
+
+useEffect(() => {
+...
+// Listen to the Screen Sharing changes event
+ const getSharingUpdate = eventEmitter.addListener(
+            EventType.GetConferenceScreenSharingUpdate,
+            (eventData: ISharingConference) => {
+                setSharingInfo(eventData);
+            }
+        );
+ ...
+
+    }, []);
+
+const shareConferenceView = ()=>{
+    if(sharingInfo?.isSharingEnabled){
+        return (
+          <ConferenceScreenSharingView />
+        );
+    }
+    else {
+        return null;
+    }
+}
+```
+
+**Conference Sharing Screenshot**
+
+![](doc/sdk/reactnative/screenShots/conference4.png)
+
+### On this page
+
+-   [Retrieve Conference Call](/docs/sdk/reactnative/tutorials/ManagingConferences#name-retrieve-conference-call-0)
+-   [Preamble](/docs/sdk/reactnative/tutorials/ManagingConferences#name-preamble-4)
+-   [Lock Conference Call](/docs/sdk/reactnative/tutorials/ManagingConferences#name-lock-conference-call-291)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

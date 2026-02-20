@@ -1,0 +1,352 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/tutorials/ManageBubbles"
+lastSynced: "2026-02-20T07:12:33.691Z"
+---
+# Documentation
+
+Manage Bubbles
+
+# Bubbles Management
+
+## Overview
+
+The Rainbow SDK for React Native provides comprehensive tools for managing bubbles, which are collaborative spaces for group communication. This guide covers all aspects of bubble management including retrieval, creation, participant management, and custom data handling.
+
+---
+
+## Table of Contents
+
+1.  [Retrieving Bubbles](#retrieving-bubbles)
+2.  [Bubble Participants Management](#bubble-participants-management)
+3.  [Bubble Custom Data](#bubble-custom-data)
+
+---
+
+## Retrieving Bubbles
+
+### Overview
+
+To display a list of bubbles, use the `<Bubbles />` component from the Rainbow RN library. This component provides a customizable interface for displaying and interacting with bubbles.
+
+### Component Props
+
+#
+
+Name
+
+Type
+
+Description
+
+1
+
+bubbles
+
+[IBubble](/docs/sdk/reactnative/api/IBubble)\[\]
+
+Array of bubble objects
+
+2
+
+style
+
+IBubbleStyleProps
+
+Custom styles for the bubble list view
+
+3
+
+refreshControl
+
+React.ReactElement
+
+Pull-to-refresh functionality
+
+4
+
+cellWidth
+
+number
+
+Width of each row in the bubbles list
+
+5
+
+cellHeight
+
+number
+
+Height of each row in the bubbles list
+
+6
+
+renderItems
+
+(bubble: IBubble) => React.ReactElement
+
+Custom render function for bubble items
+
+7
+
+renderListEmpty
+
+() => React.ReactElement
+
+Rendered when the bubbles array is empty
+
+### Implementation Example
+
+```tsx
+import React, { FunctionComponent, useState, useEffect } from 'react';
+import { Bubbles, IBubble } from 'react-native-rainbow-module';
+
+export const BubblesComponent: FunctionComponent = () => {
+  const [allBubbles, setAllBubbles] = useState<IBubble[]>([]);
+  
+  useEffect(() => {
+    // Fetch bubbles
+    bubblesService.getBubbles();
+    
+    // Listen for bubble list updates
+    const bubblesListUpdated = eventEmitter.addListener(
+      EventType.BubblesListUpdated,
+      (eventData: IBubble[]) => {
+        setAllBubbles(eventData);
+      }
+    );
+
+    return () => {
+      bubblesListUpdated.remove();
+    };
+  }, []);
+
+  const renderBubbleItem = (item: IBubble) => {
+    return (
+      <ListItem avatar={true} style={defaultStyle.listItem}>
+        {/* Custom bubble item rendering */}
+      </ListItem>
+    );
+  };
+
+  return (
+    <Bubbles
+      bubbles={allBubbles}
+      renderItems={renderBubbleItem}
+      // Add other props as needed
+    />
+  );
+};
+```
+
+---
+
+## Bubble Participants Management
+
+The Rainbow SDK allows you to manage participants within your bubbles, including adding, removing, and modifying participant roles.
+
+### Adding Participants
+
+#### Adding Multiple Participants
+
+```ts
+import { BubbleParticipants } from 'react-native-rainbow-module';
+
+const addMultipleParticipants = (bubbleId: string, contactsJid: string[]) => {
+  BubbleParticipants.addParticipants(bubbleId, contactsJid);
+};
+```
+
+#### Adding a Single Participant with Options
+
+```ts
+const addParticipant = (
+  bubbleId: string, 
+  contactJid: string, 
+  asModerator: boolean = false, 
+  withInvitation: boolean = true
+) => {
+  BubbleParticipants.inviteParticipantToBubble(
+    bubbleId, 
+    contactJid, 
+    asModerator, 
+    withInvitation
+  );
+};
+```
+
+### Removing Participants
+
+```ts
+useEffect(() => {
+  // Listen for remove participant result
+  const removeListener = eventEmitter.addListener(
+    EventType.RemoveContactFromBubbleResult,
+    (eventData: { members: IContact[], organizers: IContact[] }) => {
+      // Handle participant removal
+    }
+  );
+
+  return () => removeListener.remove();
+}, []);
+
+// To remove a participant
+BubbleParticipants.removeContactFromBubble(bubbleId, contactJid);
+```
+
+### Managing Participant Roles
+
+#### Promote to Organizer
+
+```ts
+BubbleParticipants.promoteToOrganizer(bubbleId, contactJid);
+```
+
+#### Demote from Organizer
+
+```ts
+BubbleParticipants.demoteFromOrganizer(bubbleId, contactJid);
+```
+
+#### Transfer Ownership
+
+```ts
+BubbleParticipants.giveOwnership(bubbleId, newOwnerJid);
+```
+
+---
+
+## Bubble Custom Data
+
+The Rainbow SDK allows you to associate custom JSON data with your bubbles for extended functionality.
+
+### Adding/Updating Custom Data
+
+```ts
+import { BubbleCustomData } from 'react-native-rainbow-module';
+
+const updateBubbleData = (bubbleId: string, data: Record<string, any>) => {
+  BubbleCustomData.updateCustomDataForBubble(bubbleId, data);
+};
+
+// Example usage
+updateBubbleData('bubble123', { 
+  customField1: 'value1',
+  customField2: 42,
+  customField3: true
+});
+```
+
+### Removing Custom Data
+
+```ts
+BubbleCustomData.deleteCustomDataForBubble(bubbleId);
+```
+
+### Retrieving Custom Data
+
+```ts
+useEffect(() => {
+  const customDataListener = eventEmitter.addListener(
+    EventType.GetBubbleCustomData,
+    (data: any) => {
+      // Handle retrieved custom data
+    }
+  );
+
+  // Request custom data
+  BubbleCustomData.getCustomDataFromBubble(bubbleId, 'yourDataKey');
+
+  return () => customDataListener.remove();
+}, [bubbleId]);
+```
+
+### Error Handling
+
+Always implement proper error handling for all bubble operations:
+
+```ts
+try {
+  await BubbleParticipants.addParticipants(bubbleId, contactJids);
+} catch (error) {
+  console.error('Failed to add participants:', error);
+  // Show error to user
+}
+```
+
+### Best Practices
+
+1.  Always clean up event listeners in the `useEffect` cleanup function
+    
+2.  Handle loading states appropriately
+    
+3.  Implement proper error handling
+    
+4.  Validate data before sending to the SDK
+    
+5.  Test thoroughly with different user roles and permissions {item.name} {item.topic} ); };
+    
+    return ; };
+    
+
+```
+#### Create a new bubble
+---
+To create a new bubble, you have to call the component `<CreateBubble />`with some props are listed on tha table below.
+
+|#|Name                    |Notes              |Description|
+|-|------------------------|-------------------|------------|
+|1| onBubbleCreationResult | (actionName: string, creationResult: [BubbleErrorCode](/docs/sdk/reactnative/api/IBubble#BUBBLEERRORCODE)) => void| Handling the result of the bubble creation |
+|2| style   | [ICreateBubbleStyleProps](/docs/sdk/reactnative/api/IBubble#ICreateBubbleStyleProps) | The style of the creating new bubble page view |
+
+```tsx
+export const CreateBubbleComponent: FunctionComponent = () => {
+    const handelBubbleCreationAction = (actionName: string, result: BubbleErrorCode) => {
+        if (result != null) {
+            const errorMsg = result as keyof typeof BubbleErrorCode;
+            Alert.alert('Failure', errorMsg);
+        } else {
+            navigation.pop();
+        }
+    };
+    return <CreateBubble onBubbleCreationResult={handelBubbleCreationAction} />;
+};
+```
+
+---
+
+> **API Reference**: For a complete list of all bubble-related methods and properties, see the [Bubble Services API Reference](/docs/sdk/reactnative/api/BubbleServices).
+
+---
+
+### On this page
+
+-   [Overview](/docs/sdk/reactnative/tutorials/ManageBubbles#name-overview-3)
+-   [Table of Contents](/docs/sdk/reactnative/tutorials/ManageBubbles#name-table-of-contents-10)
+-   [Retrieving Bubbles](/docs/sdk/reactnative/tutorials/ManageBubbles#name-retrieving-bubbles-31)
+-   [Overview](/docs/sdk/reactnative/tutorials/ManageBubbles#name-overview-34)
+-   [Component Props](/docs/sdk/reactnative/tutorials/ManageBubbles#name-component-props-40)
+-   [Implementation Example](/docs/sdk/reactnative/tutorials/ManageBubbles#name-implementation-example-161)
+-   [Bubble Participants Management](/docs/sdk/reactnative/tutorials/ManageBubbles#name-bubble-participants-management-166)
+-   [Adding Participants](/docs/sdk/reactnative/tutorials/ManageBubbles#name-adding-participants-172)
+-   [Adding Multiple Participants](/docs/sdk/reactnative/tutorials/ManageBubbles#name-adding-multiple-participants-175)
+-   [Adding a Single Participant with Options](/docs/sdk/reactnative/tutorials/ManageBubbles#name-adding-a-single-participant-with-options-179)
+-   [Removing Participants](/docs/sdk/reactnative/tutorials/ManageBubbles#name-removing-participants-183)
+-   [Managing Participant Roles](/docs/sdk/reactnative/tutorials/ManageBubbles#name-managing-participant-roles-187)
+-   [Promote to Organizer](/docs/sdk/reactnative/tutorials/ManageBubbles#name-promote-to-organizer-190)
+-   [Demote from Organizer](/docs/sdk/reactnative/tutorials/ManageBubbles#name-demote-from-organizer-194)
+-   [Transfer Ownership](/docs/sdk/reactnative/tutorials/ManageBubbles#name-transfer-ownership-198)
+-   [Bubble Custom Data](/docs/sdk/reactnative/tutorials/ManageBubbles#name-bubble-custom-data-203)
+-   [Adding/Updating Custom Data](/docs/sdk/reactnative/tutorials/ManageBubbles#name-addingupdating-custom-data-209)
+-   [Removing Custom Data](/docs/sdk/reactnative/tutorials/ManageBubbles#name-removing-custom-data-213)
+-   [Retrieving Custom Data](/docs/sdk/reactnative/tutorials/ManageBubbles#name-retrieving-custom-data-217)
+-   [Error Handling](/docs/sdk/reactnative/tutorials/ManageBubbles#name-error-handling-221)
+-   [Best Practices](/docs/sdk/reactnative/tutorials/ManageBubbles#name-best-practices-228)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

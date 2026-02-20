@@ -1,0 +1,124 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/InvitationServices"
+lastSynced: "2026-02-20T07:12:33.468Z"
+---
+# Documentation
+
+Invitation Service
+
+# Invitation Services API Reference
+
+---
+
+This document provides a detailed API reference for managing invitations.
+
+## Fetch All Invitations
+
+Retrieves both sent and received invitations for the user.
+
+**Action Dispatch:**
+
+```typescript
+import { getInvitations } from 'react-native-rainbow-module';
+
+dispatch(getInvitations());
+```
+
+**Event Listeners:**
+
+```typescript
+import { eventEmitter, EventType, IInvitation } from 'react-native-rainbow-module';
+
+// For received invitations
+eventEmitter.addListener(
+  EventType.ReceivedInvitationsUpdated,
+  (invitations: IInvitation[]) => {
+    console.log('Received invitations updated:', invitations);
+  }
+);
+
+// For sent invitations
+eventEmitter.addListener(
+  EventType.SentInvitationsUpdated,
+  (invitations: IInvitation[]) => {
+    console.log('Sent invitations updated:', invitations);
+  }
+);
+```
+
+---
+
+## Accept an Invitation
+
+Accepts a received invitation.
+
+**Action Dispatch:**
+
+```typescript
+import { acceptInvitation } from 'react-native-rainbow-module';
+
+const invitationId = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+dispatch(acceptInvitation(invitationId));
+```
+
+---
+
+## Decline an Invitation
+
+Declines a received invitation.
+
+**Action Dispatch:**
+
+```typescript
+import { declineInvitation } from 'react-native-rainbow-module';
+
+const invitationId = 'xxxxxxxxxxxxxx';
+dispatch(declineInvitation(invitationId));
+```
+
+---
+
+## Cancel an Invitation
+
+Cancels a sent invitation.
+
+**Action Dispatch:**
+
+```typescript
+import { cancelInvitation } from 'react-native-rainbow-module';
+
+const invitationId = 'xxxxxxxxxxxxxxxxxx';
+dispatch(cancelInvitation(invitationId));
+```
+
+---
+
+## Resend an Invitation
+
+Resends a sent invitation.
+
+**Action Dispatch:**
+
+```typescript
+import { sendInvitationByEmail } from 'react-native-rainbow-module';
+
+const userEmail = 'user@example.com';
+dispatch(sendInvitationByEmail(userEmail));
+```
+
+### On this page
+
+-   [Fetch All Invitations](/docs/sdk/reactnative/api/InvitationServices#name-fetch-all-invitations-7)
+-   [Accept an Invitation](/docs/sdk/reactnative/api/InvitationServices#name-accept-an-invitation-22)
+-   [Decline an Invitation](/docs/sdk/reactnative/api/InvitationServices#name-decline-an-invitation-33)
+-   [Cancel an Invitation](/docs/sdk/reactnative/api/InvitationServices#name-cancel-an-invitation-44)
+-   [Resend an Invitation](/docs/sdk/reactnative/api/InvitationServices#name-resend-an-invitation-55)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

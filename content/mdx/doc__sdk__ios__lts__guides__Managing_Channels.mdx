@@ -1,0 +1,974 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/ios/lts/guides/Managing_Channels"
+lastSynced: "2026-02-20T07:12:29.293Z"
+---
+# Documentation
+
+Managing channels
+
+LTS release 2.13.0Published on 2025-03-07
+
+## Managing Channels
+
+---
+
+### What is a channel
+
+Channels are targetted to provide rooms for publishing information for a large audience by few writers. Users that subscribe to a channel could react to the posts with `Reactions` (like, don't like, ...).
+
+There are 2 kind (mode) of channels, providing different visibility:
+
+Channel mode
+
+Description
+
+Public
+
+All users of the company can search, consult, subscribe and unsubscribe this channel.
+
+Closed
+
+Only an Owner can add users to the channel. Invitation is forced and users can't unsubscribe.
+
+More details in the [Creating channels](###creating-channels) section.
+
+In a channel, an user has a `role` that defines his rights. More details in the [Managing users in channels](##managing-users-in-channels) section.
+
+Each channel keep upto `aChannel.max_items` persistent items (30 by default), when this limit is reached the older items are retracted.
+
+A channel item has several fields:
+
+Channel item
+
+Title
+
+Body
+
+URL
+
+A list of images
+
+A list of attachments
+
+Youtube video
+
+The `Body` of the item could have one of these content types:
+
+-   **Basic**: the body is in UTF-8 text.
+-   **HTML**: the body can contains HTML tags.
+-   **Markdown**: the body can contains markdown tags.
+-   **Data**: the body content could be anything.
+
+### Accessing the user subscribed channels
+
+Once connected, you can browse the channels you are involved in using the `channels` property of the `ChannelsService` singleton object. The `channels` property is a read-only array that is maintained by the SDK:
+
+-   [swift](#codegroupTab-hashTag1)
+-   [objective C](#codegroupTab-hashTag2)
+
+```swift
+let channels = ServicesManager.sharedInstance().channelsService.channels
+```
+
+```objectivec
+NSArray *channels =
+        [ServicesManager sharedInstance].channelsService.channels;
+```
+
+The latest published channels items are cached by the ChannelsService in the `channelsItems` read-only array :
+
+-   [swift](#codegroupTab-hashTag3)
+-   [objective C](#codegroupTab-hashTag4)
+
+```swift
+let channelsItems = ServicesManager.sharedInstance().channelsService.channelsItems
+```
+
+```objectivec
+NSArray *channelsItems =
+        [ServicesManager sharedInstance].channelsService.channelsItems;
+```
+
+There is also a helper method to get a channel by his `channelId`:
+
+-   [swift](#codegroupTab-hashTag5)
+-   [objective C](#codegroupTab-hashTag6)
+
+```swift
+let channel = ServicesManager.sharedInstance().channelsService.getChannel(channelId)
+```
+
+```objectivec
+Channel *channel = [[ServicesManager sharedInstance].channelsService getChannel: channelId];
+```
+
+You may have to filter the items for a channel using the `channelId` property of the items and compare it to the `channel.id` property of the given channel :
+
+-   [swift](#codegroupTab-hashTag7)
+-   [objective C](#codegroupTab-hashTag8)
+
+```swift
+var itemsInChannel : [ChannelItem] = []
+
+...
+
+itemsInChannel.removeAll()
+for item in ServicesManager.sharedInstance().channelsService.channelsItems {
+    if item.channelId == channel?.id {
+         itemsInChannel.append(item)
+    }
+}
+```
+
+```objectivec
+@property (nonatomic, strong) NSMutableArray<ChannelItem *> *itemsInChannel;
+
+...
+
+[self.itemsInChannel removeAllObjects];
+for(ChannelItem *item in [ServicesManager sharedInstance].channelsService.channelsItems){
+    if([item.channelId isEqualToString:channel.id]){
+       [self.itemsInChannel addObject:item];
+    }
+}
+```
+
+### Creating channels
+
+The `ChannelsService` provide two methods for creating and subscribing new channels, one for each mode, closed or public:
+
+-   [swift](#codegroupTab-hashTag9)
+-   [objective C](#codegroupTab-hashTag10)
+
+```swift
+/**
+ *  Create a channel in closed mode
+ *  @param  name                the channel name
+ *  @param  description         the optional channel description, pass nil if not used
+ *  @param  category            the optional channel category, pass nil if not used
+ *  @param  maxItems            the optional max items to persist in the channel, pass -1 for default
+ *  @param  autoprov            auto provisioning members with the channel's company users
+ *  @param  completionHandler   completion handler
+ */
+func createClosedChannel(_ name: String, description: String?, category: String?, maxItems: Int32, autoprov: Bool, completionHandler: ChannelsServiceGetChannelCompletionHandler?)
+
+/**
+ *  Create a channel in public mode
+ *  @param  name                the channel name
+ *  @param  description         the optional channel description, pass nil if not used
+ *  @param  category            the optional channel category, pass nil if not used
+ *  @param  maxItems            the optional max items to persist in the channel, pass -1 for default
+ *  @param  completionHandler   completion handler
+ */
+func createPublicChannel:(_ name: String, description: String?, category: String?, maxItems: Int32, completionHandler: ChannelsServiceGetChannelCompletionHandler?)
+```
+
+```objectivec
+/**
+ *  Create a channel in closed mode
+ *  @param  name                the channel name
+ *  @param  description         the optional channel description, pass nil if not used
+ *  @param  category            the optional channel category, pass nil if not used
+ *  @param  maxItems            the optional max items to persist in the channel, pass -1 for default
+ *  @param  autoprov            auto provisioning members with the channel's company users
+ *  @param  completionHandler   completion handler
+ */
+-(void) createClosedChannel:(NSString *)name description:(NSString *)description category:(NSString *)category maxItems:(int)maxItems autoprov:(BOOL) autoprov completionHandler:(ChannelsServiceGetChannelCompletionHandler) completionHandler;
+
+/**
+ *  Create a channel in public mode
+ *  @param  name                the channel name
+ *  @param  description         the optional channel description, pass nil if not used
+ *  @param  category            the optional channel category, pass nil if not used
+ *  @param  maxItems            the optional max items to persist in the channel, pass -1 for default
+ *  @param  completionHandler   completion handler
+ */
+-(void) createPublicChannel:(NSString *)name description:(NSString *)description category:(NSString *)category maxItems:(int)maxItems completionHandler:(ChannelsServiceGetChannelCompletionHandler) completionHandler;
+```
+
+> **Note**
+> 
+> Created channels are affiliated to your company and can't be seen by an other company.
+
+> **Note**
+> 
+> In closed channels, the users can't subscribe on their own, the owner has to add them with a role.
+
+### Deleting channels
+
+There is the following method to delete a channel and all its published items:
+
+-   [swift](#codegroupTab-hashTag11)
+-   [objective C](#codegroupTab-hashTag12)
+
+```swift
+ServicesManager.sharedInstance().channelsService.deleteChannel(channelId) { error in
+    if let error = error as? NSError {
+        ...   
+    } else {
+        ... 
+    }
+}
+```
+
+```objectivec
+[[ServicesManager sharedInstance].channelsService deleteChannel: channelId completionHandler:^(NSError *error) {
+    if(error){
+        ...
+    } else {
+        ...
+    }
+}];
+```
+
+### Discovering channels
+
+You can search for channels by name and get their `ChannelDescription` using:
+
+-   [swift](#codegroupTab-hashTag13)
+-   [objective C](#codegroupTab-hashTag14)
+
+```swift
+let maxChannels = 20
+ServicesManager.sharedInstance().channelsService.fetchChannels(byName: "name", limit: maxChannels) { channelDescriptions, error in
+    if let error = error as? NSError {
+        ...
+    } else {
+        ...      
+    }
+}
+```
+
+```objectivec
+[[ServicesManager sharedInstance].channelsService fetchChannelByName: @"name"
+    limit: maxChannels
+    completionHandler: ^(NSArray<ChannelDescription *> *channelDescriptions, NSError *error){
+        if(!error){
+            ...
+        }
+    }
+ ];
+```
+
+or their topic using:
+
+-   [swift](#codegroupTab-hashTag15)
+-   [objective C](#codegroupTab-hashTag16)
+
+```swift
+let maxChannels = 20
+ServicesManager.sharedInstance().channelsService.fetchChannels(byTopic: "topic", limit: maxChannels) { channelDescriptions, error in
+    if let error = error as? NSError {
+
+    } else {
+                
+    }
+}
+```
+
+```objectivec
+[[ServicesManager sharedInstance].channelsService fetchChannelByTopic: @"topic"
+    limit: maxChannels
+    completionHandler: ^(NSArray<ChannelDescription *> *channelDescriptions, NSError *error){
+        if(!error){
+            ...
+        }
+    }
+ ];
+```
+
+You can also fetch more `channel` objects that may not be in the `channels` global property of the `ChannelsService` with the following methods :
+
+-   [swift](#codegroupTab-hashTag17)
+-   [objective C](#codegroupTab-hashTag18)
+
+```swift
+/**
+ *  Fetch channels for a given category
+ *  @param  number              The number of channels to be fetched
+ *  @param  category            The category to be fetched
+ *  @param  ignoreSubscribed    Ignore the subscribed channels or not
+ *  @param  completionHandler   Completion handler
+ */
+func fetchChannels(number: Int32, forCategory: String, ignoreSubscribed: Bool, completionHandler: ChannelsServiceFetchChannelsCompletionHandler)
+
+/**
+ *  Fetch the most followed channels
+ *  @param  number              The number of channels to be fetched
+ *  @param  ignoreSubscribed    Ignore the subscribed channels or not
+ *  @param  completionHandler   Completion handler
+ */
+func fetchMostFollowedChannels(number: Int32, ignoreSubscribed: Bool, completionHandler: ChannelsServiceFetchChannelsCompletionHandler)
+
+/**
+ *  Fetch the most recent channels
+ *  @param  number              The number of channels to be fetched
+ *  @param  ignoreSubscribed    Ignore the subscribed channels or not
+ *  @param  completionHandler   Completion handler
+ */
+func fetchMostRecentChannels(number: Int32, ignoreSubscribed: Bool, completionHandler: ChannelsServiceFetchChannelsCompletionHandler)
+```
+
+```objectivec
+/**
+ *  Fetch channels for a given category
+ *  @param  number              The number of channels to be fetched
+ *  @param  category            The category to be fetched
+ *  @param  ignoreSubscribed    Ignore the subscribed channels or not
+ *  @param  completionHandler   Completion handler
+ */
+-(void) fetchChannels:(int) number forCategory:(NSString *) category ignoreSubscribed:(BOOL) ignoreSubscribed completionHandler: (ChannelsServiceFetchChannelsCompletionHandler) completionHandler;
+
+/**
+ *  Fetch the most followed channels
+ *  @param  number              The number of channels to be fetched
+ *  @param  ignoreSubscribed    Ignore the subscribed channels or not
+ *  @param  completionHandler   Completion handler
+ */
+-(void) fetchMostFollowedChannels:(int) number ignoreSubscribed:(BOOL) ignoreSubscribed completionHandler: (ChannelsServiceFetchChannelsCompletionHandler) completionHandler;
+
+/**
+ *  Fetch the most recent channels
+ *  @param  number              The number of channels to be fetched
+ *  @param  ignoreSubscribed    Ignore the subscribed channels or not
+ *  @param  completionHandler   Completion handler
+ */
+-(void) fetchMostRecentChannels:(int) number ignoreSubscribed:(BOOL) ignoreSubscribed completionHandler: (ChannelsServiceFetchChannelsCompletionHandler) completionHandler;
+```
+
+The fetched channels are not added to the global `channels` array.
+
+### Publishing and updating channel items
+
+You may post items to a channel for which you have subscribed and are allowed to write using:
+
+-   [swift](#codegroupTab-hashTag19)
+-   [objective C](#codegroupTab-hashTag20)
+
+```swift
+/**
+ *  Publish an item to a channel
+ *
+ *  @param  channel             the channel
+ *  @param  type                the type of the channel item (ChannelItemTypeBasic, ChannelItemTypeHtml, ChannelItemTypeData, ChannelItemTypeMarkdown)
+ *  @param  message             the message text (optional)
+ *  @param  title               a message title (optional)
+ *  @param  url                 a link url (optional)
+ *  @param  images              a list of Rainbow images identifier (String) or ChannelItemImage object (optional)
+ *  @param  attachments         a list of Rainbow attachments identifiers (String) or File object (optional)
+ *  @param  youtubeVideoId      a video youtube identifier (optional)
+ *  @param  completionHandler   completion handler
+ */
+ 
+ServicesManager.sharedInstance().channelsService.addItem(to: channel, type: .undefined, message:"A message", title:"A title", url:nil, images:nil, attachments:nil, youtubeVideoId:nil) { error in
+        if let error = error as? NSError {
+            ...
+        } else {
+          ...   
+        }
+    }
+}
+```
+
+```objectivec
+/**
+ *  Publish an item to a channel
+ *
+ *  @param  channel             the channel
+ *  @param  type                the type of the channel item (ChannelItemTypeBasic, ChannelItemTypeHtml, ChannelItemTypeData, ChannelItemTypeMarkdown)
+ *  @param  message             the message text (optional)
+ *  @param  title               a message title (optional)
+ *  @param  url                 a link url (optional)
+ *  @param  images              a list of Rainbow images identifier (String) or ChannelItemImage object (optional)
+ *  @param  attachments         a list of Rainbow attachments identifiers (String) or File object (optional)
+ *  @param  youtubeVideoId      a video youtube identifier (optional)
+ *  @param  completionHandler   completion handler
+ */
+ 
+[[ServicesManager sharedInstance].channelsService addItemToChannel:channel type:ChannelItemTypeUndefined message:@"A message" title:@"A title" url:nil images:nil attachments:nil youtubeVideoId:nil completionHandler:^(NSError *error) {
+    if(error){
+        ...
+    } else {
+        ...
+    }
+}];
+```
+
+To update some fields of a published items you should use:
+
+-   [swift](#codegroupTab-hashTag21)
+-   [objective C](#codegroupTab-hashTag22)
+
+```swift
+/**
+ *  Update an item
+ *  The message, title, url, imagesIds, attachmentsIds and youtubeVideoId parameters are managed as following. If you want to:
+ *      - update the field --> set a correct value (non empty string or list with items)
+ *      - ignore the field --> set a nil parameter
+ *      - delete the field --> set the empty value (empty string or empty list)
+ *
+ *  @param  channelItem         the channel item
+ *  @param  type                the type of the channel item: ChannelItemTypeBasic (default), ChannelItemTypeHtml, ChannelItemTypeData, ChannelItemTypeMarkdown
+ *  @param  message             the message text (optional)
+ *  @param  title               a message title (optional)
+ *  @param  url                 a link url (optional)
+ *  @param  images              a list of Rainbow images identifier (String) or ChannelItemImage object (optional)
+ *  @param  attachments         a list of Rainbow attachments identifiers (String) or File object (optional)
+ *  @param  youtubeVideoId      a video youtube identifier (optional)
+ *  @param  completionHandler   completion handler
+ */
+
+func update(channelItem: ChannelItem, type: ChannelItemType, message: String?, title: String?, url: String?, images:[Any]?, attachments: [Any], youtubeVideoId: String?)
+```
+
+```objectivec
+/**
+ *  Update an item
+ *  The message, title, url, imagesIds, attachmentsIds and youtubeVideoId parameters are managed as following. If you want to:
+ *      - update the field --> set a correct value (non empty string or list with items)
+ *      - ignore the field --> set a nil parameter
+ *      - delete the field --> set the empty value (empty string or empty list)
+ *
+ *  @param  channelItem         the channel item
+ *  @param  type                the type of the channel item: ChannelItemTypeBasic (default), ChannelItemTypeHtml, ChannelItemTypeData, ChannelItemTypeMarkdown
+ *  @param  message             the message text (optional)
+ *  @param  title               a message title (optional)
+ *  @param  url                 a link url (optional)
+ *  @param  images              a list of Rainbow images identifier (NSString) or ChannelItemImage object (optional)
+ *  @param  attachments         a list of Rainbow attachments identifiers (NSString) or File object (optional)
+ *  @param  youtubeVideoId      a video youtube identifier (optional)
+ *  @param  completionHandler   completion handler
+ */
+-(void) updateItem:(ChannelItem *) channelItem type:(ChannelItemType)type message:(NSString *)message title:(NSString *)title url:(NSString *)url images:(NSArray *)images attachments:(NSArray *)attachments youtubeVideoId:(NSString *)youtubeVideoId completionHandler:(ChannelsServiceCompletionHandler) completionHandler;
+```
+
+### Fetching channel's items
+
+You may fetch more `channelItem` object using the following methods:
+
+-   [swift](#codegroupTab-hashTag23)
+-   [objective C](#codegroupTab-hashTag24)
+
+```swift
+/**
+ *  Fetch a number of items for one channel before a certain date (if nil, we just fetch the latest items).
+ *  The items fetched ARE NOT stored in cache either in memory and will be fetched every time.
+ *  @param  channel             the channel
+ *  @param  beforeDate          the date reference
+ *  @param  number              the number of items fetched
+ *  @param  completionHandler   completion handler
+ */
+func fetchItems(for: Channel, before: Date?, number: Int32, completionHandler: ChannelsServiceGetItemsCompletionHandler)
+
+/**
+ *  Fetch a number of items for all subscribed channels before a certain date (if nil, we just fetch the latest items).
+ *  The items fetched ARE NOT stored in cache either in memory and will be fetched every time.
+ *  @param  beforeDate          the before date (generally the last message)
+ *  @param  number              the number of items fetched
+ *  @param  completionHandler   completion handler
+ */
+func fetchLatestItemsList(before: Date?, number: Int32, completionHandler: ChannelsServiceGetItemsCompletionHandler)
+```
+
+```objectivec
+/**
+ *  Fetch a number of items for one channel before a certain date (if nil, we just fetch the latest items).
+ *  The items fetched ARE NOT stored in cache either in memory and will be fetched every time.
+ *  @param  channel             the channel
+ *  @param  beforeDate          the date reference
+ *  @param  number              the number of items fetched
+ *  @param  completionHandler   completion handler
+ */
+-(void) fetchItemsForChannel:(Channel *) channel beforeDate:(NSDate *) beforeDate number:(int) number completionHandler:(ChannelsServiceGetItemsCompletionHandler) completionHandler;
+
+/**
+ *  Fetch a number of items for all subscribed channels before a certain date (if nil, we just fetch the latest items).
+ *  The items fetched ARE NOT stored in cache either in memory and will be fetched every time.
+ *  @param  beforeDate          the before date (generally the last message)
+ *  @param  number              the number of items fetched
+ *  @param  completionHandler   completion handler
+ */
+-(void) fetchLatestItemsListBeforeDate:(NSDate *) beforeDate number:(int) number completionHandler:(ChannelsServiceGetItemsCompletionHandler) completionHandler;
+```
+
+### Listening to message from a channel
+
+You may listen to new published items in channels you are subscribed in by listening to the `kChannelsServiceDidReceiveNewItem` notification:
+
+-   [swift](#codegroupTab-hashTag25)
+-   [objective C](#codegroupTab-hashTag26)
+
+```swift
+// Handle the kChannelsServiceDidReceiveNewItem notification
+NotificationCenter.default.addObserver(self, selector:#selector(didReceiveItem(_:)), name: NSNotification.Name(kChannelsServiceDidReceiveNewItem) ,object:nil)
+
+...
+
+@objc func didReceiveItem(_ notification : Notification) {
+    if let item = notification.object as? ChannelItem {
+        let channel = ServicesManager.sharedInstance().channelsService.getChannel(item.channelId)
+        ...
+    }
+}
+```
+
+```objectivec
+// Handle the kChannelsServiceDidReceiveNewItem notification
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveItem:) name: kChannelsServiceDidReceiveNewItem object:nil];
+
+...
+
+-(void) didReceiveItem :(NSNotification *) notification {
+    ChannelItem *item = notification.object;
+    Channel *channel = [[ServicesManager sharedInstance].channelsService getChannel:item.channelId];
+    ...
+}
+```
+
+### Mark items as read for a channel
+
+You can acknowledge a channel item using the `markItem`method:
+
+-   [swift](#codegroupTab-hashTag27)
+-   [objective C](#codegroupTab-hashTag28)
+
+```swift
+/**
+ *  Acknowledge a channel item (the isNew property will then be set at NO)
+ *  @param  item        the channel item to acknowledge
+ */
+func markItem(asRead: ChannelItem)
+```
+
+```objectivec
+/**
+ *  Acknowledge a channel item (the isNew property will then be set at NO)
+ *  @param  item        the channel item to acknowledge
+ */
+-(void) markItemAsRead:(ChannelItem * _Nonnull) item;
+```
+
+### Mute or unmute a channel
+
+You can mute or unmute a channel in order to activate or deactivate PUSH notifications for new messages added to this channel by calling the `muteChannel` method:
+
+-   [swift](#codegroupTab-hashTag29)
+-   [objective C](#codegroupTab-hashTag30)
+
+```swift
+/**
+*  Enable / disable notifications for this channel
+*  @param  channel       the channel
+*  @param  muted          the notification mute state for this channel
+*  @param  completionHandler   completion handler
+*/
+func muteChannel(channel: Channel>, mute: Bool, completionHandler: ChannelsServiceCompletionHandler?)
+```
+
+```objectivec
+/**
+*  Enable / disable notifications for this channel
+*  @param  channel       the channel
+*  @param  muted          the notification mute state for this channel
+*  @param  completionHandler   completion handler
+*/
+-(void) muteChannel:(Channel * _Nonnull) channel mute:(BOOL) muted completionHandler:(ChannelsServiceCompletionHandler _Nullable) completionHandler;
+```
+
+## Managing users in channels
+
+User role
+
+Description
+
+Owner
+
+Can modify information of the channel, invite other users (including new owners/publishers), publish messages and receive incoming messages
+
+Publisher
+
+Can publish messages in the channel and receive incoming messages
+
+Member
+
+Can only receive incoming messages
+
+None
+
+An user who have left the channel (by his own or removed by a owner)
+
+### Adding new members to a channel
+
+New users with members role can be added using the `addMembersToChannel` method:
+
+-   [swift](#codegroupTab-hashTag31)
+-   [objective C](#codegroupTab-hashTag32)
+
+```swift
+/**
+ *  Add or update a list of users to the type 'member' in a channel
+ *  @param  channel             the channel
+ *  @param  members             the list of rainbow users identifiers
+ *  @param  completionHandler   completion handler
+ */
+func addMembers(to: Channel, members: [String], completionHandler: ((Error?) -> Void)?)
+```
+
+```objectivec
+/**
+ *  Add or update a list of users to the type 'member' in a channel
+ *  @param  channel             the channel
+ *  @param  members             the list of rainbow users identifiers
+ *  @param  completionHandler   completion handler
+ */
+-(void) addMembersToChannel:(Channel * _Nonnull) channel members:(NSArray<NSString *> * _Nonnull) members completionHandler:(void(^ _Nullable)(NSError * _Nullable error)) completionHandler;
+```
+
+### Adding new publishers to a channel
+
+New users with publisher role can be added using the `addPublishersToChannel` method:
+
+-   [swift](#codegroupTab-hashTag33)
+-   [objective C](#codegroupTab-hashTag34)
+
+```swift
+/**
+ *  Add or update a list of users to the type 'publisher' in a channel
+ *  @param  channel             the channel
+ *  @param  publishers          the list of rainbow users identifiers
+ *  @param  completionHandler   completion handler
+ */
+func addPublishers(to: Channel, publishers: [String], completionHandler: ((Error?) -> Void)?)
+```
+
+```objectivec
+/**
+ *  Add or update a list of users to the type 'publisher' in a channel
+ *  @param  channel             the channel
+ *  @param  publishers          the list of rainbow users identifiers
+ *  @param  completionHandler   completion handler
+ */
+-(void) addPublishersToChannel:(Channel * _Nonnull) channel publishers:(NSArray<NSString *> * _Nonnull) publishers completionHandler:(void(^ _Nullable)(NSError * _Nullable error)) completionHandler;
+```
+
+### Promote / demote a user in a channel
+
+To promote a channel user to the publisher role you should use the `promoteUser` method and `demoteUser` otherwise:
+
+-   [swift](#codegroupTab-hashTag35)
+-   [objective C](#codegroupTab-hashTag36)
+
+```swift
+/**
+ *  Promote a user in a channel
+ *  @param  user                the `ChannelUser` object
+ *  @param  channel             the channel
+ *  @param  completionHandler   completion handler
+ */
+promoteUser(_ ChannelUser, in: Channel, completionHandler: ((Error?) -> Void)?)
+
+/**
+*  Demote a user in a channel
+*  @param  user                the `ChannelUser` object
+*  @param  channel             the channel
+*  @param  completionHandler   completion handler
+*/
+demoteUser(_ ChannelUser, in: Channel, completionHandler: ((Error?) -> Void)?)
+```
+
+```objectivec
+/**
+ *  Promote a user in a channel
+ *  @param  user                the `ChannelUser` object
+ *  @param  channel             the channel
+ *  @param  completionHandler   completion handler
+ */
+-(void) promoteUser:(ChannelUser * _Nonnull) user inChannel:(Channel * _Nonnull) channel completionHandler:(void(^ _Nullable)(NSError * _Nullable error)) completionHandler;
+
+/**
+*  Demote a user in a channel
+*  @param  user                the `ChannelUser` object
+*  @param  channel             the channel
+*  @param  completionHandler   completion handler
+*/
+-(void) demoteUser:(ChannelUser * _Nonnull) user inChannel:(Channel * _Nonnull) channel completionHandler:(void(^ _Nullable)(NSError * _Nullable error)) completionHandler;
+```
+
+### Removing users from a channel
+
+A user may be removed from a channel by calling the `removeUser` method:
+
+-   [swift](#codegroupTab-hashTag37)
+-   [objective C](#codegroupTab-hashTag38)
+
+```swift
+/**
+*  Remove a user from a channel
+*  @param  user                the `ChannelUser` object
+*  @param  channel             the channel
+*  @param  completionHandler   completion handler
+*/
+func remove(user: ChannelUser, from: Channel, completionHandler: ((Error?) -> Void)?)
+```
+
+```objectivec
+/**
+*  Remove a user from a channel
+*  @param  user                the `ChannelUser` object
+*  @param  channel             the channel
+*  @param  completionHandler   completion handler
+*/
+-(void) removeUser:(ChannelUser * _Nonnull) user fromChannel:(Channel * _Nonnull) channel completionHandler:(void(^ _Nullable)(NSError * _Nullable error)) completionHandler;
+```
+
+### Retrieving users of a channel
+
+To get the users of a channel, you can use the `fetchUsersFromChannel` method.
+
+This method retrieves users by page which allows to load users in several steps. For example, if your channel has 950 users, you can call the method a first time to retrieve the first 100 users.
+
+Once the user needs to see the next users, call another time and this will load the next users. And so on.
+
+-   [swift](#codegroupTab-hashTag39)
+-   [objective C](#codegroupTab-hashTag40)
+
+```swift
+/**
+ *  Fetch a list of users from a channel
+ *  @param  from                the channel to fetch the users
+ *  @param  filterType          filter of the users with a `ChannelUserFilterType` object
+ *  @param  offset              the offset of the first user to fetch
+ *  @param  count               the number of users to fetch
+ *  @param  completionHandler   completion handler
+ */
+ fetchUsers(from: Channel, filterType: ChannelUserFilterType, offset: Int32, count: Int32, completionHandler: (([ChannelUser]?, Int32, Error?) -> Void)?)
+```
+
+```objectivec
+/**
+ *  Fetch a list of users from a channel
+ *  @param  channel             the channel to fetch the users
+ *  @param  filterType          filter of the users with a `ChannelUserFilterType` object
+ *  @param  offset              the offset of the first user to fetch
+ *  @param  count               the number of users to fetch
+ *  @param  block               completion handler
+ */
+-(void) fetchUsersFromChannel:(Channel * _Nonnull) channel filterType:(ChannelUserFilterType) filterType offset:(int) offset count:(int) count withBlock:(void(^_Nullable)(NSArray<ChannelUser *> * _Nullable users, int total, NSError * _Nullable error)) block;
+```
+
+### Invitations management methods
+
+You could accept a invitation to join a channel with the `acceptInvitation` method or decline it with `declineInvitation`
+
+-   [swift](#codegroupTab-hashTag41)
+-   [objective C](#codegroupTab-hashTag42)
+
+```swift
+/**
+ *  Accept an invitation to join a channel
+ *  @param  channel     the channel to join
+ *  @param  completionHandler   completion handler
+ */
+func acceptInvitation(channel: Channel, completionHandler: ChannelsServiceCompletionHandler?)
+
+/**
+ *  Decline an invitation to join a channel
+ *  @param  channel     the channel to join
+ *  @param  completionHandler   completion handler
+ */
+func declineInvitation(channel: Channel, completionHandler: ChannelsServiceCompletionHandler?)
+```
+
+```objectivec
+/**
+ *  Accept an invitation to join a channel
+ *  @param  channel     the channel to join
+ *  @param  completionHandler   completion handler
+ */
+-(void) acceptInvitation:(Channel * _Nonnull) channel completionHandler:(ChannelsServiceCompletionHandler _Nullable) completionHandler;
+
+/**
+ *  Decline an invitation to join a channel
+ *  @param  channel     the channel to join
+ *  @param  completionHandler   completion handler
+ */
+-(void) declineInvitation:(Channel * _Nonnull) channel completionHandler:(ChannelsServiceCompletionHandler _Nullable) completionHandler;
+```
+
+### Reactions
+
+Users that subscribe to a channel could react to the items posted with `Reactions` ("like", "don't like", ...).
+
+To set or update a user reaction to a posted channel item you should use the `updateUserReactionForChannelItem` method, to remove a reaction `removeUserReactionForChannelItem` method should be used. To retrieve the list of users for a reaction type you should use the `fetchUsersForReaction` method.
+
+-   [swift](#codegroupTab-hashTag43)
+-   [objective C](#codegroupTab-hashTag44)
+
+```swift
+/**
+ *  Update the user reaction for a channel item
+ *  @param  channelItem         The channel item to update the user reaction
+ *  @param  reactionType        The new reaction type to set (if nil or "none", equivalent as `removeUserReactionForChannelItem`)
+ *  @param  completionHandler     The block with ChannelItem and NSError
+ */
+func updateUserReaction(for: ChannelItem, withReactionType: String?, completionHandler: ((ChannelItem?, Error?) -> Void)?)
+
+/**
+ *  Remove the current user reaction for a channel item
+ *  @param  channelItem         The channel item to update the user reaction
+ *  @param  completionHandler      The block with ChannelItem and NSError
+ */
+func removeUserReaction(for: ChannelItem, completionHandler: ((ChannelItem?, Error?) -> Void)?)
+
+/**
+ *  Fetch the list of users for a reaction to a channel item
+ *
+ *  @param  reaction            The reaction to fetch ("all" if nil)
+ *  @param  channelItem         The channel item to fetch the users reaction (required)
+ *  @param  offset              The start offset to paginate the request (0 if negativ)
+ *  @param  count               The number of items to fetch from the offset (server default value if 0 or less)
+ *  @param  completionHandler      A completion block with the list of contacts, a reactionsChanged (compared to the one in memory) or an error
+ */
+ func fetchUsers(forReaction: String?, channelItem: ChannelItem, offset: Int32, count: Int32, completionHandler: (([ChannelItemReactionContact]?, Bool, Error?) -> Void)?)
+```
+
+```objectivec
+/**
+ *  Update the user reaction for a channel item
+ *  @param  channelItem         The channel item to update the user reaction
+ *  @param  reactionType        The new reaction type to set (if nil or "none", equivalent as `removeUserReactionForChannelItem`)
+ *  @param  completionHandler     The block with ChannelItem and NSError
+ */
+-(void) updateUserReactionForChannelItem:(ChannelItem * _Nonnull) channelItem withReactionType:(NSString * _Nullable) reactionType completionHandler:(void(^_Nullable)(ChannelItem * _Nullable channelItem, NSError * _Nullable error)) completionHandler;
+
+/**
+ *  Remove the current user reaction for a channel item
+ *  @param  channelItem         The channel item to update the user reaction
+ *  @param  completionHandler      The block with ChannelItem and NSError
+ */
+-(void) removeUserReactionForChannelItem:(ChannelItem * _Nonnull) channelItem completionHandler:(void(^_Nullable)(ChannelItem * _Nullable channelItem, NSError * _Nullable error)) completionHandler;
+
+/**
+ *  Fetch the list of users for a reaction to a channel item
+ *
+ *  @param  reaction            The reaction to fetch ("all" if nil)
+ *  @param  channelItem         The channel item to fetch the users reaction (required)
+ *  @param  offset              The start offset to paginate the request (0 if negativ)
+ *  @param  count               The number of items to fetch from the offset (server default value if 0 or less)
+ *  @param  completionHandler      A completion block with the list of contacts, a reactionsChanged (compared to the one in memory) or an error
+ */
+-(void) fetchUsersForReaction:(NSString * _Nullable) reaction channelItem:(ChannelItem * _Nonnull) channelItem offset:(int) offset count:(int) count completionHandler:(void(^_Nullable)(NSArray<ChannelItemReactionContact *> * _Nullable contacts, BOOL reactionsChanged, NSError * _Nullable error)) completionHandler;
+```
+
+## Channel related events
+
+The following is a non exhaustive list of useful events related to channels your code may listen to:
+
+Event name
+
+Description
+
+kChannelsServiceDidEndLoadingChannelsFromCache
+
+Event sent when all channels are loaded from the cache
+
+kChannelsServiceDidEndLoadingChannelsItemsFromCache
+
+Event sent when all channels items are loaded from the cache
+
+kChannelsServiceDidEndFetchingChannelsFromServer
+
+Event sent when all channels are fetched from server
+
+kChannelsServiceDidEndFetchingChannelsItemsFromServer
+
+Event sent when all channels items are fetched from the server
+
+kChannelsServiceDidAddChannel
+
+Event sent when a channel is added
+
+kChannelsServiceDidRemoveChannel
+
+Event sent when a channel is removed
+
+kChannelsServiceDidUpdateChannel
+
+Event sent when a channel is updated
+
+kChannelsServiceDidReceiveNewItem
+
+Channel's new item received, can be used to display a notification
+
+kChannelsServiceDidUpdateItem
+
+Received channel's update item notifications
+
+kChannelsServiceDidRetractItem
+
+Retracted channel's item notifications
+
+kChannelsServiceDidCreateChannel
+
+Channel create notifications
+
+kChannelsServiceDidDeleteChannel
+
+channel Deletion notifications
+
+kChannelsServiceDidUpdateInvitationsCount
+
+Event sent when the count of invitations changes
+
+kChannelsServiceDidUpdateNewItemsCount
+
+Event sent when the count of new items changes
+
+## Limitations
+
+Here is a list of limitations regarding Channels:
+
+Limit
+
+Value
+
+Description
+
+Max items saved when offline
+
+100
+
+If you were not connected during a long time, you will be able to get only the 100 latest messages from a channel. Older messages will never been received.
+
+### On this page
+
+-   [Managing Channels](/docs/sdk/ios#name-managing-channels-0)
+-   [What is a channel](/docs/sdk/ios#name-what-is-a-channel-4)
+-   [Accessing the user subscribed channels](/docs/sdk/ios#name-accessing-the-user-subscribed-channels-121)
+-   [Creating channels](/docs/sdk/ios#name-creating-channels-140)
+-   [Deleting channels](/docs/sdk/ios#name-deleting-channels-163)
+-   [Discovering channels](/docs/sdk/ios#name-discovering-channels-170)
+-   [Publishing and updating channel items](/docs/sdk/ios#name-publishing-and-updating-channel-items-188)
+-   [Fetching channel's items](/docs/sdk/ios#name-fetching-channels-items-199)
+-   [Listening to message from a channel](/docs/sdk/ios#name-listening-to-message-from-a-channel-206)
+-   [Mark items as read for a channel](/docs/sdk/ios#name-mark-items-as-read-for-a-channel-213)
+-   [Mute or unmute a channel](/docs/sdk/ios#name-mute-or-unmute-a-channel-220)
+-   [Managing users in channels](/docs/sdk/ios#name-managing-users-in-channels-227)
+-   [Adding new members to a channel](/docs/sdk/ios#name-adding-new-members-to-a-channel-276)
+-   [Adding new publishers to a channel](/docs/sdk/ios#name-adding-new-publishers-to-a-channel-283)
+-   [Promote / demote a user in a channel](/docs/sdk/ios#name-promote--demote-a-user-in-a-channel-290)
+-   [Removing users from a channel](/docs/sdk/ios#name-removing-users-from-a-channel-297)
+-   [Retrieving users of a channel](/docs/sdk/ios#name-retrieving-users-of-a-channel-304)
+-   [Invitations management methods](/docs/sdk/ios#name-invitations-management-methods-317)
+-   [Reactions](/docs/sdk/ios#name-reactions-324)
+-   [Channel related events](/docs/sdk/ios#name-channel-related-events-334)
+-   [Limitations](/docs/sdk/ios#name-limitations-466)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

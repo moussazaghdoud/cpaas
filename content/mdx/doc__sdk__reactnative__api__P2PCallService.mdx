@@ -1,0 +1,159 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/P2PCallService"
+lastSynced: "2026-02-20T07:12:33.506Z"
+---
+# Documentation
+
+Webrtc call Service
+
+### Peer to Peer WebRTC Call Service
+
+---
+
+### Preamble
+
+---
+
+The `WebRTCService` module contains all the webrtc native method that handle the webrtc calls.
+
+[Switch Camera](#switchCamera)
+
+Switch between the front and the back camera during video call
+
+[reject Call](#rejectCall)
+
+Reject an incoming webRtc call
+
+[Take Call](#takeCall)
+
+Answer an incoming webRTC call
+
+[Hangup Call](#hangupCall)
+
+Hangup active webRTC call
+
+[Start Call](#startCall)
+
+Start a webRTC call
+
+[Add LocalVideo to call](#addLocalVideoToCall)
+
+Add your Local Video to the active webRTC call
+
+[Remove LocalVideo From Call](#removeLocalVideoFromCall)
+
+Remove your localVideo from the active call
+
+\---
+
+### Switch Camera
+
+You can use `WebRTCService.switchCamera()` method to switch between your front and back camera during the video webrtc call.
+
+```tsx
+import { WebRTCService } from 'react-native-rainbow-module'
+...
+
+WebRTCService.switchCamera();
+
+...
+```
+
+---
+
+### Reject Incoming Call
+
+You can use `WebRTCService.rejectCall()` method to reject an incoming webRtc call.
+
+```tsx
+import { WebRTCService } from 'react-native-rainbow-module'
+
+...
+ WebRTCService.rejectCall();
+...
+```
+
+---
+
+### takeCall
+
+You can use `WebRTCService.takeCall()` method to answer an incoming webRtc call.
+
+```tsx
+import { WebRTCService } from 'react-native-rainbow-module'
+
+...
+ WebRTCService.takeCall();
+```
+
+---
+
+### hangupCall
+
+You can use `WebRTCService.hangupCall()` method to end the active webRtc call.
+
+```tsx
+import { WebRTCService } from 'react-native-rainbow-module'
+...
+  WebRTCService.hangupCall();
+```
+
+---
+
+### startCall
+
+You can use `WebRTCService.startCall()` method to initiate a webRtc call towards your contact.
+
+```tsx
+import { WebRTCService } from 'react-native-rainbow-module'
+...
+
+  WebRTCService.startCall();
+```
+
+---
+
+### addLocalVideoToCall
+
+You can use `WebRTCService.addLocalVideoToCall()` method to add your video local stream to the active webRTC call.
+
+```tsx
+import { WebRTCService } from 'react-native-rainbow-module'
+...
+
+  WebRTCService.addLocalVideoToCall();
+```
+
+---
+
+### removeLocalVideoFromCall
+
+You can use `WebRTCService.removeLocalVideoFromCall()` method to remove your video local stream to the active webRTC call.
+
+```tsx
+import { WebRTCService } from 'react-native-rainbow-module'
+...
+
+  WebRTCService.removeLocalVideoFromCall();
+```
+
+### On this page
+
+-   [Peer to Peer WebRTC Call Service](/docs/sdk/reactnative/api/P2PCallService#name-peer-to-peer-webrtc-call-service-0)
+-   [Preamble](/docs/sdk/reactnative/api/P2PCallService#name-preamble-4)
+-   [Switch Camera](/docs/sdk/reactnative/api/P2PCallService#name-switch-camera-12)
+-   [Reject Incoming Call](/docs/sdk/reactnative/api/P2PCallService#name-reject-incoming-call-23)
+-   [takeCall](/docs/sdk/reactnative/api/P2PCallService#name-takecall-34)
+-   [hangupCall](/docs/sdk/reactnative/api/P2PCallService#name-hangupcall-45)
+-   [startCall](/docs/sdk/reactnative/api/P2PCallService#name-startcall-56)
+-   [addLocalVideoToCall](/docs/sdk/reactnative/api/P2PCallService#name-addlocalvideotocall-67)
+-   [removeLocalVideoFromCall](/docs/sdk/reactnative/api/P2PCallService#name-removelocalvideofromcall-78)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

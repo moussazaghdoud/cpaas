@@ -1,0 +1,1073 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/ios/lts/guides/CHANGELOG"
+lastSynced: "2026-02-20T07:12:29.082Z"
+---
+# Documentation
+
+Changelog
+
+LTS release 2.12.0Published on 2024-07-23Compare
+
+## SDK for iOS
+
+---
+
+Welcome to the new release of the Rainbow SDK for iOS. There are a number of significant updates in this version that we hope you will like, some of the key highlights include:
+
+## \[Unreleased\]
+
+## \[2.13.0-LTS\] - 2025-03-07
+
+### Changed
+
+-   The property `groupsService` from `ServicesManager` has been removed. Use property `groupsManager` from `ContactsManagerService` instead.
+-   The property `locationService` from `ServicesManager` has been removed because the location is used only in `ConversationsManagerService`.
+-   The property `urlMetadataService` from `ServicesManager` has been removed. Use property `urlMetadataManager` from `ConversationsManagerService` instead.
+-   The following `ConferencesManagerService` methods has been removed from the public header :
+    -   `-(void) rejectIncomingConference:completionHandler:`
+    -   `-(void) join:(NSString *)roomId completionHandler:(ConferenceManagerErrorBlock) completionHandler`
+-   The following methods from `CallsManager` have now a completionBlock:
+    -   `-(BOOL) hold:(Call* _Nonnull) activeCall`
+    -   `-(BOOL) retrieve:(Call* _Nonnull) heldCall`
+    -   `-(BOOL) swapCurrentCalls`
+    -   `-(void) setMutedState:(BOOL) muted forCall:(Call* _Nonnull) mCall`
+-   The following methods from `TelephonyService` have now a completionBlock:
+    -   `-(void) swapCall:(Call* _Nonnull) activeCall withHeldCall:(Call* _Nonnull) heldCall`
+    -   `-(void) blindTransferCall:(Call* _Nonnull) activeCall toPhoneNumber:(PhoneNumber* _Nonnull) phNumber`
+-   The following deprecated methods (without completionHandler) have been removed:
+    -   `-(void) deleteGroup:(Group *_Nonnull) group`
+    -   `-(void) updateGroup:(Group *_Nonnull) group withNewComment:(NSString *_Nonnull) newComment`
+    -   `-(void) addContact:(RainbowContact *_Nonnull) contact inGroup:(Group *_Nonnull) group`
+    -   `-(void) removeContact:(RainbowContact *_Nonnull) contact fromGroup:(Group *_Nonnull) group`
+-   The method `-(void) fetchRoomWithOpenInviteId:withCompletionHandler:` has been replaced by `-(void) joinBubbleWithPublicId:completionHandler:`. The completionHandler has now a new string `lobbyRoomId` in case the lobby is enabled and the user is in, and not automatically added to the bubble.
+-   The method `-(void) validateRoomOpenInviteId:withCompletionHandler:` has been replaced by `-(void) fetchRoomPublicData:completionHandler:`. The completionHandler has now a room with id and name, but also a boolean `isConferenceStarted`.
+-   The properties `isVideoHeld`, `isSharingHeld` and the method `isMediaHeldForSharing` from a `RoomConfParticipant` has been removed and replaced by `isMediaHeld`. The new property `isSharingType` can be used to know if the participant is a sharing type or video.
+-   The class `HybridManagerAssistantGroup` has been renamed to `ManagerAssistantGroup`.
+    -   The method `isLeaderInVoiceGroup` has been renamed to `isManagerInOneMAGroup`.
+    -   The method `getFirstLeaderAssistantGroup` has been renamed to `getFirstManagerAssistantGroup`.
+    -   The method `getLeaderAssistantGroups` has been renamed to `getManagerAssistantGroups`.
+    -   The method `isActiveInAllLeaderAssistantGroups` has been renamed to `isActiveInAllManagerAssistantGroups`.
+    -   The method `changeMyStatusInAllLeaderAssistantGroupsToActive` has been renamed to `changeMyStatusInAllManagerAssistantGroupsToActive`.
+-   The class `VoiceGroupMember` has been renamed to `TelGroupMember`.
+    -   The enum `VoiceGroupMemberStatus` has been renamed to `TelGroupMemberStatus`.
+    -   The enum `VoiceGroupMemberRole` has been renamed to `TelGroupMemberRole`.
+    -   The enum `VoiceGroupMemberConnectedStatus` has been renamed to `TelGroupMemberConnectedStatus`.
+    -   The method `isLeader` has been renamed to `isManager`.
+    -   The method `isManager` has been renamed to `isAdmin`.
+    -   The method `isManagerOnly` has been renamed to `isAdminOnly`.
+    -   The method `isManagerAndAgent` has been renamed to `isAdminAndAgent`.
+-   The method `getSyncAvatarInCacheForContact` has been removed from `ContactsManagerService` public header.
+-   The class `ContactPatternSearchCriteria` has been renamed `ContactsPatternSearchCriteria`.
+-   The method `simulateDidReceiveMessage` has been removed fromm `ConversationsManagerService` public header.
+-   The methods `createPollInRoom` and `updatePoll` from `PollsManager` have now a new parameter `modifyVote`.
+-   The method `getLeaderAssistantStateString` from SipwiseTelephonySce has been removed (UI choice).
+
+## \[2.12.0-LTS\] - 2024-07-23
+
+### Changed
+
+-   The following internal methods have been removed. You should use `updateDisplayedVideos` instead, to automatically hold / unhold the displayed videos.
+    -   `holdRemoteVideo`
+    -   `unholdRemoteVideo`
+    -   `holdActiveSpeakerVideo`
+    -   `unholdActiveSpeakerVideo`
+-   The notification `kRTCServiceDidAddRemoteVideoTrack` sent by `RTCService` is now always returning a `RTCCall` object in `notification.object`, instead of sometimes returning `RTCCall`, sometimes a publisherId, sometimes nil.
+-   A new notification `kContactsManagerServiceDidRefreshPersonalDirectory` is now fired when the personal directory has been fetched from the server. The method `fetchAllPersonalContacts` has been removed and the personal directory contacts can now be retrieved via `myPersonalDirectoryContacts` property of the `ContactsManagerService` class.
+-   The case `FilterTypeAudioORVideo` of enum `FilterFileType` has been deleted and replaced by `FilterTypeAudio` and `FilterTypeVideo`. The fetch methods are now done for either one or the other, not for both at once anymore.
+-   The method `fetchSharedFilesWithViewer` has now a new parameter `owner` (type `RainbowContact`) which is used when the filterType is set to `FilesFilterTypeReceived` to filter on files received by a specific user in a bubble.
+-   Following methods from `ChannelsService` were renamed to use `completionHandler` parameter name instead of `block`
+    -   refreshChannelsListWithCompletionBlock was changed to `refreshChannelsListWithCompletionHandler`
+    -   refreshLatestItemsListWithCompletionBlock was changed to `refreshLatestItemsListWithCompletionHandler`
+    -   fetchUsersFromChannel:filterType:offset:count:withBlock: was changed to `fetchUsersFromChannel:filterType:offset:count:completionHandler:`
+    -   searchUsersWithName:fromChannel:offset:count:withBlock: was changed to `searchUsersWithName:fromChannel:offset:count:completionHandler:`
+    -   updateUserReactionForChannelItem:withReactionType:withBlock: was changed to `updateUserReactionForChannelItem:withReactionType:completionHandler:`
+    -   removeUserReactionForChannelItem:withBlock: was changed to `removeUserReactionForChannelItem:completionHandler:`
+    -   fetchUsersForReaction:channelItem:offset:count:withBlock: was changed to `fetchUsersForReaction:channelItem:offset:count:completionHandler:`
+    -   loadItemImageWith:forceOriginalFile:completionBlock: was changed to `loadItemImageWith:forceOriginalFile:completionHandler:`
+-   The documentation for [managing channels](/docs/sdk/ios) has been rewritten.
+
+## \[2.11.0-LTS\] - 2024-04-02
+
+### Changed
+
+-   Notification `kConferencesManagerDidReceiveUnmuteRequest` is now sending a `kParticipantKey` (type `Participant`) instead of `kConferenceParticipantKey` (type `RoomConfParticipant`)
+-   Remove legacy fat framework support in favor of xcframework format
+
+## \[2.10.0-LTS\] - 2024-01-09
+
+### Changed
+
+-   Following methods from `ConferencesManagerService` were renamed to use `completionHandler` parameter name instead of `block`
+    -   changeMuteParticipantState:conferenceParticipant:muted:block: was changed to `changeMuteParticipantState:conferenceParticipant:muted:completionHandler:`
+    -   changeMuteAllParticipantsConference:allMuted:block: was changed to `changeMuteAllParticipantsConference:allMuted:completionHandler:`
+    -   changeLockState:locked:block: was changed to `changeLockState:locked:completionHandler:`
+    -   join:start:block: was changed to `join:start:completionHandler:`
+    -   join:forceLocalVideo:forceMuted:block: was changed to `join:forceLocalVideo:forceMuted:completionHandler:`
+    -   startOrJoin:forceLocalVideo:block: was changed to `startOrJoin:forceLocalVideo:completionHandler:`
+    -   callParticipants:phoneNumbers:room:block: was changed to `callParticipants:phoneNumbers:room:completionHandler:`
+    -   startAdhocConferenceFromCall:contacts:numbers:block: was changed to `startAdhocConferenceFromCall:contacts:numbers:completionHandler:`
+    -   startAdhocConferenceFromCalls:block: was changed to `startAdhocConferenceFromCalls:completionHandler:`
+    -   hangup:block: was changed to `hangup:completionHandler:`
+    -   hangup:room:block: was changed to `hangup:room:completionHandler:`
+    -   rejectIncomingConference:block: was changed to `rejectIncomingConference:completionHandler:`
+    -   delegate:participant:block: was changed to `delegate:participant:completionHandler:`
+    -   updateVideoSubscriptionForPublisher:room:streamLevel:block: was changed to `updateVideoSubscriptionForPublisher:room:streamLevel:completionHandler:`
+    -   startRecording:block: was changed to `startRecording:completionHandler:`
+    -   stopRecording:block: was changed to `stopRecording:completionHandler:`
+    -   pauseRecording:block: was changed to `pauseRecording:completionHandler:`
+    -   resumeRecording:block: was changed to `resumeRecording:completionHandler:`
+-   Search method `-(void) fetchContactsWithPattern:criteria:limit:offset:completionBlock:` from `ContactsSearchManager` now use `local` boolean attribute from `ContactsSearchCriteria` to search or not in phone local contacts.
+-   The methods `fetchMyReceivedFilesFromOffset`, `fetchMyFilesFromOffset` and `fetchAllFilesFromOffset` are removed and replaced by `fetchRainbowStorageFilesFromOffset` with a parameter to set all, received or sent files
+-   The method `fetchAllFilesWithViewer` is removed and replaced by `fetchSharedFilesWithViewer` which takes the parameter to select all, received or sent files
+-   The property `areAllIncomingVideosDisabled` for `Conference` has been renamed to `incomingVideosDisabled`
+
+## \[2.9.0-LTS\] - 2023-09-19
+
+### Added
+
+-   New notification kConversationsManagerDidUpdateActiveCall has been added to handle active call update (P2P, PBX, conference). Use `Conversation` in notification.object. Use property `hasActiveCall` on the `Conversation` object to know current state.
+
+## \[SDK for iOS 2.8.0 LTS\] - \[2023-07-05\]
+
+***API Changes***
+
+-   The conference model has been refactored to use Conference V2 model. This is mandatory to update in order to use this version, please check the [migration guide](/docs/sdk/ios).
+-   The contact model has been refactored. This is mandatory to update in order to use this version, please check the [contact model guide](/docs/sdk/ios).
+-   In case of migration issue or question, you can open a new topic on the forum
+-   In `ContactsManagerService`, following methods have now `NSError` in the completionHandler:
+    -   `-(void) inviteContact:(Contact *_Nullable) contact withPhoneNumber:(NSString * _Nonnull) phoneNumber withCompletionHandler:(void(^_Nullable)(Invitation * _Nullable invitation, NSError * _Nullable error))completionHandler;`
+    -   `-(void) inviteByPhoneNumber:(NSString *_Nonnull) phoneNumber withCompletionHandler:(void(^_Nullable)(Invitation * _Nullable invitation, NSError * _Nullable error))completionHandler;`
+-   In `ContactsManagerService`, the method `-(void) inviteByEmail:(NSString *_Nonnull) email withCompletionHandler:(void(^ _Nullable)(Invitation * _Nullable invitation, NSError * _Nullable error))completionHandler;` is now checking if the email is associated to a Rainbow account. If found, the invitation is sent to the account instead of the email.
+-   In `ContactSearchManager`, the argument `block` of the `fetchContactsWithPattern` method has been renamed `completionBlock`
+
+## \[SDK for iOS 2.7.1\] - \[2023-06-21\]
+
+***Other Changes***
+
+-   Fix call logs not correctly retrieved if `getAllCallLogs` is called too early
+
+## \[SDK for iOS 2.7.0 LTS\] - \[2023-04-12\]
+
+***Others Changes***
+
+-   Bug fixes and performance improvements.
+
+## \[SDK for iOS 2.6.0 LTS\] - \[2023-02-27\]
+
+***Others Changes***
+
+-   Bug fixes and performance improvements.
+
+### \[SDK for iOS 2.5.0 LTS\] - November 2022
+
+***API Changes***
+
+-   Search contacts has been changed :
+    
+    -   The following have been deleted :
+        -   \-(void) searchRemoteContactsWithPattern:withCompletionHandler:
+        -   \-(void) searchRemoteContactsWithPattern: advancedMode:limitPerCategory:rainbowUsersOnly:searchMode:withCompletionHandler:
+        -   \-(void) searchMoreRemoteContactsWithSource:offset:withCompletionHandler:
+        -   \-(void) searchRemoteContactsWithPattern:source:advancedMode:limit:offset:withCompletionHandler:
+        -   Enum `RemoteContactsSource`
+    -   The following method replaces them :
+        -   \-(void) fetchContactsWithPattern:(NSString \* \_Nonnull) pattern criteria:(ContactsSearchCriteria \* \_Nonnull) contactsSearchCriteria limit:(int) limit offset:(int) offset block:(void(^ \_Nonnull)(NSArray<Contact \*> \* \_Nullable contacts)) block
+        -   Use `ContactsSearchCriteria` to choose what to search
+-   The following notifications have been renamed :
+    
+    -   `kTelephonyServiceDidAddCallNotification` is now `kTelephonyServiceDidAddCall`
+    -   `kTelephonyServiceDidUpdateCallNotification` is now `kTelephonyServiceDidUpdateCall`
+    -   `kTelephonyServiceDidRemoveCallNotification` is now `kTelephonyServiceDidRemoveCall`
+    -   `kTelephonyServiceDidFailedToCallNotification` is now `kTelephonyServiceDidFailedToCall`
+    -   `kNotificationsManagerHandleNotification` is now `kNotificationsManagerNotificationHandler`
+    -   `kRTCServiceDidAllowMicrophoneNotification` is now `kRTCServiceDidAllowMicrophone`
+    -   `kRTCServiceDidRefuseMicrophoneNotification` is now `kRTCServiceDidRefuseMicrophone`
+    -   `kRTCServiceDidAddCaptureSessionNotification` is now `kRTCServiceDidAddCaptureSession`
+    -   `kRTCServiceDidAddLocalVideoTrackNotification` is now `kRTCServiceDidAddLocalVideoTrack`
+    -   `kRTCServiceDidRemoveLocalVideoTrackNotification` is now `kRTCServiceDidRemoveLocalVideoTrack`
+    -   `kRTCServiceDidAddRemoteVideoTrackNotification` is now `kRTCServiceDidAddRemoteVideoTrack`
+    -   `kRTCServiceDidRemoveRemoteVideoTrackNotification` is now `kRTCServiceDidRemoveRemoteVideoTrack`
+    -   `kRTCServiceCallQualityLevelNotification` is now `kRTCServiceCallQualityLevel`
+    -   `kRTCServiceCallStatsNotification` is now `kRTCServiceCallStats`
+    -   `kRTCServiceDidChangeRecordingCallStateNotification` is now `kRTCServiceDidChangeRecordingCallState`
+    -   `kRTCServiceNoMicrophoneAccessNotification` is now `kRTCServiceNoMicrophoneAccess`
+    -   `kConversationsManagerDidAckMessageNotification` is now `kConversationsManagerDidAckMessage`
+    -   `kConversationsManagerDidAckAllMessagesNotification` is now `kConversationsManagerDidAckAllMessages`
+    -   `kContactsManagerServiceLocalAccessGrantedNotification` is now `kContactsManagerServiceLocalAccessGranted`
+-   Deprecated methods have been removed:
+    
+    -   ConversationsManagerService
+        -   sendReplyMessage:forMessage:withMention:to: completionHandler:
+        -   sendTextMessage:filesAttachment:withMention: to:completionHandler:
+        -   sendTextAlertMessage:withPriority:replyingTo:to: completionHandler:
+        -   sendReplyMessage:forMessage:to:completionHandler:
+        -   sendVoiceMessage: to:completionHandler:
+        -   sendLocationMessage: to: completionHandler:
+    -   ContactsManagerService
+        -   searchRemoteContactsWithPattern:limitPerCategory: rainbowUsersOnly:searchMode: withCompletionHandler:
+    -   RTCService
+        -   remoteVideoStreamForCall:
+        -   remoteSharingStreamForCall:
+        -   localVideoStreamForCall:
+
+### \[SDK for iOS 2.4.1 LTS\] - June 2022
+
+***API Changes***
+
+-   Since version 2.4.0 LTS, the pushes (IM and VoIP) are automatically encrypted by the server. Therefore, the iOS app needs to decrypt the received IM push by calling method `decryptNotificationContentWithUserInfo` from notificationsManager (the VoIP push is directly decrypted in the SDK):
+
+In the notification service extension :
+
+```
+NSString *crypt = [userInfo valueForKeyPath:@"aps.crypt"];
+if (crypt != nil) {
+    NSDictionary *decryptedUserInfo = [[ServicesManager sharedInstance].notificationsManager decryptNotificationContentWithUserInfo:request.content.userInfo];
+} else {
+    // Push is not encrypted
+}
+```
+
+***Other Changes***
+
+-   The documentation to update or delete avatar has been updated
+-   The documentation to update user phone numbers has been updated
+
+### \[SDK for iOS 2.4.0 LTS\] - April 2022
+
+***API Changes***
+
+-   You can setup the notification manager to use the sandbox APNs if you are using HTTP/2 based push notifications certificate (APNS v2) : `[[ServicesManager sharedInstance].notificationsManager useSandboxAPNs:YES]`.
+-   The property `sharingPublisher` has been added to the object `Conference` to allow displaying the current publisher who is sharing his screen. The notification `kConferencesManagerDidUpdateSharingInConference` is also sent when this value changes.
+-   The property `customData` (type of NSDictionary) has been added to the service `MyUser` to access customData of the current connected user. It is accessible by `[ServicesManager sharedInstance].myUser.customData`. It is updatible by `[[ServicesManager sharedInstance].contactsManagerService updateUserWithFields:@{@"customData" : yourCustomDataDictionary} withCompletionBlock:nil];`
+
+***Other Changes***
+
+-   Starting from Rainbow SDK for iOS version 2.4.0 LTS, the IM messages are encrypted using CryptoSwift. We have also started to migrate our API calls to use Alamofire library. Therefor, if not already done, you need to add the dependencies in your application in order to build with this version.
+
+Easy way using Swift Package Manager (but using Carthage is also working):
+
+```
+.package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", .upToNextMajor(from: "1.4.3"))
+.package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.5.0"))
+```
+
+### \[SDK for iOS 2.3.0 LTS\] - December 2021
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 2.2.0 LTS\] - August 2021
+
+***API/Methods Changes***
+
+-   The Rainbow SDK for iOS is now also delivered as an xcframework. You will have more information in the [Hello World guide](/docs/sdk/ios), section **Using Carthage**.
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 2.1.0 LTS\] - May 2021
+
+***API/Methods Changes***
+
+-   The constant notification `kChannelsServiceDidReceiveItem` has been renamed to `kChannelsServiceDidAddItem` which is used when a new item is added (from cache or server)
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 2.0.0\] - April 2021
+
+***API/Methods Changes***
+
+-   The method `deleteMyAccount` from `LoginManager` is now taking a block with `NSError` as parameter which depends on the server response.
+-   The method `searchRoomWithPattern:` has been renamed to `searchLocalRoomsByPattern:` and the method `searchRoomWithPattern:searchRoomType:` has been renamed to `searchLocalRoomsByPattern:searchRoomType:`
+-   New methods has been added in `RoomsService` to asynchronously search rooms on the server and be able to find rooms that are not loaded locally. The method `searchRoomsByName:ofType:completionBlock:` perform a search by room names and `searchRoomsByTags:ofType:completionBlock:` do a search by room tags.
+
+***Others Changes***
+
+-   We are modifying SDK support policy and versions. You should read this [documentation](/docs/hub/lts-support-sdk-version) for more informations.
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.86.0\] - March 2021
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.85.0\] - March 2021
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.84.0\] - February 2021
+
+***API/Methods Changes***
+
+-   The methods to send a text (with or without files), an alert or a reply in `ConversationsManagerService` are deprecated:
+    
+    -   `sendTextMessage:filesAttachment:withMention:to:completionHandler:attachmentUploadProgressHandler:`
+    -   `sendTextAlertMessage:withPriority:replyingTo:to:completionHandler:`
+    -   `sendReplyMessage:forMessage:to:completionHandler:`
+    -   `sendReplyMessage:forMessage:withMention:to:completionHandler:`
+-   They are replaced by one single method:
+    
+    -   `sendTextMessage:files:mentions:priority:repliedMessage:conversation:completionHandler:`
+-   The method to send a voice message in `ConversationsManagerService` is deprecated:
+    
+    -   `sendVoiceMessage:to:completionHandler:attachmentUploadProgressHandler:`
+-   Replaced by:
+    
+    -   `sendVoiceMessage:priority:conversation:completionHandler:`
+-   The method to send a location in `ConversationsManagerService` is deprecated:
+    
+    -   `sendLocationMessage:to:completionHandler:attachmentUploadProgressHandler:`
+-   Replaced by:
+    
+    -   `sendLocationMessage:priority:conversation:completionHandler:`
+-   Add a `MyUser` property `isPushWithAckEnabled` that returns `YES` if the user receive remote push notifications with APNS v2 protocol
+    
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.83.0\] - January 2021
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.82.0\] - January 2021
+
+***API/Methods Changes***
+
+-   The `MediaPillarStatus` is deprecated, now all VoIP information are available in NomadicStatus, which is now fully managed by `TelephonyService`. MediaPillarStatus will soon be removed.
+-   The method `fetchChannelsByDescription` from `ChannelsService` has been renamed to `fetchChannelsByTopic` (unchanged behavior)
+-   The methods in `ChannelsService` have now the correct nullability for each parameters and the return object. It could have an impact in Swift with optional or non-optional value.
+-   The `cameraVideoCapturer` was removed from `RTCService` and it must be removed from the app side and let the SDK manage the capture session when start a video call or add a video media. There are two new methods have been added into `RTCService` to control the camera video capturer if needed.
+-   Add `switchTheVideoCapturerCamera` method in `RTCService` to switch the back and forth camera in the video call.
+-   Add `pauseLocalVideoCaptureSession` method in `RTCService` to pause the camera video capturer.
+-   The observer for `kRTCServiceDidAddCaptureSession` notification in the app side should be updated to parse the `AVCaptureSession` notification object to be used for displaying the local video of the user.
+-   The method `localVideoStreamForCall:` from `RTCService` is deprecated, now should use `localVideoTrackForCall:` that return the `RTCVideoTrack` object.
+-   The method `remoteVideoStreamForCall:` from `RTCService` is deprecated, now should use `remoteVideoTrackForCall:` that return the `RTCVideoTrack` object that can be used to render the remote user video.
+-   The method `remoteSharingStreamForCall:` from `RTCService` is deprecated, now should use `remoteSharingTrackForCall:` that return the `RTCVideoTrack` object that can be used to render the remote sharing video.
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.81.0\] - December 2020
+
+***API/Methods Changes***
+
+-   The parameter `appName` of the method `startCallKitWithIncomingSoundName` has been deleted because CallKit uses directly the name of the application and the name parameter cannot be modified starting iOS14.
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.80.0\] - November 2020
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.79.0\] - November 2020
+
+***API/Methods Changes***
+
+-   The method `removeUsersFromChannel:removedUsers:completionHandler:` has been replaced by `removeUser:fromChannel:completionHandler:` which now takes a `ChannelUser` object instead of a `NSArray` of user id
+-   The methods `promoteUser` and `demoteUser` have been added to promote a user to publisher role or demote to member role in a channel
+
+### \[SDK for iOS 1.78.0\] - October 2020
+
+***API/Methods Changes***
+
+The following methods have been deleted :
+
+-   sendMessage:fileAttachment:to:completionHandler:attachmentUploadProgressHandler:
+-   sendMessage:fileAttachment:withLocation:to:completionHandler:attachmentUploadProgressHandler:
+-   sendMessage:fileAttachment:isVoiceMessage:withLocation:to:completionHandler:attachmentUploadProgressHandler:
+-   sendTextMessage:fileAttachment:to:completionHandler:attachmentUploadProgressHandler:
+
+The parameter `fileAttachment` of the following method is now `filesAttachment` and is a `NSArray<File *> *` object (could be nil) :
+
+-   sendTextMessage:fileAttachment:withMention:to:completionHandler:attachmentUploadProgressHandler:
+
+As a reminder, you can use following methods to replace :
+
+-   sendTextMessage:filesAttachment:withMention:to:completionHandler:attachmentUploadProgressHandler:
+    
+-   sendVoiceMessage:to:completionHandler:attachmentUploadProgressHandler:
+    
+-   sendLocationMessage:to:completionHandler:attachmentUploadProgressHandler:
+    
+-   A new property `voiceMessageDuration` has been added to the `File` object when it reference a voice memo and return the duration in seconds of the voice message.
+    
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.77.0\] - September 2020
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.76.0\] - September 2020
+
+***API/Methods Changes***
+
+-   The method `changeMyPresence` in `ContactsManagerService` has now a new parameter `completionBlock` with an `NSError` object
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.75.0\] - August 2020
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.74.0\] - August 2020
+
+***API/Methods Changes***
+
+-   The method `hasMyUserJoinedConference` in `ConferencesManagerService` has been replaced by the property `hasMyUserJoinedOnThisDevice` on a `Conference` object
+-   The method `hasContact:joinedConference` in `ConferencesManagerService` has been replaced by the method `hasJoined:` on a `Conference` object
+-   The property `hasMyUserJoined` has been added on a `Conference` object which just called `hasJoined:` on the connected user
+-   A event `kConferencesManagerDidDelegateConference` has been added to `ConfererencesManagerService` which is sent when a conference was delegated to a participant.
+-   The method `delegateConference:toParticipant:completionHandler:` has been added to `ConferencesManagerService` which could be used to delegate a conference to another participant.
+-   The method `countOfDelegableParticipants:` has been added to `ConferencesManagerService` that return the count of `ConferenceParticipant` that could be delegated.
+-   A property `delegateCapability` has been added to `ConferenceParticipant`, it is `YES` if the participant could be choosen as a delegate for the current conference.
+-   A property `isAllowedToBeConferenceDelegate` has been added to `MyUser`, it is `YES` if the user could be delegated for a WebRTC conference.
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.73.0\] - July 2020
+
+***API/Methods Changes***
+
+-   Notification `kConferencesManagerDidUpdateConferencePublisher` has been replaced by `kConferencesManagerDidUpdatePublisher`.
+    
+-   New notifications has been added to manage publishers and participants in `ConferencesManagerService` : - `kConferencesManagerDidAddPublisher` - `kConferencesManagerDidUpdatePublisher` - `kConferencesManagerDidRemovePublisher` - `kConferencesManagerParticipantHasJoined` - `kConferencesManagerParticipantHasLeft` - `kConferencesManagerParticipantHasBeenUpdated`
+    
+-   New notification has been added to find out who's talking during the conference in `ConferencesManagerService` :
+    
+    -   `kConferencesManagerSpeakingParticipantsStateHasBeenUpdated`
+-   New notification has been added to know the conference state in `ConferencesManagerService` :
+    
+    -   `kConferencesManagerDidReceiveConferenceState`
+-   To retrieive participants and publisher with previous notifications two keys have been added : - `kConferencePublisherKey` - `kConferenceParticipantsKey` - `kConferenceStateKey`
+    
+-   Added `conferenceState` dictionnay property to `ConferenceInfo` object.
+    
+-   Two new methods has been added in `ConferencesManagerService` to subscribe and unsubscribe to dynamic video stream (ActiveSpeaker video change automatically depending on who's talking) :
+    
+    -   `(void) subscribeToVideoSharedByConferencePublisher:(ConferencePublisher *) conferencePublisher inConference:(Conference *)conference streamLevel:(PublisherStreamLevel)streamLevel activeSpeakerEnabled:(BOOL)activeSpeaker`
+        
+    -   `(void) unsubscribeToActiveSpeakerVideo`
+        
+-   Two new methods has been added in `RTCService` in order to know if the current call for conference contains a ActiveSpeaker dynamic video track and the method to retreive it :
+    
+    -   `-(BOOL) isCallContainsActiveSpeakerVideo:(RTCCall *) call`
+        
+    -   `-(RTCVideoTrack *_Nullable) remoteActiveSpeakerVideoTrack`
+        
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.72.0\] - June 2020
+
+***API/Methods Changes***
+
+-   Added `roomPrivilege` property to `ConferenceParticipant` class represented with a `ParticipantPrivilege` enum that describe the participant's authorization level in room.
+-   Added `webRTCConferenceEndPoint` property to `ConferencesManagerService` that return the WebRTC ConfEndpoint object.
+-   Added `pstnInstantConferenceEndPoint` property to `ConferencesManagerService` that return the WebRTC ConfEndpoint object.
+
+#### Refactoring of the methods to fetch a list of files
+
+For these 3 new methods, the completion handler has now the following parameters : - NSArray<File \*> files : list of files fetched - NSUInteger total : total number of files which could be fetched with this method - NSError \*error : the potential error
+
+The enumeration object `FileSortField` has been added with : - FileSortFieldDate - FileSortFieldFilename - FileSortFieldSize
+
+1.  Fetch my files `refreshSharedFileListFromOffset`
+
+This method has been replaced by `fetchMyFilesFromOffset`.
+
+The parameters were : - offset - limit - typeMIME - completionHandler (NSArray of files, offset, total, error)
+
+The parameters are now : - offset - limit - typeMIME - sortOrderField (new) - completionHandler (new)
+
+2.  Fetch files shared with a peer `loadSharedFilesWithPeer`
+
+This method has been replaced by `fetchSharedFilesWithPeer`.
+
+The parameters were : - peer - offset - completionHandler (NSArray of files, error)
+
+The parameters are now : - peer - offset - limit (new) - typeMIME (new) - sortOrderField (new) - completionHandler (new)
+
+3.  Fetch my received files (global)
+
+The new method has been added `fetchMyReceivedFilesFromOffset`
+
+The parameters are : - offset - limit - typeMIME - sortOrderField - completionHandler
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.71.0\] - May 2020
+
+***API/Methods Changes***
+
+-   add `muteUponEntry` boolean in `Room` object, that return `YES` if participants are automatically muted when entering the web conference in that room.
+-   add a new `createRoom` method in `RoomsService` that also take a `options` dictionary : `-(Room *)createRoom:(NSString *) name withTopic:(NSString *) topic options:(NSDictionary<NSString *, id> *)options error:(NSError **) error`
+-   add a new `updateRoom` method in `RoomsService` to set the `muteUponEntry` boolean for a room : `-(void) updateRoom:(Room *) room withMuteParticipantsUponEntry:(BOOL) mute withCompletionBlock:(void (^)(NSError *error))completionBlock;`
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.70.0\] - April 2020
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.69.0\] - April 2020
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.68.0\] - March 2020
+
+***Others Changes***
+
+-   Fix crashes when a key is pressed on DTMF.
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.67.0\] - February 2020
+
+***API/Methods Changes***
+
+##### Mark as read all new received messages
+
+The method to mark as read all new messages received for a conversation in `ConversationsManagerService` has changed.
+
+Internally: - the old method sends an XMPP message for each unread messages to mark as read - the new method sends a REST request to mark all unread messages as read
+
+The name of the method has also changed: - Old name: `-(void) markAsReadByMeAllMessageForConversation:(Conversation *) conversation` - New name: `-(void) markAllMessagesAsReadForConversation:(Conversation *) conversation`
+
+##### Mark as read any new message received
+
+The method to mark as read any new message received for a graphically opened conversation has changed.
+
+The method `-(void) markAsReadByMeAllMessageForConversation:(Conversation *) conversation` has been removed. It was called on UI side any time we receive a new message in the current conversation.
+
+The new way is to set the property `automaticallySendMarkAsReadNewMessage` from a `Conversation` object at : - YES for example in viewWillAppear in the conversation view - NO for example in viewWillDisappear in the conversation view
+
+The SDK will then manage the mark as read behavior.
+
+##### Others changes
+
+-   The method `createAutoAcceptedRoom` has been added to create a bubble without invitation for any new user added. See guide **Managing bubble** to get more information.
+
+### \[SDK for iOS 1.66.0\] - January 2020
+
+***API/Methods Changes***
+
+-   The behavior of the notification `kRoomsServiceDidReceiveRoomInvitation` has completly changed:
+    
+    -   Before:
+        -   was triggered every time we fetch a room where we are in `pending` state
+        -   has one parameter of type `Room *`
+    -   Now:
+        -   is only triggered on XMPP server room invitation message
+        -   has a `NSDictionary *` parameter with currently 2 `NSString *` with keys `roomName` and `inviterName`
+    -   Goal: allow the application to display an UI local notification
+    -   If you used this notification, replace by:
+        -   listening to `kRoomsServiceDidAddRoom` for new room (you probably already listen to it)
+        -   using the property `myStatusInRoom` on `Room` object to know if this is a room invitation
+-   The method to create a copy of a file in the user Rainbow sharing has been changed (in `FileSharingService`):
+    
+
+```
+-(void) transferFile:(File *)file  withCompletionHandler:(FileSharingCompletionHandler) completionHandler
+```
+```
+- The replaced method is:
+```
+```
+-(void) copyFileIntoRainbowSharing:(File * _Nonnull)file  withCompletionHandler:(FileSharingCompletionHandler _Nullable) completionHandler
+```
+```
+- The changes are :
+    - The name from `transferFile` to `copyFileIntoRainbowSharing`
+    - The `_Nonnull` and `_Nullable` specifiers
+```
+
+-   A method to forward a `File` to some `Conversation` has been added tp `FileSharingService`: `-(void) forwardFile:(File * _Nonnull) file to:(NSArray<Conversation *> * _Nonnull) conversations completionHandler:(void(^_Nullable)(NSError * _Nullable error)) completionHandler;`
+    
+-   New methods to send a text message with an optional attached file, replace the last recently sent message with a corrected one, reply to a previous message and to forward a message from a conversation to another one(s) had been added to the `ConversationsManagerService`:
+    
+    -   `-(Message *) sendTextMessage:(NSString *) message fileAttachment:(File *) file withMention:(NSArray<NSString *> * _Nullable)mentionedPeerJIDs to:(Conversation *) conversation completionHandler:(ConversationsManagerServiceSendMessageCompletionHandler) completionHandler attachmentUploadProgressHandler:(ConversationsManagerAttachmentProgressionHandler) progressHandler;`
+    -   `-(Message *) sendReplyMessage:(NSString *)text forMessage:(Message *)previousMessage withMention:(NSArray<NSString *> * _Nullable)mentionedPeerJIDs to:(Conversation *) conversation completionHandler:(ConversationsManagerServiceSendMessageCompletionHandler) completionHandler`
+    -   `-(Message *) sendReplacementMessageForMessage:(Message *)message replacementText:(NSString *)text withMention:(NSArray<NSString *> * _Nullable)mentionedPeerJIDs to:(Conversation *) conversation completionHandler:(ConversationsManagerServiceSendMessageCompletionHandler) completionHandler;`
+    -   `-(void) forwardMessage:(Message * _Nonnull) message to:(NSArray<Conversation *> * _Nonnull) conversations completionHandler:(void(^_Nullable)(NSError * _Nullable error)) completionHandler`
+-   `File` now has a property `location` instead of `isLocationFile`
+    
+-   Postal address string representation in a block has been added to `PostalAddress`: `-(NSString *) stringBlockRepresentation`
+    
+
+### \[SDK for iOS 1.65.0\] - December 2019
+
+---
+
+***API/Methods Breaking Changes***
+
+-   Due to internal SDK rework, notification `kChangeServerURLNotification` has been removed and replaced by `kLoginManagerDidChangeServer`. This new notification no more contains a `Server` object but a `NSDictionary` with the key `serverURL`.
+
+***API/Methods Changes***
+
+-   Added `isVisibleByOthers` boolean property to `PhoneNumber` defining if a phone number is visible by other users or not.
+-   Added `isExtensionNumber` boolean property to `PhoneNumber` indicating if this number is an extension number (shortNumber or internalNumber).
+-   Enable telephony features in `TelephonyService`
+-   Added `Contact` properties regarding custom service bot: `isRainbowSupportBot` and `avatarId` have been added
+-   `hasActiveWebRTCCalls` have been renamed to `hasActive1PccCalls`
+-   Added `isApplicationActive` property to `ServiceManager` that return `YES` if the application is in state UIApplicationStateActive
+-   Added boolean properties to `Server` class `isCNServer` that return the value `YES` if the user is connected on the China environment, `isHDSServer` that return the value `YES` if the user is connected on the Healthcare environment.
+-   Added `displayableParticipants` property to `Room` class to get all displayable participants of this room, creator included. Displayable is defined as: the participant has firstname or lastname or phone number or email address and is accepted or pending.
+
+***Others Changes***
+
+-   Unveil `LogsRecorder` class and add documentation in the servicability guide about the log recording and operations on log files.
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.64.0\] - November 2019
+
+---
+
+***API/Methods Changes***
+
+-   Message class have a new property `youtubeId` to carry a link to a YouTube video.
+-   Contact class have 2 new properties `custom1` and `custom2` to carry two custom values.
+-   `isAllowedToUseTelephonySecondCall` property has been added to `MyUser` class.
+
+***Others Changes***
+
+-   The guide about Contacts have been updated.
+-   Missing documentation about `ConferencesManagerService` and a new sample app about WebRTC conferences has been added.
+-   The support bot avatar could now be customized.
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.63.0\] - November 2019
+
+---
+
+***API Breaking Changes***
+
+-   `FileSharingCompletionHandler` completion handler type name in `SharingService` had a typo that has been fixed.
+
+***API/Methods Changes***
+
+-   Search methods from `DirectoryService` are now handling pagination.
+-   Add PSTN conference locking/unlocking methods in `ConferencesManagerService`.
+-   Add method to change the log level of the RTC stack.
+-   Add `loadSharedFilesWithPeer` and `deleteAllFiles` methods in `SharingService`.
+-   Add a `departmentName` attribute for `ExternalContact`.
+-   Update WebRTC framework to GoogleWebRTC-1.1.29229.
+-   Add `VoiceMessagesService` implementing a voice message API.
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.62.0\] - October 2019
+
+---
+
+***3-Release SDK Breaking Changes***
+
+-   \[SEND A MESSAGE IN A CONVERSATION\] The methods have been refactored. Therefore, the following methods are now deprecated and will be removed in 3 versions (1.65.0):
+    -   `-(Message *) sendMessage:(NSString *) message fileAttachment:(File *) file to:(Conversation *) conversation completionHandler:(ConversationsManagerServiceSendMessageCompletionHandler) completionHandler attachmentUploadProgressHandler:(ConversationsManagerAttachmentProgressionHandler) progressHandler`
+    -   `-(Message *) sendMessage:(NSString *) message fileAttachment:(File *) file withLocation:(Location *)location to:(Conversation *) conversation completionHandler:(ConversationsManagerServiceSendMessageCompletionHandler) completionHandler attachmentUploadProgressHandler:(ConversationsManagerAttachmentProgressionHandler) progressHandler`
+    -   `-(Message *) sendMessage:(NSString *) message fileAttachment:(File *) file isVoiceMessage:(BOOL)isVoiceMessage withLocation:(Location *)location to:(Conversation *) conversation completionHandler:(ConversationsManagerServiceSendMessageCompletionHandler) completionHandler attachmentUploadProgressHandler:(ConversationsManagerAttachmentProgressionHandler) progressHandler`
+-   These methods are replaced by:
+    -   `-(Message *) sendTextMessage:(NSString *) message fileAttachment:(File *) file to:(Conversation *) conversation completionHandler:(ConversationsManagerServiceSendMessageCompletionHandler) completionHandler attachmentUploadProgressHandler:(ConversationsManagerAttachmentProgressionHandler) progressHandler`
+    -   `-(Message *) sendVoiceMessage:(File *) file to:(Conversation *) conversation completionHandler:(ConversationsManagerServiceSendMessageCompletionHandler) completionHandler attachmentUploadProgressHandler:(ConversationsManagerAttachmentProgressionHandler) progressHandler`
+    -   `-(Message *) sendLocationMessage:(Location *)location to:(Conversation *) conversation completionHandler:(ConversationsManagerServiceSendMessageCompletionHandler) completionHandler attachmentUploadProgressHandler:(ConversationsManagerAttachmentProgressionHandler) progressHandler`
+-   Please update as soon as possible by using the correct one(s)!
+
+***API/Methods Changes***
+
+-   Add a new `alternateBody` property to `Message` to hold alternate body content(s) with MIME type(s).
+-   Add a new `refreshMyPersonalMeeting` method to `ConferencesManagerService`.
+-   Add a new method `disconnectWithoutLogout` in LoginManager to disconnect xmpp stream without logout the user.
+-   Add a new property `isAuthenticatedWithSSO` to `MyUser` object which is `YES` if the user authentication type is based on SSO eg: "SAML", "OIDC".
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.61.0\] - September 2019
+
+---
+
+***API/Methods Changes***
+
+-   The mehod `sendDTMF` has been added to `RTCService` which allows to send a DTMF code to the current call. To get more information, check the guide [Managing voice video calls](/docs/sdk/ios) (section **Sending a DTFM code**) or the [Jazzy sendDTMF documentation](https://sdk.openrainbow.io/ios/docs/jazzy/Classes/RTCService.html#/c:objc\(cs\)RTCService\(im\)sendDTMF:)
+
+***Others Changes***
+
+-   Add join without audio to a PSTN conference that we already joined in dial-in.
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.60.0\] - August 2019
+
+---
+
+***3-Release SDK Breaking Changes***
+
+-   None
+
+***API/Methods Changes***
+
+-   Use a empty UIImage to reset MyUser avatar in `updateAvatar` method
+-   Add a new `isVoiceMessage` property to `File`
+-   Add a new method for `sendMessage` with flag `isVoiceMessage`
+-   Add a `LocationService` and a `Location` property to `Message` to provide geo location sharing with other parties
+-   The method `searchRemoteContactsWithPattern` has a new mandatory parameter `advancedMode`: `-(void) searchRemoteContactsWithPattern:(NSString *) pattern advancedMode:(BOOL) advancedMode limitPerCategory:(int) limitPerCategory rainbowUsersOnly:(BOOL) rainbowUsersOnly searchMode:(SearchRemoteContactsMode) searchMode withCompletionHandler:(ContactsManagerServiceSearchRemoteContactsCompletionHandler) completionHandler;` The old method (without the `advancedMode`) is now deprecated and will be removed in 3 versions (1.63.0).
+
+***Others Changes***
+
+-   New tutorial [File Sharing](/docs/sdk/ios) is now available
+-   New tutorial [Managing Voice and Video calls](/docs/sdk/ios) is now available
+-   Use a empty UIImage to reset MyUser avatar in `updateAvatar` method
+-   Add a new `isVoiceMessage` property to `File`
+-   Add a new method for `sendMessage` with flag `isVoiceMessage`
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.59.0\] - July 2019
+
+---
+
+***API Changes***
+
+-   The method `updateUserWithFields` from `ContactsManagerService` is now able to delete the user avatar by setting the key `photo` to an empty string.
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.58.0\] - July 2019
+
+---
+
+***API Changes***
+
+-   Add a case to `loadSharedFilesWithPeer:fromOffset:completionHandler:` to load all received files when the given peer is `nil`
+-   New API to fetch a room with a openInvite Id : `(void) fetchRoomWithOpenInviteId:(NSString *_Nonnull) openInviteId withCompletionHandler:(RoomsServiceCompletionHandler _Nonnull ) completionHandler;`
+-   New API to register a user with a openIvite Id : `(void) sendSelfRegisterRequestWithLoginEmail:(NSString *) loginEmail password:(NSString *) password openInviteId:(NSString *) openInviteId completionHandler:(LoginManagerRegistrationCompletionHandler) completionHandler;`
+
+***Others Changes***
+
+-   Optimizations and fixes have been done on the data resynchronisation when reconnecting to Rainbow.
+-   Fix some cases where the push notifications stop working.
+-   Fixes for geolocation messages.
+-   Documentation and API guides updates.
+
+### \[SDK for iOS 1.57.0\] - June 2019
+
+---
+
+***API Changes***
+
+-   None
+
+***Others Changes***
+
+-   Optimizations have been done to favorite conversation handling.
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.56.0\] - June 2019
+
+---
+
+***API Changes***
+
+-   The new channels API is available.
+-   The new favorite conversations API is available.
+
+***Others Changes***
+
+-   Optimizations has been done to speed up the startup phase.
+-   API documentation and guides had been updated.
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.55.0\] - May 2019
+
+---
+
+***API Changes***
+
+-   Channels API is undergoing a large rework for the next release.
+
+***Others Changes***
+
+-   API documentation and guides had been updated.
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.54.0\] - Apr 2019
+
+---
+
+***API Changes***
+
+-   The method `startAndJoinConference` has been changed to `startAndJoinConferenceWithRoom`. The parameter `conference` has been removed (it should be included in the parameter `room`). The parameter `dialOut` has been added which is used for pstnAudio call to differenciate the dial-in with the dial-out call mode.
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.53.0\] - Mar 2019
+
+---
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.52.0\] - Feb 2019
+
+---
+
+***Others Changes***
+
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.51.0\] - Jan 2019
+
+---
+
+***Others Changes***
+
+-   A tutorial to generate certificates for the push notification has been added.
+-   The SDK does not support anymore the architecture armv7s.
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.50.0\] - Dec 2018
+
+---
+
+***Others Changes***
+
+-   The attachment of a last message of a conversation is now correctly set when opening the application if the message has already been stored in the cache.
+-   If a message contains an attachment, its body is not set anymore to the filename.
+-   Some bugs and crashes have been fixed in this version.
+
+### \[SDK for iOS 1.49.0\] - Nov 2018
+
+---
+
+***API Changes***
+
+-   The new method `isBusyPresentation` has been added to the object `Contact`.
+-   The new getter `bodyInMarkdown` on a **Message** object has been added to allow you to manage the display if a message has a markdown content.
+
+***Others Changes***
+
+-   Some bugs and crashs have been fixed in this version.
+
+### \[SDK for iOS 1.48.0\] - Nov 2018
+
+---
+
+***3-Release SDK Breaking Changes***
+
+-   None
+
+***API Breaking Changes***
+
+-   None
+
+***API Changes***
+
+-   The new method `notifyGuestUsers` has been added in the module **RoomsService** to send an invitation to a guest to join a room.
+-   The new method `cancelGuestUsers` has been added in the module **RoomsService** to cancel invitations sent to a guest to join a room.
+
+***Others Changes***
+
+-   Some bugs / crashs have been fixed in this version
+
+### \[SDK for iOS 1.47.0\] - Oct 2018
+
+---
+
+***3-Release SDK Breaking Changes***
+
+-   Due to the data privacy improvements introduced in Rainbow 1.47 and as mentionned in the SDK iOS v1.0.14 release notes, your application MUST use at least the Rainbow SDK iOS v1.0.14 or a higher version to continue to work. All Rainbow SDK iOS versions prior to v1.0.14 are no more compliant with our Rainbow platform.
+
+***API Breaking Changes***
+
+-   None
+
+***API Changes***
+
+-   The new method `setAvatar` has been added in the module **MyUser** to change the connected user avatar.
+-   The new method `beginNewOutgoingCallWithPeer` with the parameter `andSubject` has been added in the module **RTCService** to make a call with a « reason of call ».
+
+***Others Changes***
+
+-   Some bugs / crashs have been fixed in this version
+
+### \[SDK for iOS 1.46.0\] - Sept 2018
+
+---
+
+The versions of the Rainbow SDK for iOS are now aligned on the Rainbow iOS application. Therefore, we will release a new version at least one time per month and the naming of the major version is the same as the Rainbow IOS application, that is why we are now at the version 1.46.0 of the Rainbow SDK for iOS.
+
+***3-Release SDK Breaking Changes***
+
+-   None
+
+***API Breaking Changes***
+
+-   None
+
+***API Changes***
+
+-   None
+
+***Others Changes***
+
+-   A new [Legals page](/docs/sdk/ios) has been added which includes disclaimer, software licence, FOSS list and status.
+-   The WebRTC stack has been updated to the version GoogleWebRTC-1.1.22973.
+-   Some bugs have been fixed in this version
+
+### \[SDK for iOS 1.0.15\] - Aug 2018
+
+---
+
+***3-Release SDK Breaking Changes***
+
+-   None
+
+***API Breaking Changes***
+
+-   None
+
+***API Changes***
+
+-   None
+
+***Others Changes***
+
+-   Some bugs have been fixed in this version
+
+### \[SDK for iOS 1.0.14\] - Aug 2018
+
+---
+
+***3-Release SDK Breaking Changes***
+
+-   Due to data privacy improvements, Rainbow platform will introduce breaking changes in the way data associated to users are located around the world in one hand and the way users connect to the platform in other hand. Consequently, any SDK IOS prior to version 1.0.14 are entered deprecation period and will no more work once Rainbow platform 1.47 will be deployed on production (starting Sept, 30th)”. Before Sept’30, your application has to migrate to SDK IOS version 1.0.14 at least in order for your application to continue to work after this date.
+
+***API Breaking Changes***
+
+-   None
+
+***API Changes***
+
+-   None
+
+***Others Changes***
+
+-   Fix: When a privilege (user, moderator, owner) was changed for a room participant, his status was set to unknown and the privilege was not updated accordingly.
+-   Fixing many issues and crashes
+
+### \[SDK for iOS 1.0.13\] - Jul 2018
+
+---
+
+***API Changes***
+
+-   Added `-(void)saveNotificationWithUserInfo:(NSDictionary *) userInfo` in `NotificationsManager`
+-   Added `-(void) cancelOutgoingCall` in `TelephonyService`
+-   The `RTCCall` notifications have been renamed, `RTCCallStatusRinging` is now `CallStatusRinging`, `RTCCallStatusConnecting` is now `CallStatusConnecting`, ...
+-   The `TelephonyService` notifications have been renamed, `kRTCServiceDidAddCallNotification` is now `kTelephonyServiceDidAddCallNotification`, `kRTCServiceDidUpdateCallNotification` is now `kTelephonyServiceDidUpdateCallNotification`, ...
+
+***Others Changes***
+
+-   Load roster cache at init of the SDK
+-   Fixing many issues and crashes
+
+### \[SDK for iOS 1.0.12\] - May 2018
+
+---
+
+***API Breaking Changes***
+
+-   iOS SDK have now a minmal deployement version set to **iOS 10**
+
+***API Changes***
+
+-   The method `acceptInvitation` and `declineInvitation` now take in parameters a completion block, that give a feedback on the operation
+
+***Others Changes***
+
+-   Fixing many issues and crashes
+
+### \[SDK for iOS 1.0.11\] - May 2018
+
+---
+
+**We are proud to publish our first public release of the Rainbow SDK for iOS.**
+
+Thanks to this `SDK` you will be able to develop amazing applications for chatting or doing live audio and video communications.
+
+**Some available features:**
+
+-   Instance messaging
+    
+-   Contact management
+    
+-   Presence
+    
+-   Multimedia calls
+    
+
+Have a look into [Getting started](/docs/sdk/ios).
+
+### On this page
+
+-   [SDK for iOS](/docs/sdk/ios#name-sdk-for-ios-0)
+-   [\[Unreleased\]](/doc/sdk/ios/lts/guides/CHANGELOG#name-unreleased-7)
+-   [\[2.13.0-LTS\] - 2025-03-07](/doc/sdk/ios/lts/guides/CHANGELOG#name-2.13.0-lts---2025-03-07-10)
+-   [\[2.12.0-LTS\] - 2024-07-23](/doc/sdk/ios/lts/guides/CHANGELOG#name-2.12.0-lts---2024-07-23-235)
+-   [\[2.11.0-LTS\] - 2024-04-02](/doc/sdk/ios/lts/guides/CHANGELOG#name-2.11.0-lts---2024-04-02-342)
+-   [\[2.10.0-LTS\] - 2024-01-09](/doc/sdk/ios/lts/guides/CHANGELOG#name-2.10.0-lts---2024-01-09-360)
+-   [\[2.9.0-LTS\] - 2023-09-19](/doc/sdk/ios/lts/guides/CHANGELOG#name-2.9.0-lts---2023-09-19-485)
+-   [\[SDK for iOS 2.8.0 LTS\] - \[2023-07-05\]](/doc/sdk/ios/lts/guides/CHANGELOG#name-sdk-for-ios-2.8.0-lts---2023-07-05-499)
+-   [\[SDK for iOS 2.7.1\] - \[2023-06-21\]](/doc/sdk/ios/lts/guides/CHANGELOG#name-sdk-for-ios-2.7.1---2023-06-21-549)
+-   [\[SDK for iOS 2.7.0 LTS\] - \[2023-04-12\]](/doc/sdk/ios/lts/guides/CHANGELOG#name-sdk-for-ios-2.7.0-lts---2023-04-12-562)
+-   [\[SDK for iOS 2.6.0 LTS\] - \[2023-02-27\]](/doc/sdk/ios/lts/guides/CHANGELOG#name-sdk-for-ios-2.6.0-lts---2023-02-27-575)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

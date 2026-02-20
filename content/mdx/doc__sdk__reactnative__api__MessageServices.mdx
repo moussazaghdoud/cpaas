@@ -1,0 +1,159 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/MessageServices"
+lastSynced: "2026-02-20T07:12:33.497Z"
+---
+# Documentation
+
+Message Service
+
+### Message Services
+
+---
+
+### Preamble
+
+---
+
+The message services module `messagesService` has all the methods supported by this library.
+
+### Get All Messages
+
+---
+
+To get all the messages that belong to a certain conversation you can call `messagesService.getMessages(conversationJid: string)`, and this method will trigger the `EventType.MessagesUpdated` event.
+
+```ts
+import { messagesService } from 'react-native-rainbow-module'
+...
+const getAllMessages = (conversationJid: string) => {
+messagesService.getMessages(conversationJid);
+}
+// listen to the messages list from the event
+eventEmitter.addListener(
+      EventType.MessagesUpdated,
+      (eventData: IMessage[]) => { 
+        // handle the new updated messages
+      }
+    );
+```
+
+### Load More Messages
+
+---
+
+To load more messages when scrolling up in the current conversation, you can use `messagesService.loadMore`, and this method will trigger the `EventType.MessagesUpdated` event.
+
+```ts
+import { messagesService } from 'react-native-rainbow-module'
+...
+const loadMoreMessages = () => {
+messagesService.loadMore();
+}
+...
+```
+
+### Send Message
+
+---
+
+To send a message whether a text message or a file, you can call `messagesService.sendMessage(message: IMessage, urgency: string, attachedFileUri: string[])`, where [urgency](/docs/sdk/reactnative/api/IMessage) is the message priority and `attachedFileUri` are the selected files to send and this method will trigger the `EventType.MessagesUpdated` event.
+
+```ts
+import { messagesService } from 'react-native-rainbow-module'
+...
+const sendMyMessage = (IMessage, urgency: string, attachedFileUri: string[]) => {
+messagesService.sendMessage(message, urgency, attachedFileUri);
+}
+```
+
+### Send Message With Additional Content And Urgency
+
+---
+
+To send a message with additional content, you can call `messagesService.sendMessageWithAdditionalContentAndUrgency(conversationJid: string,text: string, additionalCont?: string,additionalContType?: string, urgency?: IUrgencyType)`, where [urgency](/docs/sdk/reactnative/api/IMessage) is the message priority and `attachedFileUri` are the selected files to send and this method will trigger the `EventType.MessagesUpdated` event.
+
+```ts
+import { messagesService } from 'react-native-rainbow-module'
+...
+
+messagesService.sendMessage(conversationJid, text, additionalCont, additionalContType, urgency );
+```
+
+### Delete Message
+
+---
+
+To delete a sent message, you can call `messagesService.deleteMessage(msgID: string)`, and this method will trigger the `EventType.MessagesUpdated` event.
+
+```ts
+import { messagesService } from 'react-native-rainbow-module'
+...
+const deleteMyMessage = (msgID: string) => {
+messagesService.deleteMessage(msgID);
+}
+```
+
+### Reply Message
+
+---
+
+To reply to a message, you can call `messagesService.replyMessage(message: IMessage)`, and this method will trigger the `EventType.MessagesUpdated` event, where the `replyMessage` should be set with the `associatedMsgId` for the selected replied message as the following.
+
+```ts
+import { messagesService } from 'react-native-rainbow-module'
+...
+const replyMessage = (messageToSend: IMessage, repliedMsgId: string) => {
+  messageToSend.associatedMsgId = repliedMsgId;
+  messagesService.replyMessage(messageToSend);
+}
+```
+
+### Forward Message
+
+---
+
+To forward a message from a conversation to other conversations, you can call `messagesService.forwardMessage(conversationsIds: string[], forwardedMsgId: string,text?: string)`, and this method will trigger the `EventType.MessagesUpdated` event. Where the `conversationsIds` is the conversation Id's list that you wanna forward to them, `forwardedMsgId` is the selected message you wanna forwarded, `text` is an optional test incase you wanna added.
+
+```ts
+import { messagesService } from 'react-native-rainbow-module'
+...
+const forwardMessage = ( conversationsIds: string[], forwardedMsgId: string, text?: string,) => {
+messagesService.forwardMessage( conversationsIds, forwardedMsgId, text);
+}
+```
+
+### Get Messages Marked as Read in Active Conversation
+
+---
+
+To mark incoming messages as read in an active conversation, you can use `messagesService.messagesMarkedASReadInActiveConversation(conversationJid: string)`, and this method will trigger the `EventType.MessagesUpdated` event.
+
+```ts
+import { messagesService } from 'react-native-rainbow-module'
+...
+const markMessagesAsRead = (conversationJid: string) => {
+messagesService.messagesMarkedASReadInActiveConversation(conversationJid);
+}
+```
+
+### On this page
+
+-   [Message Services](/docs/sdk/reactnative/api/MessageServices#name-message-services-0)
+-   [Preamble](/docs/sdk/reactnative/api/MessageServices#name-preamble-4)
+-   [Get All Messages](/docs/sdk/reactnative/api/MessageServices#name-get-all-messages-11)
+-   [Load More Messages](/docs/sdk/reactnative/api/MessageServices#name-load-more-messages-19)
+-   [Send Message](/docs/sdk/reactnative/api/MessageServices#name-send-message-27)
+-   [Send Message With Additional Content And Urgency](/docs/sdk/reactnative/api/MessageServices#name-send-message-with-additional-content-and-urgency-35)
+-   [Delete Message](/docs/sdk/reactnative/api/MessageServices#name-delete-message-43)
+-   [Reply Message](/docs/sdk/reactnative/api/MessageServices#name-reply-message-51)
+-   [Forward Message](/docs/sdk/reactnative/api/MessageServices#name-forward-message-59)
+-   [Get Messages Marked as Read in Active Conversation](/docs/sdk/reactnative/api/MessageServices#name-get-messages-marked-as-read-in-active-conversation-67)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

@@ -1,0 +1,437 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/favorites"
+lastSynced: "2026-02-20T07:12:32.171Z"
+---
+# Documentation
+
+Favorites Service
+
+LTS release 2.XPublished on 2025-01-01
+
+## FavoritesService
+
+This module is the basic module for handling Favorites in Rainbow. In Rainbow, Favorites are the way to list a most frequent, most used or the most important conversations, bubbles and bots.  
+The main methods and events proposed in that service allow to:  
+\- Create or delete a Rainbow Favorite (one-to-one, bubble or bot),  
+\- Retrieve all information linked to that Favorite,  
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [FavoritesService](#module_FavoritesService)
+    -   *Favorites GET*
+        -   [getFavorite(peerId)](#module_FavoritesService+getFavorite) ⇒ `Promise.<Favorite>`
+        -   [fetchAllFavorites(peerId)](#module_FavoritesService+fetchAllFavorites) ⇒ `Array.<Favorite>`
+        -   [checkIsPeerSettedAsFavorite(peerId)](#module_FavoritesService+checkIsPeerSettedAsFavorite) ⇒ `Array.<Favorite>`
+        -   [getFavoriteById(favoriteId)](#module_FavoritesService+getFavoriteById) ⇒ `Array.<Favorite>`
+        -   [getAllUserFavoriteList(peerId)](#module_FavoritesService+getAllUserFavoriteList) ⇒ `Array.<Favorite>`
+        -   [moveFavoriteToPosition(favoriteId, position)](#module_FavoritesService+moveFavoriteToPosition) ⇒ `Array.<Favorite>`
+    -   *Favorites MANAGEMENT*
+        -   [createFavorite()(id, type)](#module_FavoritesService+createFavorite_new) ⇒ `Promise.<Favorite>`
+        -   [deleteFavorite()(id)](#module_FavoritesService+deleteFavorite_new) ⇒ `Array.<Favorite>`
+
+---
+
+### favoritesService.getFavorite(peerId) ⇒ `Promise.<Favorite>`
+
+get favorite from cache by Id.
+
+**Kind**: instance method of [`FavoritesService`](#module_FavoritesService)
+
+**Returns**: `Promise.<Favorite>` - The favorite corresponding to the peerId
+
+**Category**: Favorites GET
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+peerId
+
+`string`
+
+The id of the favorite.
+
+---
+
+### favoritesService.fetchAllFavorites(peerId) ⇒ `Array.<Favorite>`
+
+Fetch all the Favorites from the server in a form of an Array  
+
+**Kind**: instance method of [`FavoritesService`](#module_FavoritesService)
+
+**Returns**: `Array.<Favorite>` - An array of Favorite objects
+
+**Category**: Favorites GET
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.56
+
+Param
+
+Type
+
+Description
+
+peerId
+
+`string`
+
+Allows to retrieve only the requested peerId(s) from user's favorites
+
+---
+
+### favoritesService.checkIsPeerSettedAsFavorite(peerId) ⇒ `Array.<Favorite>`
+
+This API can be used to check if a given peerId is in user's favorites.  
+
+**Kind**: instance method of [`FavoritesService`](#module_FavoritesService)
+
+**Returns**: `Array.<Favorite>` - The result
+
+Champ
+
+Type
+
+Description
+
+isFavorite
+
+Boolean
+
+true if the requested peerId is in user's favorites, false otherwise.
+
+**Category**: Favorites GET
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.21.0
+
+Param
+
+Type
+
+Description
+
+peerId
+
+`string`
+
+peerId unique identifier
+
+---
+
+### favoritesService.getFavoriteById(favoriteId) ⇒ `Array.<Favorite>`
+
+This API can be used to retrieve a specific user's favorite by Id.  
+
+**Kind**: instance method of [`FavoritesService`](#module_FavoritesService)
+
+**Returns**: `Array.<Favorite>` - The result
+
+Champ
+
+Type
+
+Description
+
+id
+
+String
+
+Id of the favorite.
+
+peerId
+
+String
+
+userId, roomId, botId, directoryId or office365Id of the favorite.
+
+position
+
+Integer
+
+position of the favorite in favorite list (first position is 0).
+
+type
+
+string
+
+Type of the favorite peer:  
+  
+\* `user` for User to User favorite type,  
+\* `room` for User to Room favorite type.  
+\* `bot` for User to Bot service favorite type.  
+\* `directory` for User to Directory service favorite type.  
+\* `office365` for User to Office365 service favorite type.  
+  
+Possibles values : `"user"`, `"room"`, `"bot"`, `"directory"`, `"office365"`
+
+**Category**: Favorites GET
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.21.0
+
+Param
+
+Type
+
+Description
+
+favoriteId
+
+`string`
+
+Favorite unique identifier
+
+---
+
+### favoritesService.getAllUserFavoriteList(peerId) ⇒ `Array.<Favorite>`
+
+This API can be used to retrieve the list of user's favorites.  
+
+**Kind**: instance method of [`FavoritesService`](#module_FavoritesService)
+
+**Returns**: `Array.<Favorite>` - The result
+
+Array of Favorites.
+
+Champ
+
+Type
+
+Description
+
+id
+
+String
+
+Id of the favorite.
+
+peerId
+
+String
+
+userId, roomId, botId, directoryId or office365Id of the favorite.
+
+position
+
+Integer
+
+position of the favorite in favorite list (first position is 0).
+
+type
+
+string
+
+Type of the favorite peer:  
+  
+\* `user` for User to User favorite type,  
+\* `room` for User to Room favorite type.  
+\* `bot` for User to Bot service favorite type.  
+\* `directory` for User to Directory service favorite type.  
+\* `office365` for User to Office365 service favorite type.  
+  
+Possibles values : `"user"`, `"room"`, `"bot"`, `"directory"`, `"office365"`
+
+**Category**: Favorites GET
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.21.0
+
+Param
+
+Type
+
+Description
+
+peerId
+
+`string`
+
+Allows to retrieve only the requested peerId(s) from user's favorites.
+
+---
+
+### favoritesService.moveFavoriteToPosition(favoriteId, position) ⇒ `Array.<Favorite>`
+
+This API can be used to update a favorite's position in favorite list.  
+
+**Kind**: instance method of [`FavoritesService`](#module_FavoritesService)
+
+**Returns**: `Array.<Favorite>` - The result
+
+Champ
+
+Type
+
+Description
+
+id
+
+String
+
+Id of the favorite.
+
+peerId
+
+String
+
+userId, roomId, botId, directoryId or office365Id of the favorite.
+
+position
+
+Integer
+
+position of the favorite in favorite list (first position is 0).
+
+type
+
+string
+
+Type of the favorite peer:  
+  
+\* `user` for User to User favorite type,  
+\* `room` for User to Room favorite type.  
+\* `bot` for User to Bot service favorite type.  
+\* `directory` for User to Directory service favorite type.  
+\* `office365` for User to Office365 service favorite type.  
+  
+Possibles values : `"user"`, `"room"`, `"bot"`, `"directory"`, `"office365"`
+
+**Category**: Favorites GET
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.21.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+favoriteId
+
+`string`
+
+Favorite unique identifier
+
+position
+
+`number`
+
+`1`
+
+new position in list. If position exceed favorites list size the favorite is moved to the end of the list
+
+---
+
+### favoritesService.createFavorite()(id, type) ⇒ `Promise.<Favorite>`
+
+Add conversation/bubble/bot to Favorites Array  
+
+**Kind**: instance method of [`FavoritesService`](#module_FavoritesService)
+
+**Returns**: `Promise.<Favorite>` - A Favorite object
+
+**Category**: Favorites MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.56
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+of the conversation/bubble
+
+type
+
+`string`
+
+of Favorite (can be 'user' or 'bubble')
+
+---
+
+### favoritesService.deleteFavorite()(id) ⇒ `Array.<Favorite>`
+
+Delete conversation/bubble/bot from Favorites Array  
+
+**Kind**: instance method of [`FavoritesService`](#module_FavoritesService)
+
+**Returns**: `Array.<Favorite>` - A Favorite object
+
+**Category**: Favorites MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 1.56
+
+Param
+
+Type
+
+Description
+
+id
+
+`string`
+
+of the Favorite item
+
+---
+
+### On this page
+
+-   [FavoritesService](/docs/sdk/node#name-favoritesservice-3)
+-   [favoritesService.getFavorite(peerId) ⇒ Promise.<Favorite>](/docs/sdk/node#name-favoritesservice.getfavoritepeerid--promise.favorite-82)
+-   [favoritesService.fetchAllFavorites(peerId) ⇒ Array.<Favorite>](/docs/sdk/node#name-favoritesservice.fetchallfavoritespeerid--array.favorite-135)
+-   [favoritesService.checkIsPeerSettedAsFavorite(peerId) ⇒ Array.<Favorite>](/docs/sdk/node#name-favoritesservice.checkispeersettedasfavoritepeerid--array.favorite-191)
+-   [favoritesService.getFavoriteById(favoriteId) ⇒ Array.<Favorite>](/docs/sdk/node#name-favoritesservice.getfavoritebyidfavoriteid--array.favorite-275)
+-   [favoritesService.getAllUserFavoriteList(peerId) ⇒ Array.<Favorite>](/docs/sdk/node#name-favoritesservice.getalluserfavoritelistpeerid--array.favorite-392)
+-   [favoritesService.moveFavoriteToPosition(favoriteId, position) ⇒ Array.<Favorite>](/docs/sdk/node#name-favoritesservice.movefavoritetopositionfavoriteid-position--array.favorite-512)
+-   [favoritesService.createFavorite()(id, type) ⇒ Promise.<Favorite>](/docs/sdk/node#name-favoritesservice.createfavoriteid-type--promise.favorite-649)
+-   [favoritesService.deleteFavorite()(id) ⇒ Array.<Favorite>](/docs/sdk/node#name-favoritesservice.deletefavoriteid--array.favorite-716)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

@@ -1,0 +1,256 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/objects/ArrayItemList"
+lastSynced: "2026-02-20T07:12:28.815Z"
+---
+# Documentation
+
+Object ArrayItemList
+
+LTS release 2.61.0Published on 202-04-06
+
+## object ArrayItemList
+
+### class ArrayItemList : Cloneable
+
+An abstract implementation of an item list.
+
+### val count: Int get (
+
+Get the number of items of the list.
+
+-   **Returns:** the number of items
+
+### fun registerChangeListener (IItemListChangeListener)
+
+Register the changes of the list.
+
+The list can be triggered as changed each time an element changes (added, removed, updated).
+
+Param
+
+Type
+
+Description
+
+changeListener
+
+IItemListChangeListener
+
+Single callback (dataChanged)
+
+### fun unregisterChangeListener (IItemListChangeListener)
+
+Unregister the changes of the list.
+
+The list can be triggered as changed each time an element changes (added, removed, updated).
+
+Param
+
+Type
+
+Description
+
+changeListener
+
+IItemListChangeListener
+
+Single callback (dataChanged)
+
+### fun fireDataChanged()
+
+Fire a data change event.
+
+### fun clear()
+
+Clear the items list.
+
+### fun add (
+
+Add an item to the list.
+
+Param
+
+Type
+
+Description
+
+item
+
+T
+
+The item to add
+
+### fun add (Int,
+
+Add an item to the list at a specific location.
+
+Param
+
+Type
+
+Description
+
+location
+
+int
+
+The index of the item
+
+item
+
+T
+
+The item to add
+
+### fun addWithoutNotification (
+
+Add an item to the list without notification (fireDataChanged() is not called).
+
+Param
+
+Type
+
+Description
+
+item
+
+T
+
+The item to add
+
+### fun addWithoutNotification (Int,
+
+Add an item to the list at a specific location without notification (fireDataChanged() is not called).
+
+Param
+
+Type
+
+Description
+
+location
+
+int
+
+The index of the item
+
+item
+
+T
+
+The item to add
+
+### fun uniqueAdd (
+
+Add an item only if it is not already in the list.
+
+Param
+
+Type
+
+Description
+
+item
+
+T
+
+The item to add
+
+### fun delete (T)
+
+Delete the specified item.
+
+Param
+
+Type
+
+Description
+
+item
+
+T
+
+The item to delete
+
+### @Synchronized fun deleteWithoutNotification (T)
+
+Delete the specified item without notification.
+
+Param
+
+Type
+
+Description
+
+item
+
+T
+
+The item to delete
+
+### fun replaceAllWithoutNotification (
+
+Replace all items without notification.
+
+Param
+
+Type
+
+Description
+
+items
+
+List
+
+The list of items to replace
+
+### val copyOfDataList: MutableList get (items)
+
+Get a copy of this list
+
+-   **Returns:** a copy of this list as a List instead of ArrayItemList
+
+### fun delete (
+
+Delete a list of items.
+
+Param
+
+Type
+
+Description
+
+items
+
+List
+
+The list of items to delete
+
+### On this page
+
+-   [object ArrayItemList](/docs/sdk/android#name-object-arrayitemlist-0)
+-   [class ArrayItemList : Cloneable](/docs/sdk/android#name-class-arrayitemlist-:-cloneable-3)
+-   [val count: Int get (](/docs/sdk/android#name-val-count:-int-get--9)
+-   [fun registerChangeListener (IItemListChangeListener)](/docs/sdk/android#name-fun-registerchangelistener-iitemlistchangelistener-22)
+-   [fun unregisterChangeListener (IItemListChangeListener)](/docs/sdk/android#name-fun-unregisterchangelistener-iitemlistchangelistener-59)
+-   [fun fireDataChanged()](/docs/sdk/android#name-fun-firedatachanged-96)
+-   [fun clear()](/docs/sdk/android#name-fun-clear-102)
+-   [fun add (](/docs/sdk/android#name-fun-add--108)
+-   [fun add (Int,](/docs/sdk/android#name-fun-add-int-142)
+-   [fun addWithoutNotification (](/docs/sdk/android#name-fun-addwithoutnotification--187)
+-   [fun addWithoutNotification (Int,](/docs/sdk/android#name-fun-addwithoutnotification-int-221)
+-   [fun uniqueAdd (](/docs/sdk/android#name-fun-uniqueadd--266)
+-   [fun delete (T)](/docs/sdk/android#name-fun-delete-t-300)
+-   [@Synchronized fun deleteWithoutNotification (T)](/docs/sdk/android#name-synchronized-fun-deletewithoutnotification-t-334)
+-   [fun replaceAllWithoutNotification (](/docs/sdk/android#name-fun-replaceallwithoutnotification--368)
+-   [val copyOfDataList: MutableList get (items)](/docs/sdk/android#name-val-copyofdatalist:-mutablelist-get-items-407)
+-   [fun delete (](/docs/sdk/android#name-fun-delete--420)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

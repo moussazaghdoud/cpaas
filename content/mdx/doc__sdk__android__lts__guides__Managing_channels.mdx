@@ -1,0 +1,663 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Managing_channels"
+lastSynced: "2026-02-20T07:12:28.712Z"
+---
+# Documentation
+
+Managing channels
+
+LTS release 2.47.0Published on 2024-04-20
+
+## Managing Channels
+
+---
+
+### Preamble
+
+---
+
+The Rainbow SDK for Android allows you to create and administrate channels. Channels offer the possibility to share information to a large numbers of users.
+
+The policy and behavior of a channel is defined by its **`mode`**. More details in the **Creating channels** section.
+
+In a channel, an user has a **`role`** that defines his rights. More details in the **Adding and removing users** section.
+
+### Retrieving the list of existing channels
+
+---
+
+Once connected to Rainbow, the SDK for Android will automatically retrieve the user's channels (owned and subscribed channels).
+
+To access the channels list, you have to call `getAllUserChannels()` and register a change listener to it:
+
+```java
+RainbowSdk.instance().channels().registerChangeListener(() -> {
+    // do something with the result of this list
+    RainbowSdk.instance().channels().getAllUserChannels();
+});
+```
+
+> Others methods like `getAllOwnedChannels()` and `getAllSubscribedChannels()` are available to only get channels you own or channels where you have subscribed.
+
+Each time you create, subscribe, unsubscribe or delete a channel, this list will be updated.
+
+'All user channels' represents only the user's channels. If you want to explore public channels, you have to use `fetchChannelsByName()` or `fetchChannelsByDescription()`, see **searching for a public channel** section.
+
+### Retrieve a channel by its id
+
+---
+
+If you know the `id` of an existing channel, you can access to the channel by calling the `getChannelById()` method: (Note : this method only search in local list)
+
+```java
+RainbowSdk.instance().channels().getChannelById(channelId);
+```
+
+### Creating channels
+
+---
+
+You can create two sort of channels: **Public** and **Closed**.
+
+Channel mode
+
+Description
+
+**Public**
+
+All users of the company can search, consult, subscribe and unsubscribe this channel.
+
+**Closed**
+
+Only an Owner can add users to the channel. Invitation is forced and users can't unsubscribe.
+
+> Created channels are affiliated to your company and can't be seen by an other company.
+
+#### Create public channel
+
+---
+
+Public channels can be created with the `createPublicChannel()` method.
+
+```java
+String name = "My public channel";
+String description = "My description";
+String category = "Information";
+
+RainbowSdk.instance().channels().createPublicChannel(name, description, category, new RainbowListener<Channel, Unit>() {
+    @Override
+    public void onSuccess(Channel data) {
+        // Do something
+    }
+
+    @Override
+    public void onError(@NonNull RainbowError<Unit> error) {
+        // Do something with the exception
+    }
+});
+```
+
+Five types of mode is possible for a channel:
+
+Channel mode
+
+Description
+
+**company\_public**
+
+Only users in the company can search, consult, subscribe and unsubscribe this channel.
+
+**company\_private**
+
+Only on invitation. Only company users can be invited. Users who have accepted the invitation can receive incoming messages
+
+**company\_closed**
+
+Only on invitation, but the users doesn't have choice to accept/decline (forced invitation). Users can't unsubscribe.
+
+**all\_public**
+
+Both company and rainbow users can search, consult, subscribe and unsubscribe this channel.
+
+**all\_private**
+
+Only on invitation. Both company and rainbow users can be invited. Users who have accepted the invitation can receive incoming messages
+
+### Managing users in private channels
+
+---
+
+In private channels, the users can't subscribe on their own, the owner has to add them with a role.
+
+User role
+
+Description
+
+**Owner**
+
+Can modify information of the channel, invite other users (including new owners/publishers), publish messages and receive incoming messages
+
+**Publisher**
+
+Can publish messages in the channel and receive incoming messages
+
+**Member**
+
+Can only receive incoming messages
+
+**None**
+
+An user who have left the channel (by his own or removed by a owner)
+
+### Managing users in channels
+
+---
+
+User role
+
+Description
+
+**Owner**
+
+Can modify information of the channel, invite other users (including new owners/publishers), publish messages and receive incoming messages
+
+**Publisher**
+
+Can publish messages in the channel and receive incoming messages
+
+**Member**
+
+Can only receive incoming messages
+
+**None**
+
+An user who have left the channel (by his own or removed by a owner)
+
+#### Adding new members to a channel
+
+---
+
+New users with **members** role can be added using the `addUsersToChannel(channel, ChannelUserAffiliationType.MEMBER)` method:
+
+```java
+Channel myChannel = ... // A channel
+List<IRainbowContact> users = ...; // List of users
+
+RainbowSdk.instance().channels().addUsersToChannel(myChannel, users, new RainbowListener<Pair<List<ChannelUser>, List<String>>, Unit> {
+    @Override
+    public void onSuccess(Pair<List<ChannelUser>, List<String>> data) {
+        // Do something with the updated channel
+    }
+
+    @Override
+    public void onError(RainbowError<Unit> error) {
+        // Do something with the exception
+    }
+});
+```
+
+#### Adding new publishers to a channel
+
+---
+
+New users with **publisher** role can be added using the `addUsersToChannel(channel, ChannelUserAffiliationType.PUBLISHER)` method:
+
+```java
+Channel myChannel = ... // A channel
+List<IRainbowContact> users = ...; // List of users
+
+RainbowSdk.instance().channels().addUsersToChannel(myChannel, users, new RainbowListener<Pair<List<ChannelUser>, List<String>>, Unit> {
+    @Override
+    public void onSuccess(Pair<List<ChannelUser>, List<String>> data) {
+        // Do something with the updated channel
+    }
+
+    @Override
+    public void onError(RainbowError<Unit> error) {
+        // Do something with the exception
+    }
+});
+```
+
+#### Adding new owners to a channel
+
+---
+
+New users with **owner** role can be added using the `addUsersToChannel(channel, ChannelUserAffiliationType.OWNER)` method:
+
+```java
+Channel myChannel = ... // A channel
+List<IRainbowContact> users = ...; // List of users
+
+
+RainbowSdk.instance().channels().addUsersToChannel(myChannel, users, new RainbowListener<Pair<List<ChannelUser>, List<String>>, Unit> {
+    @Override
+    public void onSuccess(Pair<List<ChannelUser>, List<String>> data) {
+        // Do something with the updated channel
+    }
+
+    @Override
+    public void onError(RainbowError<Unit> error) {
+        // Do something with the exception
+    }
+});
+```
+
+#### Updating users in a channel
+
+---
+
+Calling `updateUsersToChannel(Channel, ChannelUserAffiliationType, List<IRainbowContact>)` method on existing users will updates user role.
+
+#### Removing users from a channel
+
+---
+
+Users can be removed from a channel by calling the `deleteUsersFromChannel()` method:
+
+```java
+Channel myChannel = ... // A channel
+List<IRainbowContact> users = ...; // List of users
+
+RainbowSdk.instance().channels().deleteUsersFromChannel(myChannel, users, new RainbowListener<Pair<List<ChannelUser>, List<String>>, Unit>() {
+    @Override
+    public void onSuccess(Pair<List<ChannelUser>, List<String>> data) {
+        // Do something with the updated channel
+    }
+
+    @Override
+    public void onError(RainbowError<Unit> error) {
+        // Do something with the exception
+    }
+});
+```
+
+To remove all users of a channel, you can use the `deleteAllUsersFromChannel()` method:
+
+```java
+Channel myChannel = ... // A channel
+
+RainbowSdk.instance().channels().deleteAllUsersFromChannel(myChannel, new RainbowListener<Unit, Unit>() {
+    @Override
+    public void onSuccess(Unit data) {
+        // Do something with the updated channel
+    }
+
+    @Override
+    public void onError(RainbowError<Unit> error) {
+        // Do something with the exception
+    }
+});
+```
+
+#### Getting the number of users
+
+---
+
+To get the number of users in a channel, you can use `getUsersCount()` method directly on the `channel` object:
+
+```java
+Channel channel = ... // Your channel
+int nbUsers = channel.getUsersCount();
+```
+
+#### Retrieving users of a channel
+
+---
+
+To get the users of a channel, you can use the `fetchUsers()` method with the `channel` object.
+
+This method retrieves users by page which allows to load users in several steps. For example, if your channel has 950 users, you can call the method a first time to retrieve the first 100 users (default value if you don't provide one).
+
+Once the user needs to see the next users, call another time and this will load the next users. And so on.
+
+```java
+Channel channel = ... // Your channel
+
+RainbowSdk.instance().channels().fetchUsers(channel, limit, offset, new RainbowListener<List<ChannelUser>, Unit>() {
+    @Override
+    public void onSuccess(List<ChannelUser> data) {
+        // `users` is the list of retrieved users
+        // Your channel object is updated with the list of users
+        // Access by channel.getUsers()
+    }
+
+    @Override
+    public void onError(RainbowError<Unit> error) {
+        // Do something with the exception
+    }
+});
+```
+
+#### Search for channel affiliations
+
+---
+
+Allows to search users matching given names. The search is done on users `firstName` and `lastName` and provides channel affiliation information.
+
+> Search is done for all users of your company, not only the ones in the channel.
+
+```java
+Channel channel = ...; // A channel
+String nameToSearch = "Severina";
+
+RainbowSdk.instance().channels().fetchUsersByName(channel, nameToSearch, limit, offset, new RainbowListener<List<ChannelUser>, Unit>r() {
+    @Override
+    public void onSuccess(List<ChannelUser> data) {
+        // Do something with the users list
+    }
+
+    @Override
+    public void onError(RainbowError<Unit> error) {
+        // Do something with the exception
+    }
+});
+```
+
+> The returned ChannelUser object has only `affiliation` and `subscribed` fields when the user is in the channel.
+
+### Sending a message to a channel
+
+---
+
+Message can be sent to a channel using `createItem()` method and must be used with the `ChannelItemBuilder` class. The `ChannChannelItemBuilderelItemBuilder` class uses the builder pattern.
+
+```java
+Channel channel = ...; // A channel
+List<RainbowFileDescriptor> imageList = ...; // images
+
+ChannelItemBuilder itemBuilder = new ChannelItemBuilder()
+    .setMessage("Pictures of the new product")
+    .setImageList(imageList)
+    .setUrl(websiteUrl);
+
+IChannelItem newItem = itemBuilder.build();
+
+RainbowSdk.instance().channels().createItem(channel, newItem, new  RainbowListener<String, Unit>() {
+    @Override
+    public void onSuccess(String data) {
+        // Notify the publish success
+    }
+
+    @Override
+    public void onError(RainbowError<Unit> error) {
+        // Do something with the exception
+    }
+});
+```
+
+### Updating a message to a channel
+
+Message can be updated using `updateItem()` method and must be used with the `ChannelItemBuilder` class. The `ChannelItemBuilder` class uses the builder pattern.
+
+```java
+Channel channel = ...; // A channel
+String channelItemId = oldItem.getId();
+String updatedMessage = ...; // Message to use for update
+
+ChannelItemBuilder itemBuilder = new ChannelItemBuilder()
+    .setMessage(updatedMessage);
+
+IChannelItem updatedItem = itemBuilder.build();
+
+RainbowSdk.instance().channels().updateItem(channel, channelItemId, updatedItem, new  RainbowListener<String, Unit>() {
+    @Override
+    public void onSuccess(String data) {
+        // Notify the update success
+    }
+
+    @Override
+    public void onError(RainbowError<Unit> error) {
+        // Do something with the exception
+    }
+});
+```
+
+### Listening to message from a channel
+
+---
+
+#### Listening to new message, update or delete of a channel
+
+---
+
+In order to catch messages from channel, you have to use the interface `Channel.IChannelListener`.
+
+```java
+Channel channel = ...; // A channel
+
+channel.registerListener(new Channel.IChannelListener() {
+    @Override
+    public void onUpdate() {
+  ArrayItemList<ChannelItem> itemList = channel.getChannelItems();
+  ...
+    }
+});
+```
+
+#### Listening to new message of all user subscribed channels
+
+---
+
+In order to catch messages from all channels user is subscribed to, you have to use the interface `IItemListChangeListener`.
+
+```java
+RainbowSdk.instance().channels().registerChangeListener(() -> {
+    // do something with the result of this list
+    RainbowSdk.instance().channels().getAllUserChannels();
+});
+```
+
+### Searching for a public channel
+
+---
+
+Public channels can be found by using the `fetchChannelsByName("myChannel")` or `fetchChannelsByDescription("description name")` methods.
+
+The response in the `RainbowListener()` is a list of channels with only 4 properties: id, name, description and creatorId.
+
+#### Searching by name
+
+---
+
+```java
+String channelName = "my channel name";
+
+RainbowSdk.instance().channels().fetchChannelsByName(channelName, new RainbowListener<List<Channel>, Unit>() {
+    @Override
+    public void onSuccess(List<Channel> data) {
+        // Do something with the found channels
+    }
+
+    @Override
+    public void onError(RainbowError<Unit> exception) {
+        // Do something with the exception
+    }
+});
+```
+
+#### Searching by description
+
+---
+
+```java
+String channelDescription = "description name";
+
+RainbowSdk.instance().channels().fetchChannelsByDescription(channelDescription,  new RainbowListener<List<Channel>, Unit>() {
+    @Override
+    public void onSuccess(List<Channel> data) {
+        // Do something with the found channels
+    }
+
+    @Override
+    public void onError(RainbowError<Unit> exception) {
+        // Do something with the exception
+    }
+});
+```
+
+> Only **owner** users from the same company can found these channels.
+
+### Subscribing to a public channel
+
+---
+
+You can subscribe to a public channel by calling the `subscribeToChannel()` method:
+
+```java
+Channel channel = ...; // A channel
+RainbowSdk.instance().channels().subscribeToChannel(channel, new RainbowListener<Channel, Unit>() {
+    @Override
+    public void onSuccess(Channel data) {
+        // Do something once subscribed to the channel
+    }
+
+    @Override
+    public void onError(RainbowError<Unit> error) {
+        // Do something with the exception
+    }
+});
+```
+
+Once subscribed, you will be able to receive notification of new messages posted on that channel by listening to the `Channel.IChannelListener` event.
+
+### Unsubscribing from a public channel
+
+---
+
+You can unsubscribe from a public channel by calling the `unsubscribeToChannel()` method:
+
+```java
+Channel channel = ...; // The channel
+
+RainbowSdk.instance().channels().unsubscribeToChannel(channel, new RainbowListener<Channel, Unit>() {
+    @Override
+    public void onSuccess(Channel data) {
+        // Do something once subscribed to the channel
+    }
+
+    @Override
+    public void onError(RainbowError<Unit> error) {
+        // Do something with the exception
+    }
+});
+```
+
+### Deleting a channel
+
+---
+
+You can delete a channel by calling the `deleteChannel()` method:
+
+```java
+Channel channel = ... // A channel
+
+RainbowSdk.instance().channels().deleteChannel(channel, new RainbowListener<Unit, Unit>() {
+    @Override
+    public void onSuccess(Unit data) {
+        // Do something once channel deleted
+    }
+
+    @Override
+    public void onError(RainbowError error) {
+        // Do something with the exception
+    }
+});
+```
+
+### Mute or unmute a channel
+
+---
+
+You can mute or unmute a channel in order to activate or deactivate PUSH notifications for new messages added to this channel by calling the `muteChannel()` or `unMuteChannel()` method:
+
+```java
+Channel channel = ... // A channel
+
+RainbowSdk.instance().channels().muteChannel(channel, new RainbowListener<Unit, Unit>() {
+    @Override
+    public void onSuccess(Unit data) {
+        // Do something once channel muted
+    }
+
+    @Override
+    public void onError(RainbowError<Unit> error) {
+        // Do something with the exception
+    }
+});
+
+RainbowSdk.instance().channels().unMuteChannel(channel,  new RainbowListener<Unit, Unit>() {
+    @Override
+    public void onSuccess(Unit data) {
+        // Do something once channel muted
+    }
+
+    @Override
+    public void onError(RainbowError<Unit> error) {
+        // Do something with the exception
+    }
+});
+```
+
+### Limitations
+
+---
+
+Here is a list of limitations regarding Channels:
+
+Limit
+
+Value
+
+Description
+
+**Max items saved when offline**
+
+100
+
+If you were not connected during a long time, you will be able to get only the 100 latest messages from a channel. Older messages will never been received.
+
+---
+
+*Last updated June, 7th 2022*
+
+### On this page
+
+-   [Managing Channels](/docs/sdk/android#name-managing-channels-0)
+-   [Preamble](/docs/sdk/android#name-preamble-4)
+-   [Retrieving the list of existing channels](/docs/sdk/android#name-retrieving-the-list-of-existing-channels-17)
+-   [Retrieve a channel by its id](/docs/sdk/android#name-retrieve-a-channel-by-its-id-39)
+-   [Creating channels](/docs/sdk/android#name-creating-channels-47)
+-   [Create public channel](/docs/sdk/android#name-create-public-channel-89)
+-   [Managing users in private channels](/docs/sdk/android#name-managing-users-in-private-channels-154)
+-   [Managing users in channels](/docs/sdk/android#name-managing-users-in-channels-207)
+-   [Adding new members to a channel](/docs/sdk/android#name-adding-new-members-to-a-channel-257)
+-   [Adding new publishers to a channel](/docs/sdk/android#name-adding-new-publishers-to-a-channel-265)
+-   [Adding new owners to a channel](/docs/sdk/android#name-adding-new-owners-to-a-channel-273)
+-   [Updating users in a channel](/docs/sdk/android#name-updating-users-in-a-channel-281)
+-   [Removing users from a channel](/docs/sdk/android#name-removing-users-from-a-channel-288)
+-   [Getting the number of users](/docs/sdk/android#name-getting-the-number-of-users-300)
+-   [Retrieving users of a channel](/docs/sdk/android#name-retrieving-users-of-a-channel-308)
+-   [Search for channel affiliations](/docs/sdk/android#name-search-for-channel-affiliations-322)
+-   [Sending a message to a channel](/docs/sdk/android#name-sending-a-message-to-a-channel-340)
+-   [Updating a message to a channel](/docs/sdk/android#name-updating-a-message-to-a-channel-348)
+-   [Listening to message from a channel](/docs/sdk/android#name-listening-to-message-from-a-channel-355)
+-   [Listening to new message, update or delete of a channel](/docs/sdk/android#name-listening-to-new-message-update-or-delete-of-a-channel-359)
+-   [Listening to new message of all user subscribed channels](/docs/sdk/android#name-listening-to-new-message-of-all-user-subscribed-channels-367)
+-   [Searching for a public channel](/docs/sdk/android#name-searching-for-a-public-channel-375)
+-   [Searching by name](/docs/sdk/android#name-searching-by-name-385)
+-   [Searching by description](/docs/sdk/android#name-searching-by-description-390)
+-   [Subscribing to a public channel](/docs/sdk/android#name-subscribing-to-a-public-channel-400)
+-   [Unsubscribing from a public channel](/docs/sdk/android#name-unsubscribing-from-a-public-channel-411)
+-   [Deleting a channel](/docs/sdk/android#name-deleting-a-channel-419)
+-   [Mute or unmute a channel](/docs/sdk/android#name-mute-or-unmute-a-channel-427)
+-   [Limitations](/docs/sdk/android#name-limitations-435)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

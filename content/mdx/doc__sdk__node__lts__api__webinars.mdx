@@ -1,0 +1,460 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/webinars"
+lastSynced: "2026-02-20T07:12:32.799Z"
+---
+# Documentation
+
+Webinars Service
+
+LTS release 2.XPublished on 2025-01-01
+
+## WebinarsService
+
+This service manages .  
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [WebinarsService](#module_WebinarsService)
+    -   [createWebinar(name, subject, waitingRoomStartDate, webinarStartDate, webinarEndDate, reminderDates, timeZone, register, approvalRegistrationMethod, passwordNeeded, isOrganizer, waitingRoomMultimediaURL, stageBackground, chatOption)](#module_WebinarsService+createWebinar) ⇒ `Promise.<any, ErrorManager>`
+    -   [updateWebinar(webinarId, name, subject, waitingRoomStartDate, webinarStartDate, webinarEndDate, reminderDates, timeZone, register, approvalRegistrationMethod, passwordNeeded, lockRegistration, waitingRoomMultimediaURL, stageBackground, chatOption)](#module_WebinarsService+updateWebinar) ⇒ `Promise.<any, ErrorManager>`
+    -   [getWebinarData(webinarId)](#module_WebinarsService+getWebinarData) ⇒ `Promise.<any, ErrorManager>`
+    -   [getWebinarsData(role)](#module_WebinarsService+getWebinarsData) ⇒ `Promise.<any, ErrorManager>`
+    -   [fetchMyWebinars(forceServerSearch)](#module_WebinarsService+fetchMyWebinars) ⇒ `Promise.<Array.<Webinar>>`
+    -   [warnWebinarModerators(webinarId)](#module_WebinarsService+warnWebinarModerators) ⇒ `Promise.<any, ErrorManager>`
+    -   [publishAWebinarEvent(webinarId)](#module_WebinarsService+publishAWebinarEvent) ⇒ `Promise.<any, ErrorManager>`
+    -   [deleteWebinar(webinarId)](#module_WebinarsService+deleteWebinar) ⇒ `Promise.<any, ErrorManager>`
+
+---
+
+### webinarsService.createWebinar(name, subject, waitingRoomStartDate, webinarStartDate, webinarEndDate, reminderDates, timeZone, register, approvalRegistrationMethod, passwordNeeded, isOrganizer, waitingRoomMultimediaURL, stageBackground, chatOption) ⇒ `Promise.<any, ErrorManager>`
+
+Create a webinar (2 rooms are used for it).  
+
+**Kind**: instance method of [`WebinarsService`](#module_WebinarsService)
+
+**Category**: Webinars
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.3.0
+
+Param
+
+Type
+
+Default
+
+Description
+
+name
+
+`string`
+
+The name of the bubble to create.
+
+subject
+
+`string`
+
+Webinar subject.
+
+waitingRoomStartDate
+
+`Date`
+
+Waiting room start date UTC format.
+
+webinarStartDate
+
+`Date`
+
+Webinar start date UTC format.
+
+webinarEndDate
+
+`Date`
+
+Webinar end date UTC format.
+
+reminderDates
+
+`Array.<Date>`
+
+Up to 10 webinar reminder dates UTC format.
+
+timeZone
+
+`string`
+
+Webinar time zone. If none, user time zone will be used.
+
+register
+
+`boolean`
+
+`true`
+
+Is participant registration required for webinar? Default value : true.
+
+approvalRegistrationMethod
+
+`string`
+
+`automatic`
+
+Participants approval method. If 'manual\` is selected, webinar creator can choose to manually approve or reject participants. default value : automatic. Possible values : manual, automatic.
+
+passwordNeeded
+
+`boolean`
+
+`true`
+
+If true, a password is needed when joining the webinar. This password is included in the registration confirmation email. Default value : true.
+
+isOrganizer
+
+`boolean`
+
+`false`
+
+If true, webinar creator is also an organizer. Default value : false.
+
+waitingRoomMultimediaURL
+
+`Array.<string>`
+
+Up to 5 URL of media to broadcast in the waiting room.
+
+stageBackground
+
+`string`
+
+Free field used for customization (for example a file descriptor unique identifier).
+
+chatOption
+
+`string`
+
+`participant`
+
+Define how participants can chat with organizers. Default value : participant. Possible values : participant, visitor, private.
+
+---
+
+### webinarsService.updateWebinar(webinarId, name, subject, waitingRoomStartDate, webinarStartDate, webinarEndDate, reminderDates, timeZone, register, approvalRegistrationMethod, passwordNeeded, lockRegistration, waitingRoomMultimediaURL, stageBackground, chatOption) ⇒ `Promise.<any, ErrorManager>`
+
+Update a webinar.  
+
+**Kind**: instance method of [`WebinarsService`](#module_WebinarsService)
+
+**Category**: Webinars
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.3.0
+
+Param
+
+Type
+
+Description
+
+webinarId
+
+`string`
+
+Webinar identifier.
+
+name
+
+`string`
+
+The name of the bubble to create.
+
+subject
+
+`string`
+
+Webinar subject.
+
+waitingRoomStartDate
+
+`Date`
+
+Waiting room start date UTC format.
+
+webinarStartDate
+
+`Date`
+
+Webinar start date UTC format.
+
+webinarEndDate
+
+`Date`
+
+Webinar end date UTC format.
+
+reminderDates
+
+`Array.<Date>`
+
+Up to 10 webinar reminder dates UTC format.
+
+timeZone
+
+`string`
+
+Webinar time zone. If none, user time zone will be used.
+
+register
+
+`boolean`
+
+Is participant registration required for webinar?
+
+approvalRegistrationMethod
+
+`string`
+
+Participants approval method. If 'manual\` is selected, webinar creator can choose to manually approve or reject participants. Possible values : manual, automatic.
+
+passwordNeeded
+
+`boolean`
+
+If true, a password is needed when joining the webinar. This password is included in the registration confirmation email.
+
+lockRegistration
+
+`boolean`
+
+Turn off registration for webinar before it starts.
+
+waitingRoomMultimediaURL
+
+`Array.<string>`
+
+Up to 5 URL of media to broadcast in the waiting room.
+
+stageBackground
+
+`string`
+
+Free field used for customization (for example a file descriptor unique identifier).
+
+chatOption
+
+`string`
+
+Define how participants can chat with organizers. Default value : participant. Possible values : participant, visitor, private.
+
+---
+
+### webinarsService.getWebinarData(webinarId) ⇒ `Promise.<any, ErrorManager>`
+
+Get data for a given webinar.  
+
+**Kind**: instance method of [`WebinarsService`](#module_WebinarsService)
+
+**Category**: Webinars
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.3.0
+
+Param
+
+Type
+
+Description
+
+webinarId
+
+`string`
+
+Webinar identifier.
+
+---
+
+### webinarsService.getWebinarsData(role) ⇒ `Promise.<any, ErrorManager>`
+
+Get data for webinars where requester is creator, organizer, speaker and/or participant.  
+
+**Kind**: instance method of [`WebinarsService`](#module_WebinarsService)
+
+**Category**: Webinars
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.3.0
+
+Param
+
+Type
+
+Description
+
+role
+
+`string`
+
+filter. Possible values : creator, organizer, speaker, participant
+
+---
+
+### webinarsService.fetchMyWebinars(forceServerSearch) ⇒ `Promise.<Array.<Webinar>>`
+
+Get the webinars you own.  
+Return a promise.  
+
+**Kind**: instance method of [`WebinarsService`](#module_WebinarsService)
+
+**Returns**: `Promise.<Array.<Webinar>>` - Return Promise
+
+**Category**: Webinars
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.3.0
+
+Param
+
+Type
+
+Description
+
+forceServerSearch
+
+`boolean`
+
+Boolean to force the get of webinars's informations from server.
+
+---
+
+### webinarsService.warnWebinarModerators(webinarId) ⇒ `Promise.<any, ErrorManager>`
+
+When main speakers and organizers are selected, it's time to warn each of them to join the practice room. when some webinar information change such as:  
+As a result, moderatorsSelectedAnNotified boolean is set to true.  
+
+**Kind**: instance method of [`WebinarsService`](#module_WebinarsService)
+
+**Category**: Webinars
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.3.0
+
+Param
+
+Type
+
+Description
+
+webinarId
+
+`string`
+
+Webinar unique identifier.  
+Notes:  
+API Call Mandatory before publishing the webinar event:  
+The webinar can't be published if webinar moderators are not warned prior.  
+see API publishAWebinarEvent  
+
+---
+
+### webinarsService.publishAWebinarEvent(webinarId) ⇒ `Promise.<any, ErrorManager>`
+
+When main information about the webinar event are decided, it's up to open participant registration and allow automatic email sent when some webinar information change such as:  
+cancellation  
+date changes  
+speakers added or removed  
+As a result, emailNotification boolean is set to true. This boolean is checked when a participant try to submit a registration earlier. See API POST /api/rainbow/webinar/v1.0/webinars/self-register  
+
+**Kind**: instance method of [`WebinarsService`](#module_WebinarsService)
+
+**Category**: Webinars
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.3.0
+
+Param
+
+Type
+
+Description
+
+webinarId
+
+`string`
+
+Webinar unique identifier.  
+
+---
+
+### webinarsService.deleteWebinar(webinarId) ⇒ `Promise.<any, ErrorManager>`
+
+Delete a webinar.  
+
+**Kind**: instance method of [`WebinarsService`](#module_WebinarsService)
+
+**Category**: Webinars
+
+**Access**: public
+
+**Nodered**: true
+
+**Since**: 2.3.0
+
+Param
+
+Type
+
+Description
+
+webinarId
+
+`string`
+
+Webinar unique identifier.  
+
+---
+
+### On this page
+
+-   [WebinarsService](/docs/sdk/node#name-webinarsservice-3)
+-   [webinarsService.createWebinar(name, subject, waitingRoomStartDate, webinarStartDate, webinarEndDate, reminderDates, timeZone, register, approvalRegistrationMethod, passwordNeeded, isOrganizer, waitingRoomMultimediaURL, stageBackground, chatOption) ⇒ Promise.<any, ErrorManager>](/docs/sdk/node#name-webinarsservice.createwebinarname-subject-waitingroomstartdate-webinarstartdate-webinarenddate-reminderdates-timezone-register-approvalregistrationmethod-passwordneeded-isorganizer-waitingroommultimediaurl-stagebackground-chatoption--promise.any-errormanager-68)
+-   [webinarsService.updateWebinar(webinarId, name, subject, waitingRoomStartDate, webinarStartDate, webinarEndDate, reminderDates, timeZone, register, approvalRegistrationMethod, passwordNeeded, lockRegistration, waitingRoomMultimediaURL, stageBackground, chatOption) ⇒ Promise.<any, ErrorManager>](/docs/sdk/node#name-webinarsservice.updatewebinarwebinarid-name-subject-waitingroomstartdate-webinarstartdate-webinarenddate-reminderdates-timezone-register-approvalregistrationmethod-passwordneeded-lockregistration-waitingroommultimediaurl-stagebackground-chatoption--promise.any-errormanager-309)
+-   [webinarsService.getWebinarData(webinarId) ⇒ Promise.<any, ErrorManager>](/docs/sdk/node#name-webinarsservice.getwebinardatawebinarid--promise.any-errormanager-516)
+-   [webinarsService.getWebinarsData(role) ⇒ Promise.<any, ErrorManager>](/docs/sdk/node#name-webinarsservice.getwebinarsdatarole--promise.any-errormanager-569)
+-   [webinarsService.fetchMyWebinars(forceServerSearch) ⇒ Promise.<Array.<Webinar>>](/docs/sdk/node#name-webinarsservice.fetchmywebinarsforceserversearch--promise.array.webinar-622)
+-   [webinarsService.warnWebinarModerators(webinarId) ⇒ Promise.<any, ErrorManager>](/docs/sdk/node#name-webinarsservice.warnwebinarmoderatorswebinarid--promise.any-errormanager-678)
+-   [webinarsService.publishAWebinarEvent(webinarId) ⇒ Promise.<any, ErrorManager>](/docs/sdk/node#name-webinarsservice.publishawebinareventwebinarid--promise.any-errormanager-731)
+-   [webinarsService.deleteWebinar(webinarId) ⇒ Promise.<any, ErrorManager>](/docs/sdk/node#name-webinarsservice.deletewebinarwebinarid--promise.any-errormanager-784)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

@@ -1,0 +1,259 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/profiles"
+lastSynced: "2026-02-20T07:12:32.482Z"
+---
+# Documentation
+
+Profiles Service
+
+LTS release 2.XPublished on 2025-01-01
+
+## ProfilesService
+
+This module is the service used to retrieve profiles from server.  
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [ProfilesService](#module_ProfilesService)
+    -   *Profiles FEATURES*
+        -   [~getServerProfilesFeatures()](#module_ProfilesService..getServerProfilesFeatures) ⇒ `Promise.<any>`
+        -   [~isFeatureEnabled()](#module_ProfilesService..isFeatureEnabled) ⇒ `any`
+        -   [~getFeatureLimitMax()](#module_ProfilesService..getFeatureLimitMax) ⇒ `any`
+        -   [~getFeatureLimitMin()](#module_ProfilesService..getFeatureLimitMin) ⇒ `any`
+        -   [~getMyProfileFeatures()](#module_ProfilesService..getMyProfileFeatures) ⇒ `any`
+    -   *Profiles PROFILES*
+        -   [~getServerProfile()](#module_ProfilesService..getServerProfile) ⇒ `Promise.<any>`
+        -   [~getServerProfiles()](#module_ProfilesService..getServerProfiles) ⇒ `Promise.<any>`
+        -   [~getMyProfileOffer()](#module_ProfilesService..getMyProfileOffer) ⇒ `any`
+        -   [~getMyProfileName()](#module_ProfilesService..getMyProfileName) ⇒ `any`
+        -   [~getMyProfiles()](#module_ProfilesService..getMyProfiles) ⇒ `any`
+        -   [~getThirdPartyApps(force)](#module_ProfilesService..getThirdPartyApps) ⇒ `Promise.<any>`
+        -   [~revokeThirdPartyAccess(tokenId)](#module_ProfilesService..revokeThirdPartyAccess) ⇒ `Promise.<any>`
+
+---
+
+### ProfilesService~getServerProfilesFeatures() ⇒ `Promise.<any>`
+
+This API can be used to get user profile features.  
+
+**Kind**: inner method of [`ProfilesService`](#module_ProfilesService)
+
+**Category**: Profiles FEATURES
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### ProfilesService~isFeatureEnabled() ⇒ `any`
+
+This API can be used to know if a feature is enabled.  
+
+**Kind**: inner method of [`ProfilesService`](#module_ProfilesService)
+
+**Category**: Profiles FEATURES
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### ProfilesService~getFeatureLimitMax() ⇒ `any`
+
+This API can be used to get Max limit of feature.  
+
+**Kind**: inner method of [`ProfilesService`](#module_ProfilesService)
+
+**Category**: Profiles FEATURES
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### ProfilesService~getFeatureLimitMin() ⇒ `any`
+
+This API can be used to get Min limit of feature.  
+
+**Kind**: inner method of [`ProfilesService`](#module_ProfilesService)
+
+**Category**: Profiles FEATURES
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### ProfilesService~getMyProfileFeatures() ⇒ `any`
+
+This API can be used to get features of the profile of connected user.  
+
+**Kind**: inner method of [`ProfilesService`](#module_ProfilesService)
+
+**Category**: Profiles FEATURES
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### ProfilesService~getServerProfile() ⇒ `Promise.<any>`
+
+This API can be used to get user profiles and features.  
+
+**Kind**: inner method of [`ProfilesService`](#module_ProfilesService)
+
+**Category**: Profiles PROFILES
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### ProfilesService~getServerProfiles() ⇒ `Promise.<any>`
+
+This API can be used to get user profiles.  
+This API can only be used by user himself
+
+**Kind**: inner method of [`ProfilesService`](#module_ProfilesService)
+
+**Category**: Profiles PROFILES
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### ProfilesService~getMyProfileOffer() ⇒ `any`
+
+This API can be used to get user profile offer.  
+Returns the profile "Enterprise", "Business", "Essential" or null (if none of them)
+
+**Kind**: inner method of [`ProfilesService`](#module_ProfilesService)
+
+**Category**: Profiles PROFILES
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### ProfilesService~getMyProfileName() ⇒ `any`
+
+This API can be used to get user profile offer name.  
+Returns the profile "Enterprise", "Business", "Essential" or null (if none of them)
+
+**Kind**: inner method of [`ProfilesService`](#module_ProfilesService)
+
+**Category**: Profiles PROFILES
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### ProfilesService~getMyProfiles() ⇒ `any`
+
+This API can be used to get user profiles.  
+
+**Kind**: inner method of [`ProfilesService`](#module_ProfilesService)
+
+**Category**: Profiles PROFILES
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### ProfilesService~getThirdPartyApps(force) ⇒ `Promise.<any>`
+
+Get The list of the Third Party Application that have access to this Rainbow Account.
+
+**Kind**: inner method of [`ProfilesService`](#module_ProfilesService)
+
+**Category**: Profiles PROFILES
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+force
+
+`boolean`
+
+`false`
+
+Parameter force in order to refresh the list
+
+---
+
+### ProfilesService~revokeThirdPartyAccess(tokenId) ⇒ `Promise.<any>`
+
+Revoke the access of a third-party application from Rainbow
+
+**Kind**: inner method of [`ProfilesService`](#module_ProfilesService)
+
+**Category**: Profiles PROFILES
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+tokenId
+
+`string`
+
+The tokenId should be sent as a parameter
+
+---
+
+### On this page
+
+-   [ProfilesService](/docs/sdk/node#name-profilesservice-3)
+-   [ProfilesService~getServerProfilesFeatures() ⇒ Promise.<any>](/docs/sdk/node#name-profilesservicegetserverprofilesfeatures--promise.any-102)
+-   [ProfilesService~isFeatureEnabled() ⇒ any](/docs/sdk/node#name-profilesserviceisfeatureenabled--any-124)
+-   [ProfilesService~getFeatureLimitMax() ⇒ any](/docs/sdk/node#name-profilesservicegetfeaturelimitmax--any-146)
+-   [ProfilesService~getFeatureLimitMin() ⇒ any](/docs/sdk/node#name-profilesservicegetfeaturelimitmin--any-168)
+-   [ProfilesService~getMyProfileFeatures() ⇒ any](/docs/sdk/node#name-profilesservicegetmyprofilefeatures--any-190)
+-   [ProfilesService~getServerProfile() ⇒ Promise.<any>](/docs/sdk/node#name-profilesservicegetserverprofile--promise.any-212)
+-   [ProfilesService~getServerProfiles() ⇒ Promise.<any>](/docs/sdk/node#name-profilesservicegetserverprofiles--promise.any-234)
+-   [ProfilesService~getMyProfileOffer() ⇒ any](/docs/sdk/node#name-profilesservicegetmyprofileoffer--any-256)
+-   [ProfilesService~getMyProfileName() ⇒ any](/docs/sdk/node#name-profilesservicegetmyprofilename--any-278)
+-   [ProfilesService~getMyProfiles() ⇒ any](/docs/sdk/node#name-profilesservicegetmyprofiles--any-300)
+-   [ProfilesService~getThirdPartyApps(force) ⇒ Promise.<any>](/docs/sdk/node#name-profilesservicegetthirdpartyappsforce--promise.any-322)
+-   [ProfilesService~revokeThirdPartyAccess(tokenId) ⇒ Promise.<any>](/docs/sdk/node#name-profilesservicerevokethirdpartyaccesstokenid--promise.any-378)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

@@ -1,0 +1,156 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/tutorials/ManageCallLogs"
+lastSynced: "2026-02-20T07:12:33.701Z"
+---
+# Documentation
+
+Manage call logs
+
+# Retrieve Call Logs
+
+## Overview
+
+The Call Logs feature allows you to display and manage call history, including all calls, missed calls, and voicemails. This guide will show you how to implement and customize call logs in your application.
+
+## Features
+
+-   View all call history
+-   Filter by missed calls
+-   Voicemail integration
+-   Customizable actions for each call log item
+-   Real-time updates
+
+## Installation
+
+Make sure you have the Rainbow SDK properly installed and configured in your project.
+
+## Basic Usage
+
+### Displaying Call Logs
+
+```tsx
+import React from 'react';
+import { CallLogs } from 'react-native-rainbow-module';
+
+export const CallLogsScreen: React.FC = () => {
+  return (
+    <CallLogs 
+      allCallsEnabled={true}
+      missedCallsEnabled={true}
+      voiceMailEnabled={true}
+    />
+  );
+};
+```
+
+## Handling Call Log Clicks
+
+You can handle when a user clicks on a call log item using the prop:`onClickCallLogAction`.
+
+```tsx
+import React from 'react';
+import { CallLogs, ICallLog } from 'react-native-rainbow-module';
+
+export const CallLogsScreen: React.FC = () => {
+  const handleCallLogClick = (callLog: ICallLog) => {
+    // Handle the click event
+    console.log('Call log clicked:', callLog);
+    // Example: Navigate to call details
+    // navigation.navigate('CallDetails', { callLog });
+  };
+
+  return (
+    <CallLogs
+      onClickCallLogAction={handleCallLogClick}
+    />
+  );
+};
+```
+
+## Props
+
+Prop
+
+Type
+
+Required
+
+Description
+
+`onClickCallLogAction`
+
+`(callLog: ICallLog) => void`
+
+No
+
+Callback when a call log item is clicked
+
+## Types
+
+## ICallLog
+
+The call log object contains the following properties:
+
+```tsx
+interface ICallLog {
+  id: string;
+  contact: IContact;
+  lastCall: {
+    state: CallState;
+    isConference: boolean;
+    date: string; // Unix timestamp in milliseconds
+    duration?: string;
+  };
+  calls: ICallLogInfo[];
+}
+```
+
+## Events
+
+The CallLogs component emits the following events:
+
+-   `CallLogsUpdated`: When the call logs are updated
+-   `MissedCallLogsUpdated`: When missed calls are updated
+-   `VoiceMailCapabilityUpdate`: When voicemail capabilities change
+
+## Best Practices
+
+1.  **Memory Management**: Always clean up event listeners when your component unmounts
+2.  **Performance**: For large call logs, consider implementing pagination
+3.  **Error Handling**: Handle cases where call logs cannot be loaded
+4.  **Permissions**: Ensure you have the necessary permissions to access call logs
+
+## Troubleshooting
+
+-   If call logs are not updating, check your event listeners
+-   Ensure proper error handling for network requests
+-   Verify that the user has the necessary permissions
+
+## API Reference
+
+For more detailed information about the available props and methods, see the [API Reference](/docs/sdk/reactnative/api/ICallLog).
+
+### On this page
+
+-   [Overview](/docs/sdk/reactnative/tutorials/ManageCallLogs#name-overview-3)
+-   [Features](/docs/sdk/reactnative/tutorials/ManageCallLogs#name-features-9)
+-   [Installation](/docs/sdk/reactnative/tutorials/ManageCallLogs#name-installation-39)
+-   [Basic Usage](/docs/sdk/reactnative/tutorials/ManageCallLogs#name-basic-usage-45)
+-   [Displaying Call Logs](/docs/sdk/reactnative/tutorials/ManageCallLogs#name-displaying-call-logs-48)
+-   [Handling Call Log Clicks](/docs/sdk/reactnative/tutorials/ManageCallLogs#name-handling-call-log-clicks-52)
+-   [Props](/docs/sdk/reactnative/tutorials/ManageCallLogs#name-props-59)
+-   [Types](/docs/sdk/reactnative/tutorials/ManageCallLogs#name-types-96)
+-   [ICallLog](/docs/sdk/reactnative/tutorials/ManageCallLogs#name-icalllog-99)
+-   [Events](/docs/sdk/reactnative/tutorials/ManageCallLogs#name-events-106)
+-   [Best Practices](/docs/sdk/reactnative/tutorials/ManageCallLogs#name-best-practices-129)
+-   [Troubleshooting](/docs/sdk/reactnative/tutorials/ManageCallLogs#name-troubleshooting-154)
+-   [API Reference](/docs/sdk/reactnative/tutorials/ManageCallLogs#name-api-reference-174)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

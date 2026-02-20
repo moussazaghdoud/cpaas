@@ -1,0 +1,732 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/conversation"
+lastSynced: "2026-02-20T07:12:32.012Z"
+---
+# Documentation
+
+Conversation
+
+LTS release 2.XPublished on 2025-01-01
+
+## Classes
+
+[Conversation](#Conversation)
+
+## Conversation
+
+**Kind**: global class
+
+**Access**: public
+
+-   [Conversation](#Conversation)
+    -   [Conversation()](#new_Conversation_new)
+    -   *API*
+        -   [id](#Conversation+id)
+        -   [dbId](#Conversation+dbId)
+        -   [type](#Conversation+type)
+        -   [contact](#Conversation+contact)
+        -   [bubble](#Conversation+bubble)
+        -   [capabilities](#Conversation+capabilities)
+        -   [avatar](#Conversation+avatar)
+        -   [filterName](#Conversation+filterName)
+        -   [missedCounter](#Conversation+missedCounter)
+        -   [missedCalls](#Conversation+missedCalls)
+        -   [\_messages](#Conversation+_messages)
+        -   [status](#Conversation+status)
+        -   [historyComplete](#Conversation+historyComplete)
+        -   [lastModification](#Conversation+lastModification)
+        -   [creationDate](#Conversation+creationDate)
+        -   [lastMessageText](#Conversation+lastMessageText)
+        -   [lastMessageSender](#Conversation+lastMessageSender)
+        -   [videoCall](#Conversation+videoCall)
+        -   [audioCall](#Conversation+audioCall)
+        -   [pstnConferenceSession](#Conversation+pstnConferenceSession)
+        -   [webConferenceSession](#Conversation+webConferenceSession)
+    -   *API*
+        -   [Type](#Conversation.Type) : `enum`
+        -   [Status](#Conversation.Status) : `enum`
+
+---
+
+### Conversation()
+
+This class represents a conversation  
+A conversation is a "long" interaction (aka the "long tail") between the user ane one or several contacts (Rainbow users or not) based on the IM media if the recipients are Rainbow users.  
+A conversation never ends and all interactions done can be retrieved.  
+
+---
+
+### conversation.id
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+id
+
+`string`
+
+The conversation ID
+
+---
+
+### conversation.dbId
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+dbId
+
+`string`
+
+The database ID
+
+---
+
+### conversation.type
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+type
+
+`ConversationType`
+
+The type of the conversation. Can be ONE\_TO\_ONE (0), BUBBLE (1) or BOT (2)
+
+---
+
+### conversation.contact
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Link**: Contact
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+contact
+
+`Contact`
+
+(ONE\_TO\_ONE conversation only) The recipient of the conversation
+
+---
+
+### conversation.bubble
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Link**: Bubble
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+bubble
+
+`Bubble`
+
+(BUBBLE conversation only) The conversation bubble
+
+---
+
+### conversation.capabilities
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+capabilities
+
+`Object`
+
+The capabilities of the conversation
+
+---
+
+### conversation.avatar
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+avatar
+
+`Object`
+
+(ONE\_TO\_ONE conversation only) The avatar of the conversation
+
+---
+
+### conversation.filterName
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+filterName
+
+`string`
+
+The name of the conversation (the display name of the recipient for ONE\_TO\_ONE conversation or the room name for a ROOM conversation)
+
+---
+
+### conversation.missedCounter
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+missedCounter
+
+`number`
+
+The number of instant messages not read
+
+---
+
+### conversation.missedCalls
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+missedCalls
+
+`number`
+
+(ONE\_TO\_ONE conversation only) The number of call missed with this recipient (only WebRTC call)
+
+---
+
+### conversation.\_messages
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Link**: Message
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+messages
+
+`Array.<Message>`
+
+The list of messages downloaded for this conversation
+
+---
+
+### conversation.status
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+status
+
+`ConversationStatus`
+
+The status of the conversation
+
+---
+
+### conversation.historyComplete
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+True
+
+`Boolean`
+
+if the history has been completely loaded
+
+---
+
+### conversation.lastModification
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+lastModification
+
+`Date`
+
+The date of the last modification of the conversation
+
+---
+
+### conversation.creationDate
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Since**: 1.21
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+creationDate
+
+`Date`
+
+The date of the creation of the conversation
+
+---
+
+### conversation.lastMessageText
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+lastMessageText
+
+`string`
+
+The text of the last message received of the conversation
+
+---
+
+### conversation.lastMessageSender
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+lastMessageSender
+
+`string`
+
+The ID of the user for the last message
+
+---
+
+### conversation.videoCall
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+videoCall
+
+`Call`
+
+Link to a WebRTC call (audio/video/sharing) if exists
+
+---
+
+### conversation.audioCall
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+audioCall
+
+`Call`
+
+Link to a telephony call (from a PBX) if exists
+
+---
+
+### conversation.pstnConferenceSession
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Since**: 1.30
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+pstnConferenceSession
+
+`ConferenceSession`
+
+Link to a pstn conference session if exists
+
+---
+
+### conversation.webConferenceSession
+
+**Kind**: instance property of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Since**: 1.30
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+webConferenceSession
+
+`ConferenceSession`
+
+Link to a webrtc conference session if exists
+
+---
+
+### Conversation.Type : `enum`
+
+Enum conversation type
+
+**Kind**: static enum of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+ONE\_TO\_ONE
+
+`number`
+
+`0`
+
+One-to-one conversation
+
+ROOM
+
+`number`
+
+`1`
+
+Room conversation with multiple participants
+
+BOT
+
+`number`
+
+`2`
+
+Conversation with a Bot
+
+---
+
+### Conversation.Status : `enum`
+
+Enum conversation status
+
+**Kind**: static enum of [`Conversation`](#Conversation)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+ACTIVE
+
+`Object`
+
+`{key:0,value:active}`
+
+Active conversation
+
+INACTIVE
+
+`Object`
+
+`{key:1,value:inactive}`
+
+Inactive conversation
+
+COMPOSING
+
+`Object`
+
+`{key:2,value:composing}`
+
+When composing a message
+
+PAUSED
+
+`Object`
+
+`{key:3,value:paused}`
+
+When a message is written but not sent
+
+---
+
+## PEERTYPE : `enum`
+
+Enum peer type
+
+```
+{
+"UNKNOWN" = "unknown", // when the peer type is unkwon
+"USER" = "user", // when the peer type is a user of the rainbow system
+"ROOM" = "room" // when the peer type is a bubble
+ }
+```
+
+**Kind**: global enum
+
+**Access**: public
+
+**Read only**: true
+
+---
+
+### On this page
+
+-   [Classes](/docs/sdk/node#name-classes-0)
+-   [Conversation](/docs/sdk/node#name-conversation-7)
+-   [Conversation()](/docs/sdk/node#name-conversation-163)
+-   [conversation.id](/docs/sdk/node#name-conversation.id-173)
+-   [conversation.dbId](/docs/sdk/node#name-conversation.dbid-220)
+-   [conversation.type](/docs/sdk/node#name-conversation.type-267)
+-   [conversation.contact](/docs/sdk/node#name-conversation.contact-314)
+-   [conversation.bubble](/docs/sdk/node#name-conversation.bubble-364)
+-   [conversation.capabilities](/docs/sdk/node#name-conversation.capabilities-414)
+-   [conversation.avatar](/docs/sdk/node#name-conversation.avatar-461)
+-   [conversation.filterName](/docs/sdk/node#name-conversation.filtername-508)
+-   [conversation.missedCounter](/docs/sdk/node#name-conversation.missedcounter-555)
+-   [conversation.missedCalls](/docs/sdk/node#name-conversation.missedcalls-602)
+-   [conversation.\_messages](/docs/sdk/node#name-conversation._messages-649)
+-   [conversation.status](/docs/sdk/node#name-conversation.status-699)
+-   [conversation.historyComplete](/docs/sdk/node#name-conversation.historycomplete-746)
+-   [conversation.lastModification](/docs/sdk/node#name-conversation.lastmodification-793)
+-   [conversation.creationDate](/docs/sdk/node#name-conversation.creationdate-840)
+-   [conversation.lastMessageText](/docs/sdk/node#name-conversation.lastmessagetext-890)
+-   [conversation.lastMessageSender](/docs/sdk/node#name-conversation.lastmessagesender-937)
+-   [conversation.videoCall](/docs/sdk/node#name-conversation.videocall-984)
+-   [conversation.audioCall](/docs/sdk/node#name-conversation.audiocall-1031)
+-   [conversation.pstnConferenceSession](/docs/sdk/node#name-conversation.pstnconferencesession-1078)
+-   [conversation.webConferenceSession](/docs/sdk/node#name-conversation.webconferencesession-1128)
+-   [Conversation.Type : enum](/docs/sdk/node#name-conversation.type-:-enum-1178)
+-   [Conversation.Status : enum](/docs/sdk/node#name-conversation.status-:-enum-1262)
+-   [PEERTYPE : enum](/docs/sdk/node#name-peertype-:-enum-1360)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

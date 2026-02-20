@@ -1,0 +1,580 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Managing_bubbles"
+lastSynced: "2026-02-20T07:12:28.677Z"
+---
+# Documentation
+
+Managing bubbles
+
+LTS release 2.47.0Published on 2024-04-20
+
+## Managing bubbles
+
+---
+
+### Preamble
+
+---
+
+This guide explains how to manage bubbles and to discuss within them.
+
+### Creation, archiving and deletion
+
+---
+
+This first part of the guide will explain how to create, archive and delete a bubble.
+
+#### Create a new bubble
+
+---
+
+To create a new bubble, you have to use the method `createBubble(String name, String description, boolean disableNotifications, IRoomProxy.IRoomCreationListener listener)` as following:
+
+disableNotifications is used for disabling notifications. For xxl bubbles, it is a good idea to put this boolean to true.
+
+```java
+RainbowSdk.instance().bubbles().createBubble("Room name", "Room description", disableNotifications, new IRoomProxy.IRoomCreationListener() {
+    @Override
+    public void onCreationSuccess(Room room) {
+        // Do something in the thread UI
+    }
+
+    @Override
+    public void onCreationFailed(RoomCreationError error) {
+        // Do something in the thread UI
+    }
+});
+```
+
+#### Archive (or close) a bubble
+
+---
+
+To archive a bubble, you have to use the method `archiveBubble(Room room, IRoomProxy.IChangeUserRoomDataListener listener)` as following below.
+
+An archived bubble can still be read but nobody can post new messages.
+
+```java
+RainbowSdk.instance().bubbles().archiveBubble(room, new IRoomProxy.IChangeUserRoomDataListener() {
+    @Override
+    public void onChangeUserRoomDataSuccess(RoomParticipant roomParticipant) {
+
+    }
+
+    @Override
+    public void onChangeUserRoomDataFailed() {
+
+    }
+});
+```
+
+Two possible cases:
+
+-   You are the owner: all participants are archived (the bubble is closed)
+-   You are a participant: you are the only one archived (you leave the bubble)
+
+#### Delete a bubble
+
+---
+
+To delete a bubble, you have to use the method `deleteBubble(Room room, IRoomProxy.IDeleteRoomListener listener)` as following:
+
+```java
+RainbowSdk.instance().bubblez().archiveBubble(room, new IRoomProxy.IDeleteRoomListener() {
+    @Override
+    public void onRoomDeletedSuccess() {
+
+    }
+
+    @Override
+    public void onRoomDeletedFailed() {
+
+    }
+});
+```
+
+### Invitation
+
+---
+
+To be able to discuss with users in a Rainbow bubble, you need to invite them into that bubble. This part will explain how to do that.
+
+#### Invite a user in a bubble
+
+---
+
+You can use one of these methods to invite one or more users in a bubble:
+
+-   One participant: `addParticipantToBubble(Room room, IRainbowContact contact, IRoomProxy.IAddParticipantsListener listener)`
+    
+-   More participants: `addParticipantsToBubble(Room room, List<IRainbowContact> contacts, IRoomProxy.IAddParticipantsListener listener)`
+    
+
+For example, if you want to invite only one participant, you can do as following:
+
+```java
+RainbowSdk.instance().bubbles.addParticipantToBubble(room, contact, new IRoomProxy.IAddParticipantsListener() {
+    @Override
+    public void onAddParticipantsSuccess() {
+
+    }
+
+    @Override
+    public void onMaxParticipantsReached() {
+
+    }
+
+    @Override
+    public void onAddParticipantFailed(Contact contactFailed) {
+
+    }
+});
+```
+
+#### Remove a user from a bubble
+
+---
+
+If you are a **Moderator**, you can remove a user from a bubble.
+
+A member removed can still have access to the bubble to see existing messages posted before he was removed, but can not see new messages posted after he has been removed and can not post new message too.
+
+To remove a contact from a bubble, you have to use the method `deleteParticipantFromBubble(Room room, IRainbowContact contact, IRoomPRoxy.IDeleteParticipantListener listener)` as following:
+
+```java
+RainbowSdk.instance().bubbles().deleteParticipantFromBubble(room, contact, new IRoomProxy.IDeleteparticipantListener() {
+    @Override
+    public void onDeleteParticipantSuccess(String roomId, String participantIdDeleted) {
+
+    }
+
+    @Override
+    public void onDeleteParticipantFailure() {
+
+    }
+});
+```
+
+#### Accept an invitation to a bubble
+
+---
+
+To accept an invitation to a bubble (in the pending Bubbles list), you have to use the API `acceptInvitation(Room room, IChangeUserRoomDataListener listener)` as following:
+
+```java
+RainbowSdk.instance().bubbles().acceptInvitation(room, new IRoomProxy.IChangeUserRoomDataListener() {
+    @Override
+    public void onChangeUserRoomDataSuccess(RoomParticipant roomParticipant) {
+
+    }
+
+    @Override
+    public void onChangeUserRoomDataFailed() {
+
+    }
+});
+```
+
+#### Reject an invitation to a bubble
+
+---
+
+To reject an invitation to a bubble (in the pending Bubbles list), you have to use the method `rejectInvitation(Room room, IChangeUserRoomDataListener listener)` as following:
+
+```java
+RainbowSdk.instance().bubbles().rejectInvitation(room, new IRoomProxy.IChangeUserRoomDataListener() {
+    @Override
+    public void onChangeUserRoomDataSuccess(RoomParticipant roomParticipant) {
+
+    }
+
+    @Override
+    public void onChangeUserRoomDataFailed() {
+
+    }
+});
+```
+
+### Discuss in a bubble
+
+---
+
+In ordre to discuss in a bubble, you first have to get or create a conversation associated to this bubble. You can do that as following:
+
+```java
+RainbowSdk.instance().im().getConversationFromRoom(room);
+```
+
+Then, you just have to do the same as a peer to peer conversation (see [Make an IM conversation](/docs/sdk/android) guide). If you need more information about the Bubble, just get the Bubble object using method `getBubble()` in the conversation.
+
+### Listen to bubbles changes
+
+---
+
+You can listen to the data changed of the list `getAllBubbles()` which is an `ArrayItemList`. See guide [Using ArrayItemList](/docs/sdk/android).
+
+This list includes all Bubble: active, pending, archived.
+
+To listen to the list:
+
+```java
+RainbowSdk.instance().bubbles().getAllBubbles().registerChangeListener(m_changeListener);
+```
+
+Do not forget to unregister:
+
+```java
+RainbowSdk.instance().bubbles().getAllBubbles().unregisterChangeListener(m_changeListener);
+```
+
+And provide the object:
+
+```java
+private IItemListChangeListener m_changeListener = new IItemListChangeListener() {
+    @Override
+    public void dataChanged() {
+        // Do something in the thread UI
+    }
+};
+```
+
+In the API `dataChanged()`, you can update, for example the UI, by getting the list you need:
+
+-   `getAllList()`: all Bubbles except pending and archived
+    
+-   `getPendingList()`: pending Bubbles (invited to join)
+    
+-   `getMyList()`: my Bubbles (Bubbles you own)
+    
+-   `getArchivedList()`: archived Bubbles
+    
+
+### Listen to a specific bubble changes
+
+---
+
+You can listen to a bubble or conference changes with the `Room.RoomListener`
+
+By example, this event is triggered when a user has accepted an invitation to join the bubble
+
+Here is a complet example on how to use it :
+
+```java
+private Room.RoomListener bubbleChangeListener = new Room.RoomListener() {
+    @Override
+    public void roomUpdated(Room updatedBubble) {
+        // Do something with updated bubble
+    }
+
+    @Override
+    public void conferenceUpdated(Room updatedBubble) {
+        // Do something with updated bubble
+    }
+};
+
+private Room bubble; // Your bubble object
+
+// Register bubble listener
+room.registerChangeListener(bubbleChangeListener);
+
+...
+
+//Don't forget to unregister listener
+room.unregisterChangeListener(bubbleChangeListener)
+```
+
+### Manage custom data in a bubble
+
+---
+
+#### Update the customData of a bubble
+
+---
+
+In order to update the customData of a bubble, you have to create a `JSONObject`, fill it with all your custom data and call the method `updateCustomDataForBubble` as following:
+
+```java
+try {
+    JSONObject customData = new JSONObject();
+    customData.put("my-key-boolean", true);
+    customData.put("my-key-string", "my-value");
+    customData.put("my-key-int", 3);
+
+    RainbowSdk.instance().bubbles().updateCustomDataForBubble(roomObject, customData, new IRoomProxy.IUpdateCustomDataListener() {
+
+        @Override
+        public void onUpdateCustomDataSuccess(Room room) {
+
+        }
+
+        @Override
+        public void onUpdateCustomDataFailed(String roomId) {
+
+        }
+
+    });
+} catch (Exception e) {
+    RBLog.warn(LOG_TAG, e.getMessage());
+}
+```
+
+#### Get the customData of a bubble
+
+---
+
+To get the customData of a bubble, you have two ways to do it:
+
+##### Method 1: Use directly the JSONObject
+
+```java
+JSONObject customData = roomObject.getAllCustomData();
+
+if (customData.has("my-key-int")) {
+    int myInt = customData.getInt("my-key-int");
+}
+
+if (customData.has("my-key-string")) {
+    String myString = customData.getString("my-key-string");
+}
+
+if (customData.has("my-key-boolean")) {
+    boolean myBoolean = customData.getBoolean("my-key-boolean");
+}
+```
+
+##### Method 2: Use methods `hasCustomData(String key)` and `getCustomData_type(String key)` from Bubble object
+
+```java
+if (roomObject.hasCustomData("my-key-int")) {
+    int myInt = roomObject.getCustomDataInt("my-key-int");
+}
+
+if (roomObject.hasCustomData("my-key-string")) {
+    String myString = roomObject.getCustomDataString("my-key-string");
+}
+
+if (roomObject.hasCustomData("my-key-boolean")) {
+    boolean myBoolean = roomObject.getCustomDataBoolean("my-key-boolean");
+}
+```
+
+#### Delete the customData of a bubble
+
+---
+
+To delete the customData of a bubble, just call the method `deleteCustomDataForBubble` as following:
+
+```java
+RainbowSdk.instance().bubbles().deleteCustomDataForBubble(roomObject, new IRoomProxy.IUpdateCustomDataListener() {
+    @Override
+    public void onUpdateCustomDataSuccess(Room room) {
+
+    }
+    @Override
+    public void onUpdateCustomDataFailed(String roomId) {
+
+    }
+});
+```
+
+### Change bubble data
+
+---
+
+To change the name and/or the subject of a bubble, just call the method `changeBubbleData` as following:
+
+```java
+RainbowSdk.instance().bubbles().changeBubbleData(m_conversation.getRoom(), name, subject, true, new IRoomProxy.IChangeRoomDataListener() {
+    @Override
+    public void onChangeRoomDataSuccess(Room room) {
+        // the ypdate of the bubble is successfully updated
+    }
+
+    @Override
+    public void onChangeRoomDataFailed(String roomId) {
+        // Error during the update of the bubble
+    }
+});
+```
+
+If the "name" field is null, the name of the bubble will not be updated. Same remark for the "subject" field, it will not be updated.
+
+### Pagination for participants within a bubble
+
+---
+
+By default, when the sdk is started, you retrieve first 100 participants.
+
+If you want to retrieve more participants, you must use this api. You must know the room Id and the number of participants you want to retrieve.
+
+```java
+RainbowSdk.instance().bubbles().getMoreActiveUsersFromBubble(roomId,
+    nbParticipantsToRetrieve, new IRoomProxy.IGetActiveUserFromRoomListener() {
+
+    @Override
+    public void onGetActiveUserFromRoomSuccess(ArrayItemList<RoomParticipant> contactsFounded) {
+        // do something
+    }
+
+    @Override
+    public void onGetActiveUserFromRoomFailed(RainbowServiceException exception) {
+        // do something
+    }
+});
+```
+
+If the request response is success, you retrieve the particpants list depending on the number of particpants chosen. If you reach the limit number of participants, no server request is sent.
+
+If the request response is failed, you receive an exception...
+
+### Manage the role of a participant
+
+---
+
+As a **moderator**, you can promote someone to the moderator role or demote someone from this role.
+
+To do that, you have some methods:
+
+-   `isUserModerator()`
+-   `setParticipantPrivilegeToModerator(Room, IRainbowContact, IRoomProxy.IChangeUserRoomDataListener)`
+-   `setParticipantPrivilegeToUser(Room, IRainbowContact, IRoomProxy.IChangeUserRoomDataListener)`
+
+As the **owner** of a bubble, you can also change the owner by setting a moderator to this role
+
+-   `changeOwner(Room, String, IRoomProxy.IChangeRoomDataListener)`
+
+#### Promote someone to the moderator role
+
+---
+
+```java
+Room room = ... // Your room
+IRainbowContact contact = ... // The contact you want to promote
+
+if (room.isUserModerator()) {
+    RainbowSdk.instance().bubbles().setParticipantPrivilegeToModerator(room, contact, new IRoomProxy.IChangeUserRoomDataListener() {
+
+        @Override
+        public void onChangeUserRoomDataSuccess(RoomParticipant roomParticipant) {
+
+        }
+
+        @Override
+        public void onChangeUserRoomDataFailed() {
+
+        }
+    });
+}
+```
+
+#### Demote someone from the moderator role
+
+---
+
+```java
+Room room = ... // Your room
+IRainbowContact contact = ... // The contact you want to demote
+
+if (room.isUserModerator()) {
+    RainbowSdk.instance().bubbles().setParticipantPrivilegeToUser(room, contact, new IRoomProxy.IChangeUserRoomDataListener() {
+
+        @Override
+        public void onChangeUserRoomDataSuccess(RoomParticipant roomParticipant) {
+
+        }
+
+        @Override
+        public void onChangeUserRoomDataFailed() {
+
+        }
+    });
+}
+```
+
+#### Change the owner of a bubble
+
+---
+
+As the owner of a bubble, you can set another participant of the room as the new owner. This user has to be moderator.
+
+```java
+Room room = ... // Your room
+RoomParticipant participant = ... // The contact you want to set as owner - he HAS TO be moderator
+
+if (room.isUserOwner() && participant.isModerator()) {
+    RainbowSdk.instance().bubbles().changeOwner(room, participant.getId(), new IRoomProxy.IChangeRoomDataListener() {
+
+        @Override
+        public void onChangeRoomDataSuccess(Room room) {
+
+        }
+
+        @Override
+        public void onChangeRoomDataFailed(String roomId) {
+
+        }
+    });
+}
+```
+
+#### Listen to changes
+
+---
+
+You can provide a listener to the methods above but you can also only listen to the list of bubbles.
+
+```java
+IItemListChangeListener m_changeListener = new IItemChangeListener() {
+    @Override
+    public void dataChanged() {
+        // Update your GUI in the thread UI
+    }
+};
+
+// Somewhere you initialize
+RainbowSdk.instance().bubbles().getAllBubbles().registerChangeListener(m_changeListener);
+
+// Somewhere else you uninitialize
+RainbowSdk.instance().bubbles().getAllBubbles().unregisterChangeListener(m_changeListener);
+```
+
+---
+
+*Last updated December, 16th 2019*
+
+### On this page
+
+-   [Managing bubbles](/docs/sdk/android#name-managing-bubbles-0)
+-   [Preamble](/docs/sdk/android#name-preamble-4)
+-   [Creation, archiving and deletion](/docs/sdk/android#name-creation-archiving-and-deletion-11)
+-   [Create a new bubble](/docs/sdk/android#name-create-a-new-bubble-18)
+-   [Archive (or close) a bubble](/docs/sdk/android#name-archive-or-close-a-bubble-29)
+-   [Delete a bubble](/docs/sdk/android#name-delete-a-bubble-55)
+-   [Invitation](/docs/sdk/android#name-invitation-63)
+-   [Invite a user in a bubble](/docs/sdk/android#name-invite-a-user-in-a-bubble-70)
+-   [Remove a user from a bubble](/docs/sdk/android#name-remove-a-user-from-a-bubble-93)
+-   [Accept an invitation to a bubble](/docs/sdk/android#name-accept-an-invitation-to-a-bubble-107)
+-   [Reject an invitation to a bubble](/docs/sdk/android#name-reject-an-invitation-to-a-bubble-115)
+-   [Discuss in a bubble](/docs/sdk/android#name-discuss-in-a-bubble-123)
+-   [Listen to bubbles changes](/docs/sdk/android#name-listen-to-bubbles-changes-134)
+-   [Listen to a specific bubble changes](/docs/sdk/android#name-listen-to-a-specific-bubble-changes-181)
+-   [Manage custom data in a bubble](/docs/sdk/android#name-manage-custom-data-in-a-bubble-195)
+-   [Update the customData of a bubble](/docs/sdk/android#name-update-the-customdata-of-a-bubble-199)
+-   [Get the customData of a bubble](/docs/sdk/android#name-get-the-customdata-of-a-bubble-207)
+-   [Delete the customData of a bubble](/docs/sdk/android#name-delete-the-customdata-of-a-bubble-222)
+-   [Change bubble data](/docs/sdk/android#name-change-bubble-data-230)
+-   [Pagination for participants within a bubble](/docs/sdk/android#name-pagination-for-participants-within-a-bubble-241)
+-   [Manage the role of a participant](/docs/sdk/android#name-manage-the-role-of-a-participant-258)
+-   [Promote someone to the moderator role](/docs/sdk/android#name-promote-someone-to-the-moderator-role-295)
+-   [Demote someone from the moderator role](/docs/sdk/android#name-demote-someone-from-the-moderator-role-300)
+-   [Change the owner of a bubble](/docs/sdk/android#name-change-the-owner-of-a-bubble-305)
+-   [Listen to changes](/docs/sdk/android#name-listen-to-changes-313)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

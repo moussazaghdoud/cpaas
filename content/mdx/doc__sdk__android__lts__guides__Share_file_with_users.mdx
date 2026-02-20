@@ -1,0 +1,310 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Share_file_with_users"
+lastSynced: "2026-02-20T07:12:28.765Z"
+---
+# Documentation
+
+Sharing files
+
+LTS release 2.61.0Published on 202-04-06
+
+## Sharing files
+
+---
+
+Using the Rainbow SDK for Android, you can share files with another Rainbow user or you can share files within a bubble.
+
+This tutorial will explain how to use the FileStorage service for sharing files in Rainbow.
+
+### Preamble
+
+---
+
+All files shared with others Rainbow users are stored on Rainbow until you decide to remove it. To avoid bad usage and depending your profile, you have some limitations.
+
+The following table sums-up the size allowed depending on your profile:
+
+Profile
+
+Quota
+
+Details
+
+Essential
+
+1 GB
+
+You can share on Rainbow up to 1 GB of files
+
+Business
+
+1 GB
+
+You can share on Rainbow up to 1 GB of files
+
+Enterprise
+
+20 GB
+
+You can share on Rainbow up to 20 GB of files
+
+The following table shows the other specifications applied to any profile:
+
+Limitation
+
+Limit
+
+Details
+
+File Size
+
+100 MB
+
+You can share files with size lower than 100 MB
+
+Files Number
+
+No limit
+
+You can share as many files as your want limited to your quota
+
+### Knowing the file sharing quota
+
+---
+
+In order to know if you can share a new file, you can call the API `getUserQuotaConsumption(IFileProxy.IGetConsumptionListener listener)`.
+
+The return is a `Consumption` object, containing following values:
+
+```java
+RainbowSdk.instance().fileStorage().getUserQuotaConsumption(new IFileProxy.IGetConsumptionListener() {
+    @Override
+    public void onGetSuccess(Consumption consumption) {
+        // Maximum of size allowed
+        long quota = consumption.getQuota();
+
+        // Current total size of files uploaded
+        long currentConsumption = consumption.getConsumption();
+
+        // Unit used
+        String unit = consumption.getUnit();
+    }
+
+    @Override
+    public void onGetError() {
+
+    }
+});
+```
+
+#### Sharing a file with a Rainbow user
+
+---
+
+In a conversation with a Rainbow user, you can share a file by calling the API `uploadFileToConversation` as following:
+
+```java
+RainbowSdk.instance().fileStorage().uploadFileToConversation(the_conversation_object, the_uri_file, "Your message", new IFileProxy.IUploadFileListener() {
+    @Override
+    public void onUploadSuccess(RainbowFileDescriptor fileDescriptor) {
+
+    }
+
+    @Override
+    public void onUploadInProgress(int percent) {
+
+    }
+
+    @Override
+    public void onUploadFailed(RainbowFileDescriptor fileDescriptor, RainbowServiceException exception) {
+
+    }
+});
+```
+
+#### Sharing a file within a bubble
+
+---
+
+Sharing a file within a Bubble can be done as simply as with a contact by calling the API `uploadFileToBubble`:
+
+```java
+RainbowSdk.instance().fileStorage().uploadFileToBubble(the_room_object, the_uri_file, "Your message", new IFileProxy.IUploadFileListener() {
+    @Override
+    public void onUploadSuccess(RainbowFileDescriptor fileDescriptor) {
+
+    }
+
+    @Override
+    public void onUploadInProgress(int percent) {
+
+    }
+
+    @Override
+    public void onUploadFailed(RainbowFileDescriptor fileDescriptor, RainbowServiceException exception) {
+
+    }
+});
+```
+
+#### Be notified of a new file shared
+
+---
+
+As the file shared is relayed through a chat message, you can listen to new messages. See more: [Make an IM conversation, chapter Get the messages and listen to updates](/docs/sdk/android)
+
+Use the method `isFileDescriptorAvailable()` on the IMMessage object and then, if not null, use `getFileDescriptor()`.
+
+```java
+if (yourImMessage.isFileDescriptorAvailable()) {
+    RainbowFileDescriptor fileDescriptor = yourImMessage.getFileDescriptor();
+}
+```
+
+#### Downloading a file
+
+---
+
+Files are protected in Rainbow. If you want to download a file, you need to be signed and call the API `downloadFile` as following:
+
+```java
+RainbowSdk.instance().fileStorage().downloadFile(file_descriptor_object, new IFileProxy.IDownloadFileListener() {
+    @Override
+    public void onDownloadSuccess(GetFileResponse result) {
+        // Use the file_descriptor_object in parameter
+    }
+
+    @Override
+    public void onDownloadInProgress(GetFileResponse result) {
+        int percentDownloaded = result.getPercentDownloaded();
+        // If necessary, do something with that value
+    }
+
+    @Override
+    public void onDownloadFailed(boolean notFound) {
+
+    }
+});
+```
+
+#### Removing a file shared
+
+---
+
+File shared on Rainbow can be removed at any time. When removed, the file can't be downloaded anymore by other Rainbow users. To remove a file you own, call the API `removeFile`.
+
+```java
+RainbowSdk.instance().fileStorage().removeFile(file_descriptor_object, new IFileProxy.IDeleteFileListener() {
+    @Override
+    public void onDeletionSuccess() {
+
+    }
+
+    @Override
+    public void onDeletionError() {
+
+    }
+});
+```
+
+### Retrieve sent and received files from server
+
+---
+
+After login, fetch files from server (sent and received).
+
+```java
+RainbowSdk.instance().fileStorage().fetchAllFilesSent(new IFileProxy.IRefreshListener() {
+    @Override
+    public void onRefreshSuccess(List<RainbowFileDescriptor> fileDescriptorList) {
+        ...
+    }
+
+    @Override
+    public void onRefreshFailed() {
+
+    }
+});
+
+RainbowSdk.instance().fileStorage().fetchAllFilesReceived(new IFileProxy.IRefreshListener() {
+    @Override
+    public void onRefreshSuccess(List<RainbowFileDescriptor> fileDescriptorList) {
+        ...
+    }
+
+    @Override
+    public void onRefreshFailed() {
+
+    }
+});
+```
+
+This should be done once, before calling following methods
+
+#### Retrieving the files sent and received in a conversation
+
+---
+
+At any time, for a dedicated conversation, you can ask for retrieving the list of files sent and received. The API `getFilesSentInConversation(conversation)` and `getFilesReceivedInConversation(room)` have to be used like in the following
+
+```java
+List<RainbowFileDescriptor> filesSentInConversation = RainbowSdk.instance().fileStorage().getFilesSentInConversation(conversation);
+
+List<RainbowFileDescriptor> filesReceivedInConversation = RainbowSdk.instance().fileStorage().getFilesReceivedInConversation(conversation);
+```
+
+#### Retrieving the files sent and received in a bubble
+
+---
+
+Use the API `getFilesSentInBubble(bubble)` and `getFilesReceivedInBubble(bubble)` if you need the same thing in a Bubble.
+
+```java
+List<RainbowFileDescriptor> filesSentInBubble = RainbowSdk.instance().fileStorage().getFilesSentInBubble(bubble);
+
+List<RainbowFileDescriptor> filesReceivedInBubble = RainbowSdk.instance().fileStorage().getFilesReceivedInBubble(bubble);
+```
+
+#### Retrieving the whole list of files sent and received
+
+---
+
+If you need to display the whole list of files shared in all conversations and bubbles, you can call the API `getAllFilesSent()` and `getAllFilesReceived()` like in the following:
+
+```java
+ArrayItemList<RainbowFileDescriptor> allFilesSent = RainbowSdk.instance().fileStorage().getAllFilesSent();
+
+ArrayItemList<RainbowFileDescriptor> allFilesReceived = RainbowSdk.instance().fileStorage().getAllFilesReceived();
+```
+
+You can note that the returned object is an `ArrayItemList`. If you need the `List` object, you can call the method `getCopyOfDataList()` on the `ArrayItemList`.
+
+However, the `ArrayItemList` allows you to listen to changes on the list (if you have a new file sent or received). See more in Guide [Using ArrayItemList](/docs/sdk/android).
+
+---
+
+*Last updated April, 12th 2018*
+
+### On this page
+
+-   [Sharing files](/docs/sdk/android#name-sharing-files-0)
+-   [Preamble](/docs/sdk/android#name-preamble-10)
+-   [Knowing the file sharing quota](/docs/sdk/android#name-knowing-the-file-sharing-quota-112)
+-   [Sharing a file with a Rainbow user](/docs/sdk/android#name-sharing-a-file-with-a-rainbow-user-123)
+-   [Sharing a file within a bubble](/docs/sdk/android#name-sharing-a-file-within-a-bubble-131)
+-   [Be notified of a new file shared](/docs/sdk/android#name-be-notified-of-a-new-file-shared-139)
+-   [Downloading a file](/docs/sdk/android#name-downloading-a-file-150)
+-   [Removing a file shared](/docs/sdk/android#name-removing-a-file-shared-158)
+-   [Retrieve sent and received files from server](/docs/sdk/android#name-retrieve-sent-and-received-files-from-server-166)
+-   [Retrieving the files sent and received in a conversation](/docs/sdk/android#name-retrieving-the-files-sent-and-received-in-a-conversation-177)
+-   [Retrieving the files sent and received in a bubble](/docs/sdk/android#name-retrieving-the-files-sent-and-received-in-a-bubble-185)
+-   [Retrieving the whole list of files sent and received](/docs/sdk/android#name-retrieving-the-whole-list-of-files-sent-and-received-193)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

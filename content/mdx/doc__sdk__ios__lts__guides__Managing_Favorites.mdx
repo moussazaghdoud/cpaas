@@ -1,0 +1,206 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/ios/lts/guides/Managing_Favorites"
+lastSynced: "2026-02-20T07:12:29.372Z"
+---
+# Documentation
+
+Ios > lts > guides > Managing\_Favorites
+
+LTS release 2.13.0Published on 2025-03-07
+
+## Managing favorites
+
+---
+
+### Preamble
+
+Favorites offer the possibility to have a list of favorite contacts and rooms
+
+The objects that can be selected as favorite must conform to the `FavoriteProtocol`, they can be: `RainbowContact`, `ExternalContact` or `Room`, they are identified by a unique `favoriteObjectId` id. The `Favorite` class encapsulate the favorite objects, the `favoriteObject` is a reference to the encapsulated object (`Contact` or `Room`)
+
+`Favorite` objects are managed by the `FavoritesManager`.
+
+### Retrieving the list of favorites
+
+The `FavoritesManager` global property `-(NSArray<FavoriteProtocol>*) favorites` keep a local list of the connected user's favorite list. This list is fetched from the server when the user connects, the `kFavoritesDidLoadFromServer` notification is sent when the favorite list is updated from the server, and `kFavoritesDidLoadFromCache` notification is sent when the favorite list is update from the cache.
+
+It is also possible to retrieve the favorites from the server at any time with the `getAllFavorites(completionHandler:)` method, that will update the local `favorites` array:
+
+-   [swift](#codegroupTab-hashTag0)
+
+```swift
+ServicesManager.sharedInstance().favoritesManager.getAllFavorites {
+    error in
+    if let error = error as? NSError {
+        // handle the error
+       ...        
+    }
+}
+```
+
+### Retrieve a favorite by its id
+
+You are able to get a favorite using its id with the `getFavoriteByObjectId` method:
+
+-   [swift](#codegroupTab-hashTag1)
+
+```swift
+let objectID:String = "..."
+
+if let favorite = ServicesManager.sharedInstance().favoritesManager.getFavoriteByObjectId(objectID) {
+    ...            
+}
+```
+
+### Create a favorite
+
+#### Create a favorite and add it at the last position
+
+A favorite can be created and added at last position with the `createFavorite(_, completionHandler:)` method:
+
+-   [swift](#codegroupTab-hashTag2)
+
+```swift
+// The room or the contact to add to the favorite list
+let roomOrContact = ...
+
+ServicesManager.sharedInstance().favoritesManager.createFavorite(roomOrContact) {
+    error in
+    
+    if let error = error as? NSError {
+        // handle the error
+       ...        
+    }    
+}
+```
+
+#### Create a favorite and insert it at the requested position
+
+A favorite can be create and inserted at a specific position with the `createFavorite(_, atPosition:, completionHandler:)` method:
+
+-   [swift](#codegroupTab-hashTag3)
+
+```swift
+// The room or the contact to add to the favorite list
+let roomOrContact = ...
+
+// The favorite position in the list
+let position:UInt = ...
+
+ServicesManager.sharedInstance().favoritesManager.createFavorite(roomOrContact, atPosition: position) {
+    error in
+    
+    if let error = error as? NSError {
+        // handle the error
+       ...        
+    } 
+}
+```
+
+### Update the favorite's position
+
+A favorite's position can be updated with the `updateFavorite(_, toPosition:, completionHandler:)` method:
+
+-   [swift](#codegroupTab-hashTag4)
+
+```swift
+// The room or the contact to move in the favorite list
+let roomOrContact = ...
+
+// The new position in the list
+let position:UInt = ...
+ServicesManager.sharedInstance().favoritesManager.updateFavorite(roomOrContact, toPosition: position) {
+    error in
+    
+    if let error = error as? NSError {
+        // handle the error
+       ...        
+    } 
+}
+```
+
+### Delete a favorite
+
+You can delete a favorite by calling the `deleteFavorite(_, completionHandler:)` method:
+
+-   [swift](#codegroupTab-hashTag5)
+
+```swift
+// The room or the contact to remove in the favorite list
+let roomOrContact = ...
+
+ServicesManager.sharedInstance().favoritesManager.deleteFavorite(roomOrContact) {
+    error in
+    
+    if let error = error as? NSError {
+        // handle the error
+       ...        
+    } 
+}
+```
+
+### Check if a favorite is in the list
+
+You can check if a favorite is in the list by calling the `is(inFavorites:)` method:
+
+-   [swift](#codegroupTab-hashTag6)
+
+```swift
+// The room or the contact to test
+let roomOrContact = ...
+
+if ServicesManager.sharedInstance().favoritesManager.is(inFavorites: roomOrContact) {
+    ...
+}
+```
+
+### Listening to favorites list changes
+
+In order to catch modification of the favorites, you have to register listeners to the following events:
+
+Event constant
+
+Description
+
+`kFavoritesDidLoadFromServer`
+
+Constant for favorite fetched from server notification
+
+`kFavoritesDidLoadFromCache`
+
+Constant for favorite loaded from cache notification
+
+`kFavoritesDidCreate`
+
+Constant for favorite create notifications
+
+`kFavoritesDidUpdate`
+
+Constant for favorite update notifications
+
+`kFavoritesDidDelete`
+
+Constant for favorite delete notifications
+
+### On this page
+
+-   [Managing favorites](/docs/sdk/ios#name-managing-favorites-0)
+-   [Preamble](/docs/sdk/ios#name-preamble-4)
+-   [Retrieving the list of favorites](/docs/sdk/ios#name-retrieving-the-list-of-favorites-16)
+-   [Retrieve a favorite by its id](/docs/sdk/ios#name-retrieve-a-favorite-by-its-id-26)
+-   [Create a favorite](/docs/sdk/ios#name-create-a-favorite-33)
+-   [Create a favorite and add it at the last position](/docs/sdk/ios#name-create-a-favorite-and-add-it-at-the-last-position-36)
+-   [Create a favorite and insert it at the requested position](/docs/sdk/ios#name-create-a-favorite-and-insert-it-at-the-requested-position-43)
+-   [Update the favorite's position](/docs/sdk/ios#name-update-the-favorites-position-50)
+-   [Delete a favorite](/docs/sdk/ios#name-delete-a-favorite-57)
+-   [Check if a favorite is in the list](/docs/sdk/ios#name-check-if-a-favorite-is-in-the-list-64)
+-   [Listening to favorites list changes](/docs/sdk/ios#name-listening-to-favorites-list-changes-71)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

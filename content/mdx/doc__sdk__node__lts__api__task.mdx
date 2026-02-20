@@ -1,0 +1,482 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/task"
+lastSynced: "2026-02-20T07:12:32.726Z"
+---
+# Documentation
+
+Task
+
+LTS release 2.XPublished on 2025-01-01
+
+## Task
+
+Task model
+
+**Access**: public
+
+-   [Task](#module_Task)
+    -   [~Task](#module_Task..Task)
+        -   [Task()](#new_module_Task..Task_new)
+        -   [id](#module_Task..Task+id)
+        -   [title](#module_Task..Task+title)
+        -   [creationDate](#module_Task..Task+creationDate)
+        -   [done](#module_Task..Task+done)
+        -   [personalNote](#module_Task..Task+personalNote)
+        -   [peerId](#module_Task..Task+peerId)
+        -   [peerJid](#module_Task..Task+peerJid)
+        -   [conversationJid](#module_Task..Task+conversationJid)
+        -   [messageId](#module_Task..Task+messageId)
+        -   [messageTimestamp](#module_Task..Task+messageTimestamp)
+        -   [text](#module_Task..Task+text)
+        -   [position](#module_Task..Task+position)
+        -   [category](#module_Task..Task+category)
+        -   [categoryId](#module_Task..Task+categoryId)
+        -   [type](#module_Task..Task+type)
+    -   [~ChannelFactory()](#module_Task..ChannelFactory)
+    -   [~updateChannel()](#module_Task..updateChannel)
+
+---
+
+### Task~Task
+
+**Kind**: inner class of [`Task`](#module_Task)
+
+**Access**: public
+
+-   [~Task](#module_Task..Task)
+    -   [Task()](#new_module_Task..Task_new)
+    -   [id](#module_Task..Task+id)
+    -   [title](#module_Task..Task+title)
+    -   [creationDate](#module_Task..Task+creationDate)
+    -   [done](#module_Task..Task+done)
+    -   [personalNote](#module_Task..Task+personalNote)
+    -   [peerId](#module_Task..Task+peerId)
+    -   [peerJid](#module_Task..Task+peerJid)
+    -   [conversationJid](#module_Task..Task+conversationJid)
+    -   [messageId](#module_Task..Task+messageId)
+    -   [messageTimestamp](#module_Task..Task+messageTimestamp)
+    -   [text](#module_Task..Task+text)
+    -   [position](#module_Task..Task+position)
+    -   [category](#module_Task..Task+category)
+    -   [categoryId](#module_Task..Task+categoryId)
+    -   [type](#module_Task..Task+type)
+
+---
+
+#### Task()
+
+This class is used to represent a Task  
+
+---
+
+#### task.id
+
+**Kind**: instance property of [`Task`](#module_Task..Task)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+id
+
+`string`
+
+Task's Id.
+
+---
+
+#### task.title
+
+**Kind**: instance property of [`Task`](#module_Task..Task)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+title
+
+`string`
+
+Task's title.
+
+---
+
+#### task.creationDate
+
+**Kind**: instance property of [`Task`](#module_Task..Task)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+creationDate
+
+`number`
+
+Task's creation date (to be used for personnalNote) If message then use messageTimestamp.
+
+---
+
+#### task.done
+
+**Kind**: instance property of [`Task`](#module_Task..Task)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+done
+
+`boolean`
+
+does the Task is done
+
+---
+
+#### task.personalNote
+
+**Kind**: instance property of [`Task`](#module_Task..Task)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+personalNote
+
+`boolean`
+
+does the Task is a personnal Note (created by the connected user)
+
+---
+
+#### task.peerId
+
+**Kind**: instance property of [`Task`](#module_Task..Task)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+peerId
+
+`string`
+
+peed's Id of a message Task.
+
+---
+
+#### task.peerJid
+
+**Kind**: instance property of [`Task`](#module_Task..Task)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+peerJid
+
+`string`
+
+peer's Jid of a message Task.
+
+---
+
+#### task.conversationJid
+
+**Kind**: instance property of [`Task`](#module_Task..Task)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+conversationJid
+
+`string`
+
+conversation's Jid of a message Task.
+
+---
+
+#### task.messageId
+
+**Kind**: instance property of [`Task`](#module_Task..Task)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+messageId
+
+`number`
+
+message's Id of a message Task.
+
+---
+
+#### task.messageTimestamp
+
+**Kind**: instance property of [`Task`](#module_Task..Task)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+messageTimestamp
+
+`string`
+
+message's Timestamp of a message Task.
+
+---
+
+#### task.text
+
+**Kind**: instance property of [`Task`](#module_Task..Task)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+text
+
+`string`
+
+of the Task. (Used for personnal Note)
+
+---
+
+#### task.position
+
+**Kind**: instance property of [`Task`](#module_Task..Task)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+position
+
+`string`
+
+of the Task.
+
+---
+
+#### task.category
+
+**Kind**: instance property of [`Task`](#module_Task..Task)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+category
+
+`string`
+
+of the Task.
+
+---
+
+#### task.categoryId
+
+**Kind**: instance property of [`Task`](#module_Task..Task)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+categoryId
+
+`string`
+
+of the Task.
+
+---
+
+#### task.type
+
+**Kind**: instance property of [`Task`](#module_Task..Task)
+
+**Access**: public
+
+**Read only**: true
+
+**Properties**
+
+Name
+
+Type
+
+Description
+
+type
+
+`string`
+
+of the Task.
+
+---
+
+### Task~ChannelFactory()
+
+This method is used to create a channel from data object
+
+**Kind**: inner method of [`Task`](#module_Task)
+
+**Access**: public
+
+---
+
+### Task~updateChannel()
+
+This method is used to update a channel from data object
+
+**Kind**: inner method of [`Task`](#module_Task)
+
+**Access**: public
+
+---
+
+### On this page
+
+-   [Task](/docs/sdk/node#name-task-3)
+-   [Task~Task](/docs/sdk/node#name-tasktask-122)
+-   [Task()](/docs/sdk/node#name-task-224)
+-   [task.id](/docs/sdk/node#name-task.id-234)
+-   [task.title](/docs/sdk/node#name-task.title-281)
+-   [task.creationDate](/docs/sdk/node#name-task.creationdate-328)
+-   [task.done](/docs/sdk/node#name-task.done-375)
+-   [task.personalNote](/docs/sdk/node#name-task.personalnote-422)
+-   [task.peerId](/docs/sdk/node#name-task.peerid-469)
+-   [task.peerJid](/docs/sdk/node#name-task.peerjid-516)
+-   [task.conversationJid](/docs/sdk/node#name-task.conversationjid-563)
+-   [task.messageId](/docs/sdk/node#name-task.messageid-610)
+-   [task.messageTimestamp](/docs/sdk/node#name-task.messagetimestamp-657)
+-   [task.text](/docs/sdk/node#name-task.text-704)
+-   [task.position](/docs/sdk/node#name-task.position-751)
+-   [task.category](/docs/sdk/node#name-task.category-798)
+-   [task.categoryId](/docs/sdk/node#name-task.categoryid-845)
+-   [task.type](/docs/sdk/node#name-task.type-892)
+-   [Task~ChannelFactory()](/docs/sdk/node#name-taskchannelfactory-939)
+-   [Task~updateChannel()](/docs/sdk/node#name-taskupdatechannel-955)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

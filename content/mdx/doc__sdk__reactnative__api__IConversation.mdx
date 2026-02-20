@@ -1,0 +1,129 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/IConversation"
+lastSynced: "2026-02-20T07:12:33.440Z"
+---
+# Documentation
+
+IConversation
+
+## Typedefs
+
+[Conversation](#IConversation) : `Interface`
+
+Conversation interface
+
+## IConversation : `Interface`
+
+IConversation interface, its `extends` from the [IPeer](/docs/sdk/reactnative/api/IPeer)
+
+**Kind**: global Interface **Properties**
+
+Name
+
+Type
+
+Description
+
+jId
+
+`string`
+
+The jabber identifier of the conversation
+
+name
+
+`string`
+
+conversation name
+
+imageURL
+
+`string`
+
+the conversation image URL
+
+lastMsg
+
+`string`
+
+last received message
+
+date
+
+`string`
+
+last message received date
+
+isBubble
+
+`boolean`
+
+is this conversation of type bubble room
+
+nbMessages
+
+`number`
+
+number of the unread message count
+
+isSelected
+
+`boolean`
+
+is this conversation had been selected form the user
+
+selectedClass
+
+`ViewStyle`
+
+the style of the conversation when is selected
+
+peerIsRoster
+
+`boolean`
+
+is this conversation is in your contact roster list?
+
+peerIsInvited
+
+`boolean`
+
+is this conversation had been invited to join your contact list?
+
+hasActiveConference
+
+`boolean`
+
+is this conversation have active conference?
+
+bubble
+
+[`IBubble`](/docs/sdk/reactnative/api/IBubble)
+
+the bubble room object incase this conversation is Bubble
+
+contact
+
+[`IContact`](/docs/sdk/reactnative/api/IContact)
+
+the contact object incase this conversation is P2P
+
+isBot
+
+`boolean`
+
+Allow to know if the contact is a bot to identify the one2one bot conversations.
+
+### On this page
+
+-   [Typedefs](/docs/sdk/reactnative/api/IConversation#name-typedefs-0)
+-   [IConversation : Interface](/docs/sdk/reactnative/api/IConversation#name-iconversation-:-interface-7)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

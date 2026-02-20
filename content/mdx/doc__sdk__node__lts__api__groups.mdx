@@ -1,0 +1,511 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/node/lts/api/groups"
+lastSynced: "2026-02-20T07:12:32.265Z"
+---
+# Documentation
+
+Groups Service
+
+LTS release 2.XPublished on 2025-01-01
+
+## GroupsService
+
+This service manages groups which allow to create his own lists of contacts.  
+  
+  
+The main methods proposed in that module allow to:  
+\- Get all groups of the user  
+\- Create a new group  
+\- Delete an existing group  
+\- Add a contact in a group  
+\- Remove a contact from a group  
+
+**Access**: public
+
+**Version**: 2.42.0-lts.0 - Documentation generated on 2025/10/17T17:36:59.491Z
+
+-   [GroupsService](#module_GroupsService)
+    -   *Groups MANAGEMENT*
+        -   [createGroup(name, comment, isFavorite)](#module_GroupsService+createGroup) ⇒ `Promise.<Object, ErrorManager>`
+        -   [deleteGroup(group)](#module_GroupsService+deleteGroup) ⇒ `Promise.<Object, ErrorManager>`
+        -   [deleteAllGroups()](#module_GroupsService+deleteAllGroups) ⇒ `Object`
+        -   [updateGroupName(group, name)](#module_GroupsService+updateGroupName) ⇒ `Promise.<Object, ErrorManager>`
+        -   [updateGroupComment(group, comment)](#module_GroupsService+updateGroupComment) ⇒ `Promise.<Object, ErrorManager>`
+        -   [setGroupAsFavorite(group)](#module_GroupsService+setGroupAsFavorite) ⇒ `Promise.<Object, ErrorManager>`
+        -   [unsetGroupAsFavorite(group)](#module_GroupsService+unsetGroupAsFavorite) ⇒ `Promise.<Object, ErrorManager>`
+        -   [getAll()](#module_GroupsService+getAll) ⇒ `Array`
+        -   [getFavoriteGroups()](#module_GroupsService+getFavoriteGroups) ⇒ `Array`
+        -   [getGroupById(id)](#module_GroupsService+getGroupById) ⇒ `Promise.<any>`
+        -   [getGroupByName(name, forceServerSearch)](#module_GroupsService+getGroupByName) ⇒ `Promise.<any>`
+    -   *Groups USERS*
+        -   [addUserInGroup(contact, group)](#module_GroupsService+addUserInGroup) ⇒ `Promise.<Object, ErrorManager>`
+        -   [removeUserFromGroup(contact, group)](#module_GroupsService+removeUserFromGroup) ⇒ `Promise.<Object, ErrorManager>`
+
+---
+
+### groupsService.createGroup(name, comment, isFavorite) ⇒ `Promise.<Object, ErrorManager>`
+
+Create a new group  
+
+**Kind**: instance method of [`GroupsService`](#module_GroupsService)
+
+**Returns**: `Promise.<Object, ErrorManager>` - The result
+
+**Category**: Groups MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Group` - Created group object or an error object depending on the result
+
+Param
+
+Type
+
+Description
+
+name
+
+`string`
+
+The name of the group to create
+
+comment
+
+`string`
+
+The comment of the group to create
+
+isFavorite
+
+`boolean`
+
+If true, the group is flagged as favorite
+
+---
+
+### groupsService.deleteGroup(group) ⇒ `Promise.<Object, ErrorManager>`
+
+Delete an owned group  
+
+**Kind**: instance method of [`GroupsService`](#module_GroupsService)
+
+**Returns**: `Promise.<Object, ErrorManager>` - The result
+
+**Category**: Groups MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Group` - Deleted group object or an error object depending on the result
+
+Param
+
+Type
+
+Description
+
+group
+
+`Object`
+
+The group to delete
+
+---
+
+### groupsService.deleteAllGroups() ⇒ `Object`
+
+Delete all existing owned groups  
+Return a promise  
+
+**Kind**: instance method of [`GroupsService`](#module_GroupsService)
+
+**Returns**: `Object` - Nothing or an error object depending on the result
+
+**Category**: Groups MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### groupsService.updateGroupName(group, name) ⇒ `Promise.<Object, ErrorManager>`
+
+Update the name of a group  
+
+**Kind**: instance method of [`GroupsService`](#module_GroupsService)
+
+**Returns**: `Promise.<Object, ErrorManager>` - The result
+
+**Category**: Groups MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Group` - Updated group object or an error object depending on the result
+
+Param
+
+Type
+
+Description
+
+group
+
+`Object`
+
+The group to update
+
+name
+
+`string`
+
+The new name of the group
+
+---
+
+### groupsService.updateGroupComment(group, comment) ⇒ `Promise.<Object, ErrorManager>`
+
+Update the comment of a group  
+
+**Kind**: instance method of [`GroupsService`](#module_GroupsService)
+
+**Returns**: `Promise.<Object, ErrorManager>` - The result
+
+**Category**: Groups MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Group` - Updated group object or an error object depending on the result
+
+Param
+
+Type
+
+Description
+
+group
+
+`Object`
+
+The group to update
+
+comment
+
+`string`
+
+The new comment of the group
+
+---
+
+### groupsService.setGroupAsFavorite(group) ⇒ `Promise.<Object, ErrorManager>`
+
+Set a group as a favorite one of the curent loggued in user.  
+
+**Kind**: instance method of [`GroupsService`](#module_GroupsService)
+
+**Returns**: `Promise.<Object, ErrorManager>` - The result
+
+**Category**: Groups MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Group` - Updated group or an error object depending on the result
+
+**Since**: 1.67.0
+
+Param
+
+Type
+
+Description
+
+group
+
+`Object`
+
+The group
+
+---
+
+### groupsService.unsetGroupAsFavorite(group) ⇒ `Promise.<Object, ErrorManager>`
+
+Remove the favorite state of a group of the curent loggued in user.  
+
+**Kind**: instance method of [`GroupsService`](#module_GroupsService)
+
+**Returns**: `Promise.<Object, ErrorManager>` - The result
+
+**Category**: Groups MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Group` - Updated group or an error object depending on the result
+
+**Since**: 1.67.0
+
+Param
+
+Type
+
+Description
+
+group
+
+`Object`
+
+The group
+
+---
+
+### groupsService.getAll() ⇒ `Array`
+
+Return the list of existing groups  
+
+**Kind**: instance method of [`GroupsService`](#module_GroupsService)
+
+**Returns**: `Array` - The list of existing groups with following fields: id, name, comment, isFavorite, owner, creationDate, array of users in the group
+
+**Category**: Groups MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### groupsService.getFavoriteGroups() ⇒ `Array`
+
+Return the list of favorite groups  
+
+**Kind**: instance method of [`GroupsService`](#module_GroupsService)
+
+**Returns**: `Array` - The list of favorite groups with following fields: id, name, comment, isFavorite, owner, creationDate, array of users in the group
+
+**Category**: Groups MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+---
+
+### groupsService.getGroupById(id) ⇒ `Promise.<any>`
+
+Return a group by its id  
+
+**Kind**: instance method of [`GroupsService`](#module_GroupsService)
+
+**Returns**: `Promise.<any>` - The group found if exist or undefined
+
+**Category**: Groups MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Description
+
+id
+
+`String`
+
+group Id of the group to found
+
+---
+
+### groupsService.getGroupByName(name, forceServerSearch) ⇒ `Promise.<any>`
+
+Return a group by its id  
+
+**Kind**: instance method of [`GroupsService`](#module_GroupsService)
+
+**Returns**: `Promise.<any>` - The group found if exist or undefined
+
+**Category**: Groups MANAGEMENT
+
+**Access**: public
+
+**Nodered**: true
+
+Param
+
+Type
+
+Default
+
+Description
+
+name
+
+`String`
+
+Name of the group to found
+
+forceServerSearch
+
+`boolean`
+
+`false`
+
+force the update from server.
+
+---
+
+### groupsService.addUserInGroup(contact, group) ⇒ `Promise.<Object, ErrorManager>`
+
+Add a contact in a group  
+
+**Kind**: instance method of [`GroupsService`](#module_GroupsService)
+
+**Returns**: `Promise.<Object, ErrorManager>` - The result
+
+Champ
+
+Type
+
+Description
+
+data
+
+Object
+
+Group Object.
+
+id
+
+String
+
+Group unique identifier.
+
+name
+
+String
+
+Group name.
+
+comment
+
+String
+
+Group comment.
+
+isFavorite
+
+Boolean
+
+Is group flagged as favorite.
+
+owner
+
+String
+
+Rainbow Id of group owner.
+
+creationDate
+
+Date-Time
+
+Creation date of the group (read only, set automatically during group creation).
+
+users
+
+String\[\]
+
+List of Rainbow users being in the group.
+
+**Category**: Groups USERS
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Group` - Updated group with the new contact added or an error object depending on the result
+
+Param
+
+Type
+
+Description
+
+contact
+
+`Contact`
+
+The user to add in group
+
+group
+
+`Object`
+
+The group
+
+---
+
+### groupsService.removeUserFromGroup(contact, group) ⇒ `Promise.<Object, ErrorManager>`
+
+Remove a contact from a group  
+
+**Kind**: instance method of [`GroupsService`](#module_GroupsService)
+
+**Returns**: `Promise.<Object, ErrorManager>` - The result
+
+**Category**: Groups USERS
+
+**Access**: public
+
+**Nodered**: true  
+**Fulfil**: `Group` - Updated group without the removed contact or an error object depending on the result
+
+Param
+
+Type
+
+Description
+
+contact
+
+`Contact`
+
+The user to remove from the group
+
+group
+
+`Object`
+
+The destination group
+
+---
+
+### On this page
+
+-   [GroupsService](/docs/sdk/node#name-groupsservice-3)
+-   [groupsService.createGroup(name, comment, isFavorite) ⇒ Promise.<Object, ErrorManager>](/docs/sdk/node#name-groupsservice.creategroupname-comment-isfavorite--promise.object-errormanager-107)
+-   [groupsService.deleteGroup(group) ⇒ Promise.<Object, ErrorManager>](/docs/sdk/node#name-groupsservice.deletegroupgroup--promise.object-errormanager-182)
+-   [groupsService.deleteAllGroups() ⇒ Object](/docs/sdk/node#name-groupsservice.deleteallgroups--object-235)
+-   [groupsService.updateGroupName(group, name) ⇒ Promise.<Object, ErrorManager>](/docs/sdk/node#name-groupsservice.updategroupnamegroup-name--promise.object-errormanager-260)
+-   [groupsService.updateGroupComment(group, comment) ⇒ Promise.<Object, ErrorManager>](/docs/sdk/node#name-groupsservice.updategroupcommentgroup-comment--promise.object-errormanager-324)
+-   [groupsService.setGroupAsFavorite(group) ⇒ Promise.<Object, ErrorManager>](/docs/sdk/node#name-groupsservice.setgroupasfavoritegroup--promise.object-errormanager-388)
+-   [groupsService.unsetGroupAsFavorite(group) ⇒ Promise.<Object, ErrorManager>](/docs/sdk/node#name-groupsservice.unsetgroupasfavoritegroup--promise.object-errormanager-444)
+-   [groupsService.getAll() ⇒ Array](/docs/sdk/node#name-groupsservice.getall--array-500)
+-   [groupsService.getFavoriteGroups() ⇒ Array](/docs/sdk/node#name-groupsservice.getfavoritegroups--array-525)
+-   [groupsService.getGroupById(id) ⇒ Promise.<any>](/docs/sdk/node#name-groupsservice.getgroupbyidid--promise.any-550)
+-   [groupsService.getGroupByName(name, forceServerSearch) ⇒ Promise.<any>](/docs/sdk/node#name-groupsservice.getgroupbynamename-forceserversearch--promise.any-603)
+-   [groupsService.addUserInGroup(contact, group) ⇒ Promise.<Object, ErrorManager>](/docs/sdk/node#name-groupsservice.adduseringroupcontact-group--promise.object-errormanager-676)
+-   [groupsService.removeUserFromGroup(contact, group) ⇒ Promise.<Object, ErrorManager>](/docs/sdk/node#name-groupsservice.removeuserfromgroupcontact-group--promise.object-errormanager-845)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

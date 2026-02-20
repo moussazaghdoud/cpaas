@@ -1,0 +1,240 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/ICallLog"
+lastSynced: "2026-02-20T07:12:33.420Z"
+---
+# Documentation
+
+ICallLog
+
+## Typedefs
+
+[CallLog](#CallLog) : `Interface`
+
+CallLog interface
+
+[ICallLogInfo](#ICallLogInfo) : `Interface`
+
+ICallLogInfo interface
+
+## CallLog : `Interface`
+
+CallLog interface
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+contact
+
+`[IContact](/docs/sdk/reactnative/api/IContact)`
+
+The contact of object of the call peer.
+
+lastCall
+
+`[ICallLogInfo](#ICallLogInfo)`
+
+The call info about the last recent Call.
+
+callsList
+
+`[ICallLogInfo[]](#ICallLogInfo)`
+
+The information list for all the call history.
+
+## ICallLogInfo : `Interface`
+
+ICallLogInfo interface
+
+**Kind**: global typedef **Properties**
+
+Name
+
+Type
+
+Description
+
+date
+
+`string`
+
+The date of the call
+
+duration
+
+`string`
+
+The call duration
+
+state
+
+`[CallLogState](#CallLogState)`
+
+The call logs state.
+
+outgoing
+
+`boolean`
+
+true if the call is outgoing call false if its missed or incoming
+
+isConference
+
+`boolean`
+
+true if the call type is conference
+
+## CallLogState : `enum`
+
+**Kind**: global enum **Access**: public **Read only**: true **Properties**
+
+Name
+
+Type
+
+Default
+
+Description
+
+missed\_incoming
+
+`string`
+
+`Missed Incoming`
+
+missed incoming call
+
+missed\_outgoing
+
+`string`
+
+`Missed Outgoing`
+
+missed outgoing call
+
+answered\_incoming
+
+`string`
+
+`Answered Incoming`
+
+Answered incoming call
+
+answered\_outgoing
+
+`string`
+
+`Answered Outgoing`
+
+Answered Outgoing call
+
+## ICallLogActionsProvider : `Interface`
+
+**Kind**: global Interface **Access**: public **Read only**: true **Properties**
+
+Name
+
+Type
+
+Description
+
+getCallLogAction
+
+`(callLog: [ICallLog](#ICallLog)) => [ICallLogAction](#ICallLogAction)[]`
+
+fetching the contact call history information details
+
+getOnClickCallLogAction
+
+`(callLog: [ICallLog](#ICallLog)) => [ICallLogAction](#ICallLogAction)`
+
+showing the user a call options dialog to call this call log peer contact
+
+## ICallLogAction : `Interface`
+
+ICallLogAction interface
+
+**Kind**: global Interface **Properties**
+
+Name
+
+Type
+
+Description
+
+style
+
+`ImageStyle`
+
+the style you want to provide to the call logs
+
+imageSource
+
+`ImageSourcePropType`
+
+the image source path
+
+run
+
+`(callLog: [ICallLog](#ICallLog)) => void`
+
+run an action when the call logs pressed
+
+## ICallLogStyleProps : `Interface`
+
+ICallLogStyleProps interface
+
+**Kind**: global Interface **Properties**
+
+Name
+
+Type
+
+Description
+
+TabsColor
+
+`ViewStyle`
+
+Call Logs tab style
+
+tabBarUnderline
+
+`ViewStyle`
+
+Call logs underline tab style
+
+tabActiveText
+
+`TextStyle`
+
+Tab text style when is selected
+
+tabText
+
+`TextStyle`
+
+Tab text style when is unselected
+
+### On this page
+
+-   [Typedefs](/docs/sdk/reactnative/api/ICallLog#name-typedefs-0)
+-   [CallLog : Interface](/docs/sdk/reactnative/api/ICallLog#name-calllog-:-interface-7)
+-   [ICallLogInfo : Interface](/docs/sdk/reactnative/api/ICallLog#name-icallloginfo-:-interface-69)
+-   [CallLogState : enum](/docs/sdk/reactnative/api/ICallLog#name-calllogstate-:-enum-153)
+-   [ICallLogActionsProvider : Interface](/docs/sdk/reactnative/api/ICallLog#name-icalllogactionsprovider-:-interface-238)
+-   [ICallLogAction : Interface](/docs/sdk/reactnative/api/ICallLog#name-icalllogaction-:-interface-286)
+-   [ICallLogStyleProps : Interface](/docs/sdk/reactnative/api/ICallLog#name-icalllogstyleprops-:-interface-348)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

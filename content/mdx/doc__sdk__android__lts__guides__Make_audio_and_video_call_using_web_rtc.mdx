@@ -1,0 +1,221 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Make_audio_and_video_call_using_web_rtc"
+lastSynced: "2026-02-20T07:12:28.519Z"
+---
+# Documentation
+
+Make audio/video call using WebRTC
+
+LTS release 2.61.0Published on 202-04-06
+
+## Make audio and video call
+
+---
+
+### Preamble
+
+---
+
+This guide describes how to make audio and video call using the SDK for Android thanks to the WebRTC stack.
+
+### Minimal permissions
+
+---
+
+Before starting with WebRTC, you need to request the following permissions in your application:
+
+```xml
+<uses-permission android:name="android.permission.CAMERA"/>
+<uses-permission android:name="android.permission.RECORD_AUDIO"/>
+```
+
+> Here is how to do this: [Request App Permissions](https://developer.android.com/training/permissions/requesting)
+
+---
+
+All APIs are declared in `RainbowSdk.instance().webRTC()`
+
+### Audio calls
+
+---
+
+A WebRTC call can have only audio or audio and video in the same call. Rainbow SDk is able to handle only one WebRTC call at a time. This means that when there is already a call in progress, no new incoming call will be handled and you will not be able to make a second outgoing call.
+
+### Incoming call
+
+---
+
+To listen to incoming calls, you should register to `ITelephonyListener` listener.
+
+This listener implements 3 API which are `onCallAdded()`, `onCallModified()` and `onCallRemoved()`.
+
+To listen to it, you should use the following API `registerTelephonyListener()` in WebRTC module.
+
+Do not forget to unregister this listener to avoid memory leaks. You should call the API `unregisterTelephonyListener()` once you do not need anymore to listen these events.
+
+Here is the content of `ITelephonyListener`:
+
+```java
+@Override
+public void onCallAdded(WebRTCCall call) {
+    RBLog.verbose(LOG_TAG, "call addded");
+}
+
+@Override
+public void onCallModified(WebRTCCall call) {
+    RBLog.verbose(LOG_TAG, "call modified");
+}
+
+@Override
+public void onCallRemoved(WebRTCCall call) {
+    RBLog.verbose(LOG_TAG, "call removed");
+}
+```
+
+To answer, when the `onCallAdded()` is triggered, you should call the API `takeCall()`. The first argument is a boolean which allows to know if you want to answer with video (`true`) or not - audio only (`false`). The second argument is a boolean which allows to know if you want to use front facing camera (`true`) or not - rear camera (`false`)
+
+If you want to reject the incoming call, you should call the API `rejectCall()`. This action runs when a call is in ringing state.
+
+The `WebRTCCall` object is the current WebRTC call. You will automaticvally get it using the listener `ITelephonyListener` or you can get it at any time using the API `getCurrentCall()`. This object contains all information related to the call. Here are the most important ones:
+
+-   `getState()` returns the current state of the call
+
+```java
+public enum MediaState
+{
+    /**
+     * The incoming call is ringing.
+     */
+    RINGING_INCOMING,
+
+    /**
+     * The outgoing call is ringing.
+     */
+    RINGING_OUTGOING,
+
+    /**
+     * The call is active (means in conversation).
+     */
+    ACTIVE
+}
+```
+
+-   `getDistant()` returns the `IRainbowContact` corresponding to the caller or the callee.
+-   `getSubject()` returns the subject of the call which is roughly the reason of the call.
+-   `getTime()` returns the duration in seconds of the call.
+-   `getStartTime()` returns the timestamp when the call has started.
+-   `canAddVideo()` returns `true` when it is possible to add video to the call.
+-   `getUseFrontFacingCamera()` returns `true` when the video is currently using the front facing camera.
+-   `getEglBaseContext()` returns the `EglBase.Context` needed by your application to render video of the call.
+
+### Outgoing call
+
+---
+
+To make audio calls, you should use the API `makeCall()`. This method has 4 arguments. You have to give your contact object, a boolean with a value which is `false` (for audio calls), a boolean with a value which is `false` (for front facing camera usage which is not used for audio calls) and the subject of the call.
+
+As soon as this method is called a `onCallAdded()` is triggered and you will get the `WebRTCCall` object representing your outgoing call.
+
+### Active call
+
+---
+
+When the call is answered on your side for incoming call or on the other side for outgoing call, the `onCallModified()` listener will be triggered and the `WebRTCCall` state will be updated to `ACTIVE`.
+
+To terminate the call, you should use the method `hangupCall()`.
+
+If you want to add video during a call, you should use the API `addVideo()`. The only argument is a boolean which allows to know if you want to use front facing camera (`true`) or not - rear camera (`false`)
+
+### Video Calls
+
+---
+
+Video calls are working exactly the same as audio calls. The only difference when using `makeCall()` or `takeCall()` is that you should use `true` for the first parameter if you want to start the call directly with video. Otherwise, as seen in previous section you can `addVideo()` to a simple audio call.
+
+Any video modification in the call will trigger a `onCallModified()`. Then you will need to update your video renderings according to what is available.
+
+To render videos, you need to use `SurfaceViewRenderer` objects that are provided by the WebRTC stack and you will need to initialize these object (`init()`) with the `getEglBaseContext()` from the current `WebRTCCall`. Then you will need to get `VideoTrack` objects (also provided by the WebRTC stack) and give them to the `SurfaceViewRenderer`.
+
+```java
+videoTrack.addSink(surfaceViewRenderer);
+```
+
+Do not forget to remove the video when you do not want to render it any more.
+
+```java
+videoTrack.removeSink(surfaceViewRenderer);
+```
+
+If you are sharing your video in the call, the `getLocalVideoTrack()` API will return you the `VideoTrack` that you will be able to display thanks to `SurfaceViewRenderer`.
+
+If you want to display the remote video, the `getDistantVideoTracks` API will return you a list of `VideoTrack` that you will be able to display thanks to `SurfaceViewRenderer`. Other Rainbow SDK (Web and Node) can share video but also desktop. So it is possible to have up to 2 remotes videos. If this is your case, the **desktop sharing** will always be the **second video** of the list.
+
+The `getDistantVideoTracks` needs a `PeerSessionType`, here are the different values:
+
+```java
+public enum PeerSessionType {
+
+    /**
+     * The WebRTC main call. It will contains audio, video and sharing for point to point calls.
+     * It will contains audio only for conference.
+     */
+    AUDIO_VIDEO_SHARING,
+
+    /**
+     * Only used for conference, it will contains the sharing video.
+     */
+    SHARING,
+
+    /**
+     * Only used for conference, it will contains the local video.
+     */
+    LOCAL_VIDEO,
+
+    /**
+     * Only used for conference, it will contains the remote videos.
+     */
+    DISTANT_VIDEO
+}
+```
+
+Others API which can be useful depending of the features of your application:
+
+-   If you want to switch your phone camera, you should use the API `switchCamera()`
+    
+-   If you want to drop video during a call, you should use the API `dropVideo()`.
+    
+
+---
+
+### WebRTC Gateway
+
+WebRTC Gateway allows you to call a right phone number using the WebRTC.
+
+To make a WebRTC Gateway call, you should do it with `makeMediaPillarCall(phoneNumber);`
+
+where phoneNumber is a string built with your country converted to E.164 recommandation.
+
+To take a Media Pillar call, you should use the `takeCall()` method as described above.
+
+*Last updated January, 22nd 2020*
+
+### On this page
+
+-   [Make audio and video call](/docs/sdk/android#name-make-audio-and-video-call-0)
+-   [Preamble](/docs/sdk/android#name-preamble-4)
+-   [Minimal permissions](/docs/sdk/android#name-minimal-permissions-11)
+-   [Audio calls](/docs/sdk/android#name-audio-calls-28)
+-   [Incoming call](/docs/sdk/android#name-incoming-call-35)
+-   [Outgoing call](/docs/sdk/android#name-outgoing-call-109)
+-   [Active call](/docs/sdk/android#name-active-call-119)
+-   [Video Calls](/docs/sdk/android#name-video-calls-132)
+-   [WebRTC Gateway](/docs/sdk/android#name-webrtc-gateway-176)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

@@ -1,0 +1,369 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Retrieve_conversations_and_contacts"
+lastSynced: "2026-02-20T07:12:28.752Z"
+---
+# Documentation
+
+Retrieve conversations and contacts
+
+LTS release 2.61.0Published on 202-04-06
+
+## Retrieve conversations and contacts
+
+---
+
+### Preamble
+
+---
+
+This guide will describe how to retrieve the list of conversations and contacts in your network.
+
+### Retrieving conversations
+
+---
+
+To retrieve all active conversations (one-to-one and bubbles), you can call the method `getAllConversations()` but you have to **listen to the conversations list changes**. See more in Guide [Using ArrayItemList](/docs/sdk/android).
+
+You can do that by creating an `IItemListChangeListener` object in the class which is listening and then register.
+
+```java
+public class MyFragmentWhichIsListeningConversations extends Fragment {
+    private IItemListChangeListener m_changeListener = new IItemListChangeListener() {
+        @Override
+        public void dataChanged() {
+            // Do something on the thread UI
+            ArrayItemList<IRainbowConversation> conversations = RainbowSdk.instance().im().getAllConversations();
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        RainbowSdk.instance().im().getAllConversations().registerChangeListener(m_changeListener);
+        return view;
+    }
+    @Override
+    public void onDestroyView() {
+        RainbowSdk.instance().im().getAllConversations().unregisterChangeListener(m_changeListener);
+        super.onDestroyView();
+    }
+}
+```
+
+To differentiate the two types of conversation, you can use the method `isRoomType()` of `IRainbowConversation`.
+
+```java
+ArrayItemList<IRainbowConversation> conversations = RainbowSdk.instance().im().getAllConversations();
+for(IRainbowConversation conversation : conversations.getCopyOfDatalist()) {
+    if (conversation.isRoomType()) {
+        // The conversation is a bubble / room
+    } else {
+        // The conversation is a peer to peer conversation (one-to-one)
+    }
+}
+```
+
+For listening to message list changes of the conversation, you can register a listener
+
+```java
+String conversationId = ""; // Id of your conversation
+IRainbowConversation conversation = RainbowSdk.instance().im().getConversationFromId(conversationId);
+
+conversation.getMessages().registerChangeListener(new IItemListChangeListener() {
+    @Override
+    public void dataChanged() {
+        //do stuff here
+    }
+});
+```
+
+### Retrieving contacts
+
+---
+
+To retrieve the list of your contacts (they are in your network), you can call the method `getRainbowContacts()` but you have to **listen to the contacts list changes**. See more in Guide [ArrayItemList](https://github.com/Rainbow-CPaaS/Rainbow-Android-SDK/blob/master/docs/tutorials/ArrayItemList.md).
+
+You can do that by creating an `IItemListChangeListener` object in the class which is listening and then register.
+
+```java
+public class MyFragmentWhichIsListeningConversations extends Fragment {
+    private IItemListChangeListener m_changeListener = new IItemListChangeListener() {
+        @Override
+        public void dataChanged() {
+            // Do something on the thread UI
+            ArrayItemList<IRainbowContact> contacts = RainbowSdk.instance().contacts().getRainbowContacts();
+        }
+    };
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        RainbowSdk.instance().contacts().getRainbowContacts().registerChangeListener(m_changeListener);
+        return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        RainbowSdk().instance().contacts().getRainbowContacts().unregisterChangeListener(m_changeListener);
+        super.onDestroyView();
+    }
+}
+```
+
+### Retrieve a contact information
+
+---
+
+To retrieve an existing contact, you can call the method `getContactFromJabberId` or `getContactFromId` as following:
+
+```java
+IRainbowContact contact;
+
+contact = RainbowSdk.instance().contacts().getContactFromId("contactId");
+contact = RainbowSdk.instance().contacts().getContactFromJabberId("contactJabberId");
+```
+
+If the contact searched is not found in your roster, you can call the method `getUserDataFromId` which will make a request to the server to retrieve the contact (limited - depending on privacy rules).
+
+```java
+RainbowSdk.instance().contacts().getUserDataFromId("contactId", new IUserProxy.IGetUserDataListener() {
+    @Override
+    public void onSuccess(Contact contact) {
+        // Do something with the retrieved contact from server
+    }
+
+    @Override
+    public void onFailure(RainbowServiceException exception) {
+        // Something was wrong
+    }
+});
+```
+
+`RainbowServiceException` is an object that contain a status code, a details code and a details message about the exception threw :
+
+```java
+RainbowServiceException exception; // The exception
+
+exception.getStatusCode(); // Example : 404 for http not found error
+exception.getDetailsCode(); // Example : 404116 for more information about error
+exception.getDetailsMessage(); // A text message about this error
+```
+
+### Managing contact updates
+
+---
+
+If you want to listen to contact updates, you have to implement `IRainbowContact.IContactListener`.
+
+```java
+public class MyFragmentWhichIsListeningToContactUpdates implement IRainbowContact.IContactListener {
+
+    private IRainbowContact my_contact; // Your contact object
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        my_contact.registerChangeListener(this);
+        return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        // Don't forget to unregister the listener
+        my_contact.unregisterChangeListener(this);
+        super.onDestroyView();
+    }
+
+    @Override
+    public void contactUpdated(Contact updatedContact) {
+        // Do something in the UI Thread
+    }
+
+    @Override
+    public void onPresenceChanged(Contact contact, RainbowPresence presence) {
+        // Do something in the UI Thread
+    }
+
+    @Override
+    public void onCompanyChanged(String companyId) {
+        // Do something in the UI Thread
+    }
+
+    @Override
+    public void onActionInProgress(boolean clickActionInProgress) {
+        // Do something in the UI Thread
+    }
+}
+```
+
+---
+
+### Search a contact
+
+---
+
+To search a contact by his name, you should use the **searchByName** method.
+
+```java
+String nameToSearch = "example";
+
+RainbowSdk.instance().contacts().searchByName(nameToSearch, new IRainbowContactsSearchListener() {
+    @Override
+    public void searchStarted() {
+
+    }
+
+    @Override
+    public void searchFinished(final List<IContact> contactsFounded) {
+        // Search finished. So you can do what you want with the list of contacts found.
+    }
+
+    @Override
+    public void searchError() {
+        // Error during the execution of the request.
+    }
+});
+```
+
+The result of this method only gives the id and the jid of the user.
+
+To have more information about the contact, you should use the **searchByJid** method.
+
+```java
+String contactJid = "jid_searched";
+
+RainbowSdk.instance().contacts().searchByJid(contactJid, new IRainbowContactsSearchListener() {
+    @Override
+    public void searchStarted() {
+
+    }
+
+    @Override
+    public void searchFinished(final List<IContact> contactsFounded) {
+        // Search finished. So you can do that you want with the list of contacts found.
+    }
+
+    @Override
+    public void searchError() {
+
+    }
+});
+```
+
+The result of this API gives information as email, firstname, lastname, etc.
+
+To know more information about the user, you should add the contact in your roster using the method **addRainbowContactToRoster**.
+
+```java
+IRainbowContact contact; // Your contact
+
+RainbowSdk.instance().contacts().addRainbowContactToRoster(contact.getId(), new IRainbowSentInvitationListener() {
+    @Override
+    public void onInvitationSentSuccess() {
+        // do something
+    }
+
+    @Override
+    public void onInvitationSentError(final RainbowServiceException exception) {
+        // Do something if needed
+    }
+
+    @Override
+    public void onInvitationError() {
+        // Do something if needed
+    }
+});
+```
+
+### Get the URL avatar of a contact
+
+---
+
+To get the URL avatar of a contact, you can call the method **getAvatarUrl** which takes only one parameter: this id.
+
+```java
+String avatarUrl = RainbowSdk.instance().contacts().getAvatarUrl("contactId");
+```
+
+After that, you will have to download the file corresponding to this URL by your own
+
+### Add a contact to your roster
+
+---
+
+To invite a contact in your Rainbow network, you can call the method `addRainbowContactToRoster` as following:
+
+```java
+RainbowSdk.instance().contacts().addRainbowContactToRoster("id", new IRainbowSentInvitationListener() {
+    @Override
+    public void onInvitationSentSuccess() {
+
+    }
+
+    @Override
+    public void onInvitationSentError(RainbowServiceException exception) {
+
+    }
+
+    @Override
+    public void onInvitationError() {
+
+    }
+});
+```
+
+The listener **IRainbowSentInvitationListener** allows you to manage the callbacks after you have sent the invitation. For example, to prevent adding a contact who is already in your roster list, or if the invitation has already been sent in the last 3600 seconds, or invitation success, etc.
+
+#### Check if a contact belong to your roster
+
+You can check if a contact belong to your roster by calling `isRoster()` on a `IRainbowContact` object :
+
+```java
+IRainbowContact contact; // Your contact
+
+if (contact.isRoster()) {
+    // Do whatever you want
+}
+```
+
+### Remove a contact from your roster
+
+---
+
+To remove a contact from your network, you can call the method `removeContactFromRoster` as following:
+
+```java
+RainbowSdk.instance().contacts().removeContactFromRoster("contactId", new IContactRemovedFromRosterListener() {
+    @Override
+    public void onSuccess() {
+
+    }
+
+    @Override
+    public void onFailure(Exception ex) {
+
+    }
+});
+```
+
+*Last updated December, 17th 2019*
+
+### On this page
+
+-   [Retrieve conversations and contacts](/docs/sdk/android#name-retrieve-conversations-and-contacts-0)
+-   [Preamble](/docs/sdk/android#name-preamble-4)
+-   [Retrieving conversations](/docs/sdk/android#name-retrieving-conversations-11)
+-   [Retrieving contacts](/docs/sdk/android#name-retrieving-contacts-30)
+-   [Retrieve a contact information](/docs/sdk/android#name-retrieve-a-contact-information-41)
+-   [Managing contact updates](/docs/sdk/android#name-managing-contact-updates-57)
+-   [Search a contact](/docs/sdk/android#name-search-a-contact-66)
+-   [Get the URL avatar of a contact](/docs/sdk/android#name-get-the-url-avatar-of-a-contact-88)
+-   [Add a contact to your roster](/docs/sdk/android#name-add-a-contact-to-your-roster-99)
+-   [Check if a contact belong to your roster](/docs/sdk/android#name-check-if-a-contact-belong-to-your-roster-110)
+-   [Remove a contact from your roster](/docs/sdk/android#name-remove-a-contact-from-your-roster-117)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

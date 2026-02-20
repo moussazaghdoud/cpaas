@@ -1,0 +1,2569 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/CHANGELOG"
+lastSynced: "2026-02-20T07:12:28.420Z"
+---
+# Documentation
+
+Changelog
+
+LTS release 2.61.0Published on 202-04-06Compare
+
+## SDK for Android
+
+---
+
+Welcome to the new release of the Rainbow SDK for Android. There are a number of significant updates in this version that we hope you will like, some of the key highlights include:
+
+### \[2.61.0\] - 2024-03-06
+
+#### Changed
+
+-   This version mainly includes fixes to improve performance and stability.
+
+### \[2.60.0\] - 2024-12-20
+
+#### Added
+
+-   `Invitations`: New method `declineOrCancelInvitation` that calls `declineInvitation` or `cancelSentInvitation`.
+-   `Invitations`: New method `getInvitationById`.
+
+#### Changed
+
+-   **Breaking** `Invitations`: Renamed property `receivedUserInvitations` to `receivedInvitations`.
+    
+-   **Breaking** `Invitations`: Renamed property `sentUserInvitations` to `sentInvitations`.
+    
+-   **Breaking** `Invitations`: Deleted property `pendingReceivedUserInvitations`, `receivedInvitations` already contains pending invitations.
+    
+-   **Breaking** `Invitations`: Deleted property `pendingSentUserInvitations`, `sentInvitations` already contains pending invitations.
+    
+-   **Breaking** `Invitations`: Property `sentInvitations` now returns a `StateFlow<List<Invitation>>`.
+    
+-   **Breaking** `Invitations`: Property `receivedInvitations` now returns a `StateFlow<List<Invitation>>`.
+    
+-   **Breaking** `Invitations`: Renamed method `acceptUserInvitation` to `acceptInvitation`. The method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Invitations`: Renamed method `declineUserInvitation` to `declineInvitation`. The method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Invitations`: Renamed method `cancelUserSentInvitation` to `cancelSentInvitation`. The method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Invitations`: Renamed method `addRainbowContactToNetwork` to `addContactToNetwork`. The method is now a suspend function and returns a `RainbowResult<Invitation>`.
+    
+-   **Breaking** `Invitations`: Renamed method `removeRainbowContactToNetwork` to `removeContactFromNetwork`. The method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Invitations`: The `refreshReceivedInvitations` method is now a suspend function and returns a `RainbowResult<List<Invitation>>`.
+    
+-   **Breaking** `Invitations`: The `refreshSentInvitations` method is now a suspend function and returns a `RainbowResult<List<Invitation>>`.
+    
+-   **Breaking** `Invitations`: The `acceptInvitation` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Invitations`: The `declineInvitation` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Invitations`: The `inviteUserByEmail` method is now a suspend function and returns a `RainbowResult<Invitation>`.
+    
+-   **Breaking** `Invitations`: The `inviteUserBySms` method is now a suspend function and returns a `RainbowResult<Invitation>`.
+    
+-   **Breaking** `Invitations`: The `inviteUser` method is now a suspend function and returns a `RainbowResult<Invitation>`.
+    
+-   **Breaking** `Invitations`: Merged methods `getReceivedUserInvitationById` and `getSentUserInvitationById` to `getInvitationById`.
+    
+-   **Breaking** `Bubbles`: The `createBubble` method is now a suspend function and returns a `RainbowResult<IRainbowRoom>`.
+    
+-   **Breaking** `Bubbles`: The `deleteBubble` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `updateBubble` method is now a suspend function and returns a `RainbowResult<IRainbowRoom>`.
+    
+-   **Breaking** `Bubbles`: The `archiveBubble` method is now a suspend function and returns a `RainbowResult<IRainbowRoom>`.
+    
+-   **Breaking** `Bubbles`: The `checkBubbleOwner` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `setParticipantPrivilegeToModerator` method is now a suspend function and returns a `RainbowResult<RoomParticipant>`.
+    
+-   **Breaking** `Bubbles`: The `setParticipantPrivilegeToUser` method is now a suspend function and returns a `RainbowResult<RoomParticipant>`.
+    
+-   **Breaking** `Bubbles`: The `rejectInvitation` method is now a suspend function and returns a `RainbowResult<RoomParticipant>`.
+    
+-   **Breaking** `Bubbles`: The `addParticipantToBubble(IRainbowRoom, IRainbowContact)` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `addParticipantToBubble(IRainbowRoom, IRainbowContact, Boolean, Boolean)` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `addParticipantsToBubble(IRainbowRoom, List<IRainbowContact>)` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `addParticipantsToBubble(IRainbowRoom, List<IRainbowContact>, Boolean, Boolean)` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `leaveBubble` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `deleteParticipantFromBubble` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `inviteUsersToBubble` method is now a suspend function and returns a `RainbowResult<Map<String, String>>`.
+    
+-   **Breaking** `Bubbles`: The `inviteGuestsToBubble` method is now a suspend function and returns a `RainbowResult<Map<String, String>>`.
+    
+-   **Breaking** `Bubbles`: The `updateCustomDataForBubble` method is now a suspend function and returns a `RainbowResult<IRainbowRoom>`.
+    
+-   **Breaking** `Bubbles`: The `deleteAllCustomDataForBubble` method is now a suspend function and returns a `RainbowResult<IRainbowRoom>`.
+    
+-   **Breaking** `Bubbles`: The `uploadRoomAvatar` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `deleteRoomAvatar` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `refreshActiveBubbles` method is now a suspend function and returns a `RainbowResult<List<IRainbowRoom>>`.
+    
+-   **Breaking** `Bubbles`: The `refreshAllInvitedBubbles` method is now a suspend function and returns a `RainbowResult<List<IRainbowRoom>>`.
+    
+-   **Breaking** `Bubbles`: The `hasInactiveBubbles` method is now a suspend function and returns a `RainbowResult<Boolean>`.
+    
+-   **Breaking** `Bubbles`: The `refreshInactiveBubbles` method is now a suspend function and returns a `RainbowResult<List<IRainbowRoom>>`.
+    
+-   **Breaking** `Bubbles`: The `refreshArchivedBubbles` method is now a suspend function and returns a `RainbowResult<List<IRainbowRoom>>`.
+    
+-   **Breaking** `Bubbles`: The `refreshMyBubbles` method is now a suspend function and returns a `RainbowResult<List<IRainbowRoom>>`.
+    
+-   **Breaking** `Bubbles`: The `getPublicLinkForBubble` method is now a suspend function and returns a `RainbowResult<OpenInvite>`.
+    
+-   **Breaking** `Bubbles`: The `shareBubbleByLink` method is now a suspend function and returns a `RainbowResult<OpenInvite>`.
+    
+-   **Breaking** `Bubbles`: The `resetBubbleByLink` method is now a suspend function and returns a `RainbowResult<OpenInvite>`.
+    
+-   **Breaking** `Bubbles`: The `stopSharingBubbleByLink` method is now a suspend function and returns a `RainbowResult<OpenInvite>`.
+    
+-   **Breaking** `Bubbles`: The `shareBubbleByNumber` method is now a suspend function and returns a `RainbowResult<String>`.
+    
+-   **Breaking** `Bubbles`: The `resetBubbleDialInCode` method is now a suspend function and returns a `RainbowResult<String>`.
+    
+-   **Breaking** `Bubbles`: The `stopSharingBubbleByNumber` method is now a suspend function and returns a `RainbowResult<String>`.
+    
+-   **Breaking** `Bubbles`: The `getDialInNumbers` method is now a suspend function and returns a `RainbowResult<RoomService.DialInNumbers>`.
+    
+-   **Breaking** `Bubbles`: The `joinBubbleByPublicLink` method is now a suspend function and returns a `RainbowResult<IRainbowRoom?>`.
+    
+-   **Breaking** `Bubbles`: The `getUserQuotaConsumption` method is now a suspend function and returns a `RainbowResult<Consumption>`.
+    
+-   **Breaking** `Bubbles`: The `addParticipantsAndStartConference` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `mergeCalls` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `updateBubbleTags` method is now a suspend function and returns a `RainbowResult<List<RoomTag>>`.
+    
+-   **Breaking** `Bubbles`: The `fetchBubbleTagSuggestions` method is now a suspend function and returns a `RainbowResult<List<RoomTag>>`.
+    
+-   **Breaking** `Bubbles`: The `searchRooms` method is now a suspend function and returns a `RainbowResult<List<IRainbowRoom>>`.
+    
+-   **Breaking** `Bubbles`: The `getRoomData` method is now a suspend function and returns a `RainbowResult<IRainbowRoom?>`.
+    
+-   **Breaking** `Bubbles`: The `getSharingEmail` method is now a suspend function and returns a `RainbowResult<String>`.
+    
+-   **Breaking** `Bubbles`: The `checkOpenInviteId` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `promoteAllMembersToModerators` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `demoteAllModeratorsToMembers` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `activateRoomLobby` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `deactivateRoomLobby` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `acceptUsersInLobby` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `acceptAllUsersInLobby` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `denyUsersInLobby` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `denyAllUsersInLobby` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `getRoomPublicData` method is now a suspend function and returns a `RainbowResult<RoomPublicDataResponse>`.
+    
+-   **Breaking** `Bubbles`: The `hideUserLobby` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `readUserLobby` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+-   **Breaking** `Bubbles`: The `leaveUserLobby` method is now a suspend function and returns a `RainbowResult<Unit>`.
+    
+
+#### Removed
+
+-   **Breaking:** `Bubbles`: Method `cancelInvitationGuestsToBubble` has been deleted as it was no longer useful.
+
+### \[2.59.0\] - 2024-12-02
+
+#### Added
+
+-   Starting with version `2.59.0`, we have begun migrating methods that previously accepted a `RainbowListener<T, U>` parameter. These methods are now suspend functions returning a `RainbowResult<T>`. This change aims to improve the consistency and simplicity of the API. **Please expect additional modules to be updated in this manner in future releases.**
+-   `RoomContainer`: Created a guide to use the module.
+
+#### Changed
+
+-   **Breaking** `RoomContainer`: Removed the property `containersAsLiveData`.
+-   **Breaking** `RoomContainer`: The property `containers` is now a `StateFlow<List<Container>>` and can be observed.
+-   **Breaking** `RoomContainer`: The `createContainer` method is now a suspend function and returns a `RainbowResult<Pair<Container, List<InvalidRoom>?>>`.
+-   **Breaking** `RoomContainer`: The `updateContainer` method is now a suspend function and returns a `RainbowResult<Container>`.
+-   **Breaking** `RoomContainer`: The `deleteContainer` method is now a suspend function and returns a `RainbowResult<Container>`.
+-   **Breaking** `RoomContainer`: The `deleteContainers` method is now a suspend function and returns a `RainbowResult<Map<String, Failure>>`.
+-   **Breaking** `RoomContainer`: The `fetchContainers` method is now a suspend function and returns a `RainbowResult<List<Container>>`.
+-   **Breaking** `RoomContainer`: The `fetchContainerById` method is now a suspend function and returns a `RainbowResult<Container>`.
+-   **Breaking** `RoomContainer`: The `addRoomsToContainer` method is now a suspend function and returns a `RainbowResult<Pair<Container, List<InvalidRoom>?>>`.
+-   **Breaking** `RoomContainer`: The `removeRoomsFromContainer` method is now a suspend function and returns a `RainbowResult<Pair<Container, List<InvalidRoom>?>>`.
+-   **Breaking** `RoomContainer`: The `moveRooms` method is now a suspend function and returns a `RainbowResult<Pair<Container, List<InvalidRoom>?>>`.
+-   **Breaking** `RoomContainer`: The `fetchRoomsForContainerIfNeeded` method is now a suspend function and returns a `RainbowResult<List<IRainbowRoom>>`.
+
+-   **Breaking** `Im`: The `deleteConversation` method is now a suspend function and returns a `RainbowResult<Unit>`.
+-   **Breaking** `Im`: The `deleteConversations` method is now a suspend function and returns a `RainbowResult<Unit>`.
+-   **Breaking** `Im`: The `deleteAllMessages` method is now a suspend function and returns a `RainbowResult<Unit>`.
+-   **Breaking** `Im`: The `sendConversationByEmail` method is now a suspend function and returns a `RainbowResult<Unit>`.
+-   **Breaking** `Im`: The `sendConversationByEmails` method is now a suspend function and returns a `RainbowResult<Unit>`.
+-   **Breaking** `Im`: The `createBookmarkInConversation` method is now a suspend function and returns a `RainbowResult<Unit>`.
+-   **Breaking** `Im`: The `removeBookmarkFromConversation` method is now a suspend function and returns a `RainbowResult<Unit>`.
+-   **Breaking** `Im`: The `muteOrUnmuteConversation` method is now a suspend function and returns a `RainbowResult<Unit>`.
+-   **Breaking** `Im`: The `refreshConversations` method is now a suspend function and returns a `RainbowResult<List<IRainbowConversation>>`.
+
+### \[2.58.0\] - 2024-11-08
+
+#### Added
+
+-   Created a new module: Pins.
+-   `Notes`: Added a sample in the module.
+-   `Pins`: Added a sample in the module.
+-   `EchoTest`: Added a sample in the module.
+-   `EchoTest`: Created a guide to use the module.
+
+#### Changed
+
+-   **Breaking** `Notes`: Renamed the module and all associated classes and methods to `Task`.
+    
+-   **Breaking** `Notes`: Moved all pins-related methods to the new `Pins` module.
+    
+-   **Breaking** `Notes`: Removed the `withResolution` parameter from `fetchNotes`. The API now always resolves data associated with the note.
+    
+-   **Breaking** `Notes`: Removed the `newCategory` and `newPosition` parameters from `updateNote`. These values are now directly retrieved from the note object.
+    
+-   **Breaking** `Notes`: Removed the nullability of the `text` and `category` parameters in the `createNote` method.
+    
+-   **Breaking** `Notes`: Updated the `deleteNote` method to accept `noteId: String` instead of `note: Note`.
+    
+-   **Breaking** `Notes`: Removed the nullability of the `imMessage`, `conversation`, and `category` parameters in the `createNoteFromMessage` method.
+    
+-   **Breaking** `Notes`: Updated the `deleteNoteFromMessage` method to accept `messageId: String` instead of `imMessage: IMMessage`.
+    
+-   **Breaking** `Notes`: Removed the nullability of the `message` and `conversation` parameters in the `pinMessageInConversation` method.
+    
+-   **Breaking** `Notes`: Removed the nullability of the `message` and `conversation` parameters in the unpinMessageInCo\`nversation method.
+    
+-   **Breaking** `Alerts`: Fixed a typo in the name of the `sendReadAcknowledge` and `sendReceivedAcknowledge` methods
+    
+-   **Breaking** `Alerts`: Renamed parameter `ialertNotificationListener` to `listener` in `registerChangeListener` and `unregisterChangeListener` methods.
+    
+-   **Breaking** `Alerts`: Renamed method `getDevices` to `fetchDevices`.
+    
+
+### \[2.57.0\] - 2024-10-01
+
+#### Added
+
+-   `Groups` Create sample in module
+-   `Favorites` Create sample in module
+-   New guide `Manage groups`
+-   New guide `Manage favorites`
+-   `Groups` Introduced `addContactsToGroup` method to add multiple contacts to the group.
+-   `Groups` Introduced `deleteContactsFromGroup` method to remove multiple contacts from the group.
+-   `Favorites` Added `fetchFavorites` method.
+
+#### Changed
+
+-   `Im` Changed parameter type of `onImReceived` from `IMMessage?` to `IMMessage`
+-   **Breaking:** `Favorites`: Renamed method `getFavorite` to `getFavoriteById`. This method now takes a non-nullable `String`.
+-   **Breaking:** `Favorites`: Method `getFavoriteByPeerId` now takes a non-nullable `String`.
+-   **Breaking:** `Favorites`: Method `createFavorite` now takes non-nullable `String` and `PeerType`, and accepts a new parameter to specify the position of the added favorite.
+-   **Breaking:** `Favorites`: Method `createFavoriteFromContact` now takes a non-nullable `IRainbowContact` and accepts a new parameter to specify the position of the added favorite.
+-   **Breaking:** `Favorites`: Method `deleteFavorite` now takes a non-nullable `String` representing the favorite ID instead of `IRainbowFavorite`.
+
+#### Removed
+
+-   **Breaking:** `Favorites`: Method `createFavoriteWithPosition` has been deleted and replaced by the position parameter in `createFavorite` and `createFavoriteFromContact`.
+
+### \[2.56.0\] - 2024-09-26
+
+#### Changed
+
+-   From this version onwards, developers need to include the JitPack Maven repository in their project `build.gradle` to resolve certain dependencies.
+
+```
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+      ...
+      maven("https://maven.openrainbow.io")
+      maven("https://jitpack.io")
+    }
+}
+```
+
+### \[2.55.0\] - 2024-09-05
+
+#### Added
+
+-   `CallLogs` now includes `groupedCallLogs` and `groupedMissedCallLogs`.
+-   `CallLogs` introduces `markCallLogAsRead(CallLog)` method.
+-   `CallLogs` introduces `getCallLogsGroupForContact(String)` method.
+-   `Groups` introduces `fetchGroupById()` method.
+
+#### Changed
+
+-   **Breaking** `CallLogs` replace method `getAllCallLogs()` with property `callLogs`
+-   **Breaking** `CallLogs` replaced method `getAllMissedCallLogs()` with property `missedCallLogs`.
+-   **Breaking** `CallLogs` replaced method `getMissedCallLogCounter()` with property `missedCounter`.
+-   **Breaking** `CallLogs` renamed method `getMissedCallLogGroupForContact()` to `getMissedCallLogsGroupForContact`.
+-   **Breaking** `CallLogs` changed parameter of method `getMissedCallLogGroupForContact()` from `IRainbowContact` to `String`.
+-   **Breaking** `CallLogs` changed parameter of method `fetchAllCallLogs()` from `RainbowListener<Unit, Unit>?` to `RainbowListener<List<CallLog>, Unit>?`.
+-   **Breaking** `CallLogs` renamed method `fetchAllCallLogs()` to `fetchCallLogs()`
+-   **Breaking** `CallLogs` changed parameter of method `deleteCallLogs()` from `ArrayList<CallLog>` to `List<CallLog>`.
+-   **Breaking** `CallLogs` renamed method `deleteCallLogGroups()` to `deleteAllCallLogsForGroups` and changed parameter from `ArrayList<CallLogGroup>` to `List<CallLogGroup>`.
+-   **Breaking** `CallLogs` renamed method `markAllGroupCallLogsAsRead()` to `markAllCallLogsAsReadForHuntingGroup()`.
+-   **Breaking** `CallLogs` renamed method `deleteGroupCallLogs()` to `deleteCallLogsForHuntingGroup()` and changed parameter from `ArrayList<GroupCallLog>` to `List<GroupCallLog>`.
+-   **Breaking** `CallLogs` renamed method `deleteAllGroupCallLogs()` to `deleteAllCallLogsForHuntingGroup()`.
+-   **Breaking** `CallLogs` renamed method `fetchGroupCallLogs()` to `fetchCallLogsForHuntingGroup()`.
+-   **Breaking** `CallLogs` renamed method `getGroupCallLogs()` to `getHuntingGroupCallLogs()`.
+-   **Breaking** `CallLogs` renamed method `getGroupMissedCallLogCounter()` to `getHuntingGroupMissedCounter()`.
+-   **Breaking** `CallLogs` renamed method `registerGroupCallLogsListener()` to `registerHuntingGroupCallLogsListener()`.
+-   **Breaking** `CallLogs` renamed method `unregisterGroupCallLogsListener()` to `unregisterHuntingGroupCallLogsListener()`.
+-   **Breaking** `CallLogs` renamed interface `GroupCallLogsListener` to `HuntingGroupCallLogsListener`.
+-   **Breaking** `GroupCallLogsListener` renamed method `onGroupChanged` to `onCallLogsChanged`.
+-   **Breaking** `GroupCallLogsListener` renamed method `onGroupMissedCounterChanged` to `onMissedCounterChanged`.
+-   **Breaking** `Groups` renamed property `allGroups` to `groups`.
+-   **Breaking** `Groups` renamed method `refreshGroups()` to `fetchGroups` and add `offset` and `limit` parameters.
+-   **Breaking** `Groups` changed parameter of method `deleteGroup()` from `Group` to `String`.
+-   **Breaking** `Groups` changed parameters of method `updateGroup()` from `Group` to `String`, `String`, `String`.
+-   **Breaking** `Groups` renamed method `addParticipantToGroup()` to `addContactToGroup` and changed parameters from `Group`, `IRainbowContact` to `String`, `String`.
+-   **Breaking** `Groups` renamed method `deleteParticipantFromGroup()` to `deleteContactFromGroup` and changed parameters from `Group`, `IRainbowContact` to `String`, `String`.
+
+### \[2.54.0\] - 2024-08-13
+
+#### Fixed
+
+-   Minor corrections have been made, which have improved the overall performance of the SDK.
+
+### \[2.53.0\] - 2024-07-25
+
+#### Added
+
+-   Create a new guide `Search in Rainbow`.
+
+#### Fixed
+
+-   Minor corrections have been made, which have improved the overall performance of the SDK.
+
+### \[2.52.0\] - 2024-06-28
+
+#### Added
+
+-   `Search` Created a new module Search, accessed through `RainbowSdk().search()`. This module centralizes search APIs for contacts, bubbles, text in conversations, and more.
+
+#### Changed
+
+-   **Breaking** `Contacts` moved the `searchByName` method to new `Search` module.
+-   **Breaking** `Contacts` renamed the `searchByJid` method to `fetchContactDataByJid` for consistency.
+
+### \[2.51.1\] - 2024-06-28
+
+#### Added
+
+-   `Notes` Introduced `pinMessageInConversation()` to create a `PinMessage` for a specific message in P2P or Bubble conversations.
+-   `Notes` Introduced `unpinMessageInConversation()` to remove an existing `PinMessage`.
+-   `Notes` Introduced `getPinnedMessagesInConversation()` to retrieve the list of `PinMessage` instances for a given conversation.
+-   `Notes` Created `PinsChangeListener` interface to notify when a `PinMessage` is modified or removed.
+-   `Notes` Added `registerChangeListener(PinsChangeListener)` to register a listener for changes.
+-   `Notes` Added `unregisterChangeListener(PinsChangeListener)` to unregister a previously added listener.
+
+### \[2.50.0\] - 2024-05-23
+
+#### Fixed
+
+-   Minor corrections have been made, which have improved the overall performance of the SDK.
+
+### \[2.49.0\] - 2024-04-26
+
+#### Added
+
+-   Create a new guide `Manage contacts`
+
+#### Changed
+
+-   `Contacts` Changed parameters of method `searchByJid` from `RainbowListener<List<IRainbowContact>, Unit>?` to `RainbowListener<IRainbowContact, Unit>?`
+
+### \[2.48.0-beta.2\] - 2024-04-04
+
+#### Added
+
+-   `IRainbowContact` Added new method `hasPhoneNumber(String)` to `IRainbowContact` interface.
+-   `Contacts` Added `personalContacts`
+-   `Contacts` Added `getContactFromEmail`
+-   `Contacts` Added `getContactFromUniqueId`
+-   `Contacts` Added `searchByName`
+
+#### Changed
+
+-   **Breaking** `Contacts` Renamed property `rainbowContacts` to `rosters`
+-   **Breaking** `Contacts` Changed parameters of methods `searchByJid` from `IRainbowContactsSearchListener` to `RainbowListener`
+
+#### Removed
+
+-   **Breaking** `Contacts` Removed `searchByNameOnlyInUserCompany`
+
+### \[2.47.1\] - 2024-03-28
+
+#### Added
+
+-   `ArrayItemList` Added method `clearListeners`
+
+#### Fixed
+
+-   Fixed broken links in the documentation.
+
+### \[2.47.0\] - 2024-03-20
+
+#### Added
+
+-   `Conferences` Added `IConferencesListener` interface inside Conferences module.
+-   `Conferences` Added new method `notifyConferenceUnMuteRequested` inside `IConferencesListener` from Conferences module.
+-   `Conferences` Added new method `notifyConferenceRejected` inside `IConferencesListener` from Conferences module.
+-   `Conferences` Added new method `notifyConferenceDelegated` inside `IConferencesListener` from Conferences module.
+-   `Conferences` Added new method `notifyConferenceDelegationFinished` inside `IConferencesListener` from Conferences module.
+-   `FileStorage` Added `notifyConferenceRecordingFileAvailable` to `IFileStorageListener` interface inside FileStorage module.
+-   `Voicemails` Added new `IVoicemailsListener` interface inside Voicemails module.
+-   `Voicemails` Added new method `registerVoicemailsListener` inside Voicemails module.
+-   `Voicemails` Added new method `unregisterVoicemailsListener` inside Voicemails module.
+-   `CallLogs` Added new `ICallLogsListener` interface inside CallLogs module.
+-   `CallLogs` Added new method `registerCallLogsListener` inside CallLogs module.
+-   `CallLogs` Added new method `unregisterCallLogsListener` inside CallLogs module.
+-   `CallLogs` Added new method `notifyMissedCall` inside `ICallLogsListener` from CallLogs module.
+-   `CallLogs` Added new method `notifyMissedCallCounterChange` inside `ICallLogsListener` from CallLogs module.
+-   `Webinars` Added new method `notifyGoOnStageRequested` inside `IWebinarListener` from Webinars module.
+-   `Webinars` Added new method `notifyGoOnStageCanceled` inside `IWebinarListener` from Webinars module.
+-   `Webinars` Added new method `notifyWebinarInvitation` inside `IWebinarListener` from Webinars module.
+-   `Webinars` Added new method `notifyWaitingRoomStarted` inside `IWebinarListener` from Webinars module.
+-   `Channels` Added new `IChannelsListener` interface inside Channels module.
+-   `Channels` Added new method `registerChannelsListener` inside Channels module.
+-   `Channels` Added new method `unregisterChannelsListener` inside Channels module.
+
+#### Changed
+
+-   **Breaking** `Notifications` The `INotificationFactory` parameter during RainbowSDK initialization has been removed.
+-   **Breaking** `Notifications` The `INotificationFactory` interface has been removed.
+-   **Breaking** `Notifications` The `IMissedCallNotificationMgr` interface has been removed.
+-   **Breaking** `Notifications` The `IFileNotificationMgr` interface has been removed.
+-   **Breaking** `Notifications` The `IWebinarNotificationMgr` interface has been removed.
+-   **Breaking** `Notifications` The `IVoicemailNotificationMgr` interface has been removed.
+-   **Breaking** `Notifications` The `ICallGroupVoicemailNotificationMgr` interface has been removed.
+-   **Breaking** `Notifications` The `IChannelNotificationMgr` interface has been removed.
+-   **Breaking** `Notifications` The `IImNotificationMgr` interface has been removed.
+-   **Breaking** `Notifications` The `IRoomNotificationMgr` interface has been removed.
+-   **Interface Method Migration:** The methods from the removed interfaces have been relocated to the appropriate module interfaces.
+-   For detailed information on managing notifications, please refer to the updated *Manage Notifications* guide or consult the sample application.
+-   **Breaking** `FileStorage` Renamed `FileStorageListener` to `IFileStorageListener`
+-   **Breaking** `Voicemails` Merged `IVoicemailCounterChangeListener` and `ICallGroupVoicemailCounterChangeListener` in new interface `IVoicemailsListener`.
+-   **Breaking** `Voicemails` Removed methods `registerVoicemailCounterChangeListener` and `unregisterVoicemailCounterChangeListener` from `Voicemails` module.
+-   **Breaking** `Voicemails` Removed methods `registerCallGroupVoicemailCounterChangeListener` and `unregisterCallGroupVoicemailCounterChangeListener` from `Voicemails` module.
+-   **Breaking** `Im` Moved `IRainbowImListener` to Im module.
+-   **Breaking** `Im` Renamed `isTypingState` to `onTypingStateChanged` in `IRainbowImListener`.
+-   **Breaking** `Im` Specify nullability for methods in `IRainbowImListener`.
+-   **Breaking** `Webinars` Renamed `IWebinarListChangedListener` to `IWebinarsListener`
+-   **Breaking** `Webinars` Renamed `unregisterWebinarListChangeListener` to `unregisterWebinarsListener`
+-   **Breaking** `Webinars` Renamed `registerWebinarListChangeListener` to `registerWebinarsListener`
+-   **Breaking** `Bubbles` Replaced methods `searchRoomsByName()` and `searchRoomsByTag()` with method `searchRooms(RoomSearchCriteria)`
+
+### \[2.45.0\] - 2024-02-19
+
+#### Added
+
+-   `Note` Create a new module to manage `Note`, The module can be accessed with `RainbowSdk().note()`
+-   `User` Add property `userTokenInCache` in module User to retrieve the token for connection.
+
+#### Changed
+
+-   **Breaking** `MyProfile` Rename the module `MyProfile` to `User` to improve consistency within the SDK.
+    -   The module can now be accessed as follows: `RainbowSdk().user()` or `RainbowSdk.instance().user()`
+-   **Breaking** `MyProfile` Replace method `getUserLoginInCache` with property `userLoginInCache`
+-   **Breaking** `MyProfile` Replace method `getUserPasswordInCache` with property `userPasswordInCache`
+-   **Breaking** `MyProfile` Updated the `changeUserPassword` method within `User` module. Added error enum type `ChangePasswordError` to listener.
+-   **Breaking** `MyProfile` Renamed the `getMyCompanyCustomData` method to `getUserCompanyCustomData`.
+-   **Breaking** `MyProfile` Removed methods `registerUserStateChangeListener` and `unregisterUserStateChangeListener`.
+    1.  `IUserStateChangeListener.onUserLogoutForced` has been added to `Connection.IConnectionListener`
+    2.  `IUserStateChangeListener.onUserSettingsChanged` has been removed since it duplicates the functionality of `IContactListener.contactUpdated()`
+-   **Breaking** `MyProfile` Moved all methods related to `Note` to a new module.
+    -   You should now access `Note` functionalities through `RainbowSdk().note()`.
+    -   Ensure to update your code to use the new module for managing notes.
+
+#### Removed
+
+-   **Breaking** `User` Removed property `userDndStatus`. This property can now be accessed with `RainbowSdk().user().getConnectedUser().isDnd`
+
+### \[2.43.0\] - 2023-01-12
+
+#### Enhancements
+
+-   Significantly enhanced and updated the "*Getting Started*" guide for developers. Enriched the guide with comprehensive and detailed instructions, step-by-step tutorials, and clearer explanations, facilitating a smoother onboarding process for developers using the SDK.
+-   Improved the documentation within the `RainbowSdk` module, enhancing clarity, completeness, and usability for developers. The revised documentation provides comprehensive guidance on utilizing the SDK's functionalities.
+-   Extensively documented the enumeration values of the `ErrorCode` from `Connection` module, enhancing clarity and understanding of error scenarios during connection and authentication processes.
+-   Improved documentation for registration methods within the SDK `MyProfile` module. The updated documentation offers clearer explanations, detailed usage instructions, and parameter descriptions, facilitating smoother integration and utilization of registration functionalities by developers.
+
+#### Added
+
+-   `Connection` Introducing `ConnectionState` in the `Connection` module, providing clear indications of the SDK's current state. States include Disconnected, Authenticating, Authenticated, and Ready, enhancing overall SDK management and monitoring.
+    
+-   `Connection` Implemented a `state` variable of type `ConnectionState` within the SDK `Connection` module. This variable serves to retrieve the current state of the connection, offering developers access to real-time information about the SDK's connection status.
+    
+-   `Connection` Implemented the `IConnectionListener` interface within the SDK `Connection` module. This interface enables developers to listen for various events:
+    
+    -   Changes in the state of the connection, providing real-time updates on the connection status.
+    -   Notification in case of a sign-in error during authentication processes.
+    -   Alerts in the event of an *XMPP* connection error, facilitating efficient error handling and monitoring capabilities for developers using the SDK.
+-   `Connection` Added `registerConnectionListener` and `unregisterConnectionListener` methods to the SDK `Connection` module. These methods facilitate the registration and removal of listeners, enabling developers to receive notifications upon changes in the SDK's connection state. This feature offers enhanced monitoring and event handling capabilities within the SDK.
+    
+
+#### Changed
+
+-   **Breaking** `MyProfile` Updated the `selfRegisterByEmail` method within `MyProfile` module. Added default values for the `lang` and `listener` parameters, simplifying method invocation and improving usability.
+-   **Breaking** `MyProfile` Updated the `selfRegisterUser` method within `MyProfile` module. Change `Contact` to `IRainbowContact` in the listener parameter.
+-   **Breaking** `Connection` signature modification for `signIn` methods
+    -   Revised the signature of all `signIn` methods across the SDK to accept an `ISignInListener` parameter instead of `SigninResponseListener`.
+    -   Set null as the default value for all optional parameters in the `signIn` methods.
+    -   Renamed the methods for improved clarity and consistency.
+-   **Breaking** `Connection` removed `isSignedIn`, `isConnected`, `isDisconnected` and `isInProgress` variables
+    -   These flags were deprecated and replaced with the more comprehensive ConnectionState enum, providing a streamlined approach to determine the current connection state within the SDK.
+-   **Breaking** `Connection` removed `registerConnectionChangedListener` and `unregisterConnectionChangedListener` methods from the SDK.
+    -   These methods were deprecated and replaced with more functional equivalents: `registerConnectionListener` and `unregisterConnectionListener`.
+-   **Breaking** `Connection` signature modification for `signOut` methods
+    -   Renamed the methods for improved clarity and consistency.
+    -   Replaced the parameter `SignoutResponseListener` with `RainbowListener<Unit, Unit>`
+-   **Breaking** `RainbowSdk` removed `isInitialized` variable previously used for SDK initialization status indication. This variable has been deleted in the updated version. You can use the new `state` variable in the Connection module, which is more complete.
+-   **Breaking** `RainbowSdk` moved the `ErrorCode` enum from the `RainbowSdk` module to the `Connection` module. This change may necessitate adjustments to your imports.
+
+### \[2.41.0\] - 2023-11-20
+
+#### Fixed
+
+-   Minor corrections have been made, which have improved the overall performance of the SDK.
+
+### \[2.40.0\] - 2023-10-09
+
+#### Added
+
+-   New API `deleteCallGroupVoicemails` in module `Voicemails`
+-   New API `deleteVoicemails` in module `Voicemails`
+
+#### Changed
+
+-   **Breaking** Change listener parameter of method `deleteContainers` in module `RoomContainer` to `RainbowListener<Map<String, RainbowError<RoomContainerRepository.ContainerError>>, RoomContainerRepository.ContainerError>?`
+-   **Breaking** Change listener parameter of method `deleteVoicemail` in module `Voicemails` to `RainbowListener<Unit, Unit>`
+-   **Breaking** Change listener parameter of method `deleteCallGroupVoiceMail` in module `Voicemails` to `RainbowListener<Unit, Unit>`
+-   **Breaking** Change listener parameter of method `deleteAllVoicemail` in module `Voicemails` to `RainbowListener<Unit, Unit>`
+-   **Breaking** Change listener parameter of method `fetchVoicemail` in module `Voicemails` to `RainbowListener<Unit, Unit>`
+-   **Breaking** Change listener parameter of method `fetchCallGroupVoicemailList` in module `Voicemails` to `RainbowListener<List<Voicemail>, Unit>`
+-   **Breaking** Change listener parameter of method `markCallGroupVoicemailAsRead` in module `Voicemails` to `RainbowListener<Unit, Unit>`
+-   **Breaking** Change listener parameter of method `fetchCallGroupsVoicemailCounter` in module `Voicemails` to `RainbowListener<Map<String, Int>, Unit>`
+-   **Breaking** Change listener parameter of method `fetchAllCallLogs` in module `CallLogs` to `RainbowListener<Unit, Unit>`
+
+---
+
+### \[2.38.1\] - 2023-09-19
+
+#### Fixed
+
+-   Minor corrections have been made, which have improved the overall performance of the SDK.
+
+---
+
+#### Changed
+
+-   Rename `ISearchContactListener` to `ISearchListener`
+
+### \[2.34.3-LTS\] - 2023-07-26
+
+#### Fixed
+
+-   Minor corrections have been made, which have improved the overall performance of the SDK.
+
+---
+
+### SDK for Android 2.22.2 - October 2022
+
+#### Other changes
+
+-   Fix `UpdateUserRequest.customData()` the method takes as parameter a `JSONObject` instead of a `JsonObject`
+
+### SDK for Android 2.21.0 - September 2022
+
+#### API Changes
+
+MyProfile
+
+-   new method `selfRegisterUser()` and `selfRegisterByEmail()` to allows a user to self register a user account in Rainbow application
+-   new method `startResetPassword()` and `resetPassword()` to allows a user to reset his password
+
+Invitations
+
+-   new object `InviteUserBody` used with builder pattern to create an invitation
+-   new method `inviteUser()` to invite a user using a `InviteUserBody`
+
+#### API Breaking Changes
+
+Contacts
+
+-   method `getUserDataFromId` now takes a `RainbowListener<IRainbowContact, Unit>` instead of a `IGetUserDataListener`
+
+MyProfile
+
+-   remove deprecated methods `updateLastName()`, `updateFirstName()`, `updateNickName()`, `updateJobTitle()`, `updateTitle()`, `updateOfficePhoneNumber()`, `updateTimeZone()` you can use `updateUser()` instead
+-   remove deprecated method `setPresenceTo(RainbowPresence)` you can use `setPresenceTo(RainbowPresence, RainbowListener)` instead
+-   method `deleteUser()` now takes a `RainbowListener<Unit, Unit>` instead of a `IUsersListener`
+-   method `changeUserPassword()` now takes a `RainbowListener<Unit, Unit>` instead of a `IChangePasswordListener`
+-   method `getSuggestions()` now takes a `RainbowListener<List<IRainbowContact>, Unit>` instead of a `IGetUserSuggestionsListener`
+-   method `getAdvancedSuggestions()` now takes a `RainbowListener<Map<ContactSuggestionType, List<IRainbowContact>>, Unit>` instead of a `IGetUserSuggestionsListener`
+-   method `updateUser()` now takes a `RainbowListener<Contact, Unit>` instead of a `IUsersListener`
+
+Invitations
+
+-   method `addRainbowContactToNetwork()` now takes a `RainbowListener<Invitation, Unit>` instead of a `ISendInvitationListener`
+-   method `inviteUserBySms()` now takes a `RainbowListener<Invitation, Unit>` instead of a `ISendInvitationListener`
+-   method `inviteUserByEmail()` now takes a `RainbowListener<Invitation, Unit>` instead of a `ISendInvitationListener`
+-   method `refreshReceivedInvitations()` now takes a `RainbowListener<List<Invitation>, Unit>` instead of a `IGetUserInvitationsListener`
+-   method `refreshSentInvitations()` now takes a `RainbowListener<List<Invitation>, Unit>` instead of a `IGetUserInvitationsListener`
+-   method `refreshSentInvitations()` now takes a `RainbowListener<List<Invitation>, Unit>` instead of a `IGetUserInvitationsListener`
+-   method `acceptUserInvitation()` now takes a `RainbowListener<Unit, Unit>` instead of a `IResultListener`
+-   method `declineUserInvitation()` now takes a `RainbowListener<Unit, Unit>` instead of a `IResultListener`
+-   method `cancelUserSentInvitation()` now takes a `RainbowListener<Unit, Unit>` instead of a `IResultListener`
+-   method `removeRainbowContactFromNetwork()` now takes a `RainbowListener<Unit, Unit>` instead of a `IResultListener`
+
+Bubbles
+
+-   method `shareBubbleByLink()` now takes a `RainbowListener<OpenInvite, Unit>` instead of a `IGetOpenInviteListener`
+-   method `resetBubbleByLink()` now takes a `RainbowListener<OpenInvite, Unit>` instead of a `IGetOpenInviteListener`
+-   method `stopSharingBubbleByLink()` now takes a `RainbowListener<OpenInvite, Unit>` instead of a `IGetOpenInviteListener`
+
+### SDK for Android 2.20.0 - August 2022
+
+#### API Changes
+
+Bubbles
+
+-   new method `hasInactiveBubbles()` to know if the user has some inactive bubbles
+-   new method `refreshAllInactiveBubbles()` to refresh all inactive bubbles
+-   rename method `refreshAllBubbles()` to `refreshAllActiveBubbles()`
+-   rename method `getMyInactiveList()` to `getAllInactiveBubbles()`
+
+#### API Breaking Changes
+
+Bubbles
+
+-   method `toggleMuteStateParticipant()` now takes a `IRainbowRoom` instead of `Room` and a `RainbowListener<Unit, ConferenceOptionsError>` as parameters instead of `IToggleMuteStateParticipantListener`
+-   method `muteAllParticipants()` now takes a `IRainbowRoom` instead of `Room` and a `RainbowListener<Unit, ConferenceOptionsError>` as parameters instead of `IToggleMuteStateParticipantListener`
+-   method `lockConference()` now takes a `IRainbowRoom` instead of `Room` and a new `RainbowListener<Unit, ConferenceOptionsError>` parameter instead of `IHangUpParticipantListener`
+-   method `hangUpParticipant()` now takes a `IRainbowRoom` instead of `Room` and a new `RainbowListener<Unit, ConferenceOptionsError>` parameter instead of `IHangUpParticipantListener`
+-   method `delegateConference()` now takes a `IRainbowRoom` instead of `Room` and a new `RainbowListener<Unit, DelegateConferenceError>` parameter instead of `IDelegateConferenceListener`
+-   rename method `declineWebConferenceCall()` to `declineConference()` the method now takes a `IRainbowRoom` instead of `Room` and a new optional `RainbowListener<Unit, Unit>` callback
+-   method `subscribeToVideo()` now takes a `IRainbowRoom` instead of `Room` and a new `RainbowListener<Unit, SubscribeParticipantVideoError>` parameter instead of `ISubscribeParticipantVideoListener`
+-   method `reSubscribeToVideo()` now takes a `IRainbowRoom` instead of `Room` and a new `RainbowListener<Unit, SubscribeParticipantVideoError>` parameter instead of `ISubscribeParticipantVideoListener`
+-   method `subscribeToService()` now takes a `IRainbowRoom` instead of `Room` and a new `RainbowListener<Unit, SubscribeParticipantVideoError>` parameter instead of `ISubscribeParticipantVideoListener`
+-   method `updateVideoQuality()` now takes a `IRainbowRoom` instead of `Room` and a new `RainbowListener<Unit, SubscribeParticipantVideoError>` parameter instead of `IUpdateVideoQualityListener`
+-   method `updateLocalVideoMaxBandwidth()` now takes a `IRainbowRoom` instead of `Room` and a new `RainbowListener<Unit, SubscribeParticipantVideoError>` parameter instead of `IUpdateVideoQualityListener`
+-   method `startAndJoinConference()` now takes a `IRainbowRoom` instead of `Room` and a new `RainbowListener<Unit, SubscribeParticipantVideoError>` parameter instead of `IJoinAudioCallListener`
+-   method `joinAudioConference()` now takes a `IRainbowRoom` instead of `Room` and a new `RainbowListener<Unit, SubscribeParticipantVideoError>` parameter instead of `IJoinAudioCallListener`
+-   method `stopAudioConference()` now takes a `IRainbowRoom` instead of `Room` and a new `RainbowListener<Unit, SubscribeParticipantVideoError>` parameter instead of `IStopAudioConfListener`
+-   method `getConferenceTalkingTime()` now takes a `IRainbowRoom` instead of `Room` and a new `RainbowListener<List<[ConferenceParticipant]>, Unit>` parameter instead of `IGetConferenceTalkingTimeListener`
+-   rename method `isConferenceJoinable` to `isConferenceReachable`
+
+### SDK for Android 2.19.0 - July 2022
+
+#### API Changes
+
+FileStorage
+
+-   new method `uploadFileToPersonalStorage()` to upload a file in the user personal storage
+
+#### API Breaking Changes
+
+FileStorage
+
+-   rename method `uploadFileDescriptorToPersonalStorage()` to `copyFileDescriptorToPersonalStorage()`
+
+Bubbles
+
+-   methods `createBubble()` and `createAutoAcceptedBubble` replaced by method `createBubble(CreateRoomBody)`
+-   methods `changeBubbleData()` and `changeOwner()` replaced by method `updateBubble(CreateRoomBody)`
+-   method `deleteBubble()` now takes a `IRainbowRoom` instead of a `Room` and a `RainbowListener<Unit, Unit>` as parameter instead of `IDeleteRoomListener`
+-   method `archiveBubble()` now takes a `IRainbowRoom` instead of a `Room` and a `RainbowListener<Unit, Unit>` as parameter instead of `RainbowListener`
+-   method `acceptInvitation()` now takes a `IRainbowRoom` instead of a `Room` and `RainbowListener<RoomParticipant, Unit>` as parameter instead of `IChangeUserRoomDataListener`
+-   method `rejectInvitation()` now takes a `IRainbowRoom` instead of a `Room` and `RainbowListener<RoomParticipant, Unit>` as parameter instead of `IChangeUserRoomDataListener`
+-   method `setParticipantPrivilegeToModerator()` now takes a `IRainbowRoom` instead of a `Room` and `RainbowListener<RoomParticipant, Unit>` as parameter instead of `IChangeUserRoomDataListener`
+-   method `setParticipantPrivilegeToUser()` now takes a `IRainbowRoom` instead of a `Room` and `RainbowListener<RoomParticipant, Unit>` as parameter instead of `IChangeUserRoomDataListener`
+-   method `setParticipantPrivilegeToGuest()` now takes a `IRainbowRoom` instead of a `Room` and `RainbowListener<RoomParticipant, Unit>` as parameter instead of `IChangeUserRoomDataListener`
+-   method `getRoomData()` now takes a `IRainbowRoom` instead of a `Room` and `RainbowListener<IRainbowRoom, Unit>` as parameter instead of `IGetRoomDataListener`
+-   method `refreshAllBubbles()` now takes a `RainbowListener<List<IRainbowRoom>, Unit>` as parameter instead of `IRoomRefreshListener`
+-   method `refreshAllBubbles()` now takes a `RainbowListener<List<IRainbowRoom>, Unit>` as parameter instead of `IRoomRefreshListener`
+-   method `searchRoomsByName()` now takes a `RainbowListener<List<IRainbowRoom>, Unit>` as parameter instead of `IRoomRefreshListener`
+-   method `searchRoomsByTag()` now takes a `RainbowListener<List<IRainbowRoom>, Unit>` as parameter instead of `IRoomRefreshListener`
+-   method `updateCustomDataForBubble()` now takes a `IRainbowRoom` instead of a `Room` and `RainbowListener<Room, Unit>` as parameter instead of `IUpdateCustomDataListener`
+-   method `deleteAllCustomDataForBubble()` now takes a `IRainbowRoom` instead of a `Room` and `RainbowListener<Room, Unit>` as parameter instead of `IUpdateCustomDataListener`
+-   rename method `checkServicePlan()` to `checkBubbleOwner()` the method now takes a `IRainbowRoom` instead of a `Room` and `RainbowListener<Room, Unit>` as parameter instead of `IUpdateCustomDataListener`
+-   method `getUserQuotaConsumption()` now takes a `RainbowListener<Consumption, Unit>` as parameter instead of `IGetConsumptionListener`
+-   rename method `getAllTags()` to `fetchBubbleTagSuggestions()` the method now takes a `RainbowListener<List<RoomTag>, Unit>` as parameter instead of `IUpdateRoomTagsListener`
+-   rename method `updateRoomTags()` to `updateBubbleTags()` the method now takes a `List<RoomTag>` instead of `List<String`, `IRainbowRoom` instead of a `String` and `RainbowListener<List<RoomTag>, Unit>` as parameter instead of `IUpdateRoomTagsListener`
+-   method `getPublicLinkForBubble()` now takes a `IRainbowRoom` instead of a `String` and `RainbowListener<OpenInvite, Unit>` as parameter instead of `IGetOpenInviteListener`
+-   rename method `joinBubbleByOpenInviteId()` to `joinBubbleByPublicLink()` the method now takes a `RainbowListener<IRainbowRoom, Unit>` as parameter instead of `IJoinRoomByOpenInvite`
+-   method `addParticipantsAndStartConference()` now takes a `RainbowListener<AdHocResponse, RoomRepository.CreateRoomError>` as parameter instead of `IAddParticipantsAndStartConferenceListener`
+-   method `mergeCalls()` now takes a `RainbowListener<AdHocResponse, RoomRepository.CreateRoomError>` as parameter instead of `IAddParticipantsAndStartConferenceListener`
+-   method `inviteGuestsToBubble()` now takes a `IRainbowRoom` instead of a `Room` and `RainbowListener<Map<String, String>, Unit>` as parameter instead of `IInviteToJoinRoom`
+-   method `inviteUsersToBubble()` now takes a `IRainbowRoom` instead of a `Room` and `RainbowListener<Map<String, String>, Unit>` as parameter instead of `IInviteToJoinRoom`
+-   method `cancelInvitationGuestsToBubble()` now takes a `IRainbowRoom` instead of a `Room` and `RainbowListener<Unit, Unit>` as parameter instead of `ICancelInviteToJoinRoom`
+-   method `fetchMoreRoomParticipants()` now takes a `IRainbowRoom` instead of a `String` and `RainbowListener<List<RoomParticipant>, Unit>` as parameter instead of `IGetActiveUserFromRoomListener`
+-   method `addParticipantToBubble()` now takes a `IRainbowRoom` instead of a `Room` and `RainbowListener<Unit, AddRoomParticipantsError>` as parameter instead of `IAddParticipantsListener`
+-   method `addParticipantsToBubble()` now takes a `IRainbowRoom` instead of a `Room` and `RainbowListener<Unit, AddRoomParticipantsError>` as parameter instead of `IAddParticipantsListener`
+-   method `leaveBubble()` now takes a `IRainbowRoom` instead of a `Room` and `RainbowListener<Unit, AddRoomParticipantsError>` as parameter instead of `IAddParticipantsListener`
+-   method `deleteParticipantFromBubble()` now takes a `IRainbowRoom` instead of a `Room` and `RainbowListener<Unit, AddRoomParticipantsError>` as parameter instead of `IAddParticipantsListener`
+-   delete method `getMoreActiveUsersFromBubble()` as all participants are already retrieved
+
+Room
+
+-   create an interface `IRainbowRoom` to expose bubble methods
+-   rename method `getParticipantsWithoutUser()` to `getParticipantsAsContactsWithoutUser()`
+-   rename method `getParticipantsTypeAsContacts()` to `getParticipantsByStatusAsContacts()`
+-   rename method `getContactFromJid()` to `getParticipantByJidAsContact()`
+-   rename method `getParticipantWithId()` to `getParticipantById()`
+-   rename method `getParticipantWithContact()` to `getParticipantByContact()`
+-   rename method `getRoomParticipantFromContactJid()` to `getParticipantByJid()`
+-   rename method `getModerators()` to `getModeratorsAsContacts()`
+-   rename method `getUserStatus()` to `getConnectedUserStatus()`
+
+Group
+
+-   property `groupMembers` now returns a `List<IRainbowContact>` instead of a `List<Contact>`
+
+### SDK for Android 2.18.0 - July 2022
+
+---
+
+#### API Changes
+
+Channels
+
+-   new method `searchChannels()` to search for channels with specific parameters.
+-   new method `browseChannels()` to browse for channels with specific parameters.
+-   new method `fetchChannelItems()` to fetch items for a channel with specific parameters.
+-   new method `fetchLatestItems()` to fetch latest items from all subscribed channels.
+-   new method `fetchUsers(Channel, Int, Int, List<ChannelUserAffiliationType>?, Boolean, RainbowListener<List<ChannelUser>, Unit>?)` to fetch users from specified channel.
+
+#### API Breaking Changes
+
+Channels
+
+-   method `muteChannel()` now takes a `RainbowListener<Unit, Unit>` as parameter instead of `IChannelMuteListener`
+-   method `unMuteChannel()` now takes a `RainbowListener<Unit, Unit>` as parameter instead of `IChannelUnMuteListener`
+-   method `acceptChannelInvitation()` now takes a `RainbowListener<Unit, Unit>` as parameter instead of `IChannelAcceptInvitationListener`
+-   method `declineChannelInvitation()` now takes a `RainbowListener<Unit, Unit>` as parameter instead of `IChannelDeclineInvitationListener`
+-   method `subscribeToChannel()` now takes a `RainbowListener<Channel, Unit>` as parameter instead of `IChannelSubscribeListener`
+-   method `unsubscribeToChannel()` now takes a `RainbowListener<Unit, Unit>` as parameter instead of `IChannelUnsubscribeListener`
+-   method `deleteAllUsersFromChannel()` now takes a `RainbowListener<Unit, Unit>` as parameter instead of `IChannelUpdateUsersListener`
+-   method `deleteItem()` now takes a `RainbowListener<Unit, Unit>` as parameter instead of `IChannelDeleteItemListener`
+-   method `deleteChannel()` now takes a `RainbowListener<Unit, Unit>` as parameter instead of `IChannelDeleteListener`
+-   method `createChannel()` now takes a `RainbowListener<Channel, Unit>` as parameter instead of `IChannelCreateListener`
+-   method `createPublicChannel()` now takes a `RainbowListener<Channel, Unit>` as parameter instead of `IChannelCreateListener`
+-   method `createClosedChannel()` now takes a `RainbowListener<Channel, Unit>` as parameter instead of `IChannelCreateListener`
+-   replace method `updateChannelDescription()` with `updateChannel()` method.
+-   method `fetchChannelsByName()` now takes a `RainbowListener<List<Channel>, Unit>` as parameter instead of `IChannelFetchListener`
+-   method `fetchChannelsByDescription()` now takes a `RainbowListener<List<Channel>, Unit>` as parameter instead of `IChannelFetchListener`
+-   removal of duplicate method `fetchChannelsByCategory()`
+-   removal of duplicate method `fetchMostFollowedChannels()`
+-   removal of duplicate method `fetchMostRecentChannels()`
+-   method `fetchChannelsByCategory()` now takes a `RainbowListener<List<Channel>, Unit>` as parameter instead of `IChannelFetchListener`
+-   method `fetchMostFollowedChannels()` now takes a `RainbowListener<List<Channel>, Unit>` as parameter instead of `IChannelFetchListener`
+-   method `fetchMostRecentChannels()` now takes a `RainbowListener<List<Channel>, Unit>` as parameter instead of `IChannelFetchListener`
+-   removal of method `fetchItems()` use `fetchChannelItems()` instead
+-   removal of method `fetchNextItems()` use `fetchChannelItems()` instead
+-   removal of method `fetchLatestItems(Int, IChannelFetchLatestItemsListener)` use `fetchLatestItems()` instead
+-   removal of method `fetchNextLatestItems(Int, Date, IChannelFetchLatestItemsListener)` use `fetchLatestItems()` instead
+-   method `updateUserReactionForChannelItem()` now takes a `Channel`, `IChannelItem` and a `RainbowListener<IChannelItem, Unit>` as parameter instead of `String`, `String` and `IChannelFetchListener`
+-   method `removeUserReactionForChannelItem()` now takes a `Channel`, `IChannelItem` and a `RainbowListener<IChannelItem, Unit>` as parameter instead of `String`, `String` and `IChannelFetchListener`
+-   removal of duplicate methods `fetchUsers()`
+-   removal of method `fetchFilteredUsers()` use `fetchUsers()` instead
+-   method `fetchUsersByName()` now takes a `RainbowListener<List<ChannelUser>, Unit>` as parameter instead of `IChannelFetchUsersListener`
+-   methods `addUsersToChannel()` now takes a `RainbowListener<Pair<List<ChannelUser>, List<String>>, Unit>` as parameter instead of `IChannelUpdateUsersListener`
+-   methods `updateUsersToChannel()` now takes a `RainbowListener<Pair<List<ChannelUser>, List<String>>, Unit>` as parameter instead of `IChannelUpdateUsersListener`
+-   methods `deleteUsersFromChannel()` now takes a `RainbowListener<Pair<List<ChannelUser>, List<String>>, Unit>` as parameter instead of `IChannelUpdateUsersListener`
+
+### SDK for Android 2.17.0 - June 2022
+
+---
+
+#### API Changes
+
+IRainbowContact
+
+-   new method `getAvatarUrl(Int)` to retrieve the contact's url avatar
+
+Room
+
+-   new method `getAvatarUrl(Int)` to retrieve the bubble's url avatar
+
+Channel
+
+-   new method `getAvatarUrl(Int)` to retrieve the channel's url avatar
+
+Channels
+
+-   new method `deleteChannelAvatar` to delete the channel's avatar
+
+Bubbles
+
+-   new method `deleteRoomAvatar` to delete the room's avatar
+
+#### API Breaking Changes
+
+MyProfile
+
+-   method `uploadPhoto()` now takes a `RainbowListener<Unit, Unit>` as parameter instead of `IAvatarListener`
+-   method `deletePhoto()` now takes a `RainbowListener<Unit, Unit>` as parameter instead of `IRoomAvatarListener`
+
+Contacts
+
+-   removal of deprecated method `getAvatarUrl(contactId)`
+-   removal of method `getAvatarUrl(IRainbowContact, Int)` it has been moved to `IRainbowContact.getAvatarUrl(Int)`
+
+Bubbles
+
+-   removal of method `getAvatarUrl(Room, Int)` it has been moved to `Room.getAvatarUrl(Int)`
+-   method `uploadRoomAvatar(room, listener)` now takes a `RainbowListener<Unit, Unit>` as parameter instead of `IAvatarListener`
+-   removal of method `uploadRoomAvatar(room, listener)`. You should use `uploadRoomAvatar(room, file, listener)` instead.
+
+Channel
+
+-   removal of the `getChannelAvatar()` method. The avatar is no longer downloaded automatically. In order to retrieve it, you must use the public url accessible via the `Channel.getAvatarUrl(resolution)` method.
+-   method `uploadChannelAvatar()` now takes a `RainbowListener<Unit, Unit>` as parameter instead of `IAvatarListener`
+
+Room
+
+-   removal of the `getPhoto()` and `setPhoto()` methods. These methods were not used.
+
+### SDK for Android 2.16.0 - May 2022
+
+---
+
+#### API Changes
+
+IRainbowContact
+
+-   new method `getFirstWorkPhoneNumber() : PhoneNumber` to retrieve the first work phone number
+-   new method `getPhoneNumber(String) : PhoneNumber` to retrieve the first phone number that correspond to a given number
+-   new method `getPhoneNumber(PhoneNumberType) : PhoneNumber` to retrieve the first phone number that correspond to a given `PhoneNumberType`
+-   new method `getFirstOfficePhoneNumberValue() : String` to retrieve the first office phone number value
+-   new method `getFirstWorkPhoneNumberValue() : String` to retrieve the first work phone number value
+-   new method `getFirstMobilePhoneNumberValue() : String` to retrieve the first mobile phone number value
+-   new method `getFirstPersonalPhoneNumberValue() : String` to retrieve the first personal phone number value
+-   new method `getFirstPersonalMobilePhoneNumberValue() : String` to retrieve the first personal mobile phone number value
+-   new method `getFirstAvailableNumberValue() : String` to retrieve the first available phone number value
+-   new method `isFromMyCompanyDirectory() : Boolean` to know if the contact is from the company directory
+-   new method `isPhoneBook() : Boolean` to know if the contact is from PBX phone book
+-   new method `getTitle() : String` return the contact title
+-   new method `getJobDepartment() : String` return the contact job department
+-   new method `getLanguage() : String` return the contact language
+-   new method `getEmails() : Set<EmailAddress>` return the contact emails as a `Set<EmailAddress>`
+-   new method `isTerminated() : Boolean` to know if the contact has been deleted
+-   new method `getTags() : List<String>` return the contact tags as a `List<String>`
+-   new method `getEmailWithType(EmailType): String` to retrieve the first email that correspond to a given `EmailType`
+-   new method `hasEmailAddress(String) : Boolean` to know if there is an email matching the given value
+-   new method `isInTheSameCompany(IRainbowContact): Boolean` to know if the contact is in the same company
+
+#### API Breaking Changes
+
+IRainbowContact
+
+-   removal of the `getInvitationId()` method as it is no longer used
+-   method `getFirstMobilePhoneNumber()` now returns a `PhoneNumber` object instead of a `String`
+-   method `getFirstPersonalPhoneNumber()` now returns a `PhoneNumber` object instead of a `String`
+-   method `getFirstPersonalMobilePhoneNumber()` now returns a `PhoneNumber` object instead of a `String`
+-   method `getFirstAvailableNumber()` now returns a `PhoneNumber` object instead of a `String`
+-   removal of deprecated `getLoginEmail()` method
+
+Connection
+
+-   removal of deprecated `getState()` method
+
+FileStorage
+
+-   removal of deprecated `removeFile()` method, you can use `deleteFileDescriptor()` instead
+-   method `getConsumption()` now takes a `RainbowListener<Consumption, Unit>` as parameter instead of `IGetConsumptionListener`
+-   method `addViewerToFileDescriptor()` now takes a `RainbowListener<Unit, AddViewerError>` as parameter instead of `IAddViewerListener`
+-   method `deleteFileDescriptorViewer()` now takes a `RainbowListener<Unit, AddViewerError>` as parameter instead of `IDeleteViewerListener`
+-   method `deleteFileDescriptorsViewer()` now takes a `RainbowListener<Unit, AddViewerError>` as parameter instead of `IDeleteViewerListener`
+-   method `deleteFileDescriptor()` now takes a `RainbowListener<Unit, DeleteFileDescriptorError>` as parameter instead of `IDeleteFileDescriptorListener`
+-   method `deleteFileDescriptors()` now takes a `RainbowListener<Unit, Unit>` as parameter instead of `IDeleteFileDescriptorListener`
+-   method `deleteAllFileDescriptors()` now takes a `RainbowListener<Unit, DeleteFileDescriptorError>` as parameter instead of `IDeleteAllFileDescriptorListener`
+-   method `fetchFileDescriptorById()` now takes a `RainbowListener<RainbowFileDescriptor, FetchFileDescriptorError>` as parameter instead of `IGetFileDescriptorListener`
+-   method `fileOwnershipChange()` now takes a `RainbowListener<RainbowFileDescriptor, ChangeOwnershipError>` as parameter instead of `IFileOwnershipChangeListener`
+-   method `uploadFileDescriptorToPersonalStorage()` now takes a `RainbowListener<RainbowFileDescriptor, CopyFileDescriptorError>` as parameter instead of `IGetFileDescriptorListener`
+-   method `fetchFileSentInBubble()` now takes a `RainbowListener<RainbowFileDescriptor, Unit>` as parameter instead of `IRefreshListener`
+-   method `fetchFileReceivedInConversation()` now takes a `RainbowListener<RainbowFileDescriptor, Unit>` as parameter instead of `IRefreshListener`
+-   method `fetchFileSentInConversation()` now takes a `RainbowListener<RainbowFileDescriptor, Unit>` as parameter instead of `IRefreshListener`
+-   method `fetchFileReceived()` now takes a `RainbowListener<RainbowFileDescriptor, Unit>` as parameter instead of `IRefreshListener`
+-   method `fetchFileSent()` now takes a `RainbowListener<RainbowFileDescriptor, Unit>` as parameter instead of `IRefreshListener`
+-   method `fetchFileReceivedInBubble()` now takes a `RainbowListener<RainbowFileDescriptor, Unit>` as parameter instead of `IRefreshListener`
+-   methods `uploadFileToConversation() - uploadFileToBubble() - uploadFileToChannel()` now takes a `RainbowListener<RainbowFileDescriptor, Unit>` as parameter instead of `IUploadFileListener`. To retrieve the upload progress, you can subscribe to changes on the RainbowFileDescriptor and use the `getPercentProgression()` method
+-   methods `downloadFile()` now takes a `RainbowListener<RainbowFileDescriptor, Unit>` as parameter instead of `IDownloadPublicFileListener`. To retrieve the upload progress, you can subscribe to changes on the RainbowFileDescriptor and use the `getPercentProgression()` method
+-   removal of deprecated `abortFileUploading()` method, you can use `cancelUpload()` instead
+
+Groups
+
+-   method `createGroup()` now takes a `RainbowListener<Group, Unit>` as parameter instead of `IGroupCreationListener`
+-   method `deleteGroup()` now takes a `RainbowListener<Unit, Unit>` as parameter instead of `IGroupDeletionListener`
+-   method `updateGroup()` now takes a `RainbowListener<Group, Unit>` as parameter instead of `IGroupCreationListener`
+-   method `addParticipantToGroup()` now takes a `RainbowListener<Unit, Unit>` as parameter instead of `IAddUserInGroupListener`
+-   method `deleteParticipantFromGroup()` now takes a `RainbowListener<Unit, Unit>` as parameter instead of `IDeleteUserInGroupListener`
+-   method `refreshGroups()` now takes a `RainbowListener<List<Group>, Unit>` as parameter instead of `IResultListener`
+
+RoomContainer
+
+-   method `createContainer()` now takes a `RainbowListener<Pair<Container, List<InvalidRoom>?>, RoomContainerRepository.ContainerError>` as parameter instead of `ICreateContainerListener`
+-   method `updateContainer()` now takes a `RainbowListener<Container, RoomContainerRepository.ContainerError>` as parameter instead of `IUpdateContainerListener`
+-   method `deleteContainer()` now takes a `RainbowListener<Container, RoomContainerRepository.ContainerError>` as parameter instead of `IDeleteContainerListener`
+-   method `deleteContainers()` now takes a `RainbowListener<Map<String, RoomContainerRepository.ContainerError>, RoomContainerRepository.ContainerError>` as parameter instead of `IDeleteContainersListener`
+-   method `fetchContainers()` now takes a `RainbowListener<List<Container>, RoomContainerRepository.ContainerError>` as parameter instead of `IFetchContainersListener`
+-   method `fetchContainerById()` now takes a `RainbowListener<Container, RoomContainerRepository.ContainerError>` as parameter instead of `IFetchContainerListener`
+-   method `addRoomsToContainer()` now takes a `RainbowListener<Pair<Container, List<InvalidRoom>?>, RoomContainerRepository.ContainerError>` as parameter instead of `IAddOrDeleteRoomsToContainerListener`
+-   method `removeRoomsToContainer()` now takes a `RainbowListener<Pair<Container, List<InvalidRoom>?>, RoomContainerRepository.ContainerError>` as parameter instead of `IAddOrDeleteRoomsToContainerListener`
+-   method `moveRooms()` now takes a `RainbowListener<Pair<Container, List<InvalidRoom>?>, RoomContainerRepository.ContainerError>` as parameter instead of `IAddOrDeleteRoomsToContainerListener`
+
+### SDK for Android 2.15.0 - April 2022
+
+---
+
+#### API changes
+
+Bubbles
+
+-   method `delegateConference` take a new boolean value to hangup the call after delegation
+
+MyProfile
+
+-   new method `getConnectedUserProfiles` to get the profiles of the connected user.
+
+#### Other changes
+
+-   Fix issue with method `WebRtc.switchCamera()`. On some devices, the method used to switch between several front or rear cameras. Now the switching is done correctly between a front and a rear camera.
+
+### SDK for Android 2.11.0 - December 2021
+
+---
+
+#### API changes
+
+In order to unify the SDK methods, we migrate the listener to a new type: `RainbowListener<T,U>`.
+
+-   `T` represents the type of the returned data in case of success
+-   `U` represents the type of the returned data in case of error
+
+When there is no returned data, this listener returns the `Unit` type
+
+This listener expose two methods :
+
+-   `onSuccess(data: T)` this callback is called in case of success of the called function. `T` is the specified type in `RainbowListener<T,U>`
+-   `onError(error: RainbowError<U>)` this callback is called in case of failure of the called function. `U` is the specified type in `RainbowListener<T,U>`
+
+`RainbowError<U>` is a new type returned in the failure callback, it contains 3 fields :
+
+-   `errorMsg` an error message
+-   `errorCode` an optional error code
+-   `errorType` an optional object of type `U`
+
+#### API Breaking changes
+
+Favorites
+
+-   method `createFavorite(...)` now takes a `RainbowListener<IRainbowFavorite, CreateFavoriteError>` instead of `IFavoriteCreateListener`
+-   method `createFavoriteWithPosition(...)` now takes a `RainbowListener<IRainbowFavorite, CreateFavoriteError>` instead of `IFavoriteCreateListener`
+-   method `updateFavoritePosition(...)` now takes a `RainbowListener<IRainbowFavorite, Unit>` instead of `IFavoritesUpdateListener`
+-   method `deleteFavorite(...)` now takes a `RainbowListener<Unit, Unit>` instead of `IFavoritesDeleteListener`
+
+### SDK for Android 2.10.0 - November 2021
+
+---
+
+#### API changes
+
+Groups
+
+-   new method `refreshGroups(IResultListener)` to reload the list of groups.
+
+Invitations
+
+-   new method `refreshReceivedInvitations(IGetUserInvitationsListener)` to reload the list received invitations.
+-   new method `refreshSentInvitations(IGetUserInvitationsListener)` to reload the list of sent invitations.
+
+IRainbowFavorite
+
+-   new method `getPosition()` to know the actual favorite position.
+
+MyProfile
+
+-   Builder `UpdateUserRequest` has a new method customData(JSONObject) to set customData of connected user.
+
+### SDK for Android 2.9.1 - November 2021
+
+---
+
+#### Others Changes
+
+-   Some minor bugs have been fixed
+
+### SDK for Android 2.8.1 - October 2021
+
+---
+
+#### Others Changes
+
+-   Some minor bugs have been fixed
+
+### SDK for Android 2.8.0 - October 2021
+
+---
+
+#### API changes
+
+Routing
+
+-   new method `getRoutinesList()` to get the list of your personal routines.
+-   new method `getRoutineById(String, IGetRoutineListener)` to get a specific routine from its id.
+-   new method `activateRoutine(String, IResultListener)` to activate one of your routines from its id.
+-   new method `modifyRoutine(Routine, IResultListener)` to modify one of your routines
+
+### SDK for Android 2.7.3 - November 2021
+
+---
+
+#### Others Changes
+
+FileStorage
+
+-   methods `uploadFileToConversation`, `uploadFileToBubble` and `uploadFileToChannel` now correctly notify about upload progression
+
+### SDK for Android 2.7.2 - October 2021
+
+---
+
+#### Others Changes
+
+Bubbles
+
+-   Fix API updateCustomDataForBubble
+
+### SDK for Android 2.7.1 - October 2021
+
+---
+
+#### API Breaking changes
+
+Bubbles
+
+-   method `getConferenceTalkingTime` now takes a room object in parameters
+
+### SDK for Android 2.7.0 - October 2021
+
+---
+
+#### API changes
+
+Routing
+
+-   new module to handle all routing methods: nomadic, forward, telephony state, CLI Options, Ringing devices
+
+Voicemail
+
+-   new module to handle all voicemail methods: counter, visual voicemail list
+
+#### API Breaking changes
+
+Telephony
+
+-   removed all methods related to Voicemail and Routing and moved them in dedicated modules.
+
+### SDK for Android 2.6.0 - September 2021
+
+---
+
+#### API changes
+
+Contacts
+
+-   new method `getContactFromPhoneNumber(String number)` to find a contact by phone number if any.
+-   new method `refreshContactLastActivityDate(IRainbowContact contact)` to refresh the last contact activity date: it is the date of the last contact presence received at server side.
+-   new method `updateCalendarAutomaticReply(IRainbowContact contact)` to update the contact calendar automatic reply message if any.
+-   new method `isLoggedInUser(IRainbowContact contact)` to check if the given contact is the logged in user.
+
+#### API Breaking changes
+
+Contacts
+
+-   removed `registerListener` since listener was no more called.
+-   removed `unregisterListener` since listener was no more called.
+
+### SDK for Android 2.5.0 - August 2021
+
+---
+
+#### API changes
+
+MyProfile
+
+-   method `setPresenceTo(RainbowPresence)` is now deprecated and replaced by `setPresenceTo(RainbowPresence, IUsersListener)`.
+-   method `updateLastName` is now deprecated and replaced by `updateUser`.
+-   method `updateFirstName` is now deprecated and replaced by `updateUser`.
+-   method `updateNickName` is now deprecated and replaced by `updateUser`.
+-   method `updateJobTitle` is now deprecated and replaced by `updateUser`.
+-   method `updateTitle` is now deprecated and replaced by `updateUser`.
+-   method `updateOfficePhoneNumber` is now deprecated and replaced by `updateUser`.
+-   method `updateTimeZone` is now deprecated and replaced by `updateUser`.
+-   new method `updateUser(UpdateUserRequest, IUsersListener)` to update the connected user with a builder pattern.
+-   new method `deleteUser` to delete the connected user.
+
+Conversations
+
+-   Conversations module is now deprecated. You should use Im module instead.
+
+Im
+
+-   all previous methods from Conversations module are now in Im module.
+-   new method `getTotalUnreadMsgNb()` to get the total number of unread messages.
+-   new method `deleteConversations()` to delete a list of conversations.
+-   new method `createNewConversationFromJid()` to create a new conversation locally from the contact jid specified. The conversation is also created at server side asynchronously.
+-   new method `createNewConversationFromRoom()` to create a new conversation locally from the room specified. The conversation is also created at server side asynchronously.
+-   new method `refreshConversations()` to reload the list of conversations from server.
+-   new method `getConversationWithContact()` to find a conversation associated to the given contact. It will not create it if null.
+-   new method `getUserLastMessageSent()` to get the last message sent by the user in the given conversation if any, null otherwise.
+
+IRainbowConversation
+
+-   new method `isHistoryLoaded()` to know if messages history has already been synchronized.
+-   new method `isChatType()` to know if the conversation is associated to a single user.
+-   new methods `getTextToSend()` and `setTextToSend()` to save a text message before sending it.
+
+IRainbowContact
+
+-   new method `isDirectory()` to know if the contact is a rainbow user.
+-   new method `isTv()` to know if the contact is a rainbow Tv.
+
+#### API Breaking changes
+
+IM
+
+-   method `sendIsTyping()` takes now a `ChatState` to be more flexible.
+
+### SDK for Android 2.4.0 - July 2021
+
+---
+
+#### API changes
+
+Channels
+
+-   new method `getTenMostFollowedChannels()` to get the ten most followed channels locally.
+-   new method `getTenMostRecentChannels()` to get the ten most recent channels locally.
+-   new method `fetchMostFollowedChannels()` to get the ten most followed channels from server.
+-   new method `fetchMostRecentChannels()` to get the ten most recent channels from server.
+-   new method `fetchChannelsByCategory()` to get all channels apart from the ones contained in the `excludedCategories`.
+-   new method `fetchFilteredUsers()` to get users from a specific `ChannelUserFilter` (ALL, PUBLISHER, INVITED).
+-   new method `createChannel()` to create a channel with an other `ChannelMode`.
+-   new method `fetchUsers()` with an `offset` and a `limit`.
+-   new method `updateUsersToChannel()` to change the `ChannelUserType` of some users within a channel.
+
+**\[New module\]** Invitations
+
+-   new method `acceptUserInvitation()` to accept an invitation to join the user's network
+-   new method `declineUserInvitation()` to decline an invitation to join the user's network
+-   new method `cancelUserSentInvitation()` to cancel an invitation previously sent to a user
+-   new method `getReceivedUserInvitations()` to get a list of received invitations
+-   new method `getSentUserInvitations()` to get a list of sent invitations
+-   new method `getPendingReceivedUserInvitations()` to get a list of pending received invitations
+-   new method `getPendingSentUserInvitations()` to get a list of pending sent invitations
+-   new method `getReceivedUserInvitationById()` to get a a received invitation by id
+-   new method `getSentUserInvitationById()` to get a sent invitation by id
+-   new method `isContactInvited()` to know if the Contact has already been invited
+-   new method `addRainbowContactToNetwork()` to invite a contact to join the user's network
+-   new method `removeRainbowContactFromNetwork()` to remove a contact from the user's network
+-   new method `inviteUserByEmail()` to send an email invitation to join Rainbow
+-   new method `inviteUserBySms()` to create an sms invitation to join Rainbow
+-   new method `getSentInvitationsAsContacts()` to get a list of sent invitations as IRainbowContact
+-   new method `getReceivedInvitationsAsContacts()` to get a list of received invitations as IRainbowContact
+-   new method `getPendingSentInvitationsAsContacts()` to get a list of pending sent invitations as IRainbowContact
+-   new method `getPendingReceivedInvitationsAsContacts()` to get a list of pending received invitations as IRainbowContact
+
+#### API Breaking changes
+
+Channels
+
+-   removed method `addOwnersToChannel()`. It has been replaced by `addUsersToChannel()` with a `ChannelUserType` parameter.
+-   removed method `addPublishersToChannel()`. It has been replaced by `addUsersToChannel()` with a `ChannelUserType` parameter.
+-   removed method `addMembersToChannel()`. It has been replaced by `addUsersToChannel()` with a `ChannelUserType` parameter.
+
+Contacts
+
+-   removed method `getSentInvitations`. It has been replaced by `invitations().getSentUserInvitations()` with a collection of Invitation as return type.
+-   removed method `getReceivedInvitations`. It has been replaced by `invitations().getReceivedUserInvitations()` with a collection of Invitation as return type.
+-   removed method `getPendingSentInvitations`. It has been replaced by `invitations().getPendingSentUserInvitations()` with a collection of Invitation as return type.
+-   removed method `getPendingReceivedInvitations`. It has been replaced by `invitations().getPendingReceivedUserInvitations()` with a collection of Invitation as return type.
+-   removed method `acceptInvitation()` It has been replaced by `invitations().acceptUserInvitation()`
+-   removed method `declineInvitation()` It has been replaced by `invitations().declineUserInvitation()`
+-   removed method `getInvitationById()` It has been replaced by `invitations().getReceivedUserInvitationById()`
+-   removed method `addRainbowContactToRoster()` It has been replaced by `invitations().addRainbowContactToNetwork()`
+-   removed method `removeContactFromRoster()` It has been replaced by `invitations().removeRainbowContactFromNetwork()`
+-   removed method `inviteUserNotRegisteredToRainbow()` It has been replaced by `invitations().inviteUserByEmail()`
+-   removed method `registerInvitationsListener()` It has been replaced by `ArrayItemList.registerChangeListener()`
+-   removed method `unregisInvitationsterListener()` It has been replaced by `ArrayItemList.unregisterChangeListener()`
+
+### SDK for Android 2.3.0 - June 2021
+
+---
+
+#### API changes
+
+Bubbles
+
+-   method `deleteParticipantFromBubble(Room room, IRainbowContact contact, boolean keepArchive, IRoomProxy.IDeleteParticipantListener listener)` has a new parameter `keepArchive` to define if the contact in parameter keeps an archive of the Bubble
+-   new method `checkServicePlan(Room room, IRainbowContact contact, ICheckServicePlanListener listener)` to check if the `contact` can be used to change the owner of the `room`
+-   new method `inviteUsersToBubble(Room room, ArrayList<IRainbowContact> contactsList, IInviteToJoinRoom listener)` for inviting a list of contacts with a single request (vs `addParticipantsToBubble()`).
+-   new method `findBubbleByJid(String roomJid)` to get a Bubble by its jid
+-   new method `getAvatarUrl(Room room, int resolution)` to get the Bubble avatar URL if any
+-   new method `updateLocalVideoMaxBandwidth(Room room, int maxBandwidth, IUpdateVideoQualityListener listener)` forupdating the maximum bandwidth of the sent video stream
+-   new method `addPhoneNumberParticipant(Room room, String number, IResultListener listener)` to add someone by phone number in a conference
+-   method `getRoomByConferenceId` has been renamed to `getBubbleByConferenceId`
+-   new method `joinBubbleByOpenInviteId(String openInviteId, IJoinRoomByOpenInvite listener)` to join a bubble with the id coming from its public link
+-   new method `addParticipantsAndStartConference(WebRTCCall currentCall, ArrayList<IRainbowContact> participants, IAddParticipantsAndStartConferenceListener listener)` to escalate a P2P call to a conference by adding participants
+-   new method `getAllTags(IUpdateRoomTagsListener listener)` to fetch all tags from all users Bubbles at server side
+-   new method `declineWebConferenceCall(String confId)` will let you decline a conference so that it stops ringing on all devices
+-   new method `lockConference(Room room, Boolean lockState)` will let you lock a conference so that no other participant can join it
+-   new method `loadAllBubblesParticipantIfNeeded(Room room)`. By default, only active or invited participants are loaded in a Bubble. To get others, this method will load them if not already done
+-   new method `searchRoomsByName(String textToSearch, ISearchRoomListener listener)` will let you search Bubbles by name. It will gives active and archived bubbles
+-   new method `searchRoomsByTag(String textToSearch, ISearchRoomListener listener)` will let you search Bubbles by tag name. It will gives active and archived bubbles
+
+CallLogs
+
+-   method `deleteCallLogsForContact(String contactId, ICallLogListener listener)` has been removed and replaced by `deleteCallLogs(ArrayList<CallLogGroup> callLogGroups, ICallLogListener listener)`. Previous method base on `contactId` could not work for all call logs.
+-   method `markCallLogsAsReadForContact(String contactId)` has been removed and replaced by `markCallLogsAsReadForGroup(CallLogGroup callLogGroup)`. Previous method base on `contactId` could not work for all call logs.
+-   new method `getMissedCallLogGroupForContact(IRainbowContact contact)` to get a `CallLogGroup` for the given `contact`. It will contains all missed call for this contact, or null if there is no missed call.
+
+FileStorage
+
+-   method `abortFileUploading(RainbowFileDescriptor)` has been deprecated and replaced by `cancelUpload(RainbowFileDescriptor)`
+-   method `removeFile(RainbowFileDescriptor, IDeleteFileListener)` has been deprecated and replaced by `deleteFileDescriptor(RainbowFileDescriptor, IDeleteFileDescriptorListener)`
+-   new method `deleteFileDescriptors(List<RainbowFileDescriptor>, IDeleteFileListener)` to delete a list of RainbowFileDescriptor
+-   new method `deleteFileDescriptorViewer(RainbowFileDescriptor, String, IDeleteViewerListener)` to delete a specific viewer from a RainbowFileDescriptor
+-   new method `deleteFileDescriptorsViewer(List<RainbowFileDescriptor>, String, IDeleteViewerListener)` to delete a specific viewer from a list of RainbowFileDescriptor
+-   new method `addViewerToFileDescriptor(RainbowFileDescriptor, RainbowFileViewer, IAddViewerListener)` to add a specific viewer to a RainbowFileDescriptor
+-   new method `uploadFileDescriptorToPersonalStorage(RainbowFileDescriptor, IGetFileDescriptorListener)` to copy a specific RainbowFileDescriptor to the user personal storage
+-   new method `deleteAllFileDescriptors(IDeleteAllFileDescriptorListener)` to delete all RainbowFileDescriptor owned by the user
+-   new method `getFileDescriptorById(String)` to retrieve a local RainbowFileDescriptor
+-   new method `fetchFileDescriptorById(String, IgetFileDescriptorListener)` to fetch a RainbowFileDescriptor from the server
+
+WebRTC
+
+-   new method `holdVideo(String contactId)` to pause a subscribed video from a conference
+-   new method `retrieveVideo(String contactId)` to resume a subscribed video from a conference
+
+#### API Breaking changes
+
+Bubbles
+
+-   removed method `getContactInBubbleFromContactJid (Room room, String contactJid)`. It has been replaced by a new method in Room object `getContactFromJid(String contactJid)`
+-   removed method `startRecording(Room room, IStartRecordListener listener)`. This method should have never been public
+-   removed method `stopRecording(Room room, IStopRecordListener listener)`. This method should have never been public
+-   removed method `retrieveVideo(ConferenceParticipant conferenceParticipant)`. It has been moved to `webRTC` module and uses a contact id
+-   removed method `holdVideo(ConferenceParticipant conferenceParticipant)`. It has been moved to `webRTC` module and uses a contact id
+
+FileStorage
+
+-   parameter `IDeleteFileListener` has been renamed to `IDeleteFileDescriptorListener` in method `removeFile`
+-   replace method `getFilesReceivedInBubble(Room)` with `fetchFileReceivedInBubble(Room, int limit, int offset, IRefreshListener)`
+-   replace method `getFilesSentInBubble(Room)` with `fetchFileSentInBubble(Room, int limit, int offset, IRefreshListener)`
+-   replace method `getFilesReceivedInConversation(IRainbowConversation)` with `fetchFileReceivedInConversation(IRainbowConversation, int limit, int offset, IRefreshListener)`
+-   replace method `getFilesSentInConversation(IRainbowConversation)` with `fetchFileSentInConversation(IRainbowConversation, int limit, int offset, IRefreshListener)`
+-   replace method `fetchAllFilesReceived(IRefreshListener)` with `fetchFileReceived(int limit, int offset, IRefreshListener)`
+-   replace method `fetchAllFilesSent(IRefreshListener)` with `fetchFileSent(int limit, int offset, IRefreshListener)`
+-   method `uploadFileToConversation` no longer allows messages to be sent directly into the conversation
+-   method `uploadFileToBubble` no longer allows messages to be sent directly into the conversation
+-   enum `GetMode` has been deleted
+
+### SDK for Android 2.2.0 - June 2021
+
+---
+
+#### API changes
+
+#### Other changes
+
+-   Some minor bugs have been fixed
+
+### SDK for Android 2.1.0-lts - May 2021
+
+#### API changes
+
+Bubbles
+
+-   new method `getAvatarUrl(Room room, int resolution)` to get the public avatar url of a bubble
+
+Contacts
+
+-   new method `getAvatarUrl(IRainbowContact contact, int resolution)` to get the public avatar url of a contact
+-   method `getAvatarUrl(String contactId)` has been deprecated
+
+#### Other changes
+
+-   Some minor bugs have been fixed
+
+### SDK for Android 2.0.0-ltsbeta - April 2021
+
+---
+
+#### Other changes
+
+-   Some minor bugs have been fixed
+
+### SDK for Android 1.86 - April 2021
+
+---
+
+#### Other changes
+
+-   Some minor bugs have been fixed
+
+### SDK for Android 1.85 - March 2021
+
+---
+
+#### API Changes
+
+Push
+
+-   when configuring Push for your application in the Rainbow Hub, you will now have to specify the Sender Id. Like the Server Key, you can find it the Firebase console. For further information, please have a look at `ENABLING PUSH NOTIFICATIONS` documentation.
+
+New **custom data** for connected user (read only)
+
+-   `RainbowSdk.instance().myProfile().getMyCompanyCustomData()` returns a `JSONObject` like for room's custom data
+
+New **custom data** for my company (read only)
+
+-   `RainbowSdk.instance().myProfile().getMyCompanyCustomData()` returns a `JSONObject` like for room's custom data
+
+#### API Breaking Changes
+
+Room custom data
+
+-   `getAllCustomData()` was renamed to `getCustomData()`
+-   `getCustomDataBoolean()` was deleted, use main `JSONObject` returned by `getCustomData()` instead
+-   `getCustomDataInt()` was deleted, use main `JSONObject` returned by `getCustomData()` instead
+-   `getCustomDataString()` was deleted, use main `JSONObject` returned by `getCustomData()` instead
+-   `hasCustomData()` was deleted, use main `JSONObject` returned by `getCustomData()` instead
+
+### SDK for Android 1.84 - February 2021
+
+---
+
+#### API Breaking Changes
+
+Connection
+
+-   method `connection().start()` is no longer needed to start the Rainbow service. You can use `connection().signin()` directly. The method will be removed in future versions.
+
+### SDK for Android 1.80 - December 2020
+
+---
+
+#### API Changes
+
+Bubbles
+
+-   new method `updateRoomTags(List<String> tags, String bubbleId, IRoomProxy.IUpdateRoomTagsListener listener)` to add, update or delete tags in specified room.
+
+### SDK for Android 1.79 - November 2020
+
+---
+
+#### API Changes
+
+-   new method `muteChannel(Channel channel, IChannelProxy.IChannelMuteListener listener)` to mute a channel and stop receiving PUSH notifications for new messages.
+-   new method `unMuteChannel(Channel channel, IChannelProxy.IChannelUnMuteListener listener)` to unmute a channel and activate PUSH notifications for new messages.
+
+### SDK for Android 1.78 - October 2020
+
+---
+
+#### API Changes
+
+FileStorage
+
+-   new method `fileOwnershipChange(fileDescriptor, ownerId, listener)` to drop the ownership to another Rainbow user of the same company
+
+MyProfile
+
+-   new method `getAdvancedSuggestions(limit, offset, listener)` to retrieve contact suggestions group by categories
+
+#### API Breaking Changes
+
+RBLog
+
+-   method `zipLogs` now takes a File instead of a String
+
+### SDK for Android 1.77 - October 2020
+
+---
+
+#### API Changes
+
+-   new method `getVoicemailCounter()` to get the voicemail counter of the connected user.
+-   new method `registerVoicemailCounterChangeListener(IVoicemailMgr.IVoicemailCounterChangeListener listener)` to listen to any change of the voicemail counter.
+-   new method `unregisterSessionsToDisplayListener(IVoicemailMgr.IVoicemailCounterChangeListener listener)` to stop listening to voicemail counter change.
+
+### SDK for Android 1.76 - September 2020
+
+---
+
+#### Others Changes
+
+-   Some bugs and crashes have been fixed.
+
+### SDK for Android 1.75 - August 2020
+
+---
+
+#### API Changes
+
+Bubbles
+
+-   new method `delegateConference(Conference conference, ConferenceParticipant conferenceParticipant, IConferenceProxy.IDelegateConferenceListener listener)` to delegate an ongoing conference to another participant.
+
+### SDK for Android 1.73 - June 2020
+
+---
+
+#### API Changes
+
+Bubbles
+
+-   new method `refreshArchivedBubbles(boolean forcePhotoReload, IRoomMgr.IRoomRefreshListener listener)` to load archived bubbles.
+-   new method `getPublicLinkForBubble(String bubbleId, IUserProxy.IGetOpenInviteListener listener)` to get the public link associated to a bubble.
+-   new method `shareBubbleByLink(String bubbleId, IUserProxy.IGetOpenInviteListener listener)` to create a new public link for the unshared bubble.
+-   new method `stopSharingBubbleByLink(String bubbleId, IUserProxy.IGetOpenInviteListener listener)` to deactivate the previous public link.
+-   new method `registerPublicLinkSharingChangeListener(IRoomMgr.IOpenInviteChangeListener listener)` : add listener to all changes on public link.
+-   new method `unregisterPublicLinkSharingChangeListener(IRoomMgr.IOpenInviteChangeListener listener)` : remove listener to all changes on public link.
+-   new method `retrieveVideo(@NotNull ConferenceParticipant conferenceParticipant)` to retrieve the subscribed video from the given participant in order to get back stream
+-   new method `holdVideo(@NotNull ConferenceParticipant conferenceParticipant)` to hold the subscribed video from the given participant in order to reduce data consumption
+
+### API Breaking Changes
+
+Bubbles
+
+-   method `refreshAllBubbles(boolean forcePhotoReload, IRoomMgr.IRoomRefreshListener listener)` does not fetch archived bubbles anymore.
+-   method `changeBubbleData(room, name, topic, visibility, participantsMuted, autoRegister, listener)` has a new parameter `@Nullable Room.AutoRegisterType autoRegister`
+
+### SDK for Android 1.72 - May 2020
+
+---
+
+#### API Changes
+
+MyProfile
+
+-   new method `changeUserPassword(String oldPassword, String newPassword, IUserProxy.IChangePasswordListener listener)` to change the current password of the connected user.
+
+Bubbles
+
+-   new method `getUserQuotaConsumption(IRoomProxy.IGetConsumptionListener listener)` to retrieve the current number of created bubbles and the available quota.
+
+### API Breaking Changes
+
+FileStorage
+
+-   in method `getUserQuotaConsumption(IFileProxy.IGetConsumptionListener listener)`, the param of the `onGetSuccess` in listener changed from package `com.ale.infra.proxy.fileserver.Consumption` to `com.ale.infra.manager.fileserver.Consumption`.
+
+### SDK for Android 1.71 - April 2020
+
+---
+
+### API Breaking Changes
+
+Bubbles
+
+-   `subscribeToVideo()` takes now a new boolean parameter activeSpeaker. It will let you subscribe in active speaker mode.
+-   Added new parameter `participantsMuted` for methods `createBubble()`, `createAutoAcceptedBubble()` and `changeBubbleData()`. This parameter automatically mutes participants when they join the meeting.
+
+### SDK for Android 1.70 - April 2020
+
+---
+
+#### API Changes
+
+Channels
+
+-   new method `fetchReactionsForChannelItem()` to retrieve reactions from a given channel item
+
+FileStorage
+
+-   new method `abortFileDownloading(RainbowFileDescriptor fileDescriptor)` to stop downloading a file
+-   new method `abortFileUploading(RainbowFileDescriptor fileDescriptor)` to stop uploading a file
+
+### SDK for Android 1.69 - March 2020
+
+---
+
+#### API Changes
+
+Telephony
+
+-   `ISession` has new method `getGlobalCallId()` to get the global call id of the corresponding PBX call.
+-   `ISession` has new method `getCorrelatorData()` to get back the correlator data provided in the `makeCall()` method.
+
+Im
+
+-   new method `sendMessageToConversation(IRainbowConversation conversation, String message, String type, String content)` : send a single additional content
+-   new method `sendMessageToConversation(IRainbowConversation conversation, String message, List<AdditionalContent> contents)` : send a list of additional contents
+
+#### API Breaking Changes
+
+Telephony
+
+-   `makeCall()` takes now a new String parameter correlatorData. It will let you correlate any `ISession` with the desired data
+
+Bubbles
+
+-   Change `Contact` to `IRainbowContact` for methods `addParticipantToBubble` and `addParticipantsToBubble`
+
+IMMessage
+
+-   renamed method `getMessageAlternateContents()` to `getAdditionalContents()`
+-   renamed method `setMessageAlternateContents()` to `setAdditionalContents()`
+-   renamed method `isAlternateContent()` to `hasAdditionalContents()`.
+
+### SDK for Android 1.68 - February 2020
+
+---
+
+#### Obfuscation
+
+Rainbow SDK includes now proper rules for Proguard/R8 that will be consumed when you active obfuscation (`enableMinify true`) into you app. That's it, no more need to handle Webrtc, Smack, Tinylog rules into your's app `proguard-rules.pro`, you can use Rainbow SDK with obfuscation in your app with an empty `proguard-rules.pro` if you have no specific rules for your project.
+
+### SDK for Android 1.67 - January 2020
+
+---
+
+#### API Changes
+
+Bubbles
+
+-   new method `updateVideoQuality()`: request to update the video quality of a publisher (only works if publisher has multi-video quality mode).
+-   new method `createAutoAcceptedBubble()` created a Bubble where participants are auto accepted.
+
+Conference
+
+-   added new callbacks to be notified when participants join, quit or are is updated
+-   `RoomListener.conferenceParticipantsAdded(List<ConferenceParticipant> participantsAdded)`
+-   `RoomListener.conferenceParticipantsUpdated(List<ConferenceParticipant> participantsUpdated)`
+-   `RoomListener.conferenceParticipantsRemoved(List<ConferenceParticipant> participantsRemoved)`
+
+#### API Breaking Changes
+
+Bubbles
+
+-   replaced method `Room.getAllParticipantsAsContactsList()` with `Room.getAllParticipantsAsContactsList()` and `Room.getParticipantsTypeAsContacts()`. First returns all participants as contact list and the second method return all participant of a type as contact list.
+-   removed methods `findBubbleStrictlyWithParticipants()` and `getFirstEscalationBubbleNameAvailable()` which were obsolete.
+
+Connection
+
+-   removed useless listener `IAllLoadingListener`
+
+### SDK for Android 1.66 - January 2020
+
+---
+
+#### API Changes
+
+IRainbowContact
+
+-   new method `isFileSharingAllowed()` for knowing if the file sharing is allowed for a given user.
+
+From this version (1.66), when a file upload fails, the Rainbow exception will return a detail code equal to 403153. That means the file sharing is not allowed.
+
+Bubbles
+
+-   new method `updateVideoQuality()`: request to update the video quality of a publisher (only works if publisher has multi-video quality mode).
+
+Channels
+
+-   new method `getAllUserChannels()` returns all user channels (owned or subscribed).
+-   new method `registerChangeListener()` to register a listener for being notified about channels changes.
+-   new method `unregisterChangeListener()` to unregister a listener for being notified about channels changes.
+
+#### API Breaking Changes
+
+Bubbles
+
+-   updated method `subscribeToVideo()`: parameter added to request a specific video quality when you subscribe to a publisher (only works if publisher has multi-video quality mode).
+
+Conferences
+
+-   all unnecessary `Pgi` prefixes were removed from classes and methods. `PgiConference` -> `Conference`, `PgiConferenceParticipant` -> `ConferenceParticipant`, `getPgiConference()` -> `getConference()`.
+
+Channels
+
+-   'getAllChannels()' returns now all channels fetched (users or others). For registering to changes use registerChangeListener()
+
+### SDK for Android 1.65 - December 2019
+
+---
+
+#### API Changes
+
+Telephony
+
+-   new method `deflectCallTo()` for deflecting incoming call to an internal number.
+-   new method `deflectCallToVoicemail()` for deflecting incoming call to voicemail if the user has one.
+-   new method `hold()` for holding active call.
+-   new method `retrieve()` for retrieving held call.
+-   new method `alternate()` for holding active call and retrieving held call at the same time.
+-   new method `transfer()` for transfering 2 calls.
+-   new method `conference()` for starting a conference with 2 calls.
+
+New **RBLog** module. Allows to print log to logcat and also write it to text files. See [RBLog](/docs/sdk/android) documentation. This new module allows you to zip logs into a file and access to it with `RBLog.zipLogs` method.
+
+#### API Breaking Changes
+
+MyProfile
+
+-   `updateOfficePhoneNumber` takes now a boolean as second parameter indicating if the phone number should be visible by others or not.
+
+### SDK for Android 1.64 - November 2019
+
+---
+
+#### API Breaking Changes
+
+Telephony
+
+-   `takeCall()` takes now a second boolean as argument to choose between front facing camera or rear camera when answering a video call.
+-   `makeCall()` takes now a second boolean as argument to choose between front facing camera or rear camera when starting a video call.
+-   `addVideo()` takes now a boolean as argument to choose between front facing camera or rear camera when adding video to the current call.
+
+Contacts
+
+-   `addRainbowContactToRoster()` takes now a IRainbowContact as first argument instead of a String.
+-   new method `getRainbowSupportBot()` return the Rainbow Support Bot contact.
+
+### SDK for Android 1.63 - October 2019
+
+---
+
+#### API Changes
+
+-   new method `sendDTMF()` for sending DTMF.
+
+### SDK for Android 1.62 - September 2019
+
+---
+
+#### API Breaking Changes
+
+Bubbles
+
+-   `findBubblesByName()` returns now a list of Room instead of just a Room to retrieve every bubbles the with same name
+
+Channels
+
+-   Introduction of the `ChannelItemBuilder` class, helping to build or update an `IChannelItem`.
+
+```java
+ChannelItemBuilder itemBuilder = new ChannelItemBuilder()
+    .setTitle(title)
+    .setMessage(message)
+    .setUrl(url)
+
+newChannelItem = itemBuilder.build();
+```
+
+-   `createItem()` and `updateItem()` where modified to be used with an `ChannelItemBuilder`.
+
+Conversations
+
+-   `sendConversationByEmail()` add a new second argument which is a String to give an email
+
+#### API Changes
+
+Conversations
+
+-   new method `sendConversationByEmails()` send a conversation from a list of emails
+-   new method `getConversationFromJid()` : return conversation object from a Jid.
+
+FileStorage
+
+-   `uploadFileToChannel()` : Fix file not voewed after uploading to a channel
+
+Channels
+
+-   new method `updateItem()` allows to update an item from a channel. To use it, you should know the itemId of the item.
+-   new interface `IChannelItem` replaces ChannelItem and built with ChannelItemBuilder which used the builder pattern.
+
+### SDK for Android 1.61 - August 2019
+
+---
+
+#### API Breaking Changes
+
+IMMessage
+
+-   `getAlternativeContent()` and `getAlternativeContentType()` methods have been deleted and replaced by `getMessageAlternateContents()`
+-   `getMessageAlternateContents()` returns a `List<AlternateContent>`
+
+#### API Changes
+
+AlternateContent
+
+-   new method `getContent()` and `getType()`
+
+### SDK for Android 1.60 - August 2019
+
+---
+
+#### API Breaking Changes
+
+FileStorage
+
+-   `getAllFilesReceived()` method has been deleted and replaced by `fetchAllFilesReceived()`
+-   `getAllFilesSent()` method has been deleted and replaced by `fetchAllFilesSent()`
+
+#### API Changes
+
+New CallLogs module
+
+-   `deleteAllCallLogs()`
+-   `deleteCallLogsForContact()`
+-   `fetchAllCallLogs()`
+-   `getAllCallLogs()`
+-   `getAllMissedCallLogs()`
+-   `getMisssedCallLogCounter()`
+-   `markAllCallLogsAsRead()`
+-   `markCallLogsAsReadForContact()`
+
+FileStorage
+
+-   new method `uploadFileToChannel()`
+
+IMMessage
+
+-   new method `getAlternativeContent()`
+-   new method `getAlternativeContentType()`
+
+Room
+
+-   new method `getLastActivityDate()`
+-   renamed method `getParticipantsAsContactList()` to `getActiveParticipantsAsContactList()`
+
+Connection
+
+-   new method `signinWithOidcToken()`
+
+TelephonyMgr:
+
+-   `getStreams()` method was renamed to `getDistantVideoStreams()`
+
+### SDK for Android 1.59 - August 2019
+
+---
+
+#### API Changes
+
+Channels:
+
+-   new method `fetchNextItems()`
+-   new method `fetchNextLatestItems()`
+
+TelephonyMgr:
+
+-   `getStreams()` method was renamed to `getDistantVideoStreams()`
+
+#### Others Changes
+
+-   Some minors bugs and crashes have been fixed.
+
+### SDK for Android 1.58 - July 2019
+
+---
+
+-   Some minors bugs and crashes have been fixed.
+
+### SDK for Android 1.57 - June 2019
+
+---
+
+-   Some minors bugs and crashes have been fixed.
+
+### SDK for Android 1.56 - May 2019
+
+---
+
+#### API Breaking Changes
+
+Channels API methods have been renamed for a better comprehension. All methods starting with `get` return locally objects and methods starting with `fetch` return objects from the server.
+
+Old name
+
+New name
+
+`acceptChannelInvitation`
+
+`addMembersToChannel`
+
+`addMembersToChannel`
+
+`addOwnersToChannel`
+
+`addOwnersToChannel`
+
+`addPublishersToChannel`
+
+`addPublishersToChannel`
+
+`createClosedChannel`
+
+`createPublicChannel`
+
+`declineChannelInvitation`
+
+`deleteChannel`
+
+`deleteItemFromChannel`
+
+`deleteItem`
+
+`getAllChannels`
+
+`getAllOwnedChannels`
+
+`getAllPendingChannels`
+
+`getAllSubscribedChannels`
+
+`getChannelById`
+
+`getChannel`
+
+`getChannelByName`
+
+`getChannelsForCategory`
+
+`fetchChannelsByCategory`
+
+`getUserChannelById`
+
+`getUserChannel`
+
+`markAllAsRead`
+
+`markAllItemsAsRead`
+
+`publishMessage`
+
+`createItem`
+
+`removeAllUsersFromChannel`
+
+`deleteAllUsersFromChannel`
+
+`removeUsersFromChannel`
+
+`deleteUsersFromChannel`
+
+`retrieveItems`
+
+`fetchItems`
+
+`fetchLatestItems`
+
+`updateItem`
+
+`retrieveUsers`
+
+`fetchUsers`
+
+`searchChannelsByDescription`
+
+`fetchChannelsByDescription`
+
+`searchChannelsByName`
+
+`fetchChannelsByName`
+
+`searchUsersByName`
+
+`fetchUsersByName`
+
+`subscribeToChannel`
+
+`unsubscribeFromChannel`
+
+`unsubscribeToChannel`
+
+`updateChannelDescription`
+
+`uploadChannelAvatar`
+
+#### API Changes
+
+New module **Favorites** added. Allows to manage a list of preferred users (contactId or roomId). See [Managing favorites](/docs/sdk/android) documentation.
+
+-   `createFavorite`
+-   `createFavoriteWithPosition`
+-   `deleteFavorite`
+-   `getFavorite`
+-   `getFavoriteByPeerId`
+-   `getFavorites`
+-   `updateFavoritePosition`
+
+#### Others Changes
+
+-   Some minors bugs and crashes have been fixed.
+
+### SDK for Android 1.55 - April 2019
+
+---
+
+#### API Changes
+
+Channels:
+
+-   `getChannelsForCategory()` method added
+-   `getPendingChannels()` was renamed into `getAllPendingChannels()`
+-   `getChannelByIdForPredefinedList()` was renamed into `getUserChannelById()`
+-   `findChannelsByName()` was renamed into `searchChannelsByName()`
+-   `findChannelsByDescription()` was renamed into `searchChannelsByDescription()`
+-   `discoverTenBestChannels()` method was deleted
+-   `discoverTenRecentChannels()` method was deleted
+-   `discoverCategoryChannels()` method was deleted
+
+#### Others Changes
+
+-   Some minors bugs and crashes have been fixed.
+
+### SDK for Android 1.54 - April 2019
+
+---
+
+#### API Breaking Changes
+
+Conversations:
+
+-   `getConversationFromContact()` callback parameter was deleted
+-   `getConversationFromRoom()` callback parameter was deleted
+
+Channels:
+
+-   `createChannel()` method was deleted and replaced by `createPublicChannel()` and `createClosedChannel()`
+-   `findChannelsByTopic()` was renamed into `findChannelsByDescription()`
+
+Channel Object:
+
+-   `getTopic()` was renamed into `getDescription()`
+-   `getConversationFromRoom()` callback parameter was deleted
+
+#### API Changes
+
+Bubbles:
+
+-   `getMyInactiveList()` method added
+
+TelephonyMgr:
+
+-   `getStreams()` method added
+
+Channels:
+
+-   `searchUsersByName()` method added
+-   `markAllAsRead()` method added
+
+### SDK for Android 1.53 - March 2019
+
+---
+
+#### API Breaking Changes
+
+Channels:
+
+-   `publishMessage()` Added `type` parameter to specify the type of message
+-   `publishMessage()` Modified `fileIds` parameter type to `List<String>`, no more `JSONArray`
+-   `createChannel()` removed enum for categories, is now open to any string value
+-   `createChannel()` Added `ChannelMode` parameter, to specify the mode of the channel
+-   `createChannel()` Added `autoProvisioning` parameter for closed company channels
+
+#### API Changes
+
+Channels:
+
+-   `discoverTenBestChannels()` method added
+-   `discoverTenRecentChannels()` method added
+-   `discoverCategoryChannels()` method added
+
+### SDK for Android 1.52 - February 2019
+
+---
+
+#### API Changes
+
+-   Telephony APIs: make call, clear call, take call, and nomadic configuration
+
+#### Others Changes
+
+-   Some minors bugs and crashes have been fixed.
+
+### SDK for Android 1.51 - January 2019
+
+---
+
+#### Others Changes
+
+-   Some minors bugs and crashes have been fixed.
+
+### SDK for Android 1.50 - December 2018
+
+---
+
+#### Others Changes
+
+-   Some minors bugs and crashes have been fixed.
+
+### SDK for Android 1.49 - November 2018
+
+---
+
+#### Others Changes
+
+-   Some minors bugs and crashes have been fixed.
+
+### SDK for Android 1.48 - October 2018
+
+---
+
+#### API Breaking Changes
+
+-   **getAddedStream** is replaced by **getStreams** method .
+
+#### API Changes
+
+-   it is now possible to retrieve some media strams in a conference.
+
+#### Others Changes
+
+-   Some minors bugs and crashes have been fixed.
+
+### SDK for Android 1.47 - October 2018
+
+---
+
+#### 3-Release SDK Breaking Changes
+
+-   Due to the data privacy improvements introduced in Rainbow 1.47 and as mentioned in the SDK Web v1.45 release notes, your application MUST use at least the Rainbow SDK Web v1.45 or a higher version to continue to work. All Rainbow SDK Web versions prior to v1.45 are no more compliant with our Rainbow platform.
+
+#### API Breaking Changes
+
+-   **makeCall** method has a new parameter that is the subject of the call.
+-   **getAddedStreams** returns now `Map<PeerSession.PeerSessionType, List<MediaStream>>`. (WebRTC)
+
+#### API Changes
+
+#### Others Changes
+
+-   Some minors bugs and crashes have been fixed.
+
+### SDK for Android 1.46.1 - September 2018
+
+---
+
+#### 3-Release SDK Breaking Changes
+
+#### API Breaking Changes
+
+-   In push module, the **onMessageReceived** method return now a boolean. if the boolean returns True then the message could be handled, else if the boolean returns false then the application needs to be started first.
+
+#### API Changes
+
+#### Others Changes
+
+-   Some minors bugs and crashes have been fixed.
+
+### SDK for Android 1.46 - September 2018
+
+---
+
+#### 3-Release SDK Breaking Changes
+
+#### API Breaking Changes
+
+-   Be careful, now the **setNotificationBuilder** is deleted and an argument is added in the **initialize** method. RainbowSdk.instance().initialize(**this**, "applicationId", "applicationSecret") where this is your main activity context. (see getting starting). **ApplicationId and ApplicationSecret are now mandatory**
+
+#### API Changes
+
+-   new APIs for web rtc conference.
+
+#### Others Changes
+
+-   Some minors bugs and crashes have been fixed.
+
+### SDK for Android 1.45 - August 2018
+
+---
+
+#### 3-Release SDK Breaking Changes
+
+-   The parameter **contactJid** of the method `removeContactFromRoster` has changed: it is now the **contactId**. The listener to use is now a `IContactRemovedFromRosterListener` with `onSuccess` and `onFailure` callbacks.
+
+#### API Breaking Changes
+
+-   None
+
+#### API Changes
+
+-   The new public method `searchByNameOnlyInUserCompany` has been added to the module `Contacts`. If the user is not in a company, the method throws an error that you can catch with the listener in parameter.
+
+#### Others Changes
+
+-   Some minors bugs and crashes have been fixed.
+
+### SDK for Android 1.44 - end of July 2018
+
+---
+
+#### 3-Release SDK Breaking Changes
+
+-   « Due to data privacy improvements and compliances, Rainbow platform will introduce breaking changes in the way data associated to users are located around the world in one hand and the way users connect to the platform in other hand. Consequently, any SDK Android prior to version 1.44 are entered deprecation period and will no more work once Rainbow platform 1.47 will be deployed on production (starting Sept, 30th)”. Before Sept’30, your application has to migrate to SDK Android version 1.44 at least in order for your application to continue to work after this date.
+
+#### API Breaking Changes
+
+-   None
+
+#### API Changes
+
+-   None
+
+#### Others Changes
+
+-   Some minors bugs and crashes have been fixed.
+
+### SDK for Android 1.43 - July 2018
+
+---
+
+#### 3-Release SDK Breaking Changes
+
+-   None
+
+#### API Breaking Changes
+
+-   None
+
+#### API Changes
+
+-   New methods « makecall… » and « takeCall » have been added to be able to manage calls that go thought the WebRTC Gateway to a PSTN device. This method is **RainbowSdk.instance().webRTC().makeMediaPillarCall(phoneNumber);**
+
+#### Others Changes
+
+-   Some minors bugs and crashes have been fixed.
+
+### SDK for Android 1.42 - June 2018
+
+---
+
+#### 3-Release SDK Breaking Changes
+
+-   None
+
+#### API Breaking Changes
+
+-   None
+
+#### API Changes
+
+-   None
+
+#### Others Changes
+
+-   Some minors bugs and crashes have been fixed.
+-   A [Legals section](/docs/sdk/android) has been added describing which FOSS (Free Open Source Software) are used in the Rainbow SDK for Android (with license and version).
+
+### SDK for Android 1.41 - May 2018
+
+---
+
+#### 3-Release SDK Breaking Changes
+
+-   None
+
+#### API Breaking Changes
+
+-   None
+
+#### API Changes
+
+-   None
+
+#### Others Changes
+
+-   The samples on Github (see [Development Kit](/docs/sdk/android)) have been updated to give a better error message in case of login failed.
+-   Some minors bugs have been fixed.
+
+### SDK for Android 1.40 - April 2018
+
+---
+
+#### 3-Release SDK Breaking Changes
+
+-   None
+
+#### API Breaking Changes
+
+-   The method `onRequestFailed` of the callback `SignoutResponseListener` has been removed because it was never used.
+
+#### API Changes
+
+-   A new method `signinWithToken` in module `Connection` has been added to allow to connect via a valid Rainbow user token instead of the couple login and password. You can see an example in the guide [Connect to rainbow](/docs/sdk/android).
+-   A new method `deleteConversation` in module `Conversations` has been added to allow to delete a conversation from the active list of conversations (the messages are not deleted). You can see an example in the guide [Make an IM conversation](/docs/sdk/android).
+
+#### Others Changes
+
+-   A limited size cache is now used to store avatars to avoid the memory use to explode in case of an account with a large number of contacts.
+-   The new section [Development Kit](/docs/sdk/android) has been added which provides 3 samples using the Rainbow SDK for Android.
+-   We have updated some libraries in this version. You could meet some issue with the manifest merger, just make sure to update the concerned libraries (for example, the support v7 libraries).
+-   We have also replaced most **compile** by **implementation** in our internal **build.gradle** dependencies part. From gradle documentation, the keyword **implementation** means: *This is where you should declare dependencies which are purely internal and not meant to be exposed to consumers.* That's why, if you are using any libraries imported by the Rainbow SDK for Android, you will now have to import them in your application part.
+
+### SDK for Android 1.39 - April 2018
+
+---
+
+#### SDK
+
+-   You can now change the owner of a bubble you owned and the promoted user has first to be moderator. The tutorial [Managing bubbles](/docs/sdk/android) has been updated accordingly.
+-   **\[Breaking change\]** The method `onInvitationSentSuccess` of the interface `IRainbowSentInvitationListener` has left its parameter `String contactEmail` because it wasn't used at all. It has an impact on the following methods: `addRainbowContactToRoster` and `inviteUserNotRegisteredToRainbow`.
+-   **\[Breaking change\]** The parameter `String contactEmail` of the method `addRainbowContactToRoster` has been removed because it wasn't used at all. You can just call this method with the corporate identifier of the contact.
+-   **\[Breaking change\]** The method inviteUserNotRegisterToRainbow has been renamed to inviteUserNotRegister**ed**ToRainbow.
+-   **\[Breaking change\]** The method `OnContactRemoveSuccess` of the interface `IRainbowContactManagementListener` has left its parameter `String contactEmail` because it wasn't used at all. It has also been renamed to `onContactRemoveSuccess`. It has an impact on the following method: `removeContactFromRoster`.
+-   **\[Breaking change\]** The method parameter `String contactEmail` of the method `removeContactFromRoster` has been removed because it wasn't used at all. You can just call this method with the contact jabber identifier of the contact.
+
+#### BUGS
+
+-   Several fixes about potential "unknown" contacts have been done.
+
+### SDK for Android 1.38 - March 2018
+
+---
+
+#### SDK
+
+-   **\[Breaking change\]** The method `getActiveUsersFromBubbleUsingPagination` has been renamed to `getMoreActiveUsersFromBubble`. This new method is easier to use. Indeed, you just fill the id of the room and the number of participants that you want to retrieve. If you reach the limit number of participants, no server request is sent.
+    
+-   You can now promote someone to the 'moderator' role in a bubble (but only if you are moderator yourself) by using the method `RainbowSdk.instance().bubbles().setParticipantPrivilegeToModerator`. You can of course demote someone from the moderator role by using `RainbowSdk.instance().bubbles().setParticipantPrivilegeToUser`. The tutorial [Managing bubbles](/docs/sdk/android) has been updated accordingly. However, this is only working if your application has been initialized with an application key.
+    
+-   Due to an update of the WebRTC library, you may have an error as below with the SDK version 1.38. To fix that, go to the **Project structure** of your application, tab **Properties** and then set **Source Compatibility** and **Target Compatibility** to **1.8**.
+    
+
+```shell
+Error:com.android.builder.dexing.DexArchiveBuilderException: Failed to process D:\Users\my_user\.gradle\caches\transforms-1\files-1.1\google-webrtc-1.0.20849.aar\f5471c6e42f60ed47cf895097c9eeb9a\jars\classes.jar
+Error:com.android.builder.dexing.DexArchiveBuilderException: Error while dexing org/webrtc/VideoRenderer$I420Frame.class
+Error:com.android.dx.cf.code.SimException: invalid opcode ba (invokedynamic requires --min-sdk-version >= 26)
+Error:Execution failed for task ':app:transformClassesWithDexBuilderForDebug'.
+```
+
+#### BUGS
+
+-   No bug fixing
+
+### SDK for Android 1.37 - March 2018
+
+---
+
+#### SDK
+
+-   **\[Breaking change\]** Some basis of the WebRTC feature have changed (many listeners have been deleted). You can get more information in the appropriated documentation: [Make audio and video call using web rtc](/docs/sdk/android).
+    
+-   **\[Breaking change\]** A new parameter has been added to the `createBubble` method to disable or not notifications. It is essential for xxl bubbles.
+    
+-   Add pagination of participants list for bubbles. For using it, you should give the roomId, the position, the number of participants to retrieve and the listener to have the request response. The method is **RainbowSdk.instance().bubbles().getActiveUsersFromBubbleUsingPagination**
+    
+-   You can now retrieve users of a channel by calling the method `retrieveUsers`. This method retrives users "by page" and you can find more information in the tutorial [Managing channels - Retrieving users of a channel](/docs/sdk/android).
+    
+
+#### BUGS
+
+-   Some methods for the Groups feature didn't work correctly (the failed listener is not called if you provide a null group). It has been fixed in this version.
+
+### SDK for Android 1.36 - February 2018
+
+---
+
+#### SDK
+
+-   **\[Breaking change\]** **onQualityChanged** is deleted from the **IStreamManagementListener** listener to avoid crash in web rtc stack
+    
+-   **\[Breaking change\]** Due to a change on server side regarding Channels services, the Rainbow SDK Android 1.35 and prior will not be able to manage channels anymore starting Rainbow 1.36. You need to update to this version in order to continue to use this service.
+    
+-   **\[Breaking change\]** To increase the scalability of the Channels API, the server will no more return the list of participants when retrieving information on a channel. Channel's getter method `getUsers()` has been replaced by `getNbUsers()` which contains the number of users of the channel.
+    
+-   Number of messages stored for a channel on Rainbow server has changed from **30** to **100**.
+    
+-   Channels - The following methods now also accept a `String[]` of corporate id instead of `IRainbowContact`: - `void addOwnersToChannel(Channel, String[], IChannelUpdateUserListener)` - `void addPublishersToChannel(Channel, String[], IChannelUpdateUserListener)` - `void addMembersToChannel(Channel, String[], IChannelUpdateUserListener)` - `void removeUsersFromChannel(Channel, String[], IChannelUpdateUserListener)`
+    
+
+#### BUGS
+
+-   \[1.36.1 and more\] The authentication of the application can sometimes not working and was due to the encoding in base64. This has been fixed in this version.
+-   The method `RainbowSdk.instance().im().getMoreMessagesFromConversation` has been fixed because it crashed when using in a bubble.
+-   The method `RainbowSdk.instance().im().sendMessageToConversation` can not send anymore an empty message.
+
+### SDK for Android 1.35 - January 2018
+
+---
+
+#### SDK
+
+-   The method `void sendIsTyping(IRainbowConversation conversation, boolean isTyping)` has been added in `Im` module which allows other contacts to know if the current user is composing or not (parameter `isTyping`). Use this method, for example, according to the content of the `TextView` of the conversation.
+-   The tutorial around the [`MyProfile`](/docs/sdk/android) module has been added. It explains how to get the connected user (+ his personal information) and how to update them.
+-   The method `getUserPasswordInCache()` in `MyProfile` module has been added to retrieve the last password saved (last login).
+
+#### BUGS
+
+-   The method `RainbowSdk.instance().connection().isConnected()` has been fixed because it sometimes returned wrong value.
+
+### SDK for Android 1.34 - Decembre 2017
+
+---
+
+#### SDK
+
+-   The Rainbow SDK for Android is now hosted on our own Maven repository. **That's why, from mid-January (when the version 1.35.0 will be released), all versions on Github might be deleted. The Rainbow SDK for Android will soon be only available on Maven. Please change the way you import the SDK and use Maven.** See step 2 of the [Getting started](/docs/sdk/android).
+-   The feature around channels has been added and is available by `RainbowSdk.instance().channels()`. This includes several methods (more detailled in the dedicated tutorial: [Managing channels](/docs/sdk/android)). - Create, delete or update a channel - `createChannel(name, topic, listener)` - `createPrivateChannel(name, topic, listener)` - `deleteChannel(channel, listener)` - `updateChannelDescription(channel, description, listener)` - Add or remove contact from a channel - `addMembersToChannel(channel, contacts, listener)` - `addOwnersToChannel(channel, contacts, listener)` - `addPublishersToChannel(channel, contacts, listener)` - `removeAllUsersFromChannel(channel, listener)` - `removeUsersFromChannel(channel, contacts, listener)` - Subscribe or unsubscribe to a channel (public channel) - `subscribeToChannel(channel, listener)` - `unsubscribeFromChannel(channel, listener)` - Get your channels - `getAllChannels()` - `getAllOwnedChannels()` - `getAllSubscribedChannels()` - Search channels - `findChannelsByName(name, listener)` - `findChannelsByTopic(topic, listener)` - `getChannelById(id, listener)` - Publish a message and listen for new ones - `publishMessage(channel, message, title, url, listener)` - `registerListener(listener)` - `unregisterListener(listener)`
+
+#### BUGS
+
+-   No bug fixing
+
+### SDK for Android 1.33 - December 2017
+
+---
+
+#### SDK
+
+-   The feature around groups has been added and is available by `RainbowSdk.instance().groups()`. This includes the following methods: - `void createGroup(String, String, IGroupCreationListener)` - `void deleteGroup(Group, IGroupDeletionListener)` - `void addParticipantToGroup(Group, IRainbowContact, IAddUserInGroupListener)` - `void deleteParticipantFromGroup(Group, IRainbowContact, IDeleteUserInGroupListener)` - `Group findGroupById(String)`
+-   The version used of Gradle has been updated in this release so it's necessary to update Android Studio as well.
+
+#### BUGS
+
+-   Due to security enhancements introduced in Rainbow 1.33, migration to the SDK Android 1.33.x is mandatory to be able to connect to Rainbow. SDK for Android prior to version 1.33.x can't connect to Rainbow anymore due to this security update.
+
+### SDK for Android 1.32 - November 2017
+
+---
+
+#### SDK
+
+-   The method `updateTitle` has been added in `MyProfile` which allows to update your title, an information available in your public profile.
+    
+-   The method `updateOfficePhoneNumber` has been added in `MyProfile` which allows to update your professional number in your public profile.
+    
+-   The method `deleteAllMessages` has been added in `Conversations` which deletes all messages on your side (your contact will not be impacted).
+    
+-   The method `changeBubbleData` from `Bubbles` now allows you to update the name of your bubble. This method also allows you to update the description or the visiblity of your bubble. If you don't want to update the name or the description, just set it at `null`.
+    
+
+### SDK for Android 1.31 - October 2017
+
+---
+
+#### SDK
+
+-   The method `getAvatarUrl(String contactId)` has been added in `Contacts` which allows to retrieve the avatar URL of the contact corporate identifier in parameter.
+    
+-   The method `addParticipantToBubble` can now also take a `IContact` object in parameter.
+    
+-   **Compatibility Break** The class `Rooms` has been renamed to `Bubbles` so you must use `RainbowSdk.instance().bubbles()` to access bubbles features.
+    
+-   **Compatibility Break** The methods `createRoom`, `archiveRoom` and `deleteRoom` have been renamed to `createBubble`, `archiveBubble` and `deleteBubble`.
+    
+-   **Compatibility Break** The methods `addParticipantToRoom` and `addParticipantsToRoom` have been renamed to `addParticipantToBubble` and `addParticipantsToBubble`.
+    
+-   **Compatibility Break** The methods `getAllRooms`, `deleteParticipantFromRoom` and `getContactInRoomFromContactJid` have been renamed to `getAllBubbles`, `deleteParticipantFromBubble` and `getContactInBubbleFromContactJid`.
+    
+-   **Compatibility Break** The method `getUserLoginInCache`, previously callable from the class `Contacts` is now callable from `MyProfile`.
+    
+-   **Compatibility Break** The methods `searchByName` and `searchByJid` have been changed: the parameter `IContactSearchListener` is replaced by `IRainbowContactsSearchListener` and the result of `searchFinished` is replaced from `List<DirectoryContact>` to `List<IContact>`.
+    
+
+#### BUGS
+
+-   No bug fixing
+
+### SDK for Android 1.30 - September 2017
+
+---
+
+#### SDK
+
+-   New methods in `Bubbles` have been added to provide enhanced features during the creation of a bubble or when a participant is added: - `void createRoom(String, String, boolean withHistory, IRoomProxy.IRoomCreationListener)` - `void addParticipantToRoom(Room, IRainbowContact, boolean asModerator, boolean withInvitation, IRoomProxy.IAddParticipantsListener)` - `void addParticipantsToRoom(Room, List<IRainbowContact>, boolean asModerators, boolean withInvitations, IRoomProxy.IAddParticipantsListener)`
+-   New methods have been added to manage custom data of a bubble: - In `Rooms` to add, modify or remove custom data: - `void updateCustomDataForBubble(Room, JSONObject _ofCustomData, IUpdateCustomDataListener)` - `void deleteAllCustomDataForBubble(Room, IUpdateCustomDataListener)` - In `Room` to retrieve all custom data or a specific one: - `JSONObject getAllCustomData()` - `Object getCustomData(String key)` - `boolean getCustomDataBoolean(String key)` - `int getCustomDataInt(String key)` - `String getCustomDataString(String key)` - `boolean hasCustomData(String key)` - The tutorial `Chatting within a bubble.md` has been updated to explain how to update, delete or get a custom data of a bubble.
+-   The file sharing feature has been added and is available by `RainbowSdk.instance().fileStorage()`. This includes the following methods: - `void downloadFile(RainbowFileDescription, IDownloadFileListener)` - `ArrayItemList<RainbowFileDescriptor> getAllFilesReceived()` - `ArrayItemList<RainbowFileDescriptor> getAllFilesSent()` - `List<RainbowFileDescriptor> getFilesReceivedInBubble(Room)` - `List<RainbowFileDescriptor> getFilesReceivedInConversation(IRainbowConversation)` - `List<RainbowFileDescriptor> getFilesSentInBubble(Room)` - `List<RainbowFileDescriptor> getFilesSentInConversation(IRainbowConversation)` - `void getUserQuotaConsumption(IGetConsumptionListener)` - `void removeFile(RainbowFileDescriptor, IDeleteFileListener)` - `void uploadFileToBubble(Room, Uri, String, IUploadFileListener)` - `void uploadFileToConversation(IRainbowConversation, Uri, String, IUploadFileListener)` - `File getFileDownloaded(RainbowFileDescriptor)` - `boolean isDownloaded(RainbowFileDescriptor)`
+
+#### BUGS
+
+-   No bug fixing
+
+### SDK for Android 1.29 - August 2017
+
+---
+
+#### SDK
+
+-   The rooms feature has been added and is available by `RainbowSdk.instance().rooms()`. This includes following methods: `createRoom`, `archiveRoom`, `deleteRoom`, `getAllRooms`, `getAllList`, `getPendingList`, `getMyList`, `getArchivedList`, `addParticipantsToRoom`, `addParticipantToRoom`, `getContactInRoomFromContactJid`, `acceptInvitation`, `rejectInvitation` and `deleteParticipantFromRoom`.
+    
+-   The method `getConversationFromRoom` has been added in `Conversations` which allows to retrieve the `Conversation` object from a `Room` object.
+    
+-   The method `getContactFromJabberId` has been added to retrieve a contact from his `jid`.
+    
+-   **Compatibility Break** The method `getContactFromId` has been renamed to `getContactFromId`.
+    
+
+#### BUGS
+
+-   The crash when a contact is deleted of the roster and when the contact is null has been fixed.
+
+### SDK for Android 1.28 - July 2017
+
+---
+
+#### SDK
+
+-   The webRTC feature has been added and is available by `RainbowSdk.instance().webRTC()`. This allows to make call, take call, add video, drop video, reject call, hangup call, switch camera and manage the different states of a call.
+    
+-   The method `getContactFromId` has been added which requests directly the server for contact information.
+    
+-   The method `RainbowSdk.instance().connection().signin(..)` can now be provided by the parameter `host` which allows to connect on another environment.
+    
+
+#### BUGS
+
+-   No bug fixing
+
+### On this page
+
+-   [SDK for Android](/docs/sdk/android#name-sdk-for-android-0)
+-   [\[2.61.0\] - 2024-03-06](/doc/sdk/android/lts/guides/CHANGELOG#name-2.61.0---2024-03-06-7)
+-   [\[2.60.0\] - 2024-12-20](/doc/sdk/android/lts/guides/CHANGELOG#name-2.60.0---2024-12-20-20)
+-   [\[2.59.0\] - 2024-12-02](/doc/sdk/android/lts/guides/CHANGELOG#name-2.59.0---2024-12-02-428)
+-   [\[2.58.0\] - 2024-11-08](/doc/sdk/android/lts/guides/CHANGELOG#name-2.58.0---2024-11-08-558)
+-   [\[2.57.0\] - 2024-10-01](/doc/sdk/android/lts/guides/CHANGELOG#name-2.57.0---2024-10-01-661)
+-   [\[2.56.0\] - 2024-09-26](/doc/sdk/android/lts/guides/CHANGELOG#name-2.56.0---2024-09-26-749)
+-   [\[2.55.0\] - 2024-09-05](/doc/sdk/android/lts/guides/CHANGELOG#name-2.55.0---2024-09-05-763)
+-   [\[2.54.0\] - 2024-08-13](/doc/sdk/android/lts/guides/CHANGELOG#name-2.54.0---2024-08-13-926)
+-   [\[2.53.0\] - 2024-07-25](/doc/sdk/android/lts/guides/CHANGELOG#name-2.53.0---2024-07-25-939)
+-   [\[2.52.0\] - 2024-06-28](/doc/sdk/android/lts/guides/CHANGELOG#name-2.52.0---2024-06-28-962)
+-   [\[2.51.1\] - 2024-06-28](/doc/sdk/android/lts/guides/CHANGELOG#name-2.51.1---2024-06-28-990)
+-   [\[2.50.0\] - 2024-05-23](/doc/sdk/android/lts/guides/CHANGELOG#name-2.50.0---2024-05-23-1028)
+-   [\[2.49.0\] - 2024-04-26](/doc/sdk/android/lts/guides/CHANGELOG#name-2.49.0---2024-04-26-1041)
+-   [\[2.48.0-beta.2\] - 2024-04-04](/doc/sdk/android/lts/guides/CHANGELOG#name-2.48.0-beta.2---2024-04-04-1064)
+-   [\[2.47.1\] - 2024-03-28](/doc/sdk/android/lts/guides/CHANGELOG#name-2.47.1---2024-03-28-1122)
+-   [\[2.47.0\] - 2024-03-20](/doc/sdk/android/lts/guides/CHANGELOG#name-2.47.0---2024-03-20-1145)
+-   [\[2.45.0\] - 2024-02-19](/doc/sdk/android/lts/guides/CHANGELOG#name-2.45.0---2024-02-19-1378)
+-   [\[2.43.0\] - 2023-01-12](/doc/sdk/android/lts/guides/CHANGELOG#name-2.43.0---2023-01-12-1477)
+-   [\[2.41.0\] - 2023-11-20](/doc/sdk/android/lts/guides/CHANGELOG#name-2.41.0---2023-11-20-1635)
+-   [\[2.40.0\] - 2023-10-09](/doc/sdk/android/lts/guides/CHANGELOG#name-2.40.0---2023-10-09-1648)
+-   [\[2.38.1\] - 2023-09-19](/doc/sdk/android/lts/guides/CHANGELOG#name-2.38.1---2023-09-19-1717)
+-   [\[2.34.3-LTS\] - 2023-07-26](/doc/sdk/android/lts/guides/CHANGELOG#name-2.34.3-lts---2023-07-26-1741)
+-   [SDK for Android 2.22.2 - October 2022](/docs/sdk/android#name-sdk-for-android-2.22.2---october-2022-1756)
+-   [SDK for Android 2.21.0 - September 2022](/docs/sdk/android#name-sdk-for-android-2.21.0---september-2022-1769)
+-   [SDK for Android 2.20.0 - August 2022](/docs/sdk/android#name-sdk-for-android-2.20.0---august-2022-1933)
+-   [SDK for Android 2.19.0 - July 2022](/docs/sdk/android#name-sdk-for-android-2.19.0---july-2022-2052)
+-   [SDK for Android 2.18.0 - July 2022](/docs/sdk/android#name-sdk-for-android-2.18.0---july-2022-2311)
+-   [SDK for Android 2.17.0 - June 2022](/docs/sdk/android#name-sdk-for-android-2.17.0---june-2022-2521)
+-   [SDK for Android 2.16.0 - May 2022](/docs/sdk/android#name-sdk-for-android-2.16.0---may-2022-2656)
+-   [SDK for Android 2.15.0 - April 2022](/docs/sdk/android#name-sdk-for-android-2.15.0---april-2022-3006)
+-   [SDK for Android 2.11.0 - December 2021](/docs/sdk/android#name-sdk-for-android-2.11.0---december-2021-3043)
+-   [SDK for Android 2.10.0 - November 2021](/docs/sdk/android#name-sdk-for-android-2.10.0---november-2021-3131)
+-   [SDK for Android 2.9.1 - November 2021](/docs/sdk/android#name-sdk-for-android-2.9.1---november-2021-3183)
+-   [SDK for Android 2.8.1 - October 2021](/docs/sdk/android#name-sdk-for-android-2.8.1---october-2021-3197)
+-   [SDK for Android 2.8.0 - October 2021](/docs/sdk/android#name-sdk-for-android-2.8.0---october-2021-3211)
+-   [SDK for Android 2.7.3 - November 2021](/docs/sdk/android#name-sdk-for-android-2.7.3---november-2021-3243)
+-   [SDK for Android 2.7.2 - October 2021](/docs/sdk/android#name-sdk-for-android-2.7.2---october-2021-3260)
+-   [SDK for Android 2.7.1 - October 2021](/docs/sdk/android#name-sdk-for-android-2.7.1---october-2021-3277)
+-   [SDK for Android 2.7.0 - October 2021](/docs/sdk/android#name-sdk-for-android-2.7.0---october-2021-3294)
+-   [SDK for Android 2.6.0 - September 2021](/docs/sdk/android#name-sdk-for-android-2.6.0---september-2021-3334)
+-   [SDK for Android 2.5.0 - August 2021](/docs/sdk/android#name-sdk-for-android-2.5.0---august-2021-3384)
+-   [SDK for Android 2.4.0 - July 2021](/docs/sdk/android#name-sdk-for-android-2.4.0---july-2021-3549)
+-   [SDK for Android 2.3.0 - June 2021](/docs/sdk/android#name-sdk-for-android-2.3.0---june-2021-3789)
+-   [SDK for Android 2.2.0 - June 2021](/docs/sdk/android#name-sdk-for-android-2.2.0---june-2021-4059)
+-   [SDK for Android 2.1.0-lts - May 2021](/docs/sdk/android#name-sdk-for-android-2.1.0-lts---may-2021-4076)
+-   [SDK for Android 2.0.0-ltsbeta - April 2021](/docs/sdk/android#name-sdk-for-android-2.0.0-ltsbeta---april-2021-4117)
+-   [SDK for Android 1.86 - April 2021](/docs/sdk/android#name-sdk-for-android-1.86---april-2021-4131)
+-   [SDK for Android 1.85 - March 2021](/docs/sdk/android#name-sdk-for-android-1.85---march-2021-4145)
+-   [SDK for Android 1.84 - February 2021](/docs/sdk/android#name-sdk-for-android-1.84---february-2021-4215)
+-   [SDK for Android 1.80 - December 2020](/docs/sdk/android#name-sdk-for-android-1.80---december-2020-4232)
+-   [SDK for Android 1.79 - November 2020](/docs/sdk/android#name-sdk-for-android-1.79---november-2020-4249)
+-   [SDK for Android 1.78 - October 2020](/docs/sdk/android#name-sdk-for-android-1.78---october-2020-4268)
+-   [SDK for Android 1.77 - October 2020](/docs/sdk/android#name-sdk-for-android-1.77---october-2020-4308)
+-   [SDK for Android 1.76 - September 2020](/docs/sdk/android#name-sdk-for-android-1.76---september-2020-4332)
+-   [SDK for Android 1.75 - August 2020](/docs/sdk/android#name-sdk-for-android-1.75---august-2020-4346)
+-   [SDK for Android 1.73 - June 2020](/docs/sdk/android#name-sdk-for-android-1.73---june-2020-4363)
+-   [API Breaking Changes](/docs/sdk/android#name-api-breaking-changes-4415)
+-   [SDK for Android 1.72 - May 2020](/docs/sdk/android#name-sdk-for-android-1.72---may-2020-4433)
+-   [API Breaking Changes](/docs/sdk/android#name-api-breaking-changes-4460)
+-   [SDK for Android 1.71 - April 2020](/docs/sdk/android#name-sdk-for-android-1.71---april-2020-4473)
+-   [API Breaking Changes](/docs/sdk/android#name-api-breaking-changes-4477)
+-   [SDK for Android 1.70 - April 2020](/docs/sdk/android#name-sdk-for-android-1.70---april-2020-4495)
+-   [SDK for Android 1.69 - March 2020](/docs/sdk/android#name-sdk-for-android-1.69---march-2020-4527)
+-   [SDK for Android 1.68 - February 2020](/docs/sdk/android#name-sdk-for-android-1.68---february-2020-4607)
+-   [SDK for Android 1.67 - January 2020](/docs/sdk/android#name-sdk-for-android-1.67---january-2020-4617)
+-   [SDK for Android 1.66 - January 2020](/docs/sdk/android#name-sdk-for-android-1.66---january-2020-4692)
+-   [SDK for Android 1.65 - December 2019](/docs/sdk/android#name-sdk-for-android-1.65---december-2019-4775)
+-   [SDK for Android 1.64 - November 2019](/docs/sdk/android#name-sdk-for-android-1.64---november-2019-4838)
+-   [SDK for Android 1.63 - October 2019](/docs/sdk/android#name-sdk-for-android-1.63---october-2019-4880)
+-   [SDK for Android 1.62 - September 2019](/docs/sdk/android#name-sdk-for-android-1.62---september-2019-4894)
+-   [SDK for Android 1.61 - August 2019](/docs/sdk/android#name-sdk-for-android-1.61---august-2019-4982)
+-   [SDK for Android 1.60 - August 2019](/docs/sdk/android#name-sdk-for-android-1.60---august-2019-5017)
+-   [SDK for Android 1.59 - August 2019](/docs/sdk/android#name-sdk-for-android-1.59---august-2019-5147)
+-   [SDK for Android 1.58 - July 2019](/docs/sdk/android#name-sdk-for-android-1.58---july-2019-5189)
+-   [SDK for Android 1.57 - June 2019](/docs/sdk/android#name-sdk-for-android-1.57---june-2019-5200)
+-   [SDK for Android 1.56 - May 2019](/docs/sdk/android#name-sdk-for-android-1.56---may-2019-5211)
+-   [SDK for Android 1.55 - April 2019](/docs/sdk/android#name-sdk-for-android-1.55---april-2019-5568)
+-   [SDK for Android 1.54 - April 2019](/docs/sdk/android#name-sdk-for-android-1.54---april-2019-5630)
+-   [SDK for Android 1.53 - March 2019](/docs/sdk/android#name-sdk-for-android-1.53---march-2019-5720)
+-   [SDK for Android 1.52 - February 2019](/docs/sdk/android#name-sdk-for-android-1.52---february-2019-5780)
+-   [SDK for Android 1.51 - January 2019](/docs/sdk/android#name-sdk-for-android-1.51---january-2019-5804)
+-   [SDK for Android 1.50 - December 2018](/docs/sdk/android#name-sdk-for-android-1.50---december-2018-5818)
+-   [SDK for Android 1.49 - November 2018](/docs/sdk/android#name-sdk-for-android-1.49---november-2018-5832)
+-   [SDK for Android 1.48 - October 2018](/docs/sdk/android#name-sdk-for-android-1.48---october-2018-5846)
+-   [SDK for Android 1.47 - October 2018](/docs/sdk/android#name-sdk-for-android-1.47---october-2018-5880)
+-   [SDK for Android 1.46.1 - September 2018](/docs/sdk/android#name-sdk-for-android-1.46.1---september-2018-5922)
+-   [SDK for Android 1.46 - September 2018](/docs/sdk/android#name-sdk-for-android-1.46---september-2018-5952)
+-   [SDK for Android 1.45 - August 2018](/docs/sdk/android#name-sdk-for-android-1.45---august-2018-5989)
+-   [SDK for Android 1.44 - end of July 2018](/docs/sdk/android#name-sdk-for-android-1.44---end-of-july-2018-6033)
+-   [SDK for Android 1.43 - July 2018](/docs/sdk/android#name-sdk-for-android-1.43---july-2018-6077)
+-   [SDK for Android 1.42 - June 2018](/docs/sdk/android#name-sdk-for-android-1.42---june-2018-6121)
+-   [SDK for Android 1.41 - May 2018](/docs/sdk/android#name-sdk-for-android-1.41---may-2018-6170)
+-   [SDK for Android 1.40 - April 2018](/docs/sdk/android#name-sdk-for-android-1.40---april-2018-6219)
+-   [SDK for Android 1.39 - April 2018](/docs/sdk/android#name-sdk-for-android-1.39---april-2018-6283)
+-   [SDK for Android 1.38 - March 2018](/docs/sdk/android#name-sdk-for-android-1.38---march-2018-6332)
+-   [SDK for Android 1.37 - March 2018](/docs/sdk/android#name-sdk-for-android-1.37---march-2018-6367)
+-   [SDK for Android 1.36 - February 2018](/docs/sdk/android#name-sdk-for-android-1.36---february-2018-6406)
+-   [SDK for Android 1.35 - January 2018](/docs/sdk/android#name-sdk-for-android-1.35---january-2018-6460)
+-   [SDK for Android 1.34 - Decembre 2017](/docs/sdk/android#name-sdk-for-android-1.34---decembre-2017-6494)
+-   [SDK for Android 1.33 - December 2017](/docs/sdk/android#name-sdk-for-android-1.33---december-2017-6523)
+-   [SDK for Android 1.32 - November 2017](/docs/sdk/android#name-sdk-for-android-1.32---november-2017-6552)
+-   [SDK for Android 1.31 - October 2017](/docs/sdk/android#name-sdk-for-android-1.31---october-2017-6581)
+-   [SDK for Android 1.30 - September 2017](/docs/sdk/android#name-sdk-for-android-1.30---september-2017-6640)
+-   [SDK for Android 1.29 - August 2017](/docs/sdk/android#name-sdk-for-android-1.29---august-2017-6674)
+-   [SDK for Android 1.28 - July 2017](/docs/sdk/android#name-sdk-for-android-1.28---july-2017-6713)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

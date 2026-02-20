@@ -1,0 +1,644 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/ios/lts/guides/Managing_Conferences"
+lastSynced: "2026-02-20T07:12:29.328Z"
+---
+# Documentation
+
+Managing conferences
+
+LTS release 2.13.0Published on 2025-03-07
+
+## Managing conferences
+
+---
+
+### Preamble
+
+This guide describes how to use SFU which is the Rainbow conference service. They are based on chat rooms.
+
+The sample application [RainbowiOSSDKSwift](https://github.com/Rainbow-CPaaS/Rainbow-iOS-SDK-Samples/tree/master/Rainbow-iOS-SDK-Sample-Swift) has been extended to also demonstrate audio/video WebRTC room conferences. You should refer to the code in the `TabBarController`, `EditRoomViewController` and `ConferenceViewController` classes.
+
+It's recommended to allow the usage of `CallKit` in your app, which needs the following background modes in `Info.plist`:
+
+```
+<key>UIBackgroundModes</key>
+    <array>
+        <string>audio</string>
+        <string>voip</string>
+    </array>
+```
+
+### Conference participants
+
+The `ConferenceParticipant` class is the generic class representing all the kind of users that could connect to a conference. There exist several subclasses of `ConferenceParticipant`:
+
+-   `RoomConfParticipant` this class represent participants that could interact with the other participant using WebRTC audio, video and screen sharing.  
+    The `roomParticipant` property give access to the `Participant` object of this conference participant which describe the user as a member of the room where the conference take place.
+    
+    -   `WebinarConfParticipant` is a subclass of `RoomConfParticipant` representing participant in a webinar which is a specialized kind of conference.
+-   `PhoneConfParticipant` this class represent participants using a classical phone to join the conference.
+    
+    -   `HGPhoneConfParticipant` is a specialized class of `PhoneConfParticipant` which represent participant in a phone hunting group.
+
+The `ConferenceParticipant` method `getContact` return the associated `Contact`object for a participant if he is known.
+
+####Conference participant roles A conference participant could be a member of the room where the conference is started or a invited guest, he could have one of the following `ParticipantRole` roles:
+
+ParticipantRole
+
+Description
+
+.member
+
+a attendee member of the room without conference administration rights
+
+.moderator
+
+a attendee member of the room with conference administration rights
+
+.guest
+
+a invited guest in the conference
+
+The member of the room who started the conference has the `.moderator` role, this could be the owner of the room or a delegate.
+
+### Start or join a conference
+
+To start a conference, the user must be the owner of the room or a delegate in that room, otherwise other room members could join a already started conference.
+
+-   [swift](#codegroupTab-hashTag1)
+
+```swift
+// The room where the conference will take place
+let room : Room = ...
+
+// if true, the user video will be activated by default when joining a already
+// started conference
+let forceLocalVideo : Bool = ...
+
+// Check if the user has the rights to start a conference in this room
+if room.isAbleToStartConference() {
+
+    // Start the conference or join it if it's already started
+    ServicesManager.sharedInstance().conferencesManagerService.startOrJoin(room, forceLocalVideo: forceLocalVideo) {
+        error in
+        if let error = error as? NSError {
+            // Handle the error
+            ...         
+        } else {
+            // The conference is started and joined 
+        ...      
+        }
+    }
+}
+```
+
+There are also several other methods allowing to set differents options at start and/or join conference time:
+
+-   [swift](#codegroupTab-hashTag2)
+
+```swift
+/**
+ * Join a conference
+ * You can also start the conference if needed
+ *
+ * @param room                  the room to join (with the correct conference)
+ * @param start                     start the conference before joining
+ * @param completionHandler the block called at the completion
+ */
+func join(room: Room, start: Bool, completionHandler:ConferenceManagerErrorBlock?)
+
+/**
+ * Join a started conference
+ * You can force the local video or the mute to be activated at start
+ *
+ * @param room              the room to join (with the correct conference)
+ * @param forceLocalVideo   if true, the user video will be activated by default
+ * @param forceMuted        if true, the user will be muted (otherwise it will follow the muteUponEntry property)
+ * @param completionHandler the block called at the completion
+ */
+func join(room: Room, forceLocalVideo: Bool, forceMuted: Bool, completionHandler: ConferenceManagerErrorBlock?)
+```
+
+#### Check if a conference is started in a room
+
+-   [swift](#codegroupTab-hashTag2.1)
+
+```swift
+// Check if a conference is started in this room
+if let conference = room.conference {
+    ...
+}
+```
+
+#### Check autorisation to join a conference
+
+-   [swift](#codegroupTab-hashTag2.2)
+
+```swift
+// Check if the user has the rights to join the conference in this room
+if room.isAbleToJoinConference() {
+    ...
+}
+```
+
+### Join a ringing conference
+
+When a conference is started all the room participants are automatically called. If a participant is not logged he will receive un VoIP push notification (The app should be setup to receive push notifications), otherwise if he's actually logged and the app could use Apple `CallKit`, a standard call notification is shown along a ringing tone allowing the user to take or reject the call.
+
+If the user take the conference call a join conference will be done automatically.
+
+To be notified about a incoming conference call the app may use the following code in a `UIViewController` that is always loaded in the application, like a instance of a subclass of `UITabBarController` (see the `TabBarController` class in the sample application [RainbowiOSSDKSwift](https://github.com/Rainbow-CPaaS/Rainbow-iOS-SDK-Samples/tree/master/Rainbow-iOS-SDK-Sample-Swift):
+
+-   [swift](#codegroupTab-hashTag2.3)
+
+```swift
+...
+
+override func viewDidLoad() {
+    super.viewDidLoad()
+
+    // notifications related to calls
+    NotificationCenter.default.addObserver(self, selector: #selector(didAddCall(notification:)),  name:NSNotification.Name(kTelephonyServiceDidAddCall), object:nil)
+}
+    
+deinit {
+    NotificationCenter.default.removeObserver(self)
+}
+        
+@objc func didAddCall(notification : Notification) {
+        
+    if let rtcCall = notification.object as? RTCCall,
+       let peer = rtcCall.remoteParty as? PeerProtocol,
+       let peerId = peer.rainbowID,
+       let conversation = ServicesManager.sharedInstance().conversationsManagerService.getConversationWithPeerID(peerId ?? ""),
+        let room = conversation.peer as? Room {
+            NSLog("didAddCall: is incoming=\(rtcCall.isIncoming), is a conference call=\(rtcCall.isRtcSfuCall) in room='\(room.displayName ?? "")'")
+            
+    } else {
+        NSLog("didAddCall: not a WebRTC call")
+    }
+}
+
+...
+```
+
+### Terminate a conference
+
+The owner of the conference could terminate it, this will hangup the call for all the participants, otherwise for other participant this will hangup the call and leave the conference.
+
+-   [swift](#codegroupTab-hashTag3)
+
+```swift
+// The room where the conference is started
+let room : Room = ...
+
+ServicesManager.sharedInstance().conferencesManagerService.hangup(room) {
+    error in
+    
+    if let error = error as? NSError {
+        // Handle the error
+        ...
+    } else {
+        // The connected user has left the conference, 
+        // it is terminated if he was the owner.
+        ...
+    }                 
+}
+```
+
+If we are the owner of the conference and want to avoid to terminate the conference if we need to leave it, we could delegate it to another participant with the `ParticipantRole.moderator` role, `delegateCapability` set to `true`.
+
+-   [swift](#codegroupTab-hashTag4)
+
+```swift
+/**
+ * Delegate a conference to another participant
+ * @param  room                the conference to delegate
+ * @param  participant         the other participant
+ * @param  completionHandler   the code block invoked at the completion
+ */
+func delegate(room: Room, participant: RoomConfParticipant, completionHandler: ConferenceManagerErrorBlock?)
+```
+
+### Disconnect a participant
+
+If the connected user has the moderator role in the conference he can disconnect another participant using the following method:
+
+-   [swift](#codegroupTab-hashTag5)
+
+```swift
+/**
+ * Disconnect the conference participant from the conference
+ *
+ * @param confParticipant       the participant to disconnect
+ * @param room                  the conference where we can find the participant
+ * @param completionHandler     the block called at the completion
+ */
+func hangup(confParticipant: ConferenceParticipant, room: Room, completionHandler: ConferenceManagerErrorBlock?)
+```
+
+### Mute/Unmute a conference participant
+
+A conference participant is able to mute or unmute himself, if he has the `.moderator` role he may mute another participant or ask him to unmute himself, he couldn't unmute directly another participant for privacy reasons. The effective mute / unmute or unmute request is done using `changeMuteParticipantState` method, when the conference participant state is effectivly changed the SDK send a `kConferencesManagerDidUpdateConference` notification with a `kConferenceChangedAttributesKey` dictionary containing the `"participants"` key:
+
+-   [swift](#codegroupTab-hashTag6)
+
+```swift
+// Unmute request notifications
+NotificationCenter.default.addObserver(self, selector:#selector(didReceiveUnmuteRequest(notification:)), name:NSNotification.Name(kConferencesManagerDidReceiveUnmuteRequest), object: nil)
+
+// Listen to update conference notification
+NotificationCenter.default.addObserver(self, selector:#selector(didUpdateConference(notification:)), name:NSNotification.Name(kConferencesManagerDidUpdateConference), object:nil)
+        
+...
+
+// Method used to toggle the mute state of a conference participant
+func toggleMute(participant: ConferenceParticipant) {
+    // The connected user could only manage his mute state if he's not
+    // a moderator, if he has the moderator role he could mute another participant
+    // and ask to unmute someone
+    if let myParticipant = room.conference?.getMyParticipant(),
+       participant.isMe() || myParticipant.role == .moderator {
+            
+        let newMuteState = !participant.muted
+        ServicesManager.sharedInstance().conferencesManagerService.changeMuteParticipantState(room, conferenceParticipant: participant, muted: newMuteState) 
+            { error, askToUnmuteSuccess in 
+              ...
+            }
+      }
+}
+
+...
+
+// Unmute request received from a moderator in the conference
+
+@objc func didReceiveUnmuteRequest(notification : Notification) {
+    NSLog("[ConferenceViewController] didReceiveUnmuteRequest")
+        
+    guard let infos = notification.object as? Dictionary<String,Any>,
+        let room = infos[kRoomKey] as? Room else {
+            NSLog("[ConferenceViewController] didReceiveUnmuteRequest error: missing parameter")
+                return
+        }
+        
+    guard let myParticipant = room.conference?.getMyParticipant() else {
+        NSLog("[ConferenceViewController] didReceiveUnmuteRequest error: missing myParticipant")
+        return
+    }
+        
+    // Do the unmute
+    ServicesManager.sharedInstance().conferencesManagerService.changeMuteParticipantState(room, conferenceParticipant: myParticipant, muted: false)
+}
+
+
+// Conference update notification handlers
+    
+@objc func didUpdateConference(notification : Notification) {
+        
+    if let notificationDict = notification.object as? Dictionary<String, Any>,
+        let theRoom = notificationDict[kRoomKey] as? Room,
+        let changedAttributes = notificationDict[kConferenceChangedAttributesKey] as? Array<String> {
+  
+        ...
+  
+        // Handle conference participant being added, updated or removed
+        if changedAttributes.contains("participants"),
+            let conference = theRoom.conference {
+        
+        // update the conference participant list
+       
+            NSLog("[ConferenceViewController] didUpdateConference: participants: \(conference.participants)")
+            
+            ...
+            
+        }
+    }
+}
+```
+
+### Conference lifecycle
+
+When the user start or join a conference the application will receive several notifications reflecting events that may needs to be handled.
+
+There is the `kConferencesManagerDidUpdateConference` notifications which may carry several events depending of the changed attributes dictionary:
+
+-   For the `"conference"` key the application is notified about the starting or the ending of the conference itself that is reflected by the `room.conference` value
+-   For the `"participants"` key the application is notified about some change in the conference participants, like a added or removed participant, a change in the mute state of a participant,...
+
+There is also the `kTelephonyServiceDidUpdateCall` notifications that reflect change in the conference call status
+
+-   [swift](#codegroupTab-hashTag6.1)
+
+```swift
+// Listen to update conference notification
+NotificationCenter.default.addObserver(self, selector:#selector(didUpdateConference(notification:)), name:NSNotification.Name(kConferencesManagerDidUpdateConference), object:nil)
+
+// WebRTC audio call handling
+ NotificationCenter.default.addObserver(self, selector:#selector(didUpdateCall(notification:)), name:NSNotification.Name(kTelephonyServiceDidUpdateCall), object: nil)
+
+...
+
+// Conference update notification handlers
+    
+@objc func didUpdateConference(notification : Notification) {
+        
+    if let notificationDict = notification.object as? Dictionary<String, Any>,
+        let theRoom = notificationDict[kRoomKey] as? Room,
+        let changedAttributes = notificationDict[kConferenceChangedAttributesKey] as? Array<String> {
+        
+        // Check if a conference was started or terminated in the room
+        if changedAttributes.contains("conference"){
+            if room?.conference != nil {
+            
+                // The conference is connected, update the conference UI
+                NSLog("didUpdateConference: conference is connected")
+                    
+            } else {
+            
+                // The conference is terminated, the conference UI could be closed
+                NSLog("didUpdateConference: conference is disconnected")   
+            }
+        }
+        
+        // Handle conference participant being added, updated or removed
+        if changedAttributes.contains("participants"),
+            let conference = theRoom.conference {
+                NSLog("didUpdateConference: participants: \(conference.participants)")
+             // Update the participant list,...
+            }
+        }
+    }
+}
+
+// Call notification handlers
+
+@objc func didUpdateCall(notification : Notification) {
+    // Check that the updated call is a WebRTC call
+    if let rtcCall = notification.object as? RTCCall {
+        NSLog("didUpdateCall status='\(Call.string(for: rtcCall.status) ?? "")'")
+       
+       // Check the call status
+        if rtcCall.status == .established, let conference = room?.conference, !conference.isOwner() {
+        // The conference call that the connected user joined is etablished
+        // The application should update the participant list, etc...
+        ...     
+        }
+    }
+}
+```
+
+### Video in conference
+
+#### Starting a conference with local video activated
+
+If the connected user has the rights to start a conference in a room:
+
+-   [swift](#codegroupTab-hashTag7)
+
+```swift
+let room : Room = ... 
+
+if room.isAbleToStartConference() {
+   ...
+}
+```
+
+and has the rights to use WebRTC video:
+
+-   [swift](#codegroupTab-hashTag8)
+
+```swift
+if ServicesManager.sharedInstance().myUser.isAllowedToUseWebRTCMobileVideo {
+   ...
+}
+```
+
+he could start a video conference, which means that the participants that will connect to the conference will receive his local video stream.
+
+A user that join the conference could send his local video using the `addVideoMedia(to: RTCCall)` method:
+
+-   [swift](#codegroupTab-hashTag9)
+
+```swift
+// true if we start or join the conference with local video on
+var videoCall = false
+
+// The view where the local video stream is displayed
+@IBOutlet weak var videoView: RTCMTLVideoView!
+
+// The local video track
+private var localVideoTrack : RTCVideoTrack?
+
+...
+
+// Local video notifications
+NotificationCenter.default.addObserver(self, selector:#selector(didAddLocalVideoTrack(notification:)), name:NSNotification.Name(kRTCServiceDidAddLocalVideoTrack), object: nil)
+NotificationCenter.default.addObserver(self, selector:#selector(didRemoveLocalVideoTrack(notification:)), name:NSNotification.Name(kRTCServiceDidRemoveLocalVideoTrack), object: nil)
+
+// WebRTC audio call handling
+NotificationCenter.default.addObserver(self, selector:#selector(didAddCall(notification:)), name:NSNotification.Name(kTelephonyServiceDidAddCall), object: nil)
+
+...
+
+// Local video notification handlers
+    
+@objc func didAddLocalVideoTrack(notification : Notification) {
+    if !Thread.isMainThread {
+        DispatchQueue.main.async {
+            self.didAddLocalVideoTrack(notification: notification)
+        }
+        return
+    }
+        
+    guard let localVideoTrack = notification.object as? RTCVideoTrack, 
+            self.localVideoTrack != localVideoTrack else {
+        return
+    }
+    
+    NSLog("didAddLocalVideoTrack")
+    self.localVideoTrack = localVideoTrack
+        
+    localVideoView.videoContentMode = .scaleAspectFill
+    localVideoTrack.add(localVideoView)
+    localVideoView.isHidden = false
+}
+    
+@objc func didRemoveLocalVideoTrack(notification : Notification) {
+    NSLog("didRemoveLocalVideoTrack")
+ 
+    localVideoTrack?.remove(localVideoView)
+    localVideoView.isHidden = true
+}
+
+// Call notification handlers
+    
+@objc func didAddCall(notification : Notification) {
+    if !Thread.isMainThread {
+        DispatchQueue.main.async {
+            self.didAddCall(notification: notification)
+        }
+        return
+    }
+ 
+    if let rtcCall = notification.object as? RTCCall {
+        NSLog("didAddCall status='\(Call.string(for: rtcCall.status) ?? "")' videoCall=\(videoCall)")
+            if videoCall && rtcCall.canAddVideo() && !rtcCall.isLocalVideoEnabled() {
+                ServicesManager.sharedInstance().rtcService.addVideoMedia(to: rtcCall)
+            }
+        }
+    }
+```
+
+#### Handling of the remote video streams
+
+When a remote conference participant starts or stops sending a video stream he's added to or removed from the publishers list of the conference and the application is notified with the `kConferencesManagerDidAddPublisher` and `kConferencesManagerDidRemovePublisher` events.
+
+The `ConferencesManagerService` `updateDisplayedVideos(_ : Room, level: PublisherStreamLevel, publishers: [RoomConfParticipant])` method updates the state of the current publisher's videos and trigger if needed some remote video notifications to add or remove video tracks using `kRTCServiceDidAddRemoteVideoTrack` or `kRTCServiceDidRemoveRemoteVideoTrack` notifications.
+
+-   [swift](#codegroupTab-hashTag10)
+
+```swift
+// Conference publisher not including RoomConfParticipant
+private var publishers : [RoomConfParticipant] = []
+
+// RTCMTLVideoView for displaying the remote videos
+private var videoViews: [String:RTCMTLVideoView] = [:]
+
+...
+
+// Publisher notifications
+NotificationCenter.default.addObserver(self, selector: #selector(didAddPublisher(notification:)), name: NSNotification.Name(kConferencesManagerDidAddPublisher), object: nil)
+NotificationCenter.default.addObserver(self, selector: #selector(didRemovePublisher(notification:)), name: NSNotification.Name(kConferencesManagerDidRemovePublisher), object: nil)
+
+// Remote video notifications
+NotificationCenter.default.addObserver(self, selector: #selector(didAddRemoteVideoTrack(notification:)), name: NSNotification.Name(kRTCServiceDidAddRemoteVideoTrack), object: nil)
+NotificationCenter.default.addObserver(self, selector: #selector(didRemoveRemoteVideoTrack(notification:)), name: NSNotification.Name(kRTCServiceDidRemoveRemoteVideoTrack), object: nil)
+
+...
+
+// Publisher notification handlers
+    
+@objc func didAddPublisher(notification : Notification) {
+    if !Thread.isMainThread {
+        DispatchQueue.main.async {
+            self.didAddPublisher(notification: notification)
+        }
+        return
+    }
+
+    guard let userInfo = notification.object as? NSDictionary,
+            let confParticipant = userInfo.object(forKey: kConferenceParticipantKey) as? RoomConfParticipant,
+            let room = userInfo.object(forKey: kRoomKey) as? Room,
+            let publisherId = confParticipant.getRainbowId(),
+            !publishers.contains(confParticipant),
+            !confParticipant.isMe() else {
+            return
+    }
+        
+    NSLog("didAddPublisher publisherID=\(publisherId)")
+        publishers.append(confParticipant)
+
+    // Update the states of the current publishers videos
+    ServicesManager.sharedInstance().conferencesManagerService.updateDisplayedVideos(room, level: .low, publishers: publishers)
+}
+    
+@objc func didRemovePublisher(notification : Notification) {
+    if !Thread.isMainThread {
+        DispatchQueue.main.async {
+            self.didRemovePublisher(notification: notification)
+        }
+        return
+    }
+        
+    guard let userInfo = notification.object as? NSDictionary,
+            let confParticipant = userInfo.object(forKey: kConferenceParticipantKey) as? RoomConfParticipant,
+            let room = userInfo.object(forKey: kRoomKey) as? Room,
+            let publisherId = confParticipant.getRainbowId(),
+            publishers.contains(confParticipant),
+            !confParticipant.isMe() else {
+        return
+    }
+        
+    NSLog("didRemovePublisher publisherID=\(publisherId)")
+        
+    publishers.removeAll(where: { confParticipant in confParticipant.getRainbowId() == publisherId })
+
+    // Update the states of the current publishers videos
+    ServicesManager.sharedInstance().conferencesManagerService.updateDisplayedVideos(room, level: .low, publishers: publishers)
+}
+
+// Remote videos notification handlers
+   
+@objc func didAddRemoteVideoTrack(notification : Notification) {
+    if !Thread.isMainThread {
+        DispatchQueue.main.async {
+            self.didAddRemoteVideoTrack(notification: notification)
+        }
+        return
+    }
+        
+    guard let userInfo = notification.object as? NSDictionary,
+            let  publisherId = userInfo.object(forKey: "publisherId") as? String else {
+        return
+    }
+     
+    if let videoView = self.videoViews[publisherId],
+        videoView.isHidden,
+        let videoTrack = ServicesManager.sharedInstance().rtcService.remoteVideoTrack(forPublisherRainbowID: publisherId) {
+            NSLog("didAddRemoteVideoTrack: publisherId=\(publisherId) videoTrack=\(String(describing: videoTrack))")
+            videoView.videoContentMode = .scaleAspectFill
+            videoView.renderFrame(nil)
+            videoTrack.add(videoView)
+            videoView.isHidden = false
+        }
+    }
+}
+    
+@objc func didRemoveRemoteVideoTrack(notification : Notification) {
+    if !Thread.isMainThread {
+        DispatchQueue.main.async {
+            self.didRemoveRemoteVideoTrack(notification: notification)
+        }
+        return
+    }
+ 
+    guard let userInfo = notification.object as? NSDictionary,
+            let  publisherId = userInfo.object(forKey: "publisherId") as? String else {
+        return
+    }
+        
+    if let videoView = self.videoViews[publisherId],
+        !videoView.isHidden {
+        NSLog("didRemoveRemoteVideoTrack: publisherId=\(publisherId))")
+        videoView.renderFrame(nil)
+        videoView.isHidden = true
+    }
+}
+```
+
+### On this page
+
+-   [Managing conferences](/docs/sdk/ios#name-managing-conferences-0)
+-   [Preamble](/docs/sdk/ios#name-preamble-4)
+-   [Conference participants](/docs/sdk/ios#name-conference-participants-17)
+-   [Start or join a conference](/docs/sdk/ios#name-start-or-join-a-conference-96)
+-   [Check if a conference is started in a room](/docs/sdk/ios#name-check-if-a-conference-is-started-in-a-room-107)
+-   [Check autorisation to join a conference](/docs/sdk/ios#name-check-autorisation-to-join-a-conference-111)
+-   [Join a ringing conference](/docs/sdk/ios#name-join-a-ringing-conference-115)
+-   [Terminate a conference](/docs/sdk/ios#name-terminate-a-conference-128)
+-   [Disconnect a participant](/docs/sdk/ios#name-disconnect-a-participant-139)
+-   [Mute/Unmute a conference participant](/docs/sdk/ios#name-muteunmute-a-conference-participant-146)
+-   [Conference lifecycle](/docs/sdk/ios#name-conference-lifecycle-153)
+-   [Video in conference](/docs/sdk/ios#name-video-in-conference-178)
+-   [Starting a conference with local video activated](/docs/sdk/ios#name-starting-a-conference-with-local-video-activated-181)
+-   [Handling of the remote video streams](/docs/sdk/ios#name-handling-of-the-remote-video-streams-199)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

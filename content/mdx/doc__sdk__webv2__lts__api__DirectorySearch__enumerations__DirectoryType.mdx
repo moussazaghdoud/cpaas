@@ -3,16 +3,84 @@ title: "CPaaS SDK for business communication solutions | Rainbow"
 description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
 type: "sdk"
 source: "https://developers.openrainbow.com/doc/sdk/webv2/lts/api/DirectorySearch/enumerations/DirectoryType"
-lastSynced: "2026-02-19T22:35:17.175Z"
+lastSynced: "2026-02-20T07:12:27.512Z"
 ---
 # Documentation
 
-Webv2 > lts > api > DirectorySearch > enumerations > DirectoryType
+DirectoryType
 
-### Sur cette page
+LTS release 5.0.0Published on 2024-06-22
+
+[**Rainbow SDK**](doc/sdk/webv2/lts/api/index) • **Docs**
 
 ---
 
-Ce contenu vous a-t-il été utile ?OuiNon
+[Rainbow SDK](doc/sdk/webv2/lts/api/index) / [DirectorySearch](doc/sdk/webv2/lts/api/DirectorySearch/index) / DirectoryType
+
+# Enumeration: DirectoryType
+
+List of different directories in which users or contacts can be searched by name.
+
+## Enumeration Members
+
+### MICROSOFT\_O365\_USERS
+
+> **MICROSOFT\_O365\_USERS**: `"MICROSOFT_O365_USERS"`
+
+Directory for Microsoft Azure AD users/Microsoft O365 contacts. This directory is available only if the user has the profile feature MSO365\_DIRECTORY\_SEARCH. A user of a default company cannot use this directory either. A search request will be rejected if this directory cannot be used.
+
+---
+
+### RAINBOW\_BUSINESS\_CONTACTS\_DIRECTORY
+
+> **RAINBOW\_BUSINESS\_CONTACTS\_DIRECTORY**: `"RAINBOW_BUSINESS_CONTACTS_DIRECTORY"`
+
+Directory for Rainbow Business Contacts. No profile feature is required to use this directory. However, a user of a default company cannot use this directory. A search request will be rejected if this directory cannot be used.
+
+---
+
+### RAINBOW\_PBX\_USERS
+
+> **RAINBOW\_PBX\_USERS**: `"RAINBOW_PBX_USERS"`
+
+Directory for PBX users. This directory is available only if the user has the profile feature TELEPHONY\_PHONE\_BOOK. A user of a default company cannot use this directory either. A search request will be rejected if this directory cannot be used.
+
+---
+
+### RAINBOW\_PERSONAL\_CONTACTS\_DIRECTORY
+
+> **RAINBOW\_PERSONAL\_CONTACTS\_DIRECTORY**: `"RAINBOW_PERSONAL_CONTACTS_DIRECTORY"`
+
+Directory for Rainbow Personal Contacts. This directory is available only if the user has the profile feature PERSONAL\_DIRECTORY. A user of a default company cannot use this directory either. A search request will be rejected if this directory cannot be used.
+
+---
+
+### RAINBOW\_USERS
+
+> **RAINBOW\_USERS**: `"RAINBOW_USERS"`
+
+Directory for Rainbow Users. No profile feature is required to use this directory. Any Rainbow user, including those belonging to the default company, can use this directory. The directory scope corresponds to all Rainbow public users and users being in companies visible to the logged-in user. This visibility depends on that defined for the logged-in user and the company to which he belongs.
+
+---
+
+### RAINBOW\_USERS\_NETWORK
+
+> **RAINBOW\_USERS\_NETWORK**: `"RAINBOW_USERS_NETWORK"`
+
+Network of Rainbow users of the logged-in user This directory type is more of a container than a directory an refers to the network of Rainbow users of the logged-in user. This network also known as 'roster' contains users who have been explicitly invited by the logged-in user to share their online status. No profile feature is required to use this directory. Any Rainbow user, including those belonging to the default company, can use this directory.
+
+### On this page
+
+-   [Enumeration Members](/docs/sdk/web#name-enumeration-members-13)
+-   [MICROSOFT\_O365\_USERS](/docs/sdk/web#name-microsoft_o365_users-16)
+-   [RAINBOW\_BUSINESS\_CONTACTS\_DIRECTORY](/docs/sdk/web#name-rainbow_business_contacts_directory-28)
+-   [RAINBOW\_PBX\_USERS](/docs/sdk/web#name-rainbow_pbx_users-40)
+-   [RAINBOW\_PERSONAL\_CONTACTS\_DIRECTORY](/docs/sdk/web#name-rainbow_personal_contacts_directory-52)
+-   [RAINBOW\_USERS](/docs/sdk/web#name-rainbow_users-64)
+-   [RAINBOW\_USERS\_NETWORK](/docs/sdk/web#name-rainbow_users_network-76)
+
+---
+
+Was this content helpful to you?YesNo
 
 Feedback

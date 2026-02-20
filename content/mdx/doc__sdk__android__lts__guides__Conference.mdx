@@ -1,0 +1,272 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/android/lts/guides/Conference"
+lastSynced: "2026-02-20T07:12:28.433Z"
+---
+# Documentation
+
+Managing conferences
+
+LTS release 2.61.0Published on 202-04-06
+
+## Conference
+
+---
+
+### Preamble
+
+---
+
+This guide describes how to use SFU which is Rainbow conference service. This conference uses bubbles.
+
+### Minimal permissions
+
+---
+
+Before starting with web RTC, you have to add differents permissions in your manifest file.
+
+```xml
+<uses-permission android:name="android.permission.CAMERA"/>
+<uses-permission android:name="android.permission.RECORD_AUDIO"/>
+```
+
+You also have to add theses lines of code at the starting of your application to manage permissions programmatically. Indeed, since android 5, you can modify permissions directly in applications menu. So, permissions can be not authorized.
+
+### Example with RECORD\_AUDIO permission
+
+---
+
+Here is an example for requesting the permission to request the microphone
+
+```java
+if (ContextCompat.checkSelfPermission(getActivity(),
+            Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+
+        ActivityCompat.requestPermissions(getActivity(),
+                new String[]{Manifest.permission.RECORD_AUDIO},
+                REQUEST_MICROPHONE);
+
+    }
+```
+
+where `REQUEST_MICROPHONE` is a `int` defined by the developer.
+
+A dialog window will open and the user of the application can be choose if he wants to authorize permissions.
+
+After, you should put theses lines of code. Theses lines allows to you to know the choice of the user.
+
+```java
+@Override
+public void onRequestPermissionsResult(int requestCode,
+                                        @NonNull String permissions[], @NonNull int[] grantResults) {
+
+    switch (requestCode) {
+        case REQUEST_MICROPHONE: {
+            // If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0) {// for example, open your call activity...
+
+
+            } else {
+                // permission denied, boo! Disable the
+                //functionality that depends on this permission
+                //or exit application if it is mandatory to have theses permissions.
+
+            }
+            break;
+        }
+    }
+}
+```
+
+### Start a conference
+
+---
+
+-   To start a conference, the user must be the owner of the bubble. If it is the case, you should yse this method:
+
+```java
+RainbowSdk.instance().bubbles().startAndJoinConference(m_room, new IConferenceProxy.IJoinAudioCallListener() {
+    @Override
+    public void onJoinAudioCallSuccess(String jingleJid) {
+        if (m_room.getConference() != null)
+            RainbowSdk.instance().webRTC().makeConferenceCall(m_room.getConference().getId(), jingleJid);
+        // do something
+
+    }
+
+    @Override
+    public void onJoinAudioCallFailed(IConferenceProxy.ConferenceError error) {
+        // do something
+    }
+});
+```
+
+-   If the user is not the owner of the bubble and if the conference is started, you should join this conference using:
+
+```java
+RainbowSdk.instance().bubbles().joinAudioConference(m_room, null, new IConferenceProxy.IJoinAudioCallListener() {
+    @Override
+    public void onJoinAudioCallSuccess(String jingleJid) {
+        if (m_room.getConference() != null)
+            RainbowSdk.instance().webRTC().makeConferenceCall(m_room.getConference().getId(), jingleJid);
+            // do something
+    }
+
+    @Override
+    public void onJoinAudioCallFailed(IConferenceProxy.ConferenceError error) {
+        // do something
+    }
+});
+```
+
+With theses 2 ways to join a conference, you have connected only in andio.
+
+### Use video and desktop sharing in conference
+
+---
+
+3 different ways to take into account
+
+-   The user shares his video
+-   Another user shares his screen
+-   One or many users share their video.
+
+Of course, many combinations are possible as for example another user shares his desktop and another shares his video...
+
+**When the user is connected in audio to the conference**:
+
+-   if the user wants to add his own video, it should use the same method as classic web RTC :
+    
+    RainbowSDK.instance().webRTC().addVideo();
+    
+
+To drop his video, the user should use this method :
+
+`RainbowSDK.instance().webRTC().dropVideo();`
+
+-   If another user shares his screen, there is nothing to do. The video will be automatically added.
+    
+-   If another user shares his video, the user must subscribe to the video of this another user. To do it, you should use
+    
+    subscribeToVideo(Room room, ConferenceParticipant publisher, MultiVideoQuality multiVideoQuality, IConferenceProxy.ISubscribeParticipantVideoListener listener)
+    
+
+> multiVideoQuality only works if the publisher is in multi-video quality, use ConferenceParticipant.isMultiVideoQuality().
+
+where is publisherId is the user id of the user that you want to subscribe the video. You should find this value in the ConferenceParticipant.
+
+In Room object, you can see a Conference object. The participants list is within the Conference object.
+
+To unsubscribe to a video, you should use
+
+`RainbowSDK.instance().bubbles().unsubscribeToVideo(Room room, String publisherId);`
+
+To subscribe to another video, you should just call the method subscribeToVideo and the video will be automatically changed. For information, each video is a new web RTC call. So, in a conference, we have tje audio call and one or two video calls.
+
+To manage correctly the display of each video, tou should use the method **RainbowSdk.instance().webRTC().getStreams(PeerSession.PeerSessionType type)** This method returns a list of **Media streams**
+
+Sessions can be :
+
+Session
+
+Definition
+
+AUDIO\_VIDEO\_SHARING
+
+the main call which contains the audio in conference mode
+
+SHARING
+
+call of a user who shares his screen
+
+LOCAL\_VIDEO
+
+call of the user when he schares his own video
+
+DISTANT\_VIDEO
+
+call of another user who shares his video. (Before, the user must subscribe to this video)
+
+MediaStream lists contained in the map contain only one imput in conference mode.
+
+### Terminate a call
+
+2 cases:
+
+-   the user is the owner of the conference (so the conference will be stopped), then you should use :
+
+```java
+RainbowSdk.instance().bubbles().stopAudioConference(Room room, IConferenceProxy.IStopAudioConfListener listener);
+```
+
+All others users in the conference will automatically hangup.
+
+-   the user is not the owner of the conference (so the user will hangup the conference)
+
+```java
+RainbowSdk.instance().bubbles().hangUpParticipant(Room room, ConferenceParticipant participant, IConferenceProxy.IHangUpParticipantListener listener);
+```
+
+When the application is started, to know that a conference is started, you should register to the getAllBubbles.
+
+```java
+RainbowSdk.instance().bubbles().getAllBubbles().registerChangeListener(m_bubblesListener);
+```
+
+where m\_bubblesListener can be :
+
+```java
+private IItemListChangeListener m_bubblesListener = new IItemListChangeListener() {
+
+    @Override
+    public void dataChanged() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for (Room room : RainbowSdk.instance().bubbles().getAllBubbles().getCopyOfDataList()) {
+
+                    if (!room.isUserOwner() && room.getConference() != null &&
+                            room.getConference().getMediaType() == ConferenceMediaType.WEB_RTC &&
+                            RainbowSdk.instance().bubbles().isConferenceJoinable(room) &&
+                            RainbowSdk.instance().webRTC().getCurrentCall() == null) {
+
+                        // do something
+                    }
+                }
+            }
+        });
+    }
+}
+```
+
+If you have problems to manage video in your app, you could see the web rtc sample which do video.
+
+\*\*
+
+**To retrieve some videos, you should subscribe to all publishers that you want and the getStreams method will be returned a list of media streams correspounding to the subscriptions number.**
+
+The list of participants is available inside your Room object when you should this code :
+
+```java
+room.getConference().getAllParticipants();
+```
+
+*Last updated December, 17th 2019*
+
+### On this page
+
+-   [Conference](/docs/sdk/android#name-conference-0)
+-   [Preamble](/docs/sdk/android#name-preamble-4)
+-   [Minimal permissions](/docs/sdk/android#name-minimal-permissions-11)
+-   [Example with RECORD\_AUDIO permission](/docs/sdk/android#name-example-with-record_audio-permission-22)
+-   [Start a conference](/docs/sdk/android#name-start-a-conference-40)
+-   [Use video and desktop sharing in conference](/docs/sdk/android#name-use-video-and-desktop-sharing-in-conference-63)
+-   [Terminate a call](/docs/sdk/android#name-terminate-a-call-199)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

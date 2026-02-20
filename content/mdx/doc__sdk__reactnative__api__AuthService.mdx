@@ -1,0 +1,79 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/reactnative/api/AuthService"
+lastSynced: "2026-02-20T07:12:33.280Z"
+---
+# Documentation
+
+Auth Service
+
+### Authentication Services
+
+### Overview
+
+The AuthService class provides methods for handling authentication-related tasks within the Rainbow SDK. This includes user login, password management, and configuration setup. The service leverages native modules to interact with the underlying authentication mechanisms.
+
+### Methods
+
+1.  `login(email: string, password: string): void` - Initiates the login process using the provided email and password.
+
+#### Parameters
+
+-   `email: string` - The email address of the user.
+-   `password: string` - The password of the user.
+
+2.  `silentLogin(): void` - Attempts to log in the user without displaying any UI. This can be useful for automatic login scenarios.
+    
+3.  `signOut(): void` - Logs out the current user by disconnecting them from the Rainbow SDK and clearing their credentials.
+    
+4.  `resetUserPassword(temporaryCode: string, newPassword: string): void` - Resets the user's password using a temporary code received via email.
+    
+
+#### Parameters
+
+-   `temporaryCode: string` - The temporary code sent to the user for verification.
+-   `newPassword: string` - The new password to set for the user.
+
+5.  `sendResetPasswordEmail(email: string): void` - Sends a password reset email to the specified email address.
+
+#### Parameters
+
+-   `email: string` - The email address of the user.
+
+### Usage Example
+
+```tsx
+import { authService } from 'path-to-auth-service';
+
+// Logging in a user
+authService.login('user@example.com', 'password123');
+
+// Sending a password reset email
+authService.sendResetPasswordEmail('user@example.com');
+
+// Resetting a user's password
+authService.resetUserPassword('temporaryCode', 'newPassword123');
+```
+
+### Conclusion
+
+The AuthService class provides essential methods for managing user authentication within the Rainbow SDK. By utilizing these methods, developers can easily implement authentication flows in their applications.
+
+### On this page
+
+-   [Authentication Services](/docs/sdk/reactnative/api/AuthService#name-authentication-services-0)
+-   [Overview](/docs/sdk/reactnative/api/AuthService#name-overview-3)
+-   [Methods](/docs/sdk/reactnative/api/AuthService#name-methods-9)
+-   [Parameters](/docs/sdk/reactnative/api/AuthService#name-parameters-19)
+-   [Parameters](/docs/sdk/reactnative/api/AuthService#name-parameters-51)
+-   [Parameters](/docs/sdk/reactnative/api/AuthService#name-parameters-73)
+-   [Usage Example](/docs/sdk/reactnative/api/AuthService#name-usage-example-83)
+-   [Conclusion](/docs/sdk/reactnative/api/AuthService#name-conclusion-87)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

@@ -1,0 +1,579 @@
+---
+title: "CPaaS SDK for business communication solutions | Rainbow"
+description: ""
+type: "sdk"
+source: "https://developers.openrainbow.com/doc/sdk/ios/lts/guides/Managing_Rooms"
+lastSynced: "2026-02-20T07:12:29.450Z"
+---
+# Documentation
+
+Managing rooms
+
+LTS release 2.13.0Published on 2025-03-07
+
+## Managing rooms
+
+---
+
+This guide explains how to manage rooms and to discuss within them. The full API is documented in the [RoomsService documentation](https://sdk.openrainbow.io/ios/docs/lts/jazzy/Classes/RoomsService.html).
+
+### Creation, archiving and deletion
+
+---
+
+This first part of the guide will explain how to create, archive and delete a room.
+
+#### Create a new room
+
+---
+
+To create a new room, you can use the method `createRoom:options:completionHandler:`:
+
+-   [swift](#codegroupTab-hashTag3)
+-   [objective C](#codegroupTab-hashTag4)
+
+```swift
+ServicesManager.sharedInstance().roomsService.createRoom("Name of the room", withTopic: "Topic of the room", options: [:]) 
+        { room, error in
+            
+            if let error = error as? NSError {
+                // Manage the error
+            } else {
+                // Continue the process           
+            } 
+        }
+```
+
+```objectivec
+[ServicesManager.sharedInstance.roomsService createRoom:@"Name of the room" withTopic:@"Topic of the room" options:nil completionHandler: ^(Room *room, NSError *error){
+        if (error) {
+            // Manage the error
+        } else {
+            // Continue the process, for example add participants in the room
+        }
+    }];
+```
+
+To create a auto accept invitation room, which means all invitations to add users in the room will be auto accepted, you should use the `autoAccepted` boolean option in the `options` dictionary
+
+-   [swift](#codegroupTab-hashTag5)
+-   [objective C](#codegroupTab-hashTag6)
+
+```swift
+ServicesManager.sharedInstance().roomsService.createRoom("Name of the room", withTopic: "Topic of the room", options: ["autoAccepted" : true]) 
+        { room, error in
+            
+            if let error = error as? NSError {
+                // Manage the error
+            } else {
+                // Continue the process           
+            } 
+        }
+```
+
+```objectivec
+[ServicesManager.sharedInstance.roomsService createRoom:@"Name of the room" withTopic:@"Topic of the room" options: @{@"autoAccepted" : @YES} completionHandler: ^(Room *room, NSError *error){
+        if (error) {
+            // Manage the error
+        } else {
+            // Continue the process, for example add participants in the room
+        }
+    }];
+```
+
+There are more available options, you may look [RoomsService documentation](https://sdk.openrainbow.io/ios/docs/lts/jazzy/Classes/RoomsService.html#/c:objc\(cs\)RoomsService\(im\)createRoom:withTopic:options:completionHandler:) to discover them all.
+
+#### Archive a room
+
+---
+
+To archive a room, you can use the method `archiveRoom` as following:
+
+-   [swift](#codegroupTab-hashTag7)
+-   [objective C](#codegroupTab-hashTag8)
+
+```swift
+let roomToBeArchived = ... 
+    ServicesManager.sharedInstance().roomsService.archiveRoom(room) { 
+        error in
+        if let error = error as? NSError {
+            // Manage the error
+        } else {
+            // Continue the process           
+        }             
+    })
+```
+
+```objectivec
+Room *roomToBeArchived = ...
+    [ServicesManager.sharedInstance.roomsService archiveRoom:roomToBeArchived withCompletionBlock:^(NSError *error) {
+        if (error) {
+            // Manage the error
+        } else {
+            // Continue the process
+        }
+    }];
+```
+
+NB: An archived room can still be read but nobody can post new messages
+
+Two possible cases:
+
+-   You are the owner: all participants are archived (the room is closed)
+-   You are a participant: you are the only one archived (you leave the room)
+
+#### Delete a room
+
+---
+
+To delete a room, you can use the method `deleteRoom` as following:
+
+-   [swift](#codegroupTab-hashTag9)
+-   [objective C](#codegroupTab-hashTag10)
+
+```swift
+let roomToBeDeleted = ...
+    if roomToBeDeleted.isMyRoom {
+        ServicesManager.sharedInstance().roomsService.deleteRoom(roomToBeDeleted) {
+            error in
+            if let error = error as? NSError {
+                // Manage the error
+            } else {
+                // Continue the process           
+            } 
+    }
+```
+
+```objectivec
+Room *roomToBeDeleted = ...
+    if (roomToBeDeleted.isMyRoom) {
+        Room *roomToBeArchived = ...
+        [ServicesManager.sharedInstance.roomsService deleteRoom:roomToBeDeleted withCompletionBlock:^(NSError *error) {
+            if (error) {
+              // Manage the error
+            } else {
+              // Continue the process
+            }
+    }];
+```
+
+NB: You can only delete room that you are owner
+
+### Invitation
+
+To be able to discuss with users in a Rainbow room, you need to invite them into that room. This part will explain how to do that.
+
+#### Invite a user in a room
+
+If you are the room owner or have the organizer role you may invite contact in that room :
+
+-   [swift](#codegroupTab-hashTag13)
+-   [objective C](#codegroupTab-hashTag14)
+
+```swift
+let contactToInvite = ...
+    let theRoom = ...
+    ServicesManager.sharedInstance().roomsService.invite(contactToInvite, in: theRoom) {
+        error in
+        if let error = error as? NSError {
+            // Manage the error
+        } else {
+            // Continue the process           
+        }     
+    }
+```
+
+```objectivec
+Contact *contactToInvite = ...;
+    Room *theRoom = ...;
+    [ServicesManager.sharedInstance.roomsService inviteContact: contactToInvite inRoom: theRoom completionHandler: ^(NSError *error){
+        if (error) {
+            // Manage the error
+        } else {
+            // Continue the process
+        }
+    }];
+```
+
+#### Remove a user from a room
+
+If you are the room owner or have the organizer role you can remove a user from a room. A user in a room is represented by a `Participant` object.
+
+A member removed can still have access to the bubble to see existing messages posted before he was removed, but can not see new messages posted after he has been removed and can not post new message too.
+
+-   [swift](#codegroupTab-hashTag15)
+-   [objective C](#codegroupTab-hashTag16)
+
+```swift
+let theRoom = ...
+    // Returns the list of Rainbow Room participants in "accepted" status
+    let participants = theRoom.getRainbowRoomParticipants()
+    if let participant = participants?[..] {
+        ServicesManager.sharedInstance().roomsService.remove(participant, from: theRoom)
+    }
+```
+
+```objectivec
+Room *theRoom = ...;
+    // Returns the list of Rainbow Room participants in "accepted" status
+    NSArray<Participant *> *participants = [theRoom getRainbowRoomParticipants];
+    Participant *participant = participants[..];
+    [ServicesManager.sharedInstance.roomsService removeParticipant:participant fromRoom: theRoom];
+```
+
+#### Accept an invitation to a room
+
+To accept an invitation to a room (in the pending room list), you have to use the `roomsService` method `acceptInvitation:completionBlock:` as following:
+
+-   [swift](#codegroupTab-hashTag17)
+-   [objective C](#codegroupTab-hashTag18)
+
+```swift
+let theRoom = ...
+    ServicesManager.sharedInstance().roomsService.acceptInvitation(theRoom) {
+        error in
+        if let error = error as? NSError {
+            // Manage the error
+        } else {
+            // Continue the process           
+        } 
+    }
+```
+
+```objectivec
+Room *theRoom = ...;
+    [ServicesManager.sharedInstance.roomsService acceptInvitation:theRoom completionBlock: ^(NSError *error){
+        if (error) {
+            // Manage the error
+        } else {
+            // Continue the process
+        }
+    }];
+```
+
+#### Decline an invitation to a room
+
+To decline an invitation to a room (in the pending room list), you have to use the `roomsService` method `declineInvitation:completionBlock:` as following:
+
+-   [swift](#codegroupTab-hashTag19)
+-   [objective C](#codegroupTab-hashTag20)
+
+```swift
+let theRoom = ...
+    ServicesManager.sharedInstance().roomsService.declineInvitation(theRoom) {
+        error in
+        if let error = error as? NSError {
+            // Manage the error
+        } else {
+            // Continue the process           
+        }  
+    }
+```
+
+```objectivec
+Room *theRoom = ...;
+    [ServicesManager.sharedInstance.roomsService declineInvitation:theRoom completionBlock: ^(NSError *error){
+        if (error) {
+            // Manage the error
+        } else {
+            // Continue the process
+        }
+    }];
+```
+
+### Discuss in a room
+
+In ordre to discuss in a room, you first have to start a conversation associated to that room. You can do that as following:
+
+-   [swift](#codegroupTab-hashTag21)
+-   [objective C](#codegroupTab-hashTag22)
+
+```swift
+let theRoom = ...
+    ServicesManager.sharedInstance().conversationsManagerService.startConversation(withPeer: theRoom) {
+    (conversation, error) in
+        if let error = error as? NSError {
+            // Manage the error
+        } else {
+            // Continue the process           
+        }   
+    }
+```
+
+```objectivec
+Room *theRoom = ...;
+    [ServicesManager.sharedInstance.conversationsManagerService startConversationWithPeer:theRoom withCompletionHandler:^(Conversation *conversation, NSError *error) {
+        if (error) {
+            // Manage the error
+        } else {
+            // Continue the process
+        }
+    }];
+```
+
+Details about managing the discussion is described in [Instant Messaging](/docs/sdk/ios)
+
+### Listen to room updates
+
+Room updates are handled by `NSNotification` notifications. You should subscribe to the notifications that matter to your application.
+
+For example to receive a notification when a room is updated, your code have to listen to `NSNotification` named `kRoomsServiceDidUpdateRoom`
+
+-   [swift](#codegroupTab-hashTag23)
+-   [objective C](#codegroupTab-hashTag24)
+
+```swift
+// notifications related to unread conversation count
+    NotificationCenter.default.addObserver(self, selector: #selector(didUpdateRoom(notification:)), name:NSNotification.Name(kRoomsServiceDidUpdateRoom), object: nil)
+    
+    @objc func didUpdateRoom(notification : Notification) {
+        // handle the notification
+        ...
+    }
+```
+
+```objectivec
+// notifications related to unread conversation count
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateRoom:) name: kRoomsServiceDidUpdateRoom object:nil];
+    
+    - (void) didUpdateRoom: (NSNotification *) notification {
+        // handle the notification
+        ...
+    }
+```
+
+The following is a non exhaustive list of useful events related to rooms:
+
+Event name
+
+Description
+
+kRoomsServiceDidUpdateRoom
+
+event fired when a room information is updated
+
+kRoomsServiceDidAddRoom
+
+event fired when a room is added
+
+kRoomsServiceDidRemoveRoom
+
+event fired when a room is removed
+
+kRoomsServiceDidUpdateMyRoomPrivilege
+
+event fired when my privilege in a room has been updated
+
+kConversationsManagerDidEndLoadingConversations
+
+event fired when the SDK finish fetching the conversations from the server
+
+kConversationsManagerDidUpdateMessagesUnreadCount
+
+event fired when the number of unread messages is updated in a conversation
+
+kConversationsManagerDidReceiveNewMessageForConversation
+
+event fired when a message is received in a conversation
+
+More events are documented in the SDK API documentation in the [constants section](https://sdk.openrainbow.io/ios/docs/lts/jazzy/Constants.html)
+
+### Manage custom data in a room
+
+#### Update the customData of a room
+
+In order to update the customData of a bubble, you have to fill a `Dictionary` with all your custom data and call `updateRoom:withCustomData:completionBlock:` method as following:
+
+-   [swift](#codegroupTab-hashTag25)
+-   [objective C](#codegroupTab-hashTag26)
+
+```swift
+ServicesManager.sharedInstance().roomsService.updateRoom(theRoom, withCustomData: ["data1":"...", "data2" : "..."]) {
+        error in
+        if let error = error as? NSError {
+            // Manage the error
+        } else {
+            // Continue the process           
+        }  
+    }
+```
+
+```objectivec
+[ServicesManager.sharedInstance.roomsService updateRoom:theRoom withCustomData: @{ @"data1" : @"...", @"data2" : @"..." } completionBlock: ^(NSError *error) {
+        if (error) {
+            // Manage the error
+        } else {
+            // Continue the process
+        }
+    }];
+```
+
+#### Get the custom data of a room
+
+The custom data is provided by the property `customData` of a `room` as follow:
+
+-   [swift](#codegroupTab-hashTag41)
+-   [objective C](#codegroupTab-hashTag42)
+
+```swift
+if let data = theRoom.customData {
+       ...     
+    }
+```
+
+```objectivec
+NSDictionary *data = theRoom.customData;
+```
+
+### Change room data
+
+To change the name and/or the subject of a bubble, just call the method `updateRoom:name:topic:block` as following:
+
+-   [swift](#codegroupTab-hashTag27)
+-   [objective C](#codegroupTab-hashTag28)
+
+```swift
+ServicesManager.sharedInstance().roomsService.updateRoom(theRoom, name: "Name", topic: "Topic")  {
+    error in
+        if let error = error as? NSError {
+            // Manage the error
+        } else {
+            // Continue the process           
+        }
+    }
+```
+
+```objectivec
+[ServicesManager.sharedInstance.roomsService updateRoom:theRoom name:@"Name" topic:@"Topic" block: ^(NSError *error) {
+        if (error) {
+            // Manage the error
+        } else {
+            // Continue the process
+        }
+    }];
+```
+
+### Manage the role of a participant
+
+As a moderator, you can promote someone to the moderator role or demote someone from this role.
+
+As the owner of a bubble, you can also change the owner by setting a moderator to this role.
+
+#### Promote someone to the moderator role
+
+-   [swift](#codegroupTab-hashTag29)
+-   [objective C](#codegroupTab-hashTag30)
+
+```swift
+let participant = ...
+    let privilege = ParticipantPrivilege.moderator
+    ServicesManager.sharedInstance().roomsService.update(participant, with: privilege, in: theRoom) {
+        error in
+        if let error = error as? NSError {
+            // Manage the error
+        } else {
+            // Continue the process           
+        }
+    }
+```
+
+```objectivec
+Participant *participant = ...;
+    ParticipantPrivilege privilege = ParticipantPrivilegeModerator;
+    [ServicesManager.sharedInstance.roomsService updateParticipant:participant withPrivilege:privilege inRoom:theRoom withCompletionBlock: ^(NSError *error) {
+        if (error) {
+            // Manage the error
+        } else {
+            // Continue the process
+        }
+    }];
+```
+
+#### Demote someone from the moderator role
+
+-   [swift](#codegroupTab-hashTag31)
+-   [objective C](#codegroupTab-hashTag32)
+
+```swift
+let participant = ...
+    let privilege = ParticipantPrivilege.user
+    ServicesManager.sharedInstance().roomsService.update(participant, with: privilege, in: theRoom) {
+        error in
+        if let error = error as? NSError {
+            // Manage the error
+        } else {
+            // Continue the process           
+        }
+    }
+```
+
+```objectivec
+Participant *participant = ...;
+    ParticipantPrivilege privilege = ParticipantPrivilegeUser;
+    [ServicesManager.sharedInstance.roomsService updateParticipant:participant withPrivilege:privilege inRoom:theRoom withCompletionBlock: ^(NSError *error) {
+        if (error) {
+            // Manage the error
+        } else {
+            // Continue the process
+        }
+    }];
+```
+
+#### Change the owner of a room
+
+The connected user has to be the owner of the room and the selected participant has to be a moderator.
+
+-   [swift](#codegroupTab-hashTag33)
+-   [objective C](#codegroupTab-hashTag34)
+
+```swift
+let participant = ...
+    ServicesManager.sharedInstance().roomsService.changeOwner(theRoom, with: participant) {
+    error in
+        if let error = error as? NSError {
+            // Manage the error
+        } else {
+            // Continue the process           
+        }
+    }
+```
+
+```objectivec
+Participant *participant = ...;
+    [ServicesManager.sharedInstance.roomsService changeOwner:theRoom withParticipant:participant completionHandler: ^(NSError *error) {
+        if (error) {
+            // Manage the error
+        } else {
+            // Continue the process
+        }
+    }];
+```
+
+### On this page
+
+-   [Managing rooms](/docs/sdk/ios#name-managing-rooms-0)
+-   [Creation, archiving and deletion](/docs/sdk/ios#name-creation-archiving-and-deletion-7)
+-   [Create a new room](/docs/sdk/ios#name-create-a-new-room-14)
+-   [Archive a room](/docs/sdk/ios#name-archive-a-room-29)
+-   [Delete a room](/docs/sdk/ios#name-delete-a-room-55)
+-   [Invitation](/docs/sdk/ios#name-invitation-66)
+-   [Invite a user in a room](/docs/sdk/ios#name-invite-a-user-in-a-room-72)
+-   [Remove a user from a room](/docs/sdk/ios#name-remove-a-user-from-a-room-79)
+-   [Accept an invitation to a room](/docs/sdk/ios#name-accept-an-invitation-to-a-room-89)
+-   [Decline an invitation to a room](/docs/sdk/ios#name-decline-an-invitation-to-a-room-96)
+-   [Discuss in a room](/docs/sdk/ios#name-discuss-in-a-room-103)
+-   [Listen to room updates](/docs/sdk/ios#name-listen-to-room-updates-113)
+-   [Manage custom data in a room](/docs/sdk/ios#name-manage-custom-data-in-a-room-199)
+-   [Update the customData of a room](/docs/sdk/ios#name-update-the-customdata-of-a-room-202)
+-   [Get the custom data of a room](/docs/sdk/ios#name-get-the-custom-data-of-a-room-209)
+-   [Change room data](/docs/sdk/ios#name-change-room-data-216)
+-   [Manage the role of a participant](/docs/sdk/ios#name-manage-the-role-of-a-participant-223)
+-   [Promote someone to the moderator role](/docs/sdk/ios#name-promote-someone-to-the-moderator-role-232)
+-   [Demote someone from the moderator role](/docs/sdk/ios#name-demote-someone-from-the-moderator-role-236)
+-   [Change the owner of a room](/docs/sdk/ios#name-change-the-owner-of-a-room-240)
+
+---
+
+Was this content helpful to you?YesNo
+
+Feedback

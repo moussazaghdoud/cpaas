@@ -3,16 +3,221 @@ title: "CPaaS SDK for business communication solutions | Rainbow"
 description: "Add chat, conference, real time collaboration and communication (PBX, VoIP, P2P) capabilities, bots and more to your business applications."
 type: "sdk"
 source: "https://developers.openrainbow.com/doc/sdk/web/lts/guides/Integrating_Angular_1x_applications"
-lastSynced: "2026-02-19T22:35:15.964Z"
+lastSynced: "2026-02-20T07:12:26.811Z"
 ---
 # Documentation
 
-Web > lts > guides > Integrating\_Angular\_1x\_applications
+Integrating Angular 1.x applications
 
-### Sur cette page
+LTS release 4.0.0Published on 2022-12-21
+
+## Integrating AngularJS 1.x applications
 
 ---
 
-Ce contenu vous a-t-il été utile ?OuiNon
+The SDK for Web is an AngularJS 1.x based library. Internally, JavaScript modules of the SDK are based on AngularJS Services, Models, etc...
+
+If your application is based on AngularJS 1.x too, this tutorial will describe how to integrate and use Rainbow Web SDK.
+
+If it's not the case either because your application is based on an other JavaScript framework or a more recent version of AngularJS, you have to read the guide [Integrating JS frameworks](doc/sdk/web/lts/guides/Integrating_JS_frameworks).
+
+### Preamble
+
+---
+
+To be able to use our Rainbow SDK for Web in an AngularJS 1.x application you will need to follow the steps below:
+
+-   Install Rainbow Web SDK NPM package
+    
+-   Load the SDK
+    
+-   Start the SDK
+    
+-   Initialize the SDK
+    
+-   Subscribe to events
+    
+-   Call methods
+    
+
+### Rainbow Knowledge
+
+---
+
+Here are some Rainbow wordings that will help you understanding this guide.
+
+Rainbow concept
+
+Details
+
+**SDK loader**
+
+The SDK Loader is an open-source library made by Alcatel-Lucent Enterprise. It helps loading the SDK for Web and all its dependencies in an AngularJS 1.x application.
+
+**Events**
+
+Events are asynchronous messages or notifications that come from Rainbow when something related to your data happens.  
+By listening to theses events, your application will be able to react and inform the user of these changes.
+
+**Methods**
+
+Methods are all the SDK functions your application can call to enable Rainbow services such as initiating a WebRTC call, sending a file, etc. In most of the cases, Methods are asynchronous and follow the JavaScript Promise pattern.
+
+### Rainbow SDK for Web installation
+
+---
+
+Open a shell console and execute the following command in your application directory (application root folder):
+
+```shell
+$ npm install rainbow-web-sdk --save
+```
+
+Then copy the files to a directory served by your Web server (e.g. `public/`).
+
+```shell
+$cp ./node_modules/rainbow-web-sdk/dist/vendors-sdk.min.js <your_folder>
+$cp ./node_modules/rainbow-web-sdk/dist/rainbow-sdk.min.js <your_folder>
+$cp ./node_modules/rainbow-web-sdk/dist/loader-sdk.min.js <your_folder>
+```
+
+### Loading Rainbow SDK for Web
+
+---
+
+In your **AngularJS** application, you can load SDK for Web by using our own loader. For more details, have a look to the guide [Loading AngularJS applications](doc/sdk/web/lts/guides/Loading_Angular_1x_applications)
+
+In your entry HTML file (e.g. index.html), add the following script at the end of your `<body>` tag. This will get the SDK for Web loader from the Rainbow official cloud and load your configuration file.
+
+```html
+<!-- Add the following lines to your 'index.html' file -->
+<html lang="en" ng-controller="sampleController">
+  <body>
+    ...
+    <script src="<path_to_your_file>/loader-sdk.min.js" data-main="./config.json"></script>
+    ...
+  </body>
+</html>
+```
+
+When the browser executes your HTML file, it will load your `config.json` file that has to be correctly filled.
+
+Once done, the SDK for Web, its dependencies and your application files that use the SDK will be loaded by the browser.
+
+### Starting the SDK
+
+---
+
+Using the **loader**, the SDK for Web is started automatically once the files have been loaded by the browser.
+
+From your application files (e.g. from your main controller), you can listen when this loading step is complete by adding these lines:
+
+```javascript
+/* In your controller file, add the following lines to depend on the SDK module */
+var sample = angular.module("sample", ["sdk"]);
+
+sample.controller("sampleController", [
+    "rainbowSDK",
+    function(sdk) {
+        "use strict";
+
+        var onLoaded = function onLoaded() {
+            // The SDK has been loaded successfully
+            console.log("[DEMO] :: Rainbow SDK has been loaded!");
+        };
+
+        // Listen when the SDK has been loaded successfully
+        $rootScope.$on(sdk.RAINBOW_ONLOADED, onLoaded);
+    }
+]);
+```
+
+### Initializing the SDK
+
+---
+
+Before you can call SDK methods, you need to initialize the SDK, by calling the method `initialize()` and listen to the `RAINBOW_ONREADY` event in order to be sure that the SDK has been started correctly.
+
+Simply add the following lines to your application:
+
+```javascript
+/* In your controller file, add the following lines to depend on the sdk module */
+var sample = angular.module("sample", ["sdk"]);
+
+sample.controller("sampleController", [
+    "rainbowSDK",
+    function(sdk) {
+        "use strict";
+
+        var onReady = function onReady() {
+            console.log("[DEMO] :: Rainbow SDK is ready!");
+        };
+
+        var onLoaded = function onLoaded() {
+            console.log("[DEMO] :: Rainbow SDK has been loaded!");
+
+            sdk.initialize()
+                .then(function() {
+                    console.log("[DEMO] :: Rainbow SDK is initialized!");
+                })
+                .catch(function() {
+                    console.log("[DEMO] :: Something went wrong with the SDK...");
+                });
+        };
+
+        $rootScope.$on(sdk.RAINBOW_ONREADY, onReady);
+
+        $rootScope.$on(sdk.RAINBOW_ONLOADED, onLoaded);
+    }
+]);
+```
+
+### Calling the SDK methods
+
+---
+
+Once your application has been loaded and initialized successfully, you can call Rainbow SDK methods by using the keyword `sdk` followed by a service name such as `contacts` or `bubbles` and a method like `getContactById()`.
+
+For example, you can initiate a webRTC call by using the method `sdk.webRTC.callInVideo(Contact)`.
+
+Most of the time, methods are asynchronous and return a JavaScript Promise.
+
+### Subscribing to SDK Events
+
+---
+
+As seen in the previous code sample, to subscribe to Rainbow events, you need to use the AngularJS method `$rootScope.$on()` with a Rainbow event name such as `sdk.RAINBOW_ONLOADED`. A JavaScript callback method will be called once the event is fired.
+
+Read Rainbow Web SDK API documentation for the complete list of events. Each Rainbow SDK for Web guide describes the required events to subscribe when doing a specific action (e.g. calling a contact, sending a file, etc.).
+
+### Related links
+
+---
+
+-   [Loading AngularJS applications](doc/sdk/web/lts/guides/Loading_Angular_Ax_applications)
+    
+-   [Supporting IE11](doc/sdk/web/lts/guides/Supporting_IE11)
+    
+
+---
+
+*Last updated January, 21th 2018*
+
+### On this page
+
+-   [Integrating AngularJS 1.x applications](/docs/sdk/web#name-integrating-angularjs-1.x-applications-0)
+-   [Preamble](/docs/sdk/web#name-preamble-13)
+-   [Rainbow Knowledge](/docs/sdk/web#name-rainbow-knowledge-52)
+-   [Rainbow SDK for Web installation](/docs/sdk/web#name-rainbow-sdk-for-web-installation-100)
+-   [Loading Rainbow SDK for Web](/docs/sdk/web#name-loading-rainbow-sdk-for-web-112)
+-   [Starting the SDK](/docs/sdk/web#name-starting-the-sdk-129)
+-   [Initializing the SDK](/docs/sdk/web#name-initializing-the-sdk-140)
+-   [Calling the SDK methods](/docs/sdk/web#name-calling-the-sdk-methods-151)
+-   [Subscribing to SDK Events](/docs/sdk/web#name-subscribing-to-sdk-events-164)
+-   [Related links](/docs/sdk/web#name-related-links-174)
+
+---
+
+Was this content helpful to you?YesNo
 
 Feedback
