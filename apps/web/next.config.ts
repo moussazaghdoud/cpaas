@@ -1,14 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  turbopack: {
-    root: ".",
-  },
   images: {
     formats: ["image/avif", "image/webp"],
   },
   async redirects() {
-    // Map old Rainbow developer portal URLs to new routes
     return [
       { source: "/doc/hub", destination: "/docs", permanent: true },
       { source: "/doc/sdk/node/:path*", destination: "/docs/sdk/node", permanent: true },
