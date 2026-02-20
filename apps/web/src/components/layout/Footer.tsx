@@ -9,7 +9,7 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 font-bold text-lg">
-              <span className="inline-block h-6 w-6 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500" />
+              <img src="/rainbow-logo.png" alt="Rainbow" className="h-6 w-6" />
               <span>{SITE_NAME}</span>
             </Link>
             <p className="mt-3 text-sm text-muted-foreground leading-relaxed">

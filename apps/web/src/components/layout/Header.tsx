@@ -19,9 +19,12 @@ export function Header() {
       <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 font-bold text-lg tracking-tight">
-            <span className="inline-block h-7 w-7 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500" />
-            <span>{SITE_NAME}</span>
+          <Link href="/" className="flex items-center gap-2.5 font-bold tracking-tight">
+            <img src="/rainbow-logo.png" alt="Rainbow" className="h-8 w-8" />
+            <span className="leading-tight text-sm">
+              <span className="block text-base font-bold">Rainbow</span>
+              <span className="block text-[11px] font-medium text-muted-foreground">For Developers</span>
+            </span>
           </Link>
 
           {/* Desktop nav */}

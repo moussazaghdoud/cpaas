@@ -1,4 +1,4 @@
-export const SITE_NAME = "Rainbow CPaaS";
+export const SITE_NAME = "Rainbow";
 export const SITE_DESCRIPTION =
   "Add communications to your apps with Rainbow CPaaS. Messaging, voice, video conferencing, and more through simple APIs and SDKs.";
 export const SITE_URL = "https://developers.rainbow.com";

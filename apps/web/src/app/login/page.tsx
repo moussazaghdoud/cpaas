@@ -43,7 +43,7 @@ function LoginForm() {
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
-          <div className="mx-auto mb-4 h-10 w-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500" />
+          <img src="/rainbow-logo.png" alt="Rainbow" className="mx-auto mb-4 h-10 w-10" />
           <h1 className="text-2xl font-bold">Sign in to {SITE_NAME}</h1>
           <p className="mt-2 text-sm text-muted-foreground">
             Access your developer portal
