@@ -44,15 +44,9 @@ export async function POST(req: NextRequest) {
     );
 
     if (!res.ok) {
-      const text = await res.text();
-      let body: Record<string, string> = {};
-      try { body = JSON.parse(text); } catch {}
+      const body = await res.json().catch(() => ({}));
       return NextResponse.json(
-        {
-          error: body.errorMsg || `Login failed (${res.status})`,
-          detail: body.errorDetails || "",
-          code: body.errorDetailsCode || null,
-        },
+        { error: body.errorMsg || "Invalid credentials" },
         { status: res.status }
       );
     }
