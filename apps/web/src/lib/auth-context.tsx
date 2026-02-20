@@ -70,10 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      const debugInfo = data.debug
-        ? `\n${data.debug.status} → ${data.debug.url}\n${data.debug.response}`
-        : "";
-      throw new Error((data.error || "Login failed") + debugInfo);
+      throw new Error(data.error || "Login failed");
     }
     const data = await res.json();
     setUser(data.user);

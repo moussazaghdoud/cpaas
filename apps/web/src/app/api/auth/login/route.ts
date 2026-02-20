@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createHash } from "crypto";
 import { getRainbowApiUrl } from "@/lib/rainbow-api";
 
 export async function POST(req: NextRequest) {
@@ -12,7 +13,21 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const appId = process.env.RAINBOW_APP_ID;
+    const appSecret = process.env.RAINBOW_APP_SECRET;
+
+    if (!appId || !appSecret) {
+      return NextResponse.json(
+        { error: "Portal not configured: missing RAINBOW_APP_ID or RAINBOW_APP_SECRET" },
+        { status: 503 }
+      );
+    }
+
     const basicAuth = Buffer.from(`${email}:${password}`).toString("base64");
+    const hash = createHash("sha256")
+      .update(appSecret + password)
+      .digest("hex");
+    const appAuth = Buffer.from(`${appId}:${hash}`).toString("base64");
     const apiUrl = getRainbowApiUrl();
 
     const res = await fetch(
@@ -22,21 +37,16 @@ export async function POST(req: NextRequest) {
         headers: {
           accept: "application/json",
           authorization: `Basic ${basicAuth}`,
+          "x-rainbow-app-auth": `Basic ${appAuth}`,
         },
         cache: "no-store",
       }
     );
 
     if (!res.ok) {
-      const text = await res.text();
-      let body: Record<string, string> = {};
-      try { body = JSON.parse(text); } catch {}
-      console.error("Rainbow login failed:", res.status, text);
+      const body = await res.json().catch(() => ({}));
       return NextResponse.json(
-        {
-          error: body.errorMsg || body.errorDetails || `Login failed (${res.status})`,
-          debug: { status: res.status, url: `${apiUrl}/api/rainbow/authentication/v1.0/login`, response: text.slice(0, 500) },
-        },
+        { error: body.errorMsg || body.errorDetails || `Login failed (${res.status})` },
         { status: res.status }
       );
     }
