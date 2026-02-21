@@ -1,2 +1,10 @@
 [phases.setup]
 nixPkgs = ["nodejs_20", "npm-9_x"]
+
+[phases.install]
+# Skip root npm install — only apps/web is needed for production
+cmds = ["echo 'Skipping root install — handled by buildCommand'"]
+
+[variables]
+# Prevent Playwright from downloading browsers if accidentally installed
+PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1"
