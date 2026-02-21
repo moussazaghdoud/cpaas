@@ -7,12 +7,12 @@ export async function GET() {
   const cookieStore = await cookies();
   const token = cookieStore.get("rainbow_token")?.value;
   if (!token) {
-    return NextResponse.json({ admin: false });
+    return NextResponse.json({ admin: false, reason: "no_token" });
   }
 
   const allowed = process.env.CMS_ADMIN_EMAILS;
   if (!allowed) {
-    return NextResponse.json({ admin: false });
+    return NextResponse.json({ admin: false, reason: "no_env_var" });
   }
 
   const apiUrl = getRainbowApiUrl();
@@ -22,7 +22,7 @@ export async function GET() {
   });
 
   if (!res.ok) {
-    return NextResponse.json({ admin: false });
+    return NextResponse.json({ admin: false, reason: "rainbow_api_error", status: res.status });
   }
 
   const raw = await res.json();
@@ -30,5 +30,5 @@ export async function GET() {
   const email = (user.loginEmail || "").toLowerCase();
   const list = allowed.split(",").map((e) => e.trim().toLowerCase());
 
-  return NextResponse.json({ admin: list.includes(email) });
+  return NextResponse.json({ admin: list.includes(email), email, allowedList: list });
 }
