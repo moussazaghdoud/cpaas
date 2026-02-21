@@ -5,12 +5,10 @@ import { SDK_LIST } from "@/lib/constants";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { listContentPages } from "@/lib/content";
 
+export const dynamic = "force-dynamic";
+
 interface Props {
   params: Promise<{ slug: string }>;
-}
-
-export async function generateStaticParams() {
-  return SDK_LIST.map((sdk) => ({ slug: sdk.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

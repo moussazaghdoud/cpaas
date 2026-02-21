@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
   saveContentPage(slug, { title, description, type, source: "cms" }, content || "");
 
   // Invalidate search index
-  const { invalidateSearchIndex } = await import("@/app/api/search/route");
+  const { invalidateSearchIndex } = await import("@/lib/search-cache");
   invalidateSearchIndex();
 
   return NextResponse.json({ ok: true, slug }, { status: 201 });

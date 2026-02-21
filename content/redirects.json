@@ -1965,11 +1965,6 @@
     "permanent": true
   },
   {
-    "source": "/doc/sdk/node/lts/guides/Managing_conferences",
-    "destination": "/docs/sdk/node",
-    "permanent": true
-  },
-  {
     "source": "/doc/sdk/node/lts/guides/Managing_contacts",
     "destination": "/docs/sdk/node",
     "permanent": true
@@ -2286,6 +2281,51 @@
   },
   {
     "source": "/doc/sdk/web/lts/guides/CHANGELOG",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/CurrentCallServices",
+    "destination": "/docs/sdk/reactnative/tutorials/CurrentCallServices",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/bubbles",
+    "destination": "/docs/sdk/reactnative/tutorials/bubbles",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/enable_push_notifications",
+    "destination": "/docs/sdk/reactnative/tutorials/enable_push_notifications",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/p2p_calls",
+    "destination": "/docs/sdk/reactnative/tutorials/p2p_calls",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/reactnative/tutorials/presence",
+    "destination": "/docs/sdk/reactnative/tutorials/presence",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/core/conversations/conversations",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/migration/migration",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/webv2/lts/guides/plugins/bubbles/bubbles",
+    "destination": "/docs/sdk/web",
+    "permanent": true
+  },
+  {
+    "source": "/doc/sdk/web/lts/guides/Loading_Angular_Ax_applications",
     "destination": "/docs/sdk/web",
     "permanent": true
   }

@@ -91,7 +91,7 @@ export async function PUT(request: NextRequest, ctx: RouteContext) {
   saveContentPage(slug, { title, description, type, source: existing.meta.source }, content);
 
   // Invalidate search index
-  const { invalidateSearchIndex } = await import("@/app/api/search/route");
+  const { invalidateSearchIndex } = await import("@/lib/search-cache");
   invalidateSearchIndex();
 
   return NextResponse.json({ ok: true, slug });
@@ -111,7 +111,7 @@ export async function DELETE(_request: NextRequest, ctx: RouteContext) {
   }
 
   // Invalidate search index
-  const { invalidateSearchIndex } = await import("@/app/api/search/route");
+  const { invalidateSearchIndex } = await import("@/lib/search-cache");
   invalidateSearchIndex();
 
   return NextResponse.json({ ok: true });

@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
+  // Point to the monorepo root so Next.js resolves lockfiles correctly
+  outputFileTracingRoot: path.resolve(__dirname, "../.."),
   images: {
     formats: ["image/avif", "image/webp"],
   },

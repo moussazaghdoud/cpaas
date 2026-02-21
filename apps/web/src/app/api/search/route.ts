@@ -2,13 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import MiniSearch from "minisearch";
 import * as fs from "fs";
 import * as path from "path";
-
-let searchIndex: MiniSearch | null = null;
-
-/** Invalidate the cached search index (called by CMS on save/delete) */
-export function invalidateSearchIndex() {
-  searchIndex = null;
-}
+import { getSearchCache, setSearchCache } from "@/lib/search-cache";
 
 interface SearchDoc {
   id: string;
@@ -20,7 +14,8 @@ interface SearchDoc {
 }
 
 function getSearchIndex(): MiniSearch {
-  if (searchIndex) return searchIndex;
+  const cached = getSearchCache();
+  if (cached) return cached as MiniSearch;
 
   const index = new MiniSearch<SearchDoc>({
     fields: ["title", "content", "excerpt"],
@@ -44,8 +39,8 @@ function getSearchIndex(): MiniSearch {
       const docs: SearchDoc[] = JSON.parse(fs.readFileSync(docsPath, "utf-8"));
       if (docs.length > 0) {
         index.addAll(docs);
-        searchIndex = index;
-        return searchIndex;
+        setSearchCache(index);
+        return index;
       }
     } catch {
       // Fall through to built-in pages
@@ -71,8 +66,8 @@ function getSearchIndex(): MiniSearch {
   ];
 
   index.addAll(staticPages);
-  searchIndex = index;
-  return searchIndex;
+  setSearchCache(index);
+  return index;
 }
 
 export async function GET(request: NextRequest) {

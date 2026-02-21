@@ -1,57 +1,17 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { listContentPages, getContentPage } from "@/lib/content";
+import { getContentPage } from "@/lib/content";
 import { markdownToHtml } from "@/lib/markdown";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { TableOfContents } from "@/components/docs/TableOfContents";
 import { CmsEditButton } from "@/components/docs/CmsEditButton";
 
-// Enable dynamic rendering so edits via CMS appear immediately
-export const dynamicParams = true;
-export const revalidate = 0;
+// Force dynamic rendering — avoids pre-rendering 500+ pages at build time
+// and ensures CMS edits appear immediately
+export const dynamic = "force-dynamic";
 
 interface Props {
   params: Promise<{ slug: string[] }>;
-}
-
-// Exact paths that have dedicated route files — exclude from catch-all
-const EXCLUDED_EXACT = new Set([
-  "getting-started",
-  "guides",
-  "faq",
-  "sdk",            // /docs/sdk has its own page.tsx
-  "sdk/node",       // /docs/sdk/[slug] handles these
-  "sdk/web",
-  "sdk/webv2",
-  "sdk/android",
-  "sdk/ios",
-  "sdk/csharp",
-  "sdk/reactnative",
-  "sdk/cli",
-  "sdk/s2s-starterkit-nodejs",
-]);
-
-export async function generateStaticParams() {
-  try {
-    const pages = listContentPages();
-    return pages
-      .filter((p) => {
-        if (!p.slug.startsWith("doc/")) return false;
-        const rest = p.slug.replace(/^doc\//, "");
-        // Exclude bare "doc" pages that would conflict with /docs
-        if (!rest || rest === "") return false;
-        // Exclude only exact paths with dedicated pages (not subtrees)
-        if (EXCLUDED_EXACT.has(rest)) return false;
-        return true;
-      })
-      .map((p) => {
-        const parts = p.slug.replace(/^doc\//, "").split("/");
-        return { slug: parts };
-      });
-  } catch (e) {
-    console.error("generateStaticParams error:", e);
-    return [];
-  }
 }
 
 function slugToContentKey(slugParts: string[]): string {

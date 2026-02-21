@@ -4,12 +4,10 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { EndpointCard } from "@/components/ui/EndpointCard";
 import { getApiPortal, getAllPortals } from "@/lib/api-data";
 
+export const dynamic = "force-dynamic";
+
 interface Props {
   params: Promise<{ slug: string }>;
-}
-
-export async function generateStaticParams() {
-  return getAllPortals().map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
