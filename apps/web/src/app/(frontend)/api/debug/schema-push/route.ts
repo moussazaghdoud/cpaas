@@ -122,12 +122,83 @@ export async function GET(request: Request) {
       });
     }
 
+    if (action === "raw-create-all") {
+      const { getTableConfig } = await import("drizzle-orm/pg-core");
+      const schema = db.schema;
+      const results: string[] = [];
+
+      // Collect all tables
+      const tables: { name: string; config: any }[] = [];
+      for (const [key, val] of Object.entries(schema)) {
+        try {
+          const config = getTableConfig(val as any);
+          if (config?.name) tables.push({ name: config.name, config });
+        } catch { /* not a table */ }
+      }
+
+      // Sort: tables without foreign keys first
+      const withFk = tables.filter((t) => t.config.foreignKeys?.length > 0);
+      const withoutFk = tables.filter((t) => !t.config.foreignKeys?.length);
+      const sorted = [...withoutFk, ...withFk];
+
+      for (const { name, config } of sorted) {
+        const cols = config.columns.map((c: any) => {
+          let def = `"${c.name}" ${c.getSQLType()}`;
+          if (c.primary) def += " PRIMARY KEY";
+          if (c.notNull && !c.primary) def += " NOT NULL";
+          if (c.hasDefault && c.default !== undefined) {
+            const d = c.defaultFn ? null : c.default;
+            if (d !== null && d !== undefined) {
+              if (typeof d === "string") def += ` DEFAULT '${d}'`;
+              else if (typeof d === "boolean") def += ` DEFAULT ${d}`;
+              else def += ` DEFAULT ${d}`;
+            }
+          }
+          return def;
+        });
+
+        const sql = `CREATE TABLE IF NOT EXISTS "${name}" (${cols.join(", ")})`;
+        try {
+          await drizzle.execute(sql);
+          results.push(`OK: ${name}`);
+        } catch (err: any) {
+          results.push(`ERR: ${name} — ${err?.message?.substring(0, 100)}`);
+        }
+      }
+
+      // Create indexes
+      for (const { name, config } of sorted) {
+        if (config.indexes) {
+          for (const idx of config.indexes) {
+            try {
+              const idxName = idx.config?.name || `${name}_idx`;
+              const idxCols = idx.config?.columns?.map((c: any) => `"${c.name}"`).join(", ");
+              if (idxCols) {
+                const unique = idx.config?.unique ? "UNIQUE " : "";
+                await drizzle.execute(`CREATE ${unique}INDEX IF NOT EXISTS "${idxName}" ON "${name}" (${idxCols})`);
+              }
+            } catch { /* index already exists or failed */ }
+          }
+        }
+      }
+
+      const finalTables = await drizzle.execute(
+        `SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name`
+      );
+      return NextResponse.json({
+        message: "raw-create-all completed",
+        results,
+        tables: (finalTables.rows || finalTables).map((r: any) => r.table_name),
+        tableCount: (finalTables.rows || finalTables).length,
+      });
+    }
+
     // Default status
     const tables = await drizzle.execute(
       `SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name`
     );
     return NextResponse.json({
-      availableActions: ["?action=create-enums-and-tables"],
+      availableActions: ["?action=create-enums-and-tables", "?action=raw-create-all"],
       existingTables: (tables.rows || tables).map((r: any) => r.table_name),
       tableCount: (tables.rows || tables).length,
     });
