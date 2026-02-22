@@ -10,89 +10,162 @@ export async function GET(request: Request) {
     const db = payload.db as any;
 
     if (action === "inspect") {
-      const schemaKeys = db.schema ? Object.keys(db.schema).slice(0, 50) : [];
-      const tableKeys = db.tables ? Object.keys(db.tables).slice(0, 50) : [];
-      return NextResponse.json({
-        schemaKeys,
-        tableKeys,
-        pushOption: db.push,
-        prodMode: process.env.NODE_ENV,
-        payloadSecret: !!process.env.PAYLOAD_SECRET,
-        dbUri: process.env.DATABASE_URI?.substring(0, 25) + "...",
-      });
-    }
-
-    if (action === "create-tables") {
-      // Call init + connect to trigger table creation
-      if (typeof db.init === "function") await db.init();
-      if (typeof db.connect === "function") await db.connect(payload);
-      const tables = await db.drizzle.execute(
-        `SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name`
-      );
-      return NextResponse.json({
-        message: "init + connect completed",
-        tables: (tables.rows || tables).map((r: any) => r.table_name),
-      });
-    }
-
-    if (action === "require-drizzle-kit") {
-      // Try Payload's internal drizzle-kit push mechanism
-      try {
-        if (typeof db.requireDrizzleKit === "function") {
-          const kit = await db.requireDrizzleKit();
-          return NextResponse.json({
-            message: "requireDrizzleKit() returned",
-            kitType: typeof kit,
-            kitKeys: kit ? Object.keys(kit).slice(0, 20) : [],
-          });
+      // Show all table names from Payload's internal schema
+      const schemaKeys = db.schema ? Object.keys(db.schema) : [];
+      // Get the Drizzle table objects
+      const tableNames: string[] = [];
+      if (db.schema) {
+        for (const [key, val] of Object.entries(db.schema)) {
+          if (val && typeof val === "object" && (val as any)[Symbol.for("drizzle:Name")]) {
+            tableNames.push((val as any)[Symbol.for("drizzle:Name")]);
+          }
         }
-        return NextResponse.json({ message: "requireDrizzleKit not available" });
+      }
+      return NextResponse.json({ schemaKeys, tableNames });
+    }
+
+    if (action === "auto-create") {
+      // Extract all table definitions from Payload's Drizzle schema and create them
+      const drizzle = db.drizzle;
+      const schema = db.schema;
+
+      if (!schema) {
+        return NextResponse.json({ error: "No schema found on db adapter" });
+      }
+
+      // Get all SQL from drizzle schema by introspecting table objects
+      // First, let's get all table names Payload expects
+      const expectedTables: string[] = [];
+      const tableObjects: any[] = [];
+
+      for (const [key, val] of Object.entries(schema)) {
+        if (val && typeof val === "object") {
+          const name = (val as any)[Symbol.for("drizzle:Name")];
+          if (name && typeof name === "string") {
+            expectedTables.push(name);
+            tableObjects.push({ key, name, obj: val });
+          }
+        }
+      }
+
+      // Get existing tables
+      const existing = await drizzle.execute(
+        `SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'`
+      );
+      const existingNames = new Set((existing.rows || existing).map((r: any) => r.table_name));
+      const missing = expectedTables.filter((t) => !existingNames.has(t));
+
+      return NextResponse.json({
+        expectedTables: expectedTables.sort(),
+        existingTables: [...existingNames].sort(),
+        missingTables: missing.sort(),
+        hint: "Use ?action=raw-create-all to create missing tables, or check the schema keys with ?action=schema-sql",
+      });
+    }
+
+    if (action === "schema-sql") {
+      // Try to generate DDL SQL from the Drizzle schema
+      try {
+        const { getTableConfig } = await import("drizzle-orm/pg-core");
+        const schema = db.schema;
+        const tableInfos: any[] = [];
+
+        for (const [key, val] of Object.entries(schema)) {
+          try {
+            const config = getTableConfig(val as any);
+            if (config?.name) {
+              tableInfos.push({
+                name: config.name,
+                columns: config.columns.map((c: any) => ({
+                  name: c.name,
+                  type: c.getSQLType(),
+                  notNull: c.notNull,
+                  hasDefault: c.hasDefault,
+                  primaryKey: c.primary,
+                })),
+              });
+            }
+          } catch {
+            // Not a table
+          }
+        }
+        return NextResponse.json({ tables: tableInfos });
       } catch (err: any) {
         return NextResponse.json({ error: err?.message });
       }
     }
 
-    if (action === "raw-create") {
-      // Create core tables with raw SQL as last resort
+    if (action === "raw-create-all") {
+      // Generate and execute CREATE TABLE statements from Drizzle schema
+      const { getTableConfig } = await import("drizzle-orm/pg-core");
+      const schema = db.schema;
       const drizzle = db.drizzle;
-      const statements = [
-        `CREATE TABLE IF NOT EXISTS "payload_migrations" ("id" serial PRIMARY KEY, "name" varchar, "batch" numeric, "created_at" timestamp DEFAULT now(), "updated_at" timestamp DEFAULT now())`,
-        `CREATE TABLE IF NOT EXISTS "users" ("id" serial PRIMARY KEY, "name" varchar, "role" varchar DEFAULT 'editor', "updated_at" timestamp DEFAULT now() NOT NULL, "created_at" timestamp DEFAULT now() NOT NULL, "email" varchar NOT NULL, "reset_password_token" varchar, "reset_password_expiration" timestamp, "salt" varchar, "hash" varchar, "login_attempts" numeric DEFAULT 0, "lock_until" timestamp)`,
-        `CREATE UNIQUE INDEX IF NOT EXISTS "users_email_idx" ON "users" USING btree ("email")`,
-        `CREATE TABLE IF NOT EXISTS "media" ("id" serial PRIMARY KEY, "alt" varchar, "caption" varchar, "updated_at" timestamp DEFAULT now() NOT NULL, "created_at" timestamp DEFAULT now() NOT NULL, "url" varchar, "thumbnail_u_r_l" varchar, "filename" varchar, "mime_type" varchar, "filesize" numeric, "width" numeric, "height" numeric)`,
-        `CREATE UNIQUE INDEX IF NOT EXISTS "media_filename_idx" ON "media" USING btree ("filename")`,
-        `CREATE TABLE IF NOT EXISTS "pages" ("id" serial PRIMARY KEY, "title" varchar NOT NULL, "slug" varchar NOT NULL, "description" varchar, "type" varchar DEFAULT 'docs', "markdown_content" text, "source" varchar, "last_synced" varchar, "meta_title" varchar, "meta_description" varchar, "meta_image_id" integer, "updated_at" timestamp DEFAULT now() NOT NULL, "created_at" timestamp DEFAULT now() NOT NULL, "_status" varchar DEFAULT 'published')`,
-        `CREATE UNIQUE INDEX IF NOT EXISTS "pages_slug_idx" ON "pages" USING btree ("slug")`,
-        `CREATE TABLE IF NOT EXISTS "faqs" ("id" serial PRIMARY KEY, "question" varchar NOT NULL, "answer" text NOT NULL, "category" varchar DEFAULT 'general', "updated_at" timestamp DEFAULT now() NOT NULL, "created_at" timestamp DEFAULT now() NOT NULL)`,
-        `CREATE TABLE IF NOT EXISTS "sdks" ("id" serial PRIMARY KEY, "name" varchar NOT NULL, "slug" varchar NOT NULL, "language" varchar, "repo_url" varchar, "version" varchar, "description" text, "updated_at" timestamp DEFAULT now() NOT NULL, "created_at" timestamp DEFAULT now() NOT NULL)`,
-        `CREATE UNIQUE INDEX IF NOT EXISTS "sdks_slug_idx" ON "sdks" USING btree ("slug")`,
-        `CREATE TABLE IF NOT EXISTS "navigation" ("id" serial PRIMARY KEY, "updated_at" timestamp, "created_at" timestamp)`,
-        `CREATE TABLE IF NOT EXISTS "navigation_items" ("_order" integer NOT NULL, "_parent_id" integer NOT NULL REFERENCES "navigation"("id") ON DELETE cascade, "id" varchar PRIMARY KEY NOT NULL, "label" varchar, "url" varchar)`,
-        `CREATE TABLE IF NOT EXISTS "navigation_items_children" ("_order" integer NOT NULL, "_parent_id" varchar NOT NULL REFERENCES "navigation_items"("id") ON DELETE cascade, "id" varchar PRIMARY KEY NOT NULL, "label" varchar, "url" varchar)`,
-        `CREATE TABLE IF NOT EXISTS "footer" ("id" serial PRIMARY KEY, "updated_at" timestamp, "created_at" timestamp)`,
-        `CREATE TABLE IF NOT EXISTS "footer_sections" ("_order" integer NOT NULL, "_parent_id" integer NOT NULL REFERENCES "footer"("id") ON DELETE cascade, "id" varchar PRIMARY KEY NOT NULL, "title" varchar)`,
-        `CREATE TABLE IF NOT EXISTS "footer_sections_links" ("_order" integer NOT NULL, "_parent_id" varchar NOT NULL REFERENCES "footer_sections"("id") ON DELETE cascade, "id" varchar PRIMARY KEY NOT NULL, "label" varchar, "url" varchar, "external" boolean DEFAULT false)`,
-        `CREATE TABLE IF NOT EXISTS "homepage" ("id" serial PRIMARY KEY, "updated_at" timestamp, "created_at" timestamp)`,
-        `CREATE TABLE IF NOT EXISTS "site_config" ("id" serial PRIMARY KEY, "site_name" varchar, "site_url" varchar, "description" varchar, "updated_at" timestamp, "created_at" timestamp)`,
-      ];
-
       const results: string[] = [];
-      for (const stmt of statements) {
+
+      // Collect all tables with their configs
+      const tables: { name: string; config: any }[] = [];
+      for (const [key, val] of Object.entries(schema)) {
         try {
-          await drizzle.execute(stmt);
-          results.push("OK: " + stmt.substring(0, 60));
-        } catch (err: any) {
-          results.push("ERR: " + stmt.substring(0, 60) + " — " + err?.message);
+          const config = getTableConfig(val as any);
+          if (config?.name) tables.push({ name: config.name, config });
+        } catch {
+          // Not a table
         }
       }
 
-      const tables = await drizzle.execute(
+      // Sort: tables without foreign keys first
+      const withFk = tables.filter((t) => t.config.foreignKeys?.length > 0);
+      const withoutFk = tables.filter((t) => !t.config.foreignKeys?.length);
+      const sorted = [...withoutFk, ...withFk];
+
+      for (const { name, config } of sorted) {
+        const cols = config.columns.map((c: any) => {
+          let def = `"${c.name}" ${c.getSQLType()}`;
+          if (c.primary) def += " PRIMARY KEY";
+          if (c.notNull && !c.primary) def += " NOT NULL";
+          if (c.hasDefault && c.default !== undefined) {
+            const d = c.defaultFn ? null : c.default;
+            if (d !== null && d !== undefined) def += ` DEFAULT ${typeof d === "string" ? `'${d}'` : d}`;
+          }
+          return def;
+        });
+
+        const sql = `CREATE TABLE IF NOT EXISTS "${name}" (${cols.join(", ")})`;
+        try {
+          await drizzle.execute(sql);
+          results.push(`OK: ${name}`);
+        } catch (err: any) {
+          results.push(`ERR: ${name} — ${err?.message?.substring(0, 100)}`);
+        }
+      }
+
+      // Create indexes
+      for (const { name, config } of sorted) {
+        if (config.indexes) {
+          for (const idx of config.indexes) {
+            try {
+              const idxName = idx.config?.name || `${name}_idx`;
+              const idxCols = idx.config?.columns?.map((c: any) => `"${c.name}"`).join(", ");
+              if (idxCols) {
+                const unique = idx.config?.unique ? "UNIQUE " : "";
+                const idxSql = `CREATE ${unique}INDEX IF NOT EXISTS "${idxName}" ON "${name}" (${idxCols})`;
+                await drizzle.execute(idxSql);
+                results.push(`IDX OK: ${idxName}`);
+              }
+            } catch (err: any) {
+              results.push(`IDX ERR: ${err?.message?.substring(0, 80)}`);
+            }
+          }
+        }
+      }
+
+      const finalTables = await drizzle.execute(
         `SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name`
       );
       return NextResponse.json({
-        message: "raw-create completed",
+        message: "raw-create-all completed",
         results,
-        tables: (tables.rows || tables).map((r: any) => r.table_name),
+        tables: (finalTables.rows || finalTables).map((r: any) => r.table_name),
       });
     }
 
@@ -101,7 +174,12 @@ export async function GET(request: Request) {
       `SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name`
     );
     return NextResponse.json({
-      availableActions: ["?action=inspect", "?action=create-tables", "?action=require-drizzle-kit", "?action=raw-create"],
+      availableActions: [
+        "?action=inspect",
+        "?action=auto-create",
+        "?action=schema-sql",
+        "?action=raw-create-all",
+      ],
       existingTables: (tables.rows || tables).map((r: any) => r.table_name),
     });
   } catch (err: any) {
