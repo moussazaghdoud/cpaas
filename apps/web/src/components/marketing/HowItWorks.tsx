@@ -1,6 +1,14 @@
 import Link from "next/link";
 
-const STEPS = [
+interface HowItWorksData {
+  heading?: string;
+  subheading?: string;
+  steps?: Array<{ title: string; description: string; icon?: string }>;
+  ctaLabel?: string;
+  ctaUrl?: string;
+}
+
+const DEFAULT_STEPS = [
   {
     step: "01",
     title: "Create your application",
@@ -21,24 +29,34 @@ const STEPS = [
   },
 ];
 
-export function HowItWorks() {
+export function HowItWorks({ data }: { data?: Record<string, unknown> }) {
+  const d = (data || {}) as HowItWorksData;
+  const heading = d.heading || "Get started in minutes";
+  const subheading = d.subheading || "Three simple steps to add communications to your application.";
+  const ctaLabel = d.ctaLabel || "Start the setup wizard";
+  const ctaUrl = d.ctaUrl || "/get-started";
+
+  const steps = d.steps
+    ? d.steps.map((s, i) => ({ step: String(i + 1).padStart(2, "0"), ...s }))
+    : DEFAULT_STEPS;
+
   return (
     <section className="py-20 sm:py-28 border-t border-border">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-            Get started in minutes
+            {heading}
           </h2>
           <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-            Three simple steps to add communications to your application.
+            {subheading}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-          {STEPS.map((step, i) => (
+          {steps.map((step, i) => (
             <div key={step.step} className="relative text-center md:text-left">
               {/* Connector line */}
-              {i < STEPS.length - 1 && (
+              {i < steps.length - 1 && (
                 <div className="hidden md:block absolute top-6 left-[calc(50%+40px)] right-[calc(-50%+40px)] h-px bg-border" />
               )}
               <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-accent/10 text-accent font-bold text-sm mb-4 mx-auto md:mx-0">
@@ -54,10 +72,10 @@ export function HowItWorks() {
 
         <div className="mt-12 text-center">
           <Link
-            href="/get-started"
+            href={ctaUrl}
             className="inline-flex items-center px-6 py-3 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
-            Start the setup wizard
+            {ctaLabel}
             <svg className="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>

@@ -8,7 +8,7 @@ import { markdownToHtml } from "@/lib/markdown";
 export default function ContentEditorPage() {
   const params = useParams();
   const router = useRouter();
-  const rawSlug = params.slug as string;
+  const rawSlug = (params?.slug as string) || "";
   const slug = decodeURIComponent(rawSlug).replace(/~/g, "/");
 
   const [title, setTitle] = useState("");

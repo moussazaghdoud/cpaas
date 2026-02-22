@@ -2,17 +2,45 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NAV_ITEMS, SITE_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { SearchModal } from "@/components/ui/SearchModal";
 import { useAuth } from "@/lib/auth-context";
 
+interface NavItem {
+  label: string;
+  url?: string;
+  href?: string;
+}
+
 export function Header() {
-  const pathname = usePathname();
+  const pathname = usePathname() || "";
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const { user, loading } = useAuth();
+  const [navItems, setNavItems] = useState<NavItem[]>(
+    NAV_ITEMS.map((item) => ({ label: item.label, href: item.href }))
+  );
+
+  // Try to fetch navigation from CMS on mount
+  useEffect(() => {
+    fetch("/api/payload/globals/navigation")
+      .then((res) => {
+        if (res.ok) return res.json();
+        throw new Error("not available");
+      })
+      .then((data) => {
+        if (data?.items && Array.isArray(data.items) && data.items.length > 0) {
+          setNavItems(data.items);
+        }
+      })
+      .catch(() => {
+        // CMS not available — keep constants fallback
+      });
+  }, []);
+
+  const getHref = (item: NavItem) => item.url || item.href || "/";
 
   return (
     <>
@@ -29,13 +57,13 @@ export function Header() {
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-1">
-            {NAV_ITEMS.map((item) => (
+            {navItems.map((item) => (
               <Link
-                key={item.href}
-                href={item.href}
+                key={getHref(item)}
+                href={getHref(item)}
                 className={cn(
                   "px-3 py-2 text-sm font-medium rounded-md transition-colors",
-                  pathname.startsWith(item.href)
+                  pathname.startsWith(getHref(item))
                     ? "text-foreground bg-muted"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                 )}
@@ -99,14 +127,14 @@ export function Header() {
         {mobileOpen && (
           <div className="md:hidden border-t border-border bg-background">
             <nav className="flex flex-col p-4 gap-1">
-              {NAV_ITEMS.map((item) => (
+              {navItems.map((item) => (
                 <Link
-                  key={item.href}
-                  href={item.href}
+                  key={getHref(item)}
+                  href={getHref(item)}
                   onClick={() => setMobileOpen(false)}
                   className={cn(
                     "px-3 py-2 text-sm font-medium rounded-md transition-colors",
-                    pathname.startsWith(item.href)
+                    pathname.startsWith(getHref(item))
                       ? "text-foreground bg-muted"
                       : "text-muted-foreground hover:text-foreground"
                   )}

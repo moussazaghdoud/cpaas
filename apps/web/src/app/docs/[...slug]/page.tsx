@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getContentPage } from "@/lib/content";
+import { getContentPageAsync, getContentPage } from "@/lib/content";
 import { markdownToHtml } from "@/lib/markdown";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { TableOfContents } from "@/components/docs/TableOfContents";
@@ -47,7 +47,9 @@ function buildBreadcrumbs(slugParts: string[]) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const key = slugToContentKey(slug);
-  const page = getContentPage(key);
+
+  // Try async (Payload first, then file fallback)
+  const page = await getContentPageAsync(key);
 
   if (!page) return { title: "Documentation" };
 
@@ -60,7 +62,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function DynamicDocsPage({ params }: Props) {
   const { slug } = await params;
   const key = slugToContentKey(slug);
-  const page = getContentPage(key);
+
+  // Dual-read: try Payload CMS first, then fall back to MDX files
+  const page = await getContentPageAsync(key);
 
   if (!page) {
     notFound();

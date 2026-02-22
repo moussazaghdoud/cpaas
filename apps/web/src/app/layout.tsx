@@ -5,27 +5,49 @@ import { AuthProvider } from "@/lib/auth-context";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: {
-    default: `${SITE_NAME} — Developer Portal`,
-    template: `%s | ${SITE_NAME}`,
-  },
-  description: SITE_DESCRIPTION,
-  metadataBase: new URL(SITE_URL),
-  openGraph: {
-    type: "website",
-    siteName: SITE_NAME,
-    title: `${SITE_NAME} — Developer Portal`,
-    description: SITE_DESCRIPTION,
-  },
-  twitter: {
-    card: "summary_large_image",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
+async function getSiteConfig() {
+  try {
+    const { getPayload } = await import("@/lib/payload");
+    const payload = await getPayload();
+    const config = await payload.findGlobal({ slug: "site-config" });
+    if (config?.siteName) {
+      return {
+        siteName: config.siteName as string,
+        siteUrl: (config.siteUrl as string) || SITE_URL,
+        description: (config.description as string) || SITE_DESCRIPTION,
+      };
+    }
+  } catch {
+    // Payload not available
+  }
+  return { siteName: SITE_NAME, siteUrl: SITE_URL, description: SITE_DESCRIPTION };
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const config = await getSiteConfig();
+
+  return {
+    title: {
+      default: `${config.siteName} — Developer Portal`,
+      template: `%s | ${config.siteName}`,
+    },
+    description: config.description,
+    metadataBase: new URL(config.siteUrl),
+    openGraph: {
+      type: "website",
+      siteName: config.siteName,
+      title: `${config.siteName} — Developer Portal`,
+      description: config.description,
+    },
+    twitter: {
+      card: "summary_large_image",
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+  };
+}
 
 export default function RootLayout({
   children,

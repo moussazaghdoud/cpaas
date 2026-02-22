@@ -2,48 +2,39 @@ import { Hero } from "@/components/marketing/Hero";
 import { FeatureGrid } from "@/components/marketing/FeatureGrid";
 import { HowItWorks } from "@/components/marketing/HowItWorks";
 import { TrustSection } from "@/components/marketing/TrustSection";
-import Link from "next/link";
+import { CTASection } from "@/components/marketing/CTASection";
+import { BlockRenderer } from "@/components/BlockRenderer";
 
-export default function HomePage() {
+async function getHomepageBlocks() {
+  try {
+    const { getPayload } = await import("@/lib/payload");
+    const payload = await getPayload();
+    const homepage = await payload.findGlobal({ slug: "homepage" });
+    if (homepage?.blocks && Array.isArray(homepage.blocks) && homepage.blocks.length > 0) {
+      return homepage.blocks as Array<{ blockType: string; [key: string]: unknown }>;
+    }
+  } catch {
+    // Payload not available — use defaults
+  }
+  return null;
+}
+
+export default async function HomePage() {
+  const blocks = await getHomepageBlocks();
+
+  // If CMS blocks are available, render them dynamically
+  if (blocks) {
+    return <BlockRenderer blocks={blocks} />;
+  }
+
+  // Fallback: render hardcoded sections (pre-migration)
   return (
     <>
       <Hero />
       <FeatureGrid />
       <HowItWorks />
       <TrustSection />
-
-      {/* Final CTA */}
-      <section className="py-20 sm:py-28 border-t border-border">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-            Ready to start building?
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto mb-8">
-            Explore the documentation, try the sandbox, or jump straight into
-            the API reference.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link
-              href="/docs"
-              className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
-            >
-              View documentation
-            </Link>
-            <Link
-              href="/api-reference"
-              className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 text-sm font-medium border border-border text-foreground rounded-lg hover:bg-muted transition-colors"
-            >
-              API reference
-            </Link>
-            <Link
-              href="/portal/sandbox"
-              className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 text-sm font-medium border border-border text-foreground rounded-lg hover:bg-muted transition-colors"
-            >
-              Try sandbox
-            </Link>
-          </div>
-        </div>
-      </section>
+      <CTASection />
     </>
   );
 }

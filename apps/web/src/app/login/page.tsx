@@ -22,7 +22,7 @@ function LoginForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const redirect = searchParams.get("redirect") || "/portal/dashboard";
+  const redirect = searchParams?.get("redirect") || "/portal/dashboard";
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

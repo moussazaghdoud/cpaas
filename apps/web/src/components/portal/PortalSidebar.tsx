@@ -62,7 +62,7 @@ const NAV = [
 ];
 
 export function PortalSidebar() {
-  const pathname = usePathname();
+  const pathname = usePathname() || "";
 
   return (
     <aside className="hidden lg:flex w-60 shrink-0 flex-col border-r border-border bg-background">
@@ -92,7 +92,7 @@ export function PortalSidebar() {
 }
 
 export function PortalMobileNav() {
-  const pathname = usePathname();
+  const pathname = usePathname() || "";
 
   return (
     <nav className="flex lg:hidden overflow-x-auto border-b border-border bg-background px-4">

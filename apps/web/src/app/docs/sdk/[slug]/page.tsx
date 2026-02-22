@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SDK_LIST } from "@/lib/constants";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-import { listContentPages } from "@/lib/content";
+import { listContentPages, listContentPagesAsync } from "@/lib/content";
 
 export const dynamic = "force-dynamic";
 
@@ -11,9 +11,33 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+/** Try to load SDK from Payload CMS, fall back to constants */
+async function getSDK(slug: string) {
+  try {
+    const { getPayload } = await import("@/lib/payload");
+    const payload = await getPayload();
+    const result = await payload.find({
+      collection: "sdks",
+      where: { slug: { equals: slug } },
+      limit: 1,
+    });
+    if (result.docs.length > 0) {
+      const doc = result.docs[0] as Record<string, unknown>;
+      return {
+        name: doc.name as string,
+        slug: doc.slug as string,
+        language: doc.language as string,
+      };
+    }
+  } catch {
+    // Payload not available
+  }
+  return SDK_LIST.find((s) => s.slug === slug) || null;
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const sdk = SDK_LIST.find((s) => s.slug === slug);
+  const sdk = await getSDK(slug);
   if (!sdk) return {};
   return {
     title: sdk.name,
@@ -26,10 +50,16 @@ interface SdkSection {
   pages: { label: string; href: string }[];
 }
 
-function getSdkContent(slug: string): SdkSection[] {
-  const pages = listContentPages();
-  const prefix = `doc/sdk/${slug}`;
+async function getSdkContent(slug: string): Promise<SdkSection[]> {
+  // Try async (Payload first) then sync fallback
+  let pages;
+  try {
+    pages = await listContentPagesAsync();
+  } catch {
+    pages = listContentPages();
+  }
 
+  const prefix = `doc/sdk/${slug}`;
   const matching = pages.filter(
     (p) => p.slug.startsWith(prefix + "/") || p.slug === prefix
   );
@@ -88,10 +118,10 @@ function getSdkContent(slug: string): SdkSection[] {
 
 export default async function SDKPage({ params }: Props) {
   const { slug } = await params;
-  const sdk = SDK_LIST.find((s) => s.slug === slug);
+  const sdk = await getSDK(slug);
   if (!sdk) notFound();
 
-  const sections = getSdkContent(slug);
+  const sections = await getSdkContent(slug);
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">

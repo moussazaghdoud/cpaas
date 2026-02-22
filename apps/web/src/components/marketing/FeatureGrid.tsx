@@ -33,30 +33,38 @@ const ICONS: Record<string, React.ReactNode> = {
   ),
 };
 
-export function FeatureGrid() {
+interface FeatureGridData {
+  heading?: string;
+  subheading?: string;
+  features?: Array<{ title: string; description: string; icon?: string; url?: string }>;
+}
+
+export function FeatureGrid({ data }: { data?: Record<string, unknown> }) {
+  const d = (data || {}) as FeatureGridData;
+  const heading = d.heading || "Everything you need to build connected experiences";
+  const subheading = d.subheading || "Rainbow CPaaS provides a comprehensive set of communication APIs and SDKs for enterprise applications.";
+  const features = (d.features || FEATURES) as Array<{ title: string; description: string; icon: string }>;
+
   return (
     <section className="py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-            Everything you need to build
-            <br className="hidden sm:block" />
-            <span className="text-muted-foreground"> connected experiences</span>
+            {heading}
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Rainbow CPaaS provides a comprehensive set of communication APIs
-            and SDKs for enterprise applications.
+            {subheading}
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {FEATURES.map((feature) => (
+          {features.map((feature) => (
             <div
               key={feature.title}
               className="group relative p-6 rounded-xl border border-border bg-card hover:bg-muted/50 transition-all duration-200"
             >
               <div className="inline-flex items-center justify-center h-10 w-10 rounded-lg bg-accent/10 text-accent mb-4">
-                {ICONS[feature.icon]}
+                {ICONS[feature.icon] || ICONS.message}
               </div>
               <h3 className="text-base font-semibold mb-2">{feature.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">

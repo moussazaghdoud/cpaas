@@ -30,7 +30,7 @@ export function DocsSidebar({ items }: DocsSidebarProps) {
 }
 
 function SidebarGroup({ item, depth }: { item: SidebarItem; depth: number }) {
-  const pathname = usePathname();
+  const pathname = usePathname() || "";
   const isActive = item.href ? pathname === item.href : false;
   const hasActiveChild = item.children?.some(
     (child) =>

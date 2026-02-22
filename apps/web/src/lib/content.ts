@@ -1,6 +1,70 @@
 import * as fs from "fs";
 import * as path from "path";
 
+// ---------------------------------------------------------------------------
+// Payload CMS integration (dual-read pattern)
+// ---------------------------------------------------------------------------
+
+async function getPayloadPage(slug: string): Promise<ContentPage | null> {
+  try {
+    const { getPayload } = await import("@/lib/payload");
+    const payload = await getPayload();
+    const result = await payload.find({
+      collection: "pages",
+      where: { slug: { equals: slug } },
+      limit: 1,
+    });
+
+    if (result.docs.length === 0) return null;
+
+    const doc = result.docs[0] as Record<string, unknown>;
+    return {
+      slug: doc.slug as string,
+      meta: {
+        title: (doc.title as string) || "",
+        description: (doc.description as string) || "",
+        type: (doc.type as string) || "docs",
+        source: (doc.source as string) || "",
+        lastSynced: (doc.lastSynced as string) || (doc.updatedAt as string) || "",
+      },
+      content: (doc.markdownContent as string) || "",
+    };
+  } catch {
+    // Payload not available — fall back to file-based
+    return null;
+  }
+}
+
+async function getPayloadPages(): Promise<ContentPage[] | null> {
+  try {
+    const { getPayload } = await import("@/lib/payload");
+    const payload = await getPayload();
+    const result = await payload.find({
+      collection: "pages",
+      limit: 1000,
+      pagination: false,
+    });
+
+    return result.docs.map((doc: Record<string, unknown>) => ({
+      slug: doc.slug as string,
+      meta: {
+        title: (doc.title as string) || "",
+        description: (doc.description as string) || "",
+        type: (doc.type as string) || "docs",
+        source: (doc.source as string) || "",
+        lastSynced: (doc.lastSynced as string) || (doc.updatedAt as string) || "",
+      },
+      content: (doc.markdownContent as string) || "",
+    }));
+  } catch {
+    return null;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// File-based content (original system)
+// ---------------------------------------------------------------------------
+
 // Find the content directory — prefer persistent volume, then build-time paths
 function findContentDir(): string {
   const volumePath = process.env.CONTENT_VOLUME_PATH;
@@ -76,8 +140,11 @@ function buildFrontmatter(meta: Record<string, string>): string {
   return `---\n${lines.join("\n")}\n---\n`;
 }
 
-/** List all available MDX content pages */
-export function listContentPages(): ContentPage[] {
+// ---------------------------------------------------------------------------
+// File-based fallback functions
+// ---------------------------------------------------------------------------
+
+function listContentPagesFromFiles(): ContentPage[] {
   if (!fs.existsSync(MDX_DIR)) return [];
 
   const files = fs.readdirSync(MDX_DIR).filter((f) => f.endsWith(".mdx"));
@@ -92,8 +159,7 @@ export function listContentPages(): ContentPage[] {
   });
 }
 
-/** Get a single content page by slug */
-export function getContentPage(slug: string): ContentPage | null {
+function getContentPageFromFile(slug: string): ContentPage | null {
   const filename = slug.replace(/\//g, "__") + ".mdx";
   const filepath = path.join(MDX_DIR, filename);
 
@@ -106,6 +172,34 @@ export function getContentPage(slug: string): ContentPage | null {
     meta: meta as unknown as ContentMeta,
     content,
   };
+}
+
+// ---------------------------------------------------------------------------
+// Public API (dual-read: Payload first, then MDX fallback)
+// ---------------------------------------------------------------------------
+
+/** List all available content pages (Payload → MDX fallback) */
+export async function listContentPagesAsync(): Promise<ContentPage[]> {
+  const payloadPages = await getPayloadPages();
+  if (payloadPages && payloadPages.length > 0) return payloadPages;
+  return listContentPagesFromFiles();
+}
+
+/** Synchronous list (MDX only — for backwards compatibility) */
+export function listContentPages(): ContentPage[] {
+  return listContentPagesFromFiles();
+}
+
+/** Get a single content page by slug (Payload → MDX fallback) */
+export async function getContentPageAsync(slug: string): Promise<ContentPage | null> {
+  const payloadPage = await getPayloadPage(slug);
+  if (payloadPage) return payloadPage;
+  return getContentPageFromFile(slug);
+}
+
+/** Synchronous get (MDX only — for backwards compatibility) */
+export function getContentPage(slug: string): ContentPage | null {
+  return getContentPageFromFile(slug);
 }
 
 /** Save (create or update) a content page */
@@ -142,7 +236,36 @@ export function deleteContentPage(slug: string): boolean {
   return true;
 }
 
-/** Get search documents */
+/** Get search documents from file or Payload */
+export async function getSearchDocumentsAsync(): Promise<Array<{
+  id: string;
+  title: string;
+  path: string;
+  excerpt: string;
+  type: string;
+  content: string;
+}>> {
+  // Try Payload-sourced index first
+  try {
+    const pages = await getPayloadPages();
+    if (pages && pages.length > 0) {
+      return pages.map((page) => ({
+        id: page.slug,
+        title: page.meta.title || page.slug,
+        path: "/" + page.slug.replace(/^doc\//, "docs/"),
+        excerpt: page.meta.description || "",
+        type: page.meta.type || "docs",
+        content: page.content.substring(0, 500),
+      }));
+    }
+  } catch {
+    // Fall through to file-based
+  }
+
+  return getSearchDocuments();
+}
+
+/** Get search documents (synchronous, file-based) */
 export function getSearchDocuments(): Array<{
   id: string;
   title: string;
