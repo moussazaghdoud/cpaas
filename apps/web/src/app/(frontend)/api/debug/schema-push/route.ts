@@ -1,77 +1,60 @@
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  const action = url.searchParams.get("action") || "status";
+
   try {
     const { getPayload } = await import("@/lib/payload");
     const payload = await getPayload();
     const db = payload.db as any;
 
-    // List available methods on db adapter
-    const methods = Object.keys(db).filter((k) => typeof db[k] === "function");
-
-    // Try different approaches to create tables
-    let result: string | null = null;
-
-    // Approach 1: createMigration + migrate
-    if (typeof db.migrate === "function") {
-      try {
-        await db.migrate();
-        result = "migrate() succeeded";
-      } catch (err: any) {
-        result = `migrate() failed: ${err?.message}`;
-      }
+    if (action === "fresh") {
+      // migrateFresh: drops everything and recreates
+      await db.migrateFresh({ forceAcceptWarning: true });
+      const tables = await db.drizzle.execute(
+        `SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name`
+      );
+      return NextResponse.json({
+        status: "OK",
+        message: "migrateFresh() completed",
+        tables: (tables.rows || tables).map((r: any) => r.table_name),
+      });
     }
 
-    // Approach 2: push
-    if (!result && typeof db.push === "function") {
-      try {
-        await db.push({ forceAcceptWarning: true });
-        result = "push() succeeded";
-      } catch (err: any) {
-        result = `push() failed: ${err?.message}`;
-      }
+    if (action === "reconnect") {
+      // Try calling connect again which should trigger push:true
+      await db.connect(payload);
+      const tables = await db.drizzle.execute(
+        `SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name`
+      );
+      return NextResponse.json({
+        status: "OK",
+        message: "connect() completed",
+        tables: (tables.rows || tables).map((r: any) => r.table_name),
+      });
     }
 
-    // Approach 3: Try raw SQL to create tables via drizzle
-    if (typeof db.drizzle?.execute === "function") {
-      try {
-        const tables = await db.drizzle.execute(
-          `SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name`
-        );
-        return NextResponse.json({
-          status: "INFO",
-          methods,
-          migrationResult: result,
-          existingTables: tables.rows || tables,
-          hasConnect: typeof db.connect === "function",
-          hasDrizzle: !!db.drizzle,
-        });
-      } catch (err: any) {
-        // drizzle.execute not available
-      }
+    if (action === "create-migration") {
+      // Generate a migration file
+      await db.createMigration({ forceAcceptWarning: true, payload });
+      return NextResponse.json({ status: "OK", message: "createMigration() completed" });
     }
 
-    // Approach 4: Try connect() which might trigger push
-    if (typeof db.connect === "function") {
-      try {
-        await db.connect(payload);
-        result = (result || "") + " | connect() called";
-      } catch (err: any) {
-        result = (result || "") + ` | connect() failed: ${err?.message}`;
-      }
-    }
-
+    // Default: show status
+    const tables = await db.drizzle.execute(
+      `SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name`
+    );
     return NextResponse.json({
       status: "INFO",
-      methods,
-      migrationResult: result,
-      hasConnect: typeof db.connect === "function",
-      hasDrizzle: !!db.drizzle,
-      pushAvailable: typeof db.push === "function",
+      action: "status",
+      availableActions: ["?action=fresh", "?action=reconnect", "?action=create-migration"],
+      existingTables: (tables.rows || tables).map((r: any) => r.table_name),
+      pushConfig: !!db.push,
     });
   } catch (err: any) {
     return NextResponse.json(
-      { status: "ERROR", message: err?.message, stack: err?.stack?.split("\n").slice(0, 8) },
+      { status: "ERROR", message: err?.message, stack: err?.stack?.split("\n").slice(0, 10) },
       { status: 500 }
     );
   }
