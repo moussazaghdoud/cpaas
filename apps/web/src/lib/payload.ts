@@ -1,14 +1,19 @@
 import config from '@payload-config'
 import { getPayload as getPayloadInstance } from 'payload'
 
+// Singleton — avoids re-initializing on every call in the same request
 let cached: Awaited<ReturnType<typeof getPayloadInstance>> | null = null
+let initFailed = false
 
 export async function getPayload() {
-  // Skip Payload during build (no database available)
-  if (process.env.NEXT_PHASE === 'phase-production-build') {
-    throw new Error('Payload not available during build')
+  if (initFailed) throw new Error('Payload init previously failed — database unavailable')
+  if (!cached) {
+    try {
+      cached = await getPayloadInstance({ config })
+    } catch (err) {
+      initFailed = true
+      throw err
+    }
   }
-  if (cached) return cached
-  cached = await getPayloadInstance({ config })
   return cached
 }
