@@ -3,6 +3,8 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { ApiPlayground } from "@/components/ui/ApiPlayground";
 import { getAllPortals } from "@/lib/api-data";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "API Playground — Rainbow CPaaS",
   description:

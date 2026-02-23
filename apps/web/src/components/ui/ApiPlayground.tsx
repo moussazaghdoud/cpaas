@@ -1,13 +1,40 @@
 "use client";
 
-import { useState, useEffect, useCallback, Suspense } from "react";
+import { useState, useEffect, useCallback, Suspense, Component, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-interface HeaderRow {
-  key: string;
-  value: string;
+/* ------------------------------------------------------------------ */
+/*  Error boundary — catches client crashes and shows the error       */
+/* ------------------------------------------------------------------ */
+interface EBProps { children: ReactNode }
+interface EBState { error: string | null }
+
+class PlaygroundErrorBoundary extends Component<EBProps, EBState> {
+  constructor(props: EBProps) {
+    super(props);
+    this.state = { error: null };
+  }
+  static getDerivedStateFromError(err: Error) {
+    return { error: err.message || "Unknown error" };
+  }
+  render() {
+    if (this.state.error) {
+      return (
+        <div className="p-6 rounded-lg border border-red-500/30 bg-red-500/10 text-red-400 text-sm">
+          <p className="font-bold mb-2">Playground crashed</p>
+          <pre className="whitespace-pre-wrap text-xs">{this.state.error}</pre>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
 }
+
+/* ------------------------------------------------------------------ */
+/*  Types                                                              */
+/* ------------------------------------------------------------------ */
+interface HeaderRow { key: string; value: string }
 
 interface PlaygroundResponse {
   status: number;
@@ -25,10 +52,13 @@ interface EndpointOption {
   portalLabel: string;
 }
 
-interface ApiPlaygroundProps {
+export interface ApiPlaygroundProps {
   endpoints: EndpointOption[];
 }
 
+/* ------------------------------------------------------------------ */
+/*  Constants                                                          */
+/* ------------------------------------------------------------------ */
 const METHODS = ["GET", "POST", "PUT", "DELETE", "PATCH"] as const;
 
 const METHOD_COLORS: Record<string, string> = {
@@ -54,32 +84,31 @@ function statusColor(status: number): string {
 function formatBody(body: unknown): string {
   if (body === null || body === undefined) return "";
   if (typeof body === "string") {
-    try {
-      return JSON.stringify(JSON.parse(body), null, 2);
-    } catch {
-      return body;
-    }
+    try { return JSON.stringify(JSON.parse(body), null, 2); } catch { return body; }
   }
   return JSON.stringify(body, null, 2);
 }
 
-// Thin wrapper that reads URL params and pushes them into the playground via effect.
-// Isolated in its own Suspense boundary so the main UI never unmounts.
-function SearchParamReader({ onParams }: { onParams: (method: string | null, path: string | null) => void }) {
-  const searchParams = useSearchParams();
+/* ------------------------------------------------------------------ */
+/*  Search-param reader (isolated in its own Suspense)                 */
+/* ------------------------------------------------------------------ */
+function SearchParamReader({ onParams }: { onParams: (m: string | null, p: string | null) => void }) {
+  const sp = useSearchParams();
   useEffect(() => {
-    onParams(searchParams.get("method"), searchParams.get("path"));
-  }, [searchParams, onParams]);
+    onParams(sp.get("method"), sp.get("path"));
+  }, [sp, onParams]);
   return null;
 }
 
-export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
-  const [method, setMethod] = useState<string>("GET");
+/* ------------------------------------------------------------------ */
+/*  Inner playground (no useSearchParams — safe for SSR)               */
+/* ------------------------------------------------------------------ */
+function PlaygroundInner({ endpoints }: ApiPlaygroundProps) {
+  const [mounted, setMounted] = useState(false);
+  const [method, setMethod] = useState("GET");
   const [baseUrl, setBaseUrl] = useState(BASE_URLS[0].value);
   const [path, setPath] = useState("");
-  const [headers, setHeaders] = useState<HeaderRow[]>([
-    { key: "accept", value: "application/json" },
-  ]);
+  const [headers, setHeaders] = useState<HeaderRow[]>([{ key: "accept", value: "application/json" }]);
   const [body, setBody] = useState("");
   const [response, setResponse] = useState<PlaygroundResponse | null>(null);
   const [loading, setLoading] = useState(false);
@@ -88,14 +117,13 @@ export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
   const [endpointSearch, setEndpointSearch] = useState("");
   const [showPicker, setShowPicker] = useState(false);
 
-  // Callback for the SearchParamReader
+  useEffect(() => { setMounted(true); }, []);
+
   const handleParams = useCallback((paramMethod: string | null, paramPath: string | null) => {
     if (paramMethod && METHODS.includes(paramMethod.toUpperCase() as typeof METHODS[number])) {
       setMethod(paramMethod.toUpperCase());
     }
-    if (paramPath) {
-      setPath(paramPath);
-    }
+    if (paramPath) setPath(paramPath);
   }, []);
 
   const filteredEndpoints = endpointSearch
@@ -114,59 +142,34 @@ export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
     setEndpointSearch("");
   }, []);
 
-  const addHeader = () => setHeaders([...headers, { key: "", value: "" }]);
-
-  const updateHeader = (index: number, field: "key" | "value", value: string) => {
-    const updated = [...headers];
-    updated[index][field] = value;
-    setHeaders(updated);
+  const addHeader = () => setHeaders((h) => [...h, { key: "", value: "" }]);
+  const updateHeader = (i: number, field: "key" | "value", v: string) => {
+    setHeaders((prev) => { const u = [...prev]; u[i] = { ...u[i], [field]: v }; return u; });
   };
-
-  const removeHeader = (index: number) => {
-    setHeaders(headers.filter((_, i) => i !== index));
-  };
+  const removeHeader = (i: number) => setHeaders((prev) => prev.filter((_, idx) => idx !== i));
 
   const formatBodyInput = () => {
-    try {
-      setBody(JSON.stringify(JSON.parse(body), null, 2));
-    } catch {
-      // not valid JSON, leave as-is
-    }
+    try { setBody(JSON.stringify(JSON.parse(body), null, 2)); } catch { /* noop */ }
   };
 
   const sendRequest = async () => {
     setLoading(true);
     setError(null);
     setResponse(null);
-
     const url = path.startsWith("http") ? path : `${baseUrl}${path}`;
-
     const headersObj: Record<string, string> = {};
-    for (const h of headers) {
-      if (h.key.trim()) {
-        headersObj[h.key.trim()] = h.value;
-      }
-    }
-
+    for (const h of headers) { if (h.key.trim()) headersObj[h.key.trim()] = h.value; }
     try {
       const res = await fetch("/api/playground", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
-          method,
-          url,
-          headers: headersObj,
+          method, url, headers: headersObj,
           body: ["POST", "PUT", "PATCH"].includes(method) ? body : undefined,
         }),
       });
-
       const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || "Request failed");
-        return;
-      }
-
+      if (!res.ok) { setError(data.error || "Request failed"); return; }
       setResponse(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Network error");
@@ -177,9 +180,30 @@ export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
 
   const showBody = ["POST", "PUT", "PATCH"].includes(method);
 
+  // Prevent hydration mismatch — render a stable skeleton on the server,
+  // then swap to the interactive UI after mount.
+  if (!mounted) {
+    return (
+      <div className="space-y-6">
+        <div className="h-11 rounded-lg border border-[var(--border)] bg-[var(--card)]" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="space-y-4">
+            <div className="h-5 w-20 rounded bg-[var(--muted)]" />
+            <div className="h-10 rounded-lg bg-[var(--muted)]" />
+            <div className="h-8 rounded bg-[var(--muted)]" />
+            <div className="h-10 rounded-lg bg-[var(--muted)]" />
+          </div>
+          <div className="space-y-4">
+            <div className="h-5 w-24 rounded bg-[var(--muted)]" />
+            <div className="h-32 rounded-lg border border-[var(--border)] bg-[var(--card)]" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
-      {/* Read URL params without suspending the whole tree */}
       <Suspense fallback={null}>
         <SearchParamReader onParams={handleParams} />
       </Suspense>
@@ -206,9 +230,7 @@ export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
             </div>
             <div className="overflow-y-auto flex-1">
               {filteredEndpoints.length === 0 ? (
-                <div className="px-4 py-6 text-center text-sm text-[var(--muted-foreground)]">
-                  No endpoints found
-                </div>
+                <div className="px-4 py-6 text-center text-sm text-[var(--muted-foreground)]">No endpoints found</div>
               ) : (
                 filteredEndpoints.map((ep, i) => (
                   <button
@@ -216,21 +238,12 @@ export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
                     onClick={() => selectEndpoint(ep)}
                     className="w-full text-left px-3 py-2 hover:bg-[var(--muted)] transition-colors flex items-start gap-2"
                   >
-                    <span
-                      className={cn(
-                        "inline-flex items-center px-1.5 py-0.5 text-[10px] font-bold rounded border shrink-0 mt-0.5",
-                        METHOD_COLORS[ep.method]
-                      )}
-                    >
+                    <span className={cn("inline-flex items-center px-1.5 py-0.5 text-[10px] font-bold rounded border shrink-0 mt-0.5", METHOD_COLORS[ep.method])}>
                       {ep.method}
                     </span>
                     <div className="min-w-0">
-                      <code className="text-xs font-mono text-[var(--foreground)] break-all">
-                        {ep.basePath}{ep.path}
-                      </code>
-                      <p className="text-[10px] text-[var(--muted-foreground)] truncate">
-                        {ep.portalLabel} &middot; {ep.summary}
-                      </p>
+                      <code className="text-xs font-mono text-[var(--foreground)] break-all">{ep.basePath}{ep.path}</code>
+                      <p className="text-[10px] text-[var(--muted-foreground)] truncate">{ep.portalLabel} &middot; {ep.summary}</p>
                     </div>
                   </button>
                 ))
@@ -240,26 +253,20 @@ export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
         )}
       </div>
 
-      {/* Main layout: Request + Response */}
+      {/* Main layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left: Request builder */}
         <div className="space-y-4">
           <h3 className="text-sm font-semibold text-[var(--foreground)] uppercase tracking-wider">Request</h3>
 
-          {/* Method + URL */}
           <div className="flex gap-2">
             <select
               value={method}
               onChange={(e) => setMethod(e.target.value)}
-              className={cn(
-                "px-3 py-2 rounded-lg border text-sm font-bold w-28 shrink-0 appearance-none cursor-pointer outline-none",
-                METHOD_COLORS[method]
-              )}
+              className="px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--card)] text-sm font-bold w-28 shrink-0 outline-none"
             >
               {METHODS.map((m) => (
-                <option key={m} value={m}>
-                  {m}
-                </option>
+                <option key={m} value={m}>{m}</option>
               ))}
             </select>
             <select
@@ -268,9 +275,7 @@ export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
               className="px-2 py-2 rounded-lg border border-[var(--border)] bg-[var(--card)] text-sm text-[var(--foreground)] shrink-0 outline-none"
             >
               {BASE_URLS.map((b) => (
-                <option key={b.value} value={b.value}>
-                  {b.label}
-                </option>
+                <option key={b.value} value={b.value}>{b.label}</option>
               ))}
             </select>
             <input
@@ -285,38 +290,17 @@ export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
           {/* Headers */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="text-xs font-medium text-[var(--muted-foreground)] uppercase tracking-wider">Headers</label>
-              <button
-                onClick={addHeader}
-                className="text-xs text-[var(--accent)] hover:underline"
-              >
-                + Add header
-              </button>
+              <span className="text-xs font-medium text-[var(--muted-foreground)] uppercase tracking-wider">Headers</span>
+              <button onClick={addHeader} className="text-xs text-[var(--accent)] hover:underline">+ Add header</button>
             </div>
             <div className="space-y-1.5">
               {headers.map((h, i) => (
                 <div key={i} className="flex gap-1.5">
-                  <input
-                    type="text"
-                    value={h.key}
-                    onChange={(e) => updateHeader(i, "key", e.target.value)}
-                    placeholder="Header name"
-                    className="flex-1 px-2.5 py-1.5 rounded border border-[var(--border)] bg-[var(--muted)] text-xs font-mono text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] outline-none focus:ring-1 focus:ring-[var(--accent)]"
-                  />
-                  <input
-                    type="text"
-                    value={h.value}
-                    onChange={(e) => updateHeader(i, "value", e.target.value)}
-                    placeholder="Value"
-                    className="flex-1 px-2.5 py-1.5 rounded border border-[var(--border)] bg-[var(--muted)] text-xs font-mono text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] outline-none focus:ring-1 focus:ring-[var(--accent)]"
-                  />
-                  <button
-                    onClick={() => removeHeader(i)}
-                    className="px-2 text-[var(--muted-foreground)] hover:text-red-400 transition-colors text-sm"
-                    title="Remove header"
-                  >
-                    &times;
-                  </button>
+                  <input type="text" value={h.key} onChange={(e) => updateHeader(i, "key", e.target.value)} placeholder="Header name"
+                    className="flex-1 px-2.5 py-1.5 rounded border border-[var(--border)] bg-[var(--muted)] text-xs font-mono text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] outline-none focus:ring-1 focus:ring-[var(--accent)]" />
+                  <input type="text" value={h.value} onChange={(e) => updateHeader(i, "value", e.target.value)} placeholder="Value"
+                    className="flex-1 px-2.5 py-1.5 rounded border border-[var(--border)] bg-[var(--muted)] text-xs font-mono text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] outline-none focus:ring-1 focus:ring-[var(--accent)]" />
+                  <button onClick={() => removeHeader(i)} className="px-2 text-[var(--muted-foreground)] hover:text-red-400 transition-colors text-sm" title="Remove">&times;</button>
                 </div>
               ))}
             </div>
@@ -326,13 +310,8 @@ export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
           {showBody && (
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="text-xs font-medium text-[var(--muted-foreground)] uppercase tracking-wider">Body</label>
-                <button
-                  onClick={formatBodyInput}
-                  className="text-xs text-[var(--accent)] hover:underline"
-                >
-                  Format JSON
-                </button>
+                <span className="text-xs font-medium text-[var(--muted-foreground)] uppercase tracking-wider">Body</span>
+                <button onClick={formatBodyInput} className="text-xs text-[var(--accent)] hover:underline">Format JSON</button>
               </div>
               <textarea
                 value={body}
@@ -344,7 +323,7 @@ export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
             </div>
           )}
 
-          {/* Send button */}
+          {/* Send */}
           <button
             onClick={sendRequest}
             disabled={loading || !path.trim()}
@@ -363,9 +342,7 @@ export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
                 </svg>
                 Sending...
               </span>
-            ) : (
-              "Send Request"
-            )}
+            ) : "Send Request"}
           </button>
         </div>
 
@@ -374,9 +351,7 @@ export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
           <h3 className="text-sm font-semibold text-[var(--foreground)] uppercase tracking-wider">Response</h3>
 
           {error && (
-            <div className="p-4 rounded-lg border border-red-500/30 bg-red-500/10 text-red-400 text-sm">
-              {error}
-            </div>
+            <div className="p-4 rounded-lg border border-red-500/30 bg-red-500/10 text-red-400 text-sm">{error}</div>
           )}
 
           {!response && !error && !loading && (
@@ -397,32 +372,19 @@ export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
 
           {response && (
             <div className="space-y-3">
-              {/* Status bar */}
               <div className="flex items-center gap-3 text-sm">
-                <span
-                  className={cn(
-                    "inline-flex items-center px-2.5 py-1 rounded border font-bold",
-                    statusColor(response.status)
-                  )}
-                >
+                <span className={cn("inline-flex items-center px-2.5 py-1 rounded border font-bold", statusColor(response.status))}>
                   {response.status} {response.statusText}
                 </span>
                 <span className="text-[var(--muted-foreground)]">{response.duration}ms</span>
               </div>
 
-              {/* Response headers (collapsible) */}
               <div>
                 <button
                   onClick={() => setShowResponseHeaders(!showResponseHeaders)}
                   className="text-xs text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors flex items-center gap-1"
                 >
-                  <svg
-                    className={cn("h-3 w-3 transition-transform", showResponseHeaders && "rotate-90")}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
+                  <svg className={cn("h-3 w-3 transition-transform", showResponseHeaders && "rotate-90")} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                   </svg>
                   Response Headers ({Object.keys(response.headers).length})
@@ -431,10 +393,10 @@ export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
                   <div className="mt-1.5 p-3 rounded border border-[var(--border)] bg-[var(--muted)] overflow-x-auto">
                     <table className="text-xs font-mono">
                       <tbody>
-                        {Object.entries(response.headers).map(([key, value]) => (
-                          <tr key={key}>
-                            <td className="pr-3 py-0.5 text-[var(--muted-foreground)] whitespace-nowrap">{key}</td>
-                            <td className="py-0.5 text-[var(--foreground)] break-all">{value}</td>
+                        {Object.entries(response.headers).map(([k, v]) => (
+                          <tr key={k}>
+                            <td className="pr-3 py-0.5 text-[var(--muted-foreground)] whitespace-nowrap">{k}</td>
+                            <td className="py-0.5 text-[var(--foreground)] break-all">{v}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -443,7 +405,6 @@ export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
                 )}
               </div>
 
-              {/* Response body */}
               <div className="rounded-lg border border-[var(--border)] bg-[var(--muted)] overflow-hidden">
                 <pre className="p-4 text-xs font-mono text-[var(--foreground)] overflow-x-auto max-h-[500px] overflow-y-auto whitespace-pre-wrap break-words">
                   {formatBody(response.body)}
@@ -454,5 +415,16 @@ export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
         </div>
       </div>
     </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Exported wrapper: error boundary around the inner playground       */
+/* ------------------------------------------------------------------ */
+export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
+  return (
+    <PlaygroundErrorBoundary>
+      <PlaygroundInner endpoints={endpoints} />
+    </PlaygroundErrorBoundary>
   );
 }
