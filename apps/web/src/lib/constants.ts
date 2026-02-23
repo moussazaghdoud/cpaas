@@ -6,6 +6,7 @@ export const SITE_URL = "https://developers.rainbow.com";
 export const NAV_ITEMS = [
   { label: "Docs", href: "/docs" },
   { label: "API Reference", href: "/api-reference" },
+  { label: "API Playground", href: "/api-playground" },
   { label: "SDKs", href: "/docs/sdk" },
   { label: "Support", href: "/support" },
 ] as const;

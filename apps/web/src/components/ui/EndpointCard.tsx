@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 interface EndpointCardProps {
@@ -5,6 +6,7 @@ interface EndpointCardProps {
   path: string;
   summary: string;
   tags?: string[];
+  basePath?: string;
 }
 
 const METHOD_COLORS = {
@@ -15,7 +17,11 @@ const METHOD_COLORS = {
   PATCH: "bg-purple-500/10 text-purple-400 border-purple-500/20",
 };
 
-export function EndpointCard({ method, path, summary, tags }: EndpointCardProps) {
+export function EndpointCard({ method, path, summary, tags, basePath }: EndpointCardProps) {
+  const tryItHref = basePath
+    ? `/api-playground?method=${method}&path=${encodeURIComponent(basePath + path)}`
+    : null;
+
   return (
     <div className="flex items-start gap-3 p-4 rounded-lg border border-border hover:bg-muted/30 transition-colors">
       <span
@@ -42,6 +48,14 @@ export function EndpointCard({ method, path, summary, tags }: EndpointCardProps)
           </div>
         )}
       </div>
+      {tryItHref && (
+        <Link
+          href={tryItHref}
+          className="shrink-0 self-center text-xs px-2.5 py-1 rounded border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--accent)] hover:border-[var(--accent)]/50 transition-colors"
+        >
+          Try it
+        </Link>
+      )}
     </div>
   );
 }

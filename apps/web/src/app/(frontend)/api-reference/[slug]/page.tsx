@@ -111,6 +111,7 @@ export default async function ApiDetailPage({ params }: Props) {
                   method={ep.method}
                   path={ep.path}
                   summary={ep.summary}
+                  basePath={api.basePath}
                 />
               ))}
             </div>
