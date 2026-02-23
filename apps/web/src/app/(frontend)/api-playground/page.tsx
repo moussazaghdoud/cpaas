@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { ApiPlayground } from "@/components/ui/ApiPlayground";
 import { getAllPortals } from "@/lib/api-data";
@@ -39,9 +38,7 @@ export default function ApiPlaygroundPage() {
         </p>
       </div>
 
-      <Suspense fallback={<div className="text-sm text-[var(--muted-foreground)]">Loading playground...</div>}>
-        <ApiPlayground endpoints={endpoints} />
-      </Suspense>
+      <ApiPlayground endpoints={endpoints} />
     </div>
   );
 }

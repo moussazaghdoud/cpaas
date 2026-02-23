@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -63,9 +63,17 @@ function formatBody(body: unknown): string {
   return JSON.stringify(body, null, 2);
 }
 
-export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
+// Thin wrapper that reads URL params and pushes them into the playground via effect.
+// Isolated in its own Suspense boundary so the main UI never unmounts.
+function SearchParamReader({ onParams }: { onParams: (method: string | null, path: string | null) => void }) {
   const searchParams = useSearchParams();
+  useEffect(() => {
+    onParams(searchParams.get("method"), searchParams.get("path"));
+  }, [searchParams, onParams]);
+  return null;
+}
 
+export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
   const [method, setMethod] = useState<string>("GET");
   const [baseUrl, setBaseUrl] = useState(BASE_URLS[0].value);
   const [path, setPath] = useState("");
@@ -80,17 +88,15 @@ export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
   const [endpointSearch, setEndpointSearch] = useState("");
   const [showPicker, setShowPicker] = useState(false);
 
-  // Pre-fill from URL params
-  useEffect(() => {
-    const paramMethod = searchParams.get("method");
-    const paramPath = searchParams.get("path");
+  // Callback for the SearchParamReader
+  const handleParams = useCallback((paramMethod: string | null, paramPath: string | null) => {
     if (paramMethod && METHODS.includes(paramMethod.toUpperCase() as typeof METHODS[number])) {
       setMethod(paramMethod.toUpperCase());
     }
     if (paramPath) {
       setPath(paramPath);
     }
-  }, [searchParams]);
+  }, []);
 
   const filteredEndpoints = endpointSearch
     ? endpoints.filter(
@@ -173,6 +179,11 @@ export function ApiPlayground({ endpoints }: ApiPlaygroundProps) {
 
   return (
     <div className="space-y-6">
+      {/* Read URL params without suspending the whole tree */}
+      <Suspense fallback={null}>
+        <SearchParamReader onParams={handleParams} />
+      </Suspense>
+
       {/* Endpoint quick-picker */}
       <div className="relative">
         <button
