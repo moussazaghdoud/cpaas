@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { NAV_ITEMS, SITE_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { SearchModal } from "@/components/ui/SearchModal";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { useAuth } from "@/lib/auth-context";
 
 interface NavItem {
@@ -75,6 +76,7 @@ export function Header() {
 
           {/* Actions */}
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             <button
               onClick={() => setSearchOpen(true)}
               className="hidden sm:flex items-center gap-2 px-3 py-1.5 text-sm text-muted-foreground border border-border rounded-lg hover:bg-muted transition-colors"

@@ -14,7 +14,9 @@
   --color-card-foreground: var(--card-foreground);
 }
 
-:root {
+/* Dark theme (default) */
+:root,
+[data-theme="dark"] {
   --background: #09090b;
   --foreground: #fafafa;
   --muted: #18181b;
@@ -26,6 +28,21 @@
   --primary-foreground: #ffffff;
   --card: #0f0f12;
   --card-foreground: #fafafa;
+}
+
+/* Light theme */
+[data-theme="light"] {
+  --background: #ffffff;
+  --foreground: #09090b;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --border: #e4e4e7;
+  --accent: #7c3aed;
+  --accent-foreground: #ffffff;
+  --primary: #6d28d9;
+  --primary-foreground: #ffffff;
+  --card: #fafafa;
+  --card-foreground: #09090b;
 }
 
 * {
@@ -42,11 +59,14 @@ code, pre, kbd {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
 }
 
-/* Scrollbar */
+/* Scrollbar — adapts via CSS vars */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--background); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
+
+/* Light-mode selection highlight */
+[data-theme="light"] ::selection { background: rgba(109, 40, 217, 0.15); }
 
 ::selection { background: rgba(109, 40, 217, 0.3); color: var(--foreground); }
 
