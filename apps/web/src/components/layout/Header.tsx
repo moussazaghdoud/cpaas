@@ -33,7 +33,14 @@ export function Header() {
       })
       .then((data) => {
         if (data?.items && Array.isArray(data.items) && data.items.length > 0) {
-          setNavItems(data.items);
+          // Ensure API Playground is always present (insert after API Reference)
+          const items: NavItem[] = data.items;
+          const hasPlayground = items.some((i) => (i.url || i.href) === "/api-playground");
+          if (!hasPlayground) {
+            const refIdx = items.findIndex((i) => (i.url || i.href) === "/api-reference");
+            items.splice(refIdx + 1, 0, { label: "API Playground", url: "/api-playground" });
+          }
+          setNavItems(items);
         }
       })
       .catch(() => {
