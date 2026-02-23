@@ -2,6 +2,8 @@ import type { CollectionConfig } from 'payload'
 import { isAdminOrEditor, publishedOnly } from '../access/roles'
 import { HeroBlock } from '../blocks/HeroBlock'
 import { FeatureGridBlock } from '../blocks/FeatureGridBlock'
+import { HowItWorksBlock } from '../blocks/HowItWorksBlock'
+import { TrustSectionBlock } from '../blocks/TrustSectionBlock'
 import { CTABlock } from '../blocks/CTABlock'
 import { RichContentBlock } from '../blocks/RichContentBlock'
 import { CodeBlock } from '../blocks/CodeBlock'
@@ -100,6 +102,8 @@ export const Pages: CollectionConfig = {
       blocks: [
         HeroBlock,
         FeatureGridBlock,
+        HowItWorksBlock,
+        TrustSectionBlock,
         CTABlock,
         RichContentBlock,
         CodeBlock,
