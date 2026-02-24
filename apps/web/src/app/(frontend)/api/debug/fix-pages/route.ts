@@ -372,12 +372,112 @@ export async function GET(request: Request) {
       });
     }
 
+    if (action === "debug-transaction") {
+      const results: string[] = [];
+      const ts = Date.now();
+
+      // Step 1: Raw SQL transaction replicating what Payload does
+      try {
+        await drizzle.execute(`BEGIN`);
+        results.push("BEGIN OK");
+        try {
+          const ins1 = await drizzle.execute(
+            `INSERT INTO pages (title, slug, type, _status, updated_at, created_at)
+             VALUES ('txn-test-${ts}', 'txn-test-${ts}', 'docs', 'published', now(), now())
+             RETURNING id`
+          );
+          const pageId = (ins1.rows || ins1)[0]?.id;
+          results.push(`INSERT pages OK: id=${pageId}`);
+
+          const ins2 = await drizzle.execute(
+            `INSERT INTO _pages_v (parent_id, version_title, version_slug, version_type, version__status, latest, updated_at, created_at)
+             VALUES (${pageId}, 'txn-test-${ts}', 'txn-test-${ts}', 'docs', 'published', true, now(), now())
+             RETURNING id`
+          );
+          results.push(`INSERT _pages_v OK: id=${(ins2.rows || ins2)[0]?.id}`);
+
+          const ins3 = await drizzle.execute(
+            `INSERT INTO payload_locked_documents (updated_at, created_at) VALUES (now(), now()) RETURNING id`
+          );
+          const lockedId = (ins3.rows || ins3)[0]?.id;
+          results.push(`INSERT payload_locked_documents OK: id=${lockedId}`);
+
+          const ins4 = await drizzle.execute(
+            `INSERT INTO payload_locked_documents_rels (parent_id, path, pages_id, "order")
+             VALUES (${lockedId}, 'pages', ${pageId}, 1) RETURNING id`
+          );
+          results.push(`INSERT payload_locked_documents_rels OK: id=${(ins4.rows || ins4)[0]?.id}`);
+
+          await drizzle.execute(`COMMIT`);
+          results.push("COMMIT OK");
+        } catch (innerErr: any) {
+          await drizzle.execute(`ROLLBACK`);
+          results.push(`ROLLBACK — error: ${innerErr?.message}`);
+          if (innerErr?.detail) results.push(`Detail: ${innerErr.detail}`);
+          if (innerErr?.code) results.push(`PG Code: ${innerErr.code}`);
+          if (innerErr?.constraint) results.push(`Constraint: ${innerErr.constraint}`);
+        }
+        const cnt = await drizzle.execute(`SELECT count(*) as c FROM pages WHERE slug LIKE 'txn-test-%'`);
+        results.push(`Raw txn rows persisted: ${(cnt.rows || cnt)[0]?.c}`);
+      } catch (outerErr: any) {
+        results.push(`Outer error: ${outerErr?.message}`);
+      }
+
+      // Step 2: Payload create with query interception
+      results.push("--- payload.create() with query log ---");
+      const origExecute = drizzle.execute.bind(drizzle);
+      const queryLog: string[] = [];
+      drizzle.execute = async (...args: any[]) => {
+        const q = typeof args[0] === "string" ? args[0].substring(0, 150) : JSON.stringify(args[0]).substring(0, 150);
+        queryLog.push(q);
+        try {
+          return await origExecute(...args);
+        } catch (err: any) {
+          queryLog.push(`  ERROR: ${err?.message?.substring(0, 200)}`);
+          throw err;
+        }
+      };
+      try {
+        await payload.create({
+          collection: "pages",
+          data: {
+            title: "Payload Test " + ts,
+            slug: "payload-test-" + ts,
+            type: "docs",
+            _status: "published",
+          },
+        });
+        results.push("payload.create() returned OK");
+      } catch (err: any) {
+        results.push(`payload.create() error: ${err?.message}`);
+      }
+      drizzle.execute = origExecute;
+
+      results.push(`Queries captured: ${queryLog.length}`);
+      for (const q of queryLog.slice(0, 40)) {
+        results.push(`  Q: ${q}`);
+      }
+
+      const cnt2 = await drizzle.execute(`SELECT count(*) as c FROM pages WHERE slug LIKE 'payload-test-%'`);
+      results.push(`Payload rows persisted: ${(cnt2.rows || cnt2)[0]?.c}`);
+
+      // Cleanup
+      try {
+        await drizzle.execute(`DELETE FROM payload_locked_documents_rels WHERE pages_id IN (SELECT id FROM pages WHERE slug LIKE 'txn-test-%' OR slug LIKE 'payload-test-%')`);
+        await drizzle.execute(`DELETE FROM _pages_v WHERE version_slug LIKE 'txn-test-%' OR version_slug LIKE 'payload-test-%'`);
+        await drizzle.execute(`DELETE FROM pages WHERE slug LIKE 'txn-test-%' OR slug LIKE 'payload-test-%'`);
+      } catch { /* best effort cleanup */ }
+
+      return NextResponse.json({ results });
+    }
+
     return NextResponse.json({
       availableActions: [
         "?action=diagnose — Show expected vs actual tables, column types, row counts",
         "?action=fix-columns — Fix varchar->text for textarea fields",
         "?action=test-create — Create a single test page and verify persistence",
         "?action=create-missing-tables — Create any tables that Payload expects but don't exist",
+        "?action=debug-transaction — Deep transaction debug with query logging",
         "?action=nuclear-rebuild — Drop everything and let Payload recreate from scratch",
       ],
     });
